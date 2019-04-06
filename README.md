@@ -38,6 +38,8 @@
    
    思维导图软件使用[mindmaster](https://www.edrawsoft.cn/download/mindmaster/)绘制。
    
+   预计2020年2月份前能完成所有资料的整理。
+   
 ## 计算机基础和网络
 * [计算机基础](https://github.com/lgjlife/Java-Interview/blob/master/Network/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80.md)
 * [TCP/IP](https://github.com/lgjlife/Java-Interview/blob/master/Network/TCPIP.md)
@@ -80,7 +82,7 @@
 
 ## 缓存
 *  [Redis](https://github.com/lgjlife/Java-Interview/blob/master/Cache/Redis.md)
-
+*  [Redis面试题整理]()https://github.com/lgjlife/Java-Interview/blob/master/Cache/Redis-Interview.md
 ## 分布式
 * [Dubbo](https://github.com/lgjlife/Java-Interview/blob/master/Distributed/Dubbo.md)
 * [分布式](https://github.com/lgjlife/Java-Interview/blob/master/Distributed/Distributed.md)

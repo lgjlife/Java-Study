@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="2260bb93-d7b8-4a7c-afe0-bc80ff3bd8f0" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/../Cloud-Frame" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Java-Interview (copy)/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Sql/Mysql.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Cache/Redis.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/DataStructuresAndAlgorithms/Algorithms.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/DataStructuresAndAlgorithms/DataStructures.md" afterDir="false" />
@@ -310,33 +308,33 @@
       <change afterPath="$PROJECT_DIR$/../microblog-research/src/test/java/com/microblog/topparent/TopParentApplicationTests.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../mq" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../nz-rpc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Dubbo.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Distributed/Dubbo.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Elasticsearch.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Search/Elasticsearch.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../JVM虚拟机.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/JavaBase/JVM.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Java基础.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/JavaBase/JavaBase.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Java多线程.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/JavaBase/JavaThread.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../KAFKA.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Message/KAFKA.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Linux.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Linux/Linux.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Maven.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/ProjectManager/Maven.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Mybatis.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Sql/Mybatis.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Netty.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Network/Netty.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Nginx.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Network/Nginx.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../RabbitMQ.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Message/RabbitMQ.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Redis.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Cache/Redis.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../RocketMQ.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Message/RocketMQ.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Spring.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Spring/Spring.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SpringBoot.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Spring/SpringBoot.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SpringCloud.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Spring/SpringCloud.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SpringMVC.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Spring/SpringMVC.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Tomcat.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/WebContainer/Tomcat.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Zookeeper.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Message/Zookeeper.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../分布式架构.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Distributed/Distributed.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../数据结构.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/DataStructuresAndAlgorithms/DataStructures.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../消息中间件.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Message/message.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../算法.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/DataStructuresAndAlgorithms/Algorithms.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../计算机基础.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Network/计算机基础.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../计算机网络.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Network/network.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../设计模式.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/DesignPatterns/DesignPatterns.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/Cache/Redis.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/DataStructuresAndAlgorithms/Algorithms.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/DataStructuresAndAlgorithms/DataStructures.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/DesignPatterns/DesignPatterns.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/Distributed/Distributed.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/Distributed/Dubbo.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/JavaBase/JVM.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/JavaBase/JavaBase.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/JavaBase/JavaThread.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/Linux/Linux.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/Message/KAFKA.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/Message/RabbitMQ.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/Message/RocketMQ.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/Message/Zookeeper.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/Message/message.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/Network/Netty.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/Network/Nginx.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/Network/network.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/Network/计算机基础.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/ProjectManager/Maven.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/Search/Elasticsearch.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/Spring/Spring.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/Spring/SpringBoot.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/Spring/SpringCloud.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/Spring/SpringMVC.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/Sql/Mybatis.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java-Interview (copy)/WebContainer/Tomcat.md" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -350,8 +348,32 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="238">
-                <caret line="14" column="2" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
+              <first_editor relative-caret-position="-153">
+                <caret line="84" column="83" selection-start-line="84" selection-start-column="83" selection-end-line="84" selection-end-column="83" />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Spring/Sping-Interview.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="328">
+                <caret line="299" column="2" selection-start-line="299" selection-start-column="2" selection-end-line="299" selection-end-column="2" />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Spring/Spring.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="323">
+                <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
               </first_editor>
               <second_editor />
             </state>
@@ -370,12 +392,12 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Database/MySQL-Interview.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
               <first_editor relative-caret-position="238">
-                <caret line="14" column="19" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
+                <caret line="14" column="19" lean-forward="true" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
               </first_editor>
               <second_editor />
             </state>
@@ -393,31 +415,11 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Spring/SpingMvc-Interview.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor />
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Spring/SpingCloud-Interview.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor />
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Cache/Redis.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
               <first_editor relative-caret-position="68">
-                <caret line="4" selection-start-line="4" selection-end-line="4" />
+                <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
               </first_editor>
               <second_editor />
             </state>
@@ -425,10 +427,12 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Network/Netty-Interview.md">
+        <entry file="file://$PROJECT_DIR$/Cache/Redis-Interview.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor />
+              <first_editor relative-caret-position="153">
+                <caret line="36" column="20" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
+              </first_editor>
               <second_editor />
             </state>
           </provider>
@@ -472,17 +476,19 @@
         <option value="$PROJECT_DIR$/Cache/RedisInterview.md" />
         <option value="$PROJECT_DIR$/Cache/Redis.md" />
         <option value="$PROJECT_DIR$/Database/Mysql.md" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/Database/MyBatis-Interview.md" />
         <option value="$PROJECT_DIR$/Database/MySQL-Interview.md" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/Spring/Sping-Interview.md" />
+        <option value="$PROJECT_DIR$/Spring/Spring.md" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="67" />
-    <option name="y" value="25" />
-    <option name="width" value="1853" />
-    <option name="height" value="1055" />
+    <option name="x" value="1920" />
+    <option name="y" value="-2" />
+    <option name="width" value="1366" />
+    <option name="height" value="770" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -613,18 +619,17 @@
       <option name="presentableId" value="Default" />
       <updated>1554386421844</updated>
       <workItem from="1554386424242" duration="5039000" />
-      <workItem from="1554440908947" duration="24504000" />
+      <workItem from="1554440908947" duration="30377000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29543000" />
+    <option name="totallyTimeSpent" value="35416000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
-    <editor active="true" />
+    <frame x="1920" y="-2" width="1366" height="770" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18428335" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25227273" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="Designer" order="3" />
@@ -638,7 +643,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Stack trace to UML" order="8" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.32937366" />
+      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.19968799" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="11" />
       <window_info anchor="bottom" id="Version Control" order="12" />
@@ -800,16 +805,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Cache/RedisIn-terview.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="433">
-            <caret line="36" column="20" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/JavaBase/JavaBaseInterview.md">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -854,14 +849,6 @@
     <entry file="file://$PROJECT_DIR$/Search/ela-Interview.md">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Spring/Sping-Interview.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor />
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Spring/SpringBoot-Interview.md">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -881,16 +868,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Cache/Redis.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="68">
-            <caret line="4" selection-start-line="4" selection-end-line="4" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Network/Netty-Interview.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -903,16 +880,6 @@
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
           <first_editor />
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="238">
-            <caret line="14" column="2" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
-          </first_editor>
           <second_editor />
         </state>
       </provider>
@@ -949,7 +916,57 @@
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
           <first_editor relative-caret-position="238">
-            <caret line="14" column="19" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
+            <caret line="14" column="19" lean-forward="true" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Cache/Redis.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="68">
+            <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Cache/Redis-Interview.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="153">
+            <caret line="36" column="20" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="-153">
+            <caret line="84" column="83" selection-start-line="84" selection-start-column="83" selection-end-line="84" selection-end-column="83" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spring/Sping-Interview.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="328">
+            <caret line="299" column="2" selection-start-line="299" selection-start-column="2" selection-end-line="299" selection-end-column="2" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spring/Spring.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="323">
+            <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
           </first_editor>
           <second_editor />
         </state>
