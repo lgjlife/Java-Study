@@ -1,7 +1,343 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2260bb93-d7b8-4a7c-afe0-bc80ff3bd8f0" name="Default Changelist" comment="" />
+    <list default="true" id="2260bb93-d7b8-4a7c-afe0-bc80ff3bd8f0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../Cloud-Frame" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Java-Interview (copy)/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Sql/Mysql.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Cache/Redis.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DataStructuresAndAlgorithms/Algorithms.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DataStructuresAndAlgorithms/DataStructures.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DesignPatterns/DesignPatterns.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Distributed/Distributed.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Distributed/Dubbo.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JavaBase/JVM.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JavaBase/JavaBase.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JavaBase/JavaThread.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Linux/Linux.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Message/KAFKA.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Message/RabbitMQ.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Message/RocketMQ.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Message/Zookeeper.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Message/message.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Network/Netty.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Network/Nginx.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Network/network.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Network/计算机基础.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ProjectManager/Maven.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Search/Elasticsearch.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Spring/Spring.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Spring/SpringBoot.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Spring/SpringCloud.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Spring/SpringMVC.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebContainer/Tomcat.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LanMeiShop/.idea/LanMeiShop.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LanMeiShop/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LanMeiShop/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LanMeiShop/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LanMeiShop/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LanMeiShop/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LanMeiShop/LanMeiShop" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Seckill" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/.travis.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/README_ZH.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/doc/images/index.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/doc/images/logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/doc/images/profile-eclipse.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/doc/images/profile-idea.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/DubboAdminApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/common/CommonResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/common/exception/ConfigurationException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/common/exception/ParamValidationException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/common/exception/PermissionDeniedException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/common/exception/ResourceNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/common/exception/ServiceException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/common/exception/SystemException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/common/exception/VersionValidationException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/common/util/Constants.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/common/util/ConvertUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/common/util/MD5Util.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/common/util/OverrideUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/common/util/Pair.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/common/util/ParseUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/common/util/RouteRule.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/common/util/SyncUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/common/util/Tool.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/common/util/UrlUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/common/util/YamlParser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/config/ConfigCenter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/config/SwaggerConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/controller/AccessesController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/controller/ConditionRoutesController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/controller/LoadBalanceController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/controller/OverridesController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/controller/ServiceController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/controller/TagRoutesController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/controller/WeightController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/data/config/GovernanceConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/data/config/impl/ApolloConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/data/config/impl/NoOpConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/data/config/impl/ZookeeperConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/data/metadata/MetaDataCollector.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/data/metadata/impl/NoOpMetadataCollector.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/data/metadata/impl/RedisMetaDataCollector.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/data/metadata/impl/ZookeeperMetaDataCollector.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/handler/CustomExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/Access.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/Agreement.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/Approval.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/ApprovalRequisition.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/Change.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/Cluster.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/Config.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/Consumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/Document.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/Entity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/Favorite.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/Feature.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/Layer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/LoadBalance.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/Mock.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/Operation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/Override.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/Owner.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/Provider.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/Registry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/Route.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/Tag.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/domain/Weight.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/dto/AccessDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/dto/BalancingDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/dto/BaseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/dto/ConditionRouteDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/dto/Config.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/dto/DynamicConfigDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/dto/RouteDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/dto/ServiceDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/dto/ServiceDetailDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/dto/TagRouteDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/dto/WeightDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/store/BlackWhiteList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/store/OverrideConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/store/OverrideDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/store/RoutingRule.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/model/store/TagRoute.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/service/ConsumerService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/service/OverrideService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/service/OwnerService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/service/ProviderService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/service/RegistryServerSync.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/service/RouteService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/service/impl/AbstractService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/service/impl/ConsumerServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/service/impl/OverrideServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/service/impl/OwnerServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/service/impl/ProviderServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/java/org/apache/dubbo/admin/service/impl/RouteServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/resources/META-INF/dubbo/internal/org.apache.dubbo.admin.data.config.GovernanceConfiguration" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/resources/META-INF/dubbo/internal/org.apache.dubbo.admin.data.metadata.MetaDataCollector" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/main/resources/log4j.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/test/java/org/apache/dubbo/admin/governance/util/UrlUtilsTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/test/main/java/org/apache/dubbo/admin/common/util/YamlParserTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-backend/src/test/main/resources/LoadBalance.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/.babelrc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/.editorconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/.eslintignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/.eslintrc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/.postcssrc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/build/build.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/build/check-versions.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/build/logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/build/utils.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/build/vue-loader.conf.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/build/webpack.base.conf.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/build/webpack.dev.conf.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/build/webpack.prod.conf.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/config/dev.env.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/config/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/config/prod.env.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/.gitrepo" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/App.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/api/menu.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/api/operation.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/assets/.gitkeep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/assets/avatar.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/assets/logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/components/ServiceDetail.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/components/ServiceSearch.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/components/governance/AccessControl.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/components/governance/LoadBalance.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/components/governance/Overrides.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/components/governance/RoutingRule.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/components/governance/TagRule.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/components/governance/WeightAdjust.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/components/http-common.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/components/metrics/ServiceMetrics.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/components/public/AceEditor.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/components/public/Drawer.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/components/public/Footers.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/components/public/Search.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/components/public/Toolbar.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/components/public/VWidget.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/components/public/notify/Snackbar.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/components/public/notify/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/components/test/ServiceMock.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/components/test/ServiceTest.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/lang/en.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/lang/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/lang/zh.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/router/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/store/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/src/util/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/.gitkeep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/OpenSans.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/dubbo.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOlCnqEu92Fr1MmEU9fABc4AMP6lbBP.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOlCnqEu92Fr1MmEU9fBBc4AMP6lQ.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOlCnqEu92Fr1MmEU9fBxc4AMP6lbBP.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOlCnqEu92Fr1MmEU9fCBc4AMP6lbBP.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOlCnqEu92Fr1MmEU9fCRc4AMP6lbBP.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOlCnqEu92Fr1MmEU9fChc4AMP6lbBP.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOlCnqEu92Fr1MmEU9fCxc4AMP6lbBP.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOlCnqEu92Fr1MmSU5fABc4AMP6lbBP.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOlCnqEu92Fr1MmSU5fBBc4AMP6lQ.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOlCnqEu92Fr1MmSU5fBxc4AMP6lbBP.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOlCnqEu92Fr1MmSU5fCBc4AMP6lbBP.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOlCnqEu92Fr1MmSU5fCRc4AMP6lbBP.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOlCnqEu92Fr1MmSU5fChc4AMP6lbBP.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOlCnqEu92Fr1MmSU5fCxc4AMP6lbBP.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOlCnqEu92Fr1MmWUlfABc4AMP6lbBP.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOlCnqEu92Fr1MmWUlfBBc4AMP6lQ.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOlCnqEu92Fr1MmWUlfBxc4AMP6lbBP.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOlCnqEu92Fr1MmWUlfCBc4AMP6lbBP.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOlCnqEu92Fr1MmWUlfCRc4AMP6lbBP.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOlCnqEu92Fr1MmWUlfChc4AMP6lbBP.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOlCnqEu92Fr1MmWUlfCxc4AMP6lbBP.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOmCnqEu92Fr1Mu4WxKKTU1Kvnz.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOmCnqEu92Fr1Mu5mxKKTU1Kvnz.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOmCnqEu92Fr1Mu72xKKTU1Kvnz.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOmCnqEu92Fr1Mu7GxKKTU1Kvnz.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOmCnqEu92Fr1Mu7WxKKTU1Kvnz.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/KFOmCnqEu92Fr1Mu7mxKKTU1Kvnz.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/dubbo-admin-frontend/static/fonts/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-admin/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-common/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-common/src/main/java/com/dubbo/frame/common/pojo/RabbitUser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-common/src/main/java/com/dubbo/frame/common/service/RemoteUserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-common/src/main/java/com/dubbo/frame/common/service/impl/RemoteUserServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-consumer/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-consumer/src/main/java/com/dubbo/frame/consumer/ConsumerApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-consumer/src/main/java/com/dubbo/frame/consumer/controller/RemoteUserController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-consumer/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-governance.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider/src/main/java/com/dubbo/frame/provider/DubboProviderApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider/src/main/java/com/dubbo/frame/provider/ZookeeperLockApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider/src/main/java/com/dubbo/frame/provider/ZookeeperLockApplication1.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider/src/main/java/com/dubbo/frame/provider/controller/ProviderController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider/src/main/java/com/dubbo/frame/provider/serviceImpl/RemoteUserServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider/src/main/java/com/dubbo/frame/provider/util/ZookeeperUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider/src/main/java/com/dubbo/frame/provider/zookeeper/ZookeeperUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider/src/main/resources/application1.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider1/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider1/src/main/java/com/dubbo/frame/provider1/DubboProviderApplication1.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider1/src/main/java/com/dubbo/frame/provider1/ZookeeperLockApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider1/src/main/java/com/dubbo/frame/provider1/ZookeeperLockApplication1.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider1/src/main/java/com/dubbo/frame/provider1/controller/ProviderController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider1/src/main/java/com/dubbo/frame/provider1/serviceImpl/RemoteUserServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider1/src/main/java/com/dubbo/frame/provider1/util/ZookeeperUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider1/src/main/java/com/dubbo/frame/provider1/zookeeper/ZookeeperUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider1/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider1/src/main/resources/application1.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider2/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider2/src/main/java/com/dubbo/frame/provider/DubboProviderApplication2.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider2/src/main/java/com/dubbo/frame/provider/ZookeeperLockApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider2/src/main/java/com/dubbo/frame/provider/ZookeeperLockApplication1.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider2/src/main/java/com/dubbo/frame/provider/controller/ProviderController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider2/src/main/java/com/dubbo/frame/provider/serviceImpl/RemoteUserServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider2/src/main/java/com/dubbo/frame/provider/util/ZookeeperUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider2/src/main/java/com/dubbo/frame/provider/zookeeper/ZookeeperUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider2/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/dubbo-provider2/src/main/resources/application1.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/rabbitmq-receiver/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/rabbitmq-receiver/src/main/java/com/dubbo/frame/rabbitmq/receiver/RabbitMqReceiverApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/rabbitmq-receiver/src/main/java/com/dubbo/frame/rabbitmq/receiver/service/ReceiverService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/rabbitmq-receiver/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/rabbitmq-sender/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/rabbitmq-sender/src/main/java/com/dubbo/frame/rabbitmq/sender/RabbitMqSenderApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/rabbitmq-sender/src/main/java/com/dubbo/frame/rabbitmq/sender/config/rabbitmq/ExchangeType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/rabbitmq-sender/src/main/java/com/dubbo/frame/rabbitmq/sender/config/rabbitmq/QueueConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/rabbitmq-sender/src/main/java/com/dubbo/frame/rabbitmq/sender/config/rabbitmq/SenderUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/rabbitmq-sender/src/main/java/com/dubbo/frame/rabbitmq/sender/controller/AmqpController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/rabbitmq-sender/src/main/java/com/dubbo/frame/rabbitmq/sender/service/SenderService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dubbo-top/rabbitmq-sender/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../microblog" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../microblog copy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../microblog-research/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../microblog-research/.mvn/wrapper/MavenWrapperDownloader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../microblog-research/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../microblog-research/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../microblog-research/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../microblog-research/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../microblog-research/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../microblog-research/src/main/java/com/microblog/project/MicroBlogApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../microblog-research/src/main/java/com/microblog/project/config/elasticsearch/ElasticsearchConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../microblog-research/src/main/java/com/microblog/project/controller/elasticsearch/ElasticsearchController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../microblog-research/src/main/java/com/microblog/project/pojo/Book.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../microblog-research/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../microblog-research/src/test/java/com/microblog/topparent/TopParentApplicationTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../mq" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../nz-rpc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Dubbo.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Distributed/Dubbo.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Elasticsearch.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Search/Elasticsearch.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../JVM虚拟机.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/JavaBase/JVM.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java基础.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/JavaBase/JavaBase.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java多线程.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/JavaBase/JavaThread.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../KAFKA.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Message/KAFKA.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Linux.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Linux/Linux.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Maven.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/ProjectManager/Maven.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Mybatis.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Sql/Mybatis.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Netty.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Network/Netty.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Nginx.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Network/Nginx.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RabbitMQ.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Message/RabbitMQ.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Redis.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Cache/Redis.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RocketMQ.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Message/RocketMQ.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Spring.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Spring/Spring.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpringBoot.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Spring/SpringBoot.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpringCloud.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Spring/SpringCloud.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpringMVC.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Spring/SpringMVC.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Tomcat.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/WebContainer/Tomcat.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Zookeeper.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Message/Zookeeper.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../分布式架构.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Distributed/Distributed.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../数据结构.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/DataStructuresAndAlgorithms/DataStructures.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../消息中间件.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Message/message.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../算法.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/DataStructuresAndAlgorithms/Algorithms.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../计算机基础.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Network/计算机基础.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../计算机网络.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/Network/network.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../设计模式.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Java-Interview (copy)/DesignPatterns/DesignPatterns.md" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,8 +350,20 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="266">
-                <caret line="114" column="11" selection-start-line="114" selection-start-column="11" selection-end-line="114" selection-end-column="11" />
+              <first_editor relative-caret-position="238">
+                <caret line="14" column="2" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Database/MyBatis-Interview.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="453">
+                <caret line="28" column="29" selection-start-line="28" selection-start-column="29" selection-end-line="28" selection-end-column="29" />
               </first_editor>
               <second_editor />
             </state>
@@ -23,56 +371,86 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Database/MySQL-Interview.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="238">
+                <caret line="14" column="19" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Database/Mybatis.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor />
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Spring/SpingMvc-Interview.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor />
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Spring/SpingCloud-Interview.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor />
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Cache/Redis.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="68">
+                <caret line="4" selection-start-line="4" selection-end-line="4" />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Network/Netty-Interview.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor />
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Network/Nginx-Interview.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor />
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Database/Mysql.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="249">
-                <caret line="425" column="5" selection-start-line="425" selection-start-column="5" selection-end-line="425" selection-end-column="5" />
+              <first_editor relative-caret-position="164">
+                <caret line="408" column="24" selection-start-line="408" selection-start-column="24" selection-end-line="408" selection-end-column="24" />
               </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ProjectManager/Git.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="34">
-                <caret line="2" selection-start-line="2" selection-end-line="2" />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Network/TCPIP.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor />
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Network/Http.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="17">
-                <caret line="1" selection-start-line="1" selection-end-line="1" />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Network/Netty.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor />
               <second_editor />
             </state>
           </provider>
@@ -81,7 +459,7 @@
     </leaf>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -89,8 +467,14 @@
         <option value="$PROJECT_DIR$/Network/Http.md" />
         <option value="$PROJECT_DIR$/Network/TCPIP.md" />
         <option value="$PROJECT_DIR$/ProjectManager/Git.md" />
-        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/WebContainer/README.md" />
+        <option value="$PROJECT_DIR$/Cache/README.md" />
+        <option value="$PROJECT_DIR$/Cache/RedisInterview.md" />
+        <option value="$PROJECT_DIR$/Cache/Redis.md" />
         <option value="$PROJECT_DIR$/Database/Mysql.md" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/Database/MyBatis-Interview.md" />
+        <option value="$PROJECT_DIR$/Database/MySQL-Interview.md" />
       </list>
     </option>
   </component>
@@ -100,7 +484,7 @@
     <option name="width" value="1853" />
     <option name="height" value="1055" />
   </component>
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
   <component name="ProjectView">
@@ -120,7 +504,42 @@
             <path>
               <item name="Java-Interview" type="b2602c69:ProjectViewProjectNode" />
               <item name="Java-Interview" type="462c0819:PsiDirectoryNode" />
+              <item name="Cache" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Java-Interview" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Java-Interview" type="462c0819:PsiDirectoryNode" />
               <item name="Database" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Java-Interview" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Java-Interview" type="462c0819:PsiDirectoryNode" />
+              <item name="DataStructuresAndAlgorithms" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Java-Interview" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Java-Interview" type="462c0819:PsiDirectoryNode" />
+              <item name="DesignPatterns" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Java-Interview" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Java-Interview" type="462c0819:PsiDirectoryNode" />
+              <item name="Distributed" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Java-Interview" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Java-Interview" type="462c0819:PsiDirectoryNode" />
+              <item name="JavaBase" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Java-Interview" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Java-Interview" type="462c0819:PsiDirectoryNode" />
+              <item name="Linux" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Java-Interview" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Java-Interview" type="462c0819:PsiDirectoryNode" />
+              <item name="Message" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Java-Interview" type="b2602c69:ProjectViewProjectNode" />
@@ -142,6 +561,11 @@
               <item name="Java-Interview" type="462c0819:PsiDirectoryNode" />
               <item name="Spring" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="Java-Interview" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Java-Interview" type="462c0819:PsiDirectoryNode" />
+              <item name="WebContainer" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -154,10 +578,14 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../microblog" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="Errors" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Spring" />
+      <recent name="$PROJECT_DIR$/WebContainer" />
+      <recent name="$PROJECT_DIR$/Search" />
       <recent name="$PROJECT_DIR$/ProjectManager" />
       <recent name="$PROJECT_DIR$/Network" />
     </key>
@@ -185,17 +613,18 @@
       <option name="presentableId" value="Default" />
       <updated>1554386421844</updated>
       <workItem from="1554386424242" duration="5039000" />
-      <workItem from="1554440908947" duration="17539000" />
+      <workItem from="1554440908947" duration="24504000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22578000" />
+    <option name="totallyTimeSpent" value="29543000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25235197" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18428335" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="Designer" order="3" />
@@ -209,7 +638,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Stack trace to UML" order="8" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.32937366" />
+      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.32937366" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="11" />
       <window_info anchor="bottom" id="Version Control" order="12" />
@@ -263,11 +692,244 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Database/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DataStructuresAndAlgorithms/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DesignPatterns/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Distributed/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/JavaBase/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Linux/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Message/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Network/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ProjectManager/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Search/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spring/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContainer/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="34">
+            <caret line="2" column="6" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Cache/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="34">
+            <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Cache/RedisIn-terview.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="433">
+            <caret line="36" column="20" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/JavaBase/JavaBaseInterview.md">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/JavaBase/Thread.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/JavaBase/JVM-Interview.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Message/Kafka-Interview.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Message/RabbitMQ-Interview.md">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Message/RocketMQ-Interview.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Message/Zookeeper-Interview.md">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Search/ela-Interview.md">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spring/Sping-Interview.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spring/SpringBoot-Interview.md">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spring/SpingMvc-Interview.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spring/SpingCloud-Interview.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Cache/Redis.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="68">
+            <caret line="4" selection-start-line="4" selection-end-line="4" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Network/Netty-Interview.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Network/Nginx-Interview.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="266">
-            <caret line="114" column="11" selection-start-line="114" selection-start-column="11" selection-end-line="114" selection-end-column="11" />
+          <first_editor relative-caret-position="238">
+            <caret line="14" column="2" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Database/Mybatis.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Database/MyBatis-Interview.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="453">
+            <caret line="28" column="29" selection-start-line="28" selection-start-column="29" selection-end-line="28" selection-end-column="29" />
           </first_editor>
           <second_editor />
         </state>
@@ -276,8 +938,18 @@
     <entry file="file://$PROJECT_DIR$/Database/Mysql.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="249">
-            <caret line="425" column="5" selection-start-line="425" selection-start-column="5" selection-end-line="425" selection-end-column="5" />
+          <first_editor relative-caret-position="164">
+            <caret line="408" column="24" selection-start-line="408" selection-start-column="24" selection-end-line="408" selection-end-column="24" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Database/MySQL-Interview.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="238">
+            <caret line="14" column="19" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
           </first_editor>
           <second_editor />
         </state>

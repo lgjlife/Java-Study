@@ -410,9 +410,10 @@ CREATE  TRICGER tricger_name AFTER UPDATE ON  table_name
       END
 ```
 OLD: 删除或者修改前的表引用,可以获得事件发生之前的数据
+
 NEW: 新增或者修改后的表引用，可以获得事件发生之后的数据
 
-如果有多条SQL语句需要执行，使用BEGIN 和END。
+如果有多条SQL语句需要执行，使用BEGIN 和END包围。
 
 
 例子：
@@ -426,6 +427,8 @@ INSERT  INTO user_delete (user_id) values(OLD.user_id);
 END; 
 ```
 
+
+                                                                                                       
 ### 创建表
 
 * 主键和外键

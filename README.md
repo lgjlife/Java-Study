@@ -34,6 +34,10 @@
    
    [码云](https://gitee.com/)
    
+   本仓库中的相关流程图使用[https://www.draw.io/](https://www.draw.io/)绘制,这是一款免费在线的流程图工具，可将文件同步到GitHub或者保存在本地。
+   
+   思维导图软件使用[mindmaster](https://www.edrawsoft.cn/download/mindmaster/)绘制。
+   
 ## 计算机基础和网络
 * [计算机基础](https://github.com/lgjlife/Java-Interview/blob/master/Network/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80.md)
 * [TCP/IP](https://github.com/lgjlife/Java-Interview/blob/master/Network/TCPIP.md)
