@@ -69,6 +69,7 @@
 
 ## Spring框架
 * [Spring](https://github.com/lgjlife/Java-Interview/blob/master/Spring%2FSpring.md)
+* [Spring 总结](https://github.com/lgjlife/Java-Interview/blob/master/Spring/Spring.md)
 * [SpringBoot](https://github.com/lgjlife/Java-Interview/blob/master/Spring%2FSpringBoot.md)
 * [SpringMVC](https://github.com/lgjlife/Java-Interview/blob/master/Spring%2FSpringMVC.md)
 * [SpringCloud](https://github.com/lgjlife/Java-Interview/blob/master/Spring%2FSpringCloud.md)
@@ -120,6 +121,15 @@
 |*|0或多个匹配|
 |+|1个或多个匹配|
 |?|0或1个匹配|
+
+### Ant 风格通配符
+
+|||
+|---|---|
+|?|匹配一个字符|
+|*|任意字符|
+|**|匹配多层路径|
+Spring 体系匹配规则符合Ant风格，比如包名匹配，请求路径匹配
 
 
 
