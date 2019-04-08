@@ -38,8 +38,8 @@
         <entry file="file://$PROJECT_DIR$/Message/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="FIRST">
-              <first_editor relative-caret-position="119">
-                <caret line="7" column="84" selection-start-line="7" selection-start-column="84" selection-end-line="7" selection-end-column="84" />
+              <first_editor relative-caret-position="238">
+                <caret line="14" column="90" selection-start-line="14" selection-start-column="90" selection-end-line="14" selection-end-column="90" />
               </first_editor>
               <second_editor />
             </state>
@@ -299,18 +299,18 @@
       <workItem from="1554440908947" duration="34817000" />
       <workItem from="1554605901010" duration="7483000" />
       <workItem from="1554623504152" duration="3685000" />
-      <workItem from="1554705273746" duration="525000" />
+      <workItem from="1554705273746" duration="1073000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="51549000" />
+    <option name="totallyTimeSpent" value="52097000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="-2" width="1366" height="770" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.022727273" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.022727273" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="Designer" order="3" />
@@ -324,7 +324,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Stack trace to UML" order="8" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.19968799" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.19968799" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="11" />
       <window_info anchor="bottom" id="Version Control" order="12" />
@@ -662,8 +662,8 @@
     <entry file="file://$PROJECT_DIR$/Message/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="FIRST">
-          <first_editor relative-caret-position="119">
-            <caret line="7" column="84" selection-start-line="7" selection-start-column="84" selection-end-line="7" selection-end-column="84" />
+          <first_editor relative-caret-position="238">
+            <caret line="14" column="90" selection-start-line="14" selection-start-column="90" selection-end-line="14" selection-end-column="90" />
           </first_editor>
           <second_editor />
         </state>
