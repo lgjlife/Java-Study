@@ -83,7 +83,7 @@
 
 ## 缓存
 *  [Redis](https://github.com/lgjlife/Java-Interview/blob/master/Cache/Redis.md)
-*  [Redis面试题整理]()https://github.com/lgjlife/Java-Interview/blob/master/Cache/Redis-Interview.md
+*  [Redis面试题整理](https://github.com/lgjlife/Java-Interview/blob/master/Cache/Redis-Interview.md)
 ## 分布式
 * [Dubbo](https://github.com/lgjlife/Java-Interview/blob/master/Distributed/Dubbo.md)
 * [分布式](https://github.com/lgjlife/Java-Interview/blob/master/Distributed/Distributed.md)
