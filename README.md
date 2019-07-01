@@ -41,6 +41,8 @@
     - [8.7. 处理用户输入](#87-处理用户输入)
     - [8.8. 控制脚本](#88-控制脚本)
 - [9. Git](#9-git)
+    - [9.1. 基本概念](#91-基本概念)
+    - [9.2. 常用命令](#92-常用命令)
 - [10. Maven](#10-maven)
 - [11. Jenkins](#11-jenkins)
 - [12. Docker](#12-docker)
@@ -78,6 +80,8 @@
 - [20. Redis](#20-redis)
 - [21. Spring](#21-spring)
 - [22. SpringBoot](#22-springboot)
+    - [22.1. 基本概念](#221-基本概念)
+    - [22.2. Spring Boot 环境下创建Bean](#222-spring-boot-环境下创建bean)
 - [23. SpringCloud](#23-springcloud)
 - [24. Dubbo](#24-dubbo)
 - [25. RocketMQ](#25-rocketmq)
@@ -96,33 +100,37 @@
         - [33.1.4. 接口隔离原则](#3314-接口隔离原则)
         - [33.1.5. 迪米特法则](#3315-迪米特法则)
         - [33.1.6. 开闭原则](#3316-开闭原则)
-    - [UML图](#uml图)
-    - [33.2. 单例模式](#332-单例模式)
-        - [基本概念](#基本概念)
-        - [实现](#实现)
-    - [33.3. 工厂方法模式](#333-工厂方法模式)
-    - [33.4. 抽象工厂模式](#334-抽象工厂模式)
-    - [33.5. 模板方法模式](#335-模板方法模式)
-    - [33.6. 建造者模式](#336-建造者模式)
-    - [33.7. 代理模式](#337-代理模式)
-    - [33.8. 原型模式](#338-原型模式)
-    - [33.9. 中介者模式](#339-中介者模式)
-    - [33.10. 命令模式](#3310-命令模式)
-    - [33.11. 责任链模式](#3311-责任链模式)
-    - [33.12. 装饰模式](#3312-装饰模式)
-    - [33.13. 策略模式](#3313-策略模式)
-    - [33.14. 适配器模式](#3314-适配器模式)
-    - [33.15. 迭代器模式](#3315-迭代器模式)
-    - [33.16. 组合模式](#3316-组合模式)
-    - [33.17. 观察者模式](#3317-观察者模式)
-    - [33.18. 门面模式](#3318-门面模式)
-    - [33.19. 备忘录模式](#3319-备忘录模式)
-    - [33.20. 访问者模式](#3320-访问者模式)
-    - [33.21. 状态模式](#3321-状态模式)
-    - [33.22. 解释器模式](#3322-解释器模式)
-    - [33.23. 享元模式](#3323-享元模式)
-    - [33.24. 桥梁模式](#3324-桥梁模式)
+    - [33.2. UML图](#332-uml图)
+    - [33.3. 单例模式](#333-单例模式)
+        - [33.3.1. 基本概念](#3331-基本概念)
+        - [33.3.2. 实现](#3332-实现)
+    - [33.4. 工厂方法模式](#334-工厂方法模式)
+    - [33.5. 抽象工厂模式](#335-抽象工厂模式)
+    - [33.6. 模板方法模式](#336-模板方法模式)
+    - [33.7. 建造者模式](#337-建造者模式)
+    - [33.8. 代理模式](#338-代理模式)
+    - [33.9. 原型模式](#339-原型模式)
+    - [33.10. 中介者模式](#3310-中介者模式)
+    - [33.11. 命令模式](#3311-命令模式)
+    - [33.12. 责任链模式](#3312-责任链模式)
+    - [33.13. 装饰模式](#3313-装饰模式)
+    - [33.14. 策略模式](#3314-策略模式)
+    - [33.15. 适配器模式](#3315-适配器模式)
+    - [33.16. 迭代器模式](#3316-迭代器模式)
+    - [33.17. 组合模式](#3317-组合模式)
+    - [33.18. 观察者模式](#3318-观察者模式)
+    - [33.19. 门面模式](#3319-门面模式)
+    - [33.20. 备忘录模式](#3320-备忘录模式)
+    - [33.21. 访问者模式](#3321-访问者模式)
+    - [33.22. 状态模式](#3322-状态模式)
+    - [33.23. 解释器模式](#3323-解释器模式)
+    - [33.24. 享元模式](#3324-享元模式)
+    - [33.25. 桥梁模式](#3325-桥梁模式)
 - [34. Zookeeper](#34-zookeeper)
+    - [34.1. 基本概念](#341-基本概念)
+        - [34.1.1. zk架构](#3411-zk架构)
+        - [34.1.2. 提供的功能](#3412-提供的功能)
+        - [34.1.3. 节点类型](#3413-节点类型)
 - [35. 分布式系统](#35-分布式系统)
 
 <!-- /TOC -->
@@ -405,6 +413,141 @@
 
 # 9. Git
 <a href="#menu" style="float:right">目录</a>
+
+## 9.1. 基本概念
+* 工作区：当前的工作目录
+* 本地库: 工作区有一个隐藏目录.git，这个不算工作区，而是Git的版本库
+  Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD
+![](https://www.liaoxuefeng.com/files/attachments/919020037470528/0)
+* 远端仓库: 存放在GitHub网站上的版本库
+
+工作区---git add --> 暂存区 ---git commit--->本地仓库---git push --->远程仓库
+
+* 分支相当于给当前的文件创建一个副本，在副本上进行修改，可以创建无数个分支进行同步开发，开发完成后再进行合并操作。
+
+## 9.2. 常用命令
+* 查看版本
+    * git --version
+* 配置
+    * 配置文件
+        * 版本库配置文件，优先级最高位于版本库.git/config中
+            * 进入工作空间
+            * git config -e 打开，编辑
+        * 全局配置文件，优先级次之，用户目录下的。gitconfig
+            * git config -e --global 打开编辑
+        * 系统级配置文件,优先级最低，/etc/gitconfig
+            * git config -e --system
+    * 配置用户名和邮箱
+        * git config --global user.name "xxx"
+        * git config --global user.name 读取配置信息用户名称
+        * git config --unset  --global user.name 删除用户信息
+        * git config --global user.email "xxx@xxx"
+* 初始化一个仓库
+    * git init
+* 为本地仓库关联远程仓库
+    * git remote add origin git@github.com:yourName/yourRepo.git 
+        * origin 为自定义名称，可以取github/gitee,就可以关联不同的远端库了
+        * git push github master /git push gitee master
+    * git remote -v 查看关联的远端仓库
+    * git remote rm origin 删除关联的远程库信息
+    
+* 将更新的文件提交到本地暂存区
+    * git add .    添加所有的文件
+    * git add demo.text 只添加demo.text文件
+* 将本地暂存区的文件提交到本地仓库
+    * git commit -m "xxxx"  添加一行信息
+    * git commit 不加-m,将会弹出新编辑窗口，需要按照以下格式编写，如果此时想终止提交，需将编辑器内容清空，并直接关闭，提交会被终止。
+        * 第一行：用一行文字简述提交的更改内容
+        * 第二行: 空行
+        * 第三行以后，详细描述更改的内容
+
+* 查看提交后的状态
+    * git status
+* 查看提交日志
+    * git log 
+        * 提交ID
+        * 提交人
+        * 提交时间
+        * 提交前后差别
+    * git log --pretty=short 只显示提交信息的第一行
+    * git log xx.file 只显示指定目录或者文件的日志
+    * git log -p xx.file 显示文件前后差别
+    * git log --graph 以图表形式查看分支
+    * git log --graph --oneline 查看每次提交的短ID
+    * git reflog 查看当前仓库的操作日志，获取短ID
+* 查看更改前后的区别
+    * 工作树---git add --> 暂存区---git commit --> 本地仓库---git push --> 远程仓库
+    * 修改文件--->git diff--->显示工作树和暂存区的区别
+    * git add --->git diff ---> 什么都不显示，因为工作树和暂存区内容一致
+    * git add --->git diff HEAD --->显示暂存区和本地仓库的区别，在commmit之前应该执行该命令，验证是否修改错误。这里的HEAD指的是当前分支中最新一次提交的指针
+    * 显示的内容差异内容中，"+"表示添加的内容，"-"表示减少的内容
+* 分支操作
+    * 分支管理
+        * master 应当为稳定分支，不应该在master上修改代码
+        * dev 开发分支，比如说加新功能
+        * fix 修复Bug分支
+        * 每一次和master合并分支前，应当使用git pull 拉取远端仓库最新的代码，避免在push时出现冲突。
+    * 显示所有分支
+        * git branch  带*的是当前的分支
+        * git branch -a 显示远程分支和本地分支
+    * 创建，切换分支
+        * git branch name 创建分支
+        * git checkout name 切换分支
+        * git checkout -b name 创建并切换分支name
+        * git checkout - 切回上一个分支
+    * 合并分支
+        * 注意每次合并前必须git add和git commit 
+        * git merge --no-ff feature-A  合并当前分支和feature-A
+    * 删除分支
+        * git branch -d fea-A
+* 更改提交
+    * git reset --hard  HEAD^ 恢复到上一次提交
+    * git reset --hard  HEAD^^^^^ 恢复到前5次提交
+    * git reset --hard  HEAD~2  恢复到前两次提交
+    * git reset --hard  commitID;  git log 的长ID或者git reflog的短ID
+    * 远程版本回退
+        * 先使用git reset 回退本地分支
+        * 再使用 git push -f origin master 强制推送到远端分支
+
+* 冲突消除
+    * 如果两个分支修改了同一个文件的。在进行合并的时候就会提示哪个文件发生冲突，无法合并。
+ ```
+ <<<<<<HEAD
+ - feature-A
+ =========
+ - fix-B
+ >>>>>>feature-B
+ ```
+ =====以上的部分是当前HEAD的内容，以下是要合并的feature-B的内容。
+ 修改之后，重新合并即可。
+
+* 压缩历史
+    * 在创建分支后，会在该分支上进行开发，期间可能会发生n次提交。如果进行合并，这个分支记录也会跟着一起被记录到主分支。因此需要对这些分支上的各个提交合并为一个提交记录。
+    * git rebase -i HEAD~2 合并最近的两次提交
+
+* 推送分支
+    * git push origin master|其他分支名称
+* 从远程仓库获取
+    * git clone 仓库地址  默认为master分支
+    * git checkout -b fea-A origin/fea-A   
+    -b 为本地创建的分支名称，应当与远程分支名称一样。
+    * git pull origin 远程分支名称，将远端分支合并到本地分支
+    为了减少发生push提交冲突冲突，push之前应当先pull到本地。
+* 标签tag
+    * 相当于一个时刻的文件快照。比如说给每一个发布版本定版本号1.0/2.0/3.0.每个版本号打一次标签。再去寻找时就不用从数量庞大的提交记录中寻找。
+    * git tag v1.0 给当前分支打包，标签为v1.0
+    * git tag v0.9 f52c633 通过提交ID打标签
+    * git tag -a v0.1 -m "version 0.1 released" 1094adb  -a指定标签名。-m 指定说明
+    * git show v1.0  查看说明
+    * git tag  查看所有的标签
+* 忽略文件上传
+    * 在使用git 时，有些文件不想提交，比如密码文件，编译出来的文件，这时候可以使用该功能进行忽略
+    * 工作区创建.gitignore
+        * *.class 忽略class结尾的文件
+        * aa.text 忽略aa.text文件
+        * target 忽略target 下的所有文件
+    * 如果之前已经提交过，必须先执行如下清空缓存,否则远端的文件还是会存在。须在当前的工作目录执行。
+        * git rm -r --cached .
 # 10. Maven
 <a href="#menu" style="float:right">目录</a>
 * mvn compile 编译源代码
@@ -866,6 +1009,327 @@ public enum BlogReturnCode implements  ReturnCode{
 <a href="#menu" style="float:right">目录</a>
 # 22. SpringBoot
 <a href="#menu" style="float:right">目录</a>
+
+## 22.1. 基本概念
+SpringBoot的核心
+* 自动配置，针对很多Spring应用常用框架进行自动默认配置，可以让你轻松启动项目。比如jedis。原先使用Jedis需要配置连接地址，配置连接池，使用SpringBoot之后，这些都会帮你配置好，只要引入相关依赖，调用其提供的接口，即可实现对Redis的访问。
+* 起步依赖:告诉Spring使用什么功能，他都能引入需要的库。
+* Actuator
+
+## 22.2. Spring Boot 环境下创建Bean
+
+**方式1**：
+
+使用@Component,@Service,@Controler,@Repository注解
+
+这几个注解都是同样的功能，被注解的类将会被Spring 容器创建单例对象。
+
+@Component : 侧重于通用的Bean类
+
+@Service：标识该类用于业务逻辑
+
+@Controler：标识该类为Spring MVC的控制器类
+
+@Repository: 标识该类是一个实体类，只有属性和Setter,Getter
+
+```java
+@Component
+public class User{
+}
+```
+当用于Spring Boot应用时，被注解的类必须在启动类的根路径或者子路径下，否则不会生效。
+
+如果不在，可以使用@ComponentScan标注扫描的路径。
+
+spring xml 也有相关的标签<component-scan />
+
+```java
+@ComponentScan(value={"com.microblog.blog","com.microblog.common"})
+public class MicroblogBlogApplication {
+    public static void main(String args[]){
+        SpringApplication.run(MicroblogBlogApplication.class,args);
+    }
+}
+```
+ 
+
+**方式2**：
+使用@Bean注解,这种方式用在Spring Boot 应用中。
+
+@Configuration 标识这是一个Spring Boot 配置类，其将会扫描该类中是否存在@Bean 注解的方法，比如如下代码，将会创建User对象并放入容器中。
+
+@ConditionalOnBean 用于判断存在某个Bean时才会创建User Bean.
+
+这里创建的Bean名称默认为方法的名称user。也可以@Bean("xxxx")定义。
+
+```java
+@Configuration
+public class UserConfiguration{
+     
+      @Bean
+　　　 @ConditionalOnBean(Location.class)
+      public User user(){
+           return new User();
+      }
+      
+}  
+```
+ 
+
+Spring boot 还为我们提供了更多类似的注解。
+```java
+//某个Bean存在时才创建
+ConditionalOnBean
+//某个类存在时才创建
+ConditionalOnClass
+ConditionalOnCloudPlatform
+ConditionalOnExpression
+ConditionalOnJava
+ConditionalOnJndi
+//某个Bean不存在时才创建
+ConditionalOnMissingBean
+//某个类不存在时才创建
+ConditionalOnMissingClass
+//不是web环境时才创建
+ConditionalOnNotWebApplication
+//某个属性存在时才创建
+ConditionalOnProperty
+//某个资源存在时才创建
+ConditionalOnResource
+ConditionalOnSingleCandidate
+//web环境下才创建
+ConditionalOnWebApplication
+ConditionEvaluationReport
+ConditionEvaluationReportAutoConfigurationImportListener
+ConditionMessage
+ConditionOutcome
+```
+也和方式1一样，也会存在扫描路径的问题，除了以上的解决方式，还有使用Spring boot starter 的解决方式
+
+在resources下创建如下文件。META-INF/spring.factories.
+
+Spring Boot 在启动的时候将会扫描该文件，从何获取到配置类UserConfiguration。
+
+
+
+spring.factories
+```xml
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.log.config.UserConfiguration
+```
+ 
+
+如果不成功，请引入该依赖
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-configuration-processor</artifactId>
+    <optional>true</optional>
+</dependency>   
+``` 
+ 
+
+这个方式也是创建SpringBoot-starter的方式。
+
+ 
+
+**方式3**：
+使用注解@Import,也会创建对象并注入容器中
+
+```java
+@Import(User.class)
+public class MicroblogUserWebApplication {
+    public static void main(String args[]) {
+        SpringApplication.run(MicroblogUserWebApplication.class, args);
+    }
+}
+```
+**方式4**：
+使用ImportSelector或者ImportBeanDefinitionRegistrar接口，配合@Import实现。
+
+在使用一些Spring Boot第三方组件时，经常会看到@EnableXXX来使能相关的服务，这里以一个例子来实现。
+
+创建测试类
+```java
+
+@Slf4j
+public class House {
+
+    public void run(){
+
+        log.info("House  run ....");
+    }
+}
+
+@Slf4j
+public class User {
+
+
+    public void run(){
+
+        log.info("User  run ....");
+
+    }
+
+}
+
+@Slf4j
+public class Student {
+
+    public void run(){
+
+        log.info("Student  run ....");
+
+    }
+
+} 
+```
+
+实现ImportSelector接口
+selectImports方法的返回值为需要创建Bean的类名称。这里创建User类。
+
+```java
+@Slf4j
+public class MyImportSelector implements ImportSelector {
+
+    @Override
+    public String[] selectImports(AnnotationMetadata annotationMetadata) {
+
+
+        log.info("MyImportSelector selectImports ...");
+        return new String[]{
+            User.class.getName()};
+    }
+}
+```
+
+
+ 
+
+实现ImportBeanDefinitionRegistrar接口
+beanDefinitionRegistry.registerBeanDefinition用于设置需要创建Bean的类名称。这里创建House类。
+
+```java
+@Slf4j
+public class MyImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar {
+    @Override
+    public void registerBeanDefinitions(AnnotationMetadata annotationMetadata, BeanDefinitionRegistry beanDefinitionRegistry) {
+
+        log.info("MyImportBeanDefinitionRegistrar  registerBeanDefinitions .....");
+        BeanDefinition beanDefinition =  new RootBeanDefinition(House.class.getName());
+        beanDefinitionRegistry.registerBeanDefinition(House.class.getName(),beanDefinition);
+    }
+}
+```
+ 
+
+创建一个配置类
+这里创建Student类。
+
+```java
+@Configuration
+public class ImportAutoconfiguration {
+
+    @Bean
+    public Student student(){
+        return new Student();
+    }
+}
+```
+ 
+
+创建EnableImportSelector注解
+EnableImportSelector注解上使用@Import，引入以上的三个类。
+
+```java
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Target(ElementType.TYPE)
+@Import({MyImportSelector.class,ImportAutoconfiguration.class,MyImportBeanDefinitionRegistrar.class})
+public @interface EnableImportSelector {
+
+    String value();
+
+}
+```
+ 测试
+```java
+@EnableImportSelector(value = "xxx")
+@SpringBootApplication
+public class ImportDemoApplication {
+
+    public static void main(String[] args) {
+        ConfigurableApplicationContext context =  SpringApplication.run(ImportDemoApplication.class, args);
+
+        User user =  context.getBean(User.class);
+        user.run();
+
+        Student student =  context.getBean(Student.class);
+        student.run();
+
+        House house =  context.getBean(House.class);
+        house.run();
+
+    }
+
+}
+```
+ 
+
+输出，可以看到，三个类User Student House都创建成功，都可从Spring 容器中获取到。
+```
+2019-06-20 17:53:39.528  INFO 27255 --- [           main] com.springboot.importselector.pojo.User  : User  run ....
+2019-06-20 17:53:39.530  INFO 27255 --- [           main] c.s.importselector.pojo.Student          : Student  run ....
+2019-06-20 17:53:39.531  INFO 27255 --- [           main] c.springboot.importselector.pojo.House   : House  run ....
+```
+
+ 
+
+**方式5**
+手动注入Bean容器，有些场景下需要代码动态注入，以上方式都不适用。这时就需要创建 对象手动注入。
+
+通过DefaultListableBeanFactory注入。
+
+registerSingleton(String beanName,Object object);
+
+这里手动使用new创建了一个Location对象。并注入容器中。
+
+ 
+```java
+@Component
+public class LocationRegister implements BeanFactoryAware {
+
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        DefaultListableBeanFactory listableBeanFactory = (DefaultListableBeanFactory)beanFactory;
+　　　　//方式1
+　　　//　Location location = new Location();
+　　　//　listableBeanFactory.registerSingleton(Location.class.getName(),location);
+
+　　　　//方式2
+　　　　BeanDefinition locationBeanDefinition = new RootBeanDefinition(Location.class);
+　　　　listableBeanFactory.registerBeanDefinition(Location.class.getName(),locationBeanDefinition);
+
+    }
+}
+```
+这种方式的应用场景是为接口创建动态代理对象，并向SPRING容器注册。
+
+比如MyBatis中的Mapper接口，Mapper没有实现类，启动时创建动态代理对象，将该对象注册到容器中，使用时只要@Autowired注入即可使用，调用接口方法将会被代理拦截，进而调用相关的SqlSession执行相关的SQL业务逻辑。
+
+ 
+
+可以看以下它的继承体系
+
+DefaultListableBeanFactory 是ConfigurableListableBeanFactory的实现类。是对BeanFactory功能的扩展。
+
+
+
+测试代码和以上一样
+```java
+Location location =  context.getBean(Location.class);
+location.run();
+```
+
 # 23. SpringCloud
 <a href="#menu" style="float:right">目录</a>
 # 24. Dubbo
@@ -906,11 +1370,11 @@ public enum BlogReturnCode implements  ReturnCode{
 * 当需要增加新功能时，应当避免修改原类的代码，应当通过一些设计模式来进行功能扩展。比如装饰模式，这样可以达到对其他使用类的影响。
 * 以上的原则都是施行指南，开闭原则是最终目标。
 
-## UML图
+## 33.2. UML图
 
-## 33.2. 单例模式
+## 33.3. 单例模式
 <a href="#menu" style="float:right">目录</a>
-### 基本概念
+### 33.3.1. 基本概念
 
 **定义**:确保某一个类只有一个对象实例。
 **衍生**：有限多例，比如对象池技术，使用缓存将创建的对象缓存起来。
@@ -921,10 +1385,11 @@ public enum BlogReturnCode implements  ReturnCode{
 
 **缺点**:
 
-### 实现
+### 33.3.2. 实现
 单例模式需要注意的关键点是如何避免高并发条件下出现多例的问题。高并发环境下，任何两条语句执行之间都有可能被其他线程所抢占并执行完整的指令。这种情况处理不好，很容易产生出多例。
 还有需要关注的是，一个系统中存在很多类，但是有的类在系统运行的生命周期中是始终没机会创建对象，比如有个偏门的用户操作才会触发某个类创建对象。这种情况下就没必要创建对象，也就是需要延迟创建对象，在使用时才去创建。
 作为单例类，没必要去考虑通过反射会破解单例模式，定义一个类为单例，作为开发者应当遵循这个规范，而不是尝试使用反射来创建多个对象从而破坏这个规定。单例模式只防君子不防小人。
+
 **饥饿式创建单例**
 这种写法就是在类加载时就创建一次，singleton属性定义为static,static属性只会在类加载的时候执行，因此不存在线程安全问题。由于是在类加载时就创建，因此称为饥饿式。
 同时需要将构造器私有化。
@@ -946,6 +1411,7 @@ public class Singleton1 implements Serializable {
 }
 ```
 上面的代码添加了一个方法readResolve，是为了解决序列化反序列化后两个对象不是同一个对象的问题。
+
 **饱汉式创建单例**
 也就是说在类加载时还不创建对象，只有在获取对象时才会创建。这里需要注意的就是线程安全问题了，所以在类上添加了同步锁。
 ```java
@@ -965,6 +1431,7 @@ public class Singleton2 implements Serializable {
     }
 }
 ```
+
 **双检锁创建单例**
 以上的方式有个问题，每次获取对象都要加锁，加锁在jvm中是一项耗费资源的操作，因此更改为在方法内部加同步锁。只有第一次创建的时候才会加锁，对象创建成功之后，后续操作不需要再重新加锁。
 ```java
@@ -990,6 +1457,7 @@ public class Singleton3 implements Serializable {
     }
 }
 ```
+
 **使用工厂模式和双检锁方式创建**
 由于指令重排序的存在，有可能helper=null会在getHelper之后执行。解决这个问题是使用volatile修饰Helper.
 详细查看[The "Double-Checked Locking is Broken" Declaration](http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html)
@@ -1006,6 +1474,7 @@ class Foo {
   // other functions and members...
   }
 ```
+
 **使用静态内部类来创建**
 由于内部类是静态的，因此是线程安全的，对象也是在首次调用内部类的时候才会创建。
 ```java
@@ -1024,6 +1493,7 @@ public class Singleton4 implements Serializable {
     }
 }
 ```
+
 **使用枚举类来创建**
 ```java
 public class Singleton5 implements Serializable {
@@ -1053,53 +1523,105 @@ public class Singleton5 implements Serializable {
 }
 ```
 
-## 33.3. 工厂方法模式
+## 33.4. 工厂方法模式
 <a href="#menu" style="float:right">目录</a>
-## 33.4. 抽象工厂模式
+
+## 33.5. 抽象工厂模式
 <a href="#menu" style="float:right">目录</a>
-## 33.5. 模板方法模式
+## 33.6. 模板方法模式
 <a href="#menu" style="float:right">目录</a>
-## 33.6. 建造者模式
+## 33.7. 建造者模式
 <a href="#menu" style="float:right">目录</a>
-## 33.7. 代理模式
+## 33.8. 代理模式
 <a href="#menu" style="float:right">目录</a>
-## 33.8. 原型模式
+## 33.9. 原型模式
 <a href="#menu" style="float:right">目录</a>
-## 33.9. 中介者模式
+## 33.10. 中介者模式
 <a href="#menu" style="float:right">目录</a>
-## 33.10. 命令模式
+## 33.11. 命令模式
 <a href="#menu" style="float:right">目录</a>
-## 33.11. 责任链模式
+## 33.12. 责任链模式
 <a href="#menu" style="float:right">目录</a>
-## 33.12. 装饰模式
+## 33.13. 装饰模式
 <a href="#menu" style="float:right">目录</a>
-## 33.13. 策略模式
+## 33.14. 策略模式
 <a href="#menu" style="float:right">目录</a>
-## 33.14. 适配器模式
+## 33.15. 适配器模式
 <a href="#menu" style="float:right">目录</a>
-## 33.15. 迭代器模式
+## 33.16. 迭代器模式
 <a href="#menu" style="float:right">目录</a>
-## 33.16. 组合模式
+## 33.17. 组合模式
 <a href="#menu" style="float:right">目录</a>
-## 33.17. 观察者模式
+## 33.18. 观察者模式
 <a href="#menu" style="float:right">目录</a>
-## 33.18. 门面模式
+## 33.19. 门面模式
 <a href="#menu" style="float:right">目录</a>
-## 33.19. 备忘录模式
+## 33.20. 备忘录模式
 <a href="#menu" style="float:right">目录</a>
-## 33.20. 访问者模式
+## 33.21. 访问者模式
 <a href="#menu" style="float:right">目录</a>
-## 33.21. 状态模式
+## 33.22. 状态模式
 <a href="#menu" style="float:right">目录</a>
-## 33.22. 解释器模式
+## 33.23. 解释器模式
 <a href="#menu" style="float:right">目录</a>
-## 33.23. 享元模式
+## 33.24. 享元模式
 <a href="#menu" style="float:right">目录</a>
-## 33.24. 桥梁模式
+## 33.25. 桥梁模式
 <a href="#menu" style="float:right">目录</a>
 
 # 34. Zookeeper
 <a href="#menu" style="float:right">目录</a>
+## 34.1. 基本概念
+<a href="#menu" style="float:right">目录</a>
+### 34.1.1. zk架构
+![](https://zookeeper.apache.org/doc/r3.5.5/images/zkservice.jpg)
+zk的结构如下，类似于一个Linux文件系统，根节点是"/"。
+同时你可以在每个节点上添加监听器，当数据发生变化(增加，修改，删除)时，将会通知客户端。
+因此zk简单理解就是一个类似文件系统结构的并且具有变更通知功能的分布式协调系统。
+每一个节点称为zode。每个节点下可以创建多个子节点，每个节点还可以存放数据。
+
+![](https://zookeeper.apache.org/doc/r3.5.5/images/zknamespace.jpg)
+
+
+* 适用场景
+在分布式系统中，多个服务需要共享一些系统配置信息，比如微服务环境下，服务提供者向zookeeper注册自己多的元数据信息(比如服务名称，地址等)。服务消费者通过注册监听器，获取到zk中服务信息的变化，服务消费者拉取新的配置信息同时更新本地缓存。就解决了服务提供者变更信息的情况下，服务消费者无需更新配置，所有过程都是自动化进行高的。
+
+目前使用zk作为分布式协调系统的有Dubbo和Kafka
+
+* 不适用场景
+不适合做海量数据存储，海量数据应当使用数据库，分布式文件系统等。
+
+* 主从模式
+为了提高系统的可靠性，zk提供主从模式的分布式部署方式。
+
+**主节点**: 主节点负责监视新的从节点和任务，分配任务给可用的从节点。每个集群只能有一个主节点。
+**从节点**: 从节点通过系统注册自己，以确保主节点看到它们可以执行任务，然后开始监视新任务。
+
+* 可靠性和快速性保证
+    * 顺序一致性 - 客户端的更新将按发送顺序执行。
+    * 原子性 - 更新成功或失败。 没有部分结果。
+    * 单系统映像 - 无论服务器连接到哪个服务器，客户端都将看到相同的服务视图。
+    * 可靠性 - 一旦应用了更新，它将从那时起持续到客户端覆盖更新。
+    * 及时性 - 系统的客户视图保证在特定时间范围内是最新的。
+
+### 34.1.2. 提供的功能
+* 给节点创建监听器
+* create : 创建节点
+* delete : 删除节点
+* exists : 检测节点是否存在
+* get data : 从节点读取数据
+* set data : 向节点写入数据
+* get children : 获取子节点列表
+* sync : 等待数据传播
+
+### 34.1.3. 节点类型
+
+以下两种类型可以交叉组合，比如持久有序，持久无序。
+* 持久化节点(persistent)和临时节点(ephemeral)，临时节点在与创建它的客户端连接断开以后，判定连接失效之后将会被删除,或者客户端主动删除。持久化节点在创建成功之后，将会一直存在，除非手动删除。
+* 有序节点和无序节点，有序节点在每次创建时同一个名称的节点时会自动在节点名称后面加上序列号。
+
+**应用场景**:微服务中的失效剔除可以使用临时节点来实现，当服务提供者失效时，zk判断连接失败之后将服务信息删除，如果消费者监听该节点，将会收到删除请求。
+
 
 # 35. 分布式系统
 <a href="#menu" style="float:right">目录</a>
