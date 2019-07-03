@@ -48,6 +48,28 @@
             - [5.3.3.3. 数据流和窗口机制](#5333-数据流和窗口机制)
             - [5.3.3.4. 阻塞控制](#5334-阻塞控制)
 - [6. 网络HTTP](#6-网络http)
+    - [6.1. 基本概念](#61-基本概念)
+        - [6.1.1. 访问一个网站的流程](#611-访问一个网站的流程)
+        - [6.1.2. 媒体类型(MIME)](#612-媒体类型mime)
+    - [6.2. URL和资源](#62-url和资源)
+    - [6.3. HTTP报文](#63-http报文)
+        - [6.3.1. 请求报文和响应报文](#631-请求报文和响应报文)
+        - [6.3.2. 首部](#632-首部)
+        - [6.3.3. 方法](#633-方法)
+        - [6.3.4. 状态码](#634-状态码)
+    - [6.4. 连接管理](#64-连接管理)
+    - [6.5. WEB服务器](#65-web服务器)
+    - [6.6. 代理](#66-代理)
+    - [6.7. 缓存](#67-缓存)
+    - [6.8. 网关](#68-网关)
+    - [6.9. 客户端识别与Cookie机制](#69-客户端识别与cookie机制)
+    - [6.10. 基本认证机制](#610-基本认证机制)
+    - [6.11. 摘要认证](#611-摘要认证)
+    - [6.12. 安全HTTP](#612-安全http)
+    - [6.13. 实体和编码](#613-实体和编码)
+    - [6.14. 国际化](#614-国际化)
+    - [6.15. WEB主机托管](#615-web主机托管)
+    - [6.16. 重定向和负载均衡](#616-重定向和负载均衡)
 - [7. Unix环境编程](#7-unix环境编程)
 - [8. Shell](#8-shell)
     - [8.1. 文件相关](#81-文件相关)
@@ -587,6 +609,7 @@ TCP通信中的四元组:源IP，源端口，目标IP，目标端口
     * 这是因为服务端在LISTEN状态下，收到建立连接请求的SYN报文后，把ACK和SYN放在一个报文里发送给客户端。而关闭连接时，当收到对方的FIN报文时，仅仅表示对方不再发送数据了但是还能接收数据，己方也未必全部数据都发送给对方了，所以己方可以立即close，也可以发送一些数据给对方后，再发送FIN报文给对方来表示同意现在关闭连接，因此，己方ACK和FIN一般都会分开发送.
 
 **连接时的11种状态**
+
 |状态|说明|
 |---|---|
 |CLOSED|初始状态，表示TCP连接是“关闭着的”或“未打开的”。
@@ -609,6 +632,239 @@ TCP通信中的四元组:源IP，源端口，目标IP，目标端口
 
 # 6. 网络HTTP
 <a href="#menu" style="float:right">目录</a>
+
+## 6.1. 基本概念
+### 6.1.1. 访问一个网站的流程
+* 输入网址
+* DNS域名解析服务解析域名，获取域名对应的服务器IP
+* ARP地址解析协议根据IP查找服务端的MAC地址
+* TCP 3次连接流程，客户端和服务端建立连接
+* 连接建立之后，客户端发送请求
+* 服务端收到请求之后，进行业务处理，根据请求返回客户端的数据。
+* 客户端收到服务端响应，渲染页面
+* 如果是短连接，客户端将发送关闭连接请求。也就是四次挥手。
+### 6.1.2. 媒体类型(MIME)
+* 因特网上有数千种不同的数据类型，http会给每种要通过web传输的对象都打上一个名为MIME类型（MIME type）的数据格式标签
+* web服务器会为所有http对象数据附加一个MIME类型。
+* 当web浏览器从服务器中取回一个对象时，会去查看相关的MIME类型，看看他们是否知道如何处理这个对象。
+* 大多数浏览器都可以处理数百种常见的对象类型：显示图片文件、解析并格式化html文件等等。
+* MIME类型是一种文本标记，表示一种主要的对象类型和一个特定的子类型，中间由一个斜杠来分割。
+
+## 6.2. URL和资源
+<a href="#menu" style="float:right">目录</a>
+URI是一类更通用的资源标识符，URL是它的一个子集。URI由两个子集URL和URN构成。URL通过描述资源的位置类标识资源。URN则通过名字来识别。
+
+URI = Universal Resource Identifier 统一资源标志符
+URL = Universal Resource Locator 统一资源定位符
+URN = Universal Resource Name 统一资源名称
+
+* URL
+    * 第一部分就是访问资源所用的协议，比如Http,ftp
+    * 第二部分就是资源所在的服务器网站，比如www.baidu.com
+    * 第三部分，资源在服务器中的位置，比如 /xxx/xx.pic
+
+目前，基本所有的URI都为URL，URN还在实验阶段。
+
+URL通用格式：
+```
+<scheme>://<user>:<password>@<host>:port/path;<param>?<query>#<frag>
+```
+|组件|描述|默认值|
+|---|---|---|
+|方案|访问资源时的协议|无|
+|用户|用户名|匿名|
+|密码|访问密码||
+|主机|访问资源所在的宿主主机的IP地址|无|
+|端口|资源所在应用的端口|无|
+|路径|资源在服务器上的访问路径|无|
+|参数|参数之间使用(;)分隔||
+|查询|查询字符串？a=1234;b=234||
+|片段|一小片或者一部分资源的名字，不会将其发送给服务器，仅在客户端内部使用||
+
+
+## 6.3. HTTP报文
+<a href="#menu" style="float:right">目录</a>
+
+### 6.3.1. 请求报文和响应报文
+
+* 格式：
+```
+报文首部(包括请求行和请求头)
+空行
+报文主体
+
+HTTP/2.0 200 OK
+Content-type: text/html
+Set-Cookie: yummy_cookie=choco
+Set-Cookie: tasty_cookie=strawberry
+
+[page content]
+
+```
+* 请求报文格式
+```
+<method> <request-url> <version>
+<headers>
+
+<entity-body>
+```
+* 响应报文格式
+```
+<version> <status> <reason-phrase>
+<headers>
+
+<entity-body>
+```
+method: 请求方法，GET，POST等
+request-url: 请求资源在服务器内的URL
+version: HTTP版本 ， 格式： http/1.1
+headers：请求头和响应头,格式： Connection: close
+status: 状态码，401/404
+reason-phrase: 原因短语,状态码的简要说明
+body: 实际数据部分，可以承载很多类型的数据，比如图片，音频，视频等
+
+### 6.3.2. 首部
+HTTP 首部字段根据实际用途被分为以下 4 种类型：
+* 通用首部字段（General Header Fields）
+  请求报文和响应报文两方都会使用的首部。
+* 请求首部字段（Request Header Fields）
+从客户端向服务器端发送请求报文时使用的首部。补充了请求的附加内容、客户端信息、响应内容相关优先级等信息。
+* 响应首部字段（Response Header Fields）
+从服务器端向客户端返回响应报文时使用的首部。补充了响应的附加内容，也会要求客户端附加额外的内容信息。
+* 实体首部字段（Entity Header Fields）
+针对请求报文和响应报文的实体部分使用的首部。补充了资源内容更新时间等与实体有关的信息。
+
+如果首部内容过长，可以分行写，但是前面必须有空格或者制表符。
+
+[首部官方说明：https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html](https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html)
+* 通用首部
+    * Date：报文创建时间
+    * Connection：客户端和服务器连接的有关选项
+    * Via：报文经过的中间节点（代理、网关）
+    * Cache-control：缓存
+
+* 请求首部
+    * From：客户端用户的E-mail地址
+    * Host：接受请求的服务器的主机名和端口
+    * Referer：当前请求的URL
+    * UA-Color：客户端显示器颜色信息
+    * UA-OS：客户端操作系统及版本
+    * Accept：告诉服务器能够发送的媒体类型
+    * Accept-Charset：告诉服务器能够发送的字符集
+    * Accept-Encoding：告诉服务器能够发送的编码方式
+    * Accept-Language：告诉服务器能够发送的语言
+    * Expect：要求服务器的行为
+    * If-Match：实体标记与文档当前的标记相匹配，则获取该文档
+    * If-Modified-Since：除非在某个指定日期后资源被修改过，否则限制该请求
+    * If-None-Match：实体标记与文档当前的标记不匹配，则获取该文档
+    * If-Unmodified-Since：除非在某个指定日期后资源没有被修改过，否则限制该请求
+    * Authorization：包含客户端提供给服务端，以便进行安全认证的数据
+    * Cookie：客户端需要发送的cookie
+    * Cookie2：客户端支持的cookie版本
+
+* 响应首部
+    * Server：服务器应用软件名称及版本
+    * Accept-Range：服务器可以接受的范围类型
+    * Set-Cookie：设置cookie
+
+* 实体首部
+    * Allow：对该实体可执行的请求方法
+    * Location：资源的新地址，重定向中常用到
+    * Content-Language：理解主体应该使用的语言
+    * Content-Length：主体的长度
+    * Content-Encoding：对主体实行的编码方式
+    * Content-Range：在整个资源中实体表示的字节范围
+    * Content-Type：主体的类型
+    * ETag：与实体相关的实体标记
+    * Expires：实体不再有效，需要再次获取该实体的时间
+    * Last-Modified：实体最后一次被修改的时间
+### 6.3.3. 方法
+
+* GET
+    * 通常用于向服务器请求资源
+    * GET请求的参数将会拼接在URL后面，因此如果是密码等参数，会存在安全性问题
+    * GET请求的URL有长度限制问题，不是协议本身限制，是浏览器限制，每个浏览器都不同
+* HEAD
+    * 服务器响应只返回首部，不返回body数据
+    * 在不获取资源的情况下了解资源的类型
+    * 通过查看状态码，查看资源是否存在
+    * 查看首部，测试资源是否被修改
+* POST
+    * 向服务器写入数据请求。
+* PUT
+    * 向服务器写入数据请求。
+* TRACE
+    * 用于回环测试
+    * 每个请求可能经过网关，代理，防火墙等，测试经过这些之后报文发生了啥变化
+    * 最后接收到的服务器将会返回TRACE响应，响应主体为原始请求报文
+* OPTIONS
+    * 查看资源支持的方法，通过响应头中的Allow: GET,POST
+* DELETE
+    * 请求删除资源
+
+### 6.3.4. 状态码
+
+* 1xx 信息性状态码
+    * 100/Continue: 说明收到了请求的初始部分，请客户端继续
+    * 101 Switching Protocols ：说明服务器正在根据客户端的指定，将协议切换成Udate首部所列的协议
+
+* 2xx 正常
+    * 200 OK,请求正常
+    * 204 NO Content,请求处理成功，但是返回的请求主体中没有内容。
+* 3xx 重定向
+    * 301 Moved Permanenty ,永久重定向，该状态标识请求的资源已经分配新的URL，以后使用新的URI进行访问。Location返回新的URI
+    * 302 Found,临时性重定向,该状态标识请求的资源已经分配新的URL，希望用户本次使用新的URI进行访问。
+    * 303 See Other,URI已经更新，应使用GET方法使用新的uri获取资源。
+    * 304 Not Modified,客户端发送附带条件的请求时(首部：If-match,If-Modified-Sinch,If-None-Match,If-Range,If-Unmodified-Since),服务端允许请求访问资源，但未满足条件的情况，此时响应不包含任何主体。
+* 4xx 客户端错误
+    * 400 Bad Request,错误的请求，请求报文存在语法错误。
+    * 401 Unauthorzied,用户认证失败
+    * 403 Forbidden,被拒绝访问
+    * 404 Not Found ,无法找到资源，可能路径\方法\请求参数有问题
+* 5xx 服务器错误
+    * 500 Internal Server Error,服务器内部错误，比如抛出异常。
+    * 503 Service Unavailable,服务不可用，常见场景是网关正常，但是底下的服务不正常。
+
+## 6.4. 连接管理
+<a href="#menu" style="float:right">目录</a>
+
+## 6.5. WEB服务器
+<a href="#menu" style="float:right">目录</a>
+
+## 6.6. 代理
+<a href="#menu" style="float:right">目录</a>
+
+## 6.7. 缓存
+<a href="#menu" style="float:right">目录</a>
+
+## 6.8. 网关 
+<a href="#menu" style="float:right">目录</a>
+
+## 6.9. 客户端识别与Cookie机制
+<a href="#menu" style="float:right">目录</a>
+
+## 6.10. 基本认证机制
+<a href="#menu" style="float:right">目录</a>
+
+## 6.11. 摘要认证
+<a href="#menu" style="float:right">目录</a>
+
+## 6.12. 安全HTTP
+<a href="#menu" style="float:right">目录</a>
+
+## 6.13. 实体和编码
+<a href="#menu" style="float:right">目录</a>
+
+## 6.14. 国际化
+<a href="#menu" style="float:right">目录</a>
+
+## 6.15. WEB主机托管
+<a href="#menu" style="float:right">目录</a>
+
+## 6.16. 重定向和负载均衡
+<a href="#menu" style="float:right">目录</a>
+
+
 # 7. Unix环境编程
 <a href="#menu" style="float:right">目录</a>
 # 8. Shell
