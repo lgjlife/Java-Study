@@ -1,5 +1,6 @@
 
 <span id="menu"></span>
+
 <!-- TOC -->
 
 - [1. 技术社区](#1-技术社区)
@@ -36,6 +37,10 @@
         - [6.6.1. 容器网络基础](#661-容器网络基础)
         - [6.6.2. 数据卷](#662-数据卷)
     - [6.7. 案例](#67-案例)
+        - [6.7.1. docker 安装Mysqk主从复制](#671-docker-安装mysqk主从复制)
+        - [6.7.2. docker 安装mycat](#672-docker-安装mycat)
+- [7. VIM](#7-vim)
+- [8. NMON监控工具](#8-nmon监控工具)
 
 <!-- /TOC -->
 
@@ -255,10 +260,27 @@ dia
 * mvn clear 清除产生的项目
 * mvn idea:idea 生成idea项目
 * mvn eclipse:eclipse生成ecllipse项目文件
+* mvn dependency:tree 打印依赖
+* 全局移除依赖
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-logging</artifactId>
+    <exclusions>
+        <exclusion>
+            <groupId>*</groupId>
+            <artifactId>*</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
+
 # 5. Jenkins
 <a href="#menu" style="float:right">目录</a>
+
 # 6. Docker
 <a href="#menu" style="float:right">目录</a>
+
 ## 6.1. Docker常用指令
 
 ### 6.1.1. 基本概念
@@ -289,7 +311,51 @@ dia
     * 可度量性
     * 移植性
     * 安全性
+* Docker 安装
+    * 文档地址 https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-from-a-package
+```bash
+# 查看可以安装的版本
+lgj@lgj-Lenovo-G470:~/Downloads$ apt-cache madison docker-ce
+ docker-ce | 5:18.09.7~3-0~ubuntu-bionic | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
+ docker-ce | 5:18.09.6~3-0~ubuntu-bionic | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
+ docker-ce | 5:18.09.5~3-0~ubuntu-bionic | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
+ docker-ce | 5:18.09.4~3-0~ubuntu-bionic | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
+ docker-ce | 5:18.09.3~3-0~ubuntu-bionic | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
+ docker-ce | 5:18.09.2~3-0~ubuntu-bionic | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
+ docker-ce | 5:18.09.1~3-0~ubuntu-bionic | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
+ docker-ce | 5:18.09.0~3-0~ubuntu-bionic | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
+ docker-ce | 18.06.3~ce~3-0~ubuntu | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
+ docker-ce | 18.06.2~ce~3-0~ubuntu | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
+ docker-ce | 18.06.1~ce~3-0~ubuntu | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
+ docker-ce | 18.06.0~ce~3-0~ubuntu | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
+ docker-ce | 18.05.0~ce~3-0~ubuntu | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
+ docker-ce | 18.03.1~ce~3-0~ubuntu | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
+#安装
+lgj@lgj-Lenovo-G470:~/Downloads$ sudo apt-get install  docker-ce=18.06.3~ce~3-0~ubuntu
+#查看安装成功与否
+lgj@lgj-Lenovo-G470:~$ docker version
+Client:
+ Version:           18.06.3-ce
+ API version:       1.38
+ Go version:        go1.10.3
+ Git commit:        d7080c1
+ Built:             Wed Feb 20 02:28:10 2019
+ OS/Arch:           linux/amd64
+ Experimental:      false
 
+Server:
+ Engine:
+  Version:          18.06.3-ce
+  API version:      1.38 (minimum version 1.12)
+  Go version:       go1.10.3
+  Git commit:       d7080c1
+  Built:            Wed Feb 20 02:26:34 2019
+  OS/Arch:          linux/amd64
+  Experimental:     false
+
+
+```
+            
 ## 6.2. 常用指令
 <a href="#menu" style="float:right">目录</a>
 * 安装
@@ -976,7 +1042,28 @@ docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
     * 查看容器端口映射情况
         * docker port name|id  5000  查看容器5000端口与主机端口映射情况
     * 查看容器所有信息，包括端口映射
-        * docker inspect name|id    
+        * docker inspect name|id 
+
+* Docker设置固定IP
+    * Docker安装后，默认会创建下面三种网络类型
+        * docker network ls 查看
+            * bridge：桥接网络
+                * 默认情况下启动的Docker容器，都是使用 bridge，Docker安装时创建的桥接网络，每次Docker容器重启时，会按照顺序获取对应的IP地址，这个就导致重启下，Docker的IP地址就变了
+            * none：无指定网络
+                * 使用 --network=none ，docker 容器就不会分配局域网的IP
+            * host： 主机网络
+                * 使用 --network=host，此时，Docker 容器的网络会附属在主机上，两者是互通的。
+    * 创建自定义网络：（设置固定IP）
+        *  创建自定义网络，并且指定网段：172.18.0.0/16
+        *  docker network create --subnet=172.18.0.0/16 mynetwork
+    * 创建容器时指定IP
+        * --net mynetwork 指定网络
+        * --ip 172.18.0.5 指定ip
+        * docker run --net mynetwork --ip 172.18.0.5 -p 7205:6379 --name redis7205 -d redis-cluster:5.0.3 redis-server /etc/redis/redis.conf
+        * 查看 docker inspect redis7205 |grep IPAddress
+
+
+
 ### 6.6.2. 数据卷
 * 数据卷作用
     * 是一个目录或者文件，绑定到容器的目录或者文件，两处内容同步更新   
@@ -1021,5 +1108,51 @@ Commands:
 
 
 ## 6.7. 案例
+<a href="#menu" style="float:right">目录</a>
+
+### 6.7.1. docker 安装Mysqk主从复制
+* https://www.cnblogs.com/songwenjie/p/9371422.html
+
+### 6.7.2. docker 安装mycat
 
 
+* 安装openjdk:8镜像
+    * docker pull  openjdk:8
+* 下载mycat
+    * http://www.mycat.io/
+    * http://dl.mycat.io/1.6.7.1/
+* 
+
+# 7. VIM
+<a href="#menu" style="float:right">目录</a>
+
+* 安装
+    * apt-get update && apt install vim
+
+* 启动配置文件
+    * /etc/vim/vimrc 全局配置文件
+    * ~/vimrc
+
+* 支持鼠标操作
+    * 输入命令 set mouse=a
+
+
+# 8. NMON监控工具
+
+<a href="#menu" style="float:right">目录</a>
+
+* 安装
+    * sudo apt -install nmon
+* 使用 
+    * 执行命令: nmon
+* 常用命令
+```bash
+ Use these keys to toggle statistics on/off:                                                                                                                                                             │
+│     c = CPU        l = CPU Long-term   - = Faster screen updates                                                                                                                                         │
+│     m = Memory     j = Filesystems     + = Slower screen updates                                                                                                                                         │
+│     d = Disks      n = Network         V = Virtual Memory                                                                                                                                                │
+│     r = Resource   N = NFS             v = Verbose hints                                                                                                                                                 │
+│     k = kernel     t = Top-processes   . = only busy disks/procs                                                                                                                                         │
+│     h = more options                   q = Quit  
+
+```
