@@ -8,9 +8,15 @@
     - [1.3. JVM](#13-jvm)
         - [1.3.1. JVM内存模型](#131-jvm内存模型)
         - [1.3.2. JVM的内存空间](#132-jvm的内存空间)
-            - [对象内存布局](#对象内存布局)
-            - [对象访问定位](#对象访问定位)
+            - [1.3.2.1. 对象内存布局](#1321-对象内存布局)
+            - [1.3.2.2. 对象访问定位](#1322-对象访问定位)
         - [1.3.3. 垃圾回收算法](#133-垃圾回收算法)
+            - [1.3.3.1. 对象回收判定](#1331-对象回收判定)
+            - [1.3.3.2. 对象引用分类](#1332-对象引用分类)
+            - [1.3.3.3. 标记清除算法](#1333-标记清除算法)
+            - [1.3.3.4. 复制算法](#1334-复制算法)
+            - [1.3.3.5. 标记整理算法](#1335-标记整理算法)
+            - [1.3.3.6. 分代收集算法](#1336-分代收集算法)
         - [1.3.4. 垃圾收集器](#134-垃圾收集器)
             - [1.3.4.1. Serial收集器](#1341-serial收集器)
             - [1.3.4.2. ParNew收集器](#1342-parnew收集器)
@@ -20,8 +26,11 @@
             - [1.3.4.6. CMS收集器](#1346-cms收集器)
             - [1.3.4.7. G1收集器](#1347-g1收集器)
         - [1.3.5. 性能监控与故障处理工具](#135-性能监控与故障处理工具)
+            - [1.3.5.1. JDK命令行工具](#1351-jdk命令行工具)
+            - [1.3.5.2. Jdk可视化工具](#1352-jdk可视化工具)
         - [1.3.6. JVM性能调优](#136-jvm性能调优)
-        - [1.3.7. 类加载器](#137-类加载器)
+        - [1.3.7. 类文件结构](#137-类文件结构)
+        - [1.3.8. 类加载器](#138-类加载器)
 
 <!-- /TOC -->
 # 1. 性能调优
@@ -124,7 +133,7 @@
         * 堆内存不足，无法分配新的内存
     * StackOverflowError
         * 递归调用导致方法深度过高
-#### 对象内存布局
+#### 1.3.2.1. 对象内存布局
 * HotSpot对象头
     * 用于存储对象自身运行时数据
     * 类型指针，即对象指向类元数据的指针
@@ -143,7 +152,7 @@ HotSpot对象头 Mark Word
 
 Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用于存储锁标志位，1bit固定为0。
 
-#### 对象访问定位
+#### 1.3.2.2. 对象访问定位
 
 * 句柄访问
     * 使用句柄访问方式，java堆将会划分出来一部分内存去来作为句柄池，reference中存储的就是对象的句柄地址。而句柄中则包含对象实例数据的地址和对象类型数据（如对象的类型，实现的接口、方法、父类、field等）的具体地址信息。
@@ -152,9 +161,74 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
     * 如果使用指针访问，那么java堆对象的布局中就必须考虑如何放置访问类型的相关信息（如对象的类型，实现的接口、方法、父类、field等），而reference中存储的就是对象的地址。
     * 使用指针访问的好处是访问速度快，它减少了一次指针定位的时间开销，由于java是面向对象的语言，在开发中java对象的访问非常的频繁，因此这类开销积少成多也是非常可观的，反之则提升访问速度。
 
-
 ### 1.3.3. 垃圾回收算法
 <a href="#menu" style="float:right">目录</a>
+
+#### 1.3.3.1. 对象回收判定
+
+**引用计数法**
+* 给对象添加一个引用计数器，引用一次则计数器+1,引用失效计数器-1，当计数器为0的时候，说明没有地方引用，垃圾收集器可以将它进行回收
+* 缺点：无法解决循环引用
+
+**可达性分析算法**
+* 以GC ROOTS为起始点，从这些节点开始向下搜索，搜索所走过的路径称为引用链，当一个对象到GC ROOTS没有引用链相连时，说明不可达，也说明没有任何引用。
+* GC Roots对象
+    * 虚拟机栈中引用的对象
+    * 方法区中类静态对象引用的对象
+    * 方法区中常量引用的对象
+    * 本地方法栈中引用的对象
+
+#### 1.3.3.2. 对象引用分类
+**强引用**
+* Object obj = new Object();
+* 只要强引用存在，就不会被垃圾回收
+* 对于Map,List中存放的对象是强引用，因此一般通过虚引用和弱引用来缓存数据
+
+**软引用**
+* 通过SoftReference来实现 
+* 内存不足时才会回收，回收之后内存不足将抛出OOM异常
+* 可以通过get来获取对象实例
+* 用于缓存热数据
+
+**弱引用**
+* 通过WeakReference来实现
+* 只要发生垃圾回收，将会被回收
+* 可以通过get来获取对象实例
+* 用于缓存冷数据
+
+**虚引用**
+* 通过PhantomReference来实现
+* 无法通过虚引用来获取对象的实例
+* 虚引用和前面的软引用、弱引用不同，它并不影响对象的生命周期
+* 如果一个对象与虚引用关联，则跟没有引用与之关联一样，在任何时候都可能被垃圾回收器回收。
+* 虚引用必须和引用队列关联使用，当垃圾回收器准备回收一个对象时，如果发现它还有虚引用，就会把这个虚引用加入到与之 关联的引用队列中
+
+#### 1.3.3.3. 标记清除算法
+* 先标记可回收的对象空间，在标记完成之后进行统一的回收
+* 缺点
+    * 效率问题，标记和清除两个过程的效率都不高
+    * 空间问题，清除后将产生内存碎片，不利于二次使用
+
+#### 1.3.3.4. 复制算法
+* 内存按容量分为两个区块，每次只使用一个区块用于内存分配
+* 垃圾回收时，将存活的对象复制到另一个区块，按顺序存放
+* 复制完成后，一次性清理之前的区块
+* 新创建对象将在另一个区块中分配
+* 优点
+    * 不产生碎片内存
+* 缺点
+    * 空间利用率不高，每次只能有一块区域分配内存。
+    * 复制效率不高
+
+#### 1.3.3.5. 标记整理算法
+* 标记对象，然后让存活的对象往一边移动，最后一次性清理掉端边界以外的内存。
+
+#### 1.3.3.6. 分代收集算法
+* 将内存分为老年代和新生代
+* 新创建的对象在新生代进行内存分配，经过多次垃圾回收之后仍然存活的对象将被放到老年代
+* 新生代的对象一般生命周期短，大部分都会被回收掉，因此每次垃圾收集只有很少的对象存活，因此使用复制算法效率比较高
+* 老年代的对象经过多次回收仍然存活，说明生命周期长，不容易被回收。因此每次垃圾回收只有少量的对象被回收，因此使用标记清除/标记整理算法效率比较高。
+
 
 ### 1.3.4. 垃圾收集器
 <a href="#menu" style="float:right">目录</a>
@@ -183,9 +257,179 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
 ### 1.3.5. 性能监控与故障处理工具
 <a href="#menu" style="float:right">目录</a>
 
+#### 1.3.5.1. JDK命令行工具
+<a href="#menu" style="float:right">目录</a>
+
+**javap**
+* 反编译工具,可用来查看java编译器生成的字节码
+    * -help 帮助
+    * -l 输出行和变量的表
+    * -public 只输出public方法和域
+    * -protected 只输出public和protected类和成员
+    * -package 只输出包，public和protected类和成员，这是默认的
+    * -p -private 输出所有类和成员
+    * -s 输出内部类型签名
+    * -c 输出分解后的代码，例如，类中每一个方法内，包含java字节码的指令
+    * -verbose 输出栈大小，方法参数的个数
+    * -constants 输出静态final常量
+    
+**jps**
+* 虚拟机进程状况工具
+
+```
+usage: jps [-help]
+       jps [-q] [-m | -l|-v|-V] [<hostid>]
+
+Definitions:
+    <hostid>:      <hostname>[:<port>]
+    
+```
+
+**jstat**
+* 虚拟机统计信息监视工具
+```
+Usage: jstat -help|-options
+       jstat -<option> [-t] [-h<lines>] <vmid> [<interval> [<count>]]
+
+Definitions:
+  <option>      An option reported by the -options option
+  <vmid>        Virtual Machine Identifier. A vmid takes the following form:
+                     <lvmid>[@<hostname>[:<port>]]
+                Where <lvmid> is the local vm identifier for the target
+                Java virtual machine, typically a process id; <hostname> is
+                the name of the host running the target Java virtual machine;
+                and <port> is the port number for the rmiregistry on the
+                target host. See the jvmstat documentation for a more complete
+                description of the Virtual Machine Identifier.
+  <lines>       Number of samples between header lines.
+  <interval>    Sampling interval. The following forms are allowed:
+                    <n>["ms"|"s"]
+                Where <n> is an integer and the suffix specifies the units as 
+                milliseconds("ms") or seconds("s"). The default units are "ms".
+  <count>       Number of samples to take before terminating.
+  -J<flag>      Pass <flag> directly to the runtime system.
+```
+**jinfo**
+* Java配置信息工具类
+```
+Usage:
+    jinfo [option] <pid>
+        (to connect to running process)
+    jinfo [option] <executable <core>
+        (to connect to a core file)
+    jinfo [option] [server_id@]<remote server IP or hostname>
+        (to connect to remote debug server)
+
+where <option> is one of:
+    -flag <name>         to print the value of the named VM flag
+    -flag [+|-]<name>    to enable or disable the named VM flag
+    -flag <name>=<value> to set the named VM flag to the given value
+    -flags               to print VM flags
+    -sysprops            to print Java system properties
+    <no option>          to print both of the above
+    -h | -help           to print this help message
+
+```
+**jmap**
+Java内存映像工具
+```
+Usage:
+    jmap [option] <pid>
+        (to connect to running process)
+    jmap [option] <executable <core>
+        (to connect to a core file)
+    jmap [option] [server_id@]<remote server IP or hostname>
+        (to connect to remote debug server)
+
+where <option> is one of:
+    <none>               to print same info as Solaris pmap
+    -heap                to print java heap summary
+    -histo[:live]        to print histogram of java object heap; if the "live"
+                         suboption is specified, only count live objects
+    -clstats             to print class loader statistics
+    -finalizerinfo       to print information on objects awaiting finalization
+    -dump:<dump-options> to dump java heap in hprof binary format
+                         dump-options:
+                           live         dump only live objects; if not specified,
+                                        all objects in the heap are dumped.
+                           format=b     binary format
+                           file=<file>  dump heap to <file>
+                         Example: jmap -dump:live,format=b,file=heap.bin <pid>
+    -F                   force. Use with -dump:<dump-options> <pid> or -histo
+                         to force a heap dump or histogram when <pid> does not
+                         respond. The "live" suboption is not supported
+                         in this mode.
+    -h | -help           to print this help message
+    -J<flag>             to pass <flag> directly to the runtime system
+
+
+```
+**jhat**
+* 虚拟机堆转储快照分析工具
+```
+Usage:  jhat [-stack <bool>] [-refs <bool>] [-port <port>] [-baseline <file>] [-debug <int>] [-version] [-h|-help] <file>
+
+	-J<flag>          Pass <flag> directly to the runtime system. For
+			  example, -J-mx512m to use a maximum heap size of 512MB
+	-stack false:     Turn off tracking object allocation call stack.
+	-refs false:      Turn off tracking of references to objects
+	-port <port>:     Set the port for the HTTP server.  Defaults to 7000
+	-exclude <file>:  Specify a file that lists data members that should
+			  be excluded from the reachableFrom query.
+	-baseline <file>: Specify a baseline object dump.  Objects in
+			  both heap dumps with the same ID and same class will
+			  be marked as not being "new".
+	-debug <int>:     Set debug level.
+			    0:  No debug output
+			    1:  Debug hprof file parsing
+			    2:  Debug hprof file parsing, no server
+	-version          Report version number
+	-h|-help          Print this help and exit
+	<file>            The file to read
+
+For a dump file that contains multiple heap dumps,
+you may specify which dump in the file
+by appending "#<number>" to the file name, i.e. "foo.hprof#3".
+
+All boolean options default to "true"
+
+```
+**jstack**
+* Java堆栈跟踪工具
+```
+Usage:
+    jstack [-l] <pid>
+        (to connect to running process)
+    jstack -F [-m] [-l] <pid>
+        (to connect to a hung process)
+    jstack [-m] [-l] <executable> <core>
+        (to connect to a core file)
+    jstack [-m] [-l] [server_id@]<remote server IP or hostname>
+        (to connect to a remote debug server)
+
+Options:
+    -F  to force a thread dump. Use when jstack <pid> does not respond (process is hung)
+    -m  to print both java and native frames (mixed mode)
+    -l  long listing. Prints additional information about locks
+    -h or -help to print this help message
+
+
+```
+****
+
+
+#### 1.3.5.2. Jdk可视化工具
+<a href="#menu" style="float:right">目录</a>
+
+* JConsole
+* JVisualVM
+
+
 ### 1.3.6. JVM性能调优
 
-### 1.3.7. 类加载器
+### 1.3.7. 类文件结构
+
+### 1.3.8. 类加载器
 
 
 
