@@ -1,54 +1,7 @@
 
 <span id="menu"></span>
 
-<!-- TOC -->
 
-- [1. 分布式系统](#1-分布式系统)
-    - [1.1. 基本概念](#11-基本概念)
-    - [1.2. 大型网站的特点](#12-大型网站的特点)
-        - [1.2.1. 特点](#121-特点)
-        - [1.2.2. 模式](#122-模式)
-    - [1.3. 架构演进](#13-架构演进)
-    - [1.4. Java 中间件](#14-java-中间件)
-    - [1.5. 序列化机制](#15-序列化机制)
-        - [1.5.1. 基本概念](#151-基本概念)
-        - [1.5.2. 常用序列化方式性能比较](#152-常用序列化方式性能比较)
-        - [1.5.3. 常用序列化方式实现](#153-常用序列化方式实现)
-            - [1.5.3.1. JDK方式](#1531-jdk方式)
-            - [1.5.3.2. FastJSON](#1532-fastjson)
-            - [1.5.3.3. Hessian](#1533-hessian)
-            - [1.5.3.4. Protostuff](#1534-protostuff)
-    - [1.6. 定时任务](#16-定时任务)
-    - [1.7. Cron表达式](#17-cron表达式)
-        - [1.7.1. Spring Scheduler](#171-spring-scheduler)
-        - [1.7.2. Quartz](#172-quartz)
-            - [1.7.2.1. Quartz 核心概念](#1721-quartz-核心概念)
-    - [1.8. 分布式ID](#18-分布式id)
-        - [1.8.1. 应用场景](#181-应用场景)
-        - [1.8.2. 分布式ID生成方案](#182-分布式id生成方案)
-    - [1.9. 分布式锁](#19-分布式锁)
-        - [1.9.1. 使用数据库实现](#191-使用数据库实现)
-        - [1.9.2. Redis实现分布式锁](#192-redis实现分布式锁)
-        - [1.9.3. Zookeeper实现分布式锁](#193-zookeeper实现分布式锁)
-    - [1.10. 微服务化](#110-微服务化)
-        - [1.10.1. 微服务和SOA](#1101-微服务和soa)
-        - [1.10.2. 拆分原则](#1102-拆分原则)
-    - [1.11. 消息机制](#111-消息机制)
-    - [1.12. 服务降级](#112-服务降级)
-    - [1.13. 流量限流](#113-流量限流)
-    - [1.14. 幂等设计](#114-幂等设计)
-    - [1.15. 数据一致性](#115-数据一致性)
-        - [1.15.1. CAP理论](#1151-cap理论)
-        - [1.15.2. Base理论](#1152-base理论)
-    - [1.16. 分布式事务实现](#116-分布式事务实现)
-    - [1.17. 负载均衡算法](#117-负载均衡算法)
-    - [1.18. 服务容错设计](#118-服务容错设计)
-    - [1.19. 集群](#119-集群)
-    - [1.20. 分库分表](#120-分库分表)
-    - [1.21. 反向代理&正向代理](#121-反向代理正向代理)
-    - [1.22. 客户端优化](#122-客户端优化)
-
-<!-- /TOC -->
 # 1. 分布式系统
 <a href="#menu" style="float:right">目录</a>
 
@@ -74,6 +27,7 @@
     * 分布式事务问题 
     
 ## 1.2. 大型网站的特点
+<a href="#menu" style="float:right">目录</a>
 
 ### 1.2.1. 特点
 高并发，大流量;高可用；海量数据;用户分布广泛，网络情况复杂;安全环境恶劣；需求快速变更，发布频繁；渐进式发展.
@@ -131,9 +85,1115 @@
 * 安全
     * 登录认证
     * 脚本攻击，跨域攻击，SQL注入攻击等的应对
+## 1.3. 常用的RPC框架
+<a href="#menu" style="float:right">目录</a>
+RPC(Remote Procedure Call,远程过程调用)一般用来实现部署在不同的机器上的系统之间的方法调用，使得程序能够像访问本地系统资源一样，通过网络去访问远端系统资源。
+这里通过网络访问，并不限制使用何种协议，RPC不等价于TCP方式。
+
+### 1.3.1. Thrift
+* FaceBook开发
+* 跨平台和语言，支持多种与语言，比如C/C++，Erlang,Java,Js
+* 采用二进制编码协议，使用TCP/IP传输协议
+
+### 1.3.2. gRPC
+* 谷歌开发,面向移动和**HTTP2**设计
+* 支持C，Java,Go，分别是grpc,grpc-java,grpc-go
+* 具备诸如双向流，流空，头部压缩，单TCP连接上的多路复用请求等待特性
+* 一般用在移动设备上
+* 默认为protocol buffers序列化协议，也可以用其他序列化协议，比如json
+
+## 1.4. Dubbo
+
+### 1.4.1. 架构
+![](http://dubbo.apache.org/docs/zh-cn/user/sources/images/dubbo-architecture.jpg)
+
+**节点角色说明**
+
+|节点	|角色说明|
+|---|---|
+|Provider|	暴露服务的服务提供方
+|Consumer|	调用远程服务的服务消费方
+|Registry|	服务注册与发现的注册中心
+|Monitor|	统计服务的调用次数和调用时间的监控中心
+|Container|	服务运行容器
+
+**调用关系说明**
+* 服务容器负责启动，加载，运行服务提供者。
+* 服务提供者在启动时，向注册中心注册自己提供的服务。
+* 服务消费者在启动时，向注册中心订阅自己所需的服务。
+* 注册中心返回服务提供者地址列表给消费者，如果有变更，注册中心将基于长连接推送变更数据给消费者。
+* 服务消费者，从提供者地址列表中，基于软负载均衡算法，选一台提供者进行调用，如果调用失败，再选另一台调用。
+* 服务消费者和提供者，在内存中累计调用次数和调用时间，定时每分钟发送一次统计数据到监控中心。
+* Dubbo 架构具有以下几个特点，分别是连通性、健壮性、伸缩性、以及向未来架构的升级性。
+
+**连通性**
+* 注册中心负责服务地址的注册与查找，相当于目录服务，服务提供者和消费者只在启动时与注册中心交互，注册中心不转发请求，压力较小
+* 监控中心负责统计各服务调用次数，调用时间等，统计先在内存汇总后每分钟一次发送到监控中心服务器，并以报表展示
+* 服务提供者向注册中心注册其提供的服务，并汇报调用时间到监控中心，此时间不包含网络开销
+* 服务消费者向注册中心获取服务提供者地址列表，并根据负载算法直接调用提供者，同时汇报调用时间到监控中心，此时间包含网络开销
+* 注册中心，服务提供者，服务消费者三者之间均为长连接，监控中心除外
+* 注册中心通过长连接感知服务提供者的存在，服务提供者宕机，注册中心将立即推送事件通知消费者
+* 注册中心和监控中心全部宕机，不影响已运行的提供者和消费者，消费者在本地缓存了提供者列表
+* 注册中心和监控中心都是可选的，服务消费者可以直连服务提供者
+
+**健壮性**
+* 监控中心宕掉不影响使用，只是丢失部分采样数据
+* 数据库宕掉后，注册中心仍能通过缓存提供服务列表查询，但不能注册新服务
+* 注册中心对等集群，任意一台宕掉后，将自动切换到另一台
+* 注册中心全部宕掉后，服务提供者和服务消费者仍能通过本地缓存通讯
+* 服务提供者无状态，任意一台宕掉后，不影响使用
+* 服务提供者全部宕掉后，服务消费者应用将无法使用，并无限次重连等待服务提供者恢复
+
+**伸缩性**
+* 注册中心为对等集群，可动态增加机器部署实例，所有客户端将自动发现新的注册中心
+* 服务提供者无状态，可动态增加机器部署实例，注册中心将推送新的服务提供者信息给消费者
+
+### 1.4.2. 功能
+
+**启动时检查**
+* 启动时检查依赖的服务是否可用，不可用时会抛出异常，导致应用无法启动
+* 通过该强制保证依赖的服务必须先启动
+* 默认为检查，通过check=true|false进行配置
+
+**集群容错**
+* **Failfast Cluster**
+    * 快速失败，只发起一次调用，失败立即报错。通常用于非幂等性的写操作，比如新增记录。
+* **Failsafe Cluster**  
+    * 失败安全，出现异常时，直接忽略。通常用于写入审计日志等操作。
+* **Failback Cluster**
+    * 失败自动恢复，后台记录失败请求，定时重发。通常用于消息通知操作。
+* **Forking Cluster**
+    * 并行调用多个服务器，只要一个成功即返回。通常用于实时性要求较高的读操作，但需要浪费更多服务资源。可通过 forks="2" 来设置最大并行数。
+* **Broadcast Cluster**
+    * 广播调用所有提供者，逐个调用，任意一台报错则报错 [2]。通常用于通知所有提供者更新缓存或日志等本地资源信息。
+
+**负载均衡**
+* **Random LoadBalance**
+    * 默认 
+    * 随机，按权重设置随机概率。
+    * 在一个截面上碰撞的概率高，但调用量越大分布越均匀，而且按概率使用权重后也比较均匀，有利于动态调整提供者权重。
+* **RoundRobin LoadBalance**
+    * 轮询，按公约后的权重设置轮询比率。
+    * 存在慢的提供者累积请求的问题，比如：第二台机器很慢，但没挂，当请求调到第二台时就卡在那，久而久之，所有请求都卡在调到第二台上。
+* **LeastActive LoadBalance**
+    * 最少活跃调用数，相同活跃数的随机，活跃数指调用前后计数差。
+    * 使慢的提供者收到更少请求，因为越慢的提供者的调用前后计数差会越大。
+* **ConsistentHash LoadBalance**
+    * 一致性 Hash，相同参数的请求总是发到同一提供者。
+    * 当某一台提供者挂时，原本发往该提供者的请求，基于虚拟节点，平摊到其它提供者，不会引起剧烈变动。
+    * 算法参见：http://en.wikipedia.org/wiki/Consistent_hashing
+
+**线程模型**
+
+* 如果事件处理的逻辑能迅速完成，并且不会发起新的 IO 请求，比如只是在内存中记个标识，则直接在 IO 线程上处理更快，因为减少了线程池调度。
+
+* 但如果事件处理逻辑较慢，或者需要发起新的 IO 请求，比如需要查询数据库，则必须派发到线程池，否则 IO 线程阻塞，将导致不能接收其它请求。
+
+* 如果用 IO 线程处理事件，又在事件处理过程中发起新的 IO 请求，比如在连接事件中发起登录请求，会报“可能引发死锁”异常，但不会真死锁。
 
 
-## 1.3. 架构演进
+* Dispatcher
+    * all 
+        * 所有消息都派发到线程池，包括请求，响应，连接事件，断开事件，心跳等。
+    * direct
+        * 所有消息都不派发到线程池，全部在 IO 线程上直接执行。
+    * message
+        *  只有请求响应消息派发到线程池，其它连接断开事件，心跳等消息，直接在 IO 线程上执行。
+    * execution 
+        * 只请求消息派发到线程池，不含响应，响应和其它连接断开事件，心跳等消息，直接在 IO 线程上执行。
+    * connection 
+        * 在 IO 线程上，将连接断开事件放入队列，有序逐个执行，其它消息派发到线程池。
+* ThreadPool
+    * fixed 
+        * 固定大小线程池，启动时建立线程，不关闭，一直持有。(缺省)
+    * cached
+        * 缓存线程池，空闲一分钟自动删除，需要时重建。
+    * limited 
+        * 可伸缩线程池，但池中的线程数只会增长不会收缩。只增长不收缩的目的是为了避免收缩时突然来了大流量引起的性能问题。
+    * eager
+        *  优先创建Worker线程池。在任务数量大于corePoolSize但是小于maximumPoolSize时，优先创建Worker来处理任务。当任务数量大于maximumPoolSize时，将任务放入阻塞队列中。阻塞队列充满时抛出RejectedExecutionException。(相比于cached:cached在任务数量超过maximumPoolSize时直接抛出异常而不是将任务放入阻塞队列)
+
+**直连提供者**
+* 在开发及测试环境下，经常需要绕过注册中心，只测试指定服务提供者，这时候可能需要点对点直连，点对点直连方式，将以服务接口为单位，忽略注册中心的提供者列表，A 接口配置点对点，不影响 B 接口从注册中心获取列表。
+
+**只订阅**
+* 为方便开发测试，经常会在线下共用一个所有服务可用的注册中心，这时，如果一个正在开发中的服务提供者注册，可能会影响消费者不能正常运行。
+* 可以让服务提供者开发方，只订阅服务(开发的服务可能依赖其它服务)，而不注册正在开发的服务，通过直连测试正在开发的服务。
+
+**只注册**
+* 如果有两个镜像环境，两个注册中心，有一个服务只在其中一个注册中心有部署，另一个注册中心还没来得及部署，而两个注册中心的其它应用都需要依赖此服务。这个时候，可以让服务提供者方只注册服务到另一注册中心，而不从另一注册中心订阅服务。
+
+**多协议**
+* dubbo 
+* rmi
+* hessian
+* http
+* webservice
+* thrift
+* memcache
+* redis
+* rest
+
+**多注册中心**
+* Multicast
+* Zookeeper
+* Nacos
+* Redis
+* Simple
+
+**服务分组**
+* 当服务有多个版本时，可以通过分组进行区分
+
+**多版本**
+* 一般用于本版升级，对比新版本和旧版本，如果新版本有问题，可以很快进行切换 
+
+**分组聚合**
+按组合并返回结果，比如菜单服务，接口一样，但有多种实现，用group区分，现在消费方需从每种group中调用一次返回结果，合并结果返回，这样就可以实现聚合菜单项。
+
+
+**参数验证**
+参数验证功能是基于 JSR303 实现的，用户只需标识 JSR303 标准的验证 annotation，并通过声明 filter 来实现验证。
+```xml
+<dependency>
+    <groupId>javax.validation</groupId>
+    <artifactId>validation-api</artifactId>
+    <version>1.0.0.GA</version>
+</dependency>
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-validator</artifactId>
+    <version>4.2.0.Final</version>
+</dependency>
+```
+```java
+
+    @NotNull // 不允许为空
+    @Size(min = 1, max = 20) // 长度或大小范围
+    private String name;
+ 
+    @NotNull(groups = ValidationService.Save.class) // 保存时不允许为空，更新时允许为空 ，表示不更新该字段
+    @Pattern(regexp = "^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$")
+    private String email;
+ 
+    @Min(18) // 最小值
+    @Max(100) // 最大值
+    private int age;
+```
+
+
+**结果缓存**
+* 结果缓存，用于加速热门数据的访问速度，Dubbo 提供声明式缓存，以减少用户加缓存的工作量。
+* 缓存类型
+    * lru 基于最近最少使用原则删除多余缓存，保持最热的数据被缓存。
+    * threadlocal 当前线程缓存，比如一个页面渲染，用到很多 portal，每个 portal 都要去查用户信息，通过线程缓存，可以减少这种多余访问。
+    * jcache 与 JSR107 集成，可以桥接各种缓存实现。
+
+
+**泛化引用**
+* 泛化接口调用方式主要用于客户端没有 API 接口及模型类元的情况，参数及返回值中的所有 POJO 均用 Map 表示，通常用于框架集成，比如：实现一个通用的服务测试框架，可通过 GenericService 调用所有服务实现。
+
+**泛化实现**
+泛接口实现方式主要用于服务器端没有API接口及模型类元的情况，参数及返回值中的所有POJO均用Map表示，通常用于框架集成，比如：实现一个通用的远程服务Mock框架，可通过实现GenericService接口处理所有服务请求。
+
+在 Java 代码中实现 GenericService 接口：
+```java
+package com.foo;
+public class MyGenericService implements GenericService {
+ 
+    public Object $invoke(String methodName, String[] parameterTypes, Object[] args) throws GenericException {
+        if ("sayHello".equals(methodName)) {
+            return "Welcome " + args[0];
+        }
+    }
+}
+```
+通过 Spring 暴露泛化实现
+在 Spring 配置申明服务的实现：
+```xml
+<bean id="genericService" class="com.foo.MyGenericService" />
+<dubbo:service interface="com.foo.BarService" ref="genericService" />
+```
+通过 API 方式暴露泛化实现
+
+```java 
+// 用org.apache.dubbo.rpc.service.GenericService可以替代所有接口实现 
+GenericService xxxService = new XxxGenericService(); 
+
+// 该实例很重量，里面封装了所有与注册中心及服务提供方连接，请缓存 
+ServiceConfig<GenericService> service = new ServiceConfig<GenericService>();
+// 弱类型接口名 
+service.setInterface("com.xxx.XxxService");  
+service.setVersion("1.0.0"); 
+// 指向一个通用服务实现 
+service.setRef(xxxService); 
+ 
+// 暴露及注册服务 
+service.export();
+```
+**回声测试**
+回声测试用于检测服务是否可用，回声测试按照正常请求流程执行，能够测试整个调用是否通畅，可用于监控。
+
+所有服务自动实现 EchoService 接口，只需将任意服务引用强制转型为 EchoService，即可使用。
+
+Spring 配置：
+```xml
+<dubbo:reference id="memberService" interface="com.xxx.MemberService" />
+```
+代码：
+```java
+// 远程服务引用
+MemberService memberService = ctx.getBean("memberService"); 
+EchoService echoService = (EchoService) memberService; // 强制转型为EchoService
+// 回声测试可用性
+String status = echoService.$echo("OK"); 
+assert(status.equals("OK"));
+```
+**上下文信息**
+
+上下文中存放的是当前调用过程中所需的环境信息。所有配置信息都将转换为 URL 的参数，参见 schema 配置参考手册 中的对应URL参数一列。
+
+RpcContext 是一个 ThreadLocal 的临时状态记录器，当接收到 RPC 请求，或发起 RPC 请求时，RpcContext 的状态都会变化。比如：A 调 B，B 再调 C，则 B 机器上，在 B 调 C 之前，RpcContext 记录的是 A 调 B 的信息，在 B 调 C 之后，RpcContext 记录的是 B 调 C 的信息。
+
+服务消费方
+```java
+// 远程调用
+xxxService.xxx();
+// 本端是否为消费端，这里会返回true
+boolean isConsumerSide = RpcContext.getContext().isConsumerSide();
+// 获取最后一次调用的提供方IP地址
+String serverIP = RpcContext.getContext().getRemoteHost();
+// 获取当前服务配置信息，所有配置信息都将转换为URL的参数
+String application = RpcContext.getContext().getUrl().getParameter("application");
+// 注意：每发起RPC调用，上下文状态会变化
+yyyService.yyy();
+```
+服务提供方
+```java
+public class XxxServiceImpl implements XxxService {
+ 
+    public void xxx() {
+        // 本端是否为提供端，这里会返回true
+        boolean isProviderSide = RpcContext.getContext().isProviderSide();
+        // 获取调用方IP地址
+        String clientIP = RpcContext.getContext().getRemoteHost();
+        // 获取当前服务配置信息，所有配置信息都将转换为URL的参数
+        String application = RpcContext.getContext().getUrl().getParameter("application");
+        // 注意：每发起RPC调用，上下文状态会变化
+        yyyService.yyy();
+        // 此时本端变成消费端，这里会返回false
+        boolean isProviderSide = RpcContext.getContext().isProviderSide();
+    } 
+}
+```
+
+
+**隐式参数**
+可以通过 RpcContext 上的 setAttachment 和 getAttachment 在服务消费方和提供方之间进行参数的隐式传递。
+在服务消费方端设置隐式参数
+setAttachment 设置的 KV 对，在完成下面一次远程调用会被清空，即多次远程调用要多次设置。
+```java
+RpcContext.getContext().setAttachment("index", "1"); // 隐式传参，后面的远程调用都会隐式将这些参数发送到服务器端，类似cookie，用于框架集成，不建议常规业务使用
+xxxService.xxx(); // 远程调用
+//在服务提供方端获取隐式参数
+public class XxxServiceImpl implements XxxService {
+ 
+    public void xxx() {
+        // 获取客户端隐式传入的参数，用于框架集成，不建议常规业务使用
+        String index = RpcContext.getContext().getAttachment("index"); 
+    }
+}
+```
+**异步调用**
+**异步执行**
+**本地调用**
+**参数回调**
+**事件通知**
+**本地存根**
+**本地伪装**
+**延迟暴露**
+**并发控制**
+**连接控制**
+**延迟连接**
+**粘滞连接**
+**令牌验证**
+**路由规则**
+**配置规则**
+**服务降级**
+**优雅停机**
+**主机绑定**
+**日志适配**
+**访问日志**
+**服务容器**
+**配置缓存**
+**分布式事务**
+**线程栈自动dump**
+**Netty4**
+**Kryo与Fst序列化**
+**简化注册中心URL**
+
+### 1.4.3. 连接协议
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.4.3.1. dubbo
+Dubbo 缺省协议采用单一长连接和 NIO 异步通讯，适合于小数据量大并发的服务调用，以及服务消费者机器数远大于服务提供者机器数的情况。
+
+反之，Dubbo 缺省协议不适合传送大数据量的服务，比如传文件，传视频等，除非请求量很低。
+![](http://dubbo.apache.org/docs/zh-cn/user/sources/images/dubbo-protocol.jpg)
+* Transporter: mina, netty, grizzy
+* Serialization: dubbo, hessian2, java, json
+* Dispatcher: all, direct, message, execution, connection
+* ThreadPool: fixed, cached
+
+**特性**
+缺省协议，使用基于 mina 1.1.7 和 hessian 3.2.1 的 tbremoting 交互。
+* 连接个数：单连接
+* 连接方式：长连接
+* 传输协议：TCP
+* 传输方式：NIO 异步传输
+* 序列化：Hessian 二进制序列化
+* 适用范围：传入传出参数数据包较小（建议小于100K），消费者比提供者个数多，单一消费者无法压满提供者，尽量不要用 dubbo 协议传输大文件或超大字符串。
+* 适用场景：常规远程服务方法调用
+**约束**
+* 参数及返回值需实现 Serializable 接口
+* 参数及返回值不能自定义实现 List, Map, Number, Date, Calendar 等接口，只能* 用 JDK 自带的实现，因为 hessian 会做特殊处理，自定义实现类中的属性值都会丢失。
+* Hessian 序列化，只传成员属性值和值的类型，不传方法或静态变量，兼容情况：
+
+|数据通讯|	情况|	结果|
+|---|---|---|
+|A->B	|类A多一种 属性（或者说类B少一种 属性）	|不抛异常，A多的那 个属性的值，B没有， 其他正常
+|A->B	|枚举A多一种 枚举（或者说B少一种 枚举），A使用多| 出来的枚举进行传输	抛异常
+|A->B	|枚举A多一种 枚举（或者说B少一种 枚举），A不使用 |多出来的枚举进行传输	不抛异常，B正常接 收数据
+|A->B	|A和B的属性 名相同，但类型不相同|	抛异常
+|A->B	|serialId 不相同	|正常传输
+接口增加方法，对客户端无影响，如果该方法不是客户端需要的，客户端不需要重新部署。输入参数和结果集中增加属性，对客户端无影响，如果客户端并不需要新属性，不用重新部署。
+
+输入参数和结果集属性名变化，对客户端序列化无影响，但是如果客户端不重新部署，不管输入还是输出，属性名变化的属性值是获取不到的。
+
+总结：服务器端和客户端对领域对象并不需要完全一致，而是按照最大匹配原则。
+
+**常见问题**
+* 为什么要消费者比提供者个数多?
+    * 因 dubbo 协议采用单一长连接，假设网络为千兆网卡 [3]，根据测试经验数据每条连接最多只能压满 7MByte(不同的环境可能不一样，供参考)，理论上 1 个服务提供者需要 20 个服务消费者才能压满网卡。
+
+* 为什么不能传大包?
+    *  因 dubbo 协议采用单一长连接，如果每次请求的数据包大小为 500KByte，假设网络为千兆网卡 [3:1]，每条连接最大 7MByte(不同的环境可能不一样，供参考)，单个服务提供者的 TPS(每秒处理事务数)最大为：128MByte / 500KByte = 262。单个消费者调用单个服务提供者的 TPS(每秒处理事务数)最大为：7MByte / 500KByte = 14。如果能接受，可以考虑使用，否则网络将成为瓶颈。
+
+* 为什么采用异步单一长连接?
+    * 因为服务的现状大都是服务提供者少，通常只有几台机器，而服务的消费者多，可能整个网站都在访问该服务，比如 Morgan 的提供者只有 6 台提供者，却有上百台消费者，每天有 1.5 亿次调用，如果采用常规的 hessian 服务，服务提供者很容易就被压跨，通过单一连接，保证单一消费者不会压死提供者，长连接，减少连接握手验证等，并使用异步 IO，复用线程池，防止 C10K 问题。
+
+#### 1.4.3.2. rmi
+* RMI 协议采用 JDK 标准的 java.rmi.* 实现，采用阻塞式短连接和 JDK 标准序列化方式。
+
+* 注意：如果正在使用 RMI 提供服务给外部访问 [1]，同时应用里依赖了老的 common-collections 包 [2] 的情况下，存在反序列化安全风险 [3]。
+
+**特性**
+* 连接个数：多连接
+* 连接方式：短连接
+* 传输协议：TCP
+* 传输方式：同步传输
+* 序列化：Java 标准二进制序列化
+* 适用范围：传入传出参数数据包大小混合，消费者与提供者个数差不多，可传文件。
+* 适用场景：常规远程服务方法调用，与原生RMI服务互操作
+**约束**
+* 参数及返回值需实现 Serializable 接口
+* dubbo 配置中的超时时间对 RMI 无效，需使用 java 启动参数设置：-Dsun.rmi.transport.tcp.responseTimeout=3000，参见下面的 RMI 配置
+
+#### 1.4.3.3. hessian
+Hessian [1] 协议用于集成 Hessian 的服务，Hessian 底层采用 Http 通讯，采用 Servlet 暴露服务，Dubbo 缺省内嵌 Jetty 作为服务器实现。
+
+Dubbo 的 Hessian 协议可以和原生 Hessian 服务互操作，即：
+
+提供者用 Dubbo 的 Hessian 协议暴露服务，消费者直接用标准 Hessian 接口调用
+或者提供方用标准 Hessian 暴露服务，消费方用 Dubbo 的 Hessian 协议调用。
+**特性**
+* 连接个数：多连接
+* 连接方式：短连接
+* 传输协议：HTTP
+* 传输方式：同步传输
+* 序列化：Hessian二进制序列化
+* 适用范围：传入传出参数数据包较大，提供者比消费者个数多，提供者压力较大，可传文件。
+* 适用场景：页面传输，文件传输，或与原生hessian服务互操作
+**依赖**
+```xml
+<dependency>
+    <groupId>com.caucho</groupId>
+    <artifactId>hessian</artifactId>
+    <version>4.0.7</version>
+</dependency>
+```
+
+**约束**
+* 参数及返回值需实现 Serializable 接口
+* 参数及返回值不能自定义实现 List, Map, Number, Date, Calendar 等接口，只能用 JDK 自带的实现，因为 hessian 会做特殊处理，自定义实现类中的属性值都会丢失。
+
+
+#### 1.4.3.4. http
+基于 HTTP 表单的远程调用协议，采用 Spring 的 HttpInvoker 实现 [1]
+
+**特性**
+* 连接个数：多连接
+* 连接方式：短连接
+* 传输协议：HTTP
+* 传输方式：同步传输
+* 序列化：表单序列化
+* 适用范围：传入传出参数数据包大小混合，提供者比消费者个数多，可用浏览器查看，可用表单或URL传入参数，暂不支持传文件。
+* 适用场景：需同时给应用程序和浏览器 JS 使用的服务。
+
+**约束**
+参数及返回值需符合 Bean 规范
+
+#### 1.4.3.5. webservice
+基于 WebService 的远程调用协议，基于 Apache CXF [1] 的 frontend-simple 和 transports-http 实现 [2]。
+
+可以和原生 WebService 服务互操作，即：
+* 提供者用 Dubbo 的 WebService 协议暴露服务，消费者直接用标准 WebService 接口调用，
+* 或者提供方用标准 WebService 暴露服务，消费方用 Dubbo 的 WebService 协议调用。
+**依赖**
+
+```xml
+<dependency>
+    <groupId>org.apache.cxf</groupId>
+    <artifactId>cxf-rt-frontend-simple</artifactId>
+    <version>2.6.1</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.cxf</groupId>
+    <artifactId>cxf-rt-transports-http</artifactId>
+    <version>2.6.1</version>
+</dependency>
+```
+
+**特性**
+* 连接个数：多连接
+* 连接方式：短连接
+* 传输协议：HTTP
+* 传输方式：同步传输
+* 序列化：SOAP 文本序列化
+* 适用场景：系统集成，跨语言调用
+
+**约束**
+* 参数及返回值需实现 Serializable 接口
+* 参数尽量使用基本类型和 POJO
+
+#### 1.4.3.6. thrift
+基于 WebService 的远程调用协议，基于 Apache CXF [1] 的 frontend-simple 和 transports-http 实现 [2]。
+
+可以和原生 WebService 服务互操作，即：
+
+提供者用 Dubbo 的 WebService 协议暴露服务，消费者直接用标准 WebService 接口调用，
+或者提供方用标准 WebService 暴露服务，消费方用 Dubbo 的 WebService 协议调用。
+**依赖**
+```xml
+<dependency>
+    <groupId>org.apache.cxf</groupId>
+    <artifactId>cxf-rt-frontend-simple</artifactId>
+    <version>2.6.1</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.cxf</groupId>
+    <artifactId>cxf-rt-transports-http</artifactId>
+    <version>2.6.1</version>
+</dependency>
+```
+
+**特性**
+* 连接个数：多连接
+* 连接方式：短连接
+* 传输协议：HTTP
+* 传输方式：同步传输
+* 序列化：SOAP 文本序列化
+* 适用场景：系统集成，跨语言调用
+
+**约束**
+* 参数及返回值需实现 Serializable 接口
+* 参数尽量使用基本类型和 POJO
+
+#### 1.4.3.7. memcached
+#### 1.4.3.8. redis
+#### 1.4.3.9. rest
+基于标准的Java REST API——JAX-RS 2.0（Java API for RESTful Web Services的简写）实现的REST调用支持
+
+**快速入门**
+在dubbo中开发一个REST风格的服务会比较简单，下面以一个注册用户的简单服务为例说明。
+
+这个服务要实现的功能是提供如下URL（注：这个URL不是完全符合REST的风格，但是更简单实用）：
+
+http://localhost:8080/users/register
+而任何客户端都可以将包含用户信息的JSON字符串POST到以上URL来完成用户注册。
+
+首先，开发服务的接口：
+```java
+public interface UserService {    
+   void registerUser(User user);
+}
+```
+然后，开发服务的实现：
+```java
+@Path("/users")
+public class UserServiceImpl implements UserService {
+       
+    @POST
+    @Path("/register")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public void registerUser(User user) {
+        // save the user...
+    }
+}
+```
+上面的实现非常简单，但是由于该 REST 服务是要发布到指定 URL 上，供任意语言的客户端甚至浏览器来访问，所以这里额外添加了几个 JAX-RS 的标准 annotation 来做相关的配置。
+```java
+@Path("/users")：指定访问UserService的URL相对路径是/users，即http://localhost:8080/users
+
+@Path("/register")：指定访问registerUser()方法的URL相对路径是/register，再结合上一个@Path为UserService指定的路径，则调用UserService.register()的完整路径为http://localhost:8080/users/register
+
+@POST：指定访问registerUser()用HTTP POST方法
+
+@Consumes({MediaType.APPLICATION_JSON})：指定registerUser()接收JSON格式
+的数据。REST框架会自动将JSON数据反序列化为User对象
+```
+最后，在spring配置文件中添加此服务，即完成所有服务开发工作：
+```xml
+<!-- 用rest协议在8080端口暴露服务 -->
+<dubbo:protocol name="rest" port="8080"/>
+
+<!-- 声明需要暴露的服务接口 -->
+<dubbo:service interface="xxx.UserService" ref="userService"/>
+
+<!-- 和本地bean一样实现服务 -->
+<bean id="userService" class="xxx.UserServiceImpl" />
+```
+
+**REST服务提供端详解**
+下面我们扩充“快速入门”中的UserService，进一步展示在dubbo中REST服务提供端的开发要点。
+
+HTTP POST/GET的实现
+REST服务中虽然建议使用HTTP协议中四种标准方法POST、DELETE、PUT、GET来分别实现常见的“增删改查”，但实际中，我们一般情况直接用POST来实现“增改”，GET来实现“删查”即可（DELETE和PUT甚至会被一些防火墙阻挡）。
+
+前面已经简单演示了POST的实现，在此，我们为UserService添加一个获取注册用户资料的功能，来演示GET的实现。
+
+这个功能就是要实现客户端通过访问如下不同URL来获取不同ID的用户资料：
+
+http://localhost:8080/users/1001
+http://localhost:8080/users/1002
+http://localhost:8080/users/1003
+当然，也可以通过其他形式的URL来访问不同ID的用户资料，例如：
+
+http://localhost:8080/users/load?id=1001
+JAX-RS本身可以支持所有这些形式。但是上面那种在URL路径中包含查询参数的形式（http://localhost:8080/users/1001） 更符合REST的一般习惯，所以更推荐大家来使用。下面我们就为UserService添加一个getUser()方法来实现这种形式的URL访问：
+```java
+@GET
+@Path("/{id : \\d+}")
+@Produces({MediaType.APPLICATION_JSON})
+public User getUser(@PathParam("id") Long id) {
+    // ...
+}
+```
+@GET：指定用HTTP GET方法访问
+
+@Path("/{id : \d+}")：根据上面的功能需求，访问getUser()的URL应当是“http://localhost:8080/users/ + 任意数字"，并且这个数字要被做为参数传入getUser()方法。 这里的annotation配置中，@Path中间的{id: xxx}指定URL相对路径中包含了名为id参数，而它的值也将被自动传递给下面用@PathParam("id")修饰的方法参数id。{id:后面紧跟的\d+是一个正则表达式，指定了id参数必须是数字。
+
+@Produces({MediaType.APPLICATION_JSON})：指定getUser()输出JSON格式的数据。框架会自动将User对象序列化为JSON数据。
+
+Annotation放在接口类还是实现类
+在Dubbo中开发REST服务主要都是通过JAX-RS的annotation来完成配置的，在上面的示例中，我们都是将annotation放在服务的实现类中。但其实，我们完全也可以将annotation放到服务的接口上，这两种方式是完全等价的，例如：
+```java
+@Path("/users")
+public interface UserService {
+    
+    @GET
+    @Path("/{id : \\d+}")
+    @Produces({MediaType.APPLICATION_JSON})
+    User getUser(@PathParam("id") Long id);
+}
+```
+在一般应用中，我们建议将annotation放到服务实现类，这样annotation和java实现代码位置更接近，更便于开发和维护。另外更重要的是，我们一般倾向于避免对接口的污染，保持接口的纯净性和广泛适用性。
+
+但是，如后文所述，如果我们要用dubbo直接开发的消费端来访问此服务，则annotation必须放到接口上。
+
+如果接口和实现类都同时添加了annotation，则实现类的annotation配置会生效，接口上的annotation被直接忽略。
+
+JSON、XML等多数据格式的支持
+在dubbo中开发的REST服务可以同时支持传输多种格式的数据，以给客户端提供最大的灵活性。其中我们目前对最常用的JSON和XML格式特别添加了额外的功能。
+
+比如，我们要让上例中的getUser()方法支持分别返回JSON和XML格式的数据，只需要在annotation中同时包含两种格式即可：
+
+@Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_XML})
+User getUser(@PathParam("id") Long id);
+或者也可以直接用字符串（还支持通配符）表示MediaType：
+
+@Produces({"application/json", "text/xml"})
+User getUser(@PathParam("id") Long id);
+如果所有方法都支持同样类型的输入输出数据格式，则我们无需在每个方法上做配置，只需要在服务类上添加annotation即可：
+```java
+@Path("/users")
+@Consumes({MediaType.APPLICATION_JSON, MediaType.TEXT_XML})
+@Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_XML})
+public class UserServiceImpl implements UserService {
+    // ...
+}
+```
+在一个REST服务同时对多种数据格式支持的情况下，根据JAX-RS标准，一般是通过HTTP中的MIME header（content-type和accept）来指定当前想用的是哪种格式的数据。
+
+但是在dubbo中，我们还自动支持目前业界普遍使用的方式，即用一个URL后缀（.json和.xml）来指定想用的数据格式。例如，在添加上述annotation后，直接访问http://localhost:8888/users/1001.json则表示用json格式，直接访问http://localhost:8888/users/1002.xml则表示用xml格式，比用HTTP Header更简单直观。Twitter、微博等的REST API都是采用这种方式。
+
+如果你既不加HTTP header，也不加后缀，则dubbo的REST会优先启用在以上annotation定义中排位最靠前的那种数据格式。
+
+注意：这里要支持XML格式数据，在annotation中既可以用MediaType.TEXT_XML，也可以用MediaType.APPLICATION_XML，但是TEXT_XML是更常用的，并且如果要利用上述的URL后缀方式来指定数据格式，只能配置为TEXT_XML才能生效。
+
+中文字符支持
+为了在dubbo REST中正常输出中文字符，和通常的Java web应用一样，我们需要将HTTP响应的contentType设置为UTF-8编码。
+
+基于JAX-RS的标准用法，我们只需要做如下annotation配置即可：
+
+@Produces({"application/json; charset=UTF-8", "text/xml; charset=UTF-8"})
+User getUser(@PathParam("id") Long id);
+为了方便用户，我们在dubbo REST中直接添加了一个支持类，来定义以上的常量，可以直接使用，减少出错的可能性。
+
+@Produces({ContentType.APPLICATION_JSON_UTF_8, ContentType.TEXT_XML_UTF_8})
+User getUser(@PathParam("id") Long id);
+XML数据格式的额外要求
+由于JAX-RS的实现一般都用标准的JAXB（Java API for XML Binding）来序列化和反序列化XML格式数据，所以我们需要为每一个要用XML传输的对象添加一个类级别的JAXB annotation，否则序列化将报错。例如为getUser()中返回的User添加如下：
+
+@XmlRootElement
+public class User implements Serializable {
+    // ...
+}
+此外，如果service方法中的返回值是Java的 primitive类型（如int，long，float，double等），最好为它们添加一层wrapper对象，因为JAXB不能直接序列化primitive类型。
+
+例如，我们想让前述的registerUser()方法返回服务器端为用户生成的ID号：
+
+long registerUser(User user);
+由于primitive类型不被JAXB序列化支持，所以添加一个wrapper对象：
+```java
+@XmlRootElement
+public class RegistrationResult implements Serializable {
+    
+    private Long id;
+    
+    public RegistrationResult() {
+    }
+    
+    public RegistrationResult(Long id) {
+        this.id = id;
+    }
+    
+    public Long getId() {
+        return id;
+    }
+    
+    public void setId(Long id) {
+        this.id = id;
+    }
+}
+```
+并修改service方法：
+
+RegistrationResult registerUser(User user);
+这样不但能够解决XML序列化的问题，而且使得返回的数据都符合XML和JSON的规范。例如，在JSON中，返回的将是如下形式：
+
+{"id": 1001}
+如果不加wrapper，JSON返回值将直接是
+
+1001 	
+而在XML中，加wrapper后返回值将是：
+```xml
+<registrationResult>
+    <id>1002</id>
+</registrationResult>
+```
+这种wrapper对象其实利用所谓Data Transfer Object（DTO）模式，采用DTO还能对传输数据做更多有用的定制。
+
+定制序列化
+如上所述，REST的底层实现会在service的对象和JSON/XML数据格式之间自动做序列化/反序列化。但有些场景下，如果觉得这种自动转换不满足要求，可以对其做定制。
+
+Dubbo中的REST实现是用JAXB做XML序列化，用Jackson做JSON序列化，所以在对象上添加JAXB或Jackson的annotation即可以定制映射。
+
+例如，定制对象属性映射到XML元素的名字：
+```java
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public class User implements Serializable {
+    
+    @XmlElement(name="username") 
+    private String name;  
+}
+定制对象属性映射到JSON字段的名字：
+
+public class User implements Serializable {
+    
+    @JsonProperty("username")
+    private String name;
+}
+```
+更多资料请参考JAXB和Jackson的官方文档，或自行google。
+
+配置REST Server的实现
+目前在dubbo中，我们支持5种嵌入式rest server的实现，并同时支持采用外部应用服务器来做rest server的实现。rest server可以通过如下配置实现：
+```xml
+<dubbo:protocol name="rest" server="jetty"/>
+```
+以上配置选用了嵌入式的jetty来做rest server，同时，如果不配置server属性，rest协议默认也是选用jetty。jetty是非常成熟的java servlet容器，并和dubbo已经有较好的集成（目前5种嵌入式server中只有jetty和后面所述的tomcat、tjws，与dubbo监控系统等完成了无缝的集成），所以，如果你的dubbo系统是单独启动的进程，你可以直接默认采用jetty即可。
+```xml
+<dubbo:protocol name="rest" server="tomcat"/>
+```
+以上配置选用了嵌入式的tomcat来做rest server。在嵌入式tomcat上，REST的性能比jetty上要好得多（参见后面的基准测试），建议在需要高性能的场景下采用tomcat。
+```xml
+<dubbo:protocol name="rest" server="netty"/>
+```
+以上配置选用嵌入式的netty来做rest server。（TODO more contents to add）
+```xml
+<dubbo:protocol name="rest" server="tjws"/> (tjws is now deprecated)
+<dubbo:protocol name="rest" server="sunhttp"/>
+```
+以上配置选用嵌入式的tjws或Sun HTTP server来做rest server。这两个server实现非常轻量级，非常方便在集成测试中快速启动使用，当然也可以在负荷不高的生产环境中使用。	注：tjws目前已经被deprecated掉了，因为它不能很好的和servlet 3.1 API工作。
+
+如果你的dubbo系统不是单独启动的进程，而是部署到了Java应用服务器中，则建议你采用以下配置：
+```xml
+<dubbo:protocol name="rest" server="servlet"/>
+```
+通过将server设置为servlet，dubbo将采用外部应用服务器的servlet容器来做rest server。同时，还要在dubbo系统的web.xml中添加如下配置：
+```xml
+<web-app>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/classes/META-INF/spring/dubbo-demo-provider.xml</param-value>
+    </context-param>
+    
+    <listener>
+        <listener-class>org.apache.dubbo.remoting.http.servlet.BootstrapListener</listener-class>
+    </listener>
+    
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>org.apache.dubbo.remoting.http.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+</web-app>
+```
+即必须将dubbo的BootstrapListener和DispatherServlet添加到web.xml，以完成dubbo的REST功能与外部servlet容器的集成。
+
+注意：如果你是用spring的ContextLoaderListener来加载spring，则必须保证BootstrapListener配置在ContextLoaderListener之前，否则dubbo初始化会出错。
+
+其实，这种场景下你依然可以坚持用嵌入式server，但外部应用服务器的servlet容器往往比嵌入式server更加强大（特别是如果你是部署到更健壮更可伸缩的WebLogic，WebSphere等），另外有时也便于在应用服务器做统一管理、监控等等。
+
+获取上下文（Context）信息
+在远程调用中，值得获取的上下文信息可能有很多种，这里特别以获取客户端IP为例。
+
+在dubbo的REST中，我们有两种方式获取客户端IP。
+
+第一种方式，用JAX-RS标准的@Context annotation：
+```java
+public User getUser(@PathParam("id") Long id, @Context HttpServletRequest request) {
+    System.out.println("Client address is " + request.getRemoteAddr());
+} 
+用Context修饰getUser()的一个方法参数后，就可以将当前的HttpServletRequest注入进来，然后直接调用servlet api获取IP。
+
+注意：这种方式只能在将server设置为 tjws、tomcat、jetty 或者 servlet 的时候才能工作，因为只有这几种 server 的实现才提供了 servlet 容器。另外，标准的JAX-RS还支持用@Context修饰service类的一个实例字段来获取HttpServletRequest，但在dubbo中我们没有对此作出支持。
+
+第二种方式，用dubbo中常用的RpcContext：
+
+public User getUser(@PathParam("id") Long id) {
+    System.out.println("Client address is " + RpcContext.getContext().getRemoteAddressString());
+} 
+注意：这种方式只能在设置server="jetty"或者server="tomcat"或者server="servlet"或者server="tjws"的时候才能工作。另外，目前dubbo的RpcContext是一种比较有侵入性的用法，未来我们很可能会做出重构。
+
+如果你想保持你的项目对JAX-RS的兼容性，未来脱离dubbo也可以运行，请选择第一种方式。如果你想要更优雅的服务接口定义，请选用第二种方式。
+
+此外，在最新的dubbo rest中，还支持通过RpcContext来获取HttpServletRequest和HttpServletResponse，以提供更大的灵活性来方便用户实现某些复杂功能，比如在dubbo标准的filter中访问HTTP Header。用法示例如下：
+
+if (RpcContext.getContext().getRequest() != null && RpcContext.getContext().getRequest() instanceof HttpServletRequest) {
+    System.out.println("Client address is " + ((HttpServletRequest) RpcContext.getContext().getRequest()).getRemoteAddr());
+}
+
+if (RpcContext.getContext().getResponse() != null && RpcContext.getContext().getResponse() instanceof HttpServletResponse) {
+    System.out.println("Response object from RpcContext: " + RpcContext.getContext().getResponse());
+}
+```
+注意：为了保持协议的中立性，RpcContext.getRequest()和RpcContext.getResponse()返回的仅仅是一个Object类，而且可能为null。所以，你必须自己做null和类型的检查。
+
+注意：只有在设置server="jetty"或者server="tomcat"或者server="servlet"的时候，你才能通过以上方法正确的得到HttpServletRequest和HttpServletResponse，因为只有这几种server实现了servlet容器。
+
+为了简化编程，在此你也可以用泛型的方式来直接获取特定类型的request/response：
+```java
+if (RpcContext.getContext().getRequest(HttpServletRequest.class) != null) {
+    System.out.println("Client address is " + RpcContext.getContext().getRequest(HttpServletRequest.class).getRemoteAddr());
+}
+
+if (RpcContext.getContext().getResponse(HttpServletResponse.class) != null) {
+    System.out.println("Response object from RpcContext: " + RpcContext.getContext().getResponse(HttpServletResponse.class));
+}
+```
+如果request/response不符合指定的类型，这里也会返回null。
+
+配置端口号和Context Path
+dubbo中的rest协议默认将采用80端口，如果想修改端口，直接配置：
+```xml
+<dubbo:protocol name="rest" port="8888"/>
+```
+另外，如前所述，我们可以用@Path来配置单个rest服务的URL相对路径。但其实，我们还可以设置一个所有rest服务都适用的基础相对路径，即java web应用中常说的context path。
+
+只需要添加如下contextpath属性即可：
+
+<dubbo:protocol name="rest" port="8888" contextpath="services"/>
+以前面代码为例：
+```xml
+@Path("/users")
+public class UserServiceImpl implements UserService {
+       
+    @POST
+    @Path("/register")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public void registerUser(User user) {
+        // save the user...
+    }	
+}
+```
+现在registerUser()的完整访问路径为：
+
+http://localhost:8888/services/users/register
+注意：如果你是选用外部应用服务器做rest server，即配置:
+```xml
+<dubbo:protocol name="rest" port="8888" contextpath="services" server="servlet"/>
+```
+则必须保证这里设置的port、contextpath，与外部应用服务器的端口、DispatcherServlet的上下文路径（即webapp path加上servlet url pattern）保持一致。例如，对于部署为tomcat ROOT路径的应用，这里的contextpath必须与web.xml中DispacherServlet的<url-pattern/>完全一致：
+```xml
+<servlet-mapping>
+     <servlet-name>dispatcher</servlet-name>
+     <url-pattern>/services/*</url-pattern>
+</servlet-mapping>
+```
+配置线程数和IO线程数
+可以为rest服务配置线程池大小：
+```
+<dubbo:protocol name="rest" threads="500"/>
+```
+注意：目前线程池的设置只有当server="netty"或者server="jetty"或者server="tomcat"的时候才能生效。另外，如果server="servlet"，由于这时候启用的是外部应用服务器做rest server，不受dubbo控制，所以这里的线程池设置也无效。
+
+如果是选用netty server，还可以配置Netty的IO worker线程数：
+```xml
+<dubbo:protocol name="rest" iothreads="5" threads="100"/>
+```
+配置长连接
+Dubbo中的rest服务默认都是采用http长连接来访问，如果想切换为短连接，直接配置：
+```xml
+<dubbo:protocol name="rest" keepalive="false"/>
+```
+注意：这个配置目前只对server="netty"和server="tomcat"才能生效。
+
+配置最大的HTTP连接数
+可以配置服务器提供端所能同时接收的最大HTTP连接数，防止REST server被过多连接撑爆，以作为一种最基本的自我保护机制：
+```xml
+<dubbo:protocol name="rest" accepts="500" server="tomcat/>
+```
+注意：这个配置目前只对server="tomcat"才能生效。
+
+配置每个消费端的超时时间和HTTP连接数
+如果rest服务的消费端也是dubbo系统，可以像其他dubbo RPC机制一样，配置消费端调用此rest服务的最大超时时间以及每个消费端所能启动的最大HTTP连接数。
+```xml
+<dubbo:service interface="xxx" ref="xxx" protocol="rest" timeout="2000" connections="10"/>
+```
+当然，由于这个配置针对消费端生效的，所以也可以在消费端配置：
+```xml
+<dubbo:reference id="xxx" interface="xxx" timeout="2000" 
+```connections="10"/>
+但是，通常我们建议配置在服务提供端提供此类配置。按照dubbo官方文档的说法：“Provider上尽量多配置Consumer端的属性，让Provider实现者一开始就思考Provider服务特点、服务质量的问题。”
+
+注意：如果dubbo的REST服务是发布给非dubbo的客户端使用，则这里<dubbo:service/>上的配置完全无效，因为这种客户端不受dubbo控制。
+
+用Annotation取代部分Spring XML配置
+以上所有的讨论都是基于dubbo在spring中的xml配置。但是，dubbo/spring本身也支持用annotation来作配置，所以我们也可以按dubbo官方文档中的步骤，把相关annotation加到REST服务的实现中，取代一些xml配置，例如：
+```java
+@Service(protocol = "rest")
+@Path("/users")
+public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+       
+    @POST
+    @Path("/register")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public void registerUser(User user) {
+        // save the user
+        userRepository.save(user);
+    }	
+}
+```
+annotation的配置更简单更精确，通常也更便于维护（当然现代IDE都可以在xml中支持比如类名重构，所以就这里的特定用例而言，xml的维护性也很好）。而xml对代码的侵入性更小一些，尤其有利于动态修改配置，特别是比如你要针对单个服务配置连接超时时间、每客户端最大连接数、集群策略、权重等等。另外，特别对复杂应用或者模块来说，xml提供了一个中心点来涵盖的所有组件和配置，更一目了然，一般更便于项目长时期的维护。
+
+当然，选择哪种配置方式没有绝对的优劣，和个人的偏好也不无关系。
+
+添加自定义的Filter、Interceptor等
+Dubbo的REST也支持JAX-RS标准的Filter和Interceptor，以方便对REST的请求与响应过程做定制化的拦截处理。
+
+其中，Filter主要用于访问和设置HTTP请求和响应的参数、URI等等。例如，设置HTTP响应的cache header：
+```java
+public class CacheControlFilter implements ContainerResponseFilter {
+
+    public void filter(ContainerRequestContext req, ContainerResponseContext res) {
+        if (req.getMethod().equals("GET")) {
+            res.getHeaders().add("Cache-Control", "someValue");
+        }
+    }
+}
+```
+Interceptor主要用于访问和修改输入与输出字节流，例如，手动添加GZIP压缩：
+```java
+public class GZIPWriterInterceptor implements WriterInterceptor {
+ 
+    @Override
+    public void aroundWriteTo(WriterInterceptorContext context)
+                    throws IOException, WebApplicationException {
+        OutputStream outputStream = context.getOutputStream();
+        context.setOutputStream(new GZIPOutputStream(outputStream));
+        context.proceed();
+    }
+}
+```
+在标准JAX-RS应用中，我们一般是为Filter和Interceptor添加@Provider annotation，然后JAX-RS runtime会自动发现并启用它们。而在dubbo中，我们是通过添加XML配置的方式来注册Filter和Interceptor：
+```xml
+<dubbo:protocol name="rest" port="8888" extension="xxx.TraceInterceptor, xxx.TraceFilter"/>
+```
+在此，我们可以将Filter、Interceptor和DynamicFeature这三种类型的对象都添加到extension属性上，多个之间用逗号分隔。（DynamicFeature是另一个接口，可以方便我们更动态的启用Filter和Interceptor，感兴趣请自行google。）
+
+当然，dubbo自身也支持Filter的概念，但我们这里讨论的Filter和Interceptor更加接近协议实现的底层，相比dubbo的filter，可以做更底层的定制化。
+
+注：这里的XML属性叫extension，而不是叫interceptor或者filter，是因为除了Interceptor和Filter，未来我们还会添加更多的扩展类型。
+
+如果REST的消费端也是dubbo系统（参见下文的讨论），则也可以用类似方式为消费端配置Interceptor和Filter。但注意，JAX-RS中消费端的Filter和提供端的Filter是两种不同的接口。例如前面例子中服务端是ContainerResponseFilter接口，而消费端对应的是ClientResponseFilter:
+```java
+public class LoggingFilter implements ClientResponseFilter {
+ 
+    public void filter(ClientRequestContext reqCtx, ClientResponseContext resCtx) throws IOException {
+        System.out.println("status: " + resCtx.getStatus());
+	    System.out.println("date: " + resCtx.getDate());
+	    System.out.println("last-modified: " + resCtx.getLastModified());
+	    System.out.println("location: " + resCtx.getLocation());
+	    System.out.println("headers:");
+	    for (Entry<String, List<String>> header : resCtx.getHeaders().entrySet()) {
+     	    System.out.print("\t" + header.getKey() + " :");
+	        for (String value : header.getValue()) {
+	            System.out.print(value + ", ");
+	        }
+	        System.out.print("\n");
+	    }
+	    System.out.println("media-type: " + resCtx.getMediaType().getType());
+    } 
+}
+```
+添加自定义的Exception处理
+Dubbo的REST也支持JAX-RS标准的ExceptionMapper，可以用来定制特定exception发生后应该返回的HTTP响应。
+```java
+public class CustomExceptionMapper implements ExceptionMapper<NotFoundException> {
+
+    public Response toResponse(NotFoundException e) {     
+        return Response.status(Response.Status.NOT_FOUND).entity("Oops! the requested resource is not found!").type("text/plain").build();
+    }
+}
+```
+和Interceptor、Filter类似，将其添加到XML配置文件中即可启用：
+```xml
+<dubbo:protocol name="rest" port="8888" extension="xxx.CustomExceptionMapper"/>
+```
+配置HTTP日志输出
+Dubbo rest支持输出所有HTTP请求/响应中的header字段和body消息体。
+
+在XML配置中添加如下自带的REST filter：
+```xml
+<dubbo:protocol name="rest" port="8888" extension="org.apache.dubbo.rpc.protocol.rest.support.LoggingFilter"/>
+```
+然后配置在logging配置中至少为org.apache.dubbo.rpc.protocol.rest.support打开INFO级别日志输出，例如，在log4j.xml中配置：
+```xml
+<logger name="org.apache.dubbo.rpc.protocol.rest.support">
+    <level value="INFO"/>
+    <appender-ref ref="CONSOLE"/>
+</logger>
+```
+当然，你也可以直接在ROOT logger打开INFO级别日志输出：
+```xml
+<root>
+	<level value="INFO" />
+	<appender-ref ref="CONSOLE"/>
+</root>
+```
+然后在日志中会有类似如下的内容输出：
+```
+The HTTP headers are: 
+accept: application/json;charset=UTF-8
+accept-encoding: gzip, deflate
+connection: Keep-Alive
+content-length: 22
+content-type: application/json
+host: 192.168.1.100:8888
+user-agent: Apache-HttpClient/4.2.1 (java 1.5)
+The contents of request body is: 
+{"id":1,"name":"dang"}
+```
+打开HTTP日志输出后，除了正常日志输出的性能开销外，也会在比如HTTP请求解析时产生额外的开销，因为需要建立额外的内存缓冲区来为日志的输出做数据准备。
+
+输入参数的校验
+dubbo的rest支持采用Java标准的bean validation annotation（JSR 303)来做输入校验http://beanvalidation.org/
+
+为了和其他dubbo远程调用协议保持一致，在rest中作校验的annotation必须放在服务的接口上，例如：
+```java
+public interface UserService {
+   
+    User getUser(@Min(value=1L, message="User ID must be greater than 1") Long id);
+}
+```
+当然，在很多其他的bean validation的应用场景都是将annotation放到实现类而不是接口上。把annotation放在接口上至少有一个好处是，dubbo的客户端可以共享这个接口的信息，dubbo甚至不需要做远程调用，在本地就可以完成输入校验。
+
+然后按照dubbo的标准方式在XML配置中打开验证：
+```xml
+<dubbo:service interface=xxx.UserService" ref="userService" protocol="rest" validation="true"/>
+```
+在dubbo的其他很多远程调用协议中，如果输入验证出错，是直接将RpcException抛向客户端，而在rest中由于客户端经常是非dubbo，甚至非java的系统，所以不便直接抛出Java异常。因此，目前我们将校验错误以XML的格式返回：
+```xml
+<violationReport>
+    <constraintViolations>
+        <path>getUserArgument0</path>
+        <message>User ID must be greater than 1</message>
+        <value>0</value>
+    </constraintViolations>
+</violationReport>
+```
+稍后也会支持其他数据格式的返回值。至于如何对验证错误消息作国际化处理，直接参考bean validation的相关文档即可。
+
+如果你认为默认的校验错误返回格式不符合你的要求，可以如上面章节所述，添加自定义的ExceptionMapper来自由的定制错误返回格式。需要注意的是，这个ExceptionMapper必须用泛型声明来捕获dubbo的RpcException，才能成功覆盖dubbo rest默认的异常处理策略。为了简化操作，其实这里最简单的方式是直接继承dubbo rest的RpcExceptionMapper，并覆盖其中处理校验异常的方法即可：
+```java
+public class MyValidationExceptionMapper extends RpcExceptionMapper {
+
+    protected Response handleConstraintViolationException(ConstraintViolationException cve) {
+        ViolationReport report = new ViolationReport();
+        for (ConstraintViolation cv : cve.getConstraintViolations()) {
+            report.addConstraintViolation(new RestConstraintViolation(
+                    cv.getPropertyPath().toString(),
+                    cv.getMessage(),
+                    cv.getInvalidValue() == null ? "null" : cv.getInvalidValue().toString()));
+        }
+        // 采用json输出代替xml输出
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(report).type(ContentType.APPLICATION_JSON_UTF_8).build();
+    }
+}
+```
+然后将这个ExceptionMapper添加到XML配置中即可：
+```xml
+<dubbo:protocol name="rest" port="8888" extension="xxx.MyValidationExceptionMapper"/>
+```
+
+## 1.5. 架构演进
+<a href="#menu" style="float:right">目录</a>
+
+
 [来源](https://segmentfault.com/a/1190000018626163)
 * **单机架构**
 ![](https://segmentfault.com/img/bVbqHnQ?w=579&h=210)
@@ -260,16 +1320,16 @@ SaaS：软件即服务。对应于上面所说的提供开发好的应用或服�
     * 使用商用硬件。商用硬件能有效降低硬件故障的机率；
     * 快速迭代。系统应该快速开发小功能模块，尽快上线进行验证，早日发现问题大大降低系统交付的风险；
     * 无状态设计。服务接口应该做成无状态的，当前接口的访问不依赖于接口上次访问的状态。
-## 1.4. Java 中间件
+## 1.6. Java 中间件
 * **定义**
     * 中间件不是上层的业务，也不是底层的支撑系统，而是处于中间位置的作用，是应用和应用之间的桥梁。
     * 常见的中间件:
         * 数据库中间件,解决应用访问数据库的共性问题，比如分库分表下的数据访问。
         * 消息中间件，解决应用之间消息传递，解耦和异步的问题。
 
-## 1.5. 序列化机制
+## 1.7. 序列化机制
 <a href="#menu" style="float:right">目录</a>
-### 1.5.1. 基本概念
+### 1.7.1. 基本概念
 **序列化**:将对象序列化为字节数组，用于网络传输或者磁盘存储。
 **反序列化**:将从网络或者磁盘获取的字节数组转化为对象。
 
@@ -278,13 +1338,13 @@ SaaS：软件即服务。对应于上面所说的提供开发好的应用或服�
     * 序列化之后的字节长度，这将会影响网络传输。
     * 功能丰富度，比如支持List,Map，复杂对象等
     * 跨语言需求，有的系统由几个不同的应用组成，每个应用可能使用不同的语言开发，因此可能存在跨语言需求。
-### 1.5.2. 常用序列化方式性能比较
+### 1.7.2. 常用序列化方式性能比较
 
 ![](https://img2018.cnblogs.com/blog/1404294/201904/1404294-20190418171605508-1194073956.jpg)
 从图上可以看出，protostuff的性能最好，而JDK序列化方式相对来说性能是比较差的。
 
-### 1.5.3. 常用序列化方式实现
-#### 1.5.3.1. JDK方式
+### 1.7.3. 常用序列化方式实现
+#### 1.7.3.1. JDK方式
 ```java
 public class JdkSerializeUtil extends AbstractSerialize {
 
@@ -321,7 +1381,7 @@ public class JdkSerializeUtil extends AbstractSerialize {
     }
 }
 ```
-#### 1.5.3.2. FastJSON
+#### 1.7.3.2. FastJSON
 ```xml
  <dependency>
      <groupId>com.alibaba</groupId>
@@ -350,7 +1410,7 @@ public class FastjsonSerializeUtil  extends AbstractSerialize {
     }
 }
 ```
-#### 1.5.3.3. Hessian
+#### 1.7.3.3. Hessian
 ```xml
 <dependency>
     <groupId>com.caucho</groupId>
@@ -401,7 +1461,7 @@ public class HessianSerializeUtil extends AbstractSerialize {
     }
 }
 ```
-#### 1.5.3.4. Protostuff
+#### 1.7.3.4. Protostuff
 ```xml
 <dependency>
     <groupId>io.protostuff</groupId>
@@ -481,14 +1541,14 @@ public class ProtostuffSerializeUtil  extends AbstractSerialize {
 |Hessian|	520|	959-3836	|376-567|	191-329|	99-161	|30-47|	 
 |Protostuff|	193|	103-145|	90-137	|75-135	|15-24|	5-8|
 
-## 1.6. 定时任务
+## 1.8. 定时任务
 <a href="#menu" style="float:right">目录</a>
 在项目开发过程中，我们经常需要执行具有周期性的任务。通过定时任务可以很好的帮助我们实现。
 当出现应用进行集群部署，此时单体的定时任务管理就会出问题：两个集群中的应用会执行相同的任务。又衍生出处理分布式定时任务，它利用数据库等方式共享定时任务的信息，当集群中有一个应用运行了定时任务。其他应用便不会再次重复执行任务。
 
 单体应用中常使用的定时任务方式是Spring Scheduler,分布式定时任务框架有Quartz.
 
-## 1.7. Cron表达式
+## 1.9. Cron表达式
 [在线Cron表达式生成:http://cron.qqe2.com/](http://cron.qqe2.com/)
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/distribution/cron.png?raw=true)
 Cron表达式是一个字符串，字符串以5或6个空格隔开，分为6或7个域，每一个域代表一个含义，Cron有如下两种语法格式：
@@ -541,7 +1601,7 @@ Cron表达式是一个字符串，字符串以5或6个空格隔开，分为6或7
 * 0 15 10 ? * 6L 2002-2005   2002年至2005年的每月的最后一个星期五上午10:15触发 
 * 0 15 10 ? * 6#3   每月的第三个星期五上午10:15触发
 
-### 1.7.1. Spring Scheduler
+### 1.9.1. Spring Scheduler
 <a href="#menu" style="float:right">目录</a>
 
 注解Scheduled
@@ -639,24 +1699,24 @@ public class ScheduleConfig implements SchedulingConfigurer {
     }
 }
 ```
-### 1.7.2. Quartz
+### 1.9.2. Quartz
 <a href="#menu" style="float:right">目录</a>
-#### 1.7.2.1. Quartz 核心概念
+#### 1.9.2.1. Quartz 核心概念
 * Job 表示一个工作，要执行的具体内容。此接口中只有一个方法，如下：
 * JobDetail 表示一个具体的可执行的调度程序，Job 是这个可执行程调度程序所要执行的内容，另外 JobDetail 还包含了这个任务调度的方案和策略。 
 * Trigger 代表一个调度参数的配置，什么时候去调。 
 * Scheduler 代表一个调度容器，一个调度容器中可以注册多个 JobDetail 和 Trigger。当 Trigger 与 JobDetail 组合，就可以被 Scheduler 容器调度了。 
 [更多使用方式参考](https://www.w3cschool.cn/quartz_doc/)
 
-## 1.8. 分布式ID
+## 1.10. 分布式ID
 <a href="#menu" style="float:right">目录</a>
 
-### 1.8.1. 应用场景
+### 1.10.1. 应用场景
 分布式ID的应用场景：
 * 数据库主键，在进行分库分表时，如果数据库仍然使用自增，可能会出现主键重复的问题，因此需要应用生成主键。
 * 在一些消息中间件的使用场景，在处理消息幂等性时，会为每个消息添加一个唯一ID，消费者通过该ID校验消息是否已经被消费。
 
-### 1.8.2. 分布式ID生成方案
+### 1.10.2. 分布式ID生成方案
 
 * 分布式ID一般的要求是：
     * 占用空间少，利于存储数字优先于字符串
@@ -786,7 +1846,7 @@ Snowflake模式：完全分布式，ID有语义。
 
 Leaf项目Github地址：https://github.com/Meituan-Dianping/Leaf 。
 
-## 1.9. 分布式锁
+## 1.11. 分布式锁
 [How to do distributed locking](https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html)
 <a href="#menu" style="float:right">目录</a>
 不管使用什么中间件，有几点是实现分布式锁必须要考虑到的。
@@ -795,9 +1855,9 @@ Leaf项目Github地址：https://github.com/Meituan-Dianping/Leaf 。
 * 性能: 高并发分布式系统中，线程互斥等待会成为性能瓶颈，需要好的中间件和实现来保证性能。
 * 锁特性：考虑到复杂的场景，分布式锁不能只是加锁，然后一直等待。最好实现如Java Lock的一些功能如：锁判断，超时设置，可重入性等。
 
-### 1.9.1. 使用数据库实现
+### 1.11.1. 使用数据库实现
 
-### 1.9.2. Redis实现分布式锁
+### 1.11.2. Redis实现分布式锁
 redis-2.9之后的set指令如下，提供了不存在则设置，设者超时时间的功能，这条语句具备原子性。
 ```
 set key value px milliseconds nx；
@@ -814,12 +1874,12 @@ set key value px milliseconds nx；
 
 
 
-### 1.9.3. Zookeeper实现分布式锁
+### 1.11.3. Zookeeper实现分布式锁
 
-## 1.10. 微服务化
+## 1.12. 微服务化
 <a href="#menu" style="float:right">目录</a>
 
-### 1.10.1. 微服务和SOA
+### 1.12.1. 微服务和SOA
 
 |微服务|SOA|
 |---|---|
@@ -831,7 +1891,7 @@ set key value px milliseconds nx；
 |业务逻辑存在于每一个服务中|业务逻辑横跨多个业务领域|
 |使用轻量级的通信方式如HTTP|企业服务总线ESB充当了服务之间通信的角色|
 
-### 1.10.2. 拆分原则
+### 1.12.2. 拆分原则
 * 公共的业务功能
     * 基础服务
         * 用户服务
@@ -847,41 +1907,41 @@ set key value px milliseconds nx；
 
 
 
-## 1.11. 消息机制
+## 1.13. 消息机制
 <a href="#menu" style="float:right">目录</a>
 
-## 1.12. 服务降级
+## 1.14. 服务降级
 <a href="#menu" style="float:right">目录</a>
 
-## 1.13. 流量限流
+## 1.15. 流量限流
 <a href="#menu" style="float:right">目录</a>
 
-## 1.14. 幂等设计
+## 1.16. 幂等设计
 <a href="#menu" style="float:right">目录</a>
 
-## 1.15. 数据一致性
+## 1.17. 数据一致性
 <a href="#menu" style="float:right">目录</a>
 
-### 1.15.1. CAP理论
-### 1.15.2. Base理论
+### 1.17.1. CAP理论
+### 1.17.2. Base理论
 
-## 1.16. 分布式事务实现
+## 1.18. 分布式事务实现
 <a href="#menu" style="float:right">目录</a>
 
-## 1.17. 负载均衡算法
+## 1.19. 负载均衡算法
 <a href="#menu" style="float:right">目录</a>
 
-## 1.18. 服务容错设计
+## 1.20. 服务容错设计
 <a href="#menu" style="float:right">目录</a>
 
-## 1.19. 集群
+## 1.21. 集群
 <a href="#menu" style="float:right">目录</a>
 
-## 1.20. 分库分表
+## 1.22. 分库分表
 <a href="#menu" style="float:right">目录</a>
 
-## 1.21. 反向代理&正向代理
+## 1.23. 反向代理&正向代理
 <a href="#menu" style="float:right">目录</a>
 
-## 1.22. 客户端优化
+## 1.24. 客户端优化
 <a href="#menu" style="float:right">目录</a>

@@ -2,31 +2,6 @@
 
 <span id="menu"></span>
 
-<!-- TOC -->
-
-- [1. Spring](#1-spring)
-    - [1.1. IOC容器](#11-ioc容器)
-    - [1.2. AOP面向切面编程](#12-aop面向切面编程)
-    - [1.3. Spring 事务管理](#13-spring-事务管理)
-    - [常用注解](#常用注解)
-    - [常用工具类](#常用工具类)
-- [2. Sppring MVC](#2-sppring-mvc)
-    - [Servlet](#servlet)
-- [3. SpringBoot](#3-springboot)
-    - [3.1. 基本概念](#31-基本概念)
-    - [3.2. Spring Boot 环境下创建Bean](#32-spring-boot-环境下创建bean)
-- [4. SpringCloud](#4-springcloud)
-- [5. 测试](#5-测试)
-    - [5.1. 基本测试](#51-基本测试)
-    - [5.2. 控制层测试](#52-控制层测试)
-    - [5.3. 服务层测试](#53-服务层测试)
-    - [5.4. DAO层测试](#54-dao层测试)
-- [6. 登录认证](#6-登录认证)
-    - [6.1. Shiro](#61-shiro)
-    - [6.2. oauth2](#62-oauth2)
-    - [6.3. token](#63-token)
-
-<!-- /TOC -->
 # 1. Spring
 <a href="#menu" style="float:right">目录</a>
 

@@ -1,41 +1,29 @@
 
-<!-- TOC -->
-
-- [1. Du<!-- TOC -->](#1-du---toc---)
-- [2. RocketMQ](#2-rocketmq)
-- [3. RabbitMQ](#3-rabbitmq)
-- [4. Kafka](#4-kafka)
-- [5. Nginx](#5-nginx)
-- [6. Tomcat](#6-tomcat)
-- [7. elasticsearch](#7-elasticsearch)
-- [8. FastDfs](#8-fastdfs)
-- [9. Zookeeper](#9-zookeeper)
-    - [9.1. 基本概念](#91-基本概念)
-        - [9.1.1. zk架构](#911-zk架构)
-        - [9.1.2. 提供的功能](#912-提供的功能)
-        - [9.1.3. 节点类型](#913-节点类型)
-
-<!-- /TOC -->
 <a href="#menu" style="float:right">目录</a>
+
 # 2. RocketMQ
 <a href="#menu" style="float:right">目录</a>
+
 # 3. RabbitMQ
 <a href="#menu" style="float:right">目录</a>
+
 # 4. Kafka
 <a href="#menu" style="float:right">目录</a>
-# 5. Nginx
-<a href="#menu" style="float:right">目录</a>
-# 6. Tomcat
-<a href="#menu" style="float:right">目录</a>
+
+
 # 7. elasticsearch
 <a href="#menu" style="float:right">目录</a>
+
 # 8. FastDfs
 <a href="#menu" style="float:right">目录</a>
 
+
 # 9. Zookeeper
 <a href="#menu" style="float:right">目录</a>
+
 ## 9.1. 基本概念
 <a href="#menu" style="float:right">目录</a>
+
 ### 9.1.1. zk架构
 ![](https://zookeeper.apache.org/doc/r3.5.5/images/zkservice.jpg)
 zk的结构如下，类似于一个Linux文件系统，根节点是"/"。
