@@ -703,6 +703,10 @@ RUN ["/bin/bash", "-c", "echo hello"]
 注意：多行命令不要写多个RUN，原因是Dockerfile中每一个指令都会建立一层.
 多少个RUN就构建了多少层镜像，会造成镜像的臃肿、多层，不仅仅增加了构件部署的时间，还容易出错。
 RUN书写时的换行符是\
+多条命令:
+RUN apt-get update && \
+    apt install vim
+
 
 **CMD**
 * 功能为容器启动时要运行的命令
@@ -1061,14 +1065,15 @@ docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
         * --ip 172.18.0.5 指定ip
         * docker run --net mynetwork --ip 172.18.0.5 -p 7205:6379 --name redis7205 -d redis-cluster:5.0.3 redis-server /etc/redis/redis.conf
         * 查看 docker inspect redis7205 |grep IPAddress
+        * docker inspect --format '{{.NetworkSettings.IPAddress}}' mysqlslaver
 
 
 
 ### 6.6.2. 数据卷
 * 数据卷作用
     * 是一个目录或者文件，绑定到容器的目录或者文件，两处内容同步更新   
-    * 经过"拷贝写"系统，以达到本地磁盘IO性能
-    * 经过"拷贝写"系统，有些文件不需要在docker commit 的时候打包进镜像中
+    * 绕过"拷贝写"系统，以达到本地磁盘IO性能
+    * 绕过"拷贝写"系统，有些文件不需要在docker commit 的时候打包进镜像中
     * 在多个容器之间共享目录
     * 在宿主和容器之间共享目录
     * 在宿主和容器之间共享单个文件
@@ -1079,6 +1084,7 @@ docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
     * docker run -v 容器目录
     * docker inspect |grep volumns 查看
     * 挂载文件
+        * -v 本地目录:容器目录 ，本地目录为绝对目录，可以是文件 
         * docker run -v /xx/xx.text:/xx/xx.text
     * 主机上的数据卷位置为/var/lib/docker/volumes
     * 共享数据卷

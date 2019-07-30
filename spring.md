@@ -5,33 +5,52 @@
 <!-- TOC -->
 
 - [1. Spring](#1-spring)
-- [2. SpringBoot](#2-springboot)
-    - [2.1. 基本概念](#21-基本概念)
-    - [2.2. Spring Boot 环境下创建Bean](#22-spring-boot-环境下创建bean)
-- [3. SpringCloud](#3-springcloud)
-- [4. 测试](#4-测试)
-    - [4.1. 基本测试](#41-基本测试)
-    - [4.2. 控制层测试](#42-控制层测试)
-    - [4.3. 服务层测试](#43-服务层测试)
-    - [4.4. DAO层测试](#44-dao层测试)
-- [5. 登录认证](#5-登录认证)
-    - [5.1. Shiro](#51-shiro)
-    - [5.2. oauth2](#52-oauth2)
-    - [5.3. token](#53-token)
+    - [1.1. IOC容器](#11-ioc容器)
+    - [1.2. AOP面向切面编程](#12-aop面向切面编程)
+    - [1.3. Spring 事务管理](#13-spring-事务管理)
+    - [常用注解](#常用注解)
+    - [常用工具类](#常用工具类)
+- [2. Sppring MVC](#2-sppring-mvc)
+    - [Servlet](#servlet)
+- [3. SpringBoot](#3-springboot)
+    - [3.1. 基本概念](#31-基本概念)
+    - [3.2. Spring Boot 环境下创建Bean](#32-spring-boot-环境下创建bean)
+- [4. SpringCloud](#4-springcloud)
+- [5. 测试](#5-测试)
+    - [5.1. 基本测试](#51-基本测试)
+    - [5.2. 控制层测试](#52-控制层测试)
+    - [5.3. 服务层测试](#53-服务层测试)
+    - [5.4. DAO层测试](#54-dao层测试)
+- [6. 登录认证](#6-登录认证)
+    - [6.1. Shiro](#61-shiro)
+    - [6.2. oauth2](#62-oauth2)
+    - [6.3. token](#63-token)
 
 <!-- /TOC -->
 # 1. Spring
 <a href="#menu" style="float:right">目录</a>
-# 2. SpringBoot
+
+## 1.1. IOC容器
+## 1.2. AOP面向切面编程
+## 1.3. Spring 事务管理
+## 常用注解
+## 常用工具类
+
+# 2. Sppring MVC
+## Servlet
+
+
+
+# 3. SpringBoot
 <a href="#menu" style="float:right">目录</a>
 
-## 2.1. 基本概念
+## 3.1. 基本概念
 SpringBoot的核心
 * 自动配置，针对很多Spring应用常用框架进行自动默认配置，可以让你轻松启动项目。比如jedis。原先使用Jedis需要配置连接地址，配置连接池，使用SpringBoot之后，这些都会帮你配置好，只要引入相关依赖，调用其提供的接口，即可实现对Redis的访问。
 * 起步依赖:告诉Spring使用什么功能，他都能引入需要的库。
 * Actuator
 
-## 2.2. Spring Boot 环境下创建Bean
+## 3.2. Spring Boot 环境下创建Bean
 
 **方式1**：
 
@@ -345,24 +364,24 @@ Location location =  context.getBean(Location.class);
 location.run();
 ```
 
-# 3. SpringCloud
+# 4. SpringCloud
 <a href="#menu" style="float:right">目录</a>
 
 
 
-# 4. 测试
+# 5. 测试
 <a href="#menu" style="float:right">目录</a>
-## 4.1. 基本测试
+## 5.1. 基本测试
 <a href="#menu" style="float:right">目录</a>
-## 4.2. 控制层测试
+## 5.2. 控制层测试
 <a href="#menu" style="float:right">目录</a>
-## 4.3. 服务层测试
+## 5.3. 服务层测试
 <a href="#menu" style="float:right">目录</a>
-## 4.4. DAO层测试
+## 5.4. DAO层测试
 <a href="#menu" style="float:right">目录</a>
 
 
-# 5. 登录认证
-## 5.1. Shiro
-## 5.2. oauth2
-## 5.3. token
+# 6. 登录认证
+## 6.1. Shiro
+## 6.2. oauth2
+## 6.3. token
