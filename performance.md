@@ -1,5 +1,6 @@
 
-<a href="#menu" style="float:right">目录</a>
+<span id="menu"></span>
+
 <!-- TOC -->
 
 - [1. 性能调优](#1-性能调优)
@@ -25,12 +26,14 @@
             - [1.3.4.5. Parallel Old收集器](#1345-parallel-old收集器)
             - [1.3.4.6. CMS收集器](#1346-cms收集器)
             - [1.3.4.7. G1收集器](#1347-g1收集器)
-        - [1.3.5. 性能监控与故障处理工具](#135-性能监控与故障处理工具)
-            - [1.3.5.1. JDK命令行工具](#1351-jdk命令行工具)
-            - [1.3.5.2. Jdk可视化工具](#1352-jdk可视化工具)
-        - [1.3.6. JVM性能调优](#136-jvm性能调优)
-        - [1.3.7. 类文件结构](#137-类文件结构)
-        - [1.3.8. 类加载器](#138-类加载器)
+        - [1.3.5. 内存分配和回收策略](#135-内存分配和回收策略)
+        - [1.3.6. 垃圾收集器相关参数介绍](#136-垃圾收集器相关参数介绍)
+        - [1.3.7. 性能监控与故障处理工具](#137-性能监控与故障处理工具)
+            - [1.3.7.1. JDK命令行工具](#1371-jdk命令行工具)
+            - [1.3.7.2. Jdk可视化工具](#1372-jdk可视化工具)
+        - [1.3.8. JVM性能调优](#138-jvm性能调优)
+        - [1.3.9. 类文件结构](#139-类文件结构)
+        - [1.3.10. 类加载器](#1310-类加载器)
 
 <!-- /TOC -->
 # 1. 性能调优
@@ -233,31 +236,197 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
 ### 1.3.4. 垃圾收集器
 <a href="#menu" style="float:right">目录</a>
 
+* HotSpot虚拟机的垃圾收集器
+    * 年轻代
+        * Serial收集器
+        * ParNew收集器
+        * Parallel Scavenge收集器
+        * G1收集器
+    * 老年代
+        * CMS收集器
+        * Serial Old收集器
+        * Parallel Old收集器
+        * G1收集器
+
+* 并发和并行
+    * 并发:多条垃圾收集线程并行工作，此时用户线程处于等待状态
+    * 并发:用户线程和垃圾收集线程同时进行，此时用户线程也可以工作，垃圾收集线程在另一个CPU工作
+* stop the world
+    * 由于执行垃圾回收，用户线程无法执行，将会导致不可预知的错误，比如响应缓慢，任务超时等
+    * 垃圾收集器应当尽量避免发生这种情况
+    
 #### 1.3.4.1. Serial收集器
 <a href="#menu" style="float:right">目录</a>
+* 进行垃圾收集时，将会暂停其他工作线程，直到回收完成
+* 这将导致出现"stop the world"问题，应用代码会发生不可预知的问题
+* 桌面应用场景，分配内存不多，可以使用该垃圾收集器
+* client 模式中比较好的选择
 
 #### 1.3.4.2. ParNew收集器
 <a href="#menu" style="float:right">目录</a>
 
+* Serial收集器的多线程版本
+* Server环境下比较好的新生代收集器
+* 与CMS(老年代收集器)很好的配合
+* 单CPU环境下，由于存在线程切换，因此效率可能会比Serial收集器低
+* 参数配置
+    * 配置-XX:+UseConcMarkSweepGC将默认新生代使用ParNew收集器
+    * 也可以通过 -XX:+UseParNewGC进行配置
+    * 通过-XX：ParallelGCThreads限制线程数
+
+
 #### 1.3.4.3. Parallel Scavenge收集器
 <a href="#menu" style="float:right">目录</a>
+
+* 使用复制算法和多线程方式实现
+* 目标是达到一个可控制的吞吐量，吞吐量=用户运行代码时间/(用户运行代码时间+垃圾收集时间)
+* 参数配置
+    * 控制垃圾收集最大停顿时间，-XX:MaxGCPauseMillis
+        * 设置过小，将发生频繁的垃圾收集行为，因为每次只能收集很少的一部分，导致吞吐量降低
+    * 设置吞吐量大小:-XX:GCTimeRation (0-100)
+        
+
 
 #### 1.3.4.4. Serial Old收集器
 <a href="#menu" style="float:right">目录</a>
 
+* 老年代单线程收集算法，使用标记整理
+* 将会发生stop the world 问题
+
 #### 1.3.4.5. Parallel Old收集器
 <a href="#menu" style="float:right">目录</a>
+
+* Parallel Scavenge收集器的老年代版本
+* 使用标记整理算法
 
 #### 1.3.4.6. CMS收集器
 <a href="#menu" style="float:right">目录</a>
 
+* 以获取最短停顿时间为目标的收集器，能够给用户带来更好的响应速度
+* 标记清除算法
+* 垃圾收集过程
+    * 初始标记
+        * 需要 stop the world
+        * 标记GC Roots能之间关联到的对象 
+    * 并发标记
+        * 需要 stop the world
+        * 进行GC Roots Tracing 的过程
+    * 重新标记
+        * 修正并发标记期间由于用户线程工作而产生标记变动的那一部分对象的标记记录
+        * 停顿时间比初始标记时间长，比并发标记时间短很多
+    * 并发清除
+* 问题
+    * 对CPU资源敏感
+    * 无法处理浮动垃圾（Floating Garbage）,可能出现Concurrent Mode Failure失败而导致另一次Fullgc.
+    * 使用标记清除算法，会产生比较多的垃圾碎片
+        * 碎片过多，老年代没有空间分配，将会触发FULL GC。
+        * -XX:UseCMSCompactAtFullCollection（默认开启）
+            * FullGC时同时进行内存碎片整理，同时将导致停顿时间变长
+        * -XX:CMSFullGCsBeforeCompaction
+            * 执行多少次FullGC后才会进行内存碎片整理，默认为0  
+
+
 #### 1.3.4.7. G1收集器
 <a href="#menu" style="float:right">目录</a>
 
-### 1.3.5. 性能监控与故障处理工具
+* JDK7+ 默认的垃圾收集器
+* 场景
+    * 垃圾收集线程和应用线程并发执行，和CMS一样
+    * 空闲内存压缩时避免冗长的暂停时间
+    * 应用需要更多可预测的GC暂停时间
+    * 不希望牺牲太多的吞吐性能
+    * 不需要很大的Java堆
+* 特点
+    * 并行和并发
+        * 充分利用多核来缩短stop the world时间
+    * 分代收集
+    * 空间整合
+        * 从整体看是标记-整理算法，从局部看是基于复制算法
+        * 收集后不产生内存碎片
+    * 可预测的停顿
+        * 让使用者指定Mms的时间片段内，垃圾收集的时间不超过Mms.
+
+**内存结构**
+* 以往的垃圾回收算法，如CMS，使用的堆内存结构如下：
+![](https://upload-images.jianshu.io/upload_images/2184951-f6a73e5ef608cfa8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp)
+* 新生代：eden space + 2个survivor
+* 老年代：old space
+* 持久代：1.8之前的perm space
+* 元空间：1.8之后的metaspace
+这些space必须是地址连续的空间。
+
+* 在G1算法中，采用了另外一种完全不同的方式组织堆内存，堆内存被划分为多个大小相等的内存块（Region），每个Region是逻辑连续的一段内存，结构如下：
+![](https://upload-images.jianshu.io/upload_images/2184951-715388c6f6799bd9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp)
+* 每个Region被标记了E、S、O和H，说明每个Region在运行时都充当了一种角色，其中H是以往算法中没有的，它代表Humongous，这表示这些Region存储的是巨型对象（humongous object，H-obj），当新建对象大小超过Region大小一半时，直接在新的一个或多个连续Region中分配，并标记为H。
+
+**Region**
+堆内存中一个Region的大小可以通过-XX:G1HeapRegionSize参数指定，大小区间只能是1M、2M、4M、8M、16M和32M，总之是2的幂次方，如果G1HeapRegionSize为默认值，则在堆初始化时计算Region的实践大小，具体实现如下：
+![](https://upload-images.jianshu.io/upload_images/2184951-c6194652e3232be2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp)
+
+默认把堆内存按照2048份均分，最后得到一个合理的大小。
+
+**GC模式**
+
+G1中提供了三种模式垃圾回收模式，young gc、mixed gc 和 full gc，在不同的条件下被触发。
+
+**young gc**
+发生在年轻代的GC算法，一般对象（除了巨型对象）都是在eden region中分配内存，当所有eden region被耗尽无法申请内存时，就会触发一次young gc，这种触发机制和之前的young gc差不多，执行完一次young gc，活跃对象会被拷贝到survivor region或者晋升到old region中，空闲的region会被放入空闲列表中，等待下次被使用。
+
+
+
+|参数|含义
+|---|---|
+|-XX:MaxGCPauseMillis|设置G1收集过程目标时间，默认值200ms
+|-XX:G1NewSizePercent|新生代最小值，默认值5%
+|-XX:G1MaxNewSizePercent|新生代最大值，默认值60%
+
+**mixed gc**
+当越来越多的对象晋升到老年代old region时，为了避免堆内存被耗尽，虚拟机会触发一个混合的垃圾收集器，即mixed gc，该算法并不是一个old gc，除了回收整个young region，还会回收一部分的old region，这里需要注意：是一部分老年代，而不是全部老年代，可以选择哪些old region进行收集，从而可以对垃圾回收的耗时时间进行控制。
+那么mixed gc什么时候被触发？
+先回顾一下cms的触发机制，如果添加了以下参数：
+-XX:CMSInitiatingOccupancyFraction=80 
+-XX:+UseCMSInitiatingOccupancyOnly
+
+当老年代的使用率达到80%时，就会触发一次cms gc。相对的，mixed gc中也有一个阈值参数 -XX:InitiatingHeapOccupancyPercent，当老年代大小占整个堆大小百分比达到该阈值时，会触发一次mixed gc.
+mixed gc的执行过程有点类似cms，主要分为以下几个步骤：
+
+initial mark: 初始标记过程，整个过程STW，标记了从GC Root可达的对象
+concurrent marking: 并发标记过程，整个过程gc collector线程与应用线程可以并行执行，标记出GC Root可达对象衍生出去的存活对象，并收集各个Region的存活对象信息
+remark: 最终标记过程，整个过程STW，标记出那些在并发标记过程中遗漏的，或者内部引用发生变化的对象
+clean up: 垃圾清除过程，如果发现一个Region中没有存活对象，则把该Region加入到空闲列表中
+
+**full gc**
+如果对象内存分配速度过快，mixed gc来不及回收，导致老年代被填满，就会触发一次full gc，G1的full gc算法就是单线程执行的serial old gc，会导致异常长时间的暂停时间，需要进行不断的调优，尽可能的避免full gc.
+
+### 1.3.5. 内存分配和回收策略
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.3.5.1. JDK命令行工具
+* 大多数情况下，对象优先在Eden区中分配，当Eden中没有足够空间，虚拟机将发生一次minor GC.
+* 大对象（需要大量连续内存空间的Java对象，比如长字符串和数组）直接进入老年代
+* 长期存活的对象将进入老年代
+    * 虚拟机给每一个对象定义了一个Age年龄计数器，每经过一次Minor GC.年龄增加1,超过阈值将被移动到老年代，默认是15岁。
+* 动态对象年龄判定
+    * 如果Survivor空间中相同年龄的对象大小的总和大于Survivor空间中总和的一半，则年龄大于或者和等于该年龄的对象则直接进入老年代，不受上面年龄阈值的限制
+* 空间分配担保
+    * 为什么要进行老年代担保
+        * Minor GC最差的情况就是垃圾收集完所有的对象都存活，此时将超过 survivor空间，导致这些对象进入老年代，最终可能导致OOM
+    * 在Minor GC之前，虚拟机会先检查老年代最大可用的连续空间是否大于新生代所有对象的空间。
+        * 如果成立，那么Minor GC就确认是安全的
+        * 如果不成立，那么Minor GC就是不安全的
+            * 检查HandlerPromotionFailure是否允许担保失败
+                * 如果允许，继续检查老年代最大的连续空间是否大于历次晋升到老年代对象的平均大小，如果大于，则进行Monor GC,尽管存在风险。
+                * 如果不允许，那么则进行一次Full GC
+                
+
+
+
+### 1.3.6. 垃圾收集器相关参数介绍
+<a href="#menu" style="float:right">目录</a>
+
+### 1.3.7. 性能监控与故障处理工具
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.3.7.1. JDK命令行工具
 <a href="#menu" style="float:right">目录</a>
 
 **javap**
@@ -418,18 +587,19 @@ Options:
 ****
 
 
-#### 1.3.5.2. Jdk可视化工具
+#### 1.3.7.2. Jdk可视化工具
 <a href="#menu" style="float:right">目录</a>
 
 * JConsole
 * JVisualVM
+![](https://github.com/lgjlife/Java-Study/blob/master/pic/jvm/monitor.jpg?raw=true)
+![](https://github.com/lgjlife/Java-Study/blob/master/pic/jvm/thread.jpg?raw=true)
+![](https://github.com/lgjlife/Java-Study/blob/master/pic/jvm/gc.jpg?raw=true)
+### 1.3.8. JVM性能调优
 
+### 1.3.9. 类文件结构
 
-### 1.3.6. JVM性能调优
-
-### 1.3.7. 类文件结构
-
-### 1.3.8. 类加载器
+### 1.3.10. 类加载器
 
 
 
