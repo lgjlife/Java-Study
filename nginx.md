@@ -940,7 +940,7 @@ name2:password2
 ### 1.3.3. 设计架构概览
 <a href="#menu" style="float:right">目录</a>
 
-![]()
+![](https://github.com/lgjlife/Java-Study/blob/master/pic/nginx/nginx.png?raw=true)
 
 **主进程**
 * 读取配置文件，并验证正确性和有效性
