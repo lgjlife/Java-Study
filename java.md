@@ -21,7 +21,6 @@
         - [1.2.6. IO](#126-io)
         - [1.2.7. 反射](#127-反射)
         - [1.2.8. JDBC](#128-jdbc)
-    - [1.3. JAVA Socket编程](#13-java-socket编程)
     - [1.4. JDK版本变化](#14-jdk版本变化)
     - [1.5. 设计模式](#15-设计模式)
         - [1.5.1. 设计原则](#151-设计原则)
@@ -491,14 +490,558 @@ public enum BlogReturnCode implements  ReturnCode{
 ### 1.2.2. 范型
 <a href="#menu" style="float:right">目录</a>
 
+
+
 ### 1.2.3. 集合
 <a href="#menu" style="float:right">目录</a>
+
+![](http://images2015.cnblogs.com/blog/745114/201603/745114-20160314011243365-185967687.png)
+
+**Collections**
+
+Collections则是集合类的一个工具类/帮助类，其中提供了一系列静态方法，用于对集合中元素进行排序、搜索以及线程安全等各种操作。
+* 排序(Sort)
+    * 使用sort方法可以根据元素的自然顺序 对指定列表按升序进行排序。列表中的所有元素都必须实现 Comparable 接口。此列表内的所有元素都必须是使用指定比较器可相互比较的
+* 混排（Shuffling）
+    * 混排算法所做的正好与 sort 相反: 它打乱在一个 List 中可能有的任何排列的踪迹。也就是说，基于随机源的输入重排该 List, 这样的排列具有相同的可能性（假设随机源是公正的）。这个算法在实现一个碰运气的游戏中是非常有用的。例如，它可被用来混排代表一副牌的 Card 对象的一个 List 。另外，在生成测试案例时，它也是十分有用的。
+    * Collections.Shuffling(list)
+* 反转(Reverse)
+    * 使用Reverse方法可以根据元素的自然顺序 对指定列表按降序进行排序。
+    * Collections.reverse(list)
+* 替换所以的元素(Fill)
+    * 使用指定元素替换指定列表中的所有元素。
+    * Collections.fill(li,"aaa");
+* 拷贝(Copy)
+    * 用两个参数，一个目标 List 和一个源 List, 将源的元素拷贝到目标，并覆盖它的内容。目标 List 至少与源一样长。如果它更长，则在目标 List 中的剩余元素不受影响。
+    * Collections.copy(list,li): 前面一个参数是目标列表 ,后一个是源列表。
+
+* 返回Collections中最小元素(min)
+    * 根据指定比较器产生的顺序，返回给定 collection 的最小元素。collection 中的所有元素都必须是通过指定比较器可相互比较的。
+    * Collections.min(list)
+* 返回Collections中最小元素(max)
+    * 根据指定比较器产生的顺序，返回给定 collection 的最大元素。collection 中的所有元素都必须是通过指定比较器可相互比较的。
+    * Collections.max(list)
+* lastIndexOfSubList
+    * 返回指定源列表中最后一次出现指定目标列表的起始位置
+    * int count = Collections.lastIndexOfSubList(list,li);
+* IndexOfSubList
+    * 返回指定源列表中第一次出现指定目标列表的起始位置
+    * int count = Collections.indexOfSubList(list,li);
+* Rotate
+    * 根据指定的距离循环移动指定列表中的元素
+    * Collections.rotate(list,-1);
+    * 如果是负数，则正向移动，正数则方向移动
+
+**Arrays**
+java.util.Arrays 类是 JDK 提供的一个工具类，用来处理数组的各种方法，而且每个方法基本上都是静态方法，能直接通过类名Arrays调用。
+* 转化成List
+```java
+public static <T> List<T> asList(T... a) {
+    return new ArrayList<>(a);
+}
+```
+这个方法返回的 ArrayList 不是我们常用的集合类 java.util.ArrayList。这里的 ArrayList 是 Arrays 的一个内部类 java.util.Arrays.ArrayList
+返回的 ArrayList 数组是一个定长列表，我们只能对其进行查看或者修改，但是不能进行添加或者删除操作
+返回的列表ArrayList里面的元素都是引用，不是独立出来的对象
+```java
+private static class ArrayList<E> extends AbstractList<E>
+        implements RandomAccess, java.io.Serializable
+    {
+        private static final long serialVersionUID = -2764017481108945198L;
+        private final E[] a;
+
+        ArrayList(E[] array) {
+            a = Objects.requireNonNull(array);
+        }
+
+        @Override
+        public int size() {
+            return a.length;
+        }
+
+        @Override
+        public Object[] toArray() {
+            return a.clone();
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public <T> T[] toArray(T[] a) {
+            int size = size();
+            if (a.length < size)
+                return Arrays.copyOf(this.a, size,
+                                     (Class<? extends T[]>) a.getClass());
+            System.arraycopy(this.a, 0, a, 0, size);
+            if (a.length > size)
+                a[size] = null;
+            return a;
+        }
+
+        @Override
+        public E get(int index) {
+            return a[index];
+        }
+
+        @Override
+        public E set(int index, E element) {
+            E oldValue = a[index];
+            a[index] = element;
+            return oldValue;
+        }
+
+        @Override
+        public int indexOf(Object o) {
+            E[] a = this.a;
+            if (o == null) {
+                for (int i = 0; i < a.length; i++)
+                    if (a[i] == null)
+                        return i;
+            } else {
+                for (int i = 0; i < a.length; i++)
+                    if (o.equals(a[i]))
+                        return i;
+            }
+            return -1;
+        }
+
+        @Override
+        public boolean contains(Object o) {
+            return indexOf(o) != -1;
+        }
+
+        @Override
+        public Spliterator<E> spliterator() {
+            return Spliterators.spliterator(a, Spliterator.ORDERED);
+        }
+
+        @Override
+        public void forEach(Consumer<? super E> action) {
+            Objects.requireNonNull(action);
+            for (E e : a) {
+                action.accept(e);
+            }
+        }
+
+        @Override
+        public void replaceAll(UnaryOperator<E> operator) {
+            Objects.requireNonNull(operator);
+            E[] a = this.a;
+            for (int i = 0; i < a.length; i++) {
+                a[i] = operator.apply(a[i]);
+            }
+        }
+
+        @Override
+        public void sort(Comparator<? super E> c) {
+            Arrays.sort(a, c);
+        }
+    }
+```
+* Arrays.asList() 方法使用场景
+    * Arrays工具类提供了一个方法asList, 使用该方法可以将一个变长参数或者数组转换成List 。但是，生成的List的长度是固定的；能够进行修改操作（比如，修改某个位置的元素）；不能执行影响长度的操作（如add、remove等操作），否则会抛出UnsupportedOperationException异常。
+    * 所以 Arrays.asList 比较适合那些已经有数组数据或者一些元素，而需要快速构建一个List，只用于读取操作，而不进行添加或删除操作的场景。
+
+* 排序 sort 
+    * 七种基本类型和引用对象排序(自定义Comparator或者引用对象实现Comparable)
+* 查找元素 binarySearch
+* 拷贝数组元素 copyOf
+    * 底层采用 System.arraycopy() 实现，这是一个native方法。
+```java
+public static native void arraycopy(Object src,  int  srcPos,
+                                        Object dest, int destPos,
+                                        int length);
+```
+* equals
+    * equals 用来比较两个数组中对应位置的每个元素是否相等。
+* deepEquals
+    * 也是用来比较两个数组的元素是否相等，不过 deepEquals 能够进行比较多维数组，而且是任意层次的嵌套数组。
+
+* 给数组赋值fill 
+```java
+//给a数组所有元素赋值 val
+public static void fill(int[] a, int val) {
+    for (int i = 0, len = a.length; i < len; i++)
+        a[i] = val;
+}
+
+//给从 fromIndex 开始的下标，toIndex-1结尾的下标都赋值 val,左闭右开
+public static void fill(int[] a, int fromIndex, int toIndex, int val) {
+    rangeCheck(a.length, fromIndex, toIndex);//判断范围是否合理
+    for (int i = fromIndex; i < toIndex; i++)
+        a[i] = val;
+}
+```
+* toString 和 deepToString
+    * toString 用来打印一维数组的元素，而 deepToString 用来打印多层次嵌套的数组元素。
+
+**Comparator 和 Comparable 比较**
+
+**Comparable 简介**
+Comparable 是排序接口。
+若一个类实现了Comparable接口，就意味着“该类支持排序”。  即然实现Comparable接口的类支持排序，假设现在存在“实现Comparable接口的类的对象的List列表(或数组)”，则该List列表(或数组)可以通过 Collections.sort（或 Arrays.sort）进行排序。
+此外，“实现Comparable接口的类的对象”可以用作“有序映射(如TreeMap)”中的键或“有序集合(TreeSet)”中的元素，而不需要指定比较器。
+
+Comparable 定义
+
+Comparable 接口仅仅只包括一个函数，它的定义如下：
+```java
+package java.lang;
+import java.util.*;
+
+public interface Comparable<T> {
+    public int compareTo(T o);
+}
+```
+说明：
+假设我们通过 x.compareTo(y) 来“比较x和y的大小”。若返回“负数”，意味着“x比y小”；返回“零”，意味着“x等于y”；返回“正数”，意味着“x大于y”。
+
+**Comparator 简介**
+
+Comparator 是比较器接口。
+我们若需要控制某个类的次序，而该类本身不支持排序(即没有实现Comparable接口)；那么，我们可以建立一个“该类的比较器”来进行排序。这个“比较器”只需要实现Comparator接口即可。
+也就是说，我们可以通过“实现Comparator类来新建一个比较器”，然后通过该比较器对类进行排序。
+
+Comparator 定义
+Comparator 接口仅仅只包括两个个函数，它的定义如下：
+
+```java
+package java.util;
+
+public interface Comparator<T> {
+
+    int compare(T o1, T o2);
+
+    boolean equals(Object obj);
+}
+```
+说明：
+(01) 若一个类要实现Comparator接口：它一定要实现compareTo(T o1, T o2) 函数，但可以不实现 equals(Object obj) 函数。
+为什么可以不实现 equals(Object obj) 函数呢？ 因为任何类，默认都是已经实现了equals(Object obj)的。 Java中的一切类都是继承于java.lang.Object，在Object.java中实现了equals(Object obj)函数；所以，其它所有的类也相当于都实现了该函数。
+(02) int compare(T o1, T o2) 是“比较o1和o2的大小”。返回“负数”，意味着“o1比o2小”；返回“零”，意味着“o1等于o2”；返回“正数”，意味着“o1大于o2”。
+
+* Comparator 和 Comparable 比较
+    * Comparable是排序接口；若一个类实现了Comparable接口，就意味着“该类支持排序”。
+    * 而Comparator是比较器；我们若需要控制某个类的次序，可以建立一个“该类的比较器”来进行排序。
+    * 我们不难发现：Comparable相当于“内部比较器”，而Comparator相当于“外部比较器”。
+
 
 ### 1.2.4. 异常
 <a href="#menu" style="float:right">目录</a>
 
+![](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564945249663&di=9c6ee8dcda7a4b1e21c970cef177ec3f&imgtype=jpg&src=http%3A%2F%2Fimg4.imgtn.bdimg.com%2Fit%2Fu%3D1403341014%2C2801110274%26fm%3D214%26gp%3D0.jpg)
+
+* Error是无法处理的异常，比如OutOfMemoryError，一般发生这种异常，JVM会选择终止程序。因此我们编写程序时不需要关心这类异常。
+* Exception，也就是我们经常见到的一些异常情况，比如NullPointerException、IndexOutOfBoundsException，这些异常是我们可以处理的异常。
+* Exception类还包含运行异常类Runtime_Exception和非运行异常类Non_RuntimeException这两个直接的子类。
+
+运行异常类对应于编译错误，它是指Java程序在运行时产生的由解释器引发的各种异常。运行异常可能出现在任何地方，且出现频率很高，因此为了避免巨大的系统资源开销，编译器不对异常进行检查。所以Java语言中的运行异常不一定被捕获。出现运行错误往往表示代码有错误，如：算数异常（如被0除）、下标异常（如数组越界）等。
+
+非运行异常时Non_RuntimeException类及其子类的实例，又称为可检测异常。Java编译器利用分析方法或构造方法中可能产生的结果来检测Java程序中是否含有检测异常的处理程序，对于每个可能的可检测异常，方法或构造方法的throws子句必须列出该异常对应的类。在Java的标准包java.lang java.util 和 java.net 中定义的异常都是非运行异常。
+
+* try-catch-finally语句
+    * try块：负责捕获异常，一旦try中发现异常，程序的控制权将被移交给catch块中的异常处理程序。
+    * try语句块不可以独立存在，必须与 catch 或者 finally 块同存】
+    * catch块：如何处理？比如发出警告：提示、检查配置、网络连接，记录错误等。执行完catch块之后程序跳出catch块，继续执行后面的代码。
+    * 【编写catch块的注意事项：多个catch块处理的异常类，要按照先catch子类后catch父类的处理方式，因为会【就近处理】异常（由上自下）。】
+    * finally：最终执行的代码，用于关闭和释放资源。
+```java
+try{
+
+}
+catch(Exception ex1){
+
+}
+catch(Exception ex2){
+
+}
+finally{
+    
+}
+
+```
+* **总结：**
+    * 不管有木有出现异常或者try和catch中有返回值return，finally块中代码都会执行；
+    * finally中最好不要包含return，否则程序会提前退出，返回会覆盖try或catch中保存的返回值。
+    * e.printStackTrace()可以输出异常信息。
+    * return值为-1为抛出异常的习惯写法。
+    * 如果方法中try,catch,finally中没有返回语句，则会调用这三个语句块之外的return结果。
+    * finally 在try中的return之后,在返回主调函数之前执行。
+
+* **throw和throws关键字**
+throws: 方法声明抛出的异常 
+throw： 抛出异常
+```java
+public void func() throws IOException{
+   throw new IOException();
+}
+```
+
+```java
+public class TryCatch {
+    public static void main(String[] args) {
+        int num = 0;
+        try {
+             num = 11;
+             return;
+
+        } catch (Exception e) {
+             num = 22;
+             return;
+        }
+        finally {
+             num = 33;
+             return;
+        }
+    }
+}
+
+//使用该指令查看编译后的字节码
+javap -c TryCatch 
+
+//当finally块中有return时
+public class org.TryCatch.TryCatch {
+  public org.TryCatch.TryCatch();
+    Code:
+       0: aload_0
+       1: invokespecial #8                  // Method java/lang/Object."<init>":()V
+       4: return
+
+  public static void main(java.lang.String[]);
+    Code:
+      //try块
+       0: iconst_0
+       1: istore_1
+       2: bipush        11
+       4: istore_1
+       //如果finally块中有return，则使用goto跳转到finally块
+       5: goto          16
+       //catch块
+       8: astore_2
+       9: bipush        22
+      11: istore_1
+       //如果finally块中有return，则使用goto跳转到finally块
+      12: goto          16
+      15: pop
+      //finally块
+      16: bipush        33
+      18: istore_1
+      //最后在这里返回
+      19: return
+    Exception table:
+       from    to  target type
+           2     8     8   Class java/lang/Exception
+           2    15    15   any
+}
+当finally块中不存在return时
+public class org.TryCatch.TryCatch {
+  public org.TryCatch.TryCatch();
+    Code:
+       0: aload_0
+       1: invokespecial #8                  // Method java/lang/Object."<init>":()V
+       4: return
+
+  public static void main(java.lang.String[]);
+    Code:
+       //try块
+       0: iconst_0
+       1: istore_1
+       2: bipush        11
+       4: istore_1
+        //复制一份finally块中的代码
+       5: bipush        33
+       7: istore_1
+       //try最后返回
+       8: return
+       //catch块
+       9: astore_2
+      10: bipush        22
+      //复制一份finally块中的代码
+      12: istore_1
+      13: bipush        33
+      15: istore_1
+      //catch最后返回
+      16: return
+      //finally块
+      17: astore_3
+      18: bipush        33
+      20: istore_1
+      21: aload_3
+      22: athrow
+    Exception table:
+       from    to  target type
+           2     5     9   Class java/lang/Exception
+           2     5    17   any
+           9    13    17   any
+}
+
+```
+1 . 从以上两段字节码可以看出，当finally和try中都存在return语句时，try中指令执行完后会跳转到finally，执行finally块中的指令，最后执行finally块中的return指令，注意这里不会再跳转到try中执行try块中的return指令. 
+2 . 当只有try中存在return语句时，try会复制一份finally中的指令到try中执行。 
+3 . catch和try的处理相同。
+
+```java
+
+//三个语句块中都不存在return时
+public static void main(java.lang.String[]);
+    Code:
+    //try
+       0: iconst_0
+       1: istore_1
+       2: bipush        11
+       4: istore_1
+       5: goto          24
+       //catch
+       8: astore_2
+       9: bipush        22
+       //复制finally中的语句
+      11: istore_1
+      12: bipush        33
+      14: istore_1
+      15: goto          27
+      //finally
+      18: astore_3
+      19: bipush        33
+      21: istore_1
+      22: aload_3
+      23: athrow
+      //为什么多这个？？
+      24: bipush        33
+      26: istore_1
+      //自动添加return
+      27: return
+
+```
+三个语句块中都不存在return时 
+1. try中执行完会跳转去执行finally的指令 ，再执行try-catch-finally之后的指令，最后执行return指令结束方法。 
+2. 如果出现异常，catch中会复制一份finally的指令，执行完后跳转到27: return结束方法。
+
+
+
+
 ### 1.2.5. 注解
 <a href="#menu" style="float:right">目录</a>
+
+**概念定义**
+* 注解
+    * 提供一种为程序元素设置元数据的方法
+* 基本原则
+    * 注解不能够直接干扰程序代码的运行，无论增加或者删除注解。代码都能够正常运行
+* 注解分类
+    * 标注注解,没有元素的注解
+    * 单值注解
+    * 完整注解
+* 元数据
+    * 就是关于数据的数据
+    * 作用
+        * 编写文档：通过代码里标识的元数据生成文档
+        * 代码分析:通过代码里标识的元数据对代码进行分析
+        * 编译检查:通过代码里标识的元数据让编译器能实现基本的编译检查
+* 标准注解
+    * @Override
+        * 保证编译的时候Override函数的声明正确
+        * target：METHOD
+    * @Deprecated
+        * 标识该类或者方法，参数不再推荐使用，相当于过期，仍可以使用，但是不推荐使用
+        * target：CONSTRUCTOR, FIELD, LOCAL_VARIABLE, METHOD, PACKAGE, PARAMETER, TYPE
+    * @SuppressWarnings
+        * 关闭特定的警告信息
+        * target：TYPE, FIELD, METHOD, PARAMETER, CONSTRUCTOR, LOCAL_VARIABLE
+        * 参数
+            * deprecation : 使用了过时的类或者方法时的警告  
+            * unchecked :  执行了未检查时转换的警告
+            * fallthrough :  当Switch程序块直接通往下一种情况而没有Break时的警告
+            * path :  在类路径，源文件路径中有不存在的路径时的警告
+            * serial  :  当在可序列化的类上缺少serialVersionUID定义时的警告  
+            * finally : 任何finally子句不能正常完成时的警告 
+            * all :  关于以上所有情况的警告
+        * @SuppressWarnings(value={"deprecation"})
+
+* 元注解
+    * 负责注解其他注解
+    * @Retention
+        * 表示需要在什么级别保留该注解信息
+        * SOURCE：注解仅保留在源代码中，在编译时被去掉
+        * CLASS：保留在类级别，运行时不存在
+        * RUNTIME: 保留到运行时
+    * @Target
+        * CONSTRUCTOR(构造器的声明), FIELD, LOCAL_VARIABLE(局部变量), METHOD, PACKAGE, PARAMETER（参数声明）, TYPE(类，接口)
+    * @Documented
+        * JavaDOC提取文档时，如果注解上有@Documented，那么被注解的对象（类，方法等）将显示该注解
+    * @Inhertied
+        * 允许子类继承父类中的注释
+    * @Repeatable
+        * 支持注解在同一个地方添加多个
+        * 参数:Class<? extends Annotation> value();       
+```java
+
+//声明支持重复注解
+@Repeatable(Persons.class)
+public  @interface Person{
+	String role() default "";
+}
+//多次使用
+@Person(role="CEO")
+@Person(role="husband")
+@Person(role="father")
+@Person(role="son")
+public   class Man {
+	String name="";
+}
+
+```
+
+* 自定义注解
+```java
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target( { ElementType.METHOD, ElementType.TYPE })
+public @interface MyAnnotation {
+
+    Integer age();
+    //default设置默认值 xx 
+    String color() default "xx"; 
+
+    Class[] zlz;
+}
+//
+@MyAnnotation(age=13,color="red",zlz={xx.class,xxx.class})
+```
+
+**AnnotatedElement**
+* **简介**
+    * 这个接口（AnnotatedElement）的对象代表了在当前JVM中的一个“被注解元素”（可以是Class，Method，Field，Constructor，Package等）。在Java语言中，所有实现了这个接口的“元素”都是可以“被注解的元素”。使用这个接口中声明的方法可以读取（通过Java的反射机制）“被注解元素”的注解。这个接口中的所有方法返回的注解都是不可变的、并且都是可序列化的。这个接口中所有方法返回的数组可以被调用者修改，而不会影响其返回给其他调用者的数组。
+* **子接口**
+    * AnnotatedArrayType （被注解的数组类型）
+    * AnnotatedParameterizedType （被注解的参数化类型）
+    * AnnotatedType （被注解的类型）
+    * AnnotatedTypeVariable （被注解的类型变量）
+    * AnnotatedWildcardType （被注解的通配类型）
+    * GenericDeclaration （通用声明，用于表示声明型元素，如：类、方法、构造器等）
+    * TypeVariable<D> （类型变量）
+
+* **其实现类**
+    * AccessibleObject（可访问对象，如：方法、构造器、属性等）
+    * Class（类，就是你用Java语言编程时每天都要写的那个东西）
+    * Constructor（构造器，类的构造方法的类型）
+    * Executable（可执行的，如构造器和方法）
+    * Field（属性，类中属性的类型）
+    * Method（方法，类中方法的类型）
+    * Package（包，你每天都在声明的包的类型）
+    * Parameter（参数，主要指方法或函数的参数，其实是这些参数的类型）
+
+以上类型对象都可以通过 AnnotatedElement相关方法获取注解信息
+```java
+public interface AnnotatedElement {
+
+    default boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {}
+    <T extends Annotation> T getAnnotation(Class<T> annotationClass);
+    Annotation[] getAnnotations();
+    default <T extends Annotation> T[] getAnnotationsByType(Class<T> annotationClass) {}
+    default <T extends Annotation> T getDeclaredAnnotation(Class<T> annotationClass) { }
+    default <T extends Annotation> T[] getDeclaredAnnotationsByType(Class<T> annotationClass) { }
+    Annotation[] getDeclaredAnnotations();
+}
+```
 
 ### 1.2.6. IO
 <a href="#menu" style="float:right">目录</a>
@@ -509,8 +1052,128 @@ public enum BlogReturnCode implements  ReturnCode{
 ### 1.2.8. JDBC
 <a href="#menu" style="float:right">目录</a>
 
-## 1.3. JAVA Socket编程
-<a href="#menu" style="float:right">目录</a>
+**数据库驱动**
+这里的驱动的概念和平时听到的那种驱动的概念是一样的，比如平时购买的声卡，网卡直接插到计算机上面是不能用的，必须要安装相应的驱动程序之后才能够使用声卡和网卡，同样道理，我们安装好数据库之后，我们的应用程序也是不能直接使用数据库的，必须要通过相应的数据库驱动程序，通过驱动程序去和数据库打交道，如下所示：
+* 应用程序-->Mysq驱动--Mysql
+* 应用程序-->Oracle驱动--Oracle
+
+**JDBC介绍**
+　　SUN公司为了简化、统一对数据库的操作，定义了一套Java操作数据库的规范（接口），称之为JDBC。这套接口由数据库厂商去实现，这样，开发人员只需要学习jdbc接口，并通过jdbc加载具体的驱动，就可以操作数据库。
+```java
+package me.gacl.demo;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class JdbcFirstDemo {
+
+    public static void main(String[] args) throws Exception {
+        //要连接的数据库URL
+        String url = "jdbc:mysql://localhost:3306/jdbcStudy";
+        //连接的数据库时使用的用户名
+        String username = "root";
+        //连接的数据库时使用的密码
+        String password = "XDP";
+        
+        //1.加载驱动
+        //DriverManager.registerDriver(new com.mysql.jdbc.Driver());不推荐使用这种方式来加载驱动
+        Class.forName("com.mysql.jdbc.Driver");//推荐使用这种方式来加载驱动
+        //2.获取与数据库的链接
+        Connection conn = DriverManager.getConnection(url, username, password);
+        
+        //3.获取用于向数据库发送sql语句的statement
+        Statement st = conn.createStatement();
+        
+        String sql = "select id,name,password,email,birthday from users";
+        //4.向数据库发sql,并获取代表结果集的resultset
+        ResultSet rs = st.executeQuery(sql);
+        
+        //5.取出结果集的数据
+        while(rs.next()){
+            System.out.println("id=" + rs.getObject("id"));
+            System.out.println("name=" + rs.getObject("name"));
+            System.out.println("password=" + rs.getObject("password"));
+            System.out.println("email=" + rs.getObject("email"));
+            System.out.println("birthday=" + rs.getObject("birthday"));
+        }
+        
+        //6.关闭链接，释放资源
+        rs.close();
+        st.close();
+        conn.close();
+    }
+}
+```
+* **JDBC之Statement,PreparedStatement,CallableStatement的区别**
+    * Statement、PreparedStatement和CallableStatement都是接口(interface)。 
+    * Statement继承自Wrapper、PreparedStatement继承自Statement、CallableStatement继承自PreparedStatement。 
+    * Statement接口提供了执行语句和获取结果的基本方法； 
+        * PreparedStatement接口添加了处理 IN 参数的方法； 
+        * CallableStatement接口添加了处理 OUT 参数的方法。 
+    * Statement: 
+        * 普通的不带参的查询SQL；支持批量更新,批量删除; 
+    * PreparedStatement: 
+        * 可变参数的SQL,编译一次,执行多次,效率高; 
+        * 安全性好，有效防止Sql注入等问题; 
+        * 支持批量更新,批量删除; 
+    * CallableStatement: 
+        * 继承自PreparedStatement,支持带参数的SQL操作; 
+        * 支持调用存储过程,提供了对输出和输入/输出参数(INOUT)的支持; 
+    * Statement每次执行sql语句，数据库都要执行sql语句的编译 ，最好用于仅执行一次查询并返回结果的情形时，效率高于PreparedStatement。
+    * PreparedStatement是预编译的，使用PreparedStatement有几个好处 
+        * 在执行可变参数的一条SQL时，PreparedStatement比Statement的效率高，因为DBMS预编译一条SQL当然会比多次编译一条SQL的效率要高。 
+        * 安全性好，有效防止Sql注入等问题。 
+        * 对于多次重复执行的语句，使用PreparedStament效率会更高一点，并且在这种情况下也比较适合使用batch； 
+        * 代码的可读性和可维护性。 
+    * 其他
+        * executeQuery：返回结果集(ResultSet)。 
+        * executeUpdate: 执行给定SQL语句,该语句可能为 INSERT、UPDATE 或 DELETE 语句， 
+        * 或者不返回任何内容的SQL语句（如 SQL DDL 语句）。 
+        * execute: 可用于执行任何SQL语句，返回一个boolean值， 
+        * 表明执行该SQL语句是否返回了ResultSet。如果执行后第一个结果是ResultSet，则返回true，否则返回false。 
+
+```java
+//Statement用法:  
+String sql = "select seq_orderdetailid.nextval as test dual";  
+Statement stat1=conn.createStatement();  
+ResultSet rs1 = stat1.executeQuery(sql);  
+if ( rs1.next() ) {  
+    id = rs1.getLong(1);  
+}  
+
+//Statement的Batch使用:  
+Statement stmt  = conn.createStatement();  
+String sql = null;  
+for(int i =0;i<20;i++){  
+    sql = "insert into test(id,name)values("+i+","+i+"_name)";  
+    stmt.addBatch(sql);  
+}  
+stmt.executeBatch();  
+
+   
+//PreparedStatement用法:  
+PreparedStatement pstmt  = con.prepareStatement("UPDATE EMPLOYEES  SET SALARY = ? WHERE ID =?");  
+pstmt.setBigDecimal(1, 153.00);  
+pstmt.setInt(2, 1102);  
+pstmt. executeUpdate()
+   
+//PreparedStatement的Batch使用:  
+PreparedStatement pstmt  = con.prepareStatement("UPDATE EMPLOYEES  SET SALARY = ? WHERE ID =?");  
+for(int i =0;i<length;i++){  
+    pstmt.setBigDecimal(1, param1[i]);  
+    pstmt.setInt(2, param2[i]);  
+    pstmt.addBatch();  
+}  
+pstmt.executeBatch();  
+
+//CallableStatement
+CallableStatement cstmt = conn.prepareCall("{call revise_total(?)}");  
+cstmt.setByte(1, 25);  
+cstmt.registerOutParameter(1, java.sql.Types.TINYINT);  
+cstmt.executeUpdate();  
+byte x = cstmt.getByte(1);  
+```
 
 ## 1.4. JDK版本变化
 * JDK5的新特性：
@@ -619,6 +1282,8 @@ public enum BlogReturnCode implements  ReturnCode{
 * 以上的原则都是施行指南，开闭原则是最终目标。
 
 ### 1.5.2. UML图
+
+![](https://github.com/lgjlife/Java-Study/blob/master/pic/designerPattern/uml.png?raw=true)
 
 ### 1.5.3. 单例模式
 <a href="#menu" style="float:right">目录</a>
