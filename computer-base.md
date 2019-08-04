@@ -1148,7 +1148,7 @@ IO复用是先通过select调用阻塞。
     * select,信号驱动IO模型
     * I/O事件发生时才会收到通知型
     * 当收到通知时，应当尽可能多的读取字节，因为只有下一次I/O来时才能收到通知。
-    * 如果程序采用循环来对文件描述符执行尽可能多的I/O，
+
 
 #### 对比总结
 epoll跟select都能提供多路I/O复用的解决方案。在现在的Linux内核里有都能够支持，其中epoll是Linux所特有，而select则应该是POSIX所规定，一般操作系统均有实现
@@ -1163,6 +1163,22 @@ select本质上是通过设置或者检查存放fd标志位的数据结构来进
 
 * 需要维护一个用来存放大量fd的数据结构，这样会使得用户空间和内核空间在传递该结构时复制开销大
 
+* select函数
+```c
+int select(int nfds,fd_set *readfds,fd_set *writefds,fd_set *exceptfds, struct timeval *timeout)
+```
+
+* 参数
+    * readfds 用来检测输入是否就绪的文件描述符集合
+    * writefds 输出
+    * exceptfds 异常情况是否发生
+    * timeout  超时时间结构体
+* 返回值
+    * 0 ：超时
+    * -1 ：发生错误
+    * 大于1：就绪状态的描述符的总数，包括读写异常三个参数 
+    
+
 **poll：**
 
 poll本质上和select没有区别，它将用户传入的数组拷贝到内核空间，然后查询每个fd对应的设备状态，如果设备就绪则在设备等待队列中加入一项并继续遍历，如果遍历完所有fd后没有发现就绪设备，则挂起当前进程，直到设备就绪或者主动超时，被唤醒后它又要再次遍历fd。这个过程经历了多次无谓的遍历。
@@ -1172,14 +1188,342 @@ poll本质上和select没有区别，它将用户传入的数组拷贝到内核�
 * 大量的fd的数组被整体复制于用户态和内核地址空间之间，而不管这样的复制是不是有意义。
 * poll还有一个特点是“水平触发”，如果报告了fd后，没有被处理，那么下次poll时会再次报告该fd。
 
+* poll 函数
+```c
+int poll(struct pollfd fds[],nfds_t nfds,int timeout)
+
+struct pollfd{
+    //文件描述符
+    int fd;
+    //请求事件位掩码
+    short events; 
+    //返回事件位源码
+    short revents;
+}
+```
+
+
+* 参数
+    * nfds 指定fds的元素个数，nfds_t实际为无符号整形
+    * fds-fd 文件描述符
+    * fds-events 需要做检查的事件位掩码，调用者初始化
+    * fds-revents 发生了事件的位掩码，内核设置并返回
+    * timeout   
+        * -1 : 一直阻塞直到有一个文件描述符发生事件
+        * 0: 不阻塞，全部检查完即使没有事件也返回
+        * 大于0:最多阻塞时间
+* 返回:同select
+
+**select poll区别**
+* select 检查的文件描述符有数量上限(FD_SETZIZE),LINUX默认为1024，修改需要重新编译内核。poll没有限制
+
+* select的fd_set同时也是保存调用结果的地方，如果多次调用select需要每次都要进行初始化。poll是两个参数存放检查和就绪的文件描述符，从而避免每次都要进行初始化。
+
+* select提供的超时精度比poll高 
+
+
+
+**select poll 问题**
+* 每次调用select和epoll都要向内核传入需要检查的文件描述符，检测是否处于就绪状态。当检查的文件描述符较多时，将会很耗时
+* select 和 poll调用完成以后，程序必须检查返回的数据结构中的每一个元素，以此查明哪个文件描述符处于就绪态。
+* 每次调用select和epoll都要向内核传入需要检查的文件描述符，检查完成，又从内核返回应用，如果文件描述符过多，复制也很耗时。
+
+
+
 **epoll:**
 epoll支持水平触发和边缘触发，最大的特点在于边缘触发，它只告诉进程哪些fd刚刚变为就需态，并且只会通知一次。还有一个特点是，epoll使用“事件”的就绪通知方式，通过epoll_ctl注册fd，一旦该fd就绪，内核就会采用类似callback的回调机制来激活该fd，epoll_wait便可以收到通知
 
-**epoll的优点：**
-* 没有最大并发连接的限制，能打开的FD的上限远大于1024（1G的内存上能监听约10万个端口）；
-* 效率提升，不是轮询的方式，不会随着FD数目的增加效率下降。只有活跃可用的FD才会调用callback函数；
-即Epoll最大的优点就在于它只管你“活跃”的连接，而跟连接总数无关，因此在实际的网络环境中，Epoll的效率就会远远高于select和poll。
-* 内存拷贝，利用mmap()文件映射内存加速与内核空间的消息传递；即epoll使用mmap减少复制开销。
+* 适用场景:
+    * 同时处理许多客户端的服务器;
+    * 需要监视大量的文件描述符，但大部分属于空闲状态，只有少数文件描述符处于就绪状态。
+
+* epoll水平触发和边缘触发的区别
+    * 例子
+        * 套接字上有输入到来
+        * 调用一次epoll_wait(),无论采用的是水平触发还是边缘触发，该调用都会告诉我们套接字已经给处于就绪态
+        * 再次调用epoll_wait()
+    * 说明
+        * 如果是水平触发通知，第二个epoll_wait()会告诉我们套接字已经给处于就绪态
+        * 如果是边缘触发通知，将会被阻塞，因为没有新的输入进来
+
+* epoll边缘触发通知机制的程序基本框架
+    * 让所有监视的文件描述符都成为非阻塞
+    * 通过epoll_wait()取得就绪状态的描述符列表
+    * 针对每一个处于就绪状态文件描述符，不断进行IO处理直到相关的系统调用(例如read,write,recv,send,accept)返回EAGAIN或EWOULDBLOCK错误 
+
+epoll的接口非常简单，一共就三个函数：
+1. int epoll_create(int size);
+创建一个epoll的句柄，size用来告诉内核这个监听的数目一共有多大。这个参数不同于select()中的第一个参数，给出最大监听的fd+1的值。需要注意的是，当创建好epoll句柄后，它就是会占用一个fd值，在linux下如果查看/proc/进程id/fd/，是能够看到这个fd的，所以在使用完epoll后，必须调用close()关闭，否则可能导致fd被耗尽。
+
+
+2. int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);
+epoll的事件注册函数，它不同与select()是在监听事件时告诉内核要监听什么类型的事件，而是在这里先注册要监听的事件类型。第一个参数是epoll_create()的返回值，第二个参数表示动作，用三个宏来表示：
+EPOLL_CTL_ADD：注册新的fd到epfd中；
+EPOLL_CTL_MOD：修改已经注册的fd的监听事件；
+EPOLL_CTL_DEL：从epfd中删除一个fd；
+第三个参数是需要监听的fd，第四个参数是告诉内核需要监听什么事，struct epoll_event结构如下：
+
+```c
+typedef union epoll_data {
+    void *ptr;
+    int fd;
+    __uint32_t u32;
+    __uint64_t u64;
+} epoll_data_t;
+
+struct epoll_event {
+    __uint32_t events; /* Epoll events */
+    epoll_data_t data; /* User data variable */
+};
+
+```
+ 
+
+
+events可以是以下几个宏的集合：
+EPOLLIN ：表示对应的文件描述符可以读（包括对端SOCKET正常关闭）；
+EPOLLOUT：表示对应的文件描述符可以写；
+EPOLLPRI：表示对应的文件描述符有紧急的数据可读（这里应该表示有带外数据到来）；
+EPOLLERR：表示对应的文件描述符发生错误；
+EPOLLHUP：表示对应的文件描述符被挂断；
+EPOLLET： 将EPOLL设为边缘触发(Edge Triggered)模式，这是相对于水平触发(Level Triggered)来说的。
+EPOLLONESHOT：只监听一次事件，当监听完这次事件之后，如果还需要继续监听这个socket的话，需要再次把这个socket加入到EPOLL队列里
+
+
+3. int epoll_wait(int epfd, struct epoll_event * events, int maxevents, int timeout);
+等待事件的产生，类似于select()调用。参数events用来从内核得到事件的集合，maxevents告之内核这个events有多大，这个 maxevents的值不能大于创建epoll_create()时的size，参数timeout是超时时间（毫秒，0会立即返回，-1将不确定，也有说法说是永久阻塞）。该函数返回需要处理的事件数目，如返回0表示已超时。
+
+
+4、关于ET、LT两种工作模式：
+可以得出这样的结论:
+ET模式仅当状态发生变化的时候才获得通知,这里所谓的状态的变化并不包括缓冲区中还有未处理的数据,也就是说,如果要采用ET模式,需要一直read/write直到出错为止,很多人反映为什么采用ET模式只接收了一部分数据就再也得不到通知了,大多因为这样;而LT模式是只要有数据没有处理就会一直通知下去的.
+
+
+那么究竟如何来使用epoll呢？其实非常简单。
+通过在包含一个头文件#include <sys/epoll.h> 以及几个简单的API将可以大大的提高你的网络服务器的支持人数。
+
+首先通过create_epoll(int maxfds)来创建一个epoll的句柄，其中maxfds为你epoll所支持的最大句柄数。这个函数会返回一个新的epoll句柄，之后的所有操作将通过这个句柄来进行操作。在用完之后，记得用close()来关闭这个创建出来的epoll句柄。
+
+之后在你的网络主循环里面，每一帧的调用epoll_wait(int epfd, epoll_event events, int max events, int timeout)来查询所有的网络接口，看哪一个可以读，哪一个可以写了。基本的语法为：
+nfds = epoll_wait(kdpfd, events, maxevents, -1);
+其中kdpfd为用epoll_create创建之后的句柄，events是一个epoll_event*的指针，当epoll_wait这个函数操作成功之后，epoll_events里面将储存所有的读写事件。max_events是当前需要监听的所有socket句柄数。最后一个timeout是 epoll_wait的超时，为0的时候表示马上返回，为-1的时候表示一直等下去，直到有事件范围，为任意正整数的时候表示等这么长的时间，如果一直没有事件，则范围。一般如果网络主循环是单独的线程的话，可以用-1来等，这样可以保证一些效率，如果是和主逻辑在同一个线程的话，则可以用0来保证主循环的效率。
+
+epoll_wait范围之后应该是一个循环，遍利所有的事件。
+
+几乎所有的epoll程序都使用下面的框架：
+```c
+for( ; ; )
+    {
+        nfds = epoll_wait(epfd,events,20,500);
+        for(i=0;i<nfds;++i)
+        {
+            if(events[i].data.fd==listenfd) //有新的连接
+            {
+                connfd = accept(listenfd,(sockaddr *)&clientaddr, &clilen); //accept这个连接
+                ev.data.fd=connfd;
+                ev.events=EPOLLIN|EPOLLET;
+                epoll_ctl(epfd,EPOLL_CTL_ADD,connfd,&ev); //将新的fd添加到epoll的监听队列中
+            }
+            else if( events[i].events&EPOLLIN ) //接收到数据，读socket
+            {
+                n = read(sockfd, line, MAXLINE)) < 0    //读
+                ev.data.ptr = md;     //md为自定义类型，添加数据
+                ev.events=EPOLLOUT|EPOLLET;
+                epoll_ctl(epfd,EPOLL_CTL_MOD,sockfd,&ev);//修改标识符，等待下一个循环时发送数据，异步处理的精髓
+            }
+            else if(events[i].events&EPOLLOUT) //有数据待发送，写socket
+            {
+                struct myepoll_data* md = (myepoll_data*)events[i].data.ptr;    //取数据
+                sockfd = md->fd;
+                send( sockfd, md->ptr, strlen((char*)md->ptr), 0 );        //发送数据
+                ev.data.fd=sockfd;
+                ev.events=EPOLLIN|EPOLLET;
+                epoll_ctl(epfd,EPOLL_CTL_MOD,sockfd,&ev); //修改标识符，等待下一个循环时接收数据
+            }
+            else
+            {
+                //其他的处理
+            }
+        }
+    }
+
+```
+完整的服务端例子
+
+```cpp
+#include <iostream>
+#include <sys/socket.h>
+#include <sys/epoll.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <errno.h>
+
+using namespace std;
+
+#define MAXLINE 5
+#define OPEN_MAX 100
+#define LISTENQ 20
+#define SERV_PORT 5000
+#define INFTIM 1000
+
+void setnonblocking(int sock)
+{
+    int opts;
+    opts=fcntl(sock,F_GETFL);
+    if(opts<0)
+    {
+        perror("fcntl(sock,GETFL)");
+        exit(1);
+    }
+    opts = opts|O_NONBLOCK;
+    if(fcntl(sock,F_SETFL,opts)<0)
+    {
+        perror("fcntl(sock,SETFL,opts)");
+        exit(1);
+    }
+}
+
+int main(int argc, char* argv[])
+{
+    int i, maxi, listenfd, connfd, sockfd,epfd,nfds, portnumber;
+    ssize_t n;
+    char line[MAXLINE];
+    socklen_t clilen;
+
+
+    if ( 2 == argc )
+    {
+        if( (portnumber = atoi(argv[1])) < 0 )
+        {
+            fprintf(stderr,"Usage:%s portnumber/a/n",argv[0]);
+            return 1;
+        }
+    }
+    else
+    {
+        fprintf(stderr,"Usage:%s portnumber/a/n",argv[0]);
+        return 1;
+    }
+
+
+
+    //声明epoll_event结构体的变量,ev用于注册事件,数组用于回传要处理的事件
+
+    struct epoll_event ev,events[20];
+    //生成用于处理accept的epoll专用的文件描述符
+
+    epfd=epoll_create(256);
+    struct sockaddr_in clientaddr;
+    struct sockaddr_in serveraddr;
+    listenfd = socket(AF_INET, SOCK_STREAM, 0);
+    //把socket设置为非阻塞方式
+
+    //setnonblocking(listenfd);
+
+    //设置与要处理的事件相关的文件描述符
+
+    ev.data.fd=listenfd;
+    //设置要处理的事件类型
+
+    ev.events=EPOLLIN|EPOLLET;
+    //ev.events=EPOLLIN;
+
+    //注册epoll事件
+
+    epoll_ctl(epfd,EPOLL_CTL_ADD,listenfd,&ev);
+    bzero(&serveraddr, sizeof(serveraddr));
+    serveraddr.sin_family = AF_INET;
+    char *local_addr="127.0.0.1";
+    inet_aton(local_addr,&(serveraddr.sin_addr));//htons(portnumber);
+
+    serveraddr.sin_port=htons(portnumber);
+    bind(listenfd,(sockaddr *)&serveraddr, sizeof(serveraddr));
+    listen(listenfd, LISTENQ);
+    maxi = 0;
+    for ( ; ; ) {
+        //等待epoll事件的发生
+
+        nfds=epoll_wait(epfd,events,20,500);
+        //处理所发生的所有事件
+
+        for(i=0;i<nfds;++i)
+        {
+            if(events[i].data.fd==listenfd)//如果新监测到一个SOCKET用户连接到了绑定的SOCKET端口，建立新的连接。
+
+            {
+                connfd = accept(listenfd,(sockaddr *)&clientaddr, &clilen);
+                if(connfd<0){
+                    perror("connfd<0");
+                    exit(1);
+                }
+                //setnonblocking(connfd);
+
+                char *str = inet_ntoa(clientaddr.sin_addr);
+                cout << "accapt a connection from " << str << endl;
+                //设置用于读操作的文件描述符
+
+                ev.data.fd=connfd;
+                //设置用于注测的读操作事件
+
+                ev.events=EPOLLIN|EPOLLET;
+                //ev.events=EPOLLIN;
+
+                //注册ev
+
+                epoll_ctl(epfd,EPOLL_CTL_ADD,connfd,&ev);
+            }
+            else if(events[i].events&EPOLLIN)//如果是已经连接的用户，并且收到数据，那么进行读入。
+
+            {
+                cout << "EPOLLIN" << endl;
+                if ( (sockfd = events[i].data.fd) < 0)
+                    continue;
+                if ( (n = read(sockfd, line, MAXLINE)) < 0) {
+                    if (errno == ECONNRESET) {
+                        close(sockfd);
+                        events[i].data.fd = -1;
+                    } else
+                        std::cout<<"readline error"<<std::endl;
+                } else if (n == 0) {
+                    close(sockfd);
+                    events[i].data.fd = -1;
+                }
+                line[n] = '/0';
+                cout << "read " << line << endl;
+                //设置用于写操作的文件描述符
+
+                ev.data.fd=sockfd;
+                //设置用于注测的写操作事件
+
+                ev.events=EPOLLOUT|EPOLLET;
+                //修改sockfd上要处理的事件为EPOLLOUT
+
+                //epoll_ctl(epfd,EPOLL_CTL_MOD,sockfd,&ev);
+
+            }
+            else if(events[i].events&EPOLLOUT) // 如果有数据发送
+
+            {
+                sockfd = events[i].data.fd;
+                write(sockfd, line, n);
+                //设置用于读操作的文件描述符
+
+                ev.data.fd=sockfd;
+                //设置用于注测的读操作事件
+
+                ev.events=EPOLLIN|EPOLLET;
+                //修改sockfd上要处理的事件为EPOLIN
+
+                epoll_ctl(epfd,EPOLL_CTL_MOD,sockfd,&ev);
+            }
+        }
+    }
+    return 0;
+}
+```
 
 **select、poll、epoll 区别总结：** 
 

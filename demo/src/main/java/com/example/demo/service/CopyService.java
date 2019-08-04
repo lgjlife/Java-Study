@@ -12,7 +12,7 @@ public class CopyService {
     private static String basePath = "/home/lgj/aProject/aRealPrj/Java-Interview";
     private static String allName = "all.md";
     private static String fileNames[] ={"util.md","computer-base.md","java.md","Thread.md","spring.md","mysql.md","Redis.md","message.md",
-                                        "nginx.md",
+                                        "nginx.md","web-cantainer.md","netty.md",
                                         "performance.md","high-concurrency.md","distribution.md","web-safe.md"};
     public static void run() {
         init();

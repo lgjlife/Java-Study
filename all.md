@@ -1,1406 +1,628 @@
 
 <span id="menu"></span>
+
+
 <!-- TOC -->
 
-- [1. 基础工具](#1-基础工具)
-    - [1.1. 技术社区](#11-技术社区)
-    - [1.2. 常用工具](#12-常用工具)
-        - [1.2.1. 编译器](#121-编译器)
-        - [1.2.2. IDEA插件](#122-idea插件)
-        - [1.2.3. HTTP请求](#123-http请求)
-        - [1.2.4. 前端开发编辑](#124-前端开发编辑)
-        - [1.2.5. 绘图工具](#125-绘图工具)
-            - [1.2.5.1. 思维导图](#1251-思维导图)
-            - [1.2.5.2. UML](#1252-uml)
-        - [1.2.6. 编辑器](#126-编辑器)
-        - [1.2.7. 调优工具](#127-调优工具)
-        - [1.2.8. 压测工具](#128-压测工具)
-        - [1.2.9. 版本管理](#129-版本管理)
-        - [1.2.10. 其他](#1210-其他)
-    - [1.3. Git](#13-git)
-        - [1.3.1. 基本概念](#131-基本概念)
-        - [1.3.2. 常用命令](#132-常用命令)
-    - [1.4. Maven](#14-maven)
-    - [1.5. Jenkins](#15-jenkins)
-    - [1.6. Docker](#16-docker)
-        - [1.6.1. Docker常用指令](#161-docker常用指令)
-            - [1.6.1.1. 基本概念](#1611-基本概念)
-        - [1.6.2. 常用指令](#162-常用指令)
-        - [1.6.3. 容器](#163-容器)
-            - [1.6.3.1. 容器的管理操作](#1631-容器的管理操作)
-            - [1.6.3.2. 容器内部信息的获取](#1632-容器内部信息的获取)
-        - [1.6.4. 镜像](#164-镜像)
-            - [1.6.4.1. 基本概念](#1641-基本概念)
-            - [1.6.4.2. 本地镜像的管理](#1642-本地镜像的管理)
-        - [1.6.5. Docker File](#165-docker-file)
-        - [1.6.6. 数据卷和容器连接](#166-数据卷和容器连接)
-            - [1.6.6.1. 容器网络基础](#1661-容器网络基础)
-            - [1.6.6.2. 数据卷](#1662-数据卷)
-        - [1.6.7. 案例](#167-案例)
-            - [1.6.7.1. docker 安装Mysqk主从复制](#1671-docker-安装mysqk主从复制)
-            - [1.6.7.2. docker 安装mycat](#1672-docker-安装mycat)
-    - [1.7. VIM](#17-vim)
-    - [1.8. NMON监控工具](#18-nmon监控工具)
-    - [1.9. 正则表达式](#19-正则表达式)
-
-<!-- /TOC -->
-# 1. 基础工具
-## 1.1. 技术社区
-<a href="#menu" style="float:right">目录</a>
-* [博客园](https://www.cnblogs.com/)
-* [开源中国](https://www.oschina.net/)
-* [stackoverflow](https://stackoverflow.com/)
-* [CSDN](https://www.csdn.net/)
-* [掘金](https://juejin.im/)
-* [技术文档下载](http://www.java1234.com/)
-* [leetcode](https://leetcode.com/)
-* [牛客网](https://www.nowcoder.com/)
-
-## 1.2. 常用工具
-
-### 1.2.1. 编译器
-* IDEA （个人觉得IDEA比较好用）
-* Eclipse
-* MyEclipse
-
-### 1.2.2. IDEA插件
-* Lombok： 使用注解，免去实体类中get /set/构造器等代码 ，需要引入lombok包
-* Alibaba Java Coding Guidelines ：《阿里巴巴Java开发规约》扫描插件,安装后右键单击选择扫描，会提示哪些地方不符合规范
-* MyBatis plugin ： 可以从mybatis mappe接口的方法直接跳转到mapper.xml配置文件
-* jclasslib: JClassLib不但是一个字节码阅读器而且还包含一个类库允许开发者读取,修改,写入Java Class文件与字节码
-
-
-### 1.2.3. HTTP请求
-* POSTMAN（https://www.getpostman.com/）:一款功能强大的网页调试与发送网页HTTP请求的工具
-* curl指令
-
-### 1.2.4. 前端开发编辑
-* [vscode](https://code.visualstudio.com/Download)
-* IDEA
-* Brackets   代码提示，颜色区分
-* sublime_text_3   这个Linux下安装后，不支持中文输入，网上有解决办法。
-
-### 1.2.5. 绘图工具
-#### 1.2.5.1. 思维导图
-* MindMaster   多平台，免费，可以导出为图片。
-#### 1.2.5.2. UML
-* https://www.draw.io/ ：在线UML绘制工具，可以保存到本地或者Github
-* Dia
-```bash
-//安装Dia
-sudo apt install dia
-//运行Dia
-dia
-```
-### 1.2.6. 编辑器
-* VIM
-* GEDIT　
-
-### 1.2.7. 调优工具
-* visualVm(https://visualvm.github.io/):是一款免费的,集成了多个 JDK 命令行工具的可视化工具,它能为您提供强大的分析能力,对 Java 应用程序做性能分析和调优.
-
-### 1.2.8. 压测工具
-* Jmeter   可以开多个线程对接口进行压测，并分析压测结果。
-
-### 1.2.9. 版本管理
-* git     
-* svn
-* 码云
-* Git在线练习 [try git](https://try.github.io/)/[git real](https://www.pluralsight.com/courses/code-school-git-real)/[Learn Git Branching](https://learngitbranching.js.org/)
-
-### 1.2.10. 其他
-* SpringBoot Banner 字符生成 [根据图片生成](https://www.degraeve.com/img2txt.php)/[根据文字生成](http://patorjk.com/software/taag/#p=display&f=3D-ASCII&t=MicroBlog%0A)
-
-
-## 1.3. Git
-<a href="#menu" style="float:right">目录</a>
-
-### 1.3.1. 基本概念
-* 工作区：当前的工作目录
-* 本地库: 工作区有一个隐藏目录.git，这个不算工作区，而是Git的版本库
-  Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD
-![](https://www.liaoxuefeng.com/files/attachments/919020037470528/0)
-* 远端仓库: 存放在GitHub网站上的版本库
-
-工作区---git add --> 暂存区 ---git commit--->本地仓库---git push --->远程仓库
-
-![](http://img5.imgtn.bdimg.com/it/u=4071081808,3892000553&fm=26&gp=0.jpg)
-* 分支相当于给当前的文件创建一个副本，在副本上进行修改，可以创建无数个分支进行同步开发，开发完成后再进行合并操作。
-
-### 1.3.2. 常用命令
-* 查看版本
-    * git --version
-* 配置
-    * 配置文件
-        * 版本库配置文件，优先级最高位于版本库.git/config中
-            * 进入工作空间
-            * git config -e 打开，编辑
-        * 全局配置文件，优先级次之，用户目录下的。gitconfig
-            * git config -e --global 打开编辑
-        * 系统级配置文件,优先级最低，/etc/gitconfig
-            * git config -e --system
-    * 配置用户名和邮箱
-        * git config --global user.name "xxx"
-        * git config --global user.name 读取配置信息用户名称
-        * git config --unset  --global user.name 删除用户信息
-        * git config --global user.email "xxx@xxx"
-* 初始化一个仓库
-    * git init
-* 为本地仓库关联远程仓库
-    * git remote add origin git@github.com:yourName/yourRepo.git 
-        * origin 为自定义名称，可以取github/gitee,就可以关联不同的远端库了
-        * git push github master /git push gitee master
-    * git remote -v 查看关联的远端仓库
-    * git remote rm origin 删除关联的远程库信息
-    
-* 将更新的文件提交到本地暂存区
-    * git add .    添加所有的文件
-    * git add demo.text 只添加demo.text文件
-* 将本地暂存区的文件提交到本地仓库
-    * git commit -m "xxxx"  添加一行信息
-    * git commit 不加-m,将会弹出新编辑窗口，需要按照以下格式编写，如果此时想终止提交，需将编辑器内容清空，并直接关闭，提交会被终止。
-        * 第一行：用一行文字简述提交的更改内容
-        * 第二行: 空行
-        * 第三行以后，详细描述更改的内容
-
-* 查看提交后的状态
-    * git status
-* 查看提交日志
-    * git log 
-        * 提交ID
-        * 提交人
-        * 提交时间
-        * 提交前后差别
-    * git log --pretty=short 只显示提交信息的第一行
-    * git log xx.file 只显示指定目录或者文件的日志
-    * git log -p xx.file 显示文件前后差别
-    * git log --graph 以图表形式查看分支
-    * git log --graph --oneline 查看每次提交的短ID
-    * git reflog 查看当前仓库的操作日志，获取短ID
-* 查看更改前后的区别
-    * 工作树---git add --> 暂存区---git commit --> 本地仓库---git push --> 远程仓库
-    * 修改文件--->git diff--->显示工作树和暂存区的区别
-    * git add --->git diff ---> 什么都不显示，因为工作树和暂存区内容一致
-    * git add --->git diff HEAD --->显示暂存区和本地仓库的区别，在commmit之前应该执行该命令，验证是否修改错误。这里的HEAD指的是当前分支中最新一次提交的指针
-    * 显示的内容差异内容中，"+"表示添加的内容，"-"表示减少的内容
-* 分支操作
-    * 分支管理
-        * master 应当为稳定分支，不应该在master上修改代码
-        * dev 开发分支，比如说加新功能
-        * fix 修复Bug分支
-        * 每一次和master合并分支前，应当使用git pull 拉取远端仓库最新的代码，避免在push时出现冲突。
-    * 显示所有分支
-        * git branch  带*的是当前的分支
-        * git branch -a 显示远程分支和本地分支
-    * 创建，切换分支
-        * git branch name 创建分支
-        * git checkout name 切换分支
-        * git checkout -b name 创建并切换分支name
-        * git checkout - 切回上一个分支
-    * 合并分支
-        * 注意每次合并前必须git add和git commit 
-        * git merge --no-ff feature-A  合并当前分支和feature-A
-    * 删除分支
-        * git branch -d fea-A
-* 更改提交
-    * git reset --hard  HEAD^ 恢复到上一次提交
-    * git reset --hard  HEAD^^^^^ 恢复到前5次提交
-    * git reset --hard  HEAD~2  恢复到前两次提交
-    * git reset --hard  commitID;  git log 的长ID或者git reflog的短ID
-    * 远程版本回退
-        * 先使用git reset 回退本地分支
-        * 再使用 git push -f origin master 强制推送到远端分支
-
-* 冲突消除
-    * 如果两个分支修改了同一个文件的。在进行合并的时候就会提示哪个文件发生冲突，无法合并。
- ```
- <<<<<<HEAD
- - feature-A
- =========
- - fix-B
- >>>>>>feature-B
- ```
- =====以上的部分是当前HEAD的内容，以下是要合并的feature-B的内容。
- 修改之后，重新合并即可。
-
-* 压缩历史
-    * 在创建分支后，会在该分支上进行开发，期间可能会发生n次提交。如果进行合并，这个分支记录也会跟着一起被记录到主分支。因此需要对这些分支上的各个提交合并为一个提交记录。
-    * git rebase -i HEAD~2 合并最近的两次提交
-
-* 推送分支
-    * git push origin master|其他分支名称
-* 从远程仓库获取
-    * git clone 仓库地址  默认为master分支
-    * git checkout -b fea-A origin/fea-A   
-    -b 为本地创建的分支名称，应当与远程分支名称一样。
-    * git pull origin 远程分支名称，将远端分支合并到本地分支
-    为了减少发生push提交冲突冲突，push之前应当先pull到本地。
-* 标签tag
-    * 相当于一个时刻的文件快照。比如说给每一个发布版本定版本号1.0/2.0/3.0.每个版本号打一次标签。再去寻找时就不用从数量庞大的提交记录中寻找。
-    * git tag v1.0 给当前分支打包，标签为v1.0
-    * git tag v0.9 f52c633 通过提交ID打标签
-    * git tag -a v0.1 -m "version 0.1 released" 1094adb  -a指定标签名。-m 指定说明
-    * git show v1.0  查看说明
-    * git tag  查看所有的标签
-* 忽略文件上传
-    * 在使用git 时，有些文件不想提交，比如密码文件，编译出来的文件，这时候可以使用该功能进行忽略
-    * 工作区创建.gitignore
-        * *.class 忽略class结尾的文件
-        * aa.text 忽略aa.text文件
-        * target 忽略target 下的所有文件
-    * 如果之前已经提交过，必须先执行如下清空缓存,否则远端的文件还是会存在。须在当前的工作目录执行。
-        * git rm -r --cached .
-## 1.4. Maven
-<a href="#menu" style="float:right">目录</a>
-* mvn compile 编译源代码
-* mvn test-compile 编译测试代码
-* mvn test 运行测试代码
-* mvn site 生成site
-* mvn install 安装到本地仓库
-* mvn package 打包
-* mvn -Dmaven.test.skip package 打包时忽略测试
-* mvn clear 清除产生的项目
-* mvn idea:idea 生成idea项目
-* mvn eclipse:eclipse生成ecllipse项目文件
-* mvn dependency:tree 打印依赖
-* 全局移除依赖
-```xml
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-logging</artifactId>
-    <exclusions>
-        <exclusion>
-            <groupId>*</groupId>
-            <artifactId>*</artifactId>
-        </exclusion>
-    </exclusions>
-</dependency>
-```
-
-## 1.5. Jenkins
-<a href="#menu" style="float:right">目录</a>
-
-## 1.6. Docker
-<a href="#menu" style="float:right">目录</a>
-
-### 1.6.1. Docker常用指令
-
-#### 1.6.1.1. 基本概念
-* Docker： 可以让开发者打包它们的应用和依赖包到一个可移植的容器中，然后将其发布到任何流行该的Linux机器上。利用docker,可以实现软件一次配置，出处运行。
-* DockerHub:存储DOCKER镜像远程仓库，类似GitHub,用户可以进行对镜像进行存储，分享，管理。
-* Docker是一种容器，容器是一种轻量级的虚拟技术，和容器相对应的是更为重量级的虚拟技术是虚拟机。
-![](https://github.com/lgjlife/Java-Study/blob/master/pic/docker/docker1.png?raw=true)
-![](https://github.com/lgjlife/Java-Study/blob/master/pic/docker/docker2.png?raw=true)
-
-* Docker组件
-    * 镜像Image
-        * 只读的静态模板，保存容器需要的环境和应用的执行代码，可以把镜像看成容器的带代码。
-        * 当代码运行起来就成了容器
-        * 镜像采用分层机制，每个镜像都是只读的
-        * 可以将写数据的层通过联合文件附加到原有的镜像之上，这种增量式修改使得镜像非常容易存储，传输和更新。
-    * 容器 container
-        * 是一个运行时环境，是镜像的运行状态
-        * 容器是可读写的
-        * 可以在容器中运行多个服务
-    * 仓库
-        * 用于存放镜像
-        * 可以从仓库中拉取镜像，向仓库传送镜像
-        * 可以创建私有和公有的仓库  
-
-* Docker特点
-    * 隔离性
-        * 主机和容器，容器和容器之间的进程，网络，消息和文件系统相互隔离
-    * 可度量性
-    * 移植性
-    * 安全性
-* Docker 安装
-    * 文档地址 https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-from-a-package
-```bash
-# 查看可以安装的版本
-lgj@lgj-Lenovo-G470:~/Downloads$ apt-cache madison docker-ce
- docker-ce | 5:18.09.7~3-0~ubuntu-bionic | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
- docker-ce | 5:18.09.6~3-0~ubuntu-bionic | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
- docker-ce | 5:18.09.5~3-0~ubuntu-bionic | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
- docker-ce | 5:18.09.4~3-0~ubuntu-bionic | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
- docker-ce | 5:18.09.3~3-0~ubuntu-bionic | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
- docker-ce | 5:18.09.2~3-0~ubuntu-bionic | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
- docker-ce | 5:18.09.1~3-0~ubuntu-bionic | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
- docker-ce | 5:18.09.0~3-0~ubuntu-bionic | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
- docker-ce | 18.06.3~ce~3-0~ubuntu | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
- docker-ce | 18.06.2~ce~3-0~ubuntu | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
- docker-ce | 18.06.1~ce~3-0~ubuntu | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
- docker-ce | 18.06.0~ce~3-0~ubuntu | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
- docker-ce | 18.05.0~ce~3-0~ubuntu | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
- docker-ce | 18.03.1~ce~3-0~ubuntu | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/edge amd64 Packages
-#安装
-lgj@lgj-Lenovo-G470:~/Downloads$ sudo apt-get install  docker-ce=18.06.3~ce~3-0~ubuntu
-#查看安装成功与否
-lgj@lgj-Lenovo-G470:~$ docker version
-Client:
- Version:           18.06.3-ce
- API version:       1.38
- Go version:        go1.10.3
- Git commit:        d7080c1
- Built:             Wed Feb 20 02:28:10 2019
- OS/Arch:           linux/amd64
- Experimental:      false
-
-Server:
- Engine:
-  Version:          18.06.3-ce
-  API version:      1.38 (minimum version 1.12)
-  Go version:       go1.10.3
-  Git commit:       d7080c1
-  Built:            Wed Feb 20 02:26:34 2019
-  OS/Arch:          linux/amd64
-  Experimental:     false
-
-
-```
-            
-### 1.6.2. 常用指令
-<a href="#menu" style="float:right">目录</a>
-* 安装
-   * 安装 sudo snap install docker
-   * 移除 sudo snap remove docker
-   * 查看snap安装的文件： snap list docker 
-* 查看版本号: docker --version
-* 查看支持的指令： docker
-* 查看本地镜像：docker images
-* 查看安装的容器: docker ps -a
-* 查看正在运行的容器: docker ps -a
-* 查看容器信息: docker inspect 容器名称/ID
-
-### 1.6.3. 容器
-<a href="#menu" style="float:right">目录</a>
-
-#### 1.6.3.1. 容器的管理操作
-* 创建容器
-    * docker create image-name
-        * 创建的容器处于停止状态
-    * docker run image-name
-        * 创建并运行容器
-
-* 容器标识符
-    * 容器名称，不配置则自动生成
-    * 容器短ID和长ID     
-命令介绍
-```
-dpcker run - i -t --name=xxxx ubuntu /bin/bash
-```
-镜像后面是执行的命令，上面是执行bash shell。
-常用
--i:打开容器的标准输入
--t:为容器建立一个命令行终端
---name:设置容器名称
---ip:设置容器ip
--p:开放的端口
--d：以后台方式运行，不显示控制台
-```bash
-Usage:	docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
-
-Run a command in a new container
-
-Options:
-      --add-host list                  Add a custom host-to-IP mapping
-                                       (host:ip)
-  -a, --attach list                    Attach to STDIN, STDOUT or STDERR
-      --blkio-weight uint16            Block IO (relative weight),
-                                       between 10 and 1000, or 0 to
-                                       disable (default 0)
-      --blkio-weight-device list       Block IO weight (relative device
-                                       weight) (default [])
-      --cap-add list                   Add Linux capabilities
-      --cap-drop list                  Drop Linux capabilities
-      --cgroup-parent string           Optional parent cgroup for the
-                                       container
-      --cidfile string                 Write the container ID to the file
-      --cpu-period int                 Limit CPU CFS (Completely Fair
-                                       Scheduler) period
-      --cpu-quota int                  Limit CPU CFS (Completely Fair
-                                       Scheduler) quota
-      --cpu-rt-period int              Limit CPU real-time period in
-                                       microseconds
-      --cpu-rt-runtime int             Limit CPU real-time runtime in
-                                       microseconds
-  -c, --cpu-shares int                 CPU shares (relative weight)
-      --cpus decimal                   Number of CPUs
-      --cpuset-cpus string             CPUs in which to allow execution
-                                       (0-3, 0,1)
-      --cpuset-mems string             MEMs in which to allow execution
-                                       (0-3, 0,1)
-  -d, --detach                         Run container in background and
-                                       print container ID
-      --detach-keys string             Override the key sequence for
-                                       detaching a container
-      --device list                    Add a host device to the container
-      --device-cgroup-rule list        Add a rule to the cgroup allowed
-                                       devices list
-      --device-read-bps list           Limit read rate (bytes per second)
-                                       from a device (default [])
-      --device-read-iops list          Limit read rate (IO per second)
-                                       from a device (default [])
-      --device-write-bps list          Limit write rate (bytes per
-                                       second) to a device (default [])
-      --device-write-iops list         Limit write rate (IO per second)
-                                       to a device (default [])
-      --disable-content-trust          Skip image verification (default true)
-      --dns list                       Set custom DNS servers
-      --dns-option list                Set DNS options
-      --dns-search list                Set custom DNS search domains
-      --entrypoint string              Overwrite the default ENTRYPOINT
-                                       of the image
-  -e, --env list                       Set environment variables
-      --env-file list                  Read in a file of environment variables
-      --expose list                    Expose a port or a range of ports
-      --group-add list                 Add additional groups to join
-      --health-cmd string              Command to run to check health
-      --health-interval duration       Time between running the check
-                                       (ms|s|m|h) (default 0s)
-      --health-retries int             Consecutive failures needed to
-                                       report unhealthy
-      --health-start-period duration   Start period for the container to
-                                       initialize before starting
-                                       health-retries countdown
-                                       (ms|s|m|h) (default 0s)
-      --health-timeout duration        Maximum time to allow one check to
-                                       run (ms|s|m|h) (default 0s)
-      --help                           Print usage
-  -h, --hostname string                Container host name
-      --init                           Run an init inside the container
-                                       that forwards signals and reaps
-                                       processes
-  -i, --interactive                    Keep STDIN open even if not attached
-      --ip string                      IPv4 address (e.g., 172.30.100.104)
-      --ip6 string                     IPv6 address (e.g., 2001:db8::33)
-      --ipc string                     IPC mode to use
-      --isolation string               Container isolation technology
-      --kernel-memory bytes            Kernel memory limit
-  -l, --label list                     Set meta data on a container
-      --label-file list                Read in a line delimited file of labels
-      --link list                      Add link to another container
-      --link-local-ip list             Container IPv4/IPv6 link-local
-                                       addresses
-      --log-driver string              Logging driver for the container
-      --log-opt list                   Log driver options
-      --mac-address string             Container MAC address (e.g.,
-                                       92:d0:c6:0a:29:33)
-  -m, --memory bytes                   Memory limit
-      --memory-reservation bytes       Memory soft limit
-      --memory-swap bytes              Swap limit equal to memory plus
-                                       swap: '-1' to enable unlimited swap
-      --memory-swappiness int          Tune container memory swappiness
-                                       (0 to 100) (default -1)
-      --mount mount                    Attach a filesystem mount to the
-                                       container
-      --name string                    Assign a name to the container
-      --network string                 Connect a container to a network
-                                       (default "default")
-      --network-alias list             Add network-scoped alias for the
-                                       container
-      --no-healthcheck                 Disable any container-specified
-                                       HEALTHCHECK
-      --oom-kill-disable               Disable OOM Killer
-      --oom-score-adj int              Tune host's OOM preferences (-1000
-                                       to 1000)
-      --pid string                     PID namespace to use
-      --pids-limit int                 Tune container pids limit (set -1
-                                       for unlimited)
-      --privileged                     Give extended privileges to this
-                                       container
-  -p, --publish list                   Publish a container's port(s) to
-                                       the host
-  -P, --publish-all                    Publish all exposed ports to
-                                       random ports
-      --read-only                      Mount the container's root
-                                       filesystem as read only
-      --restart string                 Restart policy to apply when a
-                                       container exits (default "no")
-      --rm                             Automatically remove the container
-                                       when it exits
-      --runtime string                 Runtime to use for this container
-      --security-opt list              Security Options
-      --shm-size bytes                 Size of /dev/shm
-      --sig-proxy                      Proxy received signals to the
-                                       process (default true)
-      --stop-signal string             Signal to stop a container
-                                       (default "SIGTERM")
-      --stop-timeout int               Timeout (in seconds) to stop a
-                                       container
-      --storage-opt list               Storage driver options for the
-                                       container
-      --sysctl map                     Sysctl options (default map[])
-      --tmpfs list                     Mount a tmpfs directory
-  -t, --tty                            Allocate a pseudo-TTY
-      --ulimit ulimit                  Ulimit options (default [])
-  -u, --user string                    Username or UID (format:
-                                       <name|uid>[:<group|gid>])
-      --userns string                  User namespace to use
-      --uts string                     UTS namespace to use
-  -v, --volume list                    Bind mount a volume
-      --volume-driver string           Optional volume driver for the
-                                       container
-      --volumes-from list              Mount volumes from the specified
-                                       container(s)
-  -w, --workdir string                 Working directory inside the container
-
-``` 
-* 查看容器
-    * 查看全部的容器 docker ps -a
-    * 查看正在运行的容器 docker ps 
-    * 显示的参数列表
-        * CONTAINER ID：容器的唯一ID
-        * IMAGE：创建容器时使用的镜像
-        * COMMAND：容器最后运行的命令
-        * CREATE：创建容器的时间
-        * STATUS：容器的状态
-            * 正常 ： Up 49s
-            * 异常 : exited（0），数字为错误码
-        * PORTS ： 开放的端口
-        * NAMES : 容器的名称，不使用--name指定则系统随机生成
-
-* 启动容器
-    * docker start name|id
-
-* 终止容器
-    * docker stop name|id
-* 删除容器
-    * docker rm name|id
-
-以上操作可能会出现无法执行的问题，执行以下指令再操作
-```
-sudo aa-remove-unknown
-```
-#### 1.6.3.2. 容器内部信息的获取
-* 查看容器日志
-    * docker logs -f --tail=5 name|id
-```bash
-lgj@lgj-Lenovo-G470:~$ docker logs --help
-
-Usage:	docker logs [OPTIONS] CONTAINER
-
-Fetch the logs of a container
-
-Options:
-      --details        Show extra details provided to logs
-  -f, --follow         Follow log output //动态更新
-      --since string   Show logs since timestamp (e.g. 2013-01-02T13:23:37) or relative (e.g. 42m for 42 minutes)
-      --tail string    Number of lines to show from the end of the logs (default "all") //显示行数
-  -t, --timestamps     Show timestamps
-      --until string   Show logs before a timestamp (e.g. 2013-01-02T13:23:37) or relative (e.g. 42m for 42 minutes)
-
-```
-
-* 查看容器进程
-    * docker top name|id
-
-* 查看容器信息
-    * docker inspect name|id
-
-* 容器内执行命令
-    * docker exec -it name /bin/bash 执行时确保容器处于运行状态
-    
-### 1.6.4. 镜像
-<a href="#menu" style="float:right">目录</a>
-
-#### 1.6.4.1. 基本概念
-* 镜像是一个包含程序运行必要依赖环境和代码的只读文件，采用分层的文件系统，将每一次改变以读写层的形式增加到原来的只读文件上
-
-* Docker镜像的系统结构(由上而下)
-    * kernel(bootfs)
-    * ubuntu(根镜像)
-    * add nginx （镜像1）
-    * add vim (镜像2)
-    * 可读写(容器)
-* 镜像的本质是磁盘上一系列文件的集合。创建新的镜像是在原有的镜像文件上进行增删改，镜像之间并不孤立，而是上层依赖下层。
-* 镜像的写时复制机制
-    * 创建一个容器时，实际上是在该镜像上创建一个空的可读写文件系统层级。可以将这个容器当成一个临时镜像。
-    * 原镜像的内容都是以只读方式挂载进来的，容器会读取镜像的内容。
-    * 一旦涉及到修改镜像文件，便会触发Docker从原镜像中复制这个文件到临时镜像中，所有修改均发生在临时镜像中。不会对原镜像产生任何影响。  
-
-#### 1.6.4.2. 本地镜像的管理
-
-* 查看镜像
-    * docker images
-    * 显示参数说明
-        * REPOSITORY
-            * 镜像仓库
-        * TAG
-            * 镜像标签，没指定则latest
-        * IMAGE ID
-            * 镜像ID
-        * CREATE
-            * 创建时间信息
-        * VIRTUAL SIZE
-            * 镜像所占用的虚拟大小，包括所有共享文件的大小
-    * 镜像的完整标识
-        * 仓库：TAG
-
-* 下载镜像
-    * docker run 时，如果本地没有，则从仓库下载
-    * docker search 搜素镜像
-        * 显示信息说明
-            *  mame
-                * 镜像名称,由命名空间和仓库名称组成
-            * description 
-                * 镜像描述
-            * stars
-                * 评分
-            * official
-                * 是否为官方镜像
-            * automated
-                * 是否使用了自动构建
-    * 拉取镜像到本地
-        * docker pull ubuntu:18
-
-* 删除镜像
-    * docker rmi name|id
-
-* 创建本地镜像
-    * 基于容器创建
-        * docker commit -m="xxxx" --author="xxx"  containName|id  xxx/xxx:1.0
-```bash
-lgj@lgj-Lenovo-G470:~$ docker commit --help
-
-Usage:	docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
-
-Create a new image from a container's changes
-
-Options:
-  -a, --author string    Author (e.g., "John Hannibal Smith <hannibal@a-team.com>")
-  -c, --change list      Apply Dockerfile instruction to the created image
-  -m, --message string   Commit message
-  -p, --pause            Pause container during commit (default true)
-
-```
-### 1.6.5. Docker File
-<a href="#menu" style="float:right">目录</a>
-
-**FROM**
-* 功能为指定基础镜像，并且必须是第一条指令。
-* 如果不以任何镜像为基础，那么写法为：FROM scratch。
-* 同时意味着接下来所写的指令将作为镜像的第一层开始
-
-* 语法：
-    * FROM image
-    * FROM image:tag
-    * FROM image:digest 
-    * 三种写法，其中tag和digest 是可选项，如果没有选择，那么默认值为latest
-
-**RUN**
-* 功能为运行指定的命令
-* RUN命令有两种格式
-    * RUN command
-    * RUN ["executable", "param1", "param2"]
-
-第一种后边直接跟shell命令
-在linux操作系统上默认 /bin/sh -c
-在windows操作系统上默认 cmd /S /C
-第二种是类似于函数调用。
-可将executable理解成为可执行文件，后面就是两个参数。
-
-两种写法比对：
-RUN /bin/bash -c 'source $HOME/.bashrc; echo $HOME
-RUN ["/bin/bash", "-c", "echo hello"]
-注意：多行命令不要写多个RUN，原因是Dockerfile中每一个指令都会建立一层.
-多少个RUN就构建了多少层镜像，会造成镜像的臃肿、多层，不仅仅增加了构件部署的时间，还容易出错。
-RUN书写时的换行符是\
-多条命令:
-RUN apt-get update && \
-    apt install vim
-
-
-**CMD**
-* 功能为容器启动时要运行的命令
-* 语法有三种写法
-    * CMD ["executable","param1","param2"]
-    * CMD ["param1","param2"]
-    * CMD command param1 param2
-
-第三种比较好理解了，就时shell这种执行方式和写法
-第一种和第二种其实都是可执行文件加上参数的形式
-
-举例说明两种写法：
-CMD [ "sh", "-c", "echo $HOME" 
-CMD [ "echo", "$HOME" ]
-补充细节：这里边包括参数的一定要用双引号，就是",不能是单引号。千万不能写成单引号。
-原因是参数传递后，docker解析的是一个JSON array
-
-
-**RUN & CMD**
-
-不要把RUN和CMD搞混了。
-RUN是构件容器时就运行的命令以及提交运行结果
-CMD是容器启动时执行的命令，在构件时并不运行，构件时紧紧指定了这个命令到底是个什么样子
-
-**LABEL**
-
-功能是为镜像指定标签
-* 语法：
-    * LABEL key=value key=value key=value ...
- 一个Dockerfile种可以有多个LABEL，如下：
-LABEL "com.example.vendor"="ACME Incorporated"
-LABEL com.example.label-with-value="foo"
-LABEL version="1.0"
-LABEL description="This text illustrates \
-that label-values can span multiple lines."
- 但是并不建议这样写，最好就写成一行，如太长需要换行的话则使用\符号
-
-如下：
-
-LABEL multi.label1="value1" \
-multi.label2="value2" \
-other="value3"
- 
-说明：LABEL会继承基础镜像种的LABEL，如遇到key相同，则值覆盖
-
-**MAINTAINER**
-指定作者
-* 语法：
-    * MAINTAINER name
-
-**EXPOSE**
-
-功能为暴漏容器运行时的监听端口给外部
-但是EXPOSE并不会使容器访问主机的端口
-如果想使得容器与主机的端口有映射关系，必须在容器启动的时候加上 -P参数
-
-**ENV**
-
-功能为设置环境变量
-语法有两种
-1. ENV key value
-2. ENV key=value ...
-两者的区别就是第一种是一次设置一个，第二种是一次设置多个
-
-**ADD**
-一个复制命令，把文件复制到景象中。
-如果把虚拟机与容器想象成两台linux服务器的话，那么这个命令就类似于scp，只是scp需要加用户名和密码的权限验证，而ADD不用。
-语法如下：
-
-1. ADD src... dest
-2. ADD ["src",... "dest"]
-
-dest路径的填写可以是容器内的绝对路径，也可以是相对于工作目录的相对路径
-src可以是一个本地文件或者是一个本地压缩文件，还可以是一个url
-如果把src写成一个url，那么ADD就类似于wget命令
-
-如以下写法都是可以的：
-ADD test relativeDir/ 
-ADD test /relativeDir
-ADD http://example.com/foobar /
-尽量不要把scr写成一个文件夹，如果src是一个文件夹了，复制整个目录的内容,包括文件系统元数据
-
-**COPY**
-看这个名字就知道，又是一个复制命令
-语法如下：
-1. COPY src... dest
-2. COPY ["src",... "dest"]
-与ADD的区别
-COPY的src只能是本地文件，其他用法一致
-
-**ENTRYPOINT**
-功能是启动时的默认命令
-语法如下：
-1. ENTRYPOINT ["executable", "param1", "param2"]
-2. ENTRYPOINT command param1 param2
-
-如果从上到下看到这里的话，那么你应该对这两种语法很熟悉啦。
-第二种就是写shel
-第一种就是可执行文件加参数
-与CMD比较说明（这俩命令太像了，而且还可以配合使用）：
-1. 相同点：
-只能写一条，如果写了多条，那么只有最后一条生效
-容器启动时才运行，运行时机相同
-2. 不同点：
-ENTRYPOINT不会被运行的command覆盖，而CMD则会被覆盖
-如果我们在Dockerfile种同时写了ENTRYPOINT和CMD，并且CMD指令不是一个完整的可执行命令，那么CMD指定的内容将会作为ENTRYPOINT的参数
-
-如下：
-FROM ubuntu
-ENTRYPOINT ["top", "-b"]
-CMD ["-c"]
-如果我们在Dockerfile种同时写了ENTRYPOINT和CMD，并且CMD是一个完整的指令，那么它们两个会互相覆盖，谁在最后谁生效
-
-如下：
-FROM ubuntu
-ENTRYPOINT ["top", "-b"]
-CMD ls -al
-那么将执行ls -al ,top -b不会执行。
-
-**VOLUME**
-可实现挂载功能，可以将内地文件夹或者其他容器种得文件夹挂在到这个容器种
-语法为：
-VOLUME ["/data"]
-说明：
-["/data"]可以是一个JsonArray ，也可以是多个值。所以如下几种写法都是正确的
-
-VOLUME ["/var/log/"]
-VOLUME /var/log
-VOLUME /var/log /var/db
-一般的使用场景为需要持久化存储数据时
-
-容器使用的是AUFS，这种文件系统不能持久化数据，当容器关闭后，所有的更改都会丢失。
-
-所以当数据需要持久化时用这个命令。
-
-**USER**
-设置启动容器的用户，可以是用户名或UID，所以，只有下面的两种写法是正确的
-USER daemo
-USER UID
-注意：如果设置了容器以daemon用户去运行，那么RUN, CMD 和 ENTRYPOINT 都会以这个用户去运行
-
-**WORKDIR**
-语法：
-WORKDIR /path/to/workdir
-
-设置工作目录，对RUN,CMD,ENTRYPOINT,COPY,ADD生效。如果不存在则会创建，也可以设置多次。
-如：
-WORKDIR /a
-WORKDIR b
-WORKDIR c
-RUN pwd
-pwd执行的结果是/a/b/c
-
-WORKDIR也可以解析环境变量
-如：
-ENV DIRPATH /path
-WORKDIR $DIRPATH/$DIRNAME
-RUN pwd
-pwd的执行结果是/path/$DIRNAME
-
-**ARG**
-语法：
-ARG name[default value]
-设置变量命令，ARG命令定义了一个变量，在docker build创建镜像的时候，使用 --build-arg varname=value来指定参数
-
-如果用户在build镜像时指定了一个参数没有定义在Dockerfile种，那么将有一个Warning
-
-提示如下：
-
-[Warning] One or more build-args [foo] were not consumed.
-    
-
-我们可以定义一个或多个参数，如下：
-
-FROM busybox
-ARG user1
-ARG buildno
-...
-也可以给参数一个默认值：
-
-FROM busybox
-ARG user1=someuser
-ARG buildno=1
-...
-如果我们给了ARG定义的参数默认值，那么当build镜像时没有指定参数值，将会使用这个默认值
-
-**ONBUILD**
-
-语法：
-ONBUILD [INSTRUCTION]
-这个命令只对当前镜像的子镜像生效。
-比如当前镜像为A，在Dockerfile种添加：
-ONBUILD RUN ls -al
-这个 ls -al 命令不会在A镜像构建或启动的时候执行
-此时有一个镜像B是基于A镜像构建的，那么这个ls -al 命令会在B镜像构建的时候被执行。
-
-**STOPSIGNAL**
-
-语法：
-STOPSIGNAL signal
-STOPSIGNAL命令是的作用是当容器推出时给系统发送什么样的指令
-
-**HEALTHCHECK**
-容器健康状况检查命令
-
-语法有两种：
-1. HEALTHCHECK [OPTIONS] CMD command
-2. HEALTHCHECK NONE
-第一个的功能是在容器内部运行一个命令来检查容器的健康状况
-第二个的功能是在基础镜像中取消健康检查命令
-[OPTIONS]的选项支持以下三中选项：
-    --interval=DURATION 两次检查默认的时间间隔为30秒
-    --timeout=DURATION 健康检查命令运行超时时长，默认30秒
-    --retries=N 当连续失败指定次数后，则容器被认为是不健康的，状态为unhealthy，默认次数是3
-
-注意：
-HEALTHCHECK命令只能出现一次，如果出现了多次，只有最后一个生效。
-CMD后边的命令的返回值决定了本次健康检查是否成功，具体的返回值如下：
-0: success - 表示容器是健康的
-1: unhealthy - 表示容器已经不能工作了
-2: reserved - 保留值
-例子：
-HEALTHCHECK --interval=5m --timeout=3s \
-CMD curl -f http://localhost/ || exit 1
-健康检查命令是：curl -f http://localhost/ || exit 
-两次检查的间隔时间是5秒
-命令超时时间为3秒    
-
-```
-lgj@lgj-Lenovo-G470:~$ docker build --help
-
-Usage:	docker build [OPTIONS] PATH | URL | -
-
-Build an image from a Dockerfile
-
-Options:
-      --add-host list           Add a custom host-to-IP mapping (host:ip)
-      --build-arg list          Set build-time variables
-      --cache-from strings      Images to consider as cache sources
-      --cgroup-parent string    Optional parent cgroup for the container
-      --compress                Compress the build context using gzip
-      --cpu-period int          Limit the CPU CFS (Completely Fair Scheduler) period
-      --cpu-quota int           Limit the CPU CFS (Completely Fair Scheduler) quota
-  -c, --cpu-shares int          CPU shares (relative weight)
-      --cpuset-cpus string      CPUs in which to allow execution (0-3, 0,1)
-      --cpuset-mems string      MEMs in which to allow execution (0-3, 0,1)
-      --disable-content-trust   Skip image verification (default true)
-  -f, --file string             Name of the Dockerfile (Default is 'PATH/Dockerfile')
-      --force-rm                Always remove intermediate containers
-      --iidfile string          Write the image ID to the file
-      --isolation string        Container isolation technology
-      --label list              Set metadata for an image
-  -m, --memory bytes            Memory limit
-      --memory-swap bytes       Swap limit equal to memory plus swap: '-1' to enable unlimited swap
-      --network string          Set the networking mode for the RUN instructions during build (default "default")
-      --no-cache                Do not use cache when building the image
-      --pull                    Always attempt to pull a newer version of the image
-  -q, --quiet                   Suppress the build output and print image ID on success
-      --rm                      Remove intermediate containers after a successful build (default true)
-      --security-opt strings    Security options
-      --shm-size bytes          Size of /dev/shm
-  -t, --tag list                Name and optionally a tag in the 'name:tag' format
-      --target string           Set the target build stage to build.
-      --ulimit ulimit           Ulimit options (default [])
-
-```
-```
-OPTIONS说明：
-
---build-arg=[] :设置镜像创建时的变量；
-
---cpu-shares :设置 cpu 使用权重；
-
---cpu-period :限制 CPU CFS周期；
-
---cpu-quota :限制 CPU CFS配额；
-
---cpuset-cpus :指定使用的CPU id；
-
---cpuset-mems :指定使用的内存 id；
-
---disable-content-trust :忽略校验，默认开启；
-
--f :指定要使用的Dockerfile路径；
-
---force-rm :设置镜像过程中删除中间容器；
-
---isolation :使用容器隔离技术；
-
---label=[] :设置镜像使用的元数据；
-
--m :设置内存最大值；
-
---memory-swap :设置Swap的最大值为内存+swap，"-1"表示不限swap；
-
---no-cache :创建镜像的过程不使用缓存；
-
---pull :尝试去更新镜像的新版本；
-
---quiet, -q :安静模式，成功后只输出镜像 ID；
-
---rm :设置镜像成功后删除中间容器；
-
---shm-size :设置/dev/shm的大小，默认值是64M；
-
---ulimit :Ulimit配置。
-
---tag, -t: 镜像的名字及标签，通常 name:tag 或者 name 格式；可以在一次构建中为一个镜像设置多个标签。
-
---network: 默认 default。在构建期间设置RUN指令的网络模式
-```
-### 1.6.6. 数据卷和容器连接
-<a href="#menu" style="float:right">目录</a>
-
-#### 1.6.6.1. 容器网络基础
-ifconfig 可以看到docker的默认分配地址是172.17.0.1
-```bash
-lgj@lgj-Lenovo-G470:~$ ifconfig
-docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
-        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
-        ether 02:42:d8:73:72:ea  txqueuelen 0  (Ethernet)
-        RX packets 0  bytes 0 (0.0 B)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 0  bytes 0 (0.0 B)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-
-```
-* 配置容器端口
-    * 大写 -P
-        * docker run|create -P
-            * 随机分配一个49000～49900内未分配的端口
-    * 小写 -p
-        * docker run|create -p  ip:hostPort:containerPort
-        * docker run|create -p  ip::containerPort
-            * 主机的随机端口和容器的端口进行映射
-        * docker run|create -p  hostPort:containerPort
-    * 查看容器端口映射情况
-        * docker port name|id  5000  查看容器5000端口与主机端口映射情况
-    * 查看容器所有信息，包括端口映射
-        * docker inspect name|id 
-
-* Docker设置固定IP
-    * Docker安装后，默认会创建下面三种网络类型
-        * docker network ls 查看
-            * bridge：桥接网络
-                * 默认情况下启动的Docker容器，都是使用 bridge，Docker安装时创建的桥接网络，每次Docker容器重启时，会按照顺序获取对应的IP地址，这个就导致重启下，Docker的IP地址就变了
-            * none：无指定网络
-                * 使用 --network=none ，docker 容器就不会分配局域网的IP
-            * host： 主机网络
-                * 使用 --network=host，此时，Docker 容器的网络会附属在主机上，两者是互通的。
-    * 创建自定义网络：（设置固定IP）
-        *  创建自定义网络，并且指定网段：172.18.0.0/16
-        *  docker network create --subnet=172.18.0.0/16 mynetwork
-    * 创建容器时指定IP
-        * --net mynetwork 指定网络
-        * --ip 172.18.0.5 指定ip
-        * docker run --net mynetwork --ip 172.18.0.5 -p 7205:6379 --name redis7205 -d redis-cluster:5.0.3 redis-server /etc/redis/redis.conf
-        * 查看 docker inspect redis7205 |grep IPAddress
-        * docker inspect --format '{{.NetworkSettings.IPAddress}}' mysqlslaver
-
-
-
-#### 1.6.6.2. 数据卷
-* 数据卷作用
-    * 是一个目录或者文件，绑定到容器的目录或者文件，两处内容同步更新   
-    * 绕过"拷贝写"系统，以达到本地磁盘IO性能
-    * 绕过"拷贝写"系统，有些文件不需要在docker commit 的时候打包进镜像中
-    * 在多个容器之间共享目录
-    * 在宿主和容器之间共享目录
-    * 在宿主和容器之间共享单个文件
-* 创建数据卷
-    * 路径需要是绝对路径
-    * dockerfile
-        * volume /xxx/xxx
-    * docker run -v 容器目录
-    * docker inspect |grep volumns 查看
-    * 挂载文件
-        * -v 本地目录:容器目录 ，本地目录为绝对目录，可以是文件 
-        * docker run -v /xx/xx.text:/xx/xx.text
-    * 主机上的数据卷位置为/var/lib/docker/volumes
-    * 共享数据卷
-        * docker run --volumes-from=aaa   --name=bbb    xxxx
-        * 容器bbb 将共享容器aaa的数据卷
-        * 无论是声明数据卷的容器还是后续引用该数据卷的容器，容器的停止和删除都不会导致数据卷本身删除。如果需要将数据卷删除，那么需要删除所有它依赖的容器，并且在删除最后一个依赖的容器时加入-v标识。docker rm -v name|id
-
-* 数据卷管理
-    * docker volume ls  列出数据卷
-    * docker volume rm volume_id  根据数据卷ID删除 
-    * docker rm -v name|id  随人容器删除，数据卷没被其他容器使用才会被删除
-```
-docker volume  --help
-
-Usage:	docker volume COMMAND
-
-Manage volumes
-
-Commands:
-  create      Create a volume
-  inspect     Display detailed information on one or more volumes
-  ls          List volumes
-  prune       Remove all unused local volumes
-  rm          Remove one or more volumes
-
-```
-
-
-### 1.6.7. 案例
-<a href="#menu" style="float:right">目录</a>
-
-#### 1.6.7.1. docker 安装Mysqk主从复制
-* https://www.cnblogs.com/songwenjie/p/9371422.html
-
-#### 1.6.7.2. docker 安装mycat
-
-
-* 安装openjdk:8镜像
-    * docker pull  openjdk:8
-* 下载mycat
-    * http://www.mycat.io/
-    * http://dl.mycat.io/1.6.7.1/
-* 
-
-## 1.7. VIM
-<a href="#menu" style="float:right">目录</a>
-
-* 安装
-    * apt-get update && apt install vim
-
-* 启动配置文件
-    * /etc/vim/vimrc 全局配置文件
-    * ~/vimrc
-
-* 支持鼠标操作
-    * 输入命令 set mouse=a
-
-
-## 1.8. NMON监控工具
-
-<a href="#menu" style="float:right">目录</a>
-
-* 安装
-    * sudo apt -install nmon
-* 使用 
-    * 执行命令: nmon
-* 常用命令
-```bash
- Use these keys to toggle statistics on/off:                                                                                                                                                             │
-│     c = CPU        l = CPU Long-term   - = Faster screen updates                                                                                                                                         │
-│     m = Memory     j = Filesystems     + = Slower screen updates                                                                                                                                         │
-│     d = Disks      n = Network         V = Virtual Memory                                                                                                                                                │
-│     r = Resource   N = NFS             v = Verbose hints                                                                                                                                                 │
-│     k = kernel     t = Top-processes   . = only busy disks/procs                                                                                                                                         │
-│     h = more options                   q = Quit  
-
-```
-
-## 1.9. 正则表达式
-正则表达式(regular expression)描述了一种字符串匹配的模式（pattern），可以用来检查一个串是否含有某种子串、将匹配的子串替换或者从某个串中取出符合某个条件的子串等。
-
-**非打印字符**
-非打印字符也可以是正则表达式的组成部分。下表列出了表示非打印字符的转义序列：
-
-**普通字符**
-普通字符包括没有显式指定为元字符的所有可打印和不可打印字符。这包括所有大写和小写字母、所有数字、所有标点符号和一些其他符号。
-
-|字符|	描述
-|---|---|
-|\cx|	匹配由x指明的控制字符。例如， \cM 匹配一个 Control-M 或回车符。x 的值必须为 A-Z 或 a-z 之一。否则，将 c 视为一个原义的 'c' 字符。
-|\f	|匹配一个换页符。等价于 \x0c 和 \cL。
-|\n	|匹配一个换行符。等价于 \x0a 和 \cJ。
-|\r	|匹配一个回车符。等价于 \x0d 和 \cM。
-|\s	|匹配任何空白字符，包括空格、制表符、换页符等等。等价于 [ \f\n\r\t\v]。注意 Unicode 正则表达式会匹配全角空格符。
-|\S	|匹配任何非空白字符。等价于 [^ \f\n\r\t\v]。
-|\t	|匹配一个制表符。等价于 \x09 和 \cI。
-|\v	|匹配一个垂直制表符。等价于 \x0b 和 \cK。
-
-
-**特殊字符**
-所谓特殊字符，就是一些有特殊含义的字符，如上面说的 runoo*b 中的 *，简单的说就是表示任何字符串的意思。如果要查找字符串中的 * 符号，则需要对 * 进行转义，即在其前加一个 \: runo\*ob 匹配 runo*ob。
-
-许多元字符要求在试图匹配它们时特别对待。若要匹配这些特殊字符，必须首先使字符"转义"，即，将反斜杠字符\ 放在它们前面。下表列出了正则表达式中的特殊字符：
-
-|特别字符|	描述
-|---|---|
-|$|	匹配输入字符串的结尾位置。如果设置了 RegExp 对象的 Multiline 属性，则 \$ 也匹配 '\n' 或 '\r'。要匹配 $ 字符本身，请使用 \\$。
-|( )|	标记一个子表达式的开始和结束位置。子表达式可以获取供以后使用。要匹配这些字符，请使用 \\( 和 \\)。
-|*|	匹配前面的子表达式零次或多次。要匹配 * 字符，请使用 \\*。
-|+|	匹配前面的子表达式一次或多次。要匹配 + 字符，请使用 \\+。
-|.|	匹配除换行符 \n 之外的任何单字符。要匹配 . ，请使用 \\. 。
-|[|	标记一个中括号表达式的开始。要匹配 [，请使用 \\[。
-|?|	匹配前面的子表达式零次或一次，或指明一个非贪婪限定符。要匹配 ? 字符，请使用 \\?。
-|\\|	将下一个字符标记为或特殊字符、或原义字符、或向后引用、或八进制转义符。例如\|'n'\| 匹配字符 'n'。'\n' 匹配换行符。序列 '\\\\' 匹配 "\\"，而 '\\(' 则匹配 "("。
-|^|	匹配输入字符串的开始位置，除非在方括号表达式中使用，此时它表示不接受该字符集合。要匹配 ^ 字符本身，请使用 \\^。
-|{|	标记限定符表达式的开始。要匹配 {，请使用 \\\{。
-|\||	指明两项之间的一个选择。要匹配 \|，请使用 \\\|。
-
-**限定符**
-限定符用来指定正则表达式的一个给定组件必须要出现多少次才能满足匹配。有 * 或 + 或 ? 或 {n} 或 {n,} 或 {n,m} 共6种。
-
-正则表达式的限定符有：
-
-|字符|	描述
-|---|---|
-|*|	匹配前面的子表达式零次或多次。例如，zo* 能匹配 "z" 以及 "zoo"。* 等价于{0,}。
-|+|	匹配前面的子表达式一次或多次。例如，'zo+' 能匹配 "zo" 以及 "zoo"，但不能匹配 "z"。+ 等价于 {1,}。
-|?|	匹配前面的子表达式零次或一次。例如，"do(es)?" 可以匹配 "do" 、 "does" 中的 "does" 、 "doxy" 中的 "do" 。? 等价于 {0,1}。
-|{n}|	n 是一个非负整数。匹配确定的 n 次。例如，'o{2}' 不能匹配 "Bob" 中的 'o'，但是能匹配 "food" 中的两个 o。
-|{n,}|	n 是一个非负整数。至少匹配n 次。例如，'o{2,}' 不能匹配 "Bob" 中的 'o'，但能匹配 "foooood" 中的所有 o。'o{1,}' 等价于 'o+'。'o{0,}' 则等价于 'o*'。
-|{n,m}|	m 和 n 均为非负整数，其中n <= m。最少匹配 n 次且最多匹配 m 次。例如，"o{1,3}" 将匹配 "fooooood" 中的前三个 o。'o{0,1}' 等价于 'o?'。请注意在逗号和两个数之间不能有空格。
-
-**定位符**
-定位符使您能够将正则表达式固定到行首或行尾。它们还使您能够创建这样的正则表达式，这些正则表达式出现在一个单词内、在一个单词的开头或者一个单词的结尾。
-
-定位符用来描述字符串或单词的边界，^ 和 $ 分别指字符串的开始与结束，\b 描述单词的前或后边界，\B 表示非单词边界。
-
-正则表达式的定位符有：
-
-|字符|	描述|
-|---|---|
-|^|	匹配输入字符串开始的位置。如果设置了 RegExp 对象的 Multiline 属性，^ 还会与 \n 或 \r 之后的位置匹配。
-|$|	匹配输入字符串结尾的位置。如果设置了 RegExp 对象的 Multiline 属性，$ 还会与 \n 或 \r 之前的位置匹配。
-|\b|	匹配一个单词边界，即字与空格间的位置。
-|\B|	非单词边界匹配。
-
-* 注意：不能将限定符与定位符一起使用。由于在紧靠换行或者单词边界的前面或后面不能有一个以上位置，因此不允许诸如 ^* 之类的表达式。
-* 若要匹配一行文本开始处的文本，请在正则表达式的开始使用 ^ 字符。不要将 ^ 的这种用法与中括号表达式内的用法混淆。
-* 若要匹配一行文本的结束处的文本，请在正则表达式的结束处使用 $ 字符。
-
-**速记理解技巧编辑**
-.,[ ],^,$
-四个字符是所有语言都支持的正则表达式，所以这四个是基础的正则表达式。正则难理解因为里面有一个等价的概念，这个概念大大增加了理解难度，让很多初学者看起来会懵，如果把等价都恢复成原始写法，自己书写正则就超级简单了，就像说话一样去写你的正则了：
-
-**等价：**
-等价是等同于的意思，表示同样的功能，用不同符号来书写。
-?,*,+,\d,\w 都是等价字符
-　　?等价于匹配长度{0,1}
-　　*等价于匹配长度{0,} 
-　　+等价于匹配长度{1,}
-　　\d等价于[0-9]
-\D等价于[^0-9]
-　　\w等价于[A-Za-z_0-9]
-\W等价于[^A-Za-z_0-9]。
-
-**常用运算符与表达式：**
-　　^ 开始
-　　（） 域段
-　　[] 包含,默认是一个字符长度
-　　[^] 不包含,默认是一个字符长度
-　　{n,m} 匹配长度 
-　　. 任何单个字符(\. 字符点)
-　　| 或
-　　\ 转义
-　　$ 结尾
-　　[A-Z] 26个大写字母
-　　[a-z] 26个小写字母
-　　[0-9] 0至9数字
-[A-Za-z0-9] 26个大写字母、26个小写字母和0至9数字
-　　， 分割
-　　.
-　　
-**分割语法：**
-　　[A,H,T,W] 包含A或H或T或W字母
-　　[a,h,t,w] 包含a或h或t或w字母
-　　[0,3,6,8] 包含0或3或6或8数字
-
-**语法与释义：**
-　　基础语法 "^([]{})([]{})([]{})$"
-　　正则字符串 = "开始（[包含内容]{长度}）（[包含内容]{长度}）（[包含内容]{长度}）结束" 
-　　
-　　?,*,+,\d,\w 这些都是简写的,完全可以用[]和{}代替，在(?:)(?=)(?!)(?<=)(?<!)(?i)(*?)(+?)这种特殊组合情况下除外。
-　　初学者可以忽略?,*,+,\d,\w一些简写标示符，学会了基础使用再按表自己去等价替换
-
-
-
-**实例**
-```
-1.验证用户名和密码：（"^[a-zA-Z]\w{5,15}$"）正确格式："[A-Z][a-z]_[0-9]"组成,并且第一个字必须为字母6~16位；
-2.验证电话号码：（"^(\d{3,4}-)\d{7,8}$"）正确格式：xxx/xxxx-xxxxxxx/xxxxxxxx；
-3.验证手机号码："^1[3|4|5|7|8][0-9]{9}$"；
-4.验证身份证号（15位）："\d{14}[[0-9],0-9xX]"，（18位）："\d{17}(\d|X|x)"；
-5.验证Email地址：("^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$")；
-6.只能输入由数字和26个英文字母组成的字符串：("^[A-Za-z0-9]+$")；
-7.整数或者小数：^[0-9]+([.][0-9]+){0,1}$
-8.只能输入数字："^[0-9]*$"。
-9.只能输入n位的数字："^\d{n}$"。
-10.只能输入至少n位的数字："^\d{n,}$"。
-11.只能输入m~n位的数字："^\d{m,n}$"。
-12.只能输入零和非零开头的数字："^(0|[1-9][0-9]*)$"。
-13.只能输入有两位小数的正实数："^[0-9]+(\.[0-9]{2})?$"。
-14.只能输入有1~3位小数的正实数："^[0-9]+(\.[0-9]{1,3})?$"。
-15.只能输入非零的正整数："^\+?[1-9][0-9]*$"。
-16.只能输入非零的负整数："^\-[1-9][0-9]*$"。
-17.只能输入长度为3的字符："^.{3}$"。
-18.只能输入由26个英文字母组成的字符串："^[A-Za-z]+$"。
-19.只能输入由26个大写英文字母组成的字符串："^[A-Z]+$"。
-20.只能输入由26个小写英文字母组成的字符串："^[a-z]+$"。
-21.验证是否含有^%&',;=?$\"等字符："[%&',;=?$\\^]+"。
-22.只能输入汉字："^[\u4e00-\u9fa5]{0,}$"。
-23.验证URL："^http://([\w-]+\.)+[\w-]+(/[\w-./?%&=]*)?$"。
-24.验证一年的12个月："^(0?[1-9]|1[0-2])$"正确格式为："01"～"09"和"10"～"12"。
-25.验证一个月的31天："^((0?[1-9])|((1|2)[0-9])|30|31)$"正确格式为；"01"～"09"、"10"～"29"和“30”~“31”。
-26.获取日期正则表达式：\\d{4}[年|\-|\.]\d{\1-\12}[月|\-|\.]\d{\1-\31}日?
-评注：可用来匹配大多数年月日信息。
-27.匹配双字节字符(包括汉字在内)：[^\x00-\xff]
-评注：可以用来计算字符串的长度（一个双字节字符长度计2，ASCII字符计1）
-28.匹配空白行的正则表达式：\n\s*\r
-评注：可以用来删除空白行
-29.匹配HTML标记的正则表达式：<(\S*?)[^>]*>.*?</>|<.*? />
-评注：网上流传的版本太糟糕，上面这个也仅仅能匹配部分，对于复杂的嵌套标记依旧无能为力
-30.匹配首尾空白字符的正则表达式：^\s*|\s*$
-评注：可以用来删除行首行尾的空白字符(包括空格、制表符、换页符等等)，非常有用的表达式
-31.匹配网址URL的正则表达式：[a-zA-z]+://[^\s]*
-评注：网上流传的版本功能很有限，上面这个基本可以满足需求
-32.匹配帐号是否合法(字母开头，允许5-16字节，允许字母数字下划线)：^[a-zA-Z][a-zA-Z0-9_]{4,15}$
-评注：表单验证时很实用
-33.匹配腾讯QQ号：[1-9][0-9]{4,}
-评注：腾讯QQ号从10 000 开始
-34.匹配中国邮政编码：[1-9]\\d{5}(?!\d)
-评注：中国邮政编码为6位数字
-35.匹配ip地址：([1-9]{1,3}\.){3}[1-9]。
-```
-<!-- TOC -->
-
-- [1. 计算机基础](#1-计算机基础)
-    - [1.1. 数据类型](#11-数据类型)
-        - [1.1.1. ASCII](#111-ascii)
-- [2. 操作系统](#2-操作系统)
-    - [2.1. 操作系统基本概念](#21-操作系统基本概念)
-            - [2.1.0.1. 操作系统发展过程](#2101-操作系统发展过程)
-            - [2.1.0.2. 基本特性](#2102-基本特性)
-        - [2.1.1. Linux进程和线程的区别](#211-linux进程和线程的区别)
-- [4. 网络TCP](#4-网络tcp)
-    - [4.1. OSI网路分层](#41-osi网路分层)
-    - [4.2. IP(Internet Protocol,网际协议)](#42-ipinternet-protocol网际协议)
-        - [4.2.1. 基本概念](#421-基本概念)
-        - [4.2.2. IP地址定义](#422-ip地址定义)
-        - [4.2.3. IP协议相关技术](#423-ip协议相关技术)
-            - [4.2.3.1. DNS](#4231-dns)
-            - [4.2.3.2. ARP](#4232-arp)
-    - [4.3. 传输层](#43-传输层)
-        - [4.3.1. 基本概念](#431-基本概念)
-            - [4.3.1.1. TCP和UDP差别](#4311-tcp和udp差别)
-            - [4.3.1.2. 端口](#4312-端口)
-        - [4.3.2. UDP](#432-udp)
-        - [4.3.3. TCP](#433-tcp)
-            - [4.3.3.1. 连接管理](#4331-连接管理)
-            - [4.3.3.2. 超时重传机制](#4332-超时重传机制)
-            - [4.3.3.3. 数据流和窗口机制](#4333-数据流和窗口机制)
-            - [4.3.3.4. 阻塞控制](#4334-阻塞控制)
-- [5. 网络HTTP](#5-网络http)
-    - [5.1. 基本概念](#51-基本概念)
-        - [5.1.1. 访问一个网站的流程](#511-访问一个网站的流程)
-        - [5.1.2. 媒体类型(MIME)](#512-媒体类型mime)
-    - [5.2. URL和资源](#52-url和资源)
-    - [5.3. HTTP报文](#53-http报文)
-        - [5.3.1. 请求报文和响应报文](#531-请求报文和响应报文)
-        - [5.3.2. 首部](#532-首部)
-        - [5.3.3. 方法](#533-方法)
-        - [5.3.4. 状态码](#534-状态码)
-    - [5.4. 连接管理](#54-连接管理)
-        - [5.4.1. 对TCP性能的考虑](#541-对tcp性能的考虑)
-        - [5.4.2. 持久连接](#542-持久连接)
-    - [5.5. WEB服务器](#55-web服务器)
-    - [5.6. 代理](#56-代理)
-    - [5.7. 缓存](#57-缓存)
-    - [5.8. 网关](#58-网关)
-    - [5.9. 客户端识别与Cookie机制](#59-客户端识别与cookie机制)
-    - [5.10. 基本认证机制](#510-基本认证机制)
-    - [5.11. 摘要认证](#511-摘要认证)
-    - [5.12. 安全HTTP](#512-安全http)
-    - [5.13. 实体和编码](#513-实体和编码)
-    - [5.14. 国际化](#514-国际化)
-    - [5.15. WEB主机托管](#515-web主机托管)
-    - [5.16. 重定向和负载均衡](#516-重定向和负载均衡)
-- [6. Unix环境编程](#6-unix环境编程)
-- [7. Shell](#7-shell)
-    - [7.1. 文件相关](#71-文件相关)
-    - [7.2. 系统监控](#72-系统监控)
-    - [7.3. 处理数据文件](#73-处理数据文件)
-    - [7.4. 环境变量](#74-环境变量)
-    - [7.5. 基本脚本命令](#75-基本脚本命令)
-    - [7.6. 结构化命令](#76-结构化命令)
-    - [7.7. 处理用户输入](#77-处理用户输入)
-    - [7.8. 控制脚本](#78-控制脚本)
+- [2. 计算机&网络&操作系统](#2-计算机网络操作系统)
+    - [2.1. 计算机基础](#21-计算机基础)
+        - [2.1.1. 数据类型](#211-数据类型)
+            - [2.1.1.1. ASCII](#2111-ascii)
+    - [2.2. 操作系统](#22-操作系统)
+        - [2.2.1. 操作系统基本概念](#221-操作系统基本概念)
+                - [2.2.1.0.1. 操作系统发展过程](#22101-操作系统发展过程)
+                - [2.2.1.0.2. 基本特性](#22102-基本特性)
+            - [2.2.1.1. Linux进程和线程的区别](#2211-linux进程和线程的区别)
+    - [2.3. 网络TCP](#23-网络tcp)
+        - [2.3.1. OSI网路分层](#231-osi网路分层)
+        - [2.3.2. IP(Internet Protocol,网际协议)](#232-ipinternet-protocol网际协议)
+            - [2.3.2.1. 基本概念](#2321-基本概念)
+            - [2.3.2.2. IP地址定义](#2322-ip地址定义)
+            - [2.3.2.3. IP协议相关技术](#2323-ip协议相关技术)
+                - [2.3.2.3.1. DNS](#23231-dns)
+                - [2.3.2.3.2. ARP](#23232-arp)
+        - [2.3.3. 传输层](#233-传输层)
+            - [2.3.3.1. 基本概念](#2331-基本概念)
+                - [2.3.3.1.1. TCP和UDP差别](#23311-tcp和udp差别)
+                - [2.3.3.1.2. 端口](#23312-端口)
+            - [2.3.3.2. UDP](#2332-udp)
+            - [2.3.3.3. TCP](#2333-tcp)
+                - [2.3.3.3.1. 连接管理](#23331-连接管理)
+                - [2.3.3.3.2. 超时重传机制](#23332-超时重传机制)
+                - [2.3.3.3.3. 数据流和窗口机制](#23333-数据流和窗口机制)
+                - [2.3.3.3.4. 阻塞控制](#23334-阻塞控制)
+    - [2.4. 网络HTTP](#24-网络http)
+        - [2.4.1. 基本概念](#241-基本概念)
+            - [2.4.1.1. 访问一个网站的流程](#2411-访问一个网站的流程)
+            - [2.4.1.2. 媒体类型(MIME)](#2412-媒体类型mime)
+        - [2.4.2. URL和资源](#242-url和资源)
+        - [2.4.3. HTTP报文](#243-http报文)
+            - [2.4.3.1. 请求报文和响应报文](#2431-请求报文和响应报文)
+            - [2.4.3.2. 首部](#2432-首部)
+            - [2.4.3.3. 方法](#2433-方法)
+            - [2.4.3.4. 状态码](#2434-状态码)
+        - [2.4.4. 连接管理](#244-连接管理)
+            - [2.4.4.1. 对TCP性能的考虑](#2441-对tcp性能的考虑)
+            - [2.4.4.2. 持久连接](#2442-持久连接)
+        - [2.4.5. WEB服务器](#245-web服务器)
+        - [2.4.6. 代理](#246-代理)
+        - [2.4.7. 缓存](#247-缓存)
+        - [2.4.8. 网关](#248-网关)
+        - [2.4.9. 客户端识别与Cookie机制](#249-客户端识别与cookie机制)
+        - [2.4.10. 基本认证机制](#2410-基本认证机制)
+        - [2.4.11. 摘要认证](#2411-摘要认证)
+        - [2.4.12. 安全HTTP](#2412-安全http)
+        - [2.4.13. 实体和编码](#2413-实体和编码)
+        - [2.4.14. 国际化](#2414-国际化)
+        - [2.4.15. WEB主机托管](#2415-web主机托管)
+        - [2.4.16. 重定向和负载均衡](#2416-重定向和负载均衡)
+    - [2.5. Unix环境编程](#25-unix环境编程)
+        - [2.5.1. 基本概念](#251-基本概念)
+        - [2.5.2. IO模型](#252-io模型)
+        - [2.5.3. select&poll&epoll比较](#253-selectpollepoll比较)
+            - [2.5.3.1. 整体概览](#2531-整体概览)
+            - [2.5.3.2. 对比总结](#2532-对比总结)
+    - [2.6. Shell](#26-shell)
+        - [2.6.1. 文件相关](#261-文件相关)
+        - [2.6.2. 系统监控](#262-系统监控)
+        - [2.6.3. 处理数据文件](#263-处理数据文件)
+        - [2.6.4. 环境变量](#264-环境变量)
+        - [2.6.5. 基本脚本命令](#265-基本脚本命令)
+        - [2.6.6. 结构化命令](#266-结构化命令)
+        - [2.6.7. 处理用户输入](#267-处理用户输入)
+        - [2.6.8. 控制脚本](#268-控制脚本)
+- [3. Java与面向对象](#3-java与面向对象)
+    - [3.1. Java基础](#31-java基础)
+        - [3.1.1. 数据类型](#311-数据类型)
+        - [3.1.2. 数据类型](#312-数据类型)
+            - [3.1.2.1. Integer 缓存对象](#3121-integer-缓存对象)
+            - [3.1.2.2. 数组](#3122-数组)
+            - [3.1.2.3. String](#3123-string)
+    - [3.2. 面向对象](#32-面向对象)
+        - [3.2.1. 三大特性](#321-三大特性)
+            - [3.2.1.1. 权限修饰符](#3211-权限修饰符)
+            - [3.2.1.2. 接口和抽象类](#3212-接口和抽象类)
+            - [3.2.1.3. 内部类](#3213-内部类)
+            - [3.2.1.4. 枚举类](#3214-枚举类)
+        - [3.2.2. 范型](#322-范型)
+        - [3.2.3. 集合](#323-集合)
+        - [3.2.4. 异常](#324-异常)
+        - [3.2.5. 注解](#325-注解)
+        - [3.2.6. IO](#326-io)
+        - [3.2.7. 反射](#327-反射)
+        - [3.2.8. JDBC](#328-jdbc)
+    - [3.3. JAVA Socket编程](#33-java-socket编程)
+    - [3.4. JDK版本变化](#34-jdk版本变化)
+    - [3.5. 设计模式](#35-设计模式)
+        - [3.5.1. 设计原则](#351-设计原则)
+            - [3.5.1.1. 单一职责原则](#3511-单一职责原则)
+            - [3.5.1.2. 里氏替换原则](#3512-里氏替换原则)
+            - [3.5.1.3. 依赖倒置原则](#3513-依赖倒置原则)
+            - [3.5.1.4. 接口隔离原则](#3514-接口隔离原则)
+            - [3.5.1.5. 迪米特法则](#3515-迪米特法则)
+            - [3.5.1.6. 开闭原则](#3516-开闭原则)
+        - [3.5.2. UML图](#352-uml图)
+        - [3.5.3. 单例模式](#353-单例模式)
+            - [3.5.3.1. 基本概念](#3531-基本概念)
+            - [3.5.3.2. 实现](#3532-实现)
+        - [3.5.4. 工厂方法模式](#354-工厂方法模式)
+        - [3.5.5. 抽象工厂模式](#355-抽象工厂模式)
+        - [3.5.6. 模板方法模式](#356-模板方法模式)
+        - [3.5.7. 建造者模式](#357-建造者模式)
+        - [3.5.8. 代理模式](#358-代理模式)
+        - [3.5.9. 原型模式](#359-原型模式)
+        - [3.5.10. 中介者模式](#3510-中介者模式)
+        - [3.5.11. 命令模式](#3511-命令模式)
+        - [3.5.12. 责任链模式](#3512-责任链模式)
+        - [3.5.13. 装饰模式](#3513-装饰模式)
+        - [3.5.14. 策略模式](#3514-策略模式)
+        - [3.5.15. 适配器模式](#3515-适配器模式)
+        - [3.5.16. 迭代器模式](#3516-迭代器模式)
+        - [3.5.17. 组合模式](#3517-组合模式)
+        - [3.5.18. 观察者模式](#3518-观察者模式)
+        - [3.5.19. 门面模式](#3519-门面模式)
+        - [3.5.20. 备忘录模式](#3520-备忘录模式)
+        - [3.5.21. 访问者模式](#3521-访问者模式)
+        - [3.5.22. 状态模式](#3522-状态模式)
+        - [3.5.23. 解释器模式](#3523-解释器模式)
+        - [3.5.24. 享元模式](#3524-享元模式)
+        - [3.5.25. 桥梁模式](#3525-桥梁模式)
+    - [3.6. Effective Java总结](#36-effective-java总结)
+        - [3.6.1. 创建和销毁对象](#361-创建和销毁对象)
+        - [3.6.2. 对于所有对象都通用的方法](#362-对于所有对象都通用的方法)
+        - [3.6.3. 类和接口](#363-类和接口)
+        - [3.6.4. 范型](#364-范型)
+        - [3.6.5. 枚举和注解](#365-枚举和注解)
+        - [3.6.6. 方法](#366-方法)
+        - [3.6.7. 通用程序设计](#367-通用程序设计)
+        - [3.6.8. 异常](#368-异常)
+        - [3.6.9. 并发](#369-并发)
+        - [3.6.10. 序列化](#3610-序列化)
+    - [3.7. Java编程思想阅读总结](#37-java编程思想阅读总结)
+        - [3.7.1. 对象导论](#371-对象导论)
+        - [3.7.2. 一切都是对象](#372-一切都是对象)
+        - [3.7.3. 操作符](#373-操作符)
+        - [3.7.4. 控制执行流程](#374-控制执行流程)
+        - [3.7.5. 初始化和清理](#375-初始化和清理)
+        - [3.7.6. 访问权限控制](#376-访问权限控制)
+        - [3.7.7. 复用类](#377-复用类)
+        - [3.7.8. 多态](#378-多态)
+        - [3.7.9. 接口](#379-接口)
+        - [3.7.10. 内部类](#3710-内部类)
+        - [3.7.11. 持有对象](#3711-持有对象)
+        - [3.7.12. 通过异常处理错误](#3712-通过异常处理错误)
+        - [3.7.13. 字符串](#3713-字符串)
+        - [3.7.14. 类型信息](#3714-类型信息)
+        - [3.7.15. 范型](#3715-范型)
+        - [3.7.16. 数组](#3716-数组)
+        - [3.7.17. 容器深入研究](#3717-容器深入研究)
+        - [3.7.18. Java IO系统](#3718-java-io系统)
+        - [3.7.19. 枚举类型](#3719-枚举类型)
+        - [3.7.20. 注解](#3720-注解)
+        - [3.7.21. 并发](#3721-并发)
+        - [3.7.22.](#3722)
+- [4. 基本概念](#4-基本概念)
+- [5. Java多线程](#5-java多线程)
+    - [5.1. 实现方式](#51-实现方式)
+    - [5.2. 基本属性](#52-基本属性)
+    - [5.3. 常用方法](#53-常用方法)
+    - [5.4. 生命周期 & 线程状态](#54-生命周期--线程状态)
+    - [5.5. 线程监控工具](#55-线程监控工具)
+- [6. Synchronized](#6-synchronized)
+        - [6.0.1. 基本概念](#601-基本概念)
+    - [6.1. 基本使用](#61-基本使用)
+    - [6.2. 实现原理](#62-实现原理)
+- [7. 线程间通信](#7-线程间通信)
+    - [7.1. 基本概念](#71-基本概念)
+    - [7.2. 实现消费者和生产者](#72-实现消费者和生产者)
+- [8. Java内存模型](#8-java内存模型)
+- [9. volatile](#9-volatile)
+- [10. Lock](#10-lock)
+- [11. 线程池](#11-线程池)
+- [12. 并发工具类](#12-并发工具类)
+- [13. 异步编程](#13-异步编程)
+- [14. Spring](#14-spring)
+    - [14.1. IOC容器](#141-ioc容器)
+    - [14.2. AOP面向切面编程](#142-aop面向切面编程)
+    - [14.3. Spring 事务管理](#143-spring-事务管理)
+    - [14.4. 常用注解](#144-常用注解)
+    - [14.5. 常用工具类](#145-常用工具类)
+- [15. Sppring MVC](#15-sppring-mvc)
+    - [15.1. Servlet](#151-servlet)
+- [16. SpringBoot](#16-springboot)
+    - [16.1. 基本概念](#161-基本概念)
+    - [16.2. Spring Boot 环境下创建Bean](#162-spring-boot-环境下创建bean)
+- [17. SpringCloud](#17-springcloud)
+- [18. 测试](#18-测试)
+    - [18.1. 基本测试](#181-基本测试)
+    - [18.2. 控制层测试](#182-控制层测试)
+    - [18.3. 服务层测试](#183-服务层测试)
+    - [18.4. DAO层测试](#184-dao层测试)
+- [19. 登录认证](#19-登录认证)
+    - [19.1. Shiro](#191-shiro)
+    - [19.2. oauth2](#192-oauth2)
+    - [19.3. token<span id="menu"></span>](#193-tokenspan-idmenuspan)
+- [20. MySQL](#20-mysql)
+    - [20.1. 基本概念](#201-基本概念)
+        - [20.1.1. 基本概念](#2011-基本概念)
+        - [20.1.2. 常用工具](#2012-常用工具)
+        - [20.1.3. 逻辑架构图](#2013-逻辑架构图)
+        - [20.1.4. 常用配置](#2014-常用配置)
+    - [20.2. 日志文件](#202-日志文件)
+        - [20.2.1. 参数文件](#2021-参数文件)
+        - [20.2.2. 日志文件](#2022-日志文件)
+        - [20.2.3. socket文件](#2023-socket文件)
+        - [20.2.4. pid文件](#2024-pid文件)
+        - [20.2.5. MySQL表结构文件](#2025-mysql表结构文件)
+        - [20.2.6. 存储引擎文件](#2026-存储引擎文件)
+    - [20.3. NoSQL与关系型数据库设计理念比较](#203-nosql与关系型数据库设计理念比较)
+        - [20.3.1. 关系型数据库](#2031-关系型数据库)
+        - [20.3.2. 非关系型数据库](#2032-非关系型数据库)
+    - [20.4. 使用数据库](#204-使用数据库)
+    - [20.5. 数据类型](#205-数据类型)
+    - [20.6. 数据更新](#206-数据更新)
+    - [20.7. 查询入门](#207-查询入门)
+    - [20.8. 多表连接查询](#208-多表连接查询)
+    - [20.9. 函数](#209-函数)
+        - [20.9.1. 聚集函数](#2091-聚集函数)
+        - [20.9.2. 数学函数](#2092-数学函数)
+        - [20.9.3. 字符串函数](#2093-字符串函数)
+        - [20.9.4. 日期和时间函数](#2094-日期和时间函数)
+        - [20.9.5. 条件判断函数](#2095-条件判断函数)
+        - [20.9.6. 系统信息函数](#2096-系统信息函数)
+        - [20.9.7. 加密函数](#2097-加密函数)
+        - [20.9.8. 其他函数](#2098-其他函数)
+    - [20.10. 存储过程](#2010-存储过程)
+        - [20.10.1. 基本概念](#20101-基本概念)
+        - [20.10.2. 使用存储过程](#20102-使用存储过程)
+    - [20.11. 视图](#2011-视图)
+        - [20.11.1. 基本概念](#20111-基本概念)
+    - [20.12. 触发器](#2012-触发器)
+        - [20.12.1. 基本概念](#20121-基本概念)
+        - [20.12.2. 触发器操作](#20122-触发器操作)
+    - [20.13. 事务](#2013-事务)
+        - [20.13.1. 基本概念](#20131-基本概念)
+            - [20.13.1.1. 事务特点](#201311-事务特点)
+            - [20.13.1.2. 锁](#201312-锁)
+            - [20.13.1.3. 多版本并发控制](#201313-多版本并发控制)
+            - [20.13.1.4. 常见术语](#201314-常见术语)
+        - [20.13.2. 基本语句](#20132-基本语句)
+    - [20.14. 数据库索引](#2014-数据库索引)
+        - [20.14.1. 基本概念](#20141-基本概念)
+            - [20.14.1.1. 分类](#201411-分类)
+            - [20.14.1.2. 索引用途](#201412-索引用途)
+            - [20.14.1.3. 索引的误区](#201413-索引的误区)
+            - [20.14.1.4. 索引数据结构](#201414-索引数据结构)
+    - [20.15. 存储引擎](#2015-存储引擎)
+        - [20.15.1. InnoDB存储引擎](#20151-innodb存储引擎)
+        - [20.15.2. MyISAM存储引擎](#20152-myisam存储引擎)
+        - [20.15.3. MEMORY存储引擎](#20153-memory存储引擎)
+        - [20.15.4. 存储引擎的选择](#20154-存储引擎的选择)
+    - [20.16. 性能优化基本的分析命令](#2016-性能优化基本的分析命令)
+        - [20.16.1. explain](#20161-explain)
+        - [20.16.2. show indexs](#20162-show-indexs)
+    - [20.17. 分库分表](#2017-分库分表)
+        - [20.17.1. 基本概念](#20171-基本概念)
+        - [20.17.2. 分布式事务](#20172-分布式事务)
+        - [20.17.3. 应对多机数据查询](#20173-应对多机数据查询)
+            - [20.17.3.1. 跨库Join](#201731-跨库join)
+            - [20.17.3.2. 外键约束](#201732-外键约束)
+    - [20.18. 高可用](#2018-高可用)
+        - [20.18.1. 主从复制](#20181-主从复制)
+            - [20.18.1.1. 常见形式](#201811-常见形式)
+            - [20.18.1.2. 主从同步复制原理](#201812-主从同步复制原理)
+            - [20.18.1.3. 主从同步配置](#201813-主从同步配置)
+            - [20.18.1.4. 添加更多从服务器](#201814-添加更多从服务器)
+- [21. Redis](#21-redis)
+    - [21.1. 数据结构和对象](#211-数据结构和对象)
+        - [21.1.1. 简单动态字符串](#2111-简单动态字符串)
+        - [21.1.2. 链表](#2112-链表)
+        - [21.1.3. 字典](#2113-字典)
+            - [21.1.3.1. Rehash](#21131-rehash)
+        - [21.1.4. 跳跃表](#2114-跳跃表)
+        - [21.1.5. 整数集合](#2115-整数集合)
+        - [21.1.6. 压缩列表](#2116-压缩列表)
+        - [21.1.7. 对象](#2117-对象)
+            - [21.1.7.1. 对象类型和编码](#21171-对象类型和编码)
+            - [21.1.7.2. 字符串对象](#21172-字符串对象)
+            - [21.1.7.3. 列表对象](#21173-列表对象)
+            - [21.1.7.4. 哈希对象](#21174-哈希对象)
+            - [21.1.7.5. 集合对象](#21175-集合对象)
+            - [21.1.7.6. 由于集合对象](#21176-由于集合对象)
+            - [21.1.7.7. 类型检查和命令多态](#21177-类型检查和命令多态)
+            - [21.1.7.8. 内存回收](#21178-内存回收)
+            - [21.1.7.9. 对象共享](#21179-对象共享)
+            - [21.1.7.10. 对象空转时长](#211710-对象空转时长)
+    - [21.2. 单机数据库实现](#212-单机数据库实现)
+        - [21.2.1. 数据库](#2121-数据库)
+        - [21.2.2. RDB持久化](#2122-rdb持久化)
+        - [21.2.3. AOF持久化](#2123-aof持久化)
+        - [21.2.4. 事件](#2124-事件)
+        - [21.2.5. 客户端](#2125-客户端)
+        - [21.2.6. 服务器](#2126-服务器)
+    - [21.3. 多机数据库实现](#213-多机数据库实现)
+        - [21.3.1. 复制](#2131-复制)
+        - [21.3.2. 哨兵](#2132-哨兵)
+        - [21.3.3. 集群](#2133-集群)
+    - [21.4. 独立功能实现](#214-独立功能实现)
+        - [21.4.1. 发布与订阅](#2141-发布与订阅)
+        - [21.4.2. 事务](#2142-事务)
+        - [21.4.3. LUA脚本](#2143-lua脚本)
+        - [21.4.4. 排序](#2144-排序)
+        - [21.4.5. 二进制位数组](#2145-二进制位数组)
+        - [21.4.6. 慢查询日志](#2146-慢查询日志)
+        - [21.4.7. 监视器](#2147-监视器)
+- [22. RocketMQ](#22-rocketmq)
+- [23. RabbitMQ](#23-rabbitmq)
+- [24. Kafka](#24-kafka)
+- [25. elasticsearch](#25-elasticsearch)
+- [26. FastDfs](#26-fastdfs)
+- [27. Zookeeper](#27-zookeeper)
+    - [27.1. 基本概念](#271-基本概念)
+        - [27.1.1. zk架构](#2711-zk架构)
+        - [27.1.2. 提供的功能](#2712-提供的功能)
+        - [27.1.3. 节点类型](#2713-节点类型)
+- [28. Nginx](#28-nginx)
+    - [28.1. 概述](#281-概述)
+        - [28.1.1. 功能特性](#2811-功能特性)
+        - [28.1.2. Nginx快速理解](#2812-nginx快速理解)
+    - [28.2. 基本使用和配置](#282-基本使用和配置)
+        - [28.2.1. Nginx平滑升级](#2821-nginx平滑升级)
+        - [28.2.2. 配置文件](#2822-配置文件)
+    - [28.3. 架构说明](#283-架构说明)
+        - [28.3.1. 模块化结构](#2831-模块化结构)
+            - [28.3.1.1. 模块分类](#28311-模块分类)
+        - [28.3.2. web请求处理机制](#2832-web请求处理机制)
+        - [28.3.3. 设计架构概览](#2833-设计架构概览)
+    - [28.4. 高级配置](#284-高级配置)
+    - [28.5. gzip压缩](#285-gzip压缩)
+    - [28.6. rewrite功能](#286-rewrite功能)
+        - [28.6.1. nginx后端服务器组的配置的5个技术指令](#2861-nginx后端服务器组的配置的5个技术指令)
+        - [28.6.2. rewrite功能的配置](#2862-rewrite功能的配置)
+        - [28.6.3. rewrite使用](#2863-rewrite使用)
+    - [28.7. 代理服务](#287-代理服务)
+        - [28.7.1. 正向代理和反向代理](#2871-正向代理和反向代理)
+        - [28.7.2. Nginx正向代理服务](#2872-nginx正向代理服务)
+        - [28.7.3. Nginx反向代理服务](#2873-nginx反向代理服务)
+            - [28.7.3.1. 反向代理基本设置的21个指令](#28731-反向代理基本设置的21个指令)
+            - [28.7.3.2. proxy buffer 的配置的7个指令](#28732-proxy-buffer-的配置的7个指令)
+            - [28.7.3.3. proxy cache 的配置的12个指令](#28733-proxy-cache-的配置的12个指令)
+        - [28.7.4. Nginx服务器负载均衡](#2874-nginx服务器负载均衡)
+    - [28.8. 邮件服务](#288-邮件服务)
+    - [28.9. 源码结构](#289-源码结构)
+    - [28.10. 基本数据结构](#2810-基本数据结构)
+    - [28.11. 启动初始化](#2811-启动初始化)
+        - [28.11.1. 启动过程概览](#28111-启动过程概览)
+    - [28.12. 时间管理](#2812-时间管理)
+    - [28.13. 内存管理](#2813-内存管理)
+        - [28.13.1. 内存的逻辑结构](#28131-内存的逻辑结构)
+        - [28.13.2. 内存池管理](#28132-内存池管理)
+        - [28.13.3. 内存的使用](#28133-内存的使用)
+    - [28.14. 工作进程](#2814-工作进程)
+        - [28.14.1. nginx服务进程间通信](#28141-nginx服务进程间通信)
+            - [28.14.1.1. Linux进程间通信方式](#281411-linux进程间通信方式)
+            - [28.14.1.2. Linux进程间双工通信方式的实现](#281412-linux进程间双工通信方式的实现)
+            - [28.14.1.3. 通信通道建立和设置](#281413-通信通道建立和设置)
+            - [28.14.1.4. 通信通道的使用](#281414-通信通道的使用)
+            - [28.14.1.5. 消息的读写](#281415-消息的读写)
+    - [28.15. 模块编程](#2815-模块编程)
+        - [28.15.1. 模块的种类](#28151-模块的种类)
+        - [28.15.2. 模块开发实战](#28152-模块开发实战)
+        - [28.15.3. 模块的编译和安装](#28153-模块的编译和安装)
+- [29. WEB容器](#29-web容器)
+    - [29.1. WEB容器比较](#291-web容器比较)
+    - [29.2. SpringBoot WEB相关配置](#292-springboot-web相关配置)
+    - [29.3. Tomcat](#293-tomcat)
+        - [29.3.1. 概述](#2931-概述)
+            - [29.3.1.1. Tomcat快速理解](#29311-tomcat快速理解)
+        - [29.3.2. Web服务机制](#2932-web服务机制)
+            - [29.3.2.1. 通信协议](#29321-通信协议)
+        - [29.3.3. Servlet规范](#2933-servlet规范)
+        - [29.3.4. Tomcat 总体架构](#2934-tomcat-总体架构)
+        - [29.3.5. Server和Service组件](#2935-server和service组件)
+        - [29.3.6. Connect组件](#2936-connect组件)
+        - [29.3.7. Engine组件](#2937-engine组件)
+        - [29.3.8. Host容器](#2938-host容器)
+        - [29.3.9. Context容器](#2939-context容器)
+        - [29.3.10. Wrapper容器](#29310-wrapper容器)
+        - [29.3.11. 生命周期管理](#29311-生命周期管理)
+        - [29.3.12. 日志框架和国家化](#29312-日志框架和国家化)
+        - [29.3.13. 公共与隔离类加载器](#29313-公共与隔离类加载器)
+        - [29.3.14. 请求URI映射器Mapper](#29314-请求uri映射器mapper)
+        - [29.3.15. Tomcat的JNDI](#29315-tomcat的jndi)
+        - [29.3.16. 运行、通信、及访问安全管理](#29316-运行通信及访问安全管理)
+        - [29.3.17. 处理请求和响应的管道](#29317-处理请求和响应的管道)
+        - [29.3.18. 多样化的会话管理器](#29318-多样化的会话管理器)
+        - [29.3.19. 高可用集群实现](#29319-高可用集群实现)
+        - [29.3.20. 集群通信框架](#29320-集群通信框架)
+        - [29.3.21. 监控和管理](#29321-监控和管理)
+    - [29.4. Jetty](#294-jetty)
+- [30. Java网路通信](#30-java网路通信)
+    - [30.1. Java IO 演进之路](#301-java-io-演进之路)
+    - [30.2. Java BIO编程](#302-java-bio编程)
+    - [30.3. NIO入门](#303-nio入门)
+    - [30.4. Netty](#304-netty)
+        - [30.4.1. Netty基本案例](#3041-netty基本案例)
+        - [30.4.2. TCP粘包拆包](#3042-tcp粘包拆包)
+            - [30.4.2.1. 粘包拆包基本概念](#30421-粘包拆包基本概念)
+            - [30.4.2.2. LineBasedFrameDecoder方式解决](#30422-linebasedframedecoder方式解决)
+            - [30.4.2.3. DelimitBasedFrameDecoder方式解决](#30423-delimitbasedframedecoder方式解决)
+            - [30.4.2.4. FixedLengthFrameDecoder方式解决](#30424-fixedlengthframedecoder方式解决)
+        - [30.4.3. 私有协议开发](#3043-私有协议开发)
+        - [30.4.4. 服务端创建流程分析](#3044-服务端创建流程分析)
+        - [30.4.5. 客户端创建流程分析](#3045-客户端创建流程分析)
+        - [30.4.6. ByteBuf说明](#3046-bytebuf说明)
+        - [30.4.7. Channel和Unsafe](#3047-channel和unsafe)
+        - [30.4.8. ChannelPipeline和ChannelHandler](#3048-channelpipeline和channelhandler)
+        - [30.4.9. EventLoop和EventLoopGroup](#3049-eventloop和eventloopgroup)
+        - [30.4.10. Futur和Promise](#30410-futur和promise)
+        - [30.4.11. Netty架构分析](#30411-netty架构分析)
+        - [30.4.12. Java多线程编程在Netty中的应用](#30412-java多线程编程在netty中的应用)
+        - [30.4.13. 高性能之道](#30413-高性能之道)
+        - [30.4.14. 可靠性](#30414-可靠性)
+- [31. 性能调优](#31-性能调优)
+    - [31.1. 性能调优概述](#311-性能调优概述)
+    - [31.2. 操作系统性能监控](#312-操作系统性能监控)
+    - [31.3. JVM](#313-jvm)
+        - [31.3.1. JIT编译器](#3131-jit编译器)
+            - [31.3.1.1. 概述](#31311-概述)
+        - [31.3.2. JVM内存模型](#3132-jvm内存模型)
+        - [31.3.3. JVM的内存空间](#3133-jvm的内存空间)
+            - [31.3.3.1. 对象内存布局](#31331-对象内存布局)
+            - [31.3.3.2. 对象访问定位](#31332-对象访问定位)
+        - [31.3.4. 垃圾回收算法](#3134-垃圾回收算法)
+            - [31.3.4.1. 对象回收判定](#31341-对象回收判定)
+            - [31.3.4.2. 对象引用分类](#31342-对象引用分类)
+            - [31.3.4.3. 标记清除算法](#31343-标记清除算法)
+            - [31.3.4.4. 复制算法](#31344-复制算法)
+            - [31.3.4.5. 标记整理算法](#31345-标记整理算法)
+            - [31.3.4.6. 分代收集算法](#31346-分代收集算法)
+        - [31.3.5. 垃圾收集器](#3135-垃圾收集器)
+            - [31.3.5.1. Serial收集器](#31351-serial收集器)
+            - [31.3.5.2. ParNew收集器](#31352-parnew收集器)
+            - [31.3.5.3. Parallel Scavenge收集器](#31353-parallel-scavenge收集器)
+            - [31.3.5.4. Serial Old收集器](#31354-serial-old收集器)
+            - [31.3.5.5. Parallel Old收集器](#31355-parallel-old收集器)
+            - [31.3.5.6. CMS收集器](#31356-cms收集器)
+            - [31.3.5.7. G1收集器](#31357-g1收集器)
+        - [31.3.6. 内存分配和回收策略](#3136-内存分配和回收策略)
+        - [31.3.7. JVM相关参数介绍](#3137-jvm相关参数介绍)
+        - [31.3.8. 性能监控与故障处理工具](#3138-性能监控与故障处理工具)
+            - [31.3.8.1. JDK命令行工具](#31381-jdk命令行工具)
+            - [31.3.8.2. Jdk可视化工具](#31382-jdk可视化工具)
+        - [31.3.9. JVM性能调优](#3139-jvm性能调优)
+        - [31.3.10. 类文件结构](#31310-类文件结构)
+        - [31.3.11. 类加载器](#31311-类加载器)
+- [32. 概述](#32-概述)
+    - [32.1. 高并发原则](#321-高并发原则)
+    - [32.2. 高可用原则](#322-高可用原则)
+- [33. 负载均衡](#33-负载均衡)
+    - [33.1. 什么是负载均衡](#331-什么是负载均衡)
+    - [33.2. 硬件负载均衡](#332-硬件负载均衡)
+    - [33.3. 四层和七层负载均衡的区别？](#333-四层和七层负载均衡的区别)
+        - [33.3.1. 技术原理上的区别。](#3331-技术原理上的区别)
+        - [33.3.2. 应用场景的需求。](#3332-应用场景的需求)
+        - [33.3.3. 七层应用需要考虑的问题。](#3333-七层应用需要考虑的问题)
+    - [33.4. 负载均衡的算法](#334-负载均衡的算法)
+        - [33.4.1. 随机算法](#3341-随机算法)
+        - [33.4.2. 轮询及加权轮询](#3342-轮询及加权轮询)
+        - [33.4.3. 最小连接及加权最小连接](#3343-最小连接及加权最小连接)
+        - [33.4.4. 哈希算法](#3344-哈希算法)
+        - [33.4.5. IP地址散列](#3345-ip地址散列)
+        - [33.4.6. URL散列](#3346-url散列)
+        - [33.4.7. 一致性哈希算法](#3347-一致性哈希算法)
+    - [33.5. 负载均衡的实现（DNS > 数据链路层 > IP层 > Http层）](#335-负载均衡的实现dns--数据链路层--ip层--http层)
+        - [33.5.1. DNS域名解析负载均衡（延迟）](#3351-dns域名解析负载均衡延迟)
+        - [33.5.2. 数据链路层负载均衡(LVS)](#3352-数据链路层负载均衡lvs)
+        - [33.5.3. IP负载均衡(SNAT)](#3353-ip负载均衡snat)
+        - [33.5.4. HTTP重定向负载均衡(少见)](#3354-http重定向负载均衡少见)
+        - [33.5.5. 反向代理负载均衡(nginx)](#3355-反向代理负载均衡nginx)
+- [34. 隔离](#34-隔离)
+    - [34.1. 概述](#341-概述)
+- [35. 限流](#35-限流)
+    - [35.1. 概述](#351-概述)
+    - [35.2. 限流算法](#352-限流算法)
+        - [35.2.1. 计数器法](#3521-计数器法)
+        - [35.2.2. 滑动窗口](#3522-滑动窗口)
+        - [35.2.3. 漏桶算法](#3523-漏桶算法)
+        - [35.2.4. 令牌桶算法](#3524-令牌桶算法)
+    - [35.3. 分布式限流](#353-分布式限流)
+- [36. 降级](#36-降级)
+- [37. 超时与重试](#37-超时与重试)
+- [38. 回滚机制](#38-回滚机制)
+    - [38.1. 事务回滚](#381-事务回滚)
+    - [38.2. 代码库回滚](#382-代码库回滚)
+    - [38.3. 部署版本回滚](#383-部署版本回滚)
+    - [38.4. 静态资源回滚](#384-静态资源回滚)
+- [39. 压测与预案](#39-压测与预案)
+    - [39.1. 系统压测](#391-系统压测)
+        - [39.1.1. 线下压测](#3911-线下压测)
+        - [39.1.2. 线上压测](#3912-线上压测)
+    - [39.2. 系统优化和容灾](#392-系统优化和容灾)
+- [40. 缓存](#40-缓存)
+    - [40.1. 应用级缓存](#401-应用级缓存)
+        - [40.1.1. 缓存回收策略](#4011-缓存回收策略)
+        - [40.1.2. 回收算法](#4012-回收算法)
+            - [40.1.2.1. FIFO](#40121-fifo)
+            - [40.1.2.2. LRU](#40122-lru)
+            - [40.1.2.3. LFU](#40123-lfu)
+            - [40.1.2.4. LRFU](#40124-lrfu)
+        - [40.1.3. Java 缓存类型](#4013-java-缓存类型)
+            - [40.1.3.1. 堆缓存](#40131-堆缓存)
+            - [40.1.3.2. 对外缓存](#40132-对外缓存)
+            - [40.1.3.3. 磁盘缓存](#40133-磁盘缓存)
+            - [40.1.3.4. 分布式缓存](#40134-分布式缓存)
+            - [40.1.3.5. 多级缓存](#40135-多级缓存)
+        - [40.1.4. 应用级缓存示例](#4014-应用级缓存示例)
+        - [40.1.5. 缓存使用模式实践](#4015-缓存使用模式实践)
+            - [40.1.5.1. Cache-Aside](#40151-cache-aside)
+            - [40.1.5.2. Cache-As-SOR](#40152-cache-as-sor)
+            - [40.1.5.3. Read-Through](#40153-read-through)
+            - [40.1.5.4. Write-Through](#40154-write-through)
+            - [40.1.5.5. Write-Behind](#40155-write-behind)
+            - [40.1.5.6. Copy-Pattern](#40156-copy-pattern)
+        - [40.1.6. 缓存一致性处理](#4016-缓存一致性处理)
+        - [40.1.7. 缓存异常处理](#4017-缓存异常处理)
+            - [40.1.7.1. 缓存穿透](#40171-缓存穿透)
+            - [40.1.7.2. 缓存击穿](#40172-缓存击穿)
+            - [40.1.7.3. 缓存雪崩](#40173-缓存雪崩)
+            - [40.1.7.4. 解决方案](#40174-解决方案)
+            - [40.1.7.5. 缓存并发问题](#40175-缓存并发问题)
+    - [40.2. HTTP缓存](#402-http缓存)
+        - [40.2.1. 浏览器缓存](#4021-浏览器缓存)
+        - [40.2.2. CDN缓存](#4022-cdn缓存)
+        - [40.2.3. NGINX缓存](#4023-nginx缓存)
+- [41. 分布式系统](#41-分布式系统)
+    - [41.1. 基本概念](#411-基本概念)
+    - [41.2. 大型网站的特点](#412-大型网站的特点)
+        - [41.2.1. 特点](#4121-特点)
+        - [41.2.2. 模式](#4122-模式)
+    - [41.3. 常用的RPC框架](#413-常用的rpc框架)
+        - [41.3.1. Thrift](#4131-thrift)
+        - [41.3.2. gRPC](#4132-grpc)
+    - [41.4. Dubbo](#414-dubbo)
+        - [41.4.1. 架构](#4141-架构)
+        - [41.4.2. 功能](#4142-功能)
+        - [41.4.3. 连接协议](#4143-连接协议)
+            - [41.4.3.1. dubbo](#41431-dubbo)
+            - [41.4.3.2. rmi](#41432-rmi)
+            - [41.4.3.3. hessian](#41433-hessian)
+            - [41.4.3.4. http](#41434-http)
+            - [41.4.3.5. webservice](#41435-webservice)
+            - [41.4.3.6. thrift](#41436-thrift)
+            - [41.4.3.7. memcached](#41437-memcached)
+            - [41.4.3.8. redis](#41438-redis)
+            - [41.4.3.9. rest](#41439-rest)
+    - [41.5. 架构演进](#415-架构演进)
+    - [41.6. Java 中间件](#416-java-中间件)
+    - [41.7. 序列化机制](#417-序列化机制)
+        - [41.7.1. 基本概念](#4171-基本概念)
+        - [41.7.2. 常用序列化方式性能比较](#4172-常用序列化方式性能比较)
+        - [41.7.3. 常用序列化方式实现](#4173-常用序列化方式实现)
+            - [41.7.3.1. JDK方式](#41731-jdk方式)
+            - [41.7.3.2. FastJSON](#41732-fastjson)
+            - [41.7.3.3. Hessian](#41733-hessian)
+            - [41.7.3.4. Protostuff](#41734-protostuff)
+    - [41.8. 定时任务](#418-定时任务)
+    - [41.9. Cron表达式](#419-cron表达式)
+        - [41.9.1. Spring Scheduler](#4191-spring-scheduler)
+        - [41.9.2. Quartz](#4192-quartz)
+            - [41.9.2.1. Quartz 核心概念](#41921-quartz-核心概念)
+    - [41.10. 分布式ID](#4110-分布式id)
+        - [41.10.1. 应用场景](#41101-应用场景)
+        - [41.10.2. 分布式ID生成方案](#41102-分布式id生成方案)
+    - [41.11. 分布式锁](#4111-分布式锁)
+        - [41.11.1. 使用数据库实现](#41111-使用数据库实现)
+        - [41.11.2. Redis实现分布式锁](#41112-redis实现分布式锁)
+        - [41.11.3. Zookeeper实现分布式锁](#41113-zookeeper实现分布式锁)
+    - [41.12. 微服务化](#4112-微服务化)
+        - [41.12.1. 微服务和SOA](#41121-微服务和soa)
+        - [41.12.2. 拆分原则](#41122-拆分原则)
+    - [41.13. 消息机制](#4113-消息机制)
+    - [41.14. 服务降级](#4114-服务降级)
+    - [41.15. 流量限流](#4115-流量限流)
+    - [41.16. 幂等设计](#4116-幂等设计)
+    - [41.17. 数据一致性](#4117-数据一致性)
+        - [41.17.1. CAP理论](#41171-cap理论)
+        - [41.17.2. Base理论](#41172-base理论)
+    - [41.18. 分布式事务实现](#4118-分布式事务实现)
+    - [41.19. 负载均衡算法](#4119-负载均衡算法)
+    - [41.20. 服务容错设计](#4120-服务容错设计)
+    - [41.21. 集群](#4121-集群)
+    - [41.22. 分库分表](#4122-分库分表)
+    - [41.23. 反向代理&正向代理](#4123-反向代理正向代理)
+    - [41.24. 客户端优化](#4124-客户端优化)
+- [42. 浏览器安全](#42-浏览器安全)
+    - [42.1. 同源策略](#421-同源策略)
+- [43. 跨站脚本攻击XSS](#43-跨站脚本攻击xss)
+    - [43.1. 简介](#431-简介)
+    - [43.2. XSS攻击](#432-xss攻击)
+    - [43.3. XSS防御](#433-xss防御)
+- [44. 跨站点请求伪造CSRF](#44-跨站点请求伪造csrf)
+    - [44.1. 基本概念](#441-基本概念)
+- [45. 点击劫持](#45-点击劫持)
+- [46. HTML5安全](#46-html5安全)
+- [47. 注入攻击](#47-注入攻击)
+- [48. 文件上传漏洞](#48-文件上传漏洞)
+- [49. 认证和会话管理](#49-认证和会话管理)
+- [50. 访问控制](#50-访问控制)
+- [51. 加密算法和随机数](#51-加密算法和随机数)
+- [52. WEB框架安全](#52-web框架安全)
+- [53. 应用拒绝服务攻击](#53-应用拒绝服务攻击)
+- [54. WEB SERVER配置安全](#54-web-server配置安全)
 
 <!-- /TOC -->
 
+# 2. 计算机&网络&操作系统
 <a href="#menu" style="float:right">目录</a>
-# 1. 计算机基础
+
+## 2.1. 计算机基础
+
 <a href="#menu" style="float:right">目录</a>
-## 1.1. 数据类型
-### 1.1.1. ASCII
+
+### 2.1.1. 数据类型
+
+#### 2.1.1.1. ASCII
 * ASCII控制字符
 
 |二进制|	十进制|	十六进制	|缩写	|名称/意义|
@@ -1539,16 +761,16 @@ Commands:
 |0111 1101|	125|	7D	|}
 |0111 1110|	126|	7E	|~
 
-# 2. 操作系统
-## 2.1. 操作系统基本概念
-#### 2.1.0.1. 操作系统发展过程
+## 2.2. 操作系统
+### 2.2.1. 操作系统基本概念
+##### 2.2.1.0.1. 操作系统发展过程
 
 * 无操作系统的计算机
 * 单道批处理系统
 * 分时系统
 * 实时系统
-#### 2.1.0.2. 基本特性
-### 2.1.1. Linux进程和线程的区别
+##### 2.2.1.0.2. 基本特性
+#### 2.2.1.1. Linux进程和线程的区别
 进程与线程的区别，早已经成为了经典问题。自线程概念诞生起，关于这个问题的讨论就没有停止过。无论是初级程序员，还是资深专家，都应该考虑过这个问题，只是层次角度不同罢了。一般程序员而言，搞清楚二者的概念，在工作实际中去运用成为了焦点。而资深工程师则在考虑系统层面如何实现两种技术及其各自的性能和实现代价。以至于到今天，Linux内核还在持续更新完善(关于进程和线程的实现模块也是内核完善的任务之一)。
 
 本文将以一个从事Linux平台系统开发的程序员角度描述这个经典问题。本文素材全部来源于工作实践经验与知识规整，若有疏漏或不正之处，敬请读者慷慨指出。
@@ -1766,10 +988,10 @@ http://my.oschina.net/cnyinlinux/blog/367910
 整个程序结束时，逐个改变条件并改变激活状态让子线程结束，最后逐个回收即可。
 
 
-# 4. 网络TCP
+## 2.3. 网络TCP
 <a href="#menu" style="float:right">目录</a>
 
-## 4.1. OSI网路分层
+### 2.3.1. OSI网路分层
 
 
 
@@ -1798,15 +1020,15 @@ http://my.oschina.net/cnyinlinux/blog/367910
         * 单播：一对一通信
         * 多播:一对多通信，组播通信
         * 任播:特定的多台主机中选出一台进行通信
-## 4.2. IP(Internet Protocol,网际协议)
-### 4.2.1. 基本概念
+### 2.3.2. IP(Internet Protocol,网际协议)
+#### 2.3.2.1. 基本概念
 IP协议负责将数据包发送给最终的目标主机。
 通信链路层是负责两个直连两个设备之间的通信，而IP是负责两个没有直连设备之间的通信。每个计算机都有自己的IP地址，发送端在发送数据之前要先确定接收者是属于哪台计算机。也就是ARP地址解析协议，通过广播发送请求，有回应的是便是目标主机，然后获取目标主机的网卡地址，缓在发送端，下次发送的时候，就可以从缓存中获取到目标主机的网卡地址。
 
 * IP协议是面向无连接的，通信可靠性由上层解决
     * 一是为了简化
     * 二是为了快速
-### 4.2.2. IP地址定义
+#### 2.3.2.2. IP地址定义
 
 * IPV4
     * 使用32位来表示，每8位一组，中间使用"."分隔
@@ -1889,8 +1111,8 @@ IP协议负责将数据包发送给最终的目标主机。
 |多播地址|11111111|FF00::/8|
 |全局单播地址|其他||
 
-### 4.2.3. IP协议相关技术
-#### 4.2.3.1. DNS
+#### 2.3.2.3. IP协议相关技术
+##### 2.3.2.3.1. DNS
 TCP/IP网络中，每一个互联的设备都有其唯一的IP地址，都可以通过IP地址访问到对方。但是IP地址不便于记忆，因此产生了一种方式，就是给每台计算机赋予唯一的主机名，可以通过主机名访问该主机名对应的IP地址的计算机。在这个背景下，便产生了一个可以有效管理主机名和IP地址之间对应关系的系统，那就是DNS系统。
 
 **域名**:域名是为了识别主机名称和组织机构名称的一种具有分层的名称。比如:www.baidu.com
@@ -1905,7 +1127,7 @@ TCP/IP网络中，每一个互联的设备都有其唯一的IP地址，都可以
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/tcp/dns-search.png?raw=true)
 解析器为了查询IP地址，向域名服务器查询，接收这个请求的域名服务器先在自己的数据库中查找，没有查找到则向上一级查找，直至遍历完查找到，查找到则将数据缓存起来，下次使用可以从缓存里面获取。
 
-#### 4.2.3.2. ARP
+##### 2.3.2.3.2. ARP
 DNS是通过访问名称获取到IP地址，但是有进行访问还需要获取到这个IP地址对应的MAC地址。
 
 * 查找流程:
@@ -1917,12 +1139,12 @@ DNS是通过访问名称获取到IP地址，但是有进行访问还需要获取
     * 主机A会将主机B的MAC地址进行缓存到本地，以供下次使用
     * 这个缓存会按照一定机制被清除，也就是有过期时间。同时若请求失败，也会重新发起获取MAC地址请求。
 
-## 4.3. 传输层
+### 2.3.3. 传输层
 <a href="#menu" style="float:right">目录</a>
 
-### 4.3.1. 基本概念
+#### 2.3.3.1. 基本概念
 
-#### 4.3.1.1. TCP和UDP差别
+##### 2.3.3.1.1. TCP和UDP差别
 
  TCP和UDP是传输层的两个具有代表性的传输层协议。TCP提供可靠的通信传输。UDP常被用于广播和细节控制交给应用的通信传输，比如可靠性保证，失败重传等策略由应用实现。
  IP首部字段有一个字段标明传输层使用的是UDP还是TCP或者其他协议。
@@ -1943,7 +1165,7 @@ DNS是通过访问名称获取到IP地址，但是有进行访问还需要获取
 
 * HTTP或者TCP中常出现的长连接，都是基于TCP来实现，也就是创建TCP连接以后不关闭，一直保持连接状态，下次发送数据的时候就可以不用重新建立连接，毕竟建立TCP连接是很费时的事情，不再通信时再关闭连接。
 
-#### 4.3.1.2. 端口
+##### 2.3.3.1.2. 端口
 数据链路中的MAC地址: 识别同一链路中的不同计算机
 IP中的IP地址:识别TCP/IP网络中互联的主机和路由器
 端口号:用于识别同一台计算机中不同的应用程序
@@ -1954,11 +1176,11 @@ IP中的IP地址:识别TCP/IP网络中互联的主机和路由器
 （2）注册端口（RegisteredPorts）：从1024到49151。它们松散地绑定于一些服务。也就是说有许多服务绑定于这些端口，这些端口同样用于许多其它目的。例如：许多系统处理动态端口从1024左右开始。
 （3）动态和/或私有端口（Dynamicand/orPrivatePorts）：从49152到65535。理论上，不应为服务分配这些端口。实际上，机器通常从1024起分配动态端口。但也有例外：SUN的RPC端口从32768开始
 
-### 4.3.2. UDP
-### 4.3.3. TCP
+#### 2.3.3.2. UDP
+#### 2.3.3.3. TCP
 TCP通信中的四元组:源IP，源端口，目标IP，目标端口
 
-#### 4.3.3.1. 连接管理
+##### 2.3.3.3.1. 连接管理
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/tcp/tcp-connect.png?raw=true)
 * 三次连接
     * 客户端发送一个SYN报文，并指明自己想要连接的端口号和它的客户端初始序列号(ISN(C))
@@ -1999,16 +1221,16 @@ TCP通信中的四元组:源IP，源端口，目标IP，目标端口
 |LAST_ACK|当被动关闭的一方在发送FIN报文后，等待对方的ACK报文的时候，就处于LAST_ACK 状态。当收到对方的ACK报文后，也就可以进入到CLOSED 可用状态了。
 
 
-#### 4.3.3.2. 超时重传机制
-#### 4.3.3.3. 数据流和窗口机制
-#### 4.3.3.4. 阻塞控制 
+##### 2.3.3.3.2. 超时重传机制
+##### 2.3.3.3.3. 数据流和窗口机制
+##### 2.3.3.3.4. 阻塞控制 
 
 
-# 5. 网络HTTP
+## 2.4. 网络HTTP
 <a href="#menu" style="float:right">目录</a>
 
-## 5.1. 基本概念
-### 5.1.1. 访问一个网站的流程
+### 2.4.1. 基本概念
+#### 2.4.1.1. 访问一个网站的流程
 * 输入网址
 * DNS域名解析服务解析域名，获取域名对应的服务器IP
 * ARP地址解析协议根据IP查找服务端的MAC地址
@@ -2017,14 +1239,14 @@ TCP通信中的四元组:源IP，源端口，目标IP，目标端口
 * 服务端收到请求之后，进行业务处理，根据请求返回客户端的数据。
 * 客户端收到服务端响应，渲染页面
 * 如果是短连接，客户端将发送关闭连接请求。也就是四次挥手。
-### 5.1.2. 媒体类型(MIME)
+#### 2.4.1.2. 媒体类型(MIME)
 * 因特网上有数千种不同的数据类型，http会给每种要通过web传输的对象都打上一个名为MIME类型（MIME type）的数据格式标签
 * web服务器会为所有http对象数据附加一个MIME类型。
 * 当web浏览器从服务器中取回一个对象时，会去查看相关的MIME类型，看看他们是否知道如何处理这个对象。
 * 大多数浏览器都可以处理数百种常见的对象类型：显示图片文件、解析并格式化html文件等等。
 * MIME类型是一种文本标记，表示一种主要的对象类型和一个特定的子类型，中间由一个斜杠来分割。
 
-## 5.2. URL和资源
+### 2.4.2. URL和资源
 <a href="#menu" style="float:right">目录</a>
 URI是一类更通用的资源标识符，URL是它的一个子集。URI由两个子集URL和URN构成。URL通过描述资源的位置类标识资源。URN则通过名字来识别。
 
@@ -2056,10 +1278,10 @@ URL通用格式：
 |片段|一小片或者一部分资源的名字，不会将其发送给服务器，仅在客户端内部使用||
 
 
-## 5.3. HTTP报文
+### 2.4.3. HTTP报文
 <a href="#menu" style="float:right">目录</a>
 
-### 5.3.1. 请求报文和响应报文
+#### 2.4.3.1. 请求报文和响应报文
 
 * 格式：
 ```
@@ -2097,7 +1319,7 @@ status: 状态码，401/404
 reason-phrase: 原因短语,状态码的简要说明
 body: 实际数据部分，可以承载很多类型的数据，比如图片，音频，视频等
 
-### 5.3.2. 首部
+#### 2.4.3.2. 首部
 HTTP 首部字段根据实际用途被分为以下 4 种类型：
 * 通用首部字段（General Header Fields）
   请求报文和响应报文两方都会使用的首部。
@@ -2152,7 +1374,7 @@ HTTP 首部字段根据实际用途被分为以下 4 种类型：
     * ETag：与实体相关的实体标记
     * Expires：实体不再有效，需要再次获取该实体的时间
     * Last-Modified：实体最后一次被修改的时间
-### 5.3.3. 方法
+#### 2.4.3.3. 方法
 
 * GET
     * 通常用于向服务器请求资源
@@ -2186,7 +1408,7 @@ HTTP 首部字段根据实际用途被分为以下 4 种类型：
 * DELETE
     * 请求删除资源
 
-### 5.3.4. 状态码
+#### 2.4.3.4. 状态码
 
 * 1xx 信息性状态码
     * 100/Continue: 说明收到了请求的初始部分，请客户端继续
@@ -2209,16 +1431,16 @@ HTTP 首部字段根据实际用途被分为以下 4 种类型：
     * 500 Internal Server Error,服务器内部错误，比如抛出异常。
     * 503 Service Unavailable,服务不可用，常见场景是网关正常，但是底下的服务不正常。
 
-## 5.4. 连接管理
+### 2.4.4. 连接管理
 <a href="#menu" style="float:right">目录</a>
 HTTP要传送一条报文时，会以流的形式将报文数据的内容通过一条打开的TCP连接按序传输，TCP收到数据流之后，会将数据流砍成被称作段的小数据块。并将段封装在IP分组中，通过因特网进行传输。
 
-### 5.4.1. 对TCP性能的考虑
+#### 2.4.4.1. 对TCP性能的考虑
 HTTP是TCP的上层，主要通信实现由TCP/IP层实现，因此影响性能的主要也是这两层。
 影响性能主要以下几点
 * 首次访问时的DNS域名解析，可能花费数十秒，后续访问会进行缓存。
 * TCP连接建立过程
-### 5.4.2. 持久连接
+#### 2.4.4.2. 持久连接
 
 * HTTP1.0方式
     * keep-alive实现 ,keep-Alive 也是首部字段,由服务器响应决定
@@ -2234,48 +1456,652 @@ HTTP是TCP的上层，主要通信实现由TCP/IP层实现，因此影响性能�
     * 客户端发送一个请求首部  Connection: close之后将不能在该连接上发送信息。
     * HTTP1.1的代理必须能够分别管理客户端和服务端的持久连接。
    
-## 5.5. WEB服务器
+### 2.4.5. WEB服务器
 <a href="#menu" style="float:right">目录</a>
 
-## 5.6. 代理
+### 2.4.6. 代理
 <a href="#menu" style="float:right">目录</a>
 
-## 5.7. 缓存
+### 2.4.7. 缓存
 <a href="#menu" style="float:right">目录</a>
 
-## 5.8. 网关 
+### 2.4.8. 网关 
 <a href="#menu" style="float:right">目录</a>
 
-## 5.9. 客户端识别与Cookie机制
+### 2.4.9. 客户端识别与Cookie机制
 <a href="#menu" style="float:right">目录</a>
 
-## 5.10. 基本认证机制
+### 2.4.10. 基本认证机制
 <a href="#menu" style="float:right">目录</a>
 
-## 5.11. 摘要认证
+### 2.4.11. 摘要认证
 <a href="#menu" style="float:right">目录</a>
 
-## 5.12. 安全HTTP
+### 2.4.12. 安全HTTP
 <a href="#menu" style="float:right">目录</a>
 
-## 5.13. 实体和编码
+### 2.4.13. 实体和编码
 <a href="#menu" style="float:right">目录</a>
 
-## 5.14. 国际化
+### 2.4.14. 国际化
 <a href="#menu" style="float:right">目录</a>
 
-## 5.15. WEB主机托管
+### 2.4.15. WEB主机托管
 <a href="#menu" style="float:right">目录</a>
 
-## 5.16. 重定向和负载均衡
+### 2.4.16. 重定向和负载均衡
 <a href="#menu" style="float:right">目录</a>
 
 
-# 6. Unix环境编程
+## 2.5. Unix环境编程
 <a href="#menu" style="float:right">目录</a>
-# 7. Shell
+
+### 2.5.1. 基本概念
 <a href="#menu" style="float:right">目录</a>
-## 7.1. 文件相关
+
+* **内核**
+管理和分配计算机资源(CPU,内存等)的核心层软件
+
+* **内核任务**
+    * 进程调度，Linux是抢占式多任务操作系统，内核需要协调好多个任务的执行。`
+    * 内存管理
+    * 提供文件系统
+    * 创建和终止进程
+    * 对设备的访问
+    * 联网
+    * 提供系统应用调用API接口
+
+* **内核态和用户态**
+    * 可将虚拟内存区域划分为用户空间和内核空间两部分
+    * 在用户态下只能访问用户空间，试图访问内核空间将会报硬件错误
+    * 在内核态下两者都可以访问到
+
+* **文件描述符**
+    * Linux下一切皆是文件，每打开一个文件或者Socket,都会获得一个文件描述符(整型)来唯一标识。
+
+* **进程**
+    * 进程是正在执行的程序实例，执行程序时，内核会将程序代码载入虚拟内存，为程序变量分配空间，建立内核记账数据结构，以记录与进程有关的各种信息（比如，进程ID，用户ID，组ID以及终止状态）
+    * 进程内存布局
+        * 文本: 程序的指令
+        * 数据: 程序使用的静态变量
+        * 堆:程序可从该区域动态分配额外的内存
+        * 栈:随函数调用，返回而增减的一片内存，用于为局部变量和函数调用链接信息分配存储空间
+    * 创建进程和执行程序
+        * fork进行创建
+        * 内核通过对父进程的复制来创建子进程
+        * 子进程从父进程处继承数据段、栈段、以及堆段的副本，即使修改也不会互相影响，两者之间的内存空间是独立的
+    * 进程IP
+        * 每一个进程都有一个唯一标识符PID，如果有父进程，还有一个父进程PPID
+
+### 2.5.2. IO模型
+<a href="#menu" style="float:right">目录</a>
+
+**概念理解**
+ 在进行网络编程时，我们常常见到同步(Sync)/异步(Async)，阻塞(Block)/非阻塞(Unblock)四种调用方式：
+ * 同步
+    * 所谓同步，就是在发出一个功能调用时，在没有得到结果之前，该调用就不返回。也就是必须一件一件事做,等前一件做完了才能做下一件事。
+    * 例如普通B/S模式（同步）：提交请求->等待服务器处理->处理完毕返回 这个期间客户端浏览器不能干任何事
+* 异步：
+    * 异步的概念和同步相对。当一个异步过程调用发出后，调用者不能立刻得到结果。实际处理这个调用的部件在完成后，通过状态、通知和回调来通知调用者。
+    * 例如 ajax请求（异步）: 请求通过事件触发->服务器处理（这是浏览器仍然可以作其他事情）->处理完毕
+* 阻塞
+    * 阻塞调用是指调用结果返回之前，当前线程会被挂起（线程进入非可执行状态，在这个状态下，cpu不会给线程分配时间片，即线程暂停运行）。函数只有在得到结果之后才会返回。
+    * 有人也许会把阻塞调用和同步调用等同起来，实际上他是不同的。对于同步调用来说，很多时候当前线程还是激活的，只是从逻辑上当前函数没有返回而已。 例如，我们在socket中调用recv函数，如果缓冲区中没有数据，这个函数就会一直等待，直到有数据才返回。而此时，当前线程还会继续处理各种各样的消息。
+
+* 非阻塞
+    * 非阻塞和阻塞的概念相对应，指在不能立刻得到结果之前，该函数不会阻塞当前线程，而会立刻返回。
+
+**对象的阻塞模式和阻塞函数调用**
+对象是否处于阻塞模式和函数是不是阻塞调用有很强的相关性，但是并不是一一对应的。阻塞对象上可以有非阻塞的调用方式，我们可以通过一定的API去轮询状 态，在适当的时候调用阻塞函数，就可以避免阻塞。而对于非阻塞对象，调用特殊的函数也可以进入阻塞调用。函数select就是这样的一个例子。
+
+* 同步，就是我调用一个功能，该功能没有结束前，我死等结果。
+* 异步，就是我调用一个功能，不需要知道该功能结果，该功能有结果后通知我（回调通知）
+* 阻塞，就是调用我（函数），我（函数）没有接收完数据或者没有得到结果之前，我不会返回。
+* 非阻塞，就是调用我（函数），我（函数）立即返回，通过select通知调用者
+
+ 
+
+同步IO和异步IO的区别就在于：数据拷贝的时候进程是否阻塞！
+阻塞IO和非阻塞IO的区别就在于：应用程序的调用是否立即返回！
+
+
+对于举个简单c/s 模式：
+
+ 
+
+同步：提交请求->等待服务器处理->处理完毕返回这个期间客户端浏览器不能干任何事
+异步：请求通过事件触发->服务器处理（这是浏览器仍然可以作其他事情）->处理完毕
+同步和异步都只针对于本机SOCKET而言的。
+同步和异步,阻塞和非阻塞,有些混用,其实它们完全不是一回事,而且它们修饰的对象也不相同。
+阻塞和非阻塞是指当进程访问的数据如果尚未就绪,进程是否需要等待,简单说这相当于函数内部的实现区别,也就是未就绪时是直接返回还是等待就绪;
+
+而同步和异步是指访问数据的机制,同步一般指主动请求并等待I/O操作完毕的方式,当数据就绪后在读写的时候必须阻塞(区别就绪与读写二个阶段,同步的读写必须阻塞),异步则指主动请求数据后便可以继续处理其它任务,随后等待I/O,操作完毕的通知,这可以使进程在数据读写时也不阻塞。(等待"通知")
+
+**Linux下的五种I/O模型**
+* 阻塞I/O（blocking I/O）
+* 非阻塞I/O （nonblocking I/O）
+* I/O复用(select 和poll) （I/O multiplexing）
+* 信号驱动I/O （signal driven I/O (SIGIO)）
+* 异步I/O （asynchronous I/O (the POSIX aio_functions)）
+前四种都是同步，只有最后一种才是异步IO。
+
+
+**阻塞I/O模型：**
+![](https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3808372216,1260325684&fm=26&gp=0.jpg)
+* 简介：进程会一直阻塞，直到数据拷贝完成
+
+应用程序调用一个IO函数，导致应用程序阻塞，等待数据准备好。 如果数据没有准备好，一直等待….数据准备好了，从内核拷贝到用户空间,IO函数返回成功指示。
+
+阻塞I/O模型图：在调用recv()/recvfrom（）函数时，发生在内核中等待数据和复制数据的过程。
+
+当调用recv()函数时，系统首先查是否有准备好的数据。如果数据没有准备好，那么系统就处于等待状态。当数据准备好后，将数据从系统缓冲区复制到用户空间，然后该函数返回。在套接应用程序中，当调用recv()函数时，未必用户空间就已经存在数据，那么此时recv()函数就会处于等待状态。
+
+当使用socket()函数和WSASocket()函数创建套接字时，默认的套接字都是阻塞的。这意味着当调用Windows Sockets API不能立即完成时，线程处于等待状态，直到操作完成。
+
+并不是所有Windows Sockets API以阻塞套接字为参数调用都会发生阻塞。例如，以阻塞模式的套接字为参数调用bind()、listen()函数时，函数会立即返回。将可能阻塞套接字的Windows Sockets API调用分为以下四种:
+
+1．输入操作： recv()、recvfrom()、WSARecv()和WSARecvfrom()函数。以阻塞套接字为参数调用该函数接收数据。如果此时套接字缓冲区内没有数据可读，则调用线程在数据到来前一直睡眠。
+
+2．输出操作： send()、sendto()、WSASend()和WSASendto()函数。以阻塞套接字为参数调用该函数发送数据。如果套接字缓冲区没有可用空间，线程会一直睡眠，直到有空间。
+
+3．接受连接：accept()和WSAAcept()函数。以阻塞套接字为参数调用该函数，等待接受对方的连接请求。如果此时没有连接请求，线程就会进入睡眠状态。
+
+4．外出连接：connect()和WSAConnect()函数。对于TCP连接，客户端以阻塞套接字为参数，调用该函数向服务器发起连接。该函数在收到服务器的应答前，不会返回。这意味着TCP连接总会等待至少到服务器的一次往返时间。
+
+　　使用阻塞模式的套接字，开发网络程序比较简单，容易实现。当希望能够立即发送和接收数据，且处理的套接字数量比较少的情况下，使用阻塞模式来开发网络程序比较合适。
+
+阻塞模式套接字的不足表现为，在大量建立好的套接字线程之间进行通信时比较困难。当使用“生产者-消费者”模型开发网络程序时，为每个套接字都分别分配一个读线程、一个处理数据线程和一个用于同步的事件，那么这样无疑加大系统的开销。其最大的缺点是当希望同时处理大量套接字时，将无从下手，其扩展性很差
+
+**非阻塞IO模型** 
+ ![](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564857412314&di=0d854bfa102034baf1b415032bb0cff8&imgtype=0&src=http%3A%2F%2Fpic.victorchu.info%2F%25E9%259D%259E%25E9%2598%25BB%25E5%25A1%259EIO.jpeg%3FimageView2%2F2%2Fw%2F800%2Fh%2F600%2Fq%2F75%257Cimageslim)
+
+简介：非阻塞IO通过进程反复调用IO函数（多次系统调用，并马上返回）；在数据拷贝的过程中，进程是阻塞的；
+ 
+我们把一个SOCKET接口设置为非阻塞就是告诉内核，当所请求的I/O操作无法完成时，不要将进程睡眠，而是返回一个错误。这样我们的I/O操作函数将不断的测试数据是否已经准备好，如果没有准备好，继续测试，直到数据准备好为止。在这个不断测试的过程中，会大量的占用CPU的时间。
+
+把SOCKET设置为非阻塞模式，即通知系统内核：在调用Windows Sockets API时，不要让线程睡眠，而应该让函数立即返回。在返回时，该函数返回一个错误代码。图所示，一个非阻塞模式套接字多次调用recv()函数的过程。前三次调用recv()函数时，内核数据还没有准备好。因此，该函数立即返回WSAEWOULDBLOCK错误代码。第四次调用recv()函数时，数据已经准备好，被复制到应用程序的缓冲区中，recv()函数返回成功指示，应用程序开始处理数据。
+
+当使用socket()函数和WSASocket()函数创建套接字时，默认都是阻塞的。在创建套接字之后，通过调用ioctlsocket()函数，将该套接字设置为非阻塞模式。Linux下的函数是:fcntl().
+
+套接字设置为非阻塞模式后，在调用Windows Sockets API函数时，调用函数会立即返回。大多数情况下，这些函数调用都会调用“失败”，并返回WSAEWOULDBLOCK错误代码。说明请求的操作在调用期间内没有时间完成。通常，应用程序需要重复调用该函数，直到获得成功返回代码。
+
+需要说明的是并非所有的Windows Sockets API在非阻塞模式下调用，都会返回WSAEWOULDBLOCK错误。例如，以非阻塞模式的套接字为参数调用bind()函数时，就不会返回该错误代码。当然，在调用WSAStartup()函数时更不会返回该错误代码，因为该函数是应用程序第一调用的函数，当然不会返回这样的错误代码。
+
+要将套接字设置为非阻塞模式，除了使用ioctlsocket()函数之外，还可以使用WSAAsyncselect()和WSAEventselect()函数。当调用该函数时，套接字会自动地设置为非阻塞方式。
+
+由于使用非阻塞套接字在调用函数时，会经常返回WSAEWOULDBLOCK错误。所以在任何时候，都应仔细检查返回代码并作好对“失败”的准备。应用程序连续不断地调用这个函数，直到它返回成功指示为止。上面的程序清单中，在While循环体内不断地调用recv()函数，以读入1024个字节的数据。这种做法很浪费系统资源。
+
+要完成这样的操作，有人使用MSG_PEEK标志调用recv()函数查看缓冲区中是否有数据可读。同样，这种方法也不好。因为该做法对系统造成的开销是很大的，并且应用程序至少要调用recv()函数两次，才能实际地读入数据。较好的做法是，使用套接字的“I/O模型”来判断非阻塞套接字是否可读可写。
+
+非阻塞模式套接字与阻塞模式套接字相比，不容易使用。使用非阻塞模式套接字，需要编写更多的代码，以便在每个Windows Sockets API函数调用中，对收到的WSAEWOULDBLOCK错误进行处理。因此，非阻塞套接字便显得有些难于使用。
+
+但是，非阻塞套接字在控制建立的多个连接，在数据的收发量不均，时间不定时，明显具有优势。这种套接字在使用上存在一定难度，但只要排除了这些困难，它在功能上还是非常强大的。通常情况下，可考虑使用套接字的“I/O模型”，它有助于应用程序通过异步方式，同时对一个或多个套接字的通信加以管理。
+
+
+**IO复用模型：**
+![](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564857181158&di=13d24a895a5417ce847d6768a8f6f0f3&imgtype=jpg&src=http%3A%2F%2Fimg0.imgtn.bdimg.com%2Fit%2Fu%3D770609745%2C3299491672%26fm%3D214%26gp%3D0.jpg)
+
+简介：主要是select和epoll；对一个IO端口，两次调用，两次返回，比阻塞IO并没有什么优越性；关键是能实现同时对多个IO端口进行监听；
+
+I/O复用模型会用到select、poll、epoll函数，这几个函数也会使进程阻塞，但是和阻塞I/O所不同的的，这两个函数可以同时阻塞多个I/O操作。而且可以同时对多个读操作，多个写操作的I/O函数进行检测，直到有数据可读或可写时，才真正调用I/O操作函数。
+
+
+
+**信号驱动IO**
+![](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564857276750&di=a736eec5e67ae951a456a8882f3b968d&imgtype=0&src=http%3A%2F%2Fimage.mamicode.com%2Finfo%2F201904%2F20190420195009891716.png) 
+
+简介：两次调用，两次返回；
+
+首先我们允许套接口进行信号驱动I/O,并安装一个信号处理函数，进程继续运行并不阻塞。当数据准备好时，进程会收到一个SIGIO信号，可以在信号处理函数中调用I/O操作函数处理数据。
+
+
+
+**异步IO模型**
+![](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564857069930&di=25759da9819bd9b52f14476aea277376&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20190624%2Ff5b1176ce6e241f48403c7e999d91b69.jpeg)
+
+简介：数据拷贝的时候进程无需阻塞。
+
+当一个异步过程调用发出后，调用者不能立刻得到结果。实际处理这个调用的部件在完成后，通过状态、通知和回调来通知调用者的输入输出操作
+
+
+同步IO引起进程阻塞，直至IO操作完成。
+异步IO不会引起进程阻塞。
+IO复用是先通过select调用阻塞。
+
+![](https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=176532706,1323700702&fm=26&gp=0.jpg)
+
+### 2.5.3. select&poll&epoll比较
+<a href="#menu" style="float:right">目录</a>
+
+
+#### 2.5.3.1. 整体概览
+
+**水平触发和边缘触发** 
+* 水平触发通知
+    * 如果文件描述符上可以非阻塞地执行I/O系统调用，此时认为它已经就绪
+    * 也就是说主动去(轮询)检查文件描述符状态
+    * select,poll,epoll
+    * 可以任意时刻去检查文件描述符状态，因此不需要每次尽可能多的读取数据。
+* 边缘触发通知
+    * 如果文件描述符自上次状态检查以来有了新的I/O活动，此时需要触发通知。
+    * select,信号驱动IO模型
+    * I/O事件发生时才会收到通知型
+    * 当收到通知时，应当尽可能多的读取字节，因为只有下一次I/O来时才能收到通知。
+
+
+#### 2.5.3.2. 对比总结
+epoll跟select都能提供多路I/O复用的解决方案。在现在的Linux内核里有都能够支持，其中epoll是Linux所特有，而select则应该是POSIX所规定，一般操作系统均有实现
+
+**select：**
+select本质上是通过设置或者检查存放fd标志位的数据结构来进行下一步处理。这样所带来的缺点是：
+* 单个进程可监视的fd数量被限制，即能监听端口的大小有限。
+一般来说这个数目和系统内存关系很大，具体数目可以cat /proc/sys/fs/file-max察看。32位机默认是1024个。64位机默认是2048.
+
+* 对socket进行扫描时是线性扫描，即采用轮询的方法，效率较低：
+当套接字比较多的时候，每次select()都要通过遍历FD_SETSIZE个Socket来完成调度,不管哪个Socket是活跃的,都遍历一遍。这会浪费很多CPU时间。如果能给套接字注册某个回调函数，当他们活跃时，自动完成相关操作，那就避免了轮询，这正是epoll与kqueue做的。
+
+* 需要维护一个用来存放大量fd的数据结构，这样会使得用户空间和内核空间在传递该结构时复制开销大
+
+* select函数
+```c
+int select(int nfds,fd_set *readfds,fd_set *writefds,fd_set *exceptfds, struct timeval *timeout)
+```
+
+* 参数
+    * readfds 用来检测输入是否就绪的文件描述符集合
+    * writefds 输出
+    * exceptfds 异常情况是否发生
+    * timeout  超时时间结构体
+* 返回值
+    * 0 ：超时
+    * -1 ：发生错误
+    * 大于1：就绪状态的描述符的总数，包括读写异常三个参数 
+    
+
+**poll：**
+
+poll本质上和select没有区别，它将用户传入的数组拷贝到内核空间，然后查询每个fd对应的设备状态，如果设备就绪则在设备等待队列中加入一项并继续遍历，如果遍历完所有fd后没有发现就绪设备，则挂起当前进程，直到设备就绪或者主动超时，被唤醒后它又要再次遍历fd。这个过程经历了多次无谓的遍历。
+
+它没有最大连接数的限制，原因是它是基于链表来存储的，但是同样有一个缺点：
+
+* 大量的fd的数组被整体复制于用户态和内核地址空间之间，而不管这样的复制是不是有意义。
+* poll还有一个特点是“水平触发”，如果报告了fd后，没有被处理，那么下次poll时会再次报告该fd。
+
+* poll 函数
+```c
+int poll(struct pollfd fds[],nfds_t nfds,int timeout)
+
+struct pollfd{
+    //文件描述符
+    int fd;
+    //请求事件位掩码
+    short events; 
+    //返回事件位源码
+    short revents;
+}
+```
+
+
+* 参数
+    * nfds 指定fds的元素个数，nfds_t实际为无符号整形
+    * fds-fd 文件描述符
+    * fds-events 需要做检查的事件位掩码，调用者初始化
+    * fds-revents 发生了事件的位掩码，内核设置并返回
+    * timeout   
+        * -1 : 一直阻塞直到有一个文件描述符发生事件
+        * 0: 不阻塞，全部检查完即使没有事件也返回
+        * 大于0:最多阻塞时间
+* 返回:同select
+
+**select poll区别**
+* select 检查的文件描述符有数量上限(FD_SETZIZE),LINUX默认为1024，修改需要重新编译内核。poll没有限制
+
+* select的fd_set同时也是保存调用结果的地方，如果多次调用select需要每次都要进行初始化。poll是两个参数存放检查和就绪的文件描述符，从而避免每次都要进行初始化。
+
+* select提供的超时精度比poll高 
+
+
+
+**select poll 问题**
+* 每次调用select和epoll都要向内核传入需要检查的文件描述符，检测是否处于就绪状态。当检查的文件描述符较多时，将会很耗时
+* select 和 poll调用完成以后，程序必须检查返回的数据结构中的每一个元素，以此查明哪个文件描述符处于就绪态。
+* 每次调用select和epoll都要向内核传入需要检查的文件描述符，检查完成，又从内核返回应用，如果文件描述符过多，复制也很耗时。
+
+
+
+**epoll:**
+epoll支持水平触发和边缘触发，最大的特点在于边缘触发，它只告诉进程哪些fd刚刚变为就需态，并且只会通知一次。还有一个特点是，epoll使用“事件”的就绪通知方式，通过epoll_ctl注册fd，一旦该fd就绪，内核就会采用类似callback的回调机制来激活该fd，epoll_wait便可以收到通知
+
+* 适用场景:
+    * 同时处理许多客户端的服务器;
+    * 需要监视大量的文件描述符，但大部分属于空闲状态，只有少数文件描述符处于就绪状态。
+
+* epoll水平触发和边缘触发的区别
+    * 例子
+        * 套接字上有输入到来
+        * 调用一次epoll_wait(),无论采用的是水平触发还是边缘触发，该调用都会告诉我们套接字已经给处于就绪态
+        * 再次调用epoll_wait()
+    * 说明
+        * 如果是水平触发通知，第二个epoll_wait()会告诉我们套接字已经给处于就绪态
+        * 如果是边缘触发通知，将会被阻塞，因为没有新的输入进来
+
+* epoll边缘触发通知机制的程序基本框架
+    * 让所有监视的文件描述符都成为非阻塞
+    * 通过epoll_wait()取得就绪状态的描述符列表
+    * 针对每一个处于就绪状态文件描述符，不断进行IO处理直到相关的系统调用(例如read,write,recv,send,accept)返回EAGAIN或EWOULDBLOCK错误 
+
+epoll的接口非常简单，一共就三个函数：
+1. int epoll_create(int size);
+创建一个epoll的句柄，size用来告诉内核这个监听的数目一共有多大。这个参数不同于select()中的第一个参数，给出最大监听的fd+1的值。需要注意的是，当创建好epoll句柄后，它就是会占用一个fd值，在linux下如果查看/proc/进程id/fd/，是能够看到这个fd的，所以在使用完epoll后，必须调用close()关闭，否则可能导致fd被耗尽。
+
+
+2. int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);
+epoll的事件注册函数，它不同与select()是在监听事件时告诉内核要监听什么类型的事件，而是在这里先注册要监听的事件类型。第一个参数是epoll_create()的返回值，第二个参数表示动作，用三个宏来表示：
+EPOLL_CTL_ADD：注册新的fd到epfd中；
+EPOLL_CTL_MOD：修改已经注册的fd的监听事件；
+EPOLL_CTL_DEL：从epfd中删除一个fd；
+第三个参数是需要监听的fd，第四个参数是告诉内核需要监听什么事，struct epoll_event结构如下：
+
+```c
+typedef union epoll_data {
+    void *ptr;
+    int fd;
+    __uint32_t u32;
+    __uint64_t u64;
+} epoll_data_t;
+
+struct epoll_event {
+    __uint32_t events; /* Epoll events */
+    epoll_data_t data; /* User data variable */
+};
+
+```
+ 
+
+
+events可以是以下几个宏的集合：
+EPOLLIN ：表示对应的文件描述符可以读（包括对端SOCKET正常关闭）；
+EPOLLOUT：表示对应的文件描述符可以写；
+EPOLLPRI：表示对应的文件描述符有紧急的数据可读（这里应该表示有带外数据到来）；
+EPOLLERR：表示对应的文件描述符发生错误；
+EPOLLHUP：表示对应的文件描述符被挂断；
+EPOLLET： 将EPOLL设为边缘触发(Edge Triggered)模式，这是相对于水平触发(Level Triggered)来说的。
+EPOLLONESHOT：只监听一次事件，当监听完这次事件之后，如果还需要继续监听这个socket的话，需要再次把这个socket加入到EPOLL队列里
+
+
+3. int epoll_wait(int epfd, struct epoll_event * events, int maxevents, int timeout);
+等待事件的产生，类似于select()调用。参数events用来从内核得到事件的集合，maxevents告之内核这个events有多大，这个 maxevents的值不能大于创建epoll_create()时的size，参数timeout是超时时间（毫秒，0会立即返回，-1将不确定，也有说法说是永久阻塞）。该函数返回需要处理的事件数目，如返回0表示已超时。
+
+
+4、关于ET、LT两种工作模式：
+可以得出这样的结论:
+ET模式仅当状态发生变化的时候才获得通知,这里所谓的状态的变化并不包括缓冲区中还有未处理的数据,也就是说,如果要采用ET模式,需要一直read/write直到出错为止,很多人反映为什么采用ET模式只接收了一部分数据就再也得不到通知了,大多因为这样;而LT模式是只要有数据没有处理就会一直通知下去的.
+
+
+那么究竟如何来使用epoll呢？其实非常简单。
+通过在包含一个头文件#include <sys/epoll.h> 以及几个简单的API将可以大大的提高你的网络服务器的支持人数。
+
+首先通过create_epoll(int maxfds)来创建一个epoll的句柄，其中maxfds为你epoll所支持的最大句柄数。这个函数会返回一个新的epoll句柄，之后的所有操作将通过这个句柄来进行操作。在用完之后，记得用close()来关闭这个创建出来的epoll句柄。
+
+之后在你的网络主循环里面，每一帧的调用epoll_wait(int epfd, epoll_event events, int max events, int timeout)来查询所有的网络接口，看哪一个可以读，哪一个可以写了。基本的语法为：
+nfds = epoll_wait(kdpfd, events, maxevents, -1);
+其中kdpfd为用epoll_create创建之后的句柄，events是一个epoll_event*的指针，当epoll_wait这个函数操作成功之后，epoll_events里面将储存所有的读写事件。max_events是当前需要监听的所有socket句柄数。最后一个timeout是 epoll_wait的超时，为0的时候表示马上返回，为-1的时候表示一直等下去，直到有事件范围，为任意正整数的时候表示等这么长的时间，如果一直没有事件，则范围。一般如果网络主循环是单独的线程的话，可以用-1来等，这样可以保证一些效率，如果是和主逻辑在同一个线程的话，则可以用0来保证主循环的效率。
+
+epoll_wait范围之后应该是一个循环，遍利所有的事件。
+
+几乎所有的epoll程序都使用下面的框架：
+```c
+for( ; ; )
+    {
+        nfds = epoll_wait(epfd,events,20,500);
+        for(i=0;i<nfds;++i)
+        {
+            if(events[i].data.fd==listenfd) //有新的连接
+            {
+                connfd = accept(listenfd,(sockaddr *)&clientaddr, &clilen); //accept这个连接
+                ev.data.fd=connfd;
+                ev.events=EPOLLIN|EPOLLET;
+                epoll_ctl(epfd,EPOLL_CTL_ADD,connfd,&ev); //将新的fd添加到epoll的监听队列中
+            }
+            else if( events[i].events&EPOLLIN ) //接收到数据，读socket
+            {
+                n = read(sockfd, line, MAXLINE)) < 0    //读
+                ev.data.ptr = md;     //md为自定义类型，添加数据
+                ev.events=EPOLLOUT|EPOLLET;
+                epoll_ctl(epfd,EPOLL_CTL_MOD,sockfd,&ev);//修改标识符，等待下一个循环时发送数据，异步处理的精髓
+            }
+            else if(events[i].events&EPOLLOUT) //有数据待发送，写socket
+            {
+                struct myepoll_data* md = (myepoll_data*)events[i].data.ptr;    //取数据
+                sockfd = md->fd;
+                send( sockfd, md->ptr, strlen((char*)md->ptr), 0 );        //发送数据
+                ev.data.fd=sockfd;
+                ev.events=EPOLLIN|EPOLLET;
+                epoll_ctl(epfd,EPOLL_CTL_MOD,sockfd,&ev); //修改标识符，等待下一个循环时接收数据
+            }
+            else
+            {
+                //其他的处理
+            }
+        }
+    }
+
+```
+完整的服务端例子
+
+```cpp
+#include <iostream>
+#include <sys/socket.h>
+#include <sys/epoll.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <errno.h>
+
+using namespace std;
+
+#define MAXLINE 5
+#define OPEN_MAX 100
+#define LISTENQ 20
+#define SERV_PORT 5000
+#define INFTIM 1000
+
+void setnonblocking(int sock)
+{
+    int opts;
+    opts=fcntl(sock,F_GETFL);
+    if(opts<0)
+    {
+        perror("fcntl(sock,GETFL)");
+        exit(1);
+    }
+    opts = opts|O_NONBLOCK;
+    if(fcntl(sock,F_SETFL,opts)<0)
+    {
+        perror("fcntl(sock,SETFL,opts)");
+        exit(1);
+    }
+}
+
+int main(int argc, char* argv[])
+{
+    int i, maxi, listenfd, connfd, sockfd,epfd,nfds, portnumber;
+    ssize_t n;
+    char line[MAXLINE];
+    socklen_t clilen;
+
+
+    if ( 2 == argc )
+    {
+        if( (portnumber = atoi(argv[1])) < 0 )
+        {
+            fprintf(stderr,"Usage:%s portnumber/a/n",argv[0]);
+            return 1;
+        }
+    }
+    else
+    {
+        fprintf(stderr,"Usage:%s portnumber/a/n",argv[0]);
+        return 1;
+    }
+
+
+
+    //声明epoll_event结构体的变量,ev用于注册事件,数组用于回传要处理的事件
+
+    struct epoll_event ev,events[20];
+    //生成用于处理accept的epoll专用的文件描述符
+
+    epfd=epoll_create(256);
+    struct sockaddr_in clientaddr;
+    struct sockaddr_in serveraddr;
+    listenfd = socket(AF_INET, SOCK_STREAM, 0);
+    //把socket设置为非阻塞方式
+
+    //setnonblocking(listenfd);
+
+    //设置与要处理的事件相关的文件描述符
+
+    ev.data.fd=listenfd;
+    //设置要处理的事件类型
+
+    ev.events=EPOLLIN|EPOLLET;
+    //ev.events=EPOLLIN;
+
+    //注册epoll事件
+
+    epoll_ctl(epfd,EPOLL_CTL_ADD,listenfd,&ev);
+    bzero(&serveraddr, sizeof(serveraddr));
+    serveraddr.sin_family = AF_INET;
+    char *local_addr="127.0.0.1";
+    inet_aton(local_addr,&(serveraddr.sin_addr));//htons(portnumber);
+
+    serveraddr.sin_port=htons(portnumber);
+    bind(listenfd,(sockaddr *)&serveraddr, sizeof(serveraddr));
+    listen(listenfd, LISTENQ);
+    maxi = 0;
+    for ( ; ; ) {
+        //等待epoll事件的发生
+
+        nfds=epoll_wait(epfd,events,20,500);
+        //处理所发生的所有事件
+
+        for(i=0;i<nfds;++i)
+        {
+            if(events[i].data.fd==listenfd)//如果新监测到一个SOCKET用户连接到了绑定的SOCKET端口，建立新的连接。
+
+            {
+                connfd = accept(listenfd,(sockaddr *)&clientaddr, &clilen);
+                if(connfd<0){
+                    perror("connfd<0");
+                    exit(1);
+                }
+                //setnonblocking(connfd);
+
+                char *str = inet_ntoa(clientaddr.sin_addr);
+                cout << "accapt a connection from " << str << endl;
+                //设置用于读操作的文件描述符
+
+                ev.data.fd=connfd;
+                //设置用于注测的读操作事件
+
+                ev.events=EPOLLIN|EPOLLET;
+                //ev.events=EPOLLIN;
+
+                //注册ev
+
+                epoll_ctl(epfd,EPOLL_CTL_ADD,connfd,&ev);
+            }
+            else if(events[i].events&EPOLLIN)//如果是已经连接的用户，并且收到数据，那么进行读入。
+
+            {
+                cout << "EPOLLIN" << endl;
+                if ( (sockfd = events[i].data.fd) < 0)
+                    continue;
+                if ( (n = read(sockfd, line, MAXLINE)) < 0) {
+                    if (errno == ECONNRESET) {
+                        close(sockfd);
+                        events[i].data.fd = -1;
+                    } else
+                        std::cout<<"readline error"<<std::endl;
+                } else if (n == 0) {
+                    close(sockfd);
+                    events[i].data.fd = -1;
+                }
+                line[n] = '/0';
+                cout << "read " << line << endl;
+                //设置用于写操作的文件描述符
+
+                ev.data.fd=sockfd;
+                //设置用于注测的写操作事件
+
+                ev.events=EPOLLOUT|EPOLLET;
+                //修改sockfd上要处理的事件为EPOLLOUT
+
+                //epoll_ctl(epfd,EPOLL_CTL_MOD,sockfd,&ev);
+
+            }
+            else if(events[i].events&EPOLLOUT) // 如果有数据发送
+
+            {
+                sockfd = events[i].data.fd;
+                write(sockfd, line, n);
+                //设置用于读操作的文件描述符
+
+                ev.data.fd=sockfd;
+                //设置用于注测的读操作事件
+
+                ev.events=EPOLLIN|EPOLLET;
+                //修改sockfd上要处理的事件为EPOLIN
+
+                epoll_ctl(epfd,EPOLL_CTL_MOD,sockfd,&ev);
+            }
+        }
+    }
+    return 0;
+}
+```
+
+**select、poll、epoll 区别总结：** 
+
+* 支持一个进程所能打开的最大连接数
+
+|||
+|---|---|
+|select|单个进程所能打开的最大连接数有FD_SETSIZE宏定义，其大小是32个整数的大小（在32位的机器上，大小就是32*32，同理64位机器上FD_SETSIZE为32*64），当然我们可以对进行修改，然后重新编译内核，但是性能可能会受到影响，这需要进一步的测试。
+|poll|poll本质上和select没有区别，但是它没有最大连接数的限制，原因是它是基于链表来存储的
+|epoll|虽然连接数有上限，但是很大，1G内存的机器上可以打开10万左右的连接，2G内存的机器可以打开20万左右的连接
+
+* FD剧增后带来的IO效率问题
+
+|||
+|---|---|
+|select|因为每次调用时都会对连接进行线性遍历，所以随着FD的增加会造成遍历速度慢的“线性下降性能问题”。
+|poll|同上
+|epoll|因为epoll内核中实现是根据每个fd上的callback函数来实现的，只有活跃的socket才会主动调用callback，所以在活跃socket较少的情况下，使用epoll没有前面两者的线性下降的性能问题，但是所有socket都很活跃的情况下，可能会有性能问题。
+
+* 消息传递方式
+
+|||
+|---|---|
+|select|内核需要将消息传递到用户空间，都需要内核拷贝动作
+|poll|同上
+|epoll|epoll通过内核和用户空间共享一块内存来实现的。
+
+**总结：**
+综上，在选择select，poll，epoll时要根据具体的使用场合以及这三种方式的自身特点。
+* 表面上看epoll的性能最好，但是在连接数少并且连接都十分活跃的情况下，select和poll的性能可能比epoll好，毕竟epoll的通知机制需要很多函数回调。
+* select低效是因为每次它都需要轮询。但低效也是相对的，视情况而定，也可通过良好的设计改善
+
+
+
+## 2.6. Shell
+<a href="#menu" style="float:right">目录</a>
+
+
+### 2.6.1. 文件相关
 * 路径
   * /   根路径
   * .   当前目录
@@ -2321,27 +2147,36 @@ HTTP是TCP的上层，主要通信实现由TCP/IP层实现，因此影响性能�
    * tail -n 2 file 实时查看文件后2行数据，动态更新。
    * head -5 file 查看看文件前5行数据
 
-## 7.2. 系统监控
+### 2.6.2. 系统监控
 <a href="#menu" style="float:right">目录</a>
-## 7.3. 处理数据文件
+
+### 2.6.3. 处理数据文件
 <a href="#menu" style="float:right">目录</a>
-## 7.4. 环境变量
+
+### 2.6.4. 环境变量
 <a href="#menu" style="float:right">目录</a>
-## 7.5. 基本脚本命令
+
+### 2.6.5. 基本脚本命令
+
 <a href="#menu" style="float:right">目录</a>
-## 7.6. 结构化命令
+
+### 2.6.6. 结构化命令
 <a href="#menu" style="float:right">目录</a>
-## 7.7. 处理用户输入
+
+### 2.6.7. 处理用户输入
 <a href="#menu" style="float:right">目录</a>
-## 7.8. 控制脚本
+
+### 2.6.8. 控制脚本
 <a href="#menu" style="float:right">目录</a><span id="menu"></span>
 
+# 3. Java与面向对象
 
-# 1. Java基础
+## 3.1. Java基础
 <a href="#menu" style="float:right">目录</a>
-## 1.1. 数据类型
+
+### 3.1.1. 数据类型
 <a href="#menu" style="float:right">目录</a>
-### 1.1.1. 数据类型
+### 3.1.2. 数据类型
 |基本数据类型|包装器类型|长度（字节）|范围|类型标识|
 |---|---|---|---|---|
 |byte|Byte|1|-128,127|
@@ -2363,7 +2198,7 @@ HTTP是TCP的上层，主要通信实现由TCP/IP层实现，因此影响性能�
    * 左边类型赋值给右边类型会自动转换，反之需要强制转换，强制转换可能会出现溢出，导致数据丢失。比如将int(1000)转换为byte.多出来的比特位将会强制截断。
    * 任何类型和字符串类型相加，都会自动转换为字符串类型
    * byte,char,short类型之间相互运算将会自动提升为int类型，这是系统避免计算溢出。
-### 1.1.2. Integer 缓存对象
+#### 3.1.2.1. Integer 缓存对象
 <a href="#menu" style="float:right">目录</a>
 缓存范围为[-128,127]，超过则创建新的对象
 ```java
@@ -2431,7 +2266,7 @@ a1==a2?  true
 b1==b2?  false
 c1==c2?  false
 ```
-### 1.1.3. 数组
+#### 3.1.2.2. 数组
 初始化
 ```java
 /创建数组，需要定义长度
@@ -2447,7 +2282,7 @@ int[][] arr1 = new int[][]{{1,2},{1,2}};
 int[][] arr2 =  {{1,2},{1,2}};
 ```
 数组工具类java.util.Arrays。提供排序,复制，比较，初始化等功能。
-### 1.1.4. String 
+#### 3.1.2.3. String 
 <a href="#menu" style="float:right">目录</a>
 ```java
 public static void main(String args[]){
@@ -2491,9 +2326,9 @@ String a = new String("1243");
 使用StringBuilder和StringBuffer，StringBuffer在一些方法上加上了Synchronized同步锁，一般不使用。
 
 
-## 1.2. 面向对象
+## 3.2. 面向对象
 <a href="#menu" style="float:right">目录</a>
-### 1.2.1. 三大特性
+### 3.2.1. 三大特性
 <a href="#menu" style="float:right">目录</a>
 * 继承
 通过继承可以实现代码的复用。
@@ -2576,14 +2411,14 @@ class Sub extends Base{
 子类普通初始化块
 子类构造器
 ```
-### 1.2.2. 权限修饰符
+#### 3.2.1.1. 权限修饰符
 <a href="#menu" style="float:right">目录</a>
 * private 本类可见
 * default 同一个包/子包可见
 * protect 子类可见
 * public 所有可见
 
-### 1.2.3. 接口和抽象类
+#### 3.2.1.2. 接口和抽象类
 **接口**
 * interface定义，implements 实现
 * 接口方法默认为public abstract 
@@ -2627,7 +2462,7 @@ class Sub extends Base{
 * 与import配合，引入static元素(属性和方法)
 
 
-### 1.2.4. 内部类
+#### 3.2.1.3. 内部类
 内部类分为普通内部类，静态内部类，局部内部类，匿名内部类。
 
 **普通内部类和静态内部类**
@@ -2703,7 +2538,7 @@ func(new Handle{
 
 });
 ```
-### 1.2.5. 枚举类
+#### 3.2.1.4. 枚举类
 ```java
 public enum BlogReturnCode implements  ReturnCode{
     //空参数 0
@@ -2729,25 +2564,31 @@ public enum BlogReturnCode implements  ReturnCode{
     }
 }
 ```
-## 1.3. 范型
-<a href="#menu" style="float:right">目录</a>
-## 1.4. 集合
-<a href="#menu" style="float:right">目录</a>
-## 1.5. 异常
-<a href="#menu" style="float:right">目录</a>
-## 1.6. 注解
-<a href="#menu" style="float:right">目录</a>
-## 1.7. IO
-<a href="#menu" style="float:right">目录</a>
-## 1.8. 反射
-<a href="#menu" style="float:right">目录</a>
-## 1.9. JDBC
+### 3.2.2. 范型
 <a href="#menu" style="float:right">目录</a>
 
-# 2. JAVA Socket编程
+### 3.2.3. 集合
 <a href="#menu" style="float:right">目录</a>
 
-# 4. JDK版本变化
+### 3.2.4. 异常
+<a href="#menu" style="float:right">目录</a>
+
+### 3.2.5. 注解
+<a href="#menu" style="float:right">目录</a>
+
+### 3.2.6. IO
+<a href="#menu" style="float:right">目录</a>
+
+### 3.2.7. 反射
+<a href="#menu" style="float:right">目录</a>
+
+### 3.2.8. JDBC
+<a href="#menu" style="float:right">目录</a>
+
+## 3.3. JAVA Socket编程
+<a href="#menu" style="float:right">目录</a>
+
+## 3.4. JDK版本变化
 * JDK5的新特性：
     * 自动拆装箱
     * Foreach
@@ -2828,167 +2669,37 @@ public enum BlogReturnCode implements  ReturnCode{
     * 基于时间的版本控制
 
 
-# 5. Java性能优化
+
+
+
+## 3.5. 设计模式
 <a href="#menu" style="float:right">目录</a>
 
-## 5.1. Java 性能调优概述
-
-### 5.1.1. 性能概述
-* 性能参考指标
-    * 执行时间
-    * CPU时间
-    * 内存分配
-    * 磁盘吞吐量
-    * 网络吞吐量
-    * 响应时间 
-
-* 最有可能影响系统性能的原因
-    * 磁盘IO
-        * 磁盘IO读写的速度比内存要慢很多，如果CPU等待IO读写，将会影响整个性能。可以使用异步IO等解决
-    * 网络操作
-        * 由于网络环境不确定性，可能存在较大延迟。
-    * CPU
-        * CPU代表计算能力，CPU性能越好，代码执行越快，同时多核还可以实现程序并行执行
-    * 异常
-        * 异常的捕获和处理是非常耗资源的
-    * 数据库
-        * 数据库读写涉及到网络通信，磁盘读写，锁竞争，所以也会影响系统性能。
-    * 锁竞争
-        * 锁竞争带来上下文切换，消耗较大的CPU资源
-    * 内存
-        * 内存用于缓存数据，内存不足，导致应用出现内存溢出，频繁进行垃圾回收。垃圾回收是一项很耗费系统性能的过程，同时也可能造成Stop the world出现。
-
-### 5.1.2. 性能调优的层次     
-
-* 设计调优
-    * 比如选择好的组件，使用NIO替换BIO
-    * 单体做成微服务
-* 代码调优
-    * 单例模式的使用
-    * 使用更好的算法
-* JVM调优
-    * 垃圾收集器的选择
-    * 内存参数的设置
-* 数据库调优
-    * 缓存
-    * 读写分离
-    * 索引
-* 操作系统调优
-## Java程序优化
+### 3.5.1. 设计原则
 <a href="#menu" style="float:right">目录</a>
 
-### 有助于改善性能的技巧
-* try-catch不要在循环中使用
-* 使用局部变量
-    * 局部变量在栈中创建，速度快
-* 位运算代替乘除法
-* 使用clone代替new
-
-
-
-## 设计优化
-<a href="#menu" style="float:right">目录</a>
-
-### 
-<a href="#menu" style="float:right">目录</a>
-* 缓冲
-* 缓存
-* 对象复用
-* 并行代替串行
-* 负载均衡
-* 时间换空间
-* 空间换时间
-
-## 5.2. JVM内存模型介绍
-<a href="#menu" style="float:right">目录</a>
-
-### 运行时数据区域
-![](https://github.com/lgjlife/Java-Study/blob/master/pic/jvm/jvm.jpg?raw=true)
-
-* 程序计数器
-    * 线程私有
-    * 当前线程所执行字节码的行号指示器
-    * 字节码解释器就是通过改变这个计数器的值来选取下一条需要执行的指令
-    * 如果执行的是Java代码，则记录的是正在执行的虚拟机字节码指令的地址
-    * 如果执行的是Native方法，则为Undefined
-    * 此内存区域唯一一个不会出现OutOfMemoryError异常的区域
-* Java 虚拟机栈
-    * 线程私有
-    * 虚拟机栈描述方法执行的内存模型
-    * 每个方法在执行时都会创建一个栈帧，用于存储局部变量表，操作数栈，动态链接，方法出口等信息
-    * 每个方法在调用到执行完成的过程，就对应着一个栈帧在虚拟机栈中入栈到出栈的过程
-    * 会抛出OutOfMemoryError和StackOverFlowError异常
-* 本地方法栈
-    * Native的方法栈
-    * 会抛出OutOfMemoryError和StackOverFlowError异常
-* Java堆
-    * 线程共享
-    * 所有对象和实例都在堆上分配
-    * 会抛出OutOfMemoryError和StackOverFlowError异常
-* 方法区
-    * 线程共享
-    * 存储已被虚拟机加载的类信息，常量，静态变量，即时编译器编译后的代码
-    * 方法区是一种规范，JDK7使用永久代来实现，JDK8使用metadata元空间来实现
-    * 会抛出OutOfMemoryError和StackOverFlowError异常
-## 5.3. 垃圾收集器和内存分配策略
-<a href="#menu" style="float:right">目录</a>
-
-## 5.4. 虚拟机性能监控和故障处理工具
-<a href="#menu" style="float:right">目录</a>
-
-## 5.5. 类文件结构
-<a href="#menu" style="float:right">目录</a>
-
-## 5.6. 虚拟机类加载机制
-<a href="#menu" style="float:right">目录</a>
-
-## 5.7. 虚拟机字节码执行引擎
-<a href="#menu" style="float:right">目录</a>
-
-
-## 5.8. 编译期优化
-<a href="#menu" style="float:right">目录</a>
-
-## 5.9. 运行期优化
-<a href="#menu" style="float:right">目录</a>
-
-## 5.10. Java内存模型与线程
-<a href="#menu" style="float:right">目录</a>
-
-## 5.11. 线程安全与锁优化
-<a href="#menu" style="float:right">目录</a>
-
-
-
-
-# 6. 设计模式
-<a href="#menu" style="float:right">目录</a>
-
-## 6.1. 设计原则
-<a href="#menu" style="float:right">目录</a>
-
-### 6.1.1. 单一职责原则
+#### 3.5.1.1. 单一职责原则
 * 每个类只负责单一的功能，避免出现复杂臃肿的类。造成维护困难。
-### 6.1.2. 里氏替换原则
+#### 3.5.1.2. 里氏替换原则
 * 父类出现的地方子类也可以出现。方便实现类替换，减少代码修改。
-### 6.1.3. 依赖倒置原则
+#### 3.5.1.3. 依赖倒置原则
 * 高层模块不应该依赖细节，而应该依赖其抽象
 * 也就是说定义类属性时，使用接口或者抽象类来定义，而不是实现类。
-### 6.1.4. 接口隔离原则
+#### 3.5.1.4. 接口隔离原则
 * 创建单一的接口，不要创建臃肿的接口。每个接口应该只是负责单一的功能，避免增加新抽象方法时，造成较多的实现类页需要修改。
-### 6.1.5. 迪米特法则
+#### 3.5.1.5. 迪米特法则
 * 一个类应当降低对其他类的依赖,避免其他类修改时，使用类也要进行修改。
-### 6.1.6. 开闭原则
+#### 3.5.1.6. 开闭原则
 * 对修改关闭，对扩展开放
 * 当需要增加新功能时，应当避免修改原类的代码，应当通过一些设计模式来进行功能扩展。比如装饰模式，这样可以达到对其他使用类的影响。
 * 以上的原则都是施行指南，开闭原则是最终目标。
 
-## 6.2. UML图
+### 3.5.2. UML图
 
-## 6.3. 单例模式
+### 3.5.3. 单例模式
 <a href="#menu" style="float:right">目录</a>
 
-### 6.3.1. 基本概念
+#### 3.5.3.1. 基本概念
 
 **定义**:确保某一个类只有一个对象实例。
 **衍生**：有限多例，比如对象池技术，使用缓存将创建的对象缓存起来。
@@ -2999,7 +2710,7 @@ public enum BlogReturnCode implements  ReturnCode{
 
 **缺点**:
 
-### 6.3.2. 实现
+#### 3.5.3.2. 实现
 单例模式需要注意的关键点是如何避免高并发条件下出现多例的问题。高并发环境下，任何两条语句执行之间都有可能被其他线程所抢占并执行完整的指令。这种情况处理不好，很容易产生出多例。
 还有需要关注的是，一个系统中存在很多类，但是有的类在系统运行的生命周期中是始终没机会创建对象，比如有个偏门的用户操作才会触发某个类创建对象。这种情况下就没必要创建对象，也就是需要延迟创建对象，在使用时才去创建。
 作为单例类，没必要去考虑通过反射会破解单例模式，定义一个类为单例，作为开发者应当遵循这个规范，而不是尝试使用反射来创建多个对象从而破坏这个规定。单例模式只防君子不防小人。
@@ -3137,76 +2848,153 @@ public class Singleton5 implements Serializable {
 }
 ```
 
-## 6.4. 工厂方法模式
+### 3.5.4. 工厂方法模式
 <a href="#menu" style="float:right">目录</a>
 
-## 6.5. 抽象工厂模式
+### 3.5.5. 抽象工厂模式
 <a href="#menu" style="float:right">目录</a>
 
-## 6.6. 模板方法模式
+### 3.5.6. 模板方法模式
 <a href="#menu" style="float:right">目录</a>
 
-## 6.7. 建造者模式
+### 3.5.7. 建造者模式
 <a href="#menu" style="float:right">目录</a>
 
-## 6.8. 代理模式
+### 3.5.8. 代理模式
 <a href="#menu" style="float:right">目录</a>
 
-## 6.9. 原型模式
+### 3.5.9. 原型模式
 <a href="#menu" style="float:right">目录</a>
 
-## 6.10. 中介者模式
+### 3.5.10. 中介者模式
 <a href="#menu" style="float:right">目录</a>
 
-## 6.11. 命令模式
+### 3.5.11. 命令模式
 <a href="#menu" style="float:right">目录</a>
 
-## 6.12. 责任链模式
+### 3.5.12. 责任链模式
 <a href="#menu" style="float:right">目录</a>
 
-## 6.13. 装饰模式
+### 3.5.13. 装饰模式
 <a href="#menu" style="float:right">目录</a>
 
-## 6.14. 策略模式
+### 3.5.14. 策略模式
 <a href="#menu" style="float:right">目录</a>
 
-## 6.15. 适配器模式
+### 3.5.15. 适配器模式
 <a href="#menu" style="float:right">目录</a>
 
-## 6.16. 迭代器模式
+### 3.5.16. 迭代器模式
 <a href="#menu" style="float:right">目录</a>
 
-## 6.17. 组合模式
+### 3.5.17. 组合模式
 <a href="#menu" style="float:right">目录</a>
 
-## 6.18. 观察者模式
+### 3.5.18. 观察者模式
 <a href="#menu" style="float:right">目录</a>
 
-## 6.19. 门面模式
+### 3.5.19. 门面模式
 <a href="#menu" style="float:right">目录</a>
 
-## 6.20. 备忘录模式
+### 3.5.20. 备忘录模式
 <a href="#menu" style="float:right">目录</a>
 
-## 6.21. 访问者模式
+### 3.5.21. 访问者模式
 <a href="#menu" style="float:right">目录</a>
 
-## 6.22. 状态模式
+### 3.5.22. 状态模式
 <a href="#menu" style="float:right">目录</a>
 
-## 6.23. 解释器模式
+### 3.5.23. 解释器模式
 <a href="#menu" style="float:right">目录</a>
 
-## 6.24. 享元模式
+### 3.5.24. 享元模式
 <a href="#menu" style="float:right">目录</a>
 
-## 6.25. 桥梁模式
+### 3.5.25. 桥梁模式
 <a href="#menu" style="float:right">目录</a>
+
+
+## 3.6. Effective Java总结
+<a href="#menu" style="float:right">目录</a>
+
+### 3.6.1. 创建和销毁对象
+
+### 3.6.2. 对于所有对象都通用的方法
+
+### 3.6.3. 类和接口
+
+### 3.6.4. 范型
+
+### 3.6.5. 枚举和注解
+
+### 3.6.6. 方法
+
+
+### 3.6.7. 通用程序设计
+
+### 3.6.8. 异常
+
+### 3.6.9. 并发
+
+### 3.6.10. 序列化
+
+## 3.7. Java编程思想阅读总结
+
+### 3.7.1. 对象导论
+
+### 3.7.2. 一切都是对象
+
+### 3.7.3. 操作符
+
+### 3.7.4. 控制执行流程
+
+### 3.7.5. 初始化和清理
+
+### 3.7.6. 访问权限控制
+
+### 3.7.7. 复用类
+
+### 3.7.8. 多态
+
+### 3.7.9. 接口
+
+### 3.7.10. 内部类
+
+### 3.7.11. 持有对象
+
+
+### 3.7.12. 通过异常处理错误
+
+### 3.7.13. 字符串
+
+### 3.7.14. 类型信息
+
+
+### 3.7.15. 范型
+
+### 3.7.16. 数组
+
+
+### 3.7.17. 容器深入研究
+
+### 3.7.18. Java IO系统
+
+
+### 3.7.19. 枚举类型
+
+### 3.7.20. 注解
+
+### 3.7.21. 并发
+
+### 3.7.22.  
+
+
 <h1>多线程</h1>
 
 
 
-# 1. 基本概念
+# 4. 基本概念
 <a href="#menu" style="float:right">目录</a>
 * 进程
     * 受操作系统管理和资源分配的基本单元，进程之间的内存空间是相互独立的。
@@ -3220,10 +3008,10 @@ public class Singleton5 implements Serializable {
     * 多核CPU的时候，可以有效利用多核提高程序执行效率
     * 在程序任务阻塞的场景下，利用多线程执行其他任务，提高执行效率
 
-# 2. Java多线程
+# 5. Java多线程
 <a href="#menu" style="float:right">目录</a>
 
-## 2.1. 实现方式
+## 5.1. 实现方式
 **方式1:继承Thread类**
 ```java
 
@@ -3311,13 +3099,13 @@ public interface Runnable {
 ```
 通过Callable配合Future类可以获取线程的执行结果。
 
-## 2.2. 基本属性
+## 5.2. 基本属性
 * 线程名称，主线程为main，其他线程为Thread-1,Thread-2,可自定义，用于区分不同的线程。
 * 线程分组
 * 线程优先级
 * 守护线程标志，默认为非守护线程
 
-## 2.3. 常用方法
+## 5.3. 常用方法
 
 * run & start
     * run 方法是Runable接口的方法，是线程执行任务的方法，线程类需要实现该方法
@@ -3366,7 +3154,7 @@ public interface Runnable {
     * 用于等待调用的线程执行结束
     * 内部使用wait实现，所以会释放锁
     
-## 2.4. 生命周期 & 线程状态
+## 5.4. 生命周期 & 线程状态
 
 * 线程创建
 * 线程运行
@@ -3392,7 +3180,7 @@ public interface Runnable {
     * 阻塞状态。不会释放线程所持有的锁
 * Terminated
     * 结束状态
-## 2.5. 线程监控工具
+## 5.5. 线程监控工具
 * jstack
 查看线程的状态，优先级，可以检测是否存在死锁
 ```
@@ -3441,9 +3229,9 @@ JNI global references: 200
 * jconsole,jvisual 
 集成多个java命令，通过界面查看各个状态
 
-# 3. Synchronized
+# 6. Synchronized
 <a href="#menu" style="float:right">目录</a>
-### 3.0.1. 基本概念
+### 6.0.1. 基本概念
 * 为什么要同步
 看一个简单的例子：
 ```java
@@ -3480,7 +3268,7 @@ class Service{
 * synchronized具有可重入特性  
 * 发生未捕获的异常时，线程将会释放锁并退出。
 
-## 3.1. 基本使用
+## 6.1. 基本使用
 * 同步语句
 **同步方法**
 ```java
@@ -3698,7 +3486,7 @@ main(){
 
 
 ```
-## 3.2. 实现原理
+## 6.2. 实现原理
 Java 虚拟机中的同步(Synchronization)基于进入和退出Monitor对象实现， 无论是显式同步(有明确的 monitorenter 和 monitorexit 指令,即同步代码块)还是隐式同步都是如此。在 Java 语言中，同步用的最多的地方可能是被 synchronized 修饰的同步方法。同步方法 并不是由 monitorenter 和 monitorexit 指令来实现同步的，而是由方法调用指令读取运行时常量池中方法表结构的 ACC_SYNCHRONIZED 标志来隐式实现的，关于这点，稍后详细分析。
 同步代码块：monitorenter指令插入到同步代码块的开始位置，monitorexit指令插入到同步代码块的结束位置，JVM需要保证每一个monitorenter都有一个monitorexit与之相对应。任何对象都有一个monitor与之相关联，当且一个monitor被持有之后，他将处于锁定状态。线程执行到monitorenter指令时，将会尝试获取对象所对应的monitor所有权，即尝试获取对象的锁；
 在JVM中，对象在内存中的布局分为三块区域：对象头、实例变量和填充数据。如下：
@@ -3751,8 +3539,8 @@ Java 虚拟机中的同步(Synchronization)基于进入和退出Monitor对象实
 等待唤醒机制与synchronize：所谓等待唤醒机制本篇主要指的是notify/notifyAll和wait方法，在使用这3个方法时，必须处于synchronized代码块或者synchronized方法中，否则就会抛出IllegalMonitorStateException异常，这是因为调用这几个方法前必须拿到当前对象的监视器monitor对象，也就是说notify/notifyAll和wait方法依赖于monitor对象，在前面的分析中，我们知道monitor 存在于对象头的Mark Word 中(存储monitor引用指针)，而synchronized关键字可以获取 monitor ，这也就是为什么notify/notifyAll和wait方法必须在synchronized代码块或者synchronized方法调用的原因。
 
 
-# 4. 线程间通信
-## 4.1. 基本概念
+# 7. 线程间通信
+## 7.1. 基本概念
 ```java
 //释放锁，线程任务暂停
 public final native void wait() throws InterruptedException;
@@ -3769,56 +3557,56 @@ public final native void notifyAll();
 * 在等待的过程中，如果线程被中断，将会抛出异常InterruptedException。
 * 调用wait将会释放锁，sleep将不会释放锁，wait将会随机选择一个线程进行唤醒
 
-## 4.2. 实现消费者和生产者
+## 7.2. 实现消费者和生产者
 
 
-# 5. Java内存模型
+# 8. Java内存模型
 <a href="#menu" style="float:right">目录</a>   
 
-# 6. volatile
+# 9. volatile
 <a href="#menu" style="float:right">目录</a>
  
-# 7. Lock
+# 10. Lock
 <a href="#menu" style="float:right">目录</a>
 
-# 8. 线程池
-<a href="#menu" style="float:right">目录</a>
-
-
-# 9. 并发工具类
+# 11. 线程池
 <a href="#menu" style="float:right">目录</a>
 
 
-# 10. 异步编程
+# 12. 并发工具类
+<a href="#menu" style="float:right">目录</a>
+
+
+# 13. 异步编程
 <a href="#menu" style="float:right">目录</a>
 
 
 <span id="menu"></span>
 
-# 1. Spring
+# 14. Spring
 <a href="#menu" style="float:right">目录</a>
 
-## 1.1. IOC容器
-## 1.2. AOP面向切面编程
-## 1.3. Spring 事务管理
-## 常用注解
-## 常用工具类
+## 14.1. IOC容器
+## 14.2. AOP面向切面编程
+## 14.3. Spring 事务管理
+## 14.4. 常用注解
+## 14.5. 常用工具类
 
-# 2. Sppring MVC
-## Servlet
+# 15. Sppring MVC
+## 15.1. Servlet
 
 
 
-# 3. SpringBoot
+# 16. SpringBoot
 <a href="#menu" style="float:right">目录</a>
 
-## 3.1. 基本概念
+## 16.1. 基本概念
 SpringBoot的核心
 * 自动配置，针对很多Spring应用常用框架进行自动默认配置，可以让你轻松启动项目。比如jedis。原先使用Jedis需要配置连接地址，配置连接池，使用SpringBoot之后，这些都会帮你配置好，只要引入相关依赖，调用其提供的接口，即可实现对Redis的访问。
 * 起步依赖:告诉Spring使用什么功能，他都能引入需要的库。
 * Actuator
 
-## 3.2. Spring Boot 环境下创建Bean
+## 16.2. Spring Boot 环境下创建Bean
 
 **方式1**：
 
@@ -4132,35 +3920,35 @@ Location location =  context.getBean(Location.class);
 location.run();
 ```
 
-# 4. SpringCloud
+# 17. SpringCloud
 <a href="#menu" style="float:right">目录</a>
 
 
 
-# 5. 测试
+# 18. 测试
 <a href="#menu" style="float:right">目录</a>
-## 5.1. 基本测试
+## 18.1. 基本测试
 <a href="#menu" style="float:right">目录</a>
-## 5.2. 控制层测试
+## 18.2. 控制层测试
 <a href="#menu" style="float:right">目录</a>
-## 5.3. 服务层测试
+## 18.3. 服务层测试
 <a href="#menu" style="float:right">目录</a>
-## 5.4. DAO层测试
-<a href="#menu" style="float:right">目录</a>
-
-
-# 6. 登录认证
-## 6.1. Shiro
-## 6.2. oauth2
-## 6.3. token<span id="menu"></span>
-
-# 1. MySQL
+## 18.4. DAO层测试
 <a href="#menu" style="float:right">目录</a>
 
-## 1.1. 基本概念
+
+# 19. 登录认证
+## 19.1. Shiro
+## 19.2. oauth2
+## 19.3. token<span id="menu"></span>
+
+# 20. MySQL
 <a href="#menu" style="float:right">目录</a>
 
-### 1.1.1. 基本概念
+## 20.1. 基本概念
+<a href="#menu" style="float:right">目录</a>
+
+### 20.1.1. 基本概念
 * 基本概念
     * 数据库: 数据库是一些关联表的集合。
     * SQL:一种结构化查询语言，专门用来和数据库进行通信的语言。
@@ -4189,10 +3977,10 @@ FOREIGN KEY (P_Id) REFERENCES Persons(P_Id)
 ```
 
 
-### 1.1.2. 常用工具
+### 20.1.2. 常用工具
 * workbench 跨平台可视化客户端
 
-### 1.1.3. 逻辑架构图
+### 20.1.3. 逻辑架构图
 <a href="#menu" style="float:right">目录</a>
 
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/mysql/mysql1.jpeg?raw=true)
@@ -4205,13 +3993,13 @@ FOREIGN KEY (P_Id) REFERENCES Persons(P_Id)
 
 
 
-### 1.1.4. 常用配置
+### 20.1.4. 常用配置
 <a href="#menu" style="float:right">目录</a>
 
-## 1.2. 日志文件
+## 20.2. 日志文件
 <a href="#menu" style="float:right">目录</a>
 
-### 1.2.1. 参数文件
+### 20.2.1. 参数文件
 <a href="#menu" style="float:right">目录</a>
 
 * 告诉MYSQL实例启动时在哪里可以找到数据库文件，并且指定初始化参数，这些参数定义了某种内存结构的大小等设置，还会介绍参数的类型
@@ -4223,33 +4011,33 @@ lgj@lgj-Lenovo-G470:~$ mysql --help | grep my.cnf
 ```
 
 
-### 1.2.2. 日志文件
+### 20.2.2. 日志文件
 <a href="#menu" style="float:right">目录</a>
 * 用来记录运行时产生的日志，比如慢查询日志，二进制日志
 
-### 1.2.3. socket文件
+### 20.2.3. socket文件
 <a href="#menu" style="float:right">目录</a>
 * 当用UNIX域套接字进行连接时需要的文件 
 
-### 1.2.4. pid文件
+### 20.2.4. pid文件
 <a href="#menu" style="float:right">目录</a>
 * MYSQL实例的进程PID文件
 
 
-### 1.2.5. MySQL表结构文件
+### 20.2.5. MySQL表结构文件
 <a href="#menu" style="float:right">目录</a>
 * 表结构定义文件 
 
-### 1.2.6. 存储引擎文件
+### 20.2.6. 存储引擎文件
 <a href="#menu" style="float:right">目录</a>
 * 存储了记录和索引等数据
 
 
-## 1.3. NoSQL与关系型数据库设计理念比较　　
+## 20.3. NoSQL与关系型数据库设计理念比较　　
 
 关系型数据库中的表都是存储一些格式化的数据结构，每个元组字段的组成都一样，即使不是每个元组都需要所有的字段，但数据库会为每个元组分配所有的字段，这样的结构可以便于表与表之间进行连接等操作，但从另一个角度来说它也是关系型数据库性能瓶颈的一个因素。而非关系型数据库以键值对存储，它的结构不固定，每一个元组可以有不一样的字段，每个元组可以根据需要增加一些自己的键值对，这样就不会局限于固定的结构，可以减少一些时间和空间的开销。
 
-### 1.3.1. 关系型数据库
+### 20.3.1. 关系型数据库
 <a href="#menu" style="float:right">目录</a>
 * 关系型数据库中一对多，多对一，多对多关系
     * 一对一
@@ -4284,7 +4072,7 @@ lgj@lgj-Lenovo-G470:~$ mysql --help | grep my.cnf
     * Oracle，Microsoft SQL Server，MySQL，PostgreSQL，DB2，
 Microsoft Access， SQLite，Teradata，MariaDB(MySQL的一个分支)，SAP
 
-### 1.3.2. 非关系型数据库
+### 20.3.2. 非关系型数据库
 <a href="#menu" style="float:right">目录</a>
 * 非关系型数据库：指非关系型的，分布式的，且一般不保证遵循ACID原则的数据存储系统。
 * 非关系型数据库结构
@@ -4342,7 +4130,7 @@ Microsoft Access， SQLite，Teradata，MariaDB(MySQL的一个分支)，SAP
 
 
 
-## 1.4. 使用数据库
+## 20.4. 使用数据库
 <a href="#menu" style="float:right">目录</a>
 
 * 启停数据库
@@ -4404,7 +4192,7 @@ CREATE TABLE `relation`(
 
 
 
-## 1.5. 数据类型
+## 20.5. 数据类型
 <a href="#menu" style="float:right">目录</a>
 **整形数据类型**
 
@@ -4524,7 +4312,7 @@ char和varchar可以有默认值，text不能指定默认值。
 
 数据库选择合适的数据类型存储还是很有必要的，对性能有一定影响。这里在零碎记录两笔，对于int类型的，如果不需要存取负值，最好加上unsigned；对于经常出现在where语句中的字段，考虑加索引，整形的尤其适合加索引
 
-## 1.6. 数据更新
+## 20.6. 数据更新
 
 ```sql
 //插入单条数据
@@ -4540,7 +4328,7 @@ delete from table_name where xx=xx
 ```
 
 
-## 1.7. 查询入门
+## 20.7. 查询入门
 <a href="#menu" style="float:right">目录</a>
 
 * select 基本语法
@@ -4612,7 +4400,7 @@ limit start,count
     * SELECT-->FROM-->WHERE-->GROUP BY-->HAVING-->ORDER BY-->LIMIT
 
 
-## 1.8. 多表连接查询
+## 20.8. 多表连接查询
 <a href="#menu" style="float:right">目录</a>
 
 * 迪卡尔积
@@ -4678,10 +4466,10 @@ select * from stu_info A right join stu_score  B on A.id=B.id;
 select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on xxx=xx;
 ```
 
-## 1.9. 函数
+## 20.9. 函数
 <a href="#menu" style="float:right">目录</a>
 
-### 1.9.1. 聚集函数
+### 20.9.1. 聚集函数
 * 运行在行祖上，计算和返回单个值的函数
 * avg
 * count
@@ -4695,7 +4483,7 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
 * min
 * sum
 
-### 1.9.2. 数学函数
+### 20.9.2. 数学函数
 * ABS(x)
     * 返回x的绝对值
 * PI()
@@ -4733,7 +4521,7 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
 * COT(x)
     * 返回给定弧度值x的余切
 
-### 1.9.3. 字符串函数
+### 20.9.3. 字符串函数
 * CHAR_LENGTH(str)
     * 计算字符串字符个数
 * CONCAT(s1,s2，...)
@@ -4772,7 +4560,7 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
     * 返回第N个字符串
 
  
-### 1.9.4. 日期和时间函数
+### 20.9.4. 日期和时间函数
 * CURDATE()、CURRENT_DATE()
     * 将当前日期按照"YYYY-MM-DD"或者"YYYYMMDD"格式的值返回，具体格式根据函数用在字符串或是数字语境中而定
 * CURRENT_TIMESTAMP()、LOCALTIME()、NOW()、SYSDATE()
@@ -4806,7 +4594,7 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
 * ADDTIME(date,expr)、SUBTIME(date,expr)
     * 前者进行date的时间加操作，后者进行date的时间减操作
 
-### 1.9.5. 条件判断函数
+### 20.9.5. 条件判断函数
 
 * IF(expr,v1,v2)
     * 如果expr是TRUE则返回v1，否则返回v2
@@ -4816,7 +4604,7 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
     * 如果expr等于某个vn，则返回对应位置THEN后面的结果，如果与所有值都不想等，则返回ELSE后面的rn
  
 
-### 1.9.6. 系统信息函数
+### 20.9.6. 系统信息函数
 
 * VERSION()
     * 查看MySQL版本号
@@ -4831,7 +4619,7 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
 
  
 
-### 1.9.7. 加密函数
+### 20.9.7. 加密函数
 
 * PASSWORD(str)
     * 从原明文密码str计算并返回加密后的字符串密码，注意这个函数的加密是单向的（不可逆），因此不应将它应用在个人的应用程序中而应该只在MySQL服务器的鉴定系统中使用
@@ -4841,7 +4629,7 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
     * 使用pswd_str作为密码，加密str
 * DECODE(crypt_str,pswd_str)
     * 使用pswd_str作为密码，解密加密字符串crypt_str，crypt_str是由ENCODE函数返回的字符串
-### 1.9.8. 其他函数
+### 20.9.8. 其他函数
 * FORMAT(x,n)
     * 将数字x格式化，并以四舍五入的方式保留小数点后n位，结果以字符串形式返回
 * CONV(N,from_base,to_base)
@@ -4856,10 +4644,10 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
     * 使用字符集charset表示字符串str
 
 
-## 1.10. 存储过程
+## 20.10. 存储过程
 <a href="#menu" style="float:right">目录</a>
 
-### 1.10.1. 基本概念
+### 20.10.1. 基本概念
 * 存储过程
     * 将多条SQL语句进行封装，类似于函数。有输入和输出。
 * 为什么使用
@@ -4872,13 +4660,13 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
     * 一般来说，存储过程的编写比基本SQL语句复杂，编写存储过程需要更高的技能，更丰富的经验。
     * 你可能没有创建存储过程的安全访问权限。许多数据库管理员限制存储过程的创建权限，允许用户使用存储过程，但不允许他们创建存储过程。
 
-### 1.10.2. 使用存储过程
+### 20.10.2. 使用存储过程
 
 
-## 1.11. 视图
+## 20.11. 视图
 <a href="#menu" style="float:right">目录</a>
 
-### 1.11.1. 基本概念
+### 20.11.1. 基本概念
 
 * 视图是虚拟的表，视图本身不包含数据，原始表数据更改，视图查询将会返回最新的数据
 * 使用视图的原因
@@ -4903,10 +4691,10 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
     * 用DROP删除视图，其语法为DROP VIEW viewname;。
     * 更新视图时，可以先用DROP再用CREATE，也可以直接用CREATE ORREPLACE VIEW。如果要更新的视图不存在，则第2条更新语句会创建一个视图；如果要更新的视图存在，则第2条更新语句会替换原有视图。
 
-## 1.12. 触发器
+## 20.12. 触发器
 <a href="#menu" style="float:right">目录</a>
 
-### 1.12.1. 基本概念
+### 20.12.1. 基本概念
 * 触发器
     * 用于在对表进行修改（DELETE，UPDATE，INSERT）时触发其他操作。
     * 仅支持表，不支持视图
@@ -4924,7 +4712,7 @@ END;
 * 应用场景
     * 在删除表数据时，将删除的数据存入其他表
     * 保证数据的一致性
-### 1.12.2. 触发器操作
+### 20.12.2. 触发器操作
 * 在创建触发器时，需要给出4条信息：
     * 唯一的触发器名(表中唯一，不同的关联表可以有相同名称的触发器)；
     * 触发器关联的表；
@@ -4951,12 +4739,12 @@ FOR EACH ROW SELECT NEW.order_num;
     * OLD中的值全都是只读的，不能更新。
 
 
-## 1.13. 事务
+## 20.13. 事务
 <a href="#menu" style="float:right">目录</a>
 
-### 1.13.1. 基本概念
+### 20.13.1. 基本概念
 
-#### 1.13.1.1. 事务特点
+#### 20.13.1.1. 事务特点
 * 事务:
     * 数据库事务是指作为单个逻辑工作单元执行的一系列操作（SQL语句）。这些操作要么全部执行，要么全部不执行
 * 四个特征 ACID 特性。 
@@ -5000,7 +4788,7 @@ FOR EACH ROW SELECT NEW.order_num;
 * 如果事务操作中包括事务型(InnoDB)的表和非事务型(MyISAM)的表，回滚时非事务型的表将不会回滚，使用时要注意，尽量不要混合使用。
 * 对非事务型的表进行事务操作，不会有错误提示。但是回滚无效。
 
-#### 1.13.1.2. 锁
+#### 20.13.1.2. 锁
 * 共享锁(shared lock)和排他锁(exclusive lock)
     * 读锁是共享的，可以多个线程同时读取相同的数据
     * 写锁是排他锁，任意时刻只能由一个线程操作同一个数据，否则将出现并发问题.获取到写锁时，其他线程禁止读写。
@@ -5033,7 +4821,7 @@ FOR EACH ROW SELECT NEW.order_num;
         * SELECT ... LOCK IN SHARE MODE
         * SELECT ... FOR UPDATE
 
-#### 1.13.1.3. 多版本并发控制
+#### 20.13.1.3. 多版本并发控制
 
 * MVCC是行级锁的一个变种，很多情况下可以避免加锁，所以开销更低。大都实现了非阻塞读操作，写操作也只锁定必要的行。
 
@@ -5042,14 +4830,14 @@ FOR EACH ROW SELECT NEW.order_num;
     * 一个列保存了行的创建版本号，一个列保存行的过期(删除)版本号
     * 每开始一个新事务，系统版本号都会自动递增。事务开始时刻的系统版本号会作为事务的版本号。用来和查询到的每行记录的版本号进行比较。
     
-#### 1.13.1.4. 常见术语
+#### 20.13.1.4. 常见术语
 * 术语：
     * 事务（transaction）指一组SQL语句；
     * 回退（rollback）指撤销指定SQL语句的过程；
     * 提交（commit）指将未存储的SQL语句结果写入数据库表；   
     * 保留点（ savepoint）指事务处理中设置的临时占位符（ placeholder），你可以对它发布回退（与回退整个事务处理不同）。
 
-### 1.13.2. 基本语句
+### 20.13.2. 基本语句
 * 启动事务
     * START TRANSATION;
 * 回滚事务
@@ -5071,13 +4859,13 @@ FOR EACH ROW SELECT NEW.order_num;
     * autocommit针对单条连接，而不是MySQL服务器
 
 
-## 1.14. 数据库索引 
+## 20.14. 数据库索引 
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.14.1. 基本概念
+### 20.14.1. 基本概念
 
-#### 1.14.1.1. 分类
+#### 20.14.1.1. 分类
 * 索引类型
     * primary key 主键索引
     * normal：表示普通索引
@@ -5141,7 +4929,7 @@ algorithm_option:
 lock_option:
     LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}
 ```
-#### 1.14.1.2. 索引用途
+#### 20.14.1.2. 索引用途
 <a href="#menu" style="float:right">目录</a>
 * 数据完整性
     * 使用主键索引或者唯一键来确保数据唯一性
@@ -5163,7 +4951,7 @@ lock_option:
 * 聚合操作
     * 聚合操作的字段添加索引也可以提高速度
 
-#### 1.14.1.3. 索引的误区
+#### 20.14.1.3. 索引的误区
 目前，MySQL的服务器可以提供足够大的内存来提供缓存索引相关数据，提高性能，因此有些规范不再适合当前的硬件环境。
 * 误区
     * 索引层级不要超过5层
@@ -5172,10 +4960,10 @@ lock_option:
     * 不应该索引不稳定的列
         
     
-#### 1.14.1.4. 索引数据结构
+#### 20.14.1.4. 索引数据结构
 <a href="#menu" style="float:right">目录</a>
 
-## 1.15. 存储引擎
+## 20.15. 存储引擎
 <a href="#menu" style="float:right">目录</a>
 
 * 查看存储引擎
@@ -5203,7 +4991,7 @@ Savepoints：事务中的保留点
 * 查看默认的存储引擎
     * show variable like "storage_enging%"
     
-### 1.15.1. InnoDB存储引擎
+### 20.15.1. InnoDB存储引擎
 
 InnoDB是事务型数据库的首选引擎，支持事务安全表（ACID），支持行锁定和外键，上图也看到了，InnoDB是默认的MySQL引擎。InnoDB主要特性有：
 * InnoDB给MySQL提供了具有提交、回滚和崩溃恢复能力的事物安全（ACID兼容）存储引擎。InnoDB锁定在行级并且也在SELECT语句中提供一个类似Oracle的非锁定读。这些功能增加了多用户部署和性能。在SQL查询中，可以自由地将InnoDB类型的表和其他MySQL的表类型混合起来，甚至在同一个查询中也可以混合
@@ -5213,7 +5001,7 @@ InnoDB是事务型数据库的首选引擎，支持事务安全表（ACID），�
 * InnoDB被用在众多需要高性能的大型数据库站点上
 InnoDB不创建目录，使用InnoDB时，MySQL将在MySQL数据目录下创建一个名为ibdata1的10MB大小的自动扩展数据文件，以及两个名为ib_logfile0和ib_logfile1的5MB大小的日志文件
 
-### 1.15.2. MyISAM存储引擎
+### 20.15.2. MyISAM存储引擎
 
 MyISAM基于ISAM存储引擎，并对其进行扩展。它是在Web、数据仓储和其他应用环境下最常使用的存储引擎之一。MyISAM拥有较高的插入、查询速度，但不支持事物。MyISAM主要特性有：
 * 大文件（达到63位文件长度）在支持大文件的文件系统和操作系统上被支持
@@ -5231,7 +5019,7 @@ MyISAM基于ISAM存储引擎，并对其进行扩展。它是在Web、数据仓�
 
 使用MyISAM引擎创建数据库，将产生3个文件。文件的名字以表名字开始，扩展名之处文件类型：frm文件存储表定义、数据文件的扩展名为.MYD（MYData）、索引文件的扩展名时.MYI（MYIndex）
 
-### 1.15.3. MEMORY存储引擎
+### 20.15.3. MEMORY存储引擎
 
 MEMORY存储引擎将表中的数据存储到内存中，未查询和引用其他表数据提供快速访问。MEMORY主要特性有：
 * MEMORY表的每个表可以有多达32个索引，每个索引16列，以及500字节的最大键长度
@@ -5244,7 +5032,7 @@ MEMORY存储引擎将表中的数据存储到内存中，未查询和引用其�
 * MEMORY表内存被存储在内存中，内存是MEMORY表和服务器在查询处理时的空闲中，创建的内部表共享
 * 当不再需要MEMORY表的内容时，要释放被MEMORY表使用的内存，应该执行DELETE FROM或TRUNCATE TABLE，或者删除整个表（使用DROP TABLE）
 
-### 1.15.4. 存储引擎的选择
+### 20.15.4. 存储引擎的选择
 
 不同的存储引擎都有各自的特点，以适应不同的需求，如下表所示：
 
@@ -5267,10 +5055,10 @@ MEMORY存储引擎将表中的数据存储到内存中，未查询和引用其�
 * 如果只有INSERT和SELECT操作，可以选择Archive，Archive支持高并发的插入操作，但是本身不是事务安全的。Archive非常适合存储归档数据，如记录日志信息可以使用Archive
 * 使用哪一种引擎需要灵活选择，一个数据库中多个表可以使用不同引擎以满足各种性能和实际需求，使用合适的存储引擎，将会提高整个数据库的性能
 
-## 1.16. 性能优化基本的分析命令
+## 20.16. 性能优化基本的分析命令
 <a href="#menu" style="float:right">目录</a>
 
-### 1.16.1. explain
+### 20.16.1. explain
 <a href="#menu" style="float:right">目录</a>
 ```SQL
 mysql> explain select * from user;
@@ -5326,7 +5114,7 @@ mysql> explain select * from user;
     * select tables optimized away：在没有group by子句的情况下，基于索引优化Min、max操作或者对于MyISAM存储引擎优化count（*），不必等到执行阶段再进行计算，查询执行计划生成的阶段即完成优化。
     * distinct：优化distinct操作，在找到第一匹配的元组后即停止找同样值的动作。
 
-### 1.16.2. show indexs
+### 20.16.2. show indexs
 <a href="#menu" style="float:right">目录</a>
 
 查看表的索引信息
@@ -5349,9 +5137,9 @@ Index_comment:
 1 row in set (0.00 sec)
 
 ```
-## 1.17. 分库分表
+## 20.17. 分库分表
 
-### 1.17.1. 基本概念
+### 20.17.1. 基本概念
 * 数据拆分
     * 垂直拆分
         * 垂直拆分是按照不同的业务进行拆分，比如用户服务，订单服务分别使用不同的数据库
@@ -5370,38 +5158,38 @@ Index_comment:
             * 针对单个表的逻辑查询可能要跨库
     * 分库分表后使用数据库中间件，比如MyCAT,sharding-jdbc
 
-### 1.17.2. 分布式事务
+### 20.17.2. 分布式事务
 <a href="#menu" style="float:right">目录</a>
 
-### 1.17.3. 应对多机数据查询
+### 20.17.3. 应对多机数据查询
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.17.3.1. 跨库Join
+#### 20.17.3.1. 跨库Join
 * 应用层处理，将单次Join操作分成多次查询
 * 数据冗余，将表增加字段，冗余其他表的数据，需要考虑数据一致性问题
 * 借助外部系统，比如搜索引擎解决一些跨库问题
-#### 1.17.3.2. 外键约束
+#### 20.17.3.2. 外键约束
 * 跨库不支持外键约束
 * 需要应用层解决跨库数据一致性问题
 
 
-## 1.18. 高可用
+## 20.18. 高可用
 
 <a href="#menu" style="float:right">目录</a>
 
-### 1.18.1. 主从复制
-#### 1.18.1.1. 常见形式
+### 20.18.1. 主从复制
+#### 20.18.1.1. 常见形式
 * 多主方式 ，主主之间互相复制
 * 一主一从
 * 一主多从
 * 多主一从
 * 联级复制，树形结构
-#### 1.18.1.2. 主从同步复制原理
+#### 20.18.1.2. 主从同步复制原理
 * 主库将所有的写操作记录在binlog日志中，并生成log dump线程，将binlog日志传给从库的I/O线程
 * 从库生成两个线程，一个是I/O线程，另一个是SQL线程
 * I/O线程去请求主库的binlog日志，并将binlog日志中的文件写入relay log（中继日志）中
 * SQL线程会读取relay loy中的内容，并解析成具体的操作，来实现主从的操作一致，达到最终数据一致的目的
-#### 1.18.1.3. 主从同步配置
+#### 20.18.1.3. 主从同步配置
 
 * 主数据库
 ```cnf
@@ -5460,7 +5248,7 @@ mysql> show slave hosts ;
 +-----------+------+------+-----------+--------------------------------------+
 
 ```
-#### 1.18.1.4. 添加更多从服务器
+#### 20.18.1.4. 添加更多从服务器
 有时候我们希望配置多台从服务器。如果是新建立的主从环境，没有什么数据，那么无论多少从服务器，搭建方式和上面说的没有什么两样。重点是，如果在已经运行了一段时间的主从环境中添加更多的从服务器，那么这台从服务器的配置就有点不一样。原因是：在主从配置的过程中，我们需要对服务器进行锁表操作，也就是说，任何数据都不可以继续写入，且持续的时间有可能会很长，在生产环境下，基本上是不允许的。
 也就是说，我们不能在主服务器上下手，相反，我们应该在已经存在的从服务器这边下手。基本过程如下：
 
@@ -5514,14 +5302,14 @@ mysql> show slave hosts ;
         - [1.4.7. 监视器](#147-监视器)
 
 <!-- /TOC -->
-# 1. Redis
+# 21. Redis
 <a href="#menu" style="float:right">目录</a>
 
-## 1.1. 数据结构和对象
+## 21.1. 数据结构和对象
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.1.1. 简单动态字符串
+### 21.1.1. 简单动态字符串
 <a href="#menu" style="float:right">目录</a>
 
 * C语言中的字符串是以空字符'\0'结尾的字符序列
@@ -5569,7 +5357,7 @@ struct __attribute__ ((__packed__)) sdshdr64 {
     * 兼容部分C字符串函数(通过重写)
         
 
-### 1.1.2. 链表
+### 21.1.2. 链表
 <a href="#menu" style="float:right">目录</a>
 
 链表数据结构，可以看到Redis是一个双向链表结构。
@@ -5604,7 +5392,7 @@ typedef struct list {
 * 链表广泛用于Redis各种功能，比如列表，发布订阅，慢查询，监视器等。
 
 
-### 1.1.3. 字典
+### 21.1.3. 字典
 <a href="#menu" style="float:right">目录</a>
 
 * 字典，又称符号表(symbol table),关联数组(associative array)或映射(map)，是一种用于保存键值对(key-value)的抽象数据结构。
@@ -5659,14 +5447,14 @@ typedef struct dict {
 } dict;
 
 ```
-#### 1.1.3.1. Rehash
+#### 21.1.3.1. Rehash
 
 <a href="#menu" style="float:right">目录</a>
 
 * 为了让哈希表的负载因子维持在一个合理的范围内，需要对字典表进行重新扩展或者收缩
 
 
-### 1.1.4. 跳跃表
+### 21.1.4. 跳跃表
 <a href="#menu" style="float:right">目录</a>
 
 * 跳跃表是一种有序的数据结构，通过在每个节点中维持多个指向其他节点的指针，从而达到快速访问节点的目的。
@@ -5682,17 +5470,17 @@ typedef struct dict {
 * 搜索节点时是从最顶层往下搜索
 * 跳跃表可以减少比较的次数，比如搜索8，只需要比较三次即可、如果是链表，需要比较8次。
 
-### 1.1.5. 整数集合
+### 21.1.5. 整数集合
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.1.6. 压缩列表
+### 21.1.6. 压缩列表
 <a href="#menu" style="float:right">目录</a>
 
 * 压缩列表是列表键和哈希键的底层实现之一
 
 
-### 1.1.7. 对象
+### 21.1.7. 对象
 <a href="#menu" style="float:right">目录</a>
 
 * 前面章节介绍了Redis所有的主要数结构，但是Redis并没有使用这些数据结构来实现键值对数据库。而是基于这些数据结构创建不同的对象。
@@ -5702,112 +5490,112 @@ typedef struct dict {
 * 使用对象可以针对不同的应用场景，为对象设置多种不同的数据结构实现，从而优化对象在不同场景下的使用效率。
 * Redis的垃圾回收是基于引用计数器实现
 
-#### 1.1.7.1. 对象类型和编码
+#### 21.1.7.1. 对象类型和编码
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.1.7.2. 字符串对象
-<a href="#menu" style="float:right">目录</a>
-
-
-#### 1.1.7.3. 列表对象
+#### 21.1.7.2. 字符串对象
 <a href="#menu" style="float:right">目录</a>
 
 
-#### 1.1.7.4. 哈希对象
+#### 21.1.7.3. 列表对象
 <a href="#menu" style="float:right">目录</a>
 
 
-#### 1.1.7.5. 集合对象 
+#### 21.1.7.4. 哈希对象
 <a href="#menu" style="float:right">目录</a>
 
 
-#### 1.1.7.6. 由于集合对象
+#### 21.1.7.5. 集合对象 
 <a href="#menu" style="float:right">目录</a>
 
 
-#### 1.1.7.7. 类型检查和命令多态
-<a href="#menu" style="float:right">目录</a>
-
-#### 1.1.7.8. 内存回收
-<a href="#menu" style="float:right">目录</a>
-
-#### 1.1.7.9. 对象共享
-<a href="#menu" style="float:right">目录</a>
-
-#### 1.1.7.10. 对象空转时长
+#### 21.1.7.6. 由于集合对象
 <a href="#menu" style="float:right">目录</a>
 
 
-## 1.2. 单机数据库实现
+#### 21.1.7.7. 类型检查和命令多态
+<a href="#menu" style="float:right">目录</a>
+
+#### 21.1.7.8. 内存回收
+<a href="#menu" style="float:right">目录</a>
+
+#### 21.1.7.9. 对象共享
+<a href="#menu" style="float:right">目录</a>
+
+#### 21.1.7.10. 对象空转时长
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.2.1. 数据库
+## 21.2. 单机数据库实现
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.2.2. RDB持久化
+### 21.2.1. 数据库
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.2.3. AOF持久化
+### 21.2.2. RDB持久化
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.2.4. 事件
+### 21.2.3. AOF持久化
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.2.5. 客户端
+### 21.2.4. 事件
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.2.6. 服务器
+### 21.2.5. 客户端
 <a href="#menu" style="float:right">目录</a>
 
 
-## 1.3. 多机数据库实现
+### 21.2.6. 服务器
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.3.1. 复制
-<a href="#menu" style="float:right">目录</a>
-
-### 1.3.2. 哨兵
+## 21.3. 多机数据库实现
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.3.3. 集群
+### 21.3.1. 复制
+<a href="#menu" style="float:right">目录</a>
+
+### 21.3.2. 哨兵
 <a href="#menu" style="float:right">目录</a>
 
 
-## 1.4. 独立功能实现
+### 21.3.3. 集群
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.4.1. 发布与订阅
+## 21.4. 独立功能实现
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.4.2. 事务
+### 21.4.1. 发布与订阅
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.4.3. LUA脚本
+### 21.4.2. 事务
 <a href="#menu" style="float:right">目录</a>
 
 
-
-### 1.4.4. 排序
-<a href="#menu" style="float:right">目录</a>
-
-
-### 1.4.5. 二进制位数组
+### 21.4.3. LUA脚本
 <a href="#menu" style="float:right">目录</a>
 
 
 
-### 1.4.6. 慢查询日志
+### 21.4.4. 排序
+<a href="#menu" style="float:right">目录</a>
+
+
+### 21.4.5. 二进制位数组
+<a href="#menu" style="float:right">目录</a>
+
+
+
+### 21.4.6. 慢查询日志
 <a href="#menu" style="float:right">目录</a>
 
 * 慢查询日志用于记录执行时间超过阈值的命令
@@ -5823,7 +5611,7 @@ typedef struct dict {
         * 显示信息: 日志的唯一标识,命令执行时的UNIX时间戳，命令执行的时长(微秒)，命令以及命令参数
     
 
-### 1.4.7. 监视器
+### 21.4.7. 监视器
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -5832,30 +5620,30 @@ typedef struct dict {
 
 <a href="#menu" style="float:right">目录</a>
 
-# 2. RocketMQ
+# 22. RocketMQ
 <a href="#menu" style="float:right">目录</a>
 
-# 3. RabbitMQ
+# 23. RabbitMQ
 <a href="#menu" style="float:right">目录</a>
 
-# 4. Kafka
-<a href="#menu" style="float:right">目录</a>
-
-
-# 7. elasticsearch
-<a href="#menu" style="float:right">目录</a>
-
-# 8. FastDfs
+# 24. Kafka
 <a href="#menu" style="float:right">目录</a>
 
 
-# 9. Zookeeper
+# 25. elasticsearch
 <a href="#menu" style="float:right">目录</a>
 
-## 9.1. 基本概念
+# 26. FastDfs
 <a href="#menu" style="float:right">目录</a>
 
-### 9.1.1. zk架构
+
+# 27. Zookeeper
+<a href="#menu" style="float:right">目录</a>
+
+## 27.1. 基本概念
+<a href="#menu" style="float:right">目录</a>
+
+### 27.1.1. zk架构
 ![](https://zookeeper.apache.org/doc/r3.5.5/images/zkservice.jpg)
 zk的结构如下，类似于一个Linux文件系统，根节点是"/"。
 同时你可以在每个节点上添加监听器，当数据发生变化(增加，修改，删除)时，将会通知客户端。
@@ -5886,7 +5674,7 @@ zk的结构如下，类似于一个Linux文件系统，根节点是"/"。
     * 可靠性 - 一旦应用了更新，它将从那时起持续到客户端覆盖更新。
     * 及时性 - 系统的客户视图保证在特定时间范围内是最新的。
 
-### 9.1.2. 提供的功能
+### 27.1.2. 提供的功能
 * 给节点创建监听器
 * create : 创建节点
 * delete : 删除节点
@@ -5896,7 +5684,7 @@ zk的结构如下，类似于一个Linux文件系统，根节点是"/"。
 * get children : 获取子节点列表
 * sync : 等待数据传播
 
-### 9.1.3. 节点类型
+### 27.1.3. 节点类型
 
 以下两种类型可以交叉组合，比如持久有序，持久无序。
 * 持久化节点(persistent)和临时节点(ephemeral)，临时节点在与创建它的客户端连接断开以后，判定连接失效之后将会被删除,或者客户端主动删除。持久化节点在创建成功之后，将会一直存在，除非手动删除。
@@ -5904,16 +5692,2282 @@ zk的结构如下，类似于一个Linux文件系统，根节点是"/"。
 
 **应用场景**:微服务中的失效剔除可以使用临时节点来实现，当服务提供者失效时，zk判断连接失败之后将服务信息删除，如果消费者监听该节点，将会收到删除请求。
 
+<span id="menu"></span>
+
+<a href="#menu" style="float:right">目录</a>
+
+# 28. Nginx
+
+## 28.1. 概述
+<a href="#menu" style="float:right">目录</a>
+
+### 28.1.1. 功能特性
+<a href="#menu" style="float:right">目录</a>
+
+* 基本服务
+    * 处理静态文件，处理索引文件以及支持自动索引
+    * 打开并自行管理文件描述符缓存
+    * 提供**反向代理**服务,并且可以使用缓存加速反向代理 ，同时完成简单的**负载均衡**和容错
+    * 提供远程FastCGI服务的缓存机制，加速访问，同时完成简单的负载均衡和容错
+    * 使用Nginx的模块化提供过滤功能，基本过滤器包括gzip压缩，ranges支持，chunked响应，XSLT，SSI以及图像缩放等
+    * 支持HTTP下的安全套接层安全协议SSL
+* 高级服务
+    * 支持基于名字和IP的虚拟主机设置
+    * 支持HTTP1.0中的KEEP-ALIVE模式和管线（PipeLined）模型连接
+    * 支持重新加载配置和在线升级等，无需中断正在执行的请求
+    * 自定义访问日志格式，带缓存的日志操作以及快速日志轮转
+    * 提供3xx~5xx错误代码**重定向**功能
+    * 支持重写模块扩展
+    * 支持HTTP DAV模块
+    * 支持FLV流和MP4流传输
+    * 支持网络控制，限流
+    * 支持嵌入Perl语言
+* 邮件代理服务
+
+### 28.1.2. Nginx快速理解
+
+**什么是nginx,它的优势和功能？**
+* Nginx是一个高性能的 HTTP 和 反向代理 服务器，也是一个 IMAP/POP3/SMTP 代理服务器。因它的稳定性、丰富的功能集、示例配置文件和低系统资源的消耗而闻名。2011年6月1日，nginx 1.0.4发布。
+* 优点：
+    * 更快
+        * 这表现在两个方面：一方面，在正常情况下，单次请求会得到更快的响应；另一方面，在高峰期（如有数以万计的并发请求），Nginx可以比其他Web服务器更快地响应请求。
+    * 高扩展性，跨平台
+        * Nginx的设计极具扩展性，它完全是由多个不同功能、不同层次、不同类型且耦合度极低的模块组成。因此，当对某一个模块修复Bug或进行升级时，可以专注于模块自身，无须在意其他。而且在HTTP模块中，还设计了HTTP过滤器模块：一个正常的HTTP模块在处理完请求后，会有一串HTTP过滤器模块对请求的结果进行再处理。这样，当我们开发一个新的HTTP模块时，不但可以使用诸如HTTP核心模块、events模块、log模块等不同层次或者不同类型的模块，还可以原封不动地复用大量已有的HTTP过滤器模块。这种低耦合度的优秀设计，造就了Nginx庞大的第三方模块，当然，公开的第三方模块也如官方发布的模块一样容易使用。
+        Nginx的模块都是嵌入到二进制文件中执行的，无论官方发布的模块还是第三方模块都是如此。这使得第三方模块一样具备极其优秀的性能，充分利用Nginx的高并发特性，因此，许多高流量的网站都倾向于开发符合自己业务特性的定制模块。
+    * 高可靠性：用于反向代理，宕机的概率微乎其微
+        * 高可靠性是我们选择Nginx的最基本条件，因为Nginx的可靠性是大家有目共睹的，很多家高流量网站都在核心服务器上大规模使用Nginx。Nginx的高可靠性来自于其核心框架代码的优秀设计、模块设计的简单性；另外，官方提供的常用模块都非常稳定，每个worker进程相对独立，master进程在1个worker进程出错时可以快速“拉起”新的worker子进程提供服务。
+
+    * 低内存消耗
+        * 一般情况下，10 000个非活跃的HTTP Keep-Alive连接在Nginx中仅消耗2.5MB的内存，这是Nginx支持高并发连接的基础。
+    * 单机支持10万以上的并发连接
+        * 这是一个非常重要的特性！随着互联网的迅猛发展和互联网用户数量的成倍增长，各大公司、网站都需要应付海量并发请求，一个能够在峰值期顶住10万以上并发请求的Server，无疑会得到大家的青睐。理论上，Nginx支持的并发连接上限取决于内存，10万远未封顶。当然，能够及时地处理更多的并发请求，是与业务特点紧密相关的。
+    * 热部署
+        * master管理进程与worker工作进程的分离设计，使得Nginx能够提供热部署功能，即可以在7×24小时不间断服务的前提下，升级Nginx的可执行文件。当然，它也支持不停止服务就更新配置项、更换日志文件等功能。
+    * 最自由的BSD许可协议
+        * 这是Nginx可以快速发展的强大动力。BSD许可协议不只是允许用户免费使用Nginx，它还允许用户在自己的项目中直接使用或修改Nginx源码，然后发布。这吸引了无数开发者继续为Nginx贡献自己的智慧。
+以上7个特点当然不是Nginx的全部，拥有无数个官方功能模块、第三方功能模块使得Nginx能够满足绝大部分应用场景，这些功能模块间可以叠加以实现更加强大、复杂的功能，有些模块还支持Nginx与Perl、Lua等脚本语言集成工作，大大提高了开发效率。这些特点促使用户在寻找一个Web服务器时更多考虑Nginx。
+----------------------
+**Nginx的模块与工作原理是什么?**
+Nginx由内核和模块组成，其中，内核的设计非常微小和简洁，完成的工作也非常简单，仅仅通过查找配置文件将客户端请求映射到一个location block（location是Nginx配置中的一个指令，用于URL匹配），而在这个location中所配置的每个指令将会启动不同的模块去完成相应的工作。 
+Nginx的模块从结构上分为核心模块、基础模块和第三方模块：
+* 核心模块：HTTP模块、EVENT模块和MAIL模块
+* 基础模块：HTTP Access模块、HTTP FastCGI模块、HTTP
+* 第三方模块：HTTP Upstream Request Hash模块、Notice模块和HTTPAccess Key模块。
+
+用户根据自己的需要开发的模块都属于第三方模块。正是有了这么多模块的支撑，Nginx的功能才会如此强大。 
+
+Nginx的模块从功能上分为如下三类：
+* Handlers（处理器模块）。此类模块直接处理请求，并进行输出内容和修改headers信息等操作。Handlers处理器模块一般只能有一个。
+* Filters （过滤器模块）。此类模块主要对其他处理器模块输出的内容进行修改操作，最后由Nginx输出。 Proxies（代理类模块）。此类模块是Nginx的HTTP
+* Upstream之类的模块，这些模块主要与后端一些服务比如FastCGI等进行交互，实现服务代理和负载均衡等功能。
+
+![](https://img-blog.csdn.net/20180810143236596?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI1OTM0NDAx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
+Nginx本身做的工作实际很少，当它接到一个HTTP请求时，它仅仅是通过查找配置文件将此次请求映射到一个location block，而此location中所配置的各个指令则会启动不同的模块去完成工作，因此模块可以看做Nginx真正的劳动工作者。通常一个location中的指令会涉及一个handler模块和多个filter模块（当然，多个location可以复用同一个模块）。handler模块负责处理请求，完成响应内容的生成，而filter模块对响应内容进行处理。 
+Nginx的模块直接被编译进Nginx，因此属于静态编译方式。启动Nginx后，Nginx的模块被自动加载，不像Apache，首先将模块编译为一个so文件，然后在配置文件中指定是否进行加载。在解析配置文件时，Nginx的每个模块都有可能去处理某个请求，但是同一个处理请求只能由一个模块来完成
+
+----------------------
+
+**怎么理解Nginx的进程模型?**
+
+在工作方式上，Nginx分为单工作进程和多工作进程两种模式。在单工作进程模式下，除主进程外，还有一个工作进程，工作进程是单线程的；在多工作进程模式下，每个工作进程包含多个线程。Nginx默认为单工作进程模式。 
+Nginx在启动后，会有一个master进程和多个worker进程。 
+**master进程** 
+主要用来管理worker进程，包含：接收来自外界的信号，向各worker进程发送信号，监控worker进程的运行状态，当worker进程退出后(异常情况下)，会自动重新启动新的worker进程。 
+master进程充当整个进程组与用户的交互接口，同时对进程进行监护。它不需要处理网络事件，不负责业务的执行，只会通过管理worker进程来实现重启服务、平滑升级、更换日志文件、配置文件实时生效等功能。 
+我们要控制nginx，只需要通过kill向master进程发送信号就行了。比如kill -HUP pid，则是告诉nginx，从容地重启nginx，我们一般用这个信号来重启nginx，或重新加载配置，因为是从容地重启，因此服务是不中断的。master进程在接收到HUP信号后是怎么做的呢？首先master进程在接到信号后，会先重新加载配置文件，然后再启动新的worker进程，并向所有老的worker进程发送信号，告诉他们可以光荣退休了。新的worker在启动后，就开始接收新的请求，而老的worker在收到来自master的信号后，就不再接收新的请求，并且在当前进程中的所有未处理完的请求处理完成后，再退出。当然，直接给master进程发送信号，这是比较老的操作方式，nginx在0.8版本之后，引入了一系列命令行参数，来方便我们管理。比如，./nginx -s reload，就是来重启nginx，./nginx -s stop，就是来停止nginx的运行。如何做到的呢？我们还是拿reload来说，我们看到，执行命令时，我们是启动一个新的nginx进程，而新的nginx进程在解析到reload参数后，就知道我们的目的是控制nginx来重新加载配置文件了，它会向master进程发送信号，然后接下来的动作，就和我们直接向master进程发送信号一样了。 
+
+![](https://img-blog.csdn.net/20180810144219311?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI1OTM0NDAx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
+而基本的网络事件，则是放在worker进程中来处理了。多个worker进程之间是对等的，他们同等竞争来自客户端的请求，各进程互相之间是独立的。一个请求，只可能在一个worker进程中处理，一个worker进程，不可能处理其它进程的请求。worker进程的个数是可以设置的，一般我们会设置与机器cpu核数一致，这里面的原因与nginx的进程模型以及事件处理模型是分不开的。 
+worker进程之间是平等的，每个进程，处理请求的机会也是一样的。当我们提供80端口的http服务时，一个连接请求过来，每个进程都有可能处理这个连接，怎么做到的呢？首先，每个worker进程都是从master进程fork过来，在master进程里面，先建立好需要listen的socket（listenfd）之后，然后再fork出多个worker进程。所有worker进程的listenfd会在新连接到来时变得可读，为保证只有一个进程处理该连接，所有worker进程在注册listenfd读事件前抢accept_mutex，抢到互斥锁的那个进程注册listenfd读事件，在读事件里调用accept接受该连接。当一个worker进程在accept这个连接之后，就开始读取请求，解析请求，处理请求，产生数据后，再返回给客户端，最后才断开连接，这样一个完整的请求就是这样的了。我们可以看到，一个请求，完全由worker进程来处理，而且只在一个worker进程中处理。worker进程之间是平等的，每个进程，处理请求的机会也是一样的。当我们提供80端口的http服务时，一个连接请求过来，每个进程都有可能处理这个连接，怎么做到的呢？首先，每个worker进程都是从master进程fork过来，在master进程里面，先建立好需要listen的socket（listenfd）之后，然后再fork出多个worker进程。所有worker进程的listenfd会在新连接到来时变得可读，为保证只有一个进程处理该连接，所有worker进程在注册listenfd读事件前抢accept_mutex，抢到互斥锁的那个进程注册listenfd读事件，在读事件里调用accept接受该连接。当一个worker进程在accept这个连接之后，就开始读取请求，解析请求，处理请求，产生数据后，再返回给客户端，最后才断开连接，这样一个完整的请求就是这样的了。我们可以看到，一个请求，完全由worker进程来处理，而且只在一个worker进程中处理。 
+nginx的进程模型，可以由下图来表示： 
+
+![](https://img-blog.csdn.net/20180810144312890?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI1OTM0NDAx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
+----------------------
+
+**Nginx+FastCGI运行原理?**
+* 什么是 FastCGI 
+    * FastCGI是一个可伸缩地、高速地在HTTP server和动态脚本语言间通信的接口。多数流行的HTTP server都支持FastCGI，包括Apache、Nginx和lighttpd等。同时，FastCGI也被许多脚本语言支持，其中就有PHP。 
+    * FastCGI是从CGI发展改进而来的。传统CGI接口方式的主要缺点是性能很差，因为每次HTTP服务器遇到动态程序时都需要重新启动脚本解析器来执行解析，然后将结果返回给HTTP服务器。这在处理高并发访问时几乎是不可用的。另外传统的CGI接口方式安全性也很差，现在已经很少使用了。 
+    * FastCGI接口方式采用C/S结构，可以将HTTP服务器和脚本解析服务器分开，同时在脚本解析服务器上启动一个或者多个脚本解析守护进程。当HTTP服务器每次遇到动态程序时，可以将其直接交付给FastCGI进程来执行，然后将得到的结果返回给浏览器。这种方式可以让HTTP服务器专一地处理静态请求或者将动态脚本服务器的结果返回给客户端，这在很大程度上提高了整个应用系统的性能。 
+* Nginx+FastCGI运行原理 
+    * Nginx不支持对外部程序的直接调用或者解析，所有的外部程序（包括PHP）必须通过FastCGI接口来调用。FastCGI接口在Linux下是socket（这个socket可以是文件socket，也可以是ip socket）。 
+    * wrapper：为了调用CGI程序，还需要一个FastCGI的wrapper（wrapper可以理解为用于启动另一个程序的程序），这个wrapper绑定在某个固定socket上，如端口或者文件socket。当Nginx将CGI请求发送给这个socket的时候，通过FastCGI接口，wrapper接收到请求，然后Fork(派生）出一个新的线程，这个线程调用解释器或者外部程序处理脚本并读取返回数据；接着，wrapper再将返回的数据通过FastCGI接口，沿着固定的socket传递给Nginx；最后，Nginx将返回的数据（html页面或者图片）发送给客户端。这就是Nginx+FastCGI的整个运作过程，如图1-3所示。
+![](https://img-blog.csdn.net/20180810144411895?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI1OTM0NDAx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/700)
+
+所以，我们首先需要一个wrapper，这个wrapper需要完成的工作： 
+1. 通过调用fastcgi（库）的函数通过socket和ningx通信（读写socket是fastcgi内部实现的功能，对wrapper是非透明的） 
+2. 调度thread，进行fork和kill 
+3. 和application（php）进行通信
+
+--------------------- 
+
+**nginx多进程事件模型：异步非阻塞?**
+虽然nginx采用多worker的方式来处理请求，每个worker里面只有一个主线程，那能够处理的并发数很有限啊，多少个worker就能处理多少个并发，何来高并发呢？非也，这就是nginx的高明之处，nginx采用了异步非阻塞的方式来处理请求，也就是说，nginx是可以同时处理成千上万个请求的。一个worker进程可以同时处理的请求数只受限于内存大小，而且在架构设计上，不同的worker进程之间处理并发请求时几乎没有同步锁的限制，worker进程通常不会进入睡眠状态，因此，当Nginx上的进程数与CPU核心数相等时（最好每一个worker进程都绑定特定的CPU核心），进程间切换的代价是最小的。
+
+而apache的常用工作方式（apache也有异步非阻塞版本，但因其与自带某些模块冲突，所以不常用），每个进程在一个时刻只处理一个请求，因此，当并发数上到几千时，就同时有几千的进程在处理请求了。这对操作系统来说，是个不小的挑战，进程带来的内存占用非常大，进程的上下文切换带来的cpu开销很大，自然性能就上不去了，而这些开销完全是没有意义的。
+
+------------------------
+**为什么nginx可以采用异步非阻塞的方式来处理?**
+看看一个请求的完整过程:首先，请求过来，要建立连接，然后再接收数据，接收数据后，再发送数据。
+
+具体到系统底层，就是读写事件，而当读写事件没有准备好时，必然不可操作，如果不用非阻塞的方式来调用，那就得阻塞调用了，事件没有准备好，那就只能等了，等事件准备好了，你再继续吧。阻塞调用会进入内核等待，cpu就会让出去给别人用了，对单线程的worker来说，显然不合适，当网络事件越多时，大家都在等待呢，cpu空闲下来没人用，cpu利用率自然上不去了，更别谈高并发了。好吧，你说加进程数，这跟apache的线程模型有什么区别，注意，别增加无谓的上下文切换。所以，在nginx里面，最忌讳阻塞的系统调用了。不要阻塞，那就非阻塞喽。非阻塞就是，事件没有准备好，马上返回EAGAIN，告诉你，事件还没准备好呢，你慌什么，过会再来吧。好吧，你过一会，再来检查一下事件，直到事件准备好了为止，在这期间，你就可以先去做其它事情，然后再来看看事件好了没。虽然不阻塞了，但你得不时地过来检查一下事件的状态，你可以做更多的事情了，但带来的开销也是不小的。
+
+----------------------------
+
+**nginx支持的事件模型?**
+Nginx支持如下处理连接的方法（I/O复用方法），这些方法可以通过use指令指定。
+    * select– 标准方法。 如果当前平台没有更有效的方法，它是编译时默认的方法。你可以使用配置参数 –with-select_module 和 –without-select_module 来启用或禁用这个模块。
+    * poll– 标准方法。 如果当前平台没有更有效的方法，它是编译时默认的方法。你可以使用配置参数 –with-poll_module 和 –without-poll_module 来启用或禁用这个模块。
+    * kqueue– 高效的方法，使用于 FreeBSD 4.1+, OpenBSD 2.9+, NetBSD 2.0 和 MacOS X. 使用双处理器的MacOS X系统使用kqueue可能会造成内核崩溃。
+    * epoll – 高效的方法，使用于Linux内核2.6版本及以后的系统。在某些发行版本中，如SuSE 8.2, 有让2.4版本的内核支持epoll的补丁。
+    * rtsig – 可执行的实时信号，使用于Linux内核版本2.2.19以后的系统。默认情况下整个系统中不能出现大于1024个POSIX实时(排队)信号。这种情况 对于高负载的服务器来说是低效的；所以有必要通过调节内核参数 /proc/sys/kernel/rtsig-max 来增加队列的大小。可是从Linux内核版本2.6.6-mm2开始， 这个参数就不再使用了，并且对于每个进程有一个独立的信号队列，这个队列的大小可以用 RLIMIT_SIGPENDING 参数调节。当这个队列过于拥塞，nginx就放弃它并且开始使用 poll 方法来处理连接直到恢复正常。
+    * /dev/poll – 高效的方法，使用于 Solaris 7 11/99+, HP/UX 11.22+ (eventport), IRIX 6.5.15+ 和 Tru64 UNIX 5.1A+.
+    * eventport – 高效的方法，使用于 Solaris 10. 为了防止出现内核崩溃的问题， 有必要安装这个 安全补丁。
+
+-------------------------
+
+**在linux下面，只有epoll是高效的方法,epoll到底是如何高效的**
+Epoll是Linux内核为处理大批量句柄而作了改进的poll。 要使用epoll只需要这三个系统调用：epoll_create(2)， epoll_ctl(2)， epoll_wait(2)。它是在2.5.44内核中被引进的(epoll(4) is a new API introduced in Linux kernel 2.5.44)，在2.6内核中得到广泛应用。
+
+epoll的优点?
+* 支持一个进程打开大数目的socket描述符(FD) 
+select 最不能忍受的是一个进程所打开的FD是有一定限制的，由FD_SETSIZE设置，默认值是2048。对于那些需要支持的上万连接数目的IM服务器来说显 然太少了。这时候你一是可以选择修改这个宏然后重新编译内核，不过资料也同时指出这样会带来网络效率的下降，二是可以选择多进程的解决方案(传统的 Apache方案)，不过虽然linux上面创建进程的代价比较小，但仍旧是不可忽视的，加上进程间数据同步远比不上线程间同步的高效，所以也不是一种完 美的方案。不过 epoll则没有这个限制，它所支持的FD上限是最大可以打开文件的数目，这个数字一般远大于2048,举个例子,在1GB内存的机器上大约是10万左 右，具体数目可以cat /proc/sys/fs/file-max察看,一般来说这个数目和系统内存关系很大。 
+* IO效率不随FD数目增加而线性下降 
+传统的select/poll另一个致命弱点就是当你拥有一个很大的socket集合，不过由于网络延时，任一时间只有部分的socket是”活跃”的，但 是select/poll每次调用都会线性扫描全部的集合，导致效率呈现线性下降。但是epoll不存在这个问题，它只会对”活跃”的socket进行操 作—这是因为在内核实现中epoll是根据每个fd上面的callback函数实现的。那么，只有”活跃”的socket才会主动的去调用 callback函数，其他idle状态socket则不会，在这点上，epoll实现了一个”伪”AIO，因为这时候推动力在os内核。在一些 benchmark中，如果所有的socket基本上都是活跃的—比如一个高速LAN环境，epoll并不比select/poll有什么效率，相 反，如果过多使用epoll_ctl,效率相比还有稍微的下降。但是一旦使用idle connections模拟WAN环境,epoll的效率就远在select/poll之上了。 
+* 使用mmap加速内核与用户空间的消息传递。 
+这 点实际上涉及到epoll的具体实现了。无论是select,poll还是epoll都需要内核把FD消息通知给用户空间，如何避免不必要的内存拷贝就很 重要，在这点上，epoll是通过内核于用户空间mmap同一块内存实现的。而如果你想我一样从2.5内核就关注epoll的话，一定不会忘记手工 mmap这一步的。 
+* 内核微调 
+这一点其实不算epoll的优点了，而是整个linux平台的优点。也许你可以怀疑linux平台，但是你无法回避linux平台赋予你微调内核的能力。比如，内核TCP/IP协 议栈使用内存池管理sk_buff结构，那么可以在运行时期动态调整这个内存pool(skb_head_pool)的大小— 通过echo XXXX>/proc/sys/net/core/hot_list_length完成。再比如listen函数的第2个参数(TCP完成3次握手 的数据包队列长度)，也可以根据你平台内存大小动态调整。更甚至在一个数据包面数目巨大但同时每个数据包本身大小却很小的特殊系统上尝试最新的NAPI网卡驱动架构。 
+(epoll内容，参考epoll_互动百科) 
+推荐设置worker的个数为cpu的核数，在这里就很容易理解了，更多的worker数，只会导致进程来竞争cpu资源了，从而带来不必要的上下文切换。而且，nginx为了更好的利用多核特性，提供了cpu亲缘性的绑定选项，我们可以将某一个进程绑定在某一个核上，这样就不会因为进程的切换带来cache的失效。像这种小的优化在nginx中非常常见，同时也说明了nginx作者的苦心孤诣。比如，nginx在做4个字节的字符串比较时，会将4个字符转换成一个int型，再作比较，以减少cpu的指令数等等。
+
+---------------
+**nginx和apache的区别？**
+1）轻量级，同样起web 服务，比apache 占用更少的内存及资源 
+2）抗并发，nginx 处理请求是异步非阻塞的，而apache 则是阻塞型的，在高并发下nginx 能保持低资源低消耗高性能 
+3）高度模块化的设计，编写模块相对简单 
+4）最核心的区别在于apache是同步多进程模型，一个连接对应一个进程；nginx是异步的，多个连接（万级别）可以对应一个进程
+
+--------------------- 
+**nginx是如何实现高并发的**
+一个主进程，多个工作进程，每个工作进程可以处理多个请求，每进来一个request，会有一个worker进程去处理。但不是全程的处理，处理到可能发生阻塞的地方，比如向上游（后端）服务器转发request，并等待请求返回。那么，这个处理的worker继续处理其他请求，而一旦上游服务器返回了，就会触发这个事件，worker才会来接手，这个request才会接着往下走。由于web server的工作性质决定了每个request的大部份生命都是在网络传输中，实际上花费在server机器上的时间片不多。这是几个进程就解决高并发的秘密所在。即@skoo所说的webserver刚好属于网络io密集型应用，不算是计算密集型。
+
+
+--------------------- 
+**请解释Nginx如何处理HTTP请求。**
+Nginx使用反应器模式。主事件循环等待操作系统发出准备事件的信号，这样数据就可以从套接字读取，在该实例中读取到缓冲区并进行处理。单个线程可以提供数万个并发连接。
+
+---------------------
+
+**在Nginx中，如何使用未定义的服务器名称来阻止处理请求?**
+只需将请求删除的服务器就可以定义为： 
+```
+Server { 
+    listen 80; server_name “ “ ; 
+    return 444; 
+} 
+```
+这里，服务器名被保留为一个空字符串，它将在没有“主机”头字段的情况下匹配请求，而一个特殊的Nginx的非标准代码444被返回，从而终止连接。
+
+---------------------
+
+**使用“反向代理服务器”的优点是什么?**
+反向代理服务器可以隐藏源服务器的存在和特征。它充当互联网云和web服务器之间的中间层。这对于安全方面来说是很好的，特别是当您使用web托管服务时。
+
+---------------------
+
+**请列举Nginx服务器的最佳用途。**
+Nginx服务器的最佳用法是在网络上部署动态HTTP内容，使用SCGI、WSGI应用程序服务器、用于脚本的FastCGI处理程序。它还可以作为负载均衡器。
+
+---------------------
+
+**请解释Nginx服务器上的Master和Worker进程分别是什么?**
+Master进程：读取及评估配置和维持 
+Worker进程：处理请求
+
+---------------------
+
+**请解释你如何通过不同于80的端口开启Nginx?**
+答：为了通过一个不同的端口开启Nginx，你必须进入/etc/Nginx/sites-enabled/，如果这是默认文件，那么你必须打开名为“default”的文件。编辑文件，并放置在你想要的端口： 
+Like server { 
+listen 81; 
+}
+
+---------------------
+
+**请解释是否有可能将Nginx的错误替换为502错误、503?**
+502 =错误网关 503 =服务器超载 有可能，但是您可以确保fastcgi_intercept_errors被设置为ON，并使用错误页面指令。 
+Location / { fastcgi_pass 127.0.01:9001; fastcgi_intercept_errors on; error_page 502 =503/error_page.html; #… }
+
+---------------------
+
+**在Nginx中，解释如何在URL中保留双斜线?**
+要在URL中保留双斜线，就必须使用merge_slashes_off; 
+语法:merge_slashes [on/off] 
+默认值: merge_slashes on 
+环境: http，server
+
+---------------------
+
+**请解释ngx_http_upstream_module的作用是什么?**
+ngx_http_upstream_module用于定义可通过fastcgi传递、proxy传递、uwsgi传递、memcached传递和scgi传递指令来引用的服务器组。
+
+---------------------
+
+**请解释什么是C10K问题?**
+C10K问题是指无法同时处理大量客户端(10,000)的网络套接字。
+
+---------------------
+
+**请陈述stub_status和sub_filter指令的作用是什么?**
+1）Stub_status指令：该指令用于了解Nginx当前状态的当前状态，如当前的活动连接，接受和处理当前读/写/等待连接的总数 2）Sub_filter指令：它用于搜索和替换响应中的内容，并快速修复陈旧的数据
+
+---------------------
+
+**解释Nginx是否支持将请求压缩到上游?**
+您可以使用Nginx模块gunzip将请求压缩到上游。gunzip模块是一个过滤器，它可以对不支持“gzip”编码方法的客户机或服务器使用“内容编码:gzip”来解压缩响应。
+
+---------------------
+
+**解释如何在Nginx中获得当前的时间?**
+要获得Nginx的当前时间，必须使用SSI模块、dategmt和dategmt和date_local的变量。Proxy_set_header THE-TIME $date_gmt;
+
+
+--------------------------------
+
+**用Nginx服务器解释-s的目的是什么?**
+用于运行Nginx -s参数的可执行文件。
+
+---------------------
+
+**解释如何在Nginx服务器上添加模块?**
+在编译过程中，必须选择Nginx模块，因为Nginx不支持模块的运行时间选择。 
+nginx 的 upstream目前支持 4 种方式的分配 
+* 轮询（默认） 
+    * 每个请求按时间顺序逐一分配到不同的后端服务器，如果后端服务器down掉，能自动剔除。 
+* weight 
+    * 指定轮询几率，weight和访问比率成正比，用于后端服务器性能不均的情况。 
+* ip_hash 
+    * 每个请求按访问ip的hash结果分配，这样每个访客固定访问一个后端服务器，可以解决session的问题。 
+* fair（第三方） 
+    * 按后端服务器的响应时间来分配请求，响应时间短的优先分配。 
+* url_hash（第三方） 
+    * nginx内置策略包含加权轮询和ip hash 
+加权轮询算法分为先深搜索和先广搜索，那么nginx采用的是先深搜索算法，即将首先将请求都分给高权重的机器，直到该机器的权值降到了比其他机器低，才开始将请求分给下一个高权重的机器；
+
+缺省安装的 nginx + php-fpm 环境，假设用户浏览一个耗时的网页，但是却在服务端渲染页面的中途关闭了浏览器，那么请问服务端的 php 脚本是继续执行还是退出执行？
+正常情况下，如果客户端client异常退出了，服务端的程序还是会继续执行，直到与IO进行了两次交互操作。服务端发现客户端已经断开连接，这个时候会触发一个user_abort，如果这个没有设置ignore_user_abort，那么这个php-fpm的程序才会被中断。 
+拓展阅读：http://www.cnblogs.com/yjf512/p/5362025.html?foxhandler=RssReadRenderProcessHandler
+
+--------------------
+
+**在Nginx中，请说明Rewrite模块里break和last的区别。**
+官方文档的定义如下： 
+last：停止执行当前这一轮的ngx_http_rewrite_module指令集，然后查找匹配改变后URI的新location； 
+break：停止执行当前这一轮的ngx_http_rewrite_module指令集； 
+千言万语举个例子： 
+```
+location /test1.txt/ { 
+    rewrite /test1.txt/ /test2.txt break; 
+}
+
+location ~ test2.txt { 
+    return 508; 
+}
+
+``` 
+使用break会匹配两次URL，如果没有满足项，就会停止匹配下面的location,直接发起请求www.xxx.com/test2.txt，由于不存在文件test2.txt，则会直接显示404。 
+使用last的话，会继续搜索下面是否有符合条件(符合重写后的/test2.txt请求)的location，匹配十次，如果十次没有得到的结果，那么就跟break一样了。返回上面的例子，/test2.txt刚好与面location的条件对应上了，进入花括号{}里面的代码执行，这里会返回508。（这里的508是我自己随便设定的）
+
+--------------------
+
+**事件驱动框架：**
+nginx事件驱动框架（书本p254）：所谓事件驱动架构，简单来说，就是由一些事件发生源来产生事件，由一个或多个事件收集器（epolld等）来收集、分发事件，然后许多事件处理器会注册自己感兴趣的事件，同时会“消费”这些事件。nginx不会使用进程或线程作为事件消费者，只能是某个模块，当前进程调用模块。
+
+传统web服务器（如Apache）的，所谓事件局限在TCP连接建立、关闭上，其他读写都不在是事件驱动，这时会退化成按序执行每个操作的批处理模式，这样每个请求在连接建立后都将始终占用系统资源，直到连接关闭才会释放资源。大大浪费了内存、cpu等资源。并且把一个进程或线程作为事件消费者。 
+传统web服务器与Nginx间重要差别： 
+前者每个事件消费者独占一个进程资源，后者只是被事件分发者进程短期调用而已。
+
+----------------------------
+
+**请求的多阶段异步处理**
+请求的多阶段异步处理只能基于事件驱动框架实现，就是把一个请求的处理过程按照事件的触发方式分为多个阶段，每个阶段都可以有事件收集、分发器（epoll等）来触发。比如一个http请求可以分为七个阶段
+
+一个master进程（管理），多个work（工作）进程。
+master对work进程采用信号进行控制
+
+平台无关的代码实现：
+在核心代码都使用了与操作系统无关的代码实现，在与操作系统相关的系统调用上则分别针对各个操作系统都有独立实现，这最终造就了Nginx的可移植性。
+
+---------------------
+
+**内存池的设计**
+为了减少避免出现内存碎片、减少向操作系统申请内存的次数、降低各个模块的开发复杂度，Nginx采用了简单的内存池（统一申请，统一释放）。比如为每个http请求分配一个内存池，请求结束时销毁整个内存池。
+
+---------------------
+
+**什么是Nginx？**
+Nginx是一个高性能的HTTP和反向代理服务器，及电子邮件（IMAP/POP3）代理服务器，同时也是一个非常高效的反向代理、负载平衡。 
+多进程异步非阻塞事件处理机制：运用了epoll模型
+
+---------------------
+
+**为什么要用Nginx？**
+* 优点：    
+    * 跨平台、配置简单 
+    * 非阻塞、高并发连接：处理2-3万并发连接数，官方监测能支持5万并发 
+    * 内存消耗小：开启10个nginx才占150M内存，Nginx采取了分阶段资源分配技术 
+    * nginx处理静态文件好,耗费内存少 
+    * 内置的健康检查功能：如果有一个服务器宕机，会做一个健康检查，再发送的请求就不会发送到宕机的服务器了。重新将请求提交到其他的节点上。    
+    * 节省宽带：支持GZIP压缩，可以添加浏览器本地缓存 
+    * 稳定性高：宕机的概率非常小 
+    * master/worker结构：一个master进程，生成一个或者多个worker进程 
+    * 接收用户请求是异步的：浏览器将请求发送到nginx服务器，它先将用户请求全部接收下来，再一次性发送给后端web服务器，极大减轻了web服务器的压力 
+    * 一边接收web服务器的返回数据，一边发送给浏览器客户端 
+    * 网络依赖性比较低，只要ping通就可以负载均衡 
+    * 可以有多台nginx服务器 
+    * 事件驱动：通信机制采用epoll模型
+
+------------------------
+
+**什么Nginx性能这么高？**
+得益于它的事件处理机制： 
+异步非阻塞事件处理机制：运用了epoll模型，提供了一个队列，排队解决
+
+---
+
+**为什么不使用多线程？**
+Apache: 创建多个进程或线程，而每个进程或线程都会为其分配cpu和内存（线程要比进程小的多，所以worker支持比perfork高的并发），并发过大会榨干服务器资源。
+
+Nginx: 采用单线程来异步非阻塞处理请求（管理员可以配置Nginx主进程的工作进程的数量）(epoll)，不会为每个请求分配cpu和内存资源，节省了大量资源，同时也减少了大量的CPU的上下文切换。所以才使得Nginx支持更高的并发。
+
+**Nginx是如何处理一个请求的呢？**
+首先，nginx在启动时，会解析配置文件，得到需要监听的端口与ip地址，然后在nginx的master进程里面 
+先初始化好这个监控的socket，再进行listen 
+然后再fork出多个子进程出来, 子进程会竞争accept新的连接。 
+此时，客户端就可以向nginx发起连接了。当客户端与nginx进行三次握手，与nginx建立好一个连接后 
+此时，某一个子进程会accept成功，然后创建nginx对连接的封装，即ngx_connection_t结构体 
+接着，根据事件调用相应的事件处理模块，如http模块与客户端进行数据的交换。 
+最后，nginx或客户端来主动关掉连接，到此，一个连接就寿终正寝了
+
+---------------------
+
+**正向代理**
+一个位于客户端和原始服务器(origin server)之间的服务器，为了从原始服务器取得内容，客户端向代理发送一个请求并指定目标(原始服务器)，然后代理向原始服务器转交请求并将获得的内容返回给客户端。客户端才能使用正向代理 
+正向代理总结就一句话：代理端代理的是客户端
+
+---------------------
+
+**反向代理**
+反向代理（Reverse Proxy）方式是指以代理服务器来接受internet上的连接请求，然后将请求，发给内部网络上的服务器 
+并将从服务器上得到的结果返回给internet上请求连接的客户端，此时代理服务器对外就表现为一个反向代理服务器 
+反向代理总结就一句话：代理端代理的是服务端
+
+---------------------
+
+**负载均衡**
+负载均衡即是代理服务器将接收的请求均衡的分发到各服务器中 
+负载均衡主要解决网络拥塞问题，提高服务器响应速度，服务就近提供，达到更好的访问质量，减少后台服务器大并发压力
+
+--------------------- 
+
+**为什么不使用多线程？**
+* Apache: 创建多个进程或线程，而每个进程或线程都会为其分配cpu和内存（线程要比进程小的多，所以worker支持比perfork高的并发），并发过大会榨干服务器资源。
+* Nginx: 采用单线程来异步非阻塞处理请求（管理员可以配置Nginx主进程的工作进程的数量）(epoll)，不会为每个请求分配cpu和内存资源，节省了大量资源，同时也减少了大量的CPU的上下文切换。所以才使得Nginx支持更高的并发。
+
+**Nginx是如何处理一个请求的呢？**
+首先，nginx在启动时，会解析配置文件，得到需要监听的端口与ip地址，然后在nginx的master进程里面
+先初始化好这个监控的socket，再进行listen
+然后再fork出多个子进程出来, 子进程会竞争accept新的连接。
+此时，客户端就可以向nginx发起连接了。当客户端与nginx进行三次握手，与nginx建立好一个连接后，此时，某一个子进程会accept成功，然后创建nginx对连接的封装，即ngx_connection_t结构体接着，根据事件调用相应的事件处理模块，如http模块与客户端进行数据的交换，最后，nginx或客户端来主动关掉连接，到此，一个连接就寿终正寝了
+
+**动态资源、静态资源分离的原因**
+动态资源、静态资源分离是让动态网站里的动态网页根据一定规则把不变的资源和经常变的资源区分开来，动静资源做好了拆分以后，我们就可以根据静态资源的特点将其做缓存操作，这就是网站静态化处理的核心思路
+动态资源、静态资源分离简单的概括是：动态文件与静态文件的分离
+二者分离的原因
+在我们的软件开发中，有些请求是需要后台处理的（如：.jsp,.do等等），有些请求是不需要经过后台处理的（如：css、html、jpg、js等等文件）
+这些不需要经过后台处理的文件称为静态文件，否则动态文件。因此我们后台处理忽略静态文件。这会有人又说那我后台忽略静态文件不就完了吗
+当然这是可以的，但是这样后台的请求次数就明显增多了。在我们对资源的响应速度有要求的时候，我们应该使用这种动静分离的策略去解决
+动、静分离将网站静态资源（HTML，JavaScript，CSS，img等文件）与后台应用分开部署，提高用户访问静态代码的速度，降低对后台应用访问
+这里我们将静态资源放到nginx中，动态资源转发到tomcat服务器中
+
+
+
+
+## 28.2. 基本使用和配置
+<a href="#menu" style="float:right">目录</a>
+
+### 28.2.1. Nginx平滑升级
+<a href="#menu" style="float:right">目录</a>
+
+
+
+### 28.2.2. 配置文件
+<a href="#menu" style="float:right">目录</a>
+
+**配置文件结构** 
+
+```
+main
+events{
+    KEY VALUE;
+}
+http{
+    server{
+        localtion{
+
+        }
+    }
+}
+```
+* 每条指令必须以分号结束
+* 参数配置形式:   KEY VALUE;
+* 语句块内的配置只在其块内或者子块里生效，main部分为全局有效，如果外层块同样配置了相同的指令，则以内部配置为准
+* 执行顺序由外至内依次执行
+* 内层块中的大部分指令会自定获取外层块的指令作为默认值，只有某些特殊指令除外
+
+||说明|
+|---|---|
+|main|控制子进程所属用户和用户组、派生子进程数、错误日志位置与级别、pid位置、子进程优先级、进程能够打开的文件描述符数目等|
+|events|控制Nginx处理连接的方式|
+|http|处理Http请求的主要配置块，大多数参数都在这里配置|
+|server|主机配置块，可用于配置多个虚拟主机|
+|localtion|目录级别的控制块，可配置多个|
+
+**配置nginx服务器用户组**
+* 用于配置运行nginx的用户或者用户组
+    * user userName [group];
+        * userName 可以运行nginx的用户、
+        * group 用户组，可选
+        * 只有配置了的用户才可以启动，否则将报错
+    * 支持所有用户
+        * 删除配置，默认支持所有用户
+        * user nobody nobody 
+        
+**配置允许生成的worker process数**
+
+* nginx 进程数
+* worker process越大，理论上支持的并发处理量也越大，实际上还受到计算机硬件的限制
+* worker process num|auto
+    * num 默认为1
+    * auto 为自动检测
+
+
+
+**配置nginx进程pid存放路径**
+* nginx最为系统的守护进程存在，需要在某文件中保存当前运行程序的主进程号
+* pif file;
+    * 默认为安装目录下的 logs/nginx.pid
+    * 路径需要包含文件名
+    
+
+**配置错误文件的存放路径**
+* 全局块，http,server都可以对日志进行相关的配置
+* error_log file|stderr  [debug|info|notice|warn|error|crit|aletr|emerg]
+    * file 输出到文件 ，此时file 为文件路径
+    * stderr输出到标准错误
+    * error  /log/nginx.log  info;
+
+**配置文件的引入**
+* 在一些情况下，需要将其他nginx的配置或者第三方模块的配置引用到当前的主配置文件中
+* include file;
+    
+**设置网络连接的序列化**
+* 惊群效应
+    * 当某一时刻只有一个网络连接到来时，多个睡眠的进程会被同时叫醒，但只有一个进程可获得连接，如果每次唤醒的数目太多，会影响一部分性能。nginx也存在这样的问题。
+* accept_mutex on|off;
+    * on 为开启连接序列化，防止进程争抢。
+    * 只能在events中进行配置
+    
+**设置是否允许同时接入多个网络连接**
+* 每个worker_process 都有能力同时接收多个新到达的网络连接
+* multi_accept on | off;
+    * 默认off,即一次只能接收一个新到达的网络连接
+    * 只能在events中进行配置
+    
+**事件驱动模型的选择**
+* use select|poll|kqueue|epoll|rtsig|/dev/poll|eventport
+
+**配置最大连接数**
+* 每个worker_process 同时开启的最大连接数
+* worker_connections number;
+    * 默认值512
+
+**定义mime-type**
+* 配置支持http请求的不同资源类型
+* include mime.types;
+    * 引入外部的配置文件，里面定义了一个 types结构，包含了浏览器能够识别的MIME类型以及对应相关类型的文件后缀名
+    * types也是nginx的一个配置块
+* default_type mime_type;
+    * 用于处理前端请求的MIME类型
+    * 默认是text/plain
+    * 可以在http/server/location中进行配置
+
+**自定义服务日志**
+* 服务日志: 记录nginx服务器提供服务过程应答前端请求的日志
+* access_log path[format[buffer=size]]
+    * path: 服务日志存放的路径和名称
+    * foemat: 可选项，服务日志的格式字符串
+    * size： 存放日志的内存缓冲区
+    * 可以在http/server/location中进行配置
+    * 如果要取消: access_log off;
+    
+
+**配置允许sendfile方式传输文件**
+
+
+**配置连接超时时间**
+* 与用户建立会话连接之后，Nginx服务器可以保持 这些连接打开一段时间。
+* keepalive_timeout timeout[header_timeout];
+    * timeout 服务端对连接的保持时间,默认值为75s.
+    * header_timeout,可选项，在应答报文头部的Keep-Alive域设置超时时间
+    * 实例：keepalive_timeout 120s 100s;
+    * 可以在http/server/location中进行配置
+
+**单连接请求数上限**
+* 用于限制用户通过某一个连接向nginx服务器发送请求的次数
+* keepalive_requests number;
+    * 默认值是100
+    * 可以在server/location中进行配置
+    
+**配置网络监听**
+* 方式1:配置监听的IP地址
+    * listen address[:port] [default_server] [setfib=number] [backlog=number] [rcvbuf=size] [sndbuf=size] [deferred] [accept_filter=filter] [bind] [ssl];
+* 方式2:配置监听端口
+    * listen port [default_server] [setfib=number] [backlog=number] [rcvbuf=size] [sndbuf=size]  [accept_filter=filter] [deferred] [bind]  [ipv6only=on|off] [ssl];
+
+* 方式2: 配置UNIX Domain Socket
+    * listen unix:path [default_server] [backlog=number] [rcvbuf=size] [sndbuf=size]  [accept_filter=filter] [deferred] [bind] [ssl];
+
+* 参数说明
+    * address：IP地址，如果是IPV6，格式为[FE80::1]
+    * port，端口号，默认80
+    * path,socket文件路径
+    * default_server 标识符，将虚拟主机设置为address:port的墨认主机
+    * setfib=number: 为socket关联路由表，目前只对FreeBSD起作用
+    * backlog=number： 设置监听函数listen最多允许多少个网络连接同时处于挂起状态，FreeBSD默认为-1,其他为511
+    * rcvbuf & sndbuf：socket接收和发送缓冲区大小
+    * accept_filter=filter：设置监听端口对请求的过滤，被过滤的内容不能被接收和处理。
+    * bind ： 标识符，使用独立的bind(),处理此address:port
+    * ssl： 标识符，设置会话使用SSL模式进行
+* 默认设置: listen *:80 |*:8080
+* 实例
+    * listen 182.2.2.1:8125
+    * listen 182.2.2.1
+    * listen 8152
+    
+**基于名称的虚拟主机配置**
+* 主机，server提供的虚拟主机，在server中进行配置
+* 设置了主机的名称并配置好DNS，用户就可以使用这个名称向虚拟主机发送请求
+* 语法: server_name name ...;
+    * 可以有一或多个名称，之间用空格隔开
+    * 每个名字就是一个域名。中间"."隔开
+        * server_name xxx.com ccc.com;
+    * 第一个名称作为此虚拟主机的主要名称
+    * name中可以使用通配符"*",但只能放在三段式结构中的首部或者尾部，*.xxx.xxx
+    * 还可以使用正则表达式，以"~"作为正则表达式 字符串的起始标志
+        * server_name ~^www.xxx.com$;:以w开头，以m结尾
+* 匹配优先级:使用通配符或者正则可能会出现匹配多个
+    * 优先级顺序，首先匹配成功的被选择
+        * 准确匹配server_name
+        * 通配符在开始时匹配成功
+        * 通配符在结尾时匹配成功
+        * 正则表达式匹配成功
+        
+
+**基于ip的虚拟主机配置**
+* server_name: 182.2.235
+
+
+**配置location块**
+* 语法结构:location [=|\~|\~*|^~] uri{...}
+    * = : 路径与uri严格匹配
+    * ~ : 使用uri正则表达式，区分大小写
+    * ~* : 使用uri正则表达式，不区分大小写
+    * ^~ : 以某个字符串开头的URL， ^~ /static/ :  以/static/的url
+    
+* 当[=|\~|\~*]存在多个时，按照从上往下进行匹配，先匹配到的被选择
+
+* location /{} 与location =/ {}的区别
+    * location /{} 遵守普通location的最大前缀匹配，如果配置了location /{} 和其他的 location规则，如果匹配其他的location规则，则选择该location规则。否则选择location /{}，也就是说location /{}的优先级最低，没有匹配才会被选择。
+    * location =/ {}路径精确匹配
+```
+location = / {
+   #规则A
+}
+location = /login {
+   #规则B
+}
+location ^~ /static/ {
+   #规则C
+}
+location ~ \.(gif|jpg|png|js|css)$ {
+   #规则D
+}
+location ~* \.png$ {
+   #规则E
+}
+location !~ \.xhtml$ {
+   #规则F
+}
+location !~* \.xhtml$ {
+   #规则G
+}
+location / {
+   #规则H
+}
+那么产生的效果如下：
+访问根目录/， 比如http://localhost/ 将匹配规则A
+访问 http://localhost/login 将匹配规则B，http://localhost/register 则匹配规则H
+访问 http://localhost/static/a.html 将匹配规则C
+访问 http://localhost/a.gif, http://localhost/b.jpg 将匹配规则D和规则E，但是规则D顺序优先，规则E不起作用， 而 http://localhost/static/c.png 则优先匹配到 规则C
+访问 http://localhost/a.PNG 则匹配规则E， 而不会匹配规则D，因为规则E不区分大小写。
+访问 http://localhost/a.xhtml 不会匹配规则F和规则G，http://localhost/a.XHTML不会匹配规则G，因为不区分大小写。规则F，规则G属于排除法，符合匹配规则但是不会匹配到，所以想想看实际应用中哪里会用到。
+访问 http://localhost/category/id/1111 则最终匹配到规则H，因为以上规则都不匹配，这个时候应该是nginx转发请求给后端应用服务器，比如FastCGI（php），tomcat（jsp），nginx作为方向代理服务器存在。
+
+```  
+**配置请求的根目录**
+* web服务器收到请求后，首先要在服务器端指定目录中寻找请求资源。
+* root path;
+* path 为nginx服务器接收到请求以后查找资源的根目录路径
+* 可以在http/server/location中进行配置，一般只在location中进行配置
+
+
+**更改location的URI**
+
+nginx是通过alias设置虚拟目录，在nginx的配置中，alias目录和root目录是有区别的：
+1）alias指定的目录是准确的，即location匹配访问的path目录下的文件直接是在alias目录下查找的；
+2）root指定的目录是location匹配访问的path目录的上一级目录,这个path目录一定要是真实存在root指定目录下的；
+3）使用alias标签的目录块中不能使用rewrite的break（具体原因不明）；另外，alias指定的目录后面必须要加上"/"符号！！
+4）alias虚拟目录配置中，location匹配的path目录如果后面不带"/"，那么访问的url地址中这个path目录后面加不加"/"不影响访问，访问时它会自动加上"/"；
+    但是如果location匹配的path目录后面加上"/"，那么访问的url地址中这个path目录必须要加上"/"，访问时它不会自动加上"/"。如果不加上"/"，访问就会失败！
+5）root目录配置中，location匹配的path目录后面带不带"/"，都不会影响访问。
+
+```
+#当收到 /img/nginx.pic,将请求映射为/var/www/image/nginx.pic，不会追加location的匹配到的部分
+location /img/{
+    alias /var/www/image/
+}
+#当收到 /img/nginx.pic,将请求映射为/var/www/image/img/nginx.pic，会追加location的匹配到的部分
+location /img/{
+    root /var/www/image/
+}
+```
+
+举例说明（比如nginx配置的域名是www.wangshibo.com）：
+**示例一**
+
+```c
+location /huan/ {
+      alias /home/www/huan/;
+}
+```
+在上面alias虚拟目录配置下，访问http://www.wangshibo.com/huan/a.html实际指定的是/home/www/huan/a.html。
+注意：alias指定的目录后面必须要加上"/"，即/home/www/huan/不能改成/home/www/huan
+
+上面的配置也可以改成root目录配置，如下，这样nginx就会去/home/www/huan下寻找http://www.wangshibo.com/huan的访问资源，两者配置后的访问效果是一样的！
+```
+location /huan/ {
+       root /home/www/;
+}
+```
+
+**示例二**
+上面的例子中alias设置的目录名和location匹配访问的path目录名一致，这样可以直接改成root目录配置；那要是不一致呢？
+再看一例：
+```
+location /web/ {
+      alias /home/www/html/;
+}
+```
+
+访问http://www.wangshibo.com/web的时候就会去/home/www/html/下寻找访问资源。
+这样的话，还不能直接改成root目录配置。
+如果非要改成root目录配置，就只能在/home/www下将html->web（做软连接，即快捷方式），如下：
+```
+location /web/ {
+     root /home/www/;
+}
+
+# ln -s /home/www/web /home/www/html       //即保持/home/www/web和/home/www/html内容一直
+```
+所以，一般情况下，在nginx配置中的良好习惯是：
+1）在location /中配置root目录；
+2）在location /path中配置alias虚拟目录。
+
+如下一例：
+```
+server {
+          listen 80;
+          server_name www.wangshibo.com;
+          index index.html index.php index.htm;
+          access_log /usr/local/nginx/logs/image.log;
+
+    location / {
+        root /var/www/html;
+        }
+
+   location /haha {                                          //匹配的path目录haha不需要真实存在alias指定的目录中
+       alias /var/www/html/ops/;                       //后面的"/"符号一定要带上
+       rewrite ^/opp/hen.php(.*)$ /opp/hen.php?s=$1 last;
+    # rewrite ^/opp/(.*)$ /opp/hen.php?s=$1 last;
+       }
+
+   location /wang {                    //匹配的path目录wang一定要真实存在root指定的目录中（就/var/www/html下一定要有wang目录存在）
+      root /var/www/html;
+     }
+
+ }
+
+[root@web01 vhosts]# cat www.kevin.com.conf
+server {
+      listen      80;
+      server_name www.kevin.com;
+     
+      access_log  /data/nginx/logs/www.kevin.com-access.log main;
+      error_log  /data/nginx/logs/www.kevin.com-error.log;
+     
+ location / {
+      root /data/web/kevin;
+      index index.php index.html index.htm;
+      }
+ 
+  location /document/ {
+      alias /data/web/document/;
+}
+ 
+  }
+```
+ 
+[root@web01 vhosts]# ll /data/web/
+total 4
+drwxrwxr-x 2 app app   33 Nov 22 10:22 document
+drwxrwxr-x 4 app app  173 Sep 23 15:00 kevin
+ 
+如上配置后,则:
+访问http://www.kevin.com/admin   就会找到/data/web/kevin/admin目录
+访问http://www.kevin.com/document  就会找到/data/web/document 目录 (里面是一些静态资源)
+
+
+**设置网站的默认首页**
+* 在前后端分离的基础上，通过Nginx配置，指定网站初始页。
+* 该指令后面可以跟多个文件，用空格隔开；
+* 如果包括多个文件，Nginx会根据文件的枚举顺序来检查，直到查找的文件存在；
+* 文件可以是相对路径也可以是绝对路径，绝对路径需要放在最后；
+* 文件可以使用变量$来命名
+* index  index.$geo.html  index.0.html  /index.html;
+* 该指令拥有默认值，index index.html ，即，如果没有给出index，默认初始页为index.html
+* index指令并不是查到文件之后，就直接拿来用了。它的实际工作方式是：
+* 如果文件存在，则使用文件作为路径，发起内部重定向。直观上看上去就像再一次从客户端发起请求，Nginx再一次搜索location一样。
+* 既然是内部重定向，域名+端口不发生变化，所以只会在同一个server下搜索。
+* 同样，如果内部重定向发生在proxy_pass反向代理后，那么重定向只会发生在代理配置中的同一个server。
+
+**实例**
+```
+server {
+    listen      80;
+    server_name example.org www.example.org;    
+    
+    location / {
+        root    /data/www;
+        index   index.html index.php;
+    }
+    
+    location ~ \.php$ {
+        root    /data/www/test;
+    }
+}
+```
+上面的例子中，如果你使用example.org或www.example.org直接发起请求，那么首先会访问到“/”的location，结合root与index指令，会先判断/data/www/index.html是否存在，如果不，则接着查看
+/data/www/index.php ，如果存在，则使用/index.php发起内部重定向，就像从客户端再一次发起请求一样，Nginx会再一次搜索location，毫无疑问匹配到第二个~ \.php$，从而访问到/data/www/test/index.php。
+
+
+
+**设置网站的默认错误页面**
+* error_page code ... [=[response]] uri
+    * code http错误码
+    * 将code的错误码转换为新的错误码response（客户端显示新的状态码）
+    * 错误页面的路径或者网站地址，如果为路径，则是以nginx服务器安装路径下的html目录为根路径的相对路径，如果设置为网址。则Nginx服务器会直接访问该网址获取错误页面。并返回 给用户端。
+* 实例:
+    * error_page 404 /404.html;
+    * error_page 404 401 /404.html;
+    * error_page 403 https://www.baidu.com;
+    * error_page 404 = 403 /403.html;
+
+
+**基于IP配置nginx的访问权限**
+* allow address |CIDR |all;
+    * 允许某个地址访问,如果有多个地址，需要重复多条指令
+    * address ip地址
+    * CIDR 访问客户端的CIDR地址，比如 127.0.0.1/25;
+    * all 默认值，支持所有IP访问
+* deny address |CIDR |all;
+
+* 多条指令的情况
+
+从上往下检测，只要有一个匹配就不会继续往下检测
+
+```
+deny 127.1.1.2;
+allow 127.1.1.3;
+deny all;
+```
+
+* 这两个指令都可以在http server location中进行配置 
+
+**基于密码配置nginx的访问权限**
+
+* auth_basic string | off;
+    * string 开启认证功能，并设置验证时的指示信息
+    * off 关闭该认证功能
+* auth_basic_user_file file ;
+    * 保存密码的文件
+```
+name1:password1
+name2:password2
+```
+
+
+## 28.3. 架构说明
+<a href="#menu" style="float:right">目录</a>
+
+### 28.3.1. 模块化结构
+<a href="#menu" style="float:right">目录</a>
+
+#### 28.3.1.1. 模块分类
+<a href="#menu" style="float:right">目录</a>
+
+**核心模块**
+**标准HTTP模块**
+**可选HTTP模块**
+**邮件服务模块**
+**第三方模块**
+### 28.3.2. web请求处理机制
+<a href="#menu" style="float:right">目录</a>
+
+**并行处理方式**
+* 多进程
+    * 设计实现简单，各个进程之间相互独立，处理客户端的请求的过程彼此不受干扰，进程内部产生错误并不会影响其他进程
+    * 当子线程退出时，其占用的资源会被操作系统回收，也不会留下任何垃圾
+    * 创建进程需要执行内存复制操作，在资源和时间上会产生额外的开销
+    * 因此，如果Web服务器接收大量的并发请求，就会对系统资源造成压力，导致系统性能下降
+* 多线程
+    * 创建线程不需要进行内存复制，开销小，
+    * 多个线程位于同一个进程内，可以访问共同的空间，彼此之间相互影响，需要对变量进行并发访问控制，以及内存管理，容易出错
+* 异步
+
+**Nginx服务器处理请求**
+* Nginx服务器的一个显著优势就是能够同时处理大量并发请求，结合多进程和异步机制(异步非阻塞)堆外提供服务。
+* nginx启动后，会产生一个主进程master process,和多个工作进程。其中可以在配置文件中指定工作进程数量。工作进程用于处理客户端请求。
+* 工作处理流程
+    * 工作进程使用异步非阻塞,可以处理多个客户端请求，多进程+异步提高了对请求的高并发处理
+    * 当某个进程接收到客户端请求后，调用IO今次嗯处理，如果不能立即得到结果，就去处理其他请求
+    * 客户端也无需等待，也去处理其他事情
+    * 当IO调用完成，就会通知工作进程，工作进程得到通知，暂时挂起当前处理的事务，去响应客户端的请求。
+* 事件处理机制
+    * IO调用返回后是如何通知工作进程的
+    * 方式1
+        * 工作进程轮询取检查IO调用完成状态
+    * 方式2
+        * IO调用后主动通知工作进程，也就是事件驱动模型
+
+**Nginx时间驱动模型**
+<a href="#menu" style="float:right">目录</a>
+
+* select 
+* poll 
+* rtsig
+
+### 28.3.3. 设计架构概览
+<a href="#menu" style="float:right">目录</a>
+
+![](https://github.com/lgjlife/Java-Study/blob/master/pic/nginx/nginx.png?raw=true)
+
+**主进程**
+* 读取配置文件，并验证正确性和有效性
+* 建立，绑定和关闭Socket
+* 按照配置生成，管理和结束工作进程
+* 接收外界指令，比如重启，升级，退出服务器等指令
+* 不中断服务，实现平滑重启，应用新配置
+* 不中断服务，实现平滑升级，升级失败进行回滚
+* 开启日志文件，获取文件描述符
+* 编译和处理Perl脚本
+
+**工作进程**
+* 接收客户端请求
+* 将请求依次送入各个功能模块进行过滤处理
+* IO调用，获取响应数据
+* 与后端服务器通信，接收后端服务器处理结果
+* 数据缓存，访问缓存索引，查询和调用缓存数据
+* 发送请求结果，响应客户端请求
+* 接收主程序命令，比如重启，升级和退出等指令
+
+**缓存索引重建及管理进程**
+* 缓存索引重建进程
+    * 根据本地磁盘上的缓存文件在内存中建立索引元数据库
+    * 进程启动后，对本地磁盘上存放的缓存文件的目录结构进行扫描
+    * 检查内存中已有的缓存元数据是否正确，并更新索引元数据
+* 缓存索引管理进程
+    * 在元数据更新后，对元数据是否过期作出判断
+
+**进程交互**
+* 进程之间的交互依赖管道进行交互
+
+
+
+
+## 28.4. 高级配置
+<a href="#menu" style="float:right">目录</a>
+
+
+## 28.5. gzip压缩
+<a href="#menu" style="float:right">目录</a>
+
+
+
+
+## 28.6. rewrite功能
+<a href="#menu" style="float:right">目录</a>
+
+rewrite功能 用于重定向服务时起到作用。
+
+### 28.6.1. nginx后端服务器组的配置的5个技术指令
+<a href="#menu" style="float:right">目录</a>
+
+**upstream指令**
+* 设置后端服务器组的主要指令，其他的指令都在该指令中进行配置
+* 语法: upstream name{}
+    * name 是后端服务器的组名，可任意配置
+    * 用于做负载均衡
+    * 默认情况是随机轮询发起后端请求，如果失败则选择下一个服务器，直到响应成功，如果全都失败，返回最后一个的失败请求。
+
+**server指令**
+* 用于配置组内的服务器
+* 语法: server address [parameters]
+    * address服务器的地址，可以包含端口号的IP地址（IP:PORT）,或者以"unix:"为前缀用于进程间通信
+    * 当前服务器更多的属性
+        * weight=number;负载均衡权重，默认为1.
+        * max_fails=numbers;
+            * 请求失败的最大次数，默认为1.
+            * 请求失败到这个数值时，则认为服务器失效(down).
+            * 如果设置为0 ，则不用上面的方法检查服务器是否有效
+            * 404不认为请求失败
+        * fail_timeout=time;
+            * 作用1:尝试请求某台服务器的时间
+            * 作用2:服务器无效(down)的持续时间，在该时间内不去检查该服务器的状态
+            * 默认10s
+        * backup;
+            * 标记为备用服务器，其他服务器失效时才会请求该服务器        
+        * down ;标记服务器为无效状态，不会向其发送请求
+```
+upstream  servername{
+    server xx.xx.xx weight=5 max_fails=1;
+    server 127.0.0.1:8452;
+    server unix:/tmp/bass;
+}
+```
+**ip_hash指令**
+* 根据请求IP进行负载均衡
+* ip_hash不能和weight一起使用
+* 根据客户端的请求IP进行哈希，因此nginx必须是客户端之后的组件，否则，将会根据前面组件的ip进行哈希
+* 客户端必须是C类地址，1.3.2开始支持IPV6地址
+
+```
+upstream  servername{
+    ip_hash;
+    server 127.0.0.1:8452;
+    server 127.0.0.2:8452;
+}
+
+```
+**keppalive**
+* 用于控制网络连接保持功能。
+* keepalive connections;
+    * 服务器每一个工作进程允许该服务器组保持的空闲网络连接的上限值。如果超过该值，工作进程将采用最近很少使用的策略关闭网络连接。
+* 该值不是限制服务器工作进程能改为服务器组开启的总网络连接数
+
+**least_conn**
+* 负载均衡和算法:最少连接。配合权重进行选择。
+
+
+### 28.6.2. rewrite功能的配置
+<a href="#menu" style="float:right">目录</a>
+
+* rewrite用于实现URL的重写。
+* 地址重写和地址转发
+    * 地址重写
+        * 
+    * 地址转发
+    * 区别
+        * 地址转发后客户端浏览器地址栏中的地址显示是不改变的;而地址重写浏览器显示的地址将会改变为新的地址
+        * 一次地址转发整个过程，只产生一次网络请求，而地址重写一般会产生两次请求
+        * 地址转发一般在同一个站点项目中，地址重写没有这个限制
+        * 地址转发到的页面不用全路径名表示，而地址重写必须使用完整的路径名表示
+        * 地址转发的过程中，可以将客户端请求的request范围内的属性传递给新的页面，但地址重写不可以。
+        * 地址转发的速度较地址重写快。
+* Rewrite规则
+    * 借助PCRE实现URI重写，并且支持Nginx预设变量
+    * nginx_http_rewrite_module模块支持重写功能
+* if指令
+    * if (condition){}
+        * condition的值为空字符串或者'\0'开头，则为false 
+        * "="--->等于;"!=" ---> 不等于，比较变量和字符串
+            * 字符串不需要加引号
+            * if ($request_method = POST)
+        * 使用正则表达式进行匹配
+            * 使用以下字符进行连接
+                * ~ 匹配对大小写敏感
+                * ~* 匹配对大小写不敏感
+                * !~ & ~* : 对上面匹配结果取反
+            * if ($request_method ~ POST)
+        * 判断请求的文件是否存在
+            *  -f : 文件存在 !-f : 文件不存在
+            * if(-f $filename)
+        * 判断请求的目录是否存在
+            * -d &!-d
+        * 判断请求的目录或者文件是否存在
+            * -e & !-e
+        * 判断请求的文件是否可执行
+            * -x & !-x
+* break 指令
+    * 和其他语言类似，中断当前语句块
+* return 指令
+    * 用于完成对请求的处理，直接向客户端返回
+    * 用法
+        * return [text];
+        * returm code URL;
+        * return URL;
+        * code ： HTTP状态码
+        * text : 响应体内容
+        * URL:为返回客户端的URL地址
+
+**rewrite**
+
+**常用全局变量**
+
+|||
+|---|---|
+|$args|变量中存放了请求URL中的请求指令，http://xx.com/login?arg1=val1&arg2=vag2 中的 "arg1=val1&arg2=vag2"
+|$content_length|请求头中的Content-length|
+|$content_type|请求头中的Content-type|
+|$document_root|针对当前请求头中的根路径|
+|$document_uri|请求中的URI不包括参数，http://xx.com/login?arg1=val1&arg2=vag2 中的 "/login"|
+|$host|请求URL中的主机部分，http://xx.com/login?arg1=val1&arg2=vag2 中的 "xx.com"，如果为空或者不可用，则存放的是Server块中的server_name的配置值|
+|$http_user_agent|客户端的代理信息|
+|$http_cookie|请求的cookie|
+|$limit_rate|Nginx针对网络连接速率的限制，也就是limit_rate的值
+|$remote_addr|客户端的地址|
+|$remote_port|客户端与服务建立连接的端口|
+|$remote_user|客户端的用户名|
+|$request_body_file|发给后端服务器的本地文件资源的名称|
+|$request_method|客户端请求方式，GET/POST等|
+|$request_filename|当前请求的资源文件的路径名|
+|$request_uri|当前请求的URI，包括请求参数|
+|$query_string|与变量$args相同|
+|$scheme|客户端请求的协议，http,https,ftp|
+|$server_protocol|客户端请求协议的版本，HTTP/1.0，HTTP/1.1等|
+|$server_addr|服务器的地址|
+|$server_name|客户端请求到达服务器的名称|
+|$server_port|客户端请求到达服务器的端口|
+|$uri|$document_uri相同|
+
+
+
+### 28.6.3. rewrite使用
+<a href="#menu" style="float:right">目录</a>
+
+
+
+## 28.7. 代理服务
+<a href="#menu" style="float:right">目录</a>
+
+### 28.7.1. 正向代理和反向代理
+![](https://github.com/lgjlife/Java-Study/blob/master/pic/nginx/proxy.png?raw=true)
+![](https://github.com/lgjlife/Java-Study/blob/master/pic/nginx/proxy1.png?raw=true)
+* **正向代理**
+    * 正向代理是**让局域网客户机接入外网以访问外网资源**   
+    * 局域网内的机器借助代理服务访问局域网外的网站
+    * 主要为了增强局域网内部网络的安全性，使得网外的威胁因素不容易影响到网内。
+    * 代理服务器起到一定的防火墙作用
+    * 利用代理服务器也可以对局域网对外网的访问进行监控和管理 
+    * 正向代理不支持外部网络对内部的访问
+* **反向代理**
+    * 反向代理是**让外网接入局域网中的站点以访问站点中的资源**
+    * 局域网向外部提供网络服务
+    * 客户端并不知道局域网内部是否使用了代理，反向代理对客户是透明的
+
+### 28.7.2. Nginx正向代理服务
+
+* 使用情况少，相对简单
+* 涉及三个指令，resolver,resolver_timeout,proxy_pass
+* 可以在http,server,location块中配置，一般是单独配置一个server来设置代理服务器
+* 不支持正向代理Https
+
+**正向代理指令**
+
+* resolver
+    * 用于指定DNS服务器的IP地址，DNS服务器的主要工作是进行域名解析。将域名映射为对应的IP地址
+    * resolver address ...[valid=time];
+        * 支持ipv6地址
+        * address : DNS服务器的IP地址，如果不指定端口号。默认使用53端口  
+        * time,设置数据包在网络中的有效时间
+            * 在访问站点时，数据包并不一定很快到达目的地，需要给数据包设置超时时间，时间到则丢弃
+        * resolver 127.5.6.1 valid=30s
+* resolver_timeout
+    * resolver_timeout time;
+        * 用于设置DNS域名解析的超时时间
+* proxy_pass
+    * proxy_pass URL;
+    * 设置代理服务器的域名和地址
+
+* 实例
+```
+server{
+    #设置DNS服务器地址为8.8.8.8。默认端口53作为DNS服务器 的服务端口
+    resolver 8.8.8.8;
+    //代理服务的监听端口为82
+    listen 82;
+    location /{
+        proxy_pass http://xxx.xx
+    } 
+}
+```
+
+### 28.7.3. Nginx反向代理服务
+<a href="#menu" style="float:right">目录</a>
+
+#### 28.7.3.1. 反向代理基本设置的21个指令 
+<a href="#menu" style="float:right">目录</a>
+
+* **proxy_pass**
+* **proxy_hide_header**
+* **proxy_pass_header**
+* **proxy_pass_request_body**
+* **proxy_pass_request_headers**
+* **proxy_set_header**
+* **proxy_set_body**
+* **proxy_bind**
+* **proxy_connect_timeout**
+* **proxy_read_timeout**
+* **proxy_send_timeout**
+* **proxy_http_version**
+* **proxy_method**
+* **proxy_ignore_client_abort**
+* **proxy_ignore_headers**
+* **proxy_rediret**
+* **proxy_intercepterrors**
+* **proxy_headers_hash_max_size**
+* **proxy_headers_hash_bucket_size**
+* **proxy_next_stream**
+* **proxy_ssl_session_request**
+
+#### 28.7.3.2. proxy buffer 的配置的7个指令
+<a href="#menu" style="float:right">目录</a>
+
+* **proxy_buffering**
+* **proxy_buffers**
+* **proxy_buffer_size**
+* **proxy_busy_buffer_size**
+* **proxy_temp_path**
+* **proxy_max_temp_file_size**
+* **proxy_temp_write_size**
+
+#### 28.7.3.3. proxy cache 的配置的12个指令
+<a href="#menu" style="float:right">目录</a>
+
+* **proxy_cache**
+* **proxy_cache_bypass**
+* **proxy_cache_key**
+* **proxy_cache_lock**
+* **proxy_cache_lock_timeout**
+* **proxy_cache_min_uses**
+* **proxy_cache_path**
+* **proxy_cache_use_state**
+* **proxy_cache_valid**
+* **proxy_no_cache**
+* **proxy_store**
+* **proxy_store_access**
+
+
+### 28.7.4. Nginx服务器负载均衡
+
+**常用状态参数**
+
+
+
+**轮询负载均衡**
+<a href="#menu" style="float:right">目录</a>
+
+```
+http{
+    upstream  blog{
+    
+        server 192.1.1.1:8223;
+        server 192.1.1.1:8323;
+        server 192.1.1.1:8423;
+    }
+    server{
+        listen 8080;
+        location /{
+            proxy_pass http://blog;
+        }
+    }
+}
+```
+* 使用默认的负载均衡策略(轮询+加权因子为1) 
+
+
+**加权轮询负载均衡**
+<a href="#menu" style="float:right">目录</a>
+
+```
+http{
+    upstream  blog{
+    
+        server 192.1.1.1:8223  weight=1;
+        server 192.1.1.1:8323  weight=2;
+        server 192.1.1.1:8423  weight=3;
+    }
+    server{
+        listen 8080;
+        location /{
+            proxy_pass http://blog;
+        }
+    }
+}
+```
+* 通过weight来配置权重
+
+**对特定资源进行负载均衡**
+<a href="#menu" style="float:right">目录</a>
+
+
+```
+http{
+    upstream  video{
+    
+        server 192.1.1.1:8223  weight=1;
+        server 192.1.1.1:8323  weight=2;
+        server 192.1.1.1:8423  weight=3;
+    }
+    upstream  file{
+    
+        server 192.1.1.1:8223  weight=1;
+        server 192.1.1.1:8323  weight=2;
+        server 192.1.1.1:8423  weight=3;
+    }
+    server{
+        listen 8080;
+        location /video{
+            proxy_pass http://video;
+        }
+
+        location /file{
+            proxy_pass http://file;
+        }
+
+    }
+}
+```
+**ip hash负载均衡**
+<a href="#menu" style="float:right">目录</a>
+
+```
+http{
+    upstream  blog{
+        ip_hash;
+        server 192.1.1.1:8223;
+        server 192.1.1.1:8323;
+        server 192.1.1.1:8423;
+    }
+    server{
+        listen 8080;
+        location /{
+            proxy_pass http://blog;
+        }
+    }
+}
+```
+
+**最少连接负载均衡**
+<a href="#menu" style="float:right">目录</a>
+
+```
+http{
+    upstream  blog{
+        least-connected;
+        server 192.1.1.1:8223;
+        server 192.1.1.1:8323;
+        server 192.1.1.1:8423;
+    }
+    server{
+        listen 8080;
+        location /{
+            proxy_pass http://blog;
+        }
+    }
+}
+```
+
+
+
+**对不同域名实现负载均衡**
+<a href="#menu" style="float:right">目录</a>
+
+* 就是存在多个不同的server
+
+```
+http{
+    upstream  video{
+    
+        server 192.1.1.1:8223  weight=1;
+        server 192.1.1.1:8323  weight=2;
+        server 192.1.1.1:8423  weight=3;
+    }
+    upstream  file{
+    
+        server 192.1.1.1:8223  weight=1;
+        server 192.1.1.1:8323  weight=2;
+        server 192.1.1.1:8423  weight=3;
+    }
+    server{
+        listen 8080;
+        location /video{
+            proxy_pass http://video;
+        }
+
+    }
+    server{
+        listen 8081;
+        location /file{
+            proxy_pass http://file;
+        }
+
+    }
+}
+```
+
+**实现带有URL重写的负载均衡**
+<a href="#menu" style="float:right">目录</a>
+
+## 28.8. 邮件服务
+<a href="#menu" style="float:right">目录</a>
+
+
+## 28.9. 源码结构
+<a href="#menu" style="float:right">目录</a>
+
+
+## 28.10. 基本数据结构
+<a href="#menu" style="float:right">目录</a>
+
+
+## 28.11. 启动初始化
+<a href="#menu" style="float:right">目录</a>
+
+### 28.11.1. 启动过程概览
+* 解析输入参数，通过输入参数确定Nginx服务器具体行为
+* 初始化时间和日志，备份输入参数，并初始化相关的全局变量。一些变量的值依赖于Nginx服务器所在操作系统的相关信息，比如内存页面大小，系统支持最大文件打开数目
+* 保存输入参数
+* 初始化描述网络套接字的相关结构
+* 初始化ngx_module_t数组
+* 读取并保存Nginx配置参数
+* 初始化ngx_cycle_s结构体
+* 保存工作进程ID到PID文件
+
+## 28.12. 时间管理
+<a href="#menu" style="float:right">目录</a>
+
+
+## 28.13. 内存管理
+<a href="#menu" style="float:right">目录</a>
+
+### 28.13.1. 内存的逻辑结构
+* nginx内存池相关结构体
+    * ngx_pool_t ,描述nginx内存池结构
+    * ngx_poll_data_t , 
+    * ngx_poll_large_t , 
+    * ngx_poll_cleanup_t , 
+
+* nginx的内存管理很好，运行过程占用系统内存很少
+
+![](https://github.com/lgjlife/Java-Study/blob/master/pic/nginx/nginx_pool.png?raw=true)
+
+* nginx内存池本质上是一个链表结构，链表的每一个节点称为一个数据块，由ngx_poll_data_t描述
+* ngx_poll_large_t 用于处理大数据内存
+* ngx_poll_cleanup_t 用于处理对内存进行释放和回收
+* ngx_pool_t相当于一个内存管理器，其他结构形成一个链表，需要时挂接在ngx_pool_t上面
+
+
+
+
+### 28.13.2. 内存池管理
+
+### 28.13.3. 内存的使用
+
+
+## 28.14. 工作进程
+<a href="#menu" style="float:right">目录</a>
+
+### 28.14.1. nginx服务进程间通信
+<a href="#menu" style="float:right">目录</a>
+
+#### 28.14.1.1. Linux进程间通信方式
+
+* 进程间通信方式
+    * 使用IPC（消息队列，信号量，共享存储）
+        * 功能强大，但是不能支持Nginx服务器使用的事件驱动模型
+    * 管道
+        * 管道简单易用，但是限制比较多，一般只是单向通信
+        * 一般在父子进程间通信
+    * 套接字 socket
+        * 用于网络通信，也可用于系统内进程间通信
+        * 支持双向通信
+          
+#### 28.14.1.2. Linux进程间双工通信方式的实现
+
+
+#### 28.14.1.3. 通信通道建立和设置
+
+
+#### 28.14.1.4. 通信通道的使用
+
+
+#### 28.14.1.5. 消息的读写
+
+## 28.15. 模块编程
+<a href="#menu" style="float:right">目录</a>
+
+
+### 28.15.1. 模块的种类
+<a href="#menu" style="float:right">目录</a>
+
+* 根据模块的重要性
+    * **核心模块**
+        * Nginx重要模块，提供了基本初始化功能
+        * 包括网络管理，文件管理，内存管理，配置解析，模块加载等基本功能实现
+    * **标准模块**
+        * 配置时无需指明编译的重要模块 
+        * 提供了实现HTTP WEB服务的基础功能，包括代理，反向代理，URL重写，GZIP压缩，邮件等功能的实现
+    * **可选的HTTP模块**    
+        * 编译时需要指明编译
+        * 这些模块大多数是为了提高web服务器的性能或者扩展额外功能而提供的，比如SSL，select ,epoll
+    * **第三方模块**
+        * 自定义开发的模块
+
+* 根据模块的角色划分
+    * **请求处理模块**
+        * 负责与客户端连接，请求收发的处理
+    * **资源过滤模块**
+        * 对服务器接收的各类网络资源进行管理和筛选
+        * 资源来源包括客户端和后端服务器
+    * **代理转发模块**
+        * 负责后端服务器的选择，资源递送等服务
+
+### 28.15.2. 模块开发实战
+<a href="#menu" style="float:right">目录</a>
+
+
+### 28.15.3. 模块的编译和安装
+<a href="#menu" style="float:right">目录</a>
+
+
+
+
+
+<span id="menu"></span>
+
+# 29. WEB容器
+<a href="#menu" style="float:right">目录</a>
+
+
+## 29.1. WEB容器比较
+<a href="#menu" style="float:right">目录</a>
+
+**Jetty和tomcat的比较**
+* 相同点：
+    * Tomcat和Jetty都是一种Servlet引擎，他们都支持标准的servlet规范和JavaEE的规范。
+* 不同点：
+    * 架构比较 
+        * Jetty的架构比Tomcat的更为简单 
+        * Jetty的架构是基于Handler来实现的，主要的扩展功能都可以用Handler来实现，扩展简单。 
+        * Tomcat的架构是基于容器设计的，进行扩展是需要了解Tomcat的整体设计结构，不易扩展。
+    * 性能比较 
+        * Jetty和Tomcat性能方面差异不大 
+        * Jetty可以同时处理大量连接而且可以长时间保持连接，适合于web聊天应用等等。 
+        * Jetty的架构简单，因此作为服务器，Jetty可以按需加载组件，减少不需要的组件，减少了服务器内存开销，从而提高服务器性能。 
+        * Jetty默认采用NIO结束在处理I/O请求上更占优势，在处理静态资源时，性能较高
+        * 少数非常繁忙;Tomcat适合处理少数非常繁忙的链接，也就是说链接生命周期短的话，Tomcat的总体性能更高。 
+        * Tomcat默认采用BIO处理I/O请求，在处理静态资源时，性能较差。
+    * 其它比较 
+        * Jetty的应用更加快速，修改简单，对新的Servlet规范的支持较好。 
+        * Tomcat目前应用比较广泛，对JavaEE和Servlet的支持更加全面，很多特性会直接集成进来。
+## 29.2. SpringBoot WEB相关配置
+```properties
+# EMBEDDED SERVER CONFIGURATION (ServerProperties)
+
+#服务器绑定地址，默认为0.0.0.0
+server.address= # Network address to which the server should bind to.
+server.compression.enabled=false # If response compression is enabled.
+server.compression.excluded-user-agents= # List of user-agents to exclude from compression.
+server.compression.mime-types= # Comma-separated list of MIME types that should be compressed. For instance `text/html,text/css,application/json`
+server.compression.min-response-size= # Minimum response size that is required for compression to be performed. For instance 2048
+#服务器连接超时
+server.connection-timeout= #3s, Time in milliseconds that connectors will wait for another HTTP request before closing the connection. When not set, the connector's container-specific default will be used. Use a value of -1 to indicate no (i.e. infinite) timeout.
+server.display-name=application # Display name of the application.
+#请求头的最大大小：
+server.max-http-header-size=0 # Maximum size in bytes of the HTTP message header.
+#确定显示有关错误的信息。例如，我们可以包含错误消息和堆栈跟踪：
+server.error.include-exception=false # Include the "exception" attribute.
+server.error.include-stacktrace=never # or always， When to include a "stacktrace" attribute.
+#Whitelabel的默认路径是*/error*。可以通过设置server.error.path参数来自定义它：
+server.error.path=/error # Path of the error controller.
+#默认情况下，Spring Boot提供标准错误网页。此页面称为Whitelabel
+server.error.whitelabel.enabled=true # Enable the default error page displayed in browsers in case of a server error.
+server.jetty.acceptors= # Number of acceptor threads to use.
+server.jetty.accesslog.append=false # Append to log.
+server.jetty.accesslog.date-format=dd/MMM/yyyy:HH:mm:ss Z # Timestamp format of the request log.
+server.jetty.accesslog.enabled=false # Enable access log.
+server.jetty.accesslog.extended-format=false # Enable extended NCSA format.
+server.jetty.accesslog.file-date-format= # Date format to place in log file name.
+server.jetty.accesslog.filename= # Log filename. If not specified, logs will be redirected to "System.err".
+server.jetty.accesslog.locale= # Locale of the request log.
+server.jetty.accesslog.log-cookies=false # Enable logging of the request cookies.
+server.jetty.accesslog.log-latency=false # Enable logging of request processing time.
+server.jetty.accesslog.log-server=false # Enable logging of the request hostname.
+server.jetty.accesslog.retention-period=31 # Number of days before rotated log files are deleted.
+server.jetty.accesslog.time-zone=GMT # Timezone of the request log.
+server.jetty.max-http-post-size=0 # Maximum size in bytes of the HTTP post or put content.
+server.jetty.selectors= # Number of selector threads to use.
+
+# 服务器端口，默认8080
+server.port=8080 # Server HTTP port.
+server.server-header= # Value to use for the Server response header (no header is sent if empty)
+server.use-forward-headers= # If X-Forwarded-* headers should be applied to the HttpRequest.
+server.servlet.context-parameters.*= # Servlet context init parameters
+server.servlet.context-path= # Context path of the application.
+server.servlet.jsp.class-name=org.apache.jasper.servlet.JspServlet # The class name of the JSP servlet.
+server.servlet.jsp.init-parameters.*= # Init parameters used to configure the JSP servlet
+server.servlet.jsp.registered=true # Whether or not the JSP servlet is registered
+server.servlet.path=/ # Path of the main dispatcher servlet.
+server.session.cookie.comment= # Comment for the session cookie.
+server.session.cookie.domain= # Domain for the session cookie.
+server.session.cookie.http-only= # "HttpOnly" flag for the session cookie.
+server.session.cookie.max-age= # Maximum age of the session cookie in seconds.
+server.session.cookie.name= # Session cookie name.
+server.session.cookie.path= # Path of the session cookie.
+server.session.cookie.secure= # "Secure" flag for the session cookie.
+server.session.persistent=false # Persist session data between restarts.
+server.session.servlet.filter-order=-2147483598 # Session repository filter order.
+server.session.servlet.filter-dispatcher-types=ASYNC, ERROR, REQUEST # Session repository filter dispatcher types.
+server.session.store-dir= # Directory used to store session data.
+server.session.timeout= # Session timeout in seconds.
+server.session.tracking-modes= # Session tracking modes (one or more of the following: "cookie", "url", "ssl").
+server.ssl.ciphers= # Supported SSL ciphers.
+server.ssl.client-auth= # Whether client authentication is wanted ("want") or needed ("need"). Requires a trust store.
+server.ssl.enabled= # Enable SSL support.
+server.ssl.enabled-protocols= # Enabled SSL protocols.
+server.ssl.key-alias= # Alias that identifies the key in the key store.
+server.ssl.key-password= # Password used to access the key in the key store.
+server.ssl.key-store= # Path to the key store that holds the SSL certificate (typically a jks file).
+server.ssl.key-store-password= # Password used to access the key store.
+server.ssl.key-store-provider= # Provider for the key store.
+server.ssl.key-store-type= # Type of the key store.
+server.ssl.protocol=TLS # SSL protocol to use.
+server.ssl.trust-store= # Trust store that holds SSL certificates.
+server.ssl.trust-store-password= # Password used to access the trust store.
+server.ssl.trust-store-provider= # Provider for the trust store.
+server.ssl.trust-store-type= # Type of the trust store.
+server.tomcat.accept-count= # Maximum queue length for incoming connection requests when all possible request processing threads are in use.
+server.tomcat.accesslog.buffered=true # Buffer output such that it is only flushed periodically.
+server.tomcat.accesslog.directory=logs # Directory in which log files are created. Can be relative to the tomcat base dir or absolute.
+server.tomcat.accesslog.enabled=false # Enable access log.
+server.tomcat.accesslog.file-date-format=.yyyy-MM-dd # Date format to place in log file name.
+server.tomcat.accesslog.pattern=common # Format pattern for access logs.
+server.tomcat.accesslog.prefix=access_log # Log file name prefix.
+server.tomcat.accesslog.rename-on-rotate=false # Defer inclusion of the date stamp in the file name until rotate time.
+server.tomcat.accesslog.request-attributes-enabled=false # Set request attributes for IP address, Hostname, protocol and port used for the request.
+server.tomcat.accesslog.rotate=true # Enable access log rotation.
+server.tomcat.accesslog.suffix=.log # Log file name suffix.
+server.tomcat.additional-tld-skip-patterns= # Comma-separated list of additional patterns that match jars to ignore for TLD scanning.
+server.tomcat.background-processor-delay=30 # Delay in seconds between the invocation of backgroundProcess methods.
+server.tomcat.basedir= # Tomcat base directory. If not specified a temporary directory will be used.
+server.tomcat.internal-proxies=10\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}|\\
+        192\\.168\\.\\d{1,3}\\.\\d{1,3}|\\
+        169\\.254\\.\\d{1,3}\\.\\d{1,3}|\\
+        127\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}|\\
+        172\\.1[6-9]{1}\\.\\d{1,3}\\.\\d{1,3}|\\
+        172\\.2[0-9]{1}\\.\\d{1,3}\\.\\d{1,3}|\\
+        172\\.3[0-1]{1}\\.\\d{1,3}\\.\\d{1,3} # regular expression matching trusted IP addresses.
+server.tomcat.max-connections= # Maximum number of connections that the server will accept and process at any given time.
+server.tomcat.max-http-header-size=0 # Maximum size in bytes of the HTTP message header.
+#整个POST请求的最大大小：
+server.tomcat.max-http-post-size=0 # 2MB, Maximum size in bytes of the HTTP post content.
+Tomcat工作线程的最大数量：
+server.tomcat.max-threads=0 # Maximum amount of worker threads.
+server.tomcat.min-spare-threads=0 # Minimum amount of worker threads.
+server.tomcat.port-header=X-Forwarded-Port # Name of the HTTP header used to override the original port value.
+server.tomcat.protocol-header= # Header that holds the incoming protocol, usually named "X-Forwarded-Proto".
+server.tomcat.protocol-header-https-value=https # Value of the protocol header that indicates that the incoming request uses SSL.
+server.tomcat.redirect-context-root= # Whether requests to the context root should be redirected by appending a / to the path.
+server.tomcat.remote-ip-header= # Name of the http header from which the remote ip is extracted. For instance `X-FORWARDED-FOR`
+server.tomcat.uri-encoding=UTF-8 # Character encoding to use to decode the URI.
+server.undertow.accesslog.dir= # Undertow access log directory.
+server.undertow.accesslog.enabled=false # Enable access log.
+server.undertow.accesslog.pattern=common # Format pattern for access logs.
+server.undertow.accesslog.prefix=access_log. # Log file name prefix.
+server.undertow.accesslog.rotate=true # Enable access log rotation.
+server.undertow.accesslog.suffix=log # Log file name suffix.
+server.undertow.buffer-size= # Size of each buffer in bytes.
+server.undertow.direct-buffers= # Allocate buffers outside the Java heap.
+server.undertow.io-threads= # Number of I/O threads to create for the worker.
+server.undertow.eager-filter-init=true # Whether servlet filters should be initialized on startup.
+server.undertow.max-http-post-size=0 # Maximum size in bytes of the HTTP post content.
+server.undertow.worker-threads= # Number of worker threads.
+```
+
+**SpringBoot自定义Tomcat相关配置** 
+```
+@Component
+public class MyEmbeddedServletContainerFactory  {
+
+
+
+    @Bean
+    public TomcatServletWebServerFactory servletContainer() {
+        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
+            @Override
+            protected void postProcessContext(Context context) {
+                SecurityConstraint constraint = new SecurityConstraint();
+                constraint.setUserConstraint("CONFIDENTIAL");
+                SecurityCollection collection = new SecurityCollection();
+                collection.addPattern("/*");
+                constraint.addCollection(collection);
+                context.addConstraint(constraint);
+            }
+        };
+        tomcat.addAdditionalTomcatConnectors(httpConnector());
+        return tomcat;
+    }
+    @Bean
+    public Connector httpConnector() {
+       ;
+        Connector connector = new Connector( Http11NioProtocol.class.getName());
+        connector.setScheme("http");
+        //Connector监听的http的端口号
+       // connector.setPort(httpPort);
+        connector.setSecure(false);
+        //监听到http的端口号后转向到的https的端口号
+      //  connector.setRedirectPort(httpsPort);
+        return connector;
+    }
+}
+
+```
+
+
+
+
+
+
+## 29.3. Tomcat
+<a href="#menu" style="float:right">目录</a>
+
+### 29.3.1. 概述
+<a href="#menu" style="float:right">目录</a>
+
+
+#### 29.3.1.1. Tomcat快速理解
+<a href="#menu" style="float:right">目录</a>
+
+### 29.3.2. Web服务机制
+<a href="#menu" style="float:right">目录</a>
+
+#### 29.3.2.1. 通信协议
+<a href="#menu" style="float:right">目录</a>
+
+* HTTP协议
+    * Hyper Text Transfer Protocol 超文本传输协议
+    * 用于从WEB服务器传输超文本到本地浏览器的过程
+    * 能够使网络传输减少，保证计算机正确快速地传输超文本文档
+    * 无状态协议，两次传输之间没有关系
+    * 由请求和响应组成
+* HTTPS协议
+    * http的安全版本
+    * 只是在HTTP中增加一个SSL或TLS协议层
+    * 提供了加解密的机制,比HTTP明文传输更加安全
+
+* 常用加解密算法分类
+    * 对称加密
+        * 密钥只有一个，加密，解密都是这个密码。DES，AES，RC4
+    * 非对称加密
+        * 密钥成对出现，使用公钥加密，私钥解密
+        * RSA,DSA,DSS
+    * Hash算法
+        * 不可逆算法，用于验证数据的完整性
+* HTTPS执行流程
+    * 客户端浏览器向服务器发送SSL/TLS协议的版本号，加密算法的种类，产生的随机数，以其他需要的各种信息。
+    * 服务器从客户端支持的加密算法中选择一组加密算法与Hash算法，并且把自己的证书(包含网址地址，加密公钥，证书颁发机构)也发送给客户端
+    * 浏览器获取服务器的证书后验证其合法性，验证证书中的网址是否与正在访问的地址一致，通过验证的浏览器会显示一个小锁头，否则证书不受信。
+    * 客户端浏览器生成一串随机数并用服务器传来的公钥加密，再使用约定好的Hash算法计算握手消息，发送到服务器
+    * 服务器接到握手消息后用自己的私钥解密，并用Hash验证，这样双方都有了此次通信的密钥
+    * 服务端再使用密钥加密一段握手消息，返回给客户端浏览器
+    * 浏览器用密钥揭秘，并用Hash算法验证，确定算法与密钥
+    * 双方利用此次协商好的密钥进行通信
+    
+### 29.3.3. Servlet规范
+<a href="#menu" style="float:right">目录</a>
+
+**Servlet 是什么？**
+* Java Servlet 是运行在 Web 服务器或应用服务器上的程序，它是作为来自 Web 浏览器或其他 HTTP 客户端的请求和 HTTP 服务器上的数据库或应用程序之间的中间层。
+
+* 使用 Servlet，您可以收集来自网页表单的用户输入，呈现来自数据库或者其他源的记录，还可以动态创建网页。
+
+* Java Servlet 通常情况下与使用 CGI（Common Gateway Interface，公共网关接口）实现的程序可以达到异曲同工的效果。但是相比于 CGI，Servlet 有以下几点优势：
+性能明显更好。
+    * Servlet 在 Web 服务器的地址空间内执行。这样它就没有必要再创建一个单独的进程来处理每个客户端请求。
+    * Servlet 是独立于平台的，因为它们是用 Java 编写的。服务器上的 Java 安全管理器执行了一系列限制，以保护服务器计算机上的资源。因此，Servlet 是可信的。
+    * Java 类库的全部功能对 Servlet 来说都是可用的。它可以通过 sockets 和 RMI 机制与 applets、数据库或其他软件进行交互。
+
+**Servlet 任务**
+* Servlet 执行以下主要任务：
+    * 读取客户端（浏览器）发送的显式的数据。这包括网页上的 HTML 表单，或者也可以是来自 applet 或自定义的 HTTP 客户端程序的表单。
+    * 读取客户端（浏览器）发送的隐式的 HTTP 请求数据。这包括 cookies、媒体类型和浏览器能理解的压缩格式等等。
+    * 处理数据并生成结果。这个过程可能需要访问数据库，执行 RMI 或 CORBA 调用，调用 Web 服务，或者直接计算得出对应的响应。
+    * 发送显式的数据（即文档）到客户端（浏览器）。该文档的格式可以是多种多样的，包括文本文件（HTML 或 XML）、二进制文件（GIF 图像）、Excel 等。
+    * 发送隐式的 HTTP 响应到客户端（浏览器）。这包括告诉浏览器或其他客户端被返回的文档类型（例如 HTML），设置 cookies 和缓存参数，以及其他类似的任务。
+
+
+**Servlet创建方式**
+* 实现接口Servlet
+* 继承抽象类GenericServlet
+* 继承HttpServlet，并重写doGet,doPost等方法
+
+**Servlet 生命周期**
+
+* Servlet 生命周期可被定义为从创建直到毁灭的整个过程。以下是 Servlet 遵循的过程：
+    * Servlet 通过调用 init () 方法进行初始化。
+    * Servlet 调用 service() 方法来处理客户端的请求。
+    * Servlet 通过调用 destroy() 方法终止（结束）。
+    * 最后，Servlet 是由 JVM 的垃圾回收器进行垃圾回收的。
+
+* **init() 方法**
+    * init 方法被设计成只调用一次。它在第一次创建 Servlet 时被调用，在后续每次用户请求时不再调用。因此，它是用于一次性初始化，就像 Applet 的 init 方法一样。
+    * Servlet 创建于用户第一次调用对应于该 Servlet 的 URL 时，但是您也可以指定 Servlet 在服务器第一次启动时被加载。
+    * 当用户调用一个 Servlet 时，就会创建一个 Servlet 实例，每一个用户请求都会产生一个新的线程，适当的时候移交给 doGet 或 doPost 方法。init() 方法简单地创建或加载一些数据，这些数据将被用于 Servlet 的整个生命周期。
+    * init 方法的定义如下：
+```java
+public void init() throws ServletException {
+  // 初始化代码...
+}
+```
+* **service() 方法**
+    * service() 方法是执行实际任务的主要方法。Servlet 容器（即 Web 服务器）调用 service() 方法来处理来自客户端（浏览器）的请求，并把格式化的响应写回给客户端。
+    * 每次服务器接收到一个 Servlet 请求时，服务器会产生一个新的线程并调用服务。service() 方法检查 HTTP 请求类型（GET、POST、PUT、DELETE 等），并在适当的时候调用 doGet、doPost、doPut，doDelete 等方法。
+    * service() 方法由容器调用，service 方法在适当的时候调用 doGet、doPost、doPut、doDelete 等方法。所以，您不用对 service() 方法做任何动作，您只需要根据来自客户端的请求类型来重写 doGet() 或 doPost() 即可。
+```java
+public void service(ServletRequest request, 
+                    ServletResponse response) 
+      throws ServletException, IOException{
+}
+```
+* **doGet() 方法**
+    * GET 请求来自于一个 URL 的正常请求，或者来自于一个未指定 METHOD 的 HTML 表单，它由 doGet() 方法处理。
+```java
+public void doGet(HttpServletRequest request,
+                  HttpServletResponse response)
+    throws ServletException, IOException {
+    // Servlet 代码
+}
+```
+* **doPost() 方法**
+POST 请求来自于一个特别指定了 METHOD 为 POST 的 HTML 表单，它由 doPost() 方法处理。
+
+```java
+public void doPost(HttpServletRequest request,
+                   HttpServletResponse response)
+    throws ServletException, IOException {
+    // Servlet 代码
+}
+```
+* **destroy() 方法**
+    * destroy() 方法只会被调用一次，在 Servlet 生命周期结束时被调用。destroy() 方法可以让您的 Servlet 关闭数据库连接、停止后台线程、把 Cookie 列表或点击计数器写入到磁盘，并执行其他类似的清理活动。
+
+    * 在调用 destroy() 方法之后，servlet 对象被标记为垃圾回收。destroy 方法定义如下所示：
+
+```java
+  public void destroy() {
+    // 终止化代码...
+  }
+```
+* 一个典型的 Servlet 生命周期方案。
+    * 第一个到达服务器的 HTTP 请求被委派到 Servlet 容器。
+    * Servlet 容器在调用 service() 方法之前加载 Servlet。
+    * 然后 Servlet 容器处理由多个线程产生的多个请求，每个线程执行一个单一的 Servlet 实例的 service() 方法。
+![](https://www.runoob.com/wp-content/uploads/2014/07/Servlet-LifeCycle.jpg)
+
+**Servlet 编写过滤器**
+* Servlet 过滤器可以动态地拦截请求和响应，以变换或使用包含在请求或响应中的信息。
+可以将一个或多个 Servlet 过滤器附加到一个 Servlet 或一组 Servlet。Servlet 过滤器也可以附加到 JavaServer Pages (JSP) 文件和 HTML 页面。调用 Servlet 前调用所有附加的 Servlet 过滤器。
+* Servlet 过滤器是可用于 Servlet 编程的 Java 类，可以实现以下目的：
+* 在客户端的请求访问后端资源之前，拦截这些请求。
+* 在服务器的响应发送回客户端之前，处理这些响应。
+* 根据规范建议的各种类型的过滤器：
+    * 身份验证过滤器（Authentication Filters）。
+    * 数据压缩过滤器（Data compression Filters）。  
+    * 加密过滤器（Encryption Filters）。
+    * 触发资源访问事件过滤器。
+    * 图像转换过滤器（Image Conversion Filters）。
+    * 日志记录和审核过滤器（Logging and Auditing Filters）。
+    * MIME-TYPE 链过滤器（MIME-TYPE Chain Filters）。
+    * 标记化过滤器（Tokenizing Filters）。
+    * XSL/T 过滤器（XSL/T Filters），转换 XML 内容。
+
+* Servlet 过滤器方法
+    * 过滤器是一个实现了 javax.servlet.Filter 接口的 Java 类。javax.servlet.Filter 接口定义了三个方法
+        * public void doFilter (ServletRequest, ServletResponse, FilterChain)
+            * 该方法完成实际的过滤操作，当客户端请求方法与过滤器设置匹配的URL时，Servlet容器将先调用过滤器的doFilter方法。FilterChain用户访问后续过滤器。
+        * public void init(FilterConfig filterConfig)
+            * web 应用程序启动时，web 服务器将创建Filter 的实例对象，并调用其init方法，读取web.xml配置，完成对象的初始化功能，从而为后续的用户请求作好拦截的准备工作（filter对象只会创建一次，init方法也只会执行一次）。开发人员通过init方法的参数，可获得代表当前filter配置信息的FilterConfig对象。
+        * public void destroy()
+            * Servlet容器在销毁过滤器实例前调用该方法，在该方法中释放Servlet过滤器占用的资源。
+
+
+### 29.3.4. Tomcat 总体架构
+<a href="#menu" style="float:right">目录</a>
+
+Tomcat总计架构
+![](https://github.com/lgjlife/Java-Study/blob/master/pic/tomcat/tomcat.png?raw=true)
+默认配置文件
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!-- Note:  A "Server" is not itself a "Container", so you may not
+     define subcomponents such as "Valves" at this level.
+     Documentation at /docs/config/server.html
+ -->
+<Server port="8005" shutdown="SHUTDOWN">
+  <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
+  <!-- Security listener. Documentation at /docs/config/listeners.html
+  <Listener className="org.apache.catalina.security.SecurityListener" />
+  -->
+  <!--APR library loader. Documentation at /docs/apr.html -->
+  <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
+  <!-- Prevent memory leaks due to use of particular java/javax APIs-->
+  <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+  <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+  <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener" />
+
+  <!-- Global JNDI resources
+       Documentation at /docs/jndi-resources-howto.html
+  -->
+  <GlobalNamingResources>
+    <!-- Editable user database that can also be used by
+         UserDatabaseRealm to authenticate users
+    -->
+    <Resource name="UserDatabase" auth="Container"
+              type="org.apache.catalina.UserDatabase"
+              description="User database that can be updated and saved"
+              factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+              pathname="conf/tomcat-users.xml" />
+  </GlobalNamingResources>
+
+  <!-- A "Service" is a collection of one or more "Connectors" that share
+       a single "Container" Note:  A "Service" is not itself a "Container",
+       so you may not define subcomponents such as "Valves" at this level.
+       Documentation at /docs/config/service.html
+   -->
+  <Service name="Catalina">
+
+    <!--The connectors can use a shared executor, you can define one or more named thread pools-->
+    <!--
+    <Executor name="tomcatThreadPool" namePrefix="catalina-exec-"
+        maxThreads="150" minSpareThreads="4"/>
+    -->
+
+
+    <!-- A "Connector" represents an endpoint by which requests are received
+         and responses are returned. Documentation at :
+         Java HTTP Connector: /docs/config/http.html
+         Java AJP  Connector: /docs/config/ajp.html
+         APR (HTTP/AJP) Connector: /docs/apr.html
+         Define a non-SSL/TLS HTTP/1.1 Connector on port 8080
+    -->
+    <Connector port="8180" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8443" />
+    <!-- A "Connector" using the shared thread pool-->
+    <!--
+    <Connector executor="tomcatThreadPool"
+               port="8080" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8443" />
+    -->
+    <!-- Define a SSL/TLS HTTP/1.1 Connector on port 8443
+         This connector uses the NIO implementation. The default
+         SSLImplementation will depend on the presence of the APR/native
+         library and the useOpenSSL attribute of the
+         AprLifecycleListener.
+         Either JSSE or OpenSSL style configuration may be used regardless of
+         the SSLImplementation selected. JSSE style configuration is used below.
+    -->
+    <!--
+    <Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"
+               maxThreads="150" SSLEnabled="true">
+        <SSLHostConfig>
+            <Certificate certificateKeystoreFile="conf/localhost-rsa.jks"
+                         type="RSA" />
+        </SSLHostConfig>
+    </Connector>
+    -->
+    <!-- Define a SSL/TLS HTTP/1.1 Connector on port 8443 with HTTP/2
+         This connector uses the APR/native implementation which always uses
+         OpenSSL for TLS.
+         Either JSSE or OpenSSL style configuration may be used. OpenSSL style
+         configuration is used below.
+    -->
+    <!--
+    <Connector port="8443" protocol="org.apache.coyote.http11.Http11AprProtocol"
+               maxThreads="150" SSLEnabled="true" >
+        <UpgradeProtocol className="org.apache.coyote.http2.Http2Protocol" />
+        <SSLHostConfig>
+            <Certificate certificateKeyFile="conf/localhost-rsa-key.pem"
+                         certificateFile="conf/localhost-rsa-cert.pem"
+                         certificateChainFile="conf/localhost-rsa-chain.pem"
+                         type="RSA" />
+        </SSLHostConfig>
+    </Connector>
+    -->
+
+    <!-- Define an AJP 1.3 Connector on port 8009 -->
+    <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
+
+
+    <!-- An Engine represents the entry point (within Catalina) that processes
+         every request.  The Engine implementation for Tomcat stand alone
+         analyzes the HTTP headers included with the request, and passes them
+         on to the appropriate Host (virtual host).
+         Documentation at /docs/config/engine.html -->
+
+    <!-- You should set jvmRoute to support load-balancing via AJP ie :
+    <Engine name="Catalina" defaultHost="localhost" jvmRoute="jvm1">
+    -->
+    <Engine name="Catalina" defaultHost="localhost">
+
+      <!--For clustering, please take a look at documentation at:
+          /docs/cluster-howto.html  (simple how to)
+          /docs/config/cluster.html (reference documentation) -->
+      <!--
+      <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/>
+      -->
+
+      <!-- Use the LockOutRealm to prevent attempts to guess user passwords
+           via a brute-force attack -->
+      <Realm className="org.apache.catalina.realm.LockOutRealm">
+        <!-- This Realm uses the UserDatabase configured in the global JNDI
+             resources under the key "UserDatabase".  Any edits
+             that are performed against this UserDatabase are immediately
+             available for use by the Realm.  -->
+        <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
+               resourceName="UserDatabase"/>
+      </Realm>
+
+      <Host name="localhost"  appBase="webapps"
+            unpackWARs="true" autoDeploy="true">
+
+        <!-- SingleSignOn valve, share authentication between web applications
+             Documentation at: /docs/config/valve.html -->
+        <!--
+        <Valve className="org.apache.catalina.authenticator.SingleSignOn" />
+        -->
+
+        <!-- Access log processes all example.
+             Documentation at: /docs/config/valve.html
+             Note: The pattern used is equivalent to using pattern="common" -->
+        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
+               prefix="localhost_access_log" suffix=".txt"
+               pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+
+      </Host>
+    </Engine>
+  </Service>
+</Server>
+```
+
+配置文件
+```xml
+<Server>
+    <Listener/>
+    <GlobalNamingResources>
+        <Resources/>
+    </GlobalNamingResources>
+
+    <Service>
+        <Executor/>            
+        <Connector/>
+        <Engine>
+            <Cluster/>
+            <Realm/>
+            <Host>
+                <Context/>
+            </Host>
+        </Engine>
+    </Service>
+</Server>
+```
+**组件说明**
+
+* Server
+    * 最顶级组件，代表Tomcat的运行实例,一个JVM中只包含一个Server
+    * 为了方便扩展，引入了监听器
+    * 为了方便在Tomcat中集成JNDI，引入了GlobalNamingResources组件
+* Service
+    * 服务的抽象，代表请求从接收到处理的所有组件的集合
+    * 一个Server可以有多个Service
+    * 一个Service包含多个用于接收请求的Conneector和处理请求的Engine.
+    * 不同的Connector可以提供不同的通信协议
+    * Executor提供线程池
+* Connector
+    * 接收客户端连接和接收报文，经过处理后送往容器处理
+    * 可以配置不同的协议，Http,AJP等
+    * 可以配置多个Connector
+* Engine
+    * 处理所有Connector的请求
+    * 包含以下组件
+        * Host:虚拟主机
+        * Listener:在Tomcat生命周期中完成某些Engine容器相关工作的监听器
+        * AccessLog: 客户端访问日志，所有客户端访问都会被记录
+        * Cluster：提供集群功能，可以将Engine容器需要共享的数据同步到集群中的其他Tomcat
+        * Pipeline： Engine对请求进行处理的管道
+        * Realm：提供Engine容器级别的用户，密码，权限数据对象，配合资源认证模块使用。        
+* Host
+    * 虚拟主机
+    * 包含以下组件
+        * Listener:在Tomcat生命周期中完成某些Host容器相关工作的监听器
+        * AccessLog: 客户端访问日志，所有客户端访问都会被记录
+        * Cluster：提供集群功能，可以将Host容器需要共享的数据同步到集群中的其他Tomcat
+        * Pipeline： Host对请求进行处理的管道
+        * Realm：提供Host容器级别的用户，密码，权限数据对象，配合资源认证模块使用。 
+        * Context   
+* Context
+    * WEB应用的抽象，我们开发的WEB应用部署到Tomcat后运行时就会转化为Context对象。
+    * 包含了各种静态资源，若干Servlet和其他动态资源
+    * 包含以下组件
+        * Listener:在Tomcat生命周期中完成某些Context容器相关工作的监听器
+        * AccessLog: 客户端访问日志，所有客户端访问都会被记录
+        * Pipeline： Context对请求进行处理的管道
+        * Realm：提供Context容器级别的用户，密码，权限数据对象，配合资源认证模块使用。
+        * Loader: WEB应用加载器，用于加载WEB应用的资源，保证不同WEB应用资源的隔离
+        * Manager: 会话管理器，用于管理对应WEB容器的会话，包括维护会话多的生成，更新，和销毁
+        * NamingResources: 命名资源。负责将Tomcat配置文件的server.xml和WEB应用的context.xml资源和属性映射到内存中。
+        * Mapper:Servelet映射器，负责该Context容器的路由导航
+        * Wrapper:Context子容器
+* Wrapper
+    * Servelet 组件
+    * ServletPool ： Servlet对象池
+    * Pipeline： Wrapper对请求进行处理的管道
+**Tomcat请求处理过程**
+![](https://github.com/lgjlife/Java-Study/blob/master/pic/tomcat/tomcat-request.png?raw=true)
+
+
+
+### 29.3.5. Server和Service组件
+<a href="#menu" style="float:right">目录</a>
+
+
+### 29.3.6. Connect组件
+<a href="#menu" style="float:right">目录</a>
+
+* http11Protocol
+    * HTTP阻塞模式协议
+* http11NioProtocol
+    * HTTP非阻塞模式协议
+* http11ArpProtocol
+    * HTTPARP模式协议
+* http11AjpProtocol
+    * HTTP阻塞模式协议
+
+### 29.3.7. Engine组件
+<a href="#menu" style="float:right">目录</a>
+
+### 29.3.8. Host容器
+<a href="#menu" style="float:right">目录</a>
+
+### 29.3.9. Context容器
+<a href="#menu" style="float:right">目录</a>
+
+
+### 29.3.10. Wrapper容器
+<a href="#menu" style="float:right">目录</a>
+
+
+### 29.3.11. 生命周期管理
+<a href="#menu" style="float:right">目录</a>
+
+
+### 29.3.12. 日志框架和国家化
+<a href="#menu" style="float:right">目录</a>
+
+### 29.3.13. 公共与隔离类加载器
+<a href="#menu" style="float:right">目录</a>
+
+
+### 29.3.14. 请求URI映射器Mapper
+<a href="#menu" style="float:right">目录</a>
+
+### 29.3.15. Tomcat的JNDI
+<a href="#menu" style="float:right">目录</a>
+
+
+### 29.3.16. 运行、通信、及访问安全管理
+<a href="#menu" style="float:right">目录</a>
+
+
+### 29.3.17. 处理请求和响应的管道
+<a href="#menu" style="float:right">目录</a>
+
+
+### 29.3.18. 多样化的会话管理器
+<a href="#menu" style="float:right">目录</a>
+
+
+### 29.3.19. 高可用集群实现
+<a href="#menu" style="float:right">目录</a>
+
+
+### 29.3.20. 集群通信框架
+<a href="#menu" style="float:right">目录</a>
+
+
+### 29.3.21. 监控和管理
+<a href="#menu" style="float:right">目录</a>
+
+
+
+## 29.4. Jetty
+<a href="#menu" style="float:right">目录</a>
+
+<span id="menu">
+<!-- TOC -->
+
+- [1. Java网路通信](#1-java网路通信)
+    - [1.1. Java IO 演进之路](#11-java-io-演进之路)
+    - [Java BIO编程](#java-bio编程)
+    - [1.2. NIO入门](#12-nio入门)
+    - [1.3. Netty](#13-netty)
+        - [1.3.1. Netty基本案例](#131-netty基本案例)
+        - [1.3.2. TCP粘包拆包](#132-tcp粘包拆包)
+            - [1.3.2.1. 粘包拆包基本概念](#1321-粘包拆包基本概念)
+            - [1.3.2.2. LineBasedFrameDecoder方式解决](#1322-linebasedframedecoder方式解决)
+            - [1.3.2.3. DelimitBasedFrameDecoder方式解决](#1323-delimitbasedframedecoder方式解决)
+            - [1.3.2.4. FixedLengthFrameDecoder方式解决](#1324-fixedlengthframedecoder方式解决)
+        - [1.3.3. 私有协议开发](#133-私有协议开发)
+        - [1.3.4. 服务端创建流程分析](#134-服务端创建流程分析)
+        - [1.3.5. 客户端创建流程分析](#135-客户端创建流程分析)
+        - [1.3.6. ByteBuf说明](#136-bytebuf说明)
+        - [1.3.7. Channel和Unsafe](#137-channel和unsafe)
+        - [1.3.8. ChannelPipeline和ChannelHandler](#138-channelpipeline和channelhandler)
+        - [1.3.9. EventLoop和EventLoopGroup](#139-eventloop和eventloopgroup)
+        - [1.3.10. Futur和Promise](#1310-futur和promise)
+        - [1.3.11. Netty架构分析](#1311-netty架构分析)
+        - [1.3.12. Java多线程编程在Netty中的应用](#1312-java多线程编程在netty中的应用)
+        - [1.3.13. 高性能之道](#1313-高性能之道)
+        - [1.3.14. 可靠性](#1314-可靠性)
+
+<!-- /TOC -->
+
+
+
+# 30. Java网路通信
+<a href="#menu" style="float:right">目录</a>
+
+## 30.1. Java IO 演进之路
+<a href="#menu" style="float:right">目录</a>
+
+## 30.2. Java BIO编程
+
+## 30.3. NIO入门
+<a href="#menu" style="float:right">目录</a>
+
+
+## 30.4. Netty
+<a href="#menu" style="float:right">目录</a>
+
+
+### 30.4.1. Netty基本案例
+<a href="#menu" style="float:right">目录</a>
+
+### 30.4.2. TCP粘包拆包
+<a href="#menu" style="float:right">目录</a>
+
+#### 30.4.2.1. 粘包拆包基本概念
+<a href="#menu" style="float:right">目录</a>
+
+#### 30.4.2.2. LineBasedFrameDecoder方式解决
+<a href="#menu" style="float:right">目录</a>
+
+#### 30.4.2.3. DelimitBasedFrameDecoder方式解决
+<a href="#menu" style="float:right">目录</a>
+
+
+#### 30.4.2.4. FixedLengthFrameDecoder方式解决
+<a href="#menu" style="float:right">目录</a>
+
+### 30.4.3. 私有协议开发
+
+### 30.4.4. 服务端创建流程分析
+
+### 30.4.5. 客户端创建流程分析
+
+### 30.4.6. ByteBuf说明
+
+### 30.4.7. Channel和Unsafe
+
+### 30.4.8. ChannelPipeline和ChannelHandler
+
+### 30.4.9. EventLoop和EventLoopGroup
+
+### 30.4.10. Futur和Promise
+
+### 30.4.11. Netty架构分析
+
+### 30.4.12. Java多线程编程在Netty中的应用
+
+### 30.4.13. 高性能之道
+
+### 30.4.14. 可靠性
+
+
+
+
 
 <span id="menu"></span>
 
 
-# 1. 性能调优
+# 31. 性能调优
 <a href="#menu" style="float:right">目录</a>
 
-## 1.1. 性能调优概述
+## 31.1. 性能调优概述
 
-## 1.2. 操作系统性能监控
+## 31.2. 操作系统性能监控
 <a href="#menu" style="float:right">目录</a>
 
 **vmstat**
@@ -5927,12 +7981,12 @@ procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
 
 ```
 
-## 1.3. JVM
+## 31.3. JVM
 <a href="#menu" style="float:right">目录</a>
 
-### JIT编译器
+### 31.3.1. JIT编译器
 
-#### 概述
+#### 31.3.1.1. 概述
 
 * JIT编译器，英文写作Just-In-Time Compiler，中文意思是即时编译器。
 JIT是一种提高程序运行效率的方法。通常，程序有两种运行方式：静态编译与动态解释。静态编译的程序在执行前全部被翻译为机器码，而动态解释执行的则是一句一句边运行边翻译。
@@ -5978,11 +8032,11 @@ JIT是一种提高程序运行效率的方法。通常，程序有两种运行�
 
 
 
-### 1.3.1. JVM内存模型
+### 31.3.2. JVM内存模型
 <a href="#menu" style="float:right">目录</a>
 ![](https://img2018.cnblogs.com/blog/163758/201811/163758-20181101131229284-1189515543.png)
 
-### 1.3.2. JVM的内存空间
+### 31.3.3. JVM的内存空间
 * 堆内存
     * 新生代
         * Eden区
@@ -6067,7 +8121,7 @@ JIT是一种提高程序运行效率的方法。通常，程序有两种运行�
         * 堆内存不足，无法分配新的内存
     * StackOverflowError
         * 递归调用导致方法深度过高
-#### 1.3.2.1. 对象内存布局
+#### 31.3.3.1. 对象内存布局
 * HotSpot对象头
     * 用于存储对象自身运行时数据
     * 类型指针，即对象指向类元数据的指针
@@ -6086,7 +8140,7 @@ HotSpot对象头 Mark Word
 
 Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用于存储锁标志位，1bit固定为0。
 
-#### 1.3.2.2. 对象访问定位
+#### 31.3.3.2. 对象访问定位
 
 * 句柄访问
     * 使用句柄访问方式，java堆将会划分出来一部分内存去来作为句柄池，reference中存储的就是对象的句柄地址。而句柄中则包含对象实例数据的地址和对象类型数据（如对象的类型，实现的接口、方法、父类、field等）的具体地址信息。
@@ -6095,10 +8149,10 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
     * 如果使用指针访问，那么java堆对象的布局中就必须考虑如何放置访问类型的相关信息（如对象的类型，实现的接口、方法、父类、field等），而reference中存储的就是对象的地址。
     * 使用指针访问的好处是访问速度快，它减少了一次指针定位的时间开销，由于java是面向对象的语言，在开发中java对象的访问非常的频繁，因此这类开销积少成多也是非常可观的，反之则提升访问速度。
 
-### 1.3.3. 垃圾回收算法
+### 31.3.4. 垃圾回收算法
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.3.3.1. 对象回收判定
+#### 31.3.4.1. 对象回收判定
 
 **引用计数法**
 * 给对象添加一个引用计数器，引用一次则计数器+1,引用失效计数器-1，当计数器为0的时候，说明没有地方引用，垃圾收集器可以将它进行回收
@@ -6112,7 +8166,7 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
     * 方法区中常量引用的对象
     * 本地方法栈中引用的对象
 
-#### 1.3.3.2. 对象引用分类
+#### 31.3.4.2. 对象引用分类
 **强引用**
 * Object obj = new Object();
 * 只要强引用存在，就不会被垃圾回收
@@ -6137,13 +8191,13 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
 * 如果一个对象与虚引用关联，则跟没有引用与之关联一样，在任何时候都可能被垃圾回收器回收。
 * 虚引用必须和引用队列关联使用，当垃圾回收器准备回收一个对象时，如果发现它还有虚引用，就会把这个虚引用加入到与之 关联的引用队列中
 
-#### 1.3.3.3. 标记清除算法
+#### 31.3.4.3. 标记清除算法
 * 先标记可回收的对象空间，在标记完成之后进行统一的回收
 * 缺点
     * 效率问题，标记和清除两个过程的效率都不高
     * 空间问题，清除后将产生内存碎片，不利于二次使用
 
-#### 1.3.3.4. 复制算法
+#### 31.3.4.4. 复制算法
 * 内存按容量分为两个区块，每次只使用一个区块用于内存分配
 * 垃圾回收时，将存活的对象复制到另一个区块，按顺序存放
 * 复制完成后，一次性清理之前的区块
@@ -6154,17 +8208,17 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
     * 空间利用率不高，每次只能有一块区域分配内存。
     * 复制效率不高
 
-#### 1.3.3.5. 标记整理算法
+#### 31.3.4.5. 标记整理算法
 * 标记对象，然后让存活的对象往一边移动，最后一次性清理掉端边界以外的内存。
 
-#### 1.3.3.6. 分代收集算法
+#### 31.3.4.6. 分代收集算法
 * 将内存分为老年代和新生代
 * 新创建的对象在新生代进行内存分配，经过多次垃圾回收之后仍然存活的对象将被放到老年代
 * 新生代的对象一般生命周期短，大部分都会被回收掉，因此每次垃圾收集只有很少的对象存活，因此使用复制算法效率比较高
 * 老年代的对象经过多次回收仍然存活，说明生命周期长，不容易被回收。因此每次垃圾回收只有少量的对象被回收，因此使用标记清除/标记整理算法效率比较高。
 
 
-### 1.3.4. 垃圾收集器
+### 31.3.5. 垃圾收集器
 <a href="#menu" style="float:right">目录</a>
 
 * HotSpot虚拟机的垃圾收集器
@@ -6186,14 +8240,14 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
     * 由于执行垃圾回收，用户线程无法执行，将会导致不可预知的错误，比如响应缓慢，任务超时等
     * 垃圾收集器应当尽量避免发生这种情况
     
-#### 1.3.4.1. Serial收集器
+#### 31.3.5.1. Serial收集器
 <a href="#menu" style="float:right">目录</a>
 * 进行垃圾收集时，将会暂停其他工作线程，直到回收完成
 * 这将导致出现"stop the world"问题，应用代码会发生不可预知的问题
 * 桌面应用场景，分配内存不多，可以使用该垃圾收集器
 * client 模式中比较好的选择
 
-#### 1.3.4.2. ParNew收集器
+#### 31.3.5.2. ParNew收集器
 <a href="#menu" style="float:right">目录</a>
 
 * Serial收集器的多线程版本
@@ -6206,7 +8260,7 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
     * 通过-XX：ParallelGCThreads限制线程数
 
 
-#### 1.3.4.3. Parallel Scavenge收集器
+#### 31.3.5.3. Parallel Scavenge收集器
 <a href="#menu" style="float:right">目录</a>
 
 * 使用复制算法和多线程方式实现
@@ -6218,19 +8272,19 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
         
 
 
-#### 1.3.4.4. Serial Old收集器
+#### 31.3.5.4. Serial Old收集器
 <a href="#menu" style="float:right">目录</a>
 
 * 老年代单线程收集算法，使用标记整理
 * 将会发生stop the world 问题
 
-#### 1.3.4.5. Parallel Old收集器
+#### 31.3.5.5. Parallel Old收集器
 <a href="#menu" style="float:right">目录</a>
 
 * Parallel Scavenge收集器的老年代版本
 * 使用标记整理算法
 
-#### 1.3.4.6. CMS收集器
+#### 31.3.5.6. CMS收集器
 <a href="#menu" style="float:right">目录</a>
 
 * 以获取最短停顿时间为目标的收集器，能够给用户带来更好的响应速度
@@ -6257,7 +8311,7 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
             * 执行多少次FullGC后才会进行内存碎片整理，默认为0  
 
 
-#### 1.3.4.7. G1收集器
+#### 31.3.5.7. G1收集器
 <a href="#menu" style="float:right">目录</a>
 
 * JDK7+ 默认的垃圾收集器
@@ -6329,7 +8383,7 @@ clean up: 垃圾清除过程，如果发现一个Region中没有存活对象，�
 **full gc**
 如果对象内存分配速度过快，mixed gc来不及回收，导致老年代被填满，就会触发一次full gc，G1的full gc算法就是单线程执行的serial old gc，会导致异常长时间的暂停时间，需要进行不断的调优，尽可能的避免full gc.
 
-### 1.3.5. 内存分配和回收策略
+### 31.3.6. 内存分配和回收策略
 <a href="#menu" style="float:right">目录</a>
 
 * 大多数情况下，对象优先在Eden区中分配，当Eden中没有足够空间，虚拟机将发生一次minor GC.
@@ -6351,7 +8405,7 @@ clean up: 垃圾清除过程，如果发现一个Region中没有存活对象，�
 
 
 
-### 1.3.6. JVM相关参数介绍
+### 31.3.7. JVM相关参数介绍
 <a href="#menu" style="float:right">目录</a>
 
 除少数例外外，大多数参数都是以下格式
@@ -6386,10 +8440,10 @@ clean up: 垃圾清除过程，如果发现一个Region中没有存活对象，�
 |---|---|---|
 
 
-### 1.3.7. 性能监控与故障处理工具
+### 31.3.8. 性能监控与故障处理工具
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.3.7.1. JDK命令行工具
+#### 31.3.8.1. JDK命令行工具
 <a href="#menu" style="float:right">目录</a>
 
 **javap**
@@ -6550,7 +8604,7 @@ Options:
 ****
 
 
-#### 1.3.7.2. Jdk可视化工具
+#### 31.3.8.2. Jdk可视化工具
 <a href="#menu" style="float:right">目录</a>
 
 * JConsole
@@ -6558,11 +8612,11 @@ Options:
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/jvm/monitor.png?raw=true)
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/jvm/thread.png?raw=true)
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/jvm/gc.png?raw=true)
-### 1.3.8. JVM性能调优
+### 31.3.9. JVM性能调优
 
-### 1.3.9. 类文件结构
+### 31.3.10. 类文件结构
 
-### 1.3.10. 类加载器
+### 31.3.11. 类加载器
 
 
 
@@ -6574,10 +8628,10 @@ Options:
 
 
 
-# 1. 概述
+# 32. 概述
 <a href="#menu" style="float:right">目录</a>
 
-## 1.1. 高并发原则
+## 32.1. 高并发原则
 * 无状态
     * 应用无状态，可以方便的进行集群扩展
     * 应用的配置从配置文件中读取，或者从配置中心读取
@@ -6608,7 +8662,7 @@ Options:
     * 分布式缓存
 * 并发化
     * 多线程处理
-## 1.2. 高可用原则
+## 32.2. 高可用原则
 <a href="#menu" style="float:right">目录</a>
 
 * 降级
@@ -6647,10 +8701,10 @@ Options:
 * 热备
 * 使用多机房
     
-# 2. 负载均衡
+# 33. 负载均衡
 <a href="#menu" style="float:right">目录</a>
 
-## 2.1. 什么是负载均衡
+## 33.1. 什么是负载均衡
 　互联网早期，业务流量比较小并且业务逻辑比较简单，单台服务器便可以满足基本的需求；但随着互联网的发展，业务流量越来越大并且业务逻辑也越来越复杂，单台机器的性能问题以及单点问题凸显了出来，因此需要多台机器来进行性能的水平扩展以及避免单点故障。但是要如何将不同的用户的流量分发到不同的服务器上面呢？
 
 　 早期的方法是使用DNS做负载，通过给客户端解析不同的IP地址，让客户端的流量直接到达各个服务器。但是这种方法有一个很大的缺点就是延时性问题，在做出调度策略改变以后，由于DNS各级节点的缓存并不会及时的在客户端生效，而且DNS负载的调度策略比较简单，无法满足业务需求，因此就出现了负载均衡。
@@ -6663,7 +8717,7 @@ Options:
 
 　七层负载均衡工作在OSI模型的应用层，因为它需要解析应用层流量，所以七层负载均衡在接到客户端的流量以后，还需要一个完整的TCP/IP协议栈。七层负载均衡会与客户端建立一条完整的连接并将应用层的请求流量解析出来，再按照调度算法选择一个应用服务器，并与应用服务器建立另外一条连接将请求发送过去，因此七层负载均衡的主要工作就是代理。
 
-## 2.2. 硬件负载均衡
+## 33.2. 硬件负载均衡
 
 硬件负载均衡解决方案是直接在服务器和外部网络间安装负载均衡设备，这种设备我们通常称之为负载均衡器，由于专门的设备完成网络请求转发的任务，独立于操作系统，整体性能高，负载均衡策略多样化，流量管理智能化。
 
@@ -6724,10 +8778,10 @@ F5 对于外网而言有一个真实的IP，对于内网的每个服务器都生
     * 提供浏览器级别管理软件，Web图形用户界面。
     * 总结：对于高并发，高访问量的互联网应用可以考虑加入硬件负载均衡器作为接入层，协助代理层的软件负载均衡器进行负载均衡的工作。硬件负载均衡器的特点是独立于操作系统，处理大访问量，费用高。从功能上来说支持多链路，多服务器，多防火墙的负载均衡，在可用性和安全性上也有良好的表现
 
-## 2.3. 四层和七层负载均衡的区别？
+## 33.3. 四层和七层负载均衡的区别？
 <a href="#menu" style="float:right">目录</a>
 
-### 2.3.1. 技术原理上的区别。
+### 33.3.1. 技术原理上的区别。
 　所谓四层负载均衡，也就是主要通过报文中的目标地址和端口，再加上负载均衡设备设置的服务器选择方式，决定最终选择的内部服务器。
 
 　以常见的TCP为例，负载均衡设备在接收到第一个来自客户端的SYN 请求时，即通过上述方式选择一个最佳的服务器，并对报文中目标IP地址进行修改(改为后端服务器IP），直接转发给该服务器。TCP的连接建立，即三次握手是客户端和服务器直接建立的，负载均衡设备只是起到一个类似路由器的转发动作。在某些部署情况下，为保证服务器回包可以正确返回给负载均衡设备，在转发报文的同时可能还会对报文原来的源地址进行修改。
@@ -6738,7 +8792,7 @@ F5 对于外网而言有一个真实的IP，对于内网的每个服务器都生
 　
 　负载均衡设备在这种情况下，更类似于一个代理服务器。负载均衡和前端的客户端以及后端的服务器会分别建立TCP连接。所以从这个技术原理上来看，七层负载均衡明显的对负载均衡设备的要求更高，处理七层的能力也必然会低于四层模式的部署方式。那么，为什么还需要七层负载均衡呢？
 
-### 2.3.2. 应用场景的需求。
+### 33.3.2. 应用场景的需求。
 　七层应用负载的好处，是使得整个网络更"智能化", 参考我们之前的另外一篇专门针对HTTP应用的优化的介绍，就可以基本上了解这种方式的优势所在。例如访问一个网站的用户流量，可以通过七层的方式，将对图片类的请求转发到特定的图片服务器并可以使用缓存技术；将对文字类的请求可以转发到特定的文字服务器并可以使用压缩技术。
 
 　当然这只是七层应用的一个小案例，从技术原理上，这种方式可以对客户端的请求和服务器的响应进行任意意义上的修改，极大的提升了应用系统在网络层的灵活性。很多在后台，(例如Nginx或者Apache)上部署的功能可以前移到负载均衡设备上，例如客户请求中的Header重写，服务器响应中的关键字过滤或者内容插入等功能。
@@ -6749,35 +8803,35 @@ F5 对于外网而言有一个真实的IP，对于内网的每个服务器都生
 
 　现在的7层负载均衡，主要还是着重于应用广泛的HTTP协议，所以其应用范围主要是众多的网站或者内部信息平台等基于B/S开发的系统。 4层负载均衡则对应其他TCP应用，例如基于C/S开发的ERP等系统。
 
-### 2.3.3. 七层应用需要考虑的问题。
+### 33.3.3. 七层应用需要考虑的问题。
 是否真的必要，七层应用的确可以提高流量智能化，同时必不可免的带来设备配置复杂，负载均衡压力增高以及故障排查上的复杂性等问题。在设计系统时需要考虑四层七层同时应用的混杂情况。
 
 是否真的可以提高安全性。例如SYN Flood攻击，七层模式的确将这些流量从服务器屏蔽，但负载均衡设备本身要有强大的抗DDoS能力，否则即使服务器正常而作为中枢调度的负载均衡设备故障也会导致整个应用的崩溃。
 
 是否有足够的灵活度。七层应用的优势是可以让整个应用的流量智能化，但是负载均衡设备需要提供完善的七层功能，满足客户根据不同情况的基于应用的调度。最简单的一个考核就是能否取代后台Nginx或者Apache等服务器上的调度功能。能够提供一个七层应用开发接口的负载均衡设备，可以让客户根据需求任意设定功能，才真正有可能提供强大的灵活性和智能性。
 
-## 2.4. 负载均衡的算法
+## 33.4. 负载均衡的算法
 <a href="#menu" style="float:right">目录</a>
 
-### 2.4.1. 随机算法
+### 33.4.1. 随机算法
 * Random随机，按权重设置随机概率。在一个截面上碰撞的概率高，但调用量越大分布越均匀，而且按概率使用权重后也比较均匀，有利于动态调整提供者权重。
 * 加权随机
 
-### 2.4.2. 轮询及加权轮询
+### 33.4.2. 轮询及加权轮询
 * 轮询(Round Robbin)当服务器群中各服务器的处理能力相同时，且每笔业务处理量差异不大时，最适合使用这种算法。 轮循，按公约后的权重设置轮循比率。存在慢的提供者累积请求问题，比如：第二台机器很慢，但没挂，当请求调到第二台时就卡在那，久而久之，所有请求都卡在调到第二台上。
 * 加权轮询(Weighted Round Robbin)为轮询中的每台服务器附加一定权重的算法。比如服务器1权重1，服务器2权重2，服务器3权重3，则顺序为1-2-2-3-3-3-1-2-2-3-3-3- ......
-### 2.4.3. 最小连接及加权最小连接
+### 33.4.3. 最小连接及加权最小连接
 * 最少连接(Least Connections)在多个服务器中，与处理连接数(会话数)最少的服务器进行通信的算法。即使在每台服务器处理能力各不相同，每笔业务处理量也不相同的情况下，也能够在一定程度上降低服务器的负载。
 加权最少连接(Weighted Least Connection)为最少连接算法中的每台服务器附加权重的算法，该算法事先为每台服务器分配处理连接的数量，并将客户端请求转至连接数最少的服务器上。
-### 2.4.4. 哈希算法
+### 33.4.4. 哈希算法
 * 普通哈希
 * 一致性哈希一致性Hash，相同参数的请求总是发到同一提供者。当某一台提供者挂时，原本发往该提供者的请求，基于虚拟节点，平摊到其它提供者，不会引起剧烈变动。
-### 2.4.5. IP地址散列
+### 33.4.5. IP地址散列
 * 通过管理发送方IP和目的地IP地址的散列，将来自同一发送方的分组(或发送至同一目的地的分组)统一转发到相同服务器的算法。当客户端有一系列业务需要处理而必须和一个服务器反复通信时，该算法能够以流(会话)为单位，保证来自相同客户端的通信能够一直在同一服务器中进行处理。
-### 2.4.6. URL散列
+### 33.4.6. URL散列
 * 通过管理客户端请求URL信息的散列，将发送至相同URL的请求转发至同一服务器的算法。
 
-### 2.4.7. 一致性哈希算法
+### 33.4.7. 一致性哈希算法
 先构造一个长度为232的整数环（这个环被称为一致性Hash环），根据节点名称的Hash值（其分布为[0, 232-1]）将服务器节点放置在这个Hash环上，然后根据数据的Key值计算得到其Hash值（其分布也为[0, 232-1]），接着在Hash环上顺时针查找距离这个Key值的Hash值最近的服务器节点，完成Key到服务器的映射查找。
 一致性hash算法还可以实现一个消费者一直命中一个服务提供者。
 
@@ -7064,18 +9118,18 @@ hashcode: 2117355968 127.0.0.1:5844
     * 一致性hash算法：
         * 可以使消费者始终对应一个服务提供者。缺点是实现相对复杂。同时通过优化hashcode算法和增加虚拟节点解决分布不均的问题。
 
-## 2.5. 负载均衡的实现（DNS > 数据链路层 > IP层 > Http层）
+## 33.5. 负载均衡的实现（DNS > 数据链路层 > IP层 > Http层）
 <a href="#menu" style="float:right">目录</a>
 
 
-### 2.5.1. DNS域名解析负载均衡（延迟）
+### 33.5.1. DNS域名解析负载均衡（延迟）
 DNS域名解析负载均衡
 
 　利用DNS处理域名解析请求的同时进行负载均衡是另一种常用的方案。在DNS服务器中配置多个A记录，如：www.mysite.com IN A 114.100.80.1、www.mysite.com IN A 114.100.80.2、www.mysite.com IN A 114.100.80.3.
 　每次域名解析请求都会根据负载均衡算法计算一个不同的IP地址返回，这样A记录中配置的多个服务器就构成一个集群，并可以实现负载均衡。
 　DNS域名解析负载均衡的优点是将负载均衡工作交给DNS，省略掉了网络管理的麻烦，缺点就是DNS可能缓存A记录，不受网站控制。事实上，大型网站总是部分使用DNS域名解析，作为第一级负载均衡手段，然后再在内部做第二级负载均衡。
 
-### 2.5.2. 数据链路层负载均衡(LVS)
+### 33.5.2. 数据链路层负载均衡(LVS)
 数据链路层负载均衡(LVS)
 
 　数据链路层负载均衡是指在通信协议的数据链路层修改mac地址进行负载均衡。
@@ -7083,19 +9137,19 @@ DNS域名解析负载均衡
 　在上图中，用户请求到达负载均衡服务器后，负载均衡服务器将请求数据的目的mac地址修改为真是WEB服务器的mac地址，并不修改数据包目标IP地址，因此数据可以正常到达目标WEB服务器，该服务器在处理完数据后可以经过网管服务器而不是负载均衡服务器直接到达用户浏览器。
 　使用三角传输模式的链路层负载均衡是目前大型网站所使用的最广的一种负载均衡手段。在linux平台上最好的链路层负载均衡开源产品是LVS(linux virtual server)。
 
-### 2.5.3. IP负载均衡(SNAT)
+### 33.5.3. IP负载均衡(SNAT)
 IP负载均衡
 　IP负载均衡：即在网络层通过修改请求目标地址进行负载均衡。
 　用户请求数据包到达负载均衡服务器后，负载均衡服务器在操作系统内核进行获取网络数据包，根据负载均衡算法计算得到一台真实的WEB服务器地址，然后将数据包的IP地址修改为真实的WEB服务器地址，不需要通过用户进程处理。真实的WEB服务器处理完毕后，相应数据包回到负载均衡服务器，负载均衡服务器再将数据包源地址修改为自身的IP地址发送给用户浏览器。
 　这里的关键在于真实WEB服务器相应数据包如何返回给负载均衡服务器，一种是负载均衡服务器在修改目的IP地址的同时修改源地址，将数据包源地址改为自身的IP，即源地址转换（SNAT），另一种方案是将负载均衡服务器同时作为真实物理服务器的网关服务器，这样所有的数据都会到达负载均衡服务器。
 　IP负载均衡在内核进程完成数据分发，较反向代理均衡有更好的处理性能。但由于所有请求响应的数据包都需要经过负载均衡服务器，因此负载均衡的网卡带宽成为系统的瓶颈。
 
-### 2.5.4. HTTP重定向负载均衡(少见)
+### 33.5.4. HTTP重定向负载均衡(少见)
 HTTP重定向负载均衡
 　HTTP重定向服务器是一台普通的应用服务器，其唯一的功能就是根据用户的HTTP请求计算一台真实的服务器地址，并将真实的服务器地址写入HTTP重定向响应中（响应状态吗302）返回给浏览器，然后浏览器再自动请求真实的服务器。
 　这种负载均衡方案的优点是比较简单，缺点是浏览器需要每次请求两次服务器才能拿完成一次访问，性能较差；使用HTTP302响应码重定向，可能是搜索引擎判断为SEO作弊，降低搜索排名。重定向服务器自身的处理能力有可能成为瓶颈。因此这种方案在实际使用中并不见多。
 
-### 2.5.5. 反向代理负载均衡(nginx)
+### 33.5.5. 反向代理负载均衡(nginx)
 反向代理负载均衡
 　传统代理服务器位于浏览器一端，代理浏览器将HTTP请求发送到互联网上。而反向代理服务器则位于网站机房一侧，代理网站web服务器接收http请求。
 　反向代理的作用是保护网站安全，所有互联网的请求都必须经过代理服务器，相当于在web服务器和可能的网络攻击之间建立了一个屏障。
@@ -7104,10 +9158,10 @@ HTTP重定向负载均衡
 反向代理服务器
 　由于反向代理服务器转发请求在HTTP协议层面，因此也叫应用层负载均衡。优点是部署简单，缺点是可能成为系统的瓶颈。
 
-# 3. 隔离
+# 34. 隔离
 <a href="#menu" style="float:right">目录</a>
 
-## 3.1. 概述
+## 34.1. 概述
 * 隔离是将系统或者资源分隔开，系统隔离是为了某个系统发生故障或者业务发生故障时，尽量减少影响面。保证其他服务或者业务能够继续运行。
 
 * 线程隔离
@@ -7140,10 +9194,10 @@ HTTP重定向负载均衡
 * 查询隔离
     * 简单，复杂，批量查询分别路由到不同的集群
 
-# 4. 限流
+# 35. 限流
 <a href="#menu" style="float:right">目录</a>
 
-## 4.1. 概述
+## 35.1. 概述
 <a href="#menu" style="float:right">目录</a>
 * 限流的目的是通过对并发访问的请求进行限速或者对于一定窗口内的请求进行限速，一旦达到系统的限制值就可以拒绝服务(定向错误页，返回错误通知，排队，降级)。
 * 可以通过压测来测试系统的处理峰值
@@ -7160,13 +9214,13 @@ HTTP重定向负载均衡
     * 还可以根据网络连接数，网络流量，CPU或内存负载等来限流  
 
 
-## 4.2. 限流算法
+## 35.2. 限流算法
 
 
-### 4.2.1. 计数器法
+### 35.2.1. 计数器法
 计数器法是限流算法里最简单也是最容易实现的一种算法。比如我们规定，对于A接口来说，我们1分钟的访问次数不能超过100个。那么我们可以这么做：在一开 始的时候，我们可以设置一个计数器counter，每当一个请求过来的时候，counter就加1，如果counter的值大于100并且该请求与第一个 请求的间隔时间还在1分钟之内，那么说明请求数过多；如果该请求与第一个请求的间隔时间大于1分钟，且counter的值还在限流范围内，那么就重置 counter
 
-### 4.2.2. 滑动窗口
+### 35.2.2. 滑动窗口
 滑动窗口，又称rolling window。为了解决这个问题，我们引入了滑动窗口算法。如果学过TCP网络协议的话，那么一定对滑动窗口这个名词不会陌生。下面这张图，很好地解释了滑动窗口算法：
 
 在上图中，整个红色的矩形框表示一个时间窗口，在我们的例子中，一个时间窗口就是一分钟。然后我们将时间窗口进行划分，比如图中，我们就将滑动窗口 划成了6格，所以每格代表的是10秒钟。每过10秒钟，我们的时间窗口就会往右滑动一格。每一个格子都有自己独立的计数器counter，比如当一个请求 在0:35秒的时候到达，那么0:30~0:39对应的counter就会加1。
@@ -7180,13 +9234,13 @@ HTTP重定向负载均衡
 * 计数器 VS 滑动窗口
 计数器算法是最简单的算法，可以看成是滑动窗口的低精度实现。滑动窗口由于需要存储多份的计数器（每一个格子存一份），所以滑动窗口在实现上需要更多的存储空间。也就是说，如果滑动窗口的精度越高，需要的存储空间就越大。
 
-### 4.2.3. 漏桶算法
+### 35.2.3. 漏桶算法
 <a href="#menu" style="float:right">目录</a>
 <a href="#menu" style="float:right">目录</a>
 漏桶(Leaky Bucket)算法思路很简单，水（请求）先进入到漏桶里，漏桶以一定的速度出水（接口有响应速率），当水流入速度过大会直接溢出（访问频率超过接口响应速率），然后就拒绝请求，可以看出漏桶算法能强行限制数据的传输速率。示意图如下：
 ![](https://img2018.cnblogs.com/blog/1136672/201904/1136672-20190421202927762-1718486905.png)
 
-### 4.2.4. 令牌桶算法
+### 35.2.4. 令牌桶算法
 <a href="#menu" style="float:right">目录</a>
 
 令牌桶算法（Token Bucket）和 Leaky Bucket 效果一样但方向相反的算法，更加容易理解。随着时间流逝，系统会按恒定1/QPS时间间隔（如果QPS=100，则间隔是10ms）往桶里加入Token（想象和漏洞漏水相反，有个水龙头在不断的加水），如果桶已经满了就不再加了。新请求来临时，会各自拿走一个Token，如果没有Token可拿了就阻塞或者拒绝服务。示意图如下：
@@ -7194,10 +9248,10 @@ HTTP重定向负载均衡
 
 漏桶算法与令牌桶算法的区别在于，漏桶算法能够强行限制数据的传输速率，令牌桶算法能够在限制数据的平均传输速率的同时还允许某种程度的突发传输。令牌桶的另外一个好处是可以方便的改变速度。 一旦需要提高速率，则按需提高放入桶中的令牌的速率。一般会定时（比如100毫秒）往桶中增加一定数量的令牌, 有些变种算法则实时的计算应该增加的令牌的数量。
 
-## 4.3. 分布式限流
+## 35.3. 分布式限流
 <a href="#menu" style="float:right">目录</a>
 
-# 5. 降级
+# 36. 降级
 <a href="#menu" style="float:right">目录</a>
 *  降级的最终目的是保证核心服务可用，降级也是要根据系统的吞吐量，响应时间，可用率等条件进行手动降级或者自动降级。
 * 降级等级分类
@@ -7226,13 +9280,13 @@ HTTP重定向负载均衡
     * 爬虫降级
     * 风控降级
 
-# 6. 超时与重试
+# 37. 超时与重试
 <a href="#menu" style="float:right">目录</a>
 
-# 7. 回滚机制
+# 38. 回滚机制
 <a href="#menu" style="float:right">目录</a>
 
-## 7.1. 事务回滚
+## 38.1. 事务回滚
 * 事务回滚是为了防止出现数据不一致的问题。
 * 对于单库回滚，数据库支持单库回滚
 * 分布式事务方案
@@ -7246,10 +9300,10 @@ HTTP重定向负载均衡
         * 补偿机制（执行/回滚）
         * TCC模式（预占/确认/消息）
         * Sagas（拆分事务/补偿机制）
-## 7.2. 代码库回滚
+## 38.2. 代码库回滚
 * Git
 * SVN
-## 7.3. 部署版本回滚
+## 38.3. 部署版本回滚
 * 部署版本化
     * 发布时全量发布，避免增量发布（只发布修改过的类），全版本可以直接回滚，不会受到约束或限制。
 * 小版本增量发布
@@ -7260,9 +9314,9 @@ HTTP重定向负载均衡
 * 架构升级
     * 在nginx层面慢慢将流量路由到新版本，直到100%
     * 如中间出现故障，可立即切换到旧版本
-## 7.4. 静态资源回滚
+## 38.4. 静态资源回滚
 
-# 8. 压测与预案
+# 39. 压测与预案
 <a href="#menu" style="float:right">目录</a>
 
 一般通过系统压测发现系统瓶颈和问题，然后进行系统优化啊和容灾，进而提升系统的健壮性和处理能力。
@@ -7276,7 +9330,7 @@ HTTP重定向负载均衡
     * 3个9：(1-99.9%)*365*24=8.76小时，表示该系统在连续运行1年时间里最多可能的业务中断时间是8.76小时。
     * 4个9：(1-99.99%)*365*24=0.876小时=52.6分钟，表示该系统在连续运行1年时间里最多可能的业务中断时间是52.6分钟。
     * 5个9：(1-99.999%)*365*24*60=5.26分钟，表示该系统在连续运行1年时间里最多可能的业务中断时间是5.26分钟
-## 8.1. 系统压测
+## 39.1. 系统压测
 * 压测方案
     * 压测接口
     * 并发量
@@ -7287,11 +9341,11 @@ HTTP重定向负载均衡
     * 响应时间(平均，最小，最大)
 * 压测报告
     * 相关参数以及测试结果
-### 8.1.1. 线下压测
+### 39.1.1. 线下压测
 * 线下通过Jmeter或者Apache ab压测系统的某个接口，然后进行调优。以达到组件性能最优状态
 * 线下压测环境和线上环境(服务器，网络，数据量)和线上完全不一样，因此测试结果只能作为参考
 
-### 8.1.2. 线上压测
+### 39.1.2. 线上压测
 * 读写区分
     * 读压测
     * 写压测
@@ -7307,23 +9361,23 @@ HTTP重定向负载均衡
     * 数据离散化，比如分库分表情况下，避免压测的数据都是路由到同一个数据库
     * 全链路压测，对所有的服务进行压测
 
-## 8.2. 系统优化和容灾
+## 39.2. 系统优化和容灾
 * 很据压测报告进行相应的优化和升级，比如硬件升级，集群扩容，参数优化，代码优化
 
 
 
 
-# 9. 缓存
+# 40. 缓存
 <a href="#menu" style="float:right">目录</a>
 * 缓存命中率
     * 缓存命中的次数/缓存查询次数
     * 命中率越高越好
     * 通过监控该参数确认是否工作良好
 
-## 9.1. 应用级缓存
+## 40.1. 应用级缓存
 <a href="#menu" style="float:right">目录</a>
 
-### 9.1.1. 缓存回收策略
+### 40.1.1. 缓存回收策略
 <a href="#menu" style="float:right">目录</a>
 
 * 基于空间
@@ -7334,14 +9388,14 @@ HTTP重定向负载均衡
     * 缓存的存在时间
 * 基于Java对象引用
     
-### 9.1.2. 回收算法
+### 40.1.2. 回收算法
 <a href="#menu" style="float:right">目录</a>
 
-#### 9.1.2.1. FIFO
+#### 40.1.2.1. FIFO
 * FIFO ：（First In First Out）：先进先出算法，即先放入缓存的先被移除。
 * 存在的问题
     * 当大量的新缓存插入会使早期进入的热点缓存会被移除掉。
-#### 9.1.2.2. LRU 
+#### 40.1.2.2. LRU 
 * LRU（Least Recently Used）：最近最少使用算法，使用时间距离现在最久的那个被移除。
 * 实现
     * 当有新数据时插入链表头部
@@ -7350,19 +9404,19 @@ HTTP重定向负载均衡
 * 存在的问题
     * 如果最近一段时间没有访问热点缓存，访问的是冷数据，热点缓存会被移除掉
 
-#### 9.1.2.3. LFU
+#### 40.1.2.3. LFU
 * LFU（Least Frequently Used）：最不常用算法，一定时间段内使用【次数（频率）】最少的那个被移除。
 * 给每一个缓存添加访问计数器，缓存不足时移除计数器最小的缓存
 * 存在的问题
     * 如果频率时间度量是1小时，则平均一天每个小时内的访问频率1000的热点数据可能会被2个小时的一段时间内的访问频率是1001的数据剔除掉；
     *  最近新加入的数据总会易于被剔除掉，由于其起始的频率值低。本质上其“重要性”指标访问频率是指在多长的时间维度进行衡量？其难以标定，所以在业界很少单一直接使用。也由于两种算法的各自特点及缺点，所以通常在生产线上会根据业务场景联合LRU与LFU一起使用，称之为LRFU。
-#### 9.1.2.4. LRFU
+#### 40.1.2.4. LRFU
 * 利用两个队列维护访问的数据元素，按被访问的频率的维度把元素分别搁在热端与冷端队列；而在同一个队列内，最后访问时间越久的元素会越被排在队列尾。
  
-### 9.1.3. Java 缓存类型
+### 40.1.3. Java 缓存类型
 <a href="#menu" style="float:right">目录</a>
 
-#### 9.1.3.1. 堆缓存
+#### 40.1.3.1. 堆缓存
 * 使用堆内存来存储对象
 * 好处是不需要序列化和反序列化，速度快。
 * 当缓存比较大时，GC回收时间比较长
@@ -7370,24 +9424,24 @@ HTTP重定向负载均衡
 * 一般用于缓存少量的热点数据，并且不是频繁修改的，因为集群环境下会出现数据不一致问题，需要做好过期时间设置
 * 常用实现方案有: Guava ,Ehcache ,MapDB
 
-#### 9.1.3.2. 对外缓存
+#### 40.1.3.2. 对外缓存
 * 使用堆外内存进行缓存,减少GC暂停时间
 * 可以使用更大的缓存空间，受机器内存限制
 * 实现方案:Ehcache ,MapDB
 
-#### 9.1.3.3. 磁盘缓存
+#### 40.1.3.3. 磁盘缓存
 * 存储磁盘，重启后仍可以加载缓存
 * 实现方案:Ehcache ,MapDB
 
-#### 9.1.3.4. 分布式缓存
+#### 40.1.3.4. 分布式缓存
 * 实现多应用共享缓存
 * 实现方案:Redis
 
-#### 9.1.3.5. 多级缓存
+#### 40.1.3.5. 多级缓存
 多级缓存就是根据不同的访问速率来设置多级缓存。优先访问速率高的缓存，提升系统性能。
 比如先访问本地缓存，本地缓存不存在，再访问分布式缓存。可以尽量减少一次网络操作。
 
-### 9.1.4. 应用级缓存示例
+### 40.1.4. 应用级缓存示例
 <a href="#menu" style="float:right">目录</a>
 
 * 设计策略
@@ -7398,7 +9452,7 @@ HTTP重定向负载均衡
     * 缓存一致性考虑
 
 
-### 9.1.5. 缓存使用模式实践
+### 40.1.5. 缓存使用模式实践
 <a href="#menu" style="float:right">目录</a>
 
 * SOR
@@ -7408,34 +9462,34 @@ HTTP重定向负载均衡
 * 回源
     * 缓存没有命中，回源数据库拿数据
 
-#### 9.1.5.1. Cache-Aside
+#### 40.1.5.1. Cache-Aside
 * 业务代码维护缓存，也就是业务代码和缓存操作混在一起
 * 并发更新问题，多个实例同时更新
     * 如果是用户维度的问题，比如用户的订单数据、用户数据，并发更新的情况很少，加上过去时间就可以
     * 对于商品数据，可以考虑canal订阅binlog.来进行增量更新，不会出现不一致情况，但会存在延迟
     * 
-#### 9.1.5.2. Cache-As-SOR
+#### 40.1.5.2. Cache-As-SOR
 * Cache 看作SOR，所有操作都是对Cache进行，然后Cache再委托给SOR进行真实的读写，即代码中只看到Cache的操作
 * 有三种实现: Read-Through, Write-Through,Write-Behind
 
-#### 9.1.5.3. Read-Through
+#### 40.1.5.3. Read-Through
 * 先查询缓存，缓存不命中再回源SOR，而不是业务代码进行回源。比如Guava的失败回调
 * 优点:业务代码更加简洁
 * 缺点：不适合复杂的查询，因为每次回源的查询条件 是不一样的，需要根据每个查询单独编写代码，可以使用回调函数解决
 
-#### 9.1.5.4. Write-Through
+#### 40.1.5.4. Write-Through
 * 穿透写模式/直写模式
 * 业务代码首先调用Cache写数据，然后由Cache负责写缓存和写Sor,而不是由业务代码操作
 
-#### 9.1.5.5. Write-Behind
+#### 40.1.5.5. Write-Behind
 * 回写模式,异步操作，异步之后可以实现批量写，合并写，延时写和限流
 
-#### 9.1.5.6. Copy-Pattern
+#### 40.1.5.6. Copy-Pattern
 * 两种复制模式，Copy on read,copy on write
 * Guava Cache 和Ehcache中堆缓存都是基于引用，有可能发生有人拿到缓存后修改，导致数据出现修改问题。
 * Ehcache3.x提供解决方案
 
-### 9.1.6. 缓存一致性处理
+### 40.1.6. 缓存一致性处理
 <a href="#menu" style="float:right">目录</a>
 
 先做一个说明，从理论上来说，给缓存设置过期时间，是保证最终一致性的解决方案。这种方案下，我们可以对存入缓存的数据设置过期时间，所有的写操作以数据库为准，对缓存操作只是尽最大努力即可。也就是说如果数据库写成功，缓存更新失败，那么只要到达过期时间，则后面的读请求自然会从数据库中读取新值然后回填缓存。因此，接下来讨论的思路不依赖于给缓存设置过期时间这个方案。
@@ -7554,18 +9608,18 @@ ok，如果发生上述情况，确实是会发生脏数据。
 备注说明：上述的订阅binlog程序在mysql中有现成的中间件叫canal，可以完成订阅binlog日志的功能。至于oracle中，博主目前不知道有没有现成中间件可以使用。另外，重试机制，博主是采用的是消息队列的方式。如果对一致性要求不是很高，直接在程序中另起一个线程，每隔一段时间去重试即可，这些大家可以灵活自由发挥，只是提供一个思路。
 
 
-### 9.1.7. 缓存异常处理
+### 40.1.7. 缓存异常处理
 <a href="#menu" style="float:right">目录</a>
 
-#### 9.1.7.1. 缓存穿透
+#### 40.1.7.1. 缓存穿透
 缓存击穿表示恶意用户模拟请求很多缓存中不存在的数据，由于缓存中都没有，导致这些请求短时间内直接落在了数据库上，导致数据库异常。这个我们在实际项目就遇到了，有些抢购活动、秒杀活动的接口API被大量的恶意用户刷，导致短时间内数据库宕机了，好在数据库是多主多从的，hold住了。
-#### 9.1.7.2. 缓存击穿
+#### 40.1.7.2. 缓存击穿
 对于一些设置了过期时间的key，如果这些key可能会在某些时间点被超高并发地访问，是一种非常“热点”的数据。这个时候，需要考虑一个问题：缓存被“击穿”的问题，这个和缓存雪崩的区别在于这里针对某一key缓存，前者则是很多key。
 缓存在某个时间点过期的时候，恰好在这个时间点对这个Key有大量的并发请求过来，这些请求发现缓存过期一般都会从后端DB加载数据并回设到缓存，这个时候大并发的请求可能会瞬间把后端DB压垮。
-#### 9.1.7.3. 缓存雪崩
+#### 40.1.7.3. 缓存雪崩
 缓存在同一时间内大量键过期（失效），接着来的一大波请求瞬间都落在了数据库中导致连接异常。
 
-#### 9.1.7.4. 解决方案
+#### 40.1.7.4. 解决方案
 
 **一、 缓存空数据**
 如果数据库查询不到数据，仍将向缓存存入一个空数据。
@@ -7719,15 +9773,15 @@ public String getByKey( String keyA, String keyB )
 }
 ```
 
-#### 9.1.7.5. 缓存并发问题
+#### 40.1.7.5. 缓存并发问题
 
 这里的并发指的是多个redis的client同时set key引起的并发问题。比较有效的解决方案就是把redis.set操作放在队列中使其串行化，必须的一个一个执行，具体的代码就不上了，当然加锁也是可以的，至于为什么不用redis中的事务，留给各位看官自己思考探究。
 
 
-## 9.2. HTTP缓存
+## 40.2. HTTP缓存
 <a href="#menu" style="float:right">目录</a>
 
-### 9.2.1. 浏览器缓存
+### 40.2.1. 浏览器缓存
 
 * Cookie
     * Cookie 是小甜饼的意思。顾名思义，cookie 确实非常小，它的大小限制为4KB左右。它的主要用途有保存登录信息，比如你登录某个网站市场可以看到“记住密码”，这通常就是通过在 Cookie 中存入一段辨别用户身份的数据来实现的。
@@ -7760,7 +9814,7 @@ localStorage和sessionStorage都具有相同的操作方法，例如setItem、ge
 localStorage和sessionStorage没有过期时间和超时回收策略，因此可以保存数据的时候顺便保存当前时间和超时，读取时再检测是否超时。
 
 
-### 9.2.2. CDN缓存
+### 40.2.2. CDN缓存
 * **基本概念**
     * CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在现有网络基础之上的智能虚拟网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。CDN的关键技术主要有内容存储和分发技术。
 * **组成**
@@ -7830,7 +9884,7 @@ localStorage和sessionStorage没有过期时间和超时回收策略，因此可
     * 把资源放到离用户近的地方，从而提高访问速度
     * 可以让用户上传的文件传到CDN，CDN再传到源站，从而提高上传速度
     
-### 9.2.3. NGINX缓存
+### 40.2.3. NGINX缓存
 
 
 
@@ -7839,10 +9893,10 @@ localStorage和sessionStorage没有过期时间和超时回收策略，因此可
 <span id="menu"></span>
 
 
-# 1. 分布式系统
+# 41. 分布式系统
 <a href="#menu" style="float:right">目录</a>
 
-## 1.1. 基本概念
+## 41.1. 基本概念
 * **分布式**
 组成系统的多个应用在不同服务器上部署，应用之间通过网络进行通信，即可称为分布式系统，如Tomcat和数据库分别部署在不同的服务器上，或两个相同功能的Tomcat分别部署在不同服务器上.
 * 为什么需要分布式系统
@@ -7863,12 +9917,12 @@ localStorage和sessionStorage没有过期时间和超时回收策略，因此可
     * 缺乏全局时钟，每个节点都有单独的时钟，依据时序来做一些业务处理就比较难。比如雪花漂移生成分布式ID就可能因为时钟漂移出现重复ID
     * 分布式事务问题 
     
-## 1.2. 大型网站的特点
+## 41.2. 大型网站的特点
 <a href="#menu" style="float:right">目录</a>
 
-### 1.2.1. 特点
+### 41.2.1. 特点
 高并发，大流量;高可用；海量数据;用户分布广泛，网络情况复杂;安全环境恶劣；需求快速变更，发布频繁；渐进式发展.
-### 1.2.2. 模式
+### 41.2.2. 模式
 * 分层
     * 将系统进行横向分层，比如视图层，业务层，数据层
     * 各层之间通过接口实现交流
@@ -7922,26 +9976,26 @@ localStorage和sessionStorage没有过期时间和超时回收策略，因此可
 * 安全
     * 登录认证
     * 脚本攻击，跨域攻击，SQL注入攻击等的应对
-## 1.3. 常用的RPC框架
+## 41.3. 常用的RPC框架
 <a href="#menu" style="float:right">目录</a>
 RPC(Remote Procedure Call,远程过程调用)一般用来实现部署在不同的机器上的系统之间的方法调用，使得程序能够像访问本地系统资源一样，通过网络去访问远端系统资源。
 这里通过网络访问，并不限制使用何种协议，RPC不等价于TCP方式。
 
-### 1.3.1. Thrift
+### 41.3.1. Thrift
 * FaceBook开发
 * 跨平台和语言，支持多种与语言，比如C/C++，Erlang,Java,Js
 * 采用二进制编码协议，使用TCP/IP传输协议
 
-### 1.3.2. gRPC
+### 41.3.2. gRPC
 * 谷歌开发,面向移动和**HTTP2**设计
 * 支持C，Java,Go，分别是grpc,grpc-java,grpc-go
 * 具备诸如双向流，流空，头部压缩，单TCP连接上的多路复用请求等待特性
 * 一般用在移动设备上
 * 默认为protocol buffers序列化协议，也可以用其他序列化协议，比如json
 
-## 1.4. Dubbo
+## 41.4. Dubbo
 
-### 1.4.1. 架构
+### 41.4.1. 架构
 ![](http://dubbo.apache.org/docs/zh-cn/user/sources/images/dubbo-architecture.jpg)
 
 **节点角色说明**
@@ -7985,7 +10039,7 @@ RPC(Remote Procedure Call,远程过程调用)一般用来实现部署在不同�
 * 注册中心为对等集群，可动态增加机器部署实例，所有客户端将自动发现新的注册中心
 * 服务提供者无状态，可动态增加机器部署实例，注册中心将推送新的服务提供者信息给消费者
 
-### 1.4.2. 功能
+### 41.4.2. 功能
 
 **启动时检查**
 * 启动时检查依赖的服务是否可用，不可用时会抛出异常，导致应用无法启动
@@ -8268,10 +10322,10 @@ public class XxxServiceImpl implements XxxService {
 **Kryo与Fst序列化**
 **简化注册中心URL**
 
-### 1.4.3. 连接协议
+### 41.4.3. 连接协议
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.4.3.1. dubbo
+#### 41.4.3.1. dubbo
 Dubbo 缺省协议采用单一长连接和 NIO 异步通讯，适合于小数据量大并发的服务调用，以及服务消费者机器数远大于服务提供者机器数的情况。
 
 反之，Dubbo 缺省协议不适合传送大数据量的服务，比如传文件，传视频等，除非请求量很低。
@@ -8318,7 +10372,7 @@ Dubbo 缺省协议采用单一长连接和 NIO 异步通讯，适合于小数据
 * 为什么采用异步单一长连接?
     * 因为服务的现状大都是服务提供者少，通常只有几台机器，而服务的消费者多，可能整个网站都在访问该服务，比如 Morgan 的提供者只有 6 台提供者，却有上百台消费者，每天有 1.5 亿次调用，如果采用常规的 hessian 服务，服务提供者很容易就被压跨，通过单一连接，保证单一消费者不会压死提供者，长连接，减少连接握手验证等，并使用异步 IO，复用线程池，防止 C10K 问题。
 
-#### 1.4.3.2. rmi
+#### 41.4.3.2. rmi
 * RMI 协议采用 JDK 标准的 java.rmi.* 实现，采用阻塞式短连接和 JDK 标准序列化方式。
 
 * 注意：如果正在使用 RMI 提供服务给外部访问 [1]，同时应用里依赖了老的 common-collections 包 [2] 的情况下，存在反序列化安全风险 [3]。
@@ -8335,7 +10389,7 @@ Dubbo 缺省协议采用单一长连接和 NIO 异步通讯，适合于小数据
 * 参数及返回值需实现 Serializable 接口
 * dubbo 配置中的超时时间对 RMI 无效，需使用 java 启动参数设置：-Dsun.rmi.transport.tcp.responseTimeout=3000，参见下面的 RMI 配置
 
-#### 1.4.3.3. hessian
+#### 41.4.3.3. hessian
 Hessian [1] 协议用于集成 Hessian 的服务，Hessian 底层采用 Http 通讯，采用 Servlet 暴露服务，Dubbo 缺省内嵌 Jetty 作为服务器实现。
 
 Dubbo 的 Hessian 协议可以和原生 Hessian 服务互操作，即：
@@ -8364,7 +10418,7 @@ Dubbo 的 Hessian 协议可以和原生 Hessian 服务互操作，即：
 * 参数及返回值不能自定义实现 List, Map, Number, Date, Calendar 等接口，只能用 JDK 自带的实现，因为 hessian 会做特殊处理，自定义实现类中的属性值都会丢失。
 
 
-#### 1.4.3.4. http
+#### 41.4.3.4. http
 基于 HTTP 表单的远程调用协议，采用 Spring 的 HttpInvoker 实现 [1]
 
 **特性**
@@ -8379,7 +10433,7 @@ Dubbo 的 Hessian 协议可以和原生 Hessian 服务互操作，即：
 **约束**
 参数及返回值需符合 Bean 规范
 
-#### 1.4.3.5. webservice
+#### 41.4.3.5. webservice
 基于 WebService 的远程调用协议，基于 Apache CXF [1] 的 frontend-simple 和 transports-http 实现 [2]。
 
 可以和原生 WebService 服务互操作，即：
@@ -8412,7 +10466,7 @@ Dubbo 的 Hessian 协议可以和原生 Hessian 服务互操作，即：
 * 参数及返回值需实现 Serializable 接口
 * 参数尽量使用基本类型和 POJO
 
-#### 1.4.3.6. thrift
+#### 41.4.3.6. thrift
 基于 WebService 的远程调用协议，基于 Apache CXF [1] 的 frontend-simple 和 transports-http 实现 [2]。
 
 可以和原生 WebService 服务互操作，即：
@@ -8445,9 +10499,9 @@ Dubbo 的 Hessian 协议可以和原生 Hessian 服务互操作，即：
 * 参数及返回值需实现 Serializable 接口
 * 参数尽量使用基本类型和 POJO
 
-#### 1.4.3.7. memcached
-#### 1.4.3.8. redis
-#### 1.4.3.9. rest
+#### 41.4.3.7. memcached
+#### 41.4.3.8. redis
+#### 41.4.3.9. rest
 基于标准的Java REST API——JAX-RS 2.0（Java API for RESTful Web Services的简写）实现的REST调用支持
 
 **快速入门**
@@ -9027,7 +11081,7 @@ public class MyValidationExceptionMapper extends RpcExceptionMapper {
 <dubbo:protocol name="rest" port="8888" extension="xxx.MyValidationExceptionMapper"/>
 ```
 
-## 1.5. 架构演进
+## 41.5. 架构演进
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -9157,16 +11211,16 @@ SaaS：软件即服务。对应于上面所说的提供开发好的应用或服�
     * 使用商用硬件。商用硬件能有效降低硬件故障的机率；
     * 快速迭代。系统应该快速开发小功能模块，尽快上线进行验证，早日发现问题大大降低系统交付的风险；
     * 无状态设计。服务接口应该做成无状态的，当前接口的访问不依赖于接口上次访问的状态。
-## 1.6. Java 中间件
+## 41.6. Java 中间件
 * **定义**
     * 中间件不是上层的业务，也不是底层的支撑系统，而是处于中间位置的作用，是应用和应用之间的桥梁。
     * 常见的中间件:
         * 数据库中间件,解决应用访问数据库的共性问题，比如分库分表下的数据访问。
         * 消息中间件，解决应用之间消息传递，解耦和异步的问题。
 
-## 1.7. 序列化机制
+## 41.7. 序列化机制
 <a href="#menu" style="float:right">目录</a>
-### 1.7.1. 基本概念
+### 41.7.1. 基本概念
 **序列化**:将对象序列化为字节数组，用于网络传输或者磁盘存储。
 **反序列化**:将从网络或者磁盘获取的字节数组转化为对象。
 
@@ -9175,13 +11229,13 @@ SaaS：软件即服务。对应于上面所说的提供开发好的应用或服�
     * 序列化之后的字节长度，这将会影响网络传输。
     * 功能丰富度，比如支持List,Map，复杂对象等
     * 跨语言需求，有的系统由几个不同的应用组成，每个应用可能使用不同的语言开发，因此可能存在跨语言需求。
-### 1.7.2. 常用序列化方式性能比较
+### 41.7.2. 常用序列化方式性能比较
 
 ![](https://img2018.cnblogs.com/blog/1404294/201904/1404294-20190418171605508-1194073956.jpg)
 从图上可以看出，protostuff的性能最好，而JDK序列化方式相对来说性能是比较差的。
 
-### 1.7.3. 常用序列化方式实现
-#### 1.7.3.1. JDK方式
+### 41.7.3. 常用序列化方式实现
+#### 41.7.3.1. JDK方式
 ```java
 public class JdkSerializeUtil extends AbstractSerialize {
 
@@ -9218,7 +11272,7 @@ public class JdkSerializeUtil extends AbstractSerialize {
     }
 }
 ```
-#### 1.7.3.2. FastJSON
+#### 41.7.3.2. FastJSON
 ```xml
  <dependency>
      <groupId>com.alibaba</groupId>
@@ -9247,7 +11301,7 @@ public class FastjsonSerializeUtil  extends AbstractSerialize {
     }
 }
 ```
-#### 1.7.3.3. Hessian
+#### 41.7.3.3. Hessian
 ```xml
 <dependency>
     <groupId>com.caucho</groupId>
@@ -9298,7 +11352,7 @@ public class HessianSerializeUtil extends AbstractSerialize {
     }
 }
 ```
-#### 1.7.3.4. Protostuff
+#### 41.7.3.4. Protostuff
 ```xml
 <dependency>
     <groupId>io.protostuff</groupId>
@@ -9378,14 +11432,14 @@ public class ProtostuffSerializeUtil  extends AbstractSerialize {
 |Hessian|	520|	959-3836	|376-567|	191-329|	99-161	|30-47|	 
 |Protostuff|	193|	103-145|	90-137	|75-135	|15-24|	5-8|
 
-## 1.8. 定时任务
+## 41.8. 定时任务
 <a href="#menu" style="float:right">目录</a>
 在项目开发过程中，我们经常需要执行具有周期性的任务。通过定时任务可以很好的帮助我们实现。
 当出现应用进行集群部署，此时单体的定时任务管理就会出问题：两个集群中的应用会执行相同的任务。又衍生出处理分布式定时任务，它利用数据库等方式共享定时任务的信息，当集群中有一个应用运行了定时任务。其他应用便不会再次重复执行任务。
 
 单体应用中常使用的定时任务方式是Spring Scheduler,分布式定时任务框架有Quartz.
 
-## 1.9. Cron表达式
+## 41.9. Cron表达式
 [在线Cron表达式生成:http://cron.qqe2.com/](http://cron.qqe2.com/)
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/distribution/cron.png?raw=true)
 Cron表达式是一个字符串，字符串以5或6个空格隔开，分为6或7个域，每一个域代表一个含义，Cron有如下两种语法格式：
@@ -9438,7 +11492,7 @@ Cron表达式是一个字符串，字符串以5或6个空格隔开，分为6或7
 * 0 15 10 ? * 6L 2002-2005   2002年至2005年的每月的最后一个星期五上午10:15触发 
 * 0 15 10 ? * 6#3   每月的第三个星期五上午10:15触发
 
-### 1.9.1. Spring Scheduler
+### 41.9.1. Spring Scheduler
 <a href="#menu" style="float:right">目录</a>
 
 注解Scheduled
@@ -9536,24 +11590,24 @@ public class ScheduleConfig implements SchedulingConfigurer {
     }
 }
 ```
-### 1.9.2. Quartz
+### 41.9.2. Quartz
 <a href="#menu" style="float:right">目录</a>
-#### 1.9.2.1. Quartz 核心概念
+#### 41.9.2.1. Quartz 核心概念
 * Job 表示一个工作，要执行的具体内容。此接口中只有一个方法，如下：
 * JobDetail 表示一个具体的可执行的调度程序，Job 是这个可执行程调度程序所要执行的内容，另外 JobDetail 还包含了这个任务调度的方案和策略。 
 * Trigger 代表一个调度参数的配置，什么时候去调。 
 * Scheduler 代表一个调度容器，一个调度容器中可以注册多个 JobDetail 和 Trigger。当 Trigger 与 JobDetail 组合，就可以被 Scheduler 容器调度了。 
 [更多使用方式参考](https://www.w3cschool.cn/quartz_doc/)
 
-## 1.10. 分布式ID
+## 41.10. 分布式ID
 <a href="#menu" style="float:right">目录</a>
 
-### 1.10.1. 应用场景
+### 41.10.1. 应用场景
 分布式ID的应用场景：
 * 数据库主键，在进行分库分表时，如果数据库仍然使用自增，可能会出现主键重复的问题，因此需要应用生成主键。
 * 在一些消息中间件的使用场景，在处理消息幂等性时，会为每个消息添加一个唯一ID，消费者通过该ID校验消息是否已经被消费。
 
-### 1.10.2. 分布式ID生成方案
+### 41.10.2. 分布式ID生成方案
 
 * 分布式ID一般的要求是：
     * 占用空间少，利于存储数字优先于字符串
@@ -9683,7 +11737,7 @@ Snowflake模式：完全分布式，ID有语义。
 
 Leaf项目Github地址：https://github.com/Meituan-Dianping/Leaf 。
 
-## 1.11. 分布式锁
+## 41.11. 分布式锁
 [How to do distributed locking](https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html)
 <a href="#menu" style="float:right">目录</a>
 不管使用什么中间件，有几点是实现分布式锁必须要考虑到的。
@@ -9692,9 +11746,9 @@ Leaf项目Github地址：https://github.com/Meituan-Dianping/Leaf 。
 * 性能: 高并发分布式系统中，线程互斥等待会成为性能瓶颈，需要好的中间件和实现来保证性能。
 * 锁特性：考虑到复杂的场景，分布式锁不能只是加锁，然后一直等待。最好实现如Java Lock的一些功能如：锁判断，超时设置，可重入性等。
 
-### 1.11.1. 使用数据库实现
+### 41.11.1. 使用数据库实现
 
-### 1.11.2. Redis实现分布式锁
+### 41.11.2. Redis实现分布式锁
 redis-2.9之后的set指令如下，提供了不存在则设置，设者超时时间的功能，这条语句具备原子性。
 ```
 set key value px milliseconds nx；
@@ -9711,12 +11765,12 @@ set key value px milliseconds nx；
 
 
 
-### 1.11.3. Zookeeper实现分布式锁
+### 41.11.3. Zookeeper实现分布式锁
 
-## 1.12. 微服务化
+## 41.12. 微服务化
 <a href="#menu" style="float:right">目录</a>
 
-### 1.12.1. 微服务和SOA
+### 41.12.1. 微服务和SOA
 
 |微服务|SOA|
 |---|---|
@@ -9728,7 +11782,7 @@ set key value px milliseconds nx；
 |业务逻辑存在于每一个服务中|业务逻辑横跨多个业务领域|
 |使用轻量级的通信方式如HTTP|企业服务总线ESB充当了服务之间通信的角色|
 
-### 1.12.2. 拆分原则
+### 41.12.2. 拆分原则
 * 公共的业务功能
     * 基础服务
         * 用户服务
@@ -9744,43 +11798,43 @@ set key value px milliseconds nx；
 
 
 
-## 1.13. 消息机制
+## 41.13. 消息机制
 <a href="#menu" style="float:right">目录</a>
 
-## 1.14. 服务降级
+## 41.14. 服务降级
 <a href="#menu" style="float:right">目录</a>
 
-## 1.15. 流量限流
+## 41.15. 流量限流
 <a href="#menu" style="float:right">目录</a>
 
-## 1.16. 幂等设计
+## 41.16. 幂等设计
 <a href="#menu" style="float:right">目录</a>
 
-## 1.17. 数据一致性
+## 41.17. 数据一致性
 <a href="#menu" style="float:right">目录</a>
 
-### 1.17.1. CAP理论
-### 1.17.2. Base理论
+### 41.17.1. CAP理论
+### 41.17.2. Base理论
 
-## 1.18. 分布式事务实现
+## 41.18. 分布式事务实现
 <a href="#menu" style="float:right">目录</a>
 
-## 1.19. 负载均衡算法
+## 41.19. 负载均衡算法
 <a href="#menu" style="float:right">目录</a>
 
-## 1.20. 服务容错设计
+## 41.20. 服务容错设计
 <a href="#menu" style="float:right">目录</a>
 
-## 1.21. 集群
+## 41.21. 集群
 <a href="#menu" style="float:right">目录</a>
 
-## 1.22. 分库分表
+## 41.22. 分库分表
 <a href="#menu" style="float:right">目录</a>
 
-## 1.23. 反向代理&正向代理
+## 41.23. 反向代理&正向代理
 <a href="#menu" style="float:right">目录</a>
 
-## 1.24. 客户端优化
+## 41.24. 客户端优化
 <a href="#menu" style="float:right">目录</a>
 
 <h1>WEB安全</h1>
@@ -9788,10 +11842,10 @@ set key value px milliseconds nx；
 <span id="menu"></span>
 
 
-# 1. 浏览器安全
+# 42. 浏览器安全
 <a href="#menu" style="float:right">目录</a>
 
-## 1.1. 同源策略
+## 42.1. 同源策略
 
 * 定义
     * 脚本只访问同源的服务器 
@@ -9885,10 +11939,10 @@ public Greeting greeting(@RequestParam(required=false, defaultValue="World") Str
   }
 ```
 
-# 2. 跨站脚本攻击XSS
+# 43. 跨站脚本攻击XSS
 <a href="#menu" style="float:right">目录</a>
 
-## 2.1. 简介
+## 43.1. 简介
 <a href="#menu" style="float:right">目录</a>
 * 全称 Cross Site Script,为与CSS区别，使用XSS
 * 概念
@@ -9906,10 +11960,10 @@ public Greeting greeting(@RequestParam(required=false, defaultValue="World") Str
         * 恶意脚本将会存储到服务端
         * 比如在一篇博客中嵌入恶意脚本，用户访问时将会执行这段恶意代码
 
-## 2.2. XSS攻击
+## 43.2. XSS攻击
 <a href="#menu" style="float:right">目录</a>
 
-## 2.3. XSS防御
+## 43.3. XSS防御
 <a href="#menu" style="float:right">目录</a>
 
 * 服务端设置Cookie时，将属性设置为HttpOnly,将禁止页面的js访问该Cookie
@@ -9925,40 +11979,40 @@ public Greeting greeting(@RequestParam(required=false, defaultValue="World") Str
     * 即死恶意脚本获取到编码后的数据，可能也无法破解出原始数据
 
 
-# 3. 跨站点请求伪造CSRF
+# 44. 跨站点请求伪造CSRF
 
 <a href="#menu" style="float:right">目录</a>
 
-## 3.1. 基本概念
+## 44.1. 基本概念
 * Cross Site Request Forgery
  
-# 4. 点击劫持
+# 45. 点击劫持
 <a href="#menu" style="float:right">目录</a>
 
-# 5. HTML5安全
+# 46. HTML5安全
 <a href="#menu" style="float:right">目录</a>
 
-# 6. 注入攻击
+# 47. 注入攻击
 <a href="#menu" style="float:right">目录</a>
 
-# 7. 文件上传漏洞
+# 48. 文件上传漏洞
 <a href="#menu" style="float:right">目录</a>
 
-# 8. 认证和会话管理
+# 49. 认证和会话管理
 <a href="#menu" style="float:right">目录</a>
 
-# 9. 访问控制
+# 50. 访问控制
 <a href="#menu" style="float:right">目录</a>
 
-# 10. 加密算法和随机数
+# 51. 加密算法和随机数
 <a href="#menu" style="float:right">目录</a>
 
-# 11. WEB框架安全
+# 52. WEB框架安全
 <a href="#menu" style="float:right">目录</a>
 
-# 12. 应用拒绝服务攻击
+# 53. 应用拒绝服务攻击
 <a href="#menu" style="float:right">目录</a>
 
-# 13. WEB SERVER配置安全
+# 54. WEB SERVER配置安全
 <a href="#menu" style="float:right">目录</a>
 
