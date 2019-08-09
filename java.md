@@ -1,97 +1,5 @@
 <span id="menu"></span>
-<!-- TOC -->
 
-- [1. Java与面向对象](#1-java与面向对象)
-    - [1.1. Java基础](#11-java基础)
-        - [1.1.1. 数据类型](#111-数据类型)
-        - [1.1.2. 数据类型](#112-数据类型)
-            - [1.1.2.1. Integer 缓存对象](#1121-integer-缓存对象)
-            - [1.1.2.2. 数组](#1122-数组)
-            - [1.1.2.3. String](#1123-string)
-    - [1.2. 面向对象](#12-面向对象)
-        - [1.2.1. 三大特性](#121-三大特性)
-            - [1.2.1.1. 权限修饰符](#1211-权限修饰符)
-            - [1.2.1.2. 接口和抽象类](#1212-接口和抽象类)
-            - [1.2.1.3. 内部类](#1213-内部类)
-            - [1.2.1.4. 枚举类](#1214-枚举类)
-        - [1.2.2. 范型](#122-范型)
-        - [1.2.3. 集合](#123-集合)
-        - [1.2.4. 异常](#124-异常)
-        - [1.2.5. 注解](#125-注解)
-        - [1.2.6. IO](#126-io)
-        - [1.2.7. 反射](#127-反射)
-        - [1.2.8. JDBC](#128-jdbc)
-    - [1.4. JDK版本变化](#14-jdk版本变化)
-    - [1.5. 设计模式](#15-设计模式)
-        - [1.5.1. 设计原则](#151-设计原则)
-            - [1.5.1.1. 单一职责原则](#1511-单一职责原则)
-            - [1.5.1.2. 里氏替换原则](#1512-里氏替换原则)
-            - [1.5.1.3. 依赖倒置原则](#1513-依赖倒置原则)
-            - [1.5.1.4. 接口隔离原则](#1514-接口隔离原则)
-            - [1.5.1.5. 迪米特法则](#1515-迪米特法则)
-            - [1.5.1.6. 开闭原则](#1516-开闭原则)
-        - [1.5.2. UML图](#152-uml图)
-        - [1.5.3. 单例模式](#153-单例模式)
-            - [1.5.3.1. 基本概念](#1531-基本概念)
-            - [1.5.3.2. 实现](#1532-实现)
-        - [1.5.4. 工厂方法模式](#154-工厂方法模式)
-        - [1.5.5. 抽象工厂模式](#155-抽象工厂模式)
-        - [1.5.6. 模板方法模式](#156-模板方法模式)
-        - [1.5.7. 建造者模式](#157-建造者模式)
-        - [1.5.8. 代理模式](#158-代理模式)
-        - [1.5.9. 原型模式](#159-原型模式)
-        - [1.5.10. 中介者模式](#1510-中介者模式)
-        - [1.5.11. 命令模式](#1511-命令模式)
-        - [1.5.12. 责任链模式](#1512-责任链模式)
-        - [1.5.13. 装饰模式](#1513-装饰模式)
-        - [1.5.14. 策略模式](#1514-策略模式)
-        - [1.5.15. 适配器模式](#1515-适配器模式)
-        - [1.5.16. 迭代器模式](#1516-迭代器模式)
-        - [1.5.17. 组合模式](#1517-组合模式)
-        - [1.5.18. 观察者模式](#1518-观察者模式)
-        - [1.5.19. 门面模式](#1519-门面模式)
-        - [1.5.20. 备忘录模式](#1520-备忘录模式)
-        - [1.5.21. 访问者模式](#1521-访问者模式)
-        - [1.5.22. 状态模式](#1522-状态模式)
-        - [1.5.23. 解释器模式](#1523-解释器模式)
-        - [1.5.24. 享元模式](#1524-享元模式)
-        - [1.5.25. 桥梁模式](#1525-桥梁模式)
-    - [1.6. Effective Java总结](#16-effective-java总结)
-        - [1.6.1. 创建和销毁对象](#161-创建和销毁对象)
-        - [1.6.2. 对于所有对象都通用的方法](#162-对于所有对象都通用的方法)
-        - [1.6.3. 类和接口](#163-类和接口)
-        - [1.6.4. 范型](#164-范型)
-        - [1.6.5. 枚举和注解](#165-枚举和注解)
-        - [1.6.6. 方法](#166-方法)
-        - [1.6.7. 通用程序设计](#167-通用程序设计)
-        - [1.6.8. 异常](#168-异常)
-        - [1.6.9. 并发](#169-并发)
-        - [1.6.10. 序列化](#1610-序列化)
-    - [1.7. Java编程思想阅读总结](#17-java编程思想阅读总结)
-        - [1.7.1. 对象导论](#171-对象导论)
-        - [1.7.2. 一切都是对象](#172-一切都是对象)
-        - [1.7.3. 操作符](#173-操作符)
-        - [1.7.4. 控制执行流程](#174-控制执行流程)
-        - [1.7.5. 初始化和清理](#175-初始化和清理)
-        - [1.7.6. 访问权限控制](#176-访问权限控制)
-        - [1.7.7. 复用类](#177-复用类)
-        - [1.7.8. 多态](#178-多态)
-        - [1.7.9. 接口](#179-接口)
-        - [1.7.10. 内部类](#1710-内部类)
-        - [1.7.11. 持有对象](#1711-持有对象)
-        - [1.7.12. 通过异常处理错误](#1712-通过异常处理错误)
-        - [1.7.13. 字符串](#1713-字符串)
-        - [1.7.14. 类型信息](#1714-类型信息)
-        - [1.7.15. 范型](#1715-范型)
-        - [1.7.16. 数组](#1716-数组)
-        - [1.7.17. 容器深入研究](#1717-容器深入研究)
-        - [1.7.18. Java IO系统](#1718-java-io系统)
-        - [1.7.19. 枚举类型](#1719-枚举类型)
-        - [1.7.20. 注解](#1720-注解)
-        - [1.7.21. 并发](#1721-并发)
-        - [1.7.22.](#1722)
-
-<!-- /TOC -->
 # 1. Java与面向对象
 
 ## 1.1. Java基础
@@ -207,6 +115,7 @@ int[][] arr2 =  {{1,2},{1,2}};
 数组工具类java.util.Arrays。提供排序,复制，比较，初始化等功能。
 #### 1.1.2.3. String 
 <a href="#menu" style="float:right">目录</a>
+
 ```java
 public static void main(String args[]){
 
@@ -251,8 +160,10 @@ String a = new String("1243");
 
 ## 1.2. 面向对象
 <a href="#menu" style="float:right">目录</a>
+
 ### 1.2.1. 三大特性
 <a href="#menu" style="float:right">目录</a>
+
 * 继承
 通过继承可以实现代码的复用。
 * 封装
@@ -334,6 +245,19 @@ class Sub extends Base{
 子类普通初始化块
 子类构造器
 ```
+
+
+
+**创建对象的多种方式**
+* 用new关键字创建.会调用构造器
+* 利用反射，调用Class类的或者是Constructor类的newInstance（）方法.会调用构造器
+* 用反序列化，调用ObjectInputStream类的readObject（）方法，不会调用构造器
+* 调用对象的clone方法，不会调用构造器
+
+
+
+
+
 #### 1.2.1.1. 权限修饰符
 <a href="#menu" style="float:right">目录</a>
 * private 本类可见
@@ -384,8 +308,36 @@ class Sub extends Base{
 * 修饰初始化块，类加载时会先被调用
 * 与import配合，引入static元素(属性和方法)
 
+#### 1.2.1.3. 建议
+* 考虑使用静态工厂方法代替构造器
+    * 如果类的实例化参数较复杂，应当通过工厂方法向用户提供简单明了的实例化方法
+* 参数较多时使用构建器
+    * 由用户决定初始化哪个属性
+* 避免创建不必要的对象
+    * 创建对象将占用JVM堆内存，为了减少堆内存的使用，要么减少不必要的对象，重复使用的对象可使用对象池，比如数据库连接池
+* 消除过期的对象引用
+    * 不再使用的对象应当消除其引用
+    * 栈中创建的引用不需要显示消除
+    * 需要注意的是使用集合存储对象时，如果不再使用应当移除该对象，以便JVM能够对其进行回收
+* 避免使用终结方法
+    * 终结方法finalizer在垃圾回收之前会被调用
+    * 因为何时被调用并不确定，可能很快，可能很长时间，如果使用其来释放资源，将存在很大的不确定性。
+* 覆盖equals应遵循的约定
+    * 自反性
+        * 对于任何非null的对象x，x.equals(x) 必须返回 true
+    * 对称性
+        * 对于任何非null的对象x、y ,x.equals(y) 和y.equals(x)结果必须相同
+    * 传递性
+        * 对于任何非null的对象x、y、z，x.equals(y)并且y.equals(z)都返回true，那么必须x.equals(z)返回true.
+    * 一致性
+        *  对于任何非null的对象x、y,如果equals中比较的信息没改，那么多次调用的结果都是一致的。
+    * 对于任何非null的对象，x.equals(null)必须返回false.
+* 重写equals时也要重写HashCode
+    * 规范:如果两个对象根据equals方法比较的结果是true,那么它们的hashCode方法结果也一样,反过来没有强制
+    * 在应用程序的执行期间，只要对象的equals方法的比较操作所用到的信息没有被修改，那么多次调用hashCode获得的整数是一致的
+    
 
-#### 1.2.1.3. 内部类
+#### 1.2.1.4. 内部类
 内部类分为普通内部类，静态内部类，局部内部类，匿名内部类。
 
 **普通内部类和静态内部类**
@@ -461,7 +413,7 @@ func(new Handle{
 
 });
 ```
-#### 1.2.1.4. 枚举类
+#### 1.2.1.5. 枚举类
 ```java
 public enum BlogReturnCode implements  ReturnCode{
     //空参数 0
@@ -487,12 +439,514 @@ public enum BlogReturnCode implements  ReturnCode{
     }
 }
 ```
-### 1.2.2. 范型
+### 1.2.2. 泛型
 <a href="#menu" style="float:right">目录</a>
 
+### 1.2.3. 概述
+泛型在java中有很重要的地位，在面向对象编程及各种设计模式中有非常广泛的应用。
+
+**什么是泛型？为什么要使用泛型？**
+* 泛型，即“参数化类型”。一提到参数，最熟悉的就是定义方法时有形参，然后调用此方法时传递实参。那么参数化类型怎么理解呢？
+* 顾名思义，就是将类型由原来的具体的类型参数化，类似于方法中的变量参数，此时类型也定义成参数形式（可以称之为类型形参），然后在使用/调用时传入具体的类型（类型实参）。
+* 泛型的本质是为了参数化类型（在不创建新的类型的情况下，通过泛型指定的不同类型来控制形参具体限制的类型）。也就是说在泛型使用过程中，
+* 操作的数据类型被指定为一个参数，这种参数类型可以用在类、接口和方法中，分别被称为泛型类、泛型接口、泛型方法。
+
+```java
+List arrayList = new ArrayList();
+arrayList.add("aaaa");
+arrayList.add(100);
+
+for(int i = 0; i< arrayList.size();i++){
+    String item = (String)arrayList.get(i);
+    Log.d("泛型测试","item = " + item);
+}
+```
+毫无疑问，程序的运行结果会以崩溃结束：
+java.lang.ClassCastException: java.lang.Integer cannot be cast to java.lang.String
+ArrayList可以存放任意类型，例子中添加了一个String类型，添加了一个Integer类型，再使用时都以String的方式使用，因此程序崩溃了。为了解决类似这样的问题（在编译阶段就可以解决），泛型应运而生。
+
+我们将第一行声明初始化list的代码更改一下，编译器会在编译阶段就能够帮我们发现类似这样的问题。
+```
+List<String> arrayList = new ArrayList<String>();
+//arrayList.add(100); 在编译阶段，编译器就会报错
+```
+* 如果不使用范型，可以把任意类型的对象放入集合，但这将丢失对象的状态信息，集合只知道它盛装的是Object,因此取出需要进行强制转换，如果类型不同，将会发送异常
+* 如果使用范型，如果放入对象的类型与集合定义的范型类型不一致，将会发生异常，该对象不会被放入集合。
 
 
-### 1.2.3. 集合
+* 泛型只在编译阶段有效。看下面的代码：
+```java
+List<String> stringArrayList = new ArrayList<String>();
+List<Integer> integerArrayList = new ArrayList<Integer>();
+
+Class classStringArrayList = stringArrayList.getClass();
+Class classIntegerArrayList = integerArrayList.getClass();
+
+if(classStringArrayList.equals(classIntegerArrayList)){
+    Log.d("泛型测试类型相同");
+}
+```
+输出结果：泛型测试: 类型相同。
+
+通过上面的例子可以证明，在编译之后程序会采取去泛型化的措施。也就是说Java中的泛型，只在编译阶段有效。在编译过程中，正确检验泛型结果后，会将泛型的相关信息擦出，并且在对象进入和离开方法的边界处添加类型检查和类型转换的方法。也就是说，泛型信息不会进入到运行时阶段。
+对此总结成一句话：泛型类型在逻辑上看以看成是多个不同的类型，实际上都是相同的基本类型。
+
+**泛型的使用**
+泛型有三种使用方式，分别为：泛型类、泛型接口、泛型方法
+
+**泛型类**
+泛型类型用于类的定义中，被称为泛型类。通过泛型可以完成对一组类的操作对外开放相同的接口。最典型的就是各种容器类，如：List、Set、Map。
+
+泛型类的最基本写法（这么看可能会有点晕，会在下面的例子中详解）：
+
+```java
+class 类名称 <泛型标识：可以随便写任意标识号，标识指定的泛型的类型>{
+  private 泛型标识 /*（成员变量类型）*/ var; 
+  .....
+
+  }
+}
+```
+一个最普通的泛型类：
+```java
+//此处T可以随便写为任意标识，常见的如T、E、K、V等形式的参数常用于表示泛型
+//在实例化泛型类时，必须指定T的具体类型
+public class Generic<T>{ 
+    //key这个成员变量的类型为T,T的类型由外部指定  
+    private T key;
+
+    public Generic(T key) { //泛型构造方法形参key的类型也为T，T的类型由外部指定
+        this.key = key;
+    }
+
+    public T getKey(){ //泛型方法getKey的返回值类型为T，T的类型由外部指定
+        return key;
+    }
+}
+
+//泛型的类型参数只能是类类型（包括自定义类），不能是简单类型
+//传入的实参类型需与泛型的类型参数类型相同，即为Integer.
+Generic<Integer> genericInteger = new Generic<Integer>(123456);
+
+//传入的实参类型需与泛型的类型参数类型相同，即为String.
+Generic<String> genericString = new Generic<String>("key_vlaue");
+Log.d("泛型测试","key is " + genericInteger.getKey());
+Log.d("泛型测试","key is " + genericString.getKey());
+```
+12-27 09:20:04.432 13063-13063/? D/泛型测试: key is 123456
+12-27 09:20:04.432 13063-13063/? D/泛型测试: key is key_vlaue
+
+定义的泛型类，就一定要传入泛型类型实参么？并不是这样，在使用泛型的时候如果传入泛型实参，则会根据传入的泛型实参做相应的限制，此时泛型才会起到本应起到的限制作用。如果不传入泛型类型实参的话，在泛型类中使用泛型的方法或成员变量定义的类型可以为任何的类型。
+
+看一个例子：
+
+```java
+Generic generic = new Generic("111111");
+Generic generic1 = new Generic(4444);
+Generic generic2 = new Generic(55.55);
+Generic generic3 = new Generic(false);
+
+Log.d("泛型测试","key is " + generic.getKey());
+Log.d("泛型测试","key is " + generic1.getKey());
+Log.d("泛型测试","key is " + generic2.getKey());
+Log.d("泛型测试","key is " + generic3.getKey());
+```
+
+D/泛型测试: key is 111111
+D/泛型测试: key is 4444
+D/泛型测试: key is 55.55
+D/泛型测试: key is false
+ 
+
+注意：
+泛型的类型参数只能是类类型，不能是简单类型。
+不能对确切的泛型类型使用instanceof操作。如下面的操作是非法的，编译时会出错。
+if(ex_num instanceof Generic<Number>){ }
+
+**泛型接口**
+泛型接口与泛型类的定义及使用基本相同。泛型接口常被用在各种类的生产器中，可以看一个例子：
+
+//定义一个泛型接口
+public interface Generator<T> {
+    public T next();
+}
+当实现泛型接口的类，未传入泛型实参时：
+
+```java
+/**
+ * 未传入泛型实参时，与泛型类的定义相同，在声明类的时候，需将泛型的声明也一起加到类中
+ * 即：class FruitGenerator<T> implements Generator<T>{
+ * 如果不声明泛型，如：class FruitGenerator implements Generator<T>，编译器会报错："Unknown class"
+ */
+class FruitGenerator<T> implements Generator<T>{
+    @Override
+    public T next() {
+        return null;
+    }
+}
+```
+
+当实现泛型接口的类，传入泛型实参时：
+
+```java
+/**
+ * 传入泛型实参时：
+ * 定义一个生产器实现这个接口,虽然我们只创建了一个泛型接口Generator<T>
+ * 但是我们可以为T传入无数个实参，形成无数种类型的Generator接口。
+ * 在实现类实现泛型接口时，如已将泛型类型传入实参类型，则所有使用泛型的地方都要替换成传入的实参类型
+ * 即：Generator<T>，public T next();中的的T都要替换成传入的String类型。
+ */
+public class FruitGenerator implements Generator<String> {
+
+    private String[] fruits = new String[]{"Apple", "Banana", "Pear"};
+
+    @Override
+    public String next() {
+        Random rand = new Random();
+        return fruits[rand.nextInt(3)];
+    }
+}
+```
+
+**泛型通配符**
+我们知道Ingeter是Number的一个子类，同时在特性章节中我们也验证过Generic<Ingeter>与Generic<Number>实际上是相同的一种基本类型。那么问题来了，在使用Generic<Number>作为形参的方法中，能否使用Generic<Ingeter>的实例传入呢？在逻辑上类似于Generic<Number>和Generic<Ingeter>是否可以看成具有父子关系的泛型类型呢？
+
+为了弄清楚这个问题，我们使用Generic<T>这个泛型类继续看下面的例子：
+
+public void showKeyValue1(Generic<Number> obj){
+    Log.d("泛型测试","key value is " + obj.getKey());
+}
+ 
+
+```java
+Generic<Integer> gInteger = new Generic<Integer>(123);
+Generic<Number> gNumber = new Generic<Number>(456);
+
+showKeyValue(gNumber);
+
+// showKeyValue这个方法编译器会为我们报错：Generic<java.lang.Integer> 
+// cannot be applied to Generic<java.lang.Number>
+// showKeyValue(gInteger);
+```
+ 
+
+通过提示信息我们可以看到Generic<Integer>不能被看作为`Generic<Number>的子类。由此可以看出:同一种泛型可以对应多个版本（因为参数类型是不确定的），不同版本的泛型类实例是不兼容的。
+
+回到上面的例子，如何解决上面的问题？总不能为了定义一个新的方法来处理Generic<Integer>类型的类，这显然与java中的多台理念相违背。因此我们需要一个在逻辑上可以表示同时是Generic<Integer>和Generic<Number>父类的引用类型。由此类型通配符应运而生。
+
+我们可以将上面的方法改一下：
+
+public void showKeyValue1(Generic<?> obj){
+    Log.d("泛型测试","key value is " + obj.getKey());
+}
+类型通配符一般是使用？代替具体的类型实参，注意了，此处’？’是类型实参，而不是类型形参 。重要说三遍！此处’？’是类型实参，而不是类型形参 ！ 此处’？’是类型实参，而不是类型形参 ！再直白点的意思就是，此处的？和Number、String、Integer一样都是一种实际的类型，可以把？看成所有类型的父类。是一种真实的类型。
+
+可以解决当具体类型不确定的时候，这个通配符就是 ?  ；当操作类型时，不需要使用类型的具体功能时，只使用Object类中的功能。那么可以用 ? 通配符来表未知类型。
+
+**泛型方法**
+在java中,泛型类的定义非常简单，但是泛型方法就比较复杂了。
+
+尤其是我们见到的大多数泛型类中的成员方法也都使用了泛型，有的甚至泛型类中也包含着泛型方法，这样在初学者中非常容易将泛型方法理解错了。
+泛型类，是在实例化类的时候指明泛型的具体类型；泛型方法，是在调用方法的时候指明泛型的具体类型 。
+
+```java
+/**
+ * 泛型方法的基本介绍
+ * @param tClass 传入的泛型实参
+ * @return T 返回值为T类型
+ * 说明：
+ *     1）public 与 返回值中间<T>非常重要，可以理解为声明此方法为泛型方法。
+ *     2）只有声明了<T>的方法才是泛型方法，泛型类中的使用了泛型的成员方法并不是泛型方法。
+ *     3）<T>表明该方法将使用泛型类型T，此时才可以在方法中使用泛型类型T。
+ *     4）与泛型类的定义一样，此处T可以随便写为任意标识，常见的如T、E、K、V等形式的参数常用于表示泛型。
+ */
+public <T> T genericMethod(Class<T> tClass)throws InstantiationException ,
+  IllegalAccessException{
+        T instance = tClass.newInstance();
+        return instance;
+}
+```
+ 
+
+Object obj = genericMethod(Class.forName("com.test.test"));
+4.6.1 泛型方法的基本用法
+光看上面的例子有的同学可能依然会非常迷糊，我们再通过一个例子，把我泛型方法再总结一下。
+
+```java
+public class GenericTest {
+   //这个类是个泛型类，在上面已经介绍过
+   public class Generic<T>{     
+        private T key;
+
+        public Generic(T key) {
+            this.key = key;
+        }
+
+        //我想说的其实是这个，虽然在方法中使用了泛型，但是这并不是一个泛型方法。
+        //这只是类中一个普通的成员方法，只不过他的返回值是在声明泛型类已经声明过的泛型。
+        //所以在这个方法中才可以继续使用 T 这个泛型。
+        public T getKey(){
+            return key;
+        }
+
+        /**
+         * 这个方法显然是有问题的，在编译器会给我们提示这样的错误信息"cannot reslove symbol E"
+         * 因为在类的声明中并未声明泛型E，所以在使用E做形参和返回值类型时，编译器会无法识别。
+        public E setKey(E key){
+             this.key = keu
+        }
+        */
+    }
+
+    /** 
+     * 这才是一个真正的泛型方法。
+     * 首先在public与返回值之间的<T>必不可少，这表明这是一个泛型方法，并且声明了一个泛型T
+     * 这个T可以出现在这个泛型方法的任意位置.
+     * 泛型的数量也可以为任意多个 
+     *    如：public <T,K> K showKeyName(Generic<T> container){
+     *        ...
+     *        }
+     */
+    public <T> T showKeyName(Generic<T> container){
+        System.out.println("container key :" + container.getKey());
+        //当然这个例子举的不太合适，只是为了说明泛型方法的特性。
+        T test = container.getKey();
+        return test;
+    }
+
+    //这也不是一个泛型方法，这就是一个普通的方法，只是使用了Generic<Number>这个泛型类做形参而已。
+    public void showKeyValue1(Generic<Number> obj){
+        Log.d("泛型测试","key value is " + obj.getKey());
+    }
+
+    //这也不是一个泛型方法，这也是一个普通的方法，只不过使用了泛型通配符?
+    //同时这也印证了泛型通配符章节所描述的，?是一种类型实参，可以看做为Number等所有类的父类
+    public void showKeyValue2(Generic<?> obj){
+        Log.d("泛型测试","key value is " + obj.getKey());
+    }
+
+     /**
+     * 这个方法是有问题的，编译器会为我们提示错误信息："UnKnown class 'E' "
+     * 虽然我们声明了<T>,也表明了这是一个可以处理泛型的类型的泛型方法。
+     * 但是只声明了泛型类型T，并未声明泛型类型E，因此编译器并不知道该如何处理E这个类型。
+    public <T> T showKeyName(Generic<E> container){
+        ...
+    }  
+    */
+
+    /**
+     * 这个方法也是有问题的，编译器会为我们提示错误信息："UnKnown class 'T' "
+     * 对于编译器来说T这个类型并未项目中声明过，因此编译也不知道该如何编译这个类。
+     * 所以这也不是一个正确的泛型方法声明。
+    public void showkey(T genericObj){
+
+    }
+    */
+
+    public static void main(String[] args) {
+
+
+    }
+}
+```
+**类中的泛型方法**
+当然这并不是泛型方法的全部，泛型方法可以出现杂任何地方和任何场景中使用。但是有一种情况是非常特殊的，当泛型方法出现在泛型类中时，我们再通过一个例子看一下
+
+```java
+public class GenericFruit {
+    class Fruit{
+        @Override
+        public String toString() {
+            return "fruit";
+        }
+    }
+
+    class Apple extends Fruit{
+        @Override
+        public String toString() {
+            return "apple";
+        }
+    }
+
+    class Person{
+        @Override
+        public String toString() {
+            return "Person";
+        }
+    }
+
+    class GenerateTest<T>{
+        public void show_1(T t){
+            System.out.println(t.toString());
+        }
+
+        //在泛型类中声明了一个泛型方法，使用泛型E，这种泛型E可以为任意类型。可以类型与T相同，也可以不同。
+        //由于泛型方法在声明的时候会声明泛型<E>，因此即使在泛型类中并未声明泛型，编译器也能够正确识别泛型方法中识别的泛型。
+        public <E> void show_3(E t){
+            System.out.println(t.toString());
+        }
+
+        //在泛型类中声明了一个泛型方法，使用泛型T，注意这个T是一种全新的类型，可以与泛型类中声明的T不是同一种类型。
+        public <T> void show_2(T t){
+            System.out.println(t.toString());
+        }
+    }
+
+    public static void main(String[] args) {
+        Apple apple = new Apple();
+        Person person = new Person();
+
+        GenerateTest<Fruit> generateTest = new GenerateTest<Fruit>();
+        //apple是Fruit的子类，所以这里可以
+        generateTest.show_1(apple);
+        //编译器会报错，因为泛型类型实参指定的是Fruit，而传入的实参类是Person
+        //generateTest.show_1(person);
+
+        //使用这两个方法都可以成功
+        generateTest.show_2(apple);
+        generateTest.show_2(person);
+
+        //使用这两个方法也都可以成功
+        generateTest.show_3(apple);
+        generateTest.show_3(person);
+    }
+}
+```
+
+**泛型方法与可变参数**
+
+再看一个泛型方法和可变参数的例子：
+```java
+public <T> void printMsg( T... args){
+    for(T t : args){
+        Log.d("泛型测试","t is " + t);
+    }
+}
+printMsg("111",222,"aaaa","2323.4",55.55);
+```
+
+**静态方法与泛型**
+静态方法有一种情况需要注意一下，那就是在类中的静态方法使用泛型：静态方法无法访问类上定义的泛型；如果静态方法操作的引用数据类型不确定的时候，必须要将泛型定义在方法上。
+
+即：如果静态方法要使用泛型的话，必须将静态方法也定义成泛型方法 。
+
+```java
+public class StaticGenerator<T> {
+    ....
+    ....
+    /**
+     * 如果在类中定义使用泛型的静态方法，需要添加额外的泛型声明（将这个方法定义成泛型方法）
+     * 即使静态方法要使用泛型类中已经声明过的泛型也不可以。
+     * 如：public static void show(T t){..},此时编译器会提示错误信息：
+          "StaticGenerator cannot be refrenced from static context"
+     */
+    public static <T> void show(T t){
+
+    }
+}
+```
+**泛型方法总结**
+泛型方法能使方法独立于类而产生变化，以下是一个基本的指导原则：
+
+无论何时，如果你能做到，你就该尽量使用泛型方法。也就是说，如果使用泛型方法将整个类泛型化，
+
+那么就应该使用泛型方法。另外对于一个static的方法而已，无法访问泛型类型的参数。
+
+所以如果static方法要使用泛型能力，就必须使其成为泛型方法。
+**泛型上下边界**
+在使用泛型的时候，我们还可以为传入的泛型类型实参进行上下边界的限制，如：类型实参只准传入某种类型的父类或某种类型的子类。
+
+为泛型添加上边界，即传入的类型实参必须是指定类型的子类型
+
+public void showKeyValue1(Generic<? extends Number> obj){
+    Log.d("泛型测试","key value is " + obj.getKey());
+}
+```java
+Generic<String> generic1 = new Generic<String>("11111");
+Generic<Integer> generic2 = new Generic<Integer>(2222);
+Generic<Float> generic3 = new Generic<Float>(2.4f);
+Generic<Double> generic4 = new Generic<Double>(2.56);
+
+//这一行代码编译器会提示错误，因为String类型并不是Number类型的子类
+//showKeyValue1(generic1);
+
+showKeyValue1(generic2);
+showKeyValue1(generic3);
+showKeyValue1(generic4);
+```
+如果我们把泛型类的定义也改一下:
+
+```java
+public class Generic<T extends Number>{
+    private T key;
+
+    public Generic(T key) {
+        this.key = key;
+    }
+
+    public T getKey(){
+        return key;
+    }
+}
+```
+ 
+
+//这一行代码也会报错，因为String不是Number的子类
+Generic<String> generic1 = new Generic<String>("11111");
+再来一个泛型方法的例子：
+
+ 
+
+```java
+//在泛型方法中添加上下边界限制的时候，必须在权限声明与返回值之间的<T>上添加上下边界，即在泛型声明的时候添加
+//public <T> T showKeyName(Generic<T extends Number> container)，编译器会报错："Unexpected bound"
+public <T extends Number> T showKeyName(Generic<T> container){
+    System.out.println("container key :" + container.getKey());
+    T test = container.getKey();
+    return test;
+}
+```
+通过上面的两个例子可以看出：泛型的上下边界添加，必须与泛型的声明在一起 。
+
+**泛型数组**
+看到了很多文章中都会提起泛型数组，经过查看sun的说明文档，在java中是”不能创建一个确切的泛型类型的数组”的。
+
+也就是说下面的这个例子是不可以的：
+
+List<String>[] ls = new ArrayList<String>[10];  
+而使用通配符创建泛型数组是可以的，如下面这个例子：
+
+List<?>[] ls = new ArrayList<?>[10]; 
+这样也是可以的：
+
+List<String>[] ls = new ArrayList[10];
+下面使用Sun的一篇文档的一个例子来说明这个问题：
+
+```java
+List<String>[] lsa = new ArrayList<String>[10]; // Not really allowed.    
+Object o = lsa;    
+Object[] oa = (Object[]) o;    
+List<Integer> li = new ArrayList<Integer>();    
+li.add(new Integer(3));    
+oa[1] = li; // Unsound, but passes run time store check    
+String s = lsa[1].get(0); // Run-time error: ClassCastException.
+```
+这种情况下，由于JVM泛型的擦除机制，在运行时JVM是不知道泛型信息的，所以可以给oa[1]赋上一个ArrayList而不会出现异常，但是在取出数据的时候却要做一次类型转换，所以就会出现ClassCastException，如果可以进行泛型数组的声明，上面说的这种情况在编译期将不会出现任何的警告和错误，只有在运行时才会出错。而对泛型数组的声明进行限制，对于这样的情况，可以在编译期提示代码有类型安全问题，比没有任何提示要强很多。 
+
+下面采用通配符的方式是被允许的:数组的类型不可以是类型变量，除非是采用通配符的方式，因为对于通配符的方式，最后取出数据是要做显式的类型转换的。
+
+```java
+List<?>[] lsa = new ArrayList<?>[10]; // OK, array of unbounded wildcard type.    
+Object o = lsa;    
+Object[] oa = (Object[]) o;    
+List<Integer> li = new ArrayList<Integer>();    
+li.add(new Integer(3));    
+oa[1] = li; // Correct.    
+Integer i = (Integer) lsa[1].get(0); // OK 
+```
+
+
+### 1.2.4. 集合
 <a href="#menu" style="float:right">目录</a>
 
 ![](http://images2015.cnblogs.com/blog/745114/201603/745114-20160314011243365-185967687.png)
@@ -725,7 +1179,7 @@ public interface Comparator<T> {
     * 我们不难发现：Comparable相当于“内部比较器”，而Comparator相当于“外部比较器”。
 
 
-### 1.2.4. 异常
+### 1.2.5. 异常
 <a href="#menu" style="float:right">目录</a>
 
 ![](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564945249663&di=9c6ee8dcda7a4b1e21c970cef177ec3f&imgtype=jpg&src=http%3A%2F%2Fimg4.imgtn.bdimg.com%2Fit%2Fu%3D1403341014%2C2801110274%26fm%3D214%26gp%3D0.jpg)
@@ -918,7 +1372,7 @@ public static void main(java.lang.String[]);
 
 
 
-### 1.2.5. 注解
+### 1.2.6. 注解
 <a href="#menu" style="float:right">目录</a>
 
 **概念定义**
@@ -1043,13 +1497,314 @@ public interface AnnotatedElement {
 }
 ```
 
-### 1.2.6. IO
+### 1.2.7. IO
 <a href="#menu" style="float:right">目录</a>
 
-### 1.2.7. 反射
+### 1.2.8. File
+* File是java.io包下与平台无关的文件和目录操作类。
+* File能改新建，删除和重命名文件和目录。
+* File不能访问文件内容，访问文件内容使用相关的流操作类。
+* 绝对路径: Linux：以根路径开头的路径(/xx/xx),WIN：以磁盘开头的路径(d://,c://)
+* 相对路径: 相对当前项目的路径( pic/header)
+
+**常用方法**
+```java
+//返回由此抽象路径名表示的文件或目录的名称。
+public String getName()
+//返回此抽象路径名的父路径名的路径名字符串，如果此路径名没有指定父目录，则返回 null。
+public String getParent()、
+//返回此抽象路径名的父路径名的抽象路径名，如果此路径名没有指定父目录，则返回 null。
+public File getParentFile()
+//将此抽象路径名转换为一个路径名字符串。
+public String getPath()
+//测试此抽象路径名是否为绝对路径名。
+public boolean isAbsolute()
+//返回抽象路径名的绝对路径名字符串。
+public String getAbsolutePath()
+//测试应用程序是否可以读取此抽象路径名表示的文件。
+public boolean canRead()
+//测试应用程序是否可以修改此抽象路径名表示的文件。
+public boolean canWrite()
+//测试此抽象路径名表示的文件或目录是否存在
+public boolean exists()
+//测试此抽象路径名表示的文件是否是一个目录。
+public boolean isDirectory()
+//测试此抽象路径名表示的文件是否是一个标准文件。
+public boolean isFile()
+//返回此抽象路径名表示的文件最后一次被修改的时间。
+public long lastModified()
+//返回由此抽象路径名表示的文件的长度。
+public long length()
+//当且仅当不存在具有此抽象路径名指定的名称的文件时，原子地创建由此抽象路径名指定的一个新的空文件。
+public boolean createNewFile() throws IOException
+// 删除此抽象路径名表示的文件或目录。
+public boolean delete()
+//在虚拟机终止时，请求删除此抽象路径名表示的文件或目录。
+public void deleteOnExit()
+//返回由此抽象路径名所表示的目录中的文件和目录的名称所组成字符串数组。
+public String[] list()
+//返回由包含在目录中的文件和目录的名称所组成的字符串数组，这一目录是通过满足指定过滤器的抽象路径名来表示的。
+public String[] list(FilenameFilter filter)
+ // 返回一个抽象路径名数组，这些路径名表示此抽象路径名所表示目录中的文件。
+public File[] listFiles()
+//返回表示此抽象路径名所表示目录中的文件和目录的抽象路径名数组，这些路径名满足特定过滤器。
+public File[] listFiles(FileFilter filter)
+//创建此抽象路径名指定的目录。
+public boolean mkdir()
+//创建此抽象路径名指定的目录，包括创建必需但不存在的父目录。
+public boolean mkdirs()
+ //重新命名此抽象路径名表示的文件。
+public boolean renameTo(File dest)
+//设置由此抽象路径名所指定的文件或目录的最后一次修改时间。
+public boolean setLastModified(long time)
+//标记此抽象路径名指定的文件或目录，以便只可对其进行读操作。
+public boolean setReadOnly()
+//在指定目录中创建一个新的空文件，使用给定的前缀和后缀字符串生成其名称。
+public static File createTempFile(String prefix, String suffix, File directory) throws IOException
+//在默认临时文件目录中创建一个空文件，使用给定前缀和后缀生成其名称。
+public static File createTempFile(String prefix, String suffix) throws IOException
+//按字母顺序比较两个抽象路径名。
+public int compareTo(File pathname)
+//按字母顺序比较抽象路径名与给定对象。
+public int compareTo(Object o)
+//测试此抽象路径名与给定对象是否相等。
+public boolean equals(Object obj)
+ //返回此抽象路径名的路径名字符串。
+public String toString()
+```
+**文件过滤器**
+```java
+public interface FilenameFilter {
+    /**
+     * Tests if a specified file should be included in a file list.
+     *
+     * @param   dir    the directory in which the file was found.
+     * @param   name   the name of the file.
+     * @return  <code>true</code> if and only if the name should be
+     * included in the file list; <code>false</code> otherwise.
+     */
+    boolean accept(File dir, String name);
+}
+@FunctionalInterface
+public interface FileFilter {
+
+    /**
+     * Tests whether or not the specified abstract pathname should be
+     * included in a pathname list.
+     *
+     * @param  pathname  The abstract pathname to be tested
+     * @return  <code>true</code> if and only if <code>pathname</code>
+     *          should be included
+     */
+    boolean accept(File pathname);
+}
+//File获取文件列表时添加过滤器
+public File[] listFiles(FileFilter filter) ;
+public File[] listFiles(FilenameFilter filter)
+```
+#### 1.2.8.1. IO流
+
+**流的概念和作用**
+
+流是一组有顺序的，有起点和终点的字节集合，是对数据传输的总称或抽象。即数据在两设备间的传输称为流，流的本质是数据传输，根据数据传输特性将流抽象为各种类，方便更直观的进行数据操作。 
+
+**IO流的分类**
+根据处理数据类型的不同分为：字符流和字节流
+根据数据流向不同分为：输入流和输出流
+ 
+**字符流和字节流**
+字符流的由来： 因为数据编码的不同，而有了对字符进行高效操作的流对象。本质其实就是基于字节流读取时，去查了指定的码表。 字节流和字符流的区别：
+* 读写单位不同：字节流以字节（8bit）为单位，字符流以字符为单位，根据码表映射字符，一次可能读多个字节。
+* 处理对象不同：字节流能处理所有类型的数据（如图片、avi等），而字符流只能处理字符类型的数据。
+* 结论：只要是处理纯文本数据，就优先考虑使用字符流。 除此之外都使用字节流。
+
+**输入流和输出流**
+对输入流只能进行读操作，对输出流只能进行写操作，程序中需要根据待传输数据的不同特性而使用不同的流。  
+
+**节点流和处理流**
+* 节点流
+    * 可以从一个特定的IO设备(磁盘，网络)读写数据的流，称为节点流
+    * 当使用节点流来进行输入输出时，程序直接连接到实际的数据源，和实际的输入输出节点连接
+* 处理流
+    * 对一个已存在的流进行连接或封装，通过封装后实现数据的读写
+    * 当使用处理流来进行输入输出时，程序并不会直接连接到实际的数据源，没有和实际的输入输出节点连接
+    * 只要使用相同的处理流，程序就可以采用完全相同的输入输出代码访问不同的数据源，相当于做了顶层封装，提供公共的访问接口。
+    
+
+
+|分类|字节输入流|字节输出流|字符输入流|字符输出流|
+|---|---|---|---|---|
+|抽象基类|InputStream|OutputStream|Reader|Writer|
+|访问文件|FileInputStream|FileOutoutStream|FileReader|FileWriter|
+|访问数组|ByteArrayInputStream|ByteArrayOutputStream|CharArrayReader|CharArrayWriter|
+|访问管道|PipedInputStream|PipedOutputStream|PipedReader|PipedWriter|
+|访问字符串|||StringReader|StringWriter|
+|缓冲流|BufferedInputStream|BufferedOutputStream|BufferedReader|BufferedWriter|
+|转换流|||InputStreamReader|OutputStreamWriter|
+|对象流|ObjectInputStream|ObjectOutputStream|||
+|抽象基类|FilterInputStream|FilterOutputStream|FilterReader|FilterWriter|
+|打印流||PrintOutputStream||PrintWriter|
+|推回输入流|PushbackInputStream||PushbackOutputStream||
+|特殊流|DataInputStream|DataOutputStream|||
+
+**输出追加内容**
+
+append 参数控制，默认是不追加，写入文件时全部覆盖。
+```java
+public FileOutputStream(String name, boolean append)
+        throws FileNotFoundException
+{
+    this(name != null ? new File(name) : null, append);
+}
+
+```
+**关闭输出流**
+* 不要忘记关闭输出流
+* 关闭输出流可以保证物理资源被回
+* 还可以将输出流缓冲区中的数据flush到物理节点中
+* Java很多输出流默认都提供了缓冲功能
+
+**什么时候使用字节流、什么时候使用字符流，二者的区别**
+* 在程序中所有的数据都是以流的方式进行传输或保存的，程序需要数据的时候要使用输入流读取数据，而当程序需要将一些数据保存起来的时候，就要使用输出流完成。
+* InputStream 和OutputStream,两个是为字节流设计的,主要用来处理字节或二进制对象,
+* Reader和 Writer.两个是为字符流（一个字符占两个字节）设计的,主要用来处理字符或字符串.
+ 
+* 字符流处理的单元为2个字节的Unicode字符，操作字符、字符数组或字符串，
+字节流处理单元为1个字节，操作字节和字节数组。
+所以字符流是由Java虚拟机将字节转化为2个字节的Unicode字符为单位的字符而成的，
+所以它对多国语言支持性比较好！
+如果是音频文件、图片、歌曲，就用字节流好点，
+如果是关系到中文（文本）的，用字符流好点
+
+
+* 所有文件的储存是都是字节（byte）的储存，在磁盘上保留的并不是文件的字符而是先把字符编码成字节，再储存这些字节到磁盘。在读取文件（特别是文本文件）时，也是一个字节一个字节地读取以形成字节序列
+字节流可用于任何类型的对象，包括二进制对象，而字符流只能处理字符或者字符串；
+字节流提供了处理任何类型的IO操作的功能，但它不能直接处理Unicode字符，而字符流就可以
+* 字节流是最基本的，所有的InputStrem和OutputStream的子类都是,主要用在处理二进制数据，它是按字节来处理的,但实际中很多的数据是文本，又提出了字符流的概念，它是按虚拟机的encode来处理，也就是要进行字符集的转化 .这两个之间通过 InputStreamReader,OutputStreamWriter来关联，实际上是通过byte[]和String来关联 .在实际开发中出现的汉字问题实际上都是在字符流和字节流之间转化不统一而造成的 
+
+
+* Reader类的read()方法返回类型为int ：作为整数读取的字符（占两个字节共16位），范围在 0 到 65535 之间 (0x00-0xffff)，如果已到达流的末尾，则返回 -1
+
+* inputStream的read()虽然也返回int，但由于此类是面向字节流的，一个字节占8个位，所以返回 0 到 255 范围内的 int 字节值。如果因为已经到达流末尾而没有可用的字节，则返回值 -1。因此对于不能用0-255来表示的值就得用字符流来读取！比如说汉字.
+
+* 字节流和字符流的主要区别是什么呢？
+    * 字节流在操作时不会用到缓冲区（内存），是直接对文件本身进行操作的。而字符流在操作时使用了缓冲区，通过缓冲区再操作文件。
+        *  我们知道，如果一个程序频繁对一个资源进行IO操作，效率会非常低。此时，通过缓冲区，先把需要操作的数据暂时放入内存中，以后直接从内存中读取数据，则可以避免多次的IO操作，提高效率
+    * 在硬盘上的所有文件都是以字节形式存在的（图片，声音，视频），而字符值在内存中才会形成。
+        * 真正存储和传输数据时都是以字节为单位的，字符只是存在与内存当中的，所以，字节流适用范围更为宽广
+
+**缓冲流**
+BufferedInputStream和BufferedOutputStream这两个类分别是FilterInputStream和FilterOutputStream的子类，作为装饰器子类，使用它们可以防止每次读取/发送数据时进行实际的写操作，代表着使用缓冲区。
+
+我们有必要知道不带缓冲的操作，每读一个字节就要写入一个字节，由于涉及磁盘的IO操作相比内存的操作要慢很多，所以不带缓冲的流效率很低。带缓冲的流，可以一次读很多字节，但不向磁盘中写入，只是先放到内存里。等凑够了缓冲区大小的时候一次性写入磁盘，这种方式可以减少磁盘操作次数，速度就会提高很多！
+
+同时正因为它们实现了缓冲功能，所以要注意在使用BufferedOutputStream写完数据后，要调用flush()方法或close()方法，强行将缓冲区中的数据写出。否则可能无法写出数据。与之相似还BufferedReader和BufferedWriter两个类。
+
+**RandomAccessFile**
+* 除了常规的读写功能，还支持任意位置读写内容
+* long getFilePointer(); 返回文件记录指针的当前位置
+* void seek(long pos); 将文件指针定位到pos 
+* 支持读和写
+    * RandomAccessFile(String name, String mode)
+    * mode : 
+        * r :以只读方式打开文件 
+        * rw : 以读写方式打开文件
+        * rws : 除了rw,还要求对文件的内容或者元数据的每个更新都同步写入到底层存储设备
+        * rwd : 除了rw,还要求对文件内容的每个更新都同步写入到底层的存储设备。
+* 如果seek 定位后写入内容，将会覆盖后续内容，如果需要实现插入写，需要先读出后面的内容，写入之后再追加写入读出的内容。
+  
+#### 1.2.8.2. 序列化
+* 序列化
+    * 将对象转化为二进制字节数组，以方便存储到磁盘或者进行网络传输
+* 反序列化
+    * 将二进制字节数组转化为对象
+
+* 需要序列化的对象必须实现Serializable接口
+* transient 修饰的属性不会被序列化
+* 引用类型的属性只有也实现Serializable接口才会被序列化
+* 自定义序列化属性,对象类加入以下方法
+    * private void writeObject（ObjectOutputStream out） throws IOException;
+        * out.writeInt(this.name);
+    * private void readObject（ObjectInputStream in throws IOException;
+        * this.name = in.readInt();
+    * private void readObjectNoData（ObjectInputStream in throws IOException;
+        * 当序列化版本不一致，流被更改等情况，掉用该方法提供默认值。
+    * 属性读写顺序必须一致，否则会出现问题
+* serialVersionUID
+    * 对象的序列化版本ID，可设置任何值
+    * 如果不显示指定，JVM将根据类的相关信息进行修改，修改后的类的计算结果可能和之前的不一样，就会导致序列化失败，因此显示指定版本ID，并根据以下情况决定当类信息修改时是否更新序列化ID
+        * 仅仅修改了方法，不会影响反序列化
+        * 修改了类静态属性或瞬态属性，不会影响反序列化
+        * 如果修改了**非类静态属性或瞬态属性**,如果新增属性，不会影响，如果修改之前的属性，将会影响，反序列化时将会失败，应当修改serialVersionUID。
+    * 如果序列化版本ID和当前类中的ID不一样，那么序列化将会失败
+
+* 注意点
+    * 对象的类名，属性（包括基本类型，数组，对其他对象的引用）都会被序列化，static,transient属性不会被序列化
+    * 反序列化时该JVM必须有该类类文件，否则将抛出异常
+    
+
+
+**方式1:实现Serializable**
+
+
+```java
+public class Person implements  Serializable{
+    
+}
+```
+
+**方式2:实现Externalizable**
+
+强制自定义序列化方式，需要程序员决定需要序列化哪些属性
+
+```java
+public class Person implements  Externalizable{
+
+    private String name = null;
+
+    transient private Integer age = null;
+
+    private Gender gender = null;
+
+    public Person() {
+        System.out.println("none-arg constructor");
+    }
+
+    public Person(String name, Integer age, Gender gender) {
+        System.out.println("arg constructor");
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        //自定义
+    }
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        //自定义
+    }
+    
+}
+```
+**序列化操作**
+```java
+Person person = new Person();
+FileOutputStream fs = new FileOutputStream("foo.ser");  
+ObjectOutputStream os =  new ObjectOutputStream(fs);  
+os.writeObject(person);  
+
+```
+
+
+### 1.2.9. 类加载和反射
 <a href="#menu" style="float:right">目录</a>
 
-### 1.2.8. JDBC
+
+
+### 1.2.10. JDBC
 <a href="#menu" style="float:right">目录</a>
 
 **数据库驱动**
@@ -1174,8 +1929,668 @@ cstmt.registerOutParameter(1, java.sql.Types.TINYINT);
 cstmt.executeUpdate();  
 byte x = cstmt.getByte(1);  
 ```
+## 1.3. 函数式编程
 
-## 1.4. JDK版本变化
+函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。
+
+函数式编程的一个特点就是，允许把函数本身作为参数传入另一个函数，还允许返回一个函数！
+## 1.4. Java 8 的新特性：
+
+### 1.4.1. Java 8 Lambda 表达式
+Lambda 表达式，也可称为闭包，它是推动 Java 8 发布的最重要新特性。
+Lambda 允许把函数作为一个方法的参数（函数作为参数传递进方法中）。
+使用 Lambda 表达式可以使代码变的更加简洁紧凑。
+法
+lambda 表达式的语法格式如下：
+
+```java
+(parameters) -> expression
+或
+(parameters) ->{ statements; }
+```
+* 以下是lambda表达式的重要特征:
+    * 可选类型声明：不需要声明参数类型，编译器可以统一识别参数值。
+    * 可选的参数圆括号：一个参数无需定义圆括号，但多个参数需要定义圆括号。
+    * 可选的大括号：如果主体包含了一个语句，就不需要使用大括号。
+    * 可选的返回关键字：如果主体只有一个表达式返回值则编译器会自动返回值，大括号需要指定明表达式返回了一个数值。
+
+**Lambda 表达式实例**
+
+```java
+// 1. 不需要参数,返回值为 5  
+() -> 5    
+// 2. 接收一个参数(数字类型),返回其2倍的值  
+x -> 2 * x    
+// 3. 接受2个参数(数字),并返回他们的差值  
+(x, y) -> x – y    
+// 4. 接收2个int型整数,返回他们的和  
+(int x, int y) -> x + y   
+// 5. 接受一个 string 对象,并在控制台打印,不返回任何值(看起来像是返回void)  
+(String s) -> System.out.print(s)
+```
+* lambda 表达式只能引用标记了 final 的外层局部变量，这就是说不能在 lambda 内部修改定义在域外的局部变量，否则会编译错误。
+* lambda 表达式的局部变量可以不用声明为 final，但是必须不可被后面的代码修改（即隐性的具有 final 的语义）
+* 在Lambda 表达式当中不允许声明一个与外部局部变量同名的参数或者局部变量
+
+### 1.4.2. Java 8 函数式接口
+函数式接口(Functional Interface)就是一个有且仅有一个抽象方法，但是可以有多个非抽象方法的接口。
+
+函数式接口可以被隐式转换为 lambda 表达式。
+
+Lambda 表达式和方法引用（实际上也可认为是Lambda表达式）上。
+
+如定义了一个函数式接口如下：
+
+@FunctionalInterface
+interface GreetingService 
+{
+    void sayMessage(String message);
+}
+那么就可以使用Lambda表达式来表示该接口的一个实现(注：JAVA 8 之前一般是用匿名类实现的)：
+
+GreetingService greetService1 = message -> System.out.println("Hello " + message);
+函数式接口可以对现有的函数友好地支持 lambda。
+
+JDK 1.8 之前已有的函数式接口:
+
+java.lang.Runnable
+java.util.concurrent.Callable
+java.security.PrivilegedAction
+java.util.Comparator
+java.io.FileFilter
+java.nio.file.PathMatcher
+java.lang.reflect.InvocationHandler
+java.beans.PropertyChangeListener
+java.awt.event.ActionListener
+javax.swing.event.ChangeListener
+JDK 1.8 新增加的函数接口：
+
+java.util.function
+java.util.function 它包含了很多类，用来支持 Java的 函数式编程，该包中的函数式接口有：
+
+|序号	|接口 & 描述
+|---|---|
+|1|	BiConsumer<T,U>代表了一个接受两个输入参数的操作，并且不返回任何结果
+|2|	BiFunction<T,U,R>代表了一个接受两个输入参数的方法，并且返回一个结果
+|3|	BinaryOperator<T>代表了一个作用于于两个同类型操作符的操作，并且返回了操作符同类型的结果
+|4|	BiPredicate<T,U>代表了一个两个参数的boolean值方法
+|5|BooleanSupplier代表了boolean值结果的提供方
+|6|	Consumer<T>代表了接受一个输入参数并且无返回的操作
+|7|	DoubleBinaryOperator代表了作用于两个double值操作符的操作，并且返回了一个double值的结果。
+|8|	DoubleConsumer代表一个接受double值参数的操作，并且不返回结果。
+|9|	DoubleFunction<R>代表接受一个double值参数的方法，并且返回结果
+|10|	DoublePredicate代表一个拥有double值参数的boolean值方法
+|11|	DoubleSupplier代表一个double值结构的提供方
+|12|	DoubleToIntFunction接受一个double类型输入，返回一个int类型结果。
+|13|	DoubleToLongFunction接受一个double类型输入，返回一个long类型结果
+|14|	DoubleUnaryOperator接受一个参数同为类型double,返回值类型也为double 。
+|15|	Function<T,R>接受一个输入参数，返回一个结果。
+|16|	IntBinaryOperator接受两个参数同为类型int,返回值类型也为int 。
+|17|	IntConsumer接受一个int类型的输入参数，无返回值 。
+|18|	IntFunction<R>接受一个int类型输入参数，返回一个结果 。
+|19|	IntPredicate接受一个int输入参数，返回一个布尔值的结果。
+|20|	IntSupplie无参数，返回一个int类型结果。
+|21|	IntToDoubleFunction接受一个int类型输入，返回一个double类型结果 。
+|22|	IntToLongFunction接受一个int类型输入，返回一个long类型结果。
+|23|	IntUnaryOperator接受一个参数同为类型int,返回值类型也为int 。
+|24|	LongBinaryOperator接受两个参数同为类型long,返回值类型也为long。
+|25|	LongConsumer接受一个long类型的输入参数，无返回值。
+|26	|LongFunction<R>接受一个long类型输入参数，返回一个结果。
+|27|	LongPredicate接受一个long输入参数，返回一个布尔值类型结果。
+|28|	LongSupplier无参数，返回一个结果long类型的值。
+|29|	LongToDoubleFunction接受一个long类型输入，返回一个double类型结果。
+|30|	LongToIntFunction接受一个long类型输入，返回一个int类型结果。
+|31|	LongUnaryOperator接受一个参数同为类型long,返回值类型也为long。
+|32|	ObjDoubleConsumer<T>接受一个object类型和一个double类型的输入参数，无返回值。
+|33	|ObjIntConsumer<T>接受一个object类型和一个int类型的输入参数，无返回值。
+|34|	ObjLongConsumer<T>接受一个object类型和一个long类型的输入参数，无返回值。
+|35	|Predicate<T>\接受一个输入参数，返回一个布尔值结果。
+|36|	Supplier<T>无参数，返回一个结果。
+|37|	ToDoubleBiFunction<T,U>接受两个输入参数，返回一个double类型结果
+|38|	ToDoubleFunction<T>接受一个输入参数，返回一个double类型结果
+|39|	ToIntBiFunction<T,U>接受两个输入参数，返回一个int类型结果。
+|40|	ToIntFunction<T>接受一个输入参数，返回一个int类型结果。
+|41|	ToLongBiFunction<T,U>接受两个输入参数，返回一个long类型结果。
+|42	|ToLongFunction<T>接受一个输入参数，返回一个long类型结果。
+|43|	UnaryOperator<T>接受一个参数为类型T,返回值类型也为T。
+
+**函数式接口实例**
+Predicate <T> 接口是一个函数式接口，它接受一个输入参数 T，返回一个布尔值结果。
+
+该接口包含多种默认方法来将Predicate组合成其他复杂的逻辑（比如：与，或，非）。
+
+该接口用于测试对象是 true 或 false。
+
+我们可以通过以下实例（Java8Tester.java）来了解函数式接口 Predicate <T> 的使用：
+```java
+Java8Tester.java 文件
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Predicate;
+ 
+public class Java8Tester {
+   public static void main(String args[]){
+      List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
+        
+      // Predicate<Integer> predicate = n -> true
+      // n 是一个参数传递到 Predicate 接口的 test 方法
+      // n 如果存在则 test 方法返回 true
+        
+      System.out.println("输出所有数据:");
+        
+      // 传递参数 n
+      eval(list, n->true);
+        
+      // Predicate<Integer> predicate1 = n -> n%2 == 0
+      // n 是一个参数传递到 Predicate 接口的 test 方法
+      // 如果 n%2 为 0 test 方法返回 true
+        
+      System.out.println("输出所有偶数:");
+      eval(list, n-> n%2 == 0 );
+        
+      // Predicate<Integer> predicate2 = n -> n > 3
+      // n 是一个参数传递到 Predicate 接口的 test 方法
+      // 如果 n 大于 3 test 方法返回 true
+        
+      System.out.println("输出大于 3 的所有数字:");
+      eval(list, n-> n > 3 );
+   }
+    
+   public static void eval(List<Integer> list, Predicate<Integer> predicate) {
+      for(Integer n: list) {
+        
+         if(predicate.test(n)) {
+            System.out.println(n + " ");
+         }
+      }
+   }
+}
+```
+### 1.4.3. 默认方法
+Java 8 新增了接口的默认方法。
+简单说，默认方法就是接口可以有实现方法，而且不需要实现类去实现其方法。
+我们只需在方法名前面加个 default 关键字即可实现默认方法。
+
+为什么要有这个特性？
+
+首先，之前的接口是个双刃剑，好处是面向抽象而不是面向具体编程，缺陷是，当需要修改接口时候，需要修改全部实现该接口的类，目前的 java 8 之前的集合框架没有 foreach 方法，通常能想到的解决办法是在JDK里给相关的接口添加新的方法及实现。然而，对于已经发布的版本，是没法在给接口添加新方法的同时不影响已有的实现。所以引进的默认方法。他们的目的是为了解决接口的修改与现有的实现不兼容的问题。
+```java
+public interface Vehicle {
+   default void print(){
+      System.out.println("我是一辆车!");
+   }
+}
+默认方法也可以设置为静态。
+```
+
+### 1.4.4. Optional 类
+Optional 类是一个可以为null的容器对象。如果值存在则isPresent()方法会返回true，调用get()方法会返回该对象。
+
+Optional 是个容器：它可以保存类型T的值，或者仅仅保存null。Optional提供很多有用的方法，这样我们就不用显式进行空值检测。
+
+Optional 类的引入很好的解决空指针异常。
+
+类声明
+以下是一个 java.util.Optional<T> 类的声明：
+
+public final class Optional<T>
+extends Object
+类方法
+|序号|	方法 & 描述
+|---|---|
+|1|	static <T> Optional<T> empty()返回空的 Optional 实例。
+|2|	boolean equals(Object obj判断其他对象是否等于 Optional。
+|3|	Optional<T> filter(Predicate<? super <T> predicate)如果值存在，并且这个值匹配给定的 predicate，返回一个Optional用以描述这个值，否则返回一个空的Optional。
+|4|	<U> Optional<U> flatMap(Function<? super T,Optional<U>> mapper)如果值存在，返回基于Optional包含的映射方法的值，否则返回一个空的Optional
+|5|	T get()如果在这个Optional中包含这个值，返回值，否则抛出异常：NoSuchElementException
+|6|	int hashCode()返回存在值的哈希码，如果值不存在 返回 0。
+|7|	void ifPresent(Consumer<? super T> consumer)如果值存在则使用该值调用 consumer , 否则不做任何事情。
+|8|	boolean isPresent()如果值存在则方法会返回true，否则返回 false。
+|9|	<U>Optional<U> map(Function<? super T,? extends U> mapper)如果有值，则对其执行调用映射函数得到返回值。如果返回值不为 null，则创建包含映射返回值的Optional作为map方法返回值，否则返回空Optional。
+|10|	static <T> Optional<T> of(T value)返回一个指定非null值的Optional。
+|11|	static <T> Optional<T> ofNullable(T value)如果为非空，返回 Optional 描述的指定值，否则返回空的 Optional。
+|12|	T orElse(T other)如果存在该值，返回值， 否则返回 other。
+|13|	T orElseGet(Supplier<? extends T> other)如果存在该值，返回值， 否则触发 other，并返回 other 调用的结果。
+|14|	<X extends Throwable> T orElseThrow(Supplier<? extends X> exceptionSupplier)如果存在该值，返回包含的值，否则抛出由 Supplier 继承的异常
+|15|	String toString()返回一个Optional的非空字符串，用来调试
+
+注意： 这些方法是从 java.lang.Object 类继承来的。
+
+Optional 实例
+我们可以通过以下实例来更好的了解 Optional 类的使用：
+
+Java8Tester.java 文件
+```java
+import java.util.Optional;
+ 
+public class Java8Tester {
+   public static void main(String args[]){
+   
+      Java8Tester java8Tester = new Java8Tester();
+      Integer value1 = null;
+      Integer value2 = new Integer(10);
+        
+      // Optional.ofNullable - 允许传递为 null 参数
+      Optional<Integer> a = Optional.ofNullable(value1);
+        
+      // Optional.of - 如果传递的参数是 null，抛出异常 NullPointerException
+      Optional<Integer> b = Optional.of(value2);
+      System.out.println(java8Tester.sum(a,b));
+   }
+    
+   public Integer sum(Optional<Integer> a, Optional<Integer> b){
+    
+      // Optional.isPresent - 判断值是否存在
+        
+      System.out.println("第一个参数值存在: " + a.isPresent());
+      System.out.println("第二个参数值存在: " + b.isPresent());
+        
+      // Optional.orElse - 如果值存在，返回它，否则返回默认值
+      Integer value1 = a.orElse(new Integer(0));
+        
+      //Optional.get - 获取值，值需要存在
+      Integer value2 = b.get();
+      return value1 + value2;
+   }
+}
+```
+
+### 1.4.5. Stream
+Java 8 API添加了一个新的抽象称为流Stream，可以让你以一种声明的方式处理数据。
+
+Stream 使用一种类似用 SQL 语句从数据库查询数据的直观方式来提供一种对 Java 集合运算和表达的高阶抽象。
+
+Stream API可以极大提高Java程序员的生产力，让程序员写出高效率、干净、简洁的代码。
+
+这种风格将要处理的元素集合看作一种流， 流在管道中传输， 并且可以在管道的节点上进行处理， 比如筛选， 排序，聚合等。
+
+元素流在管道中经过中间操作（intermediate operation）的处理，最后由最终操作(terminal operation)得到前面处理的结果。
+
++--------------------+       +------+   +------+   +---+   +-------+
+| stream of elements +-----> |filter+-> |sorted+-> |map+-> |collect|
++--------------------+       +------+   +------+   +---+   +-------+
+以上的流程转换为 Java 代码为：
+```java
+List<Integer> transactionsIds = 
+widgets.stream()
+             .filter(b -> b.getColor() == RED)
+             .sorted((x,y) -> x.getWeight() - y.getWeight())
+             .mapToInt(Widget::getWeight)
+             .sum();
+```
+
+**什么是 Stream？**
+* Stream（流）是一个来自数据源的元素队列并支持聚合操作
+* 元素是特定类型的对象，形成一个队列。 Java中的Stream并不会存储元素，而是按需计算。
+* 数据源 流的来源。 可以是集合，数组，I/O channel， 产生器generator 等。
+* 聚合操作 类似SQL语句一样的操作， 比如filter, map, reduce, find, match, sorted等。
+
+和以前的Collection操作不同， Stream操作还有两个基础的特征：
+* Pipelining: 中间操作都会返回流对象本身。 这样多个操作可以串联成一个管道， 如同流式风格（fluent style）。 这样做可以对操作进行优化， 比如延迟执行(laziness)和短路( short-circuiting)。
+* 内部迭代： 以前对集合遍历都是通过Iterator或者For-Each的方式, 显式的在集合外部进行迭代， 这叫做外部迭代。 Stream提供了内部迭代的方式， 通过访问者模式(Visitor)实现。
+
+**生成流**
+在 Java 8 中, 集合接口有两个方法来生成流：
+* stream() − 为集合创建串行流。
+* parallelStream() − 为集合创建并行流。
+
+**forEach**
+Stream 提供了新的方法 'forEach' 来迭代流中的每个数据。以下代码片段使用 forEach 输出了10个随机数：
+```JAVA
+Random random = new Random();
+random.ints().limit(10).forEach(System.out::println);
+```
+**map**
+
+map 方法用于映射每个元素到对应的结果，以下代码片段使用 map 输出了元素对应的平方数：
+```JAVA
+List<Integer> numbers = Arrays.asList(3, 2, 2, 3, 7, 3, 5);
+// 获取对应的平方数
+List<Integer> squaresList = numbers.stream().map( i -> i*i).distinct().collect(Collectors.toList());
+```
+
+**filter**
+
+filter 方法用于通过设置的条件过滤出元素。以下代码片段使用 filter 方法过滤出空字符串：
+```JAVA
+List<String>strings = Arrays.asList("abc", "", "bc", "efg", "abcd","", "jkl");
+// 获取空字符串的数量
+int count = strings.stream().filter(string -> string.isEmpty()).count();
+```
+**limit**
+limit 方法用于获取指定数量的流。 以下代码片段使用 limit 方法打印出 10 条数据：
+```JAVA
+Random random = new Random();
+random.ints().limit(10).forEach(System.out::println);
+```
+**sorted**
+sorted 方法用于对流进行排序。以下代码片段使用 sorted 方法对输出的 10 个随机数进行排序：
+```JAVA
+Random random = new Random();
+random.ints().limit(10).sorted().forEach(System.out::println);
+并行（parallel）程序
+parallelStream 是流并行处理程序的代替方法。以下实例我们使用 parallelStream 来输出空字符串的数量：
+
+List<String> strings = Arrays.asList("abc", "", "bc", "efg", "abcd","", "jkl");
+// 获取空字符串的数量
+int count = strings.parallelStream().filter(string -> string.isEmpty()).count();
+```
+我们可以很容易的在顺序运行和并行直接切换。
+
+**Collectors**
+Collectors 类实现了很多归约操作，例如将流转换成集合和聚合元素。Collectors 可用于返回列表或字符串：
+```JAVA
+List<String>strings = Arrays.asList("abc", "", "bc", "efg", "abcd","", "jkl");
+List<String> filtered = strings.stream().filter(string -> !string.isEmpty()).collect(Collectors.toList());
+ 
+System.out.println("筛选列表: " + filtered);
+String mergedString = strings.stream().filter(string -> !string.isEmpty()).collect(Collectors.joining(", "));
+System.out.println("合并字符串: " + mergedString);
+```
+
+统计
+另外，一些产生统计结果的收集器也非常有用。它们主要用于int、double、long等基本类型上，它们可以用来产生类似如下的统计结果。
+```JAVA
+List<Integer> numbers = Arrays.asList(3, 2, 2, 3, 7, 3, 5);
+ 
+IntSummaryStatistics stats = numbers.stream().mapToInt((x) -> x).summaryStatistics();
+ 
+System.out.println("列表中最大的数 : " + stats.getMax());
+System.out.println("列表中最小的数 : " + stats.getMin());
+System.out.println("所有数之和 : " + stats.getSum());
+System.out.println("平均数 : " + stats.getAverage());
+```
+Stream 完整实例
+将以下代码放入 Java8Tester.java 文件中：
+
+```JAVA
+Java8Tester.java 文件
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.IntSummaryStatistics;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.Map;
+ 
+public class Java8Tester {
+   public static void main(String args[]){
+      System.out.println("使用 Java 7: ");
+        
+      // 计算空字符串
+      List<String> strings = Arrays.asList("abc", "", "bc", "efg", "abcd","", "jkl");
+      System.out.println("列表: " +strings);
+      long count = getCountEmptyStringUsingJava7(strings);
+        
+      System.out.println("空字符数量为: " + count);
+      count = getCountLength3UsingJava7(strings);
+        
+      System.out.println("字符串长度为 3 的数量为: " + count);
+        
+      // 删除空字符串
+      List<String> filtered = deleteEmptyStringsUsingJava7(strings);
+      System.out.println("筛选后的列表: " + filtered);
+        
+      // 删除空字符串，并使用逗号把它们合并起来
+      String mergedString = getMergedStringUsingJava7(strings,", ");
+      System.out.println("合并字符串: " + mergedString);
+      List<Integer> numbers = Arrays.asList(3, 2, 2, 3, 7, 3, 5);
+        
+      // 获取列表元素平方数
+      List<Integer> squaresList = getSquares(numbers);
+      System.out.println("平方数列表: " + squaresList);
+      List<Integer> integers = Arrays.asList(1,2,13,4,15,6,17,8,19);
+        
+      System.out.println("列表: " +integers);
+      System.out.println("列表中最大的数 : " + getMax(integers));
+      System.out.println("列表中最小的数 : " + getMin(integers));
+      System.out.println("所有数之和 : " + getSum(integers));
+      System.out.println("平均数 : " + getAverage(integers));
+      System.out.println("随机数: ");
+        
+      // 输出10个随机数
+      Random random = new Random();
+        
+      for(int i=0; i < 10; i++){
+         System.out.println(random.nextInt());
+      }
+        
+      System.out.println("使用 Java 8: ");
+      System.out.println("列表: " +strings);
+        
+      count = strings.stream().filter(string->string.isEmpty()).count();
+      System.out.println("空字符串数量为: " + count);
+        
+      count = strings.stream().filter(string -> string.length() == 3).count();
+      System.out.println("字符串长度为 3 的数量为: " + count);
+        
+      filtered = strings.stream().filter(string ->!string.isEmpty()).collect(Collectors.toList());
+      System.out.println("筛选后的列表: " + filtered);
+        
+      mergedString = strings.stream().filter(string ->!string.isEmpty()).collect(Collectors.joining(", "));
+      System.out.println("合并字符串: " + mergedString);
+        
+      squaresList = numbers.stream().map( i ->i*i).distinct().collect(Collectors.toList());
+      System.out.println("Squares List: " + squaresList);
+      System.out.println("列表: " +integers);
+        
+      IntSummaryStatistics stats = integers.stream().mapToInt((x) ->x).summaryStatistics();
+        
+      System.out.println("列表中最大的数 : " + stats.getMax());
+      System.out.println("列表中最小的数 : " + stats.getMin());
+      System.out.println("所有数之和 : " + stats.getSum());
+      System.out.println("平均数 : " + stats.getAverage());
+      System.out.println("随机数: ");
+        
+      random.ints().limit(10).sorted().forEach(System.out::println);
+        
+      // 并行处理
+      count = strings.parallelStream().filter(string -> string.isEmpty()).count();
+      System.out.println("空字符串的数量为: " + count);
+   }
+    
+   private static int getCountEmptyStringUsingJava7(List<String> strings){
+      int count = 0;
+        
+      for(String string: strings){
+        
+         if(string.isEmpty()){
+            count++;
+         }
+      }
+      return count;
+   }
+    
+   private static int getCountLength3UsingJava7(List<String> strings){
+      int count = 0;
+        
+      for(String string: strings){
+        
+         if(string.length() == 3){
+            count++;
+         }
+      }
+      return count;
+   }
+    
+   private static List<String> deleteEmptyStringsUsingJava7(List<String> strings){
+      List<String> filteredList = new ArrayList<String>();
+        
+      for(String string: strings){
+        
+         if(!string.isEmpty()){
+             filteredList.add(string);
+         }
+      }
+      return filteredList;
+   }
+    
+   private static String getMergedStringUsingJava7(List<String> strings, String separator){
+      StringBuilder stringBuilder = new StringBuilder();
+        
+      for(String string: strings){
+        
+         if(!string.isEmpty()){
+            stringBuilder.append(string);
+            stringBuilder.append(separator);
+         }
+      }
+      String mergedString = stringBuilder.toString();
+      return mergedString.substring(0, mergedString.length()-2);
+   }
+    
+   private static List<Integer> getSquares(List<Integer> numbers){
+      List<Integer> squaresList = new ArrayList<Integer>();
+        
+      for(Integer number: numbers){
+         Integer square = new Integer(number.intValue() * number.intValue());
+            
+         if(!squaresList.contains(square)){
+            squaresList.add(square);
+         }
+      }
+      return squaresList;
+   }
+    
+   private static int getMax(List<Integer> numbers){
+      int max = numbers.get(0);
+        
+      for(int i=1;i < numbers.size();i++){
+        
+         Integer number = numbers.get(i);
+            
+         if(number.intValue() > max){
+            max = number.intValue();
+         }
+      }
+      return max;
+   }
+    
+   private static int getMin(List<Integer> numbers){
+      int min = numbers.get(0);
+        
+      for(int i=1;i < numbers.size();i++){
+         Integer number = numbers.get(i);
+        
+         if(number.intValue() < min){
+            min = number.intValue();
+         }
+      }
+      return min;
+   }
+    
+   private static int getSum(List numbers){
+      int sum = (int)(numbers.get(0));
+        
+      for(int i=1;i < numbers.size();i++){
+         sum += (int)numbers.get(i);
+      }
+      return sum;
+   }
+    
+   private static int getAverage(List<Integer> numbers){
+      return getSum(numbers) / numbers.size();
+   }
+}
+```
+### 1.4.6. Java 8 日期时间 API
+
+Java 8通过发布新的Date-Time API (JSR 310)来进一步加强对日期与时间的处理。
+在旧版的 Java 中，日期时间 API 存在诸多问题，其中有：
+非线程安全 − java.util.Date 是非线程安全的，所有的日期类都是可变的，这是Java日期类最大的问题之一。
+
+设计很差 − Java的日期/时间类的定义并不一致，在java.util和java.sql的包中都有日期类，此外用于格式化和解析的类在java.text包中定义。java.util.Date同时包含日期和时间，而java.sql.Date仅包含日期，将其纳入java.sql包并不合理。另外这两个类都有相同的名字，这本身就是一个非常糟糕的设计。
+时区处理麻烦 − 日期类并不提供国际化，没有时区支持，因此Java引入了java.util.Calendar和java.util.TimeZone类，但他们同样存在上述所有的问题。
+Java 8 在 java.time 包下提供了很多新的 API。以下为两个比较重要的 API：
+Local(本地) − 简化了日期时间的处理，没有时区的问题。
+Zoned(时区) − 通过制定的时区处理日期时间。
+新的java.time包涵盖了所有处理日期，时间，日期/时间，时区，时刻（instants），过程（during）与时钟（clock）的操作。
+
+**本地化日期时间 API**
+LocalDate/LocalTime 和 LocalDateTime 类可以在处理时区不是必须的情况。代码如下：
+
+Java8Tester.java 文件
+```JAVA
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.time.Month;
+ 
+public class Java8Tester {
+   public static void main(String args[]){
+      Java8Tester java8tester = new Java8Tester();
+      java8tester.testLocalDateTime();
+   }
+    
+   public void testLocalDateTime(){
+    
+      // 获取当前的日期时间
+      LocalDateTime currentTime = LocalDateTime.now();
+      System.out.println("当前时间: " + currentTime);
+        
+      LocalDate date1 = currentTime.toLocalDate();
+      System.out.println("date1: " + date1);
+        
+      Month month = currentTime.getMonth();
+      int day = currentTime.getDayOfMonth();
+      int seconds = currentTime.getSecond();
+        
+      System.out.println("月: " + month +", 日: " + day +", 秒: " + seconds);
+        
+      LocalDateTime date2 = currentTime.withDayOfMonth(10).withYear(2012);
+      System.out.println("date2: " + date2);
+        
+      // 12 december 2014
+      LocalDate date3 = LocalDate.of(2014, Month.DECEMBER, 12);
+      System.out.println("date3: " + date3);
+        
+      // 22 小时 15 分钟
+      LocalTime date4 = LocalTime.of(22, 15);
+      System.out.println("date4: " + date4);
+        
+      // 解析字符串
+      LocalTime date5 = LocalTime.parse("20:15:30");
+      System.out.println("date5: " + date5);
+   }
+}
+```
+### 1.4.7. Java8 Base64
+
+
+在Java 8中，Base64编码已经成为Java类库的标准。
+
+Java 8 内置了 Base64 编码的编码器和解码器。
+
+Base64工具类提供了一套静态方法获取下面三种BASE64编解码器：
+
+基本：输出被映射到一组字符A-Za-z0-9+/，编码不添加任何行标，输出的解码仅支持A-Za-z0-9+/。
+URL：输出映射到一组字符A-Za-z0-9+_，输出是URL和文件。
+MIME：输出隐射到MIME友好格式。输出每行不超过76字符，并且使用'\r'并跟随'\n'作为分割。编码输出最后没有行分割。
+内嵌类
+|序号|	内嵌类 & 描述
+|---|---|
+|1|	static class Base64.Decoder
+该类实现一个解码器用于，使用 Base64 编码来解码字节数据。
+
+|2|	static class Base64.Encoder
+该类实现一个编码器，使用 Base64 编码来编码字节数据。
+
+
+|序号|	方法名 & 描述
+|---|---|
+|1|	static Base64.Decoder getDecoder()返回一个 Base64.Decoder ，解码使用基本型 base64 编码方案。
+|2|	static Base64.Encoder getEncoder()返回一个 Base64.Encoder ，编码使用基本型 base64 编码方案。
+|3|	static Base64.Decoder getMimeDecoder()返回一个 Base64.Decoder ，解码使用 MIME 型 base64 编码方案。
+|4|	static Base64.Encoder getMimeEncoder()返回一个 Base64.Encoder ，编码使用 MIME 型 base64 编码方案。
+|5|	static Base64.Encoder getMimeEncoder(int lineLength, byte[] lineSeparator)返回一个 Base64.Encoder ，编码使用 MIME 型 base64 编码方案，可以通过参数指定每行的长度及行的分隔符。
+|6|	static Base64.Decoder getUrlDecoder()
+返回一个 Base64.Decoder ，解码使用 URL 和文件名安全型 base64 编码方案。
+|7|	static Base64.Encoder getUrlEncoder()返回一个 Base64.Encoder ，编码使用 URL 和文件名安全型 base64 编码方案。
+
+
+
+
+## 1.5. JDK版本变化
 * JDK5的新特性：
     * 自动拆装箱
     * Foreach
@@ -1259,36 +2674,36 @@ byte x = cstmt.getByte(1);
 
 
 
-## 1.5. 设计模式
+## 1.6. 设计模式
 <a href="#menu" style="float:right">目录</a>
 
-### 1.5.1. 设计原则
+### 1.6.1. 设计原则
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.5.1.1. 单一职责原则
+#### 1.6.1.1. 单一职责原则
 * 每个类只负责单一的功能，避免出现复杂臃肿的类。造成维护困难。
-#### 1.5.1.2. 里氏替换原则
+#### 1.6.1.2. 里氏替换原则
 * 父类出现的地方子类也可以出现。方便实现类替换，减少代码修改。
-#### 1.5.1.3. 依赖倒置原则
+#### 1.6.1.3. 依赖倒置原则
 * 高层模块不应该依赖细节，而应该依赖其抽象
 * 也就是说定义类属性时，使用接口或者抽象类来定义，而不是实现类。
-#### 1.5.1.4. 接口隔离原则
+#### 1.6.1.4. 接口隔离原则
 * 创建单一的接口，不要创建臃肿的接口。每个接口应该只是负责单一的功能，避免增加新抽象方法时，造成较多的实现类页需要修改。
-#### 1.5.1.5. 迪米特法则
+#### 1.6.1.5. 迪米特法则
 * 一个类应当降低对其他类的依赖,避免其他类修改时，使用类也要进行修改。
-#### 1.5.1.6. 开闭原则
+#### 1.6.1.6. 开闭原则
 * 对修改关闭，对扩展开放
 * 当需要增加新功能时，应当避免修改原类的代码，应当通过一些设计模式来进行功能扩展。比如装饰模式，这样可以达到对其他使用类的影响。
 * 以上的原则都是施行指南，开闭原则是最终目标。
 
-### 1.5.2. UML图
+### 1.6.2. UML图
 
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/designerPattern/uml.png?raw=true)
 
-### 1.5.3. 单例模式
+### 1.6.3. 单例模式
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.5.3.1. 基本概念
+#### 1.6.3.1. 基本概念
 
 **定义**:确保某一个类只有一个对象实例。
 **衍生**：有限多例，比如对象池技术，使用缓存将创建的对象缓存起来。
@@ -1299,7 +2714,7 @@ byte x = cstmt.getByte(1);
 
 **缺点**:
 
-#### 1.5.3.2. 实现
+#### 1.6.3.2. 实现
 单例模式需要注意的关键点是如何避免高并发条件下出现多例的问题。高并发环境下，任何两条语句执行之间都有可能被其他线程所抢占并执行完整的指令。这种情况处理不好，很容易产生出多例。
 还有需要关注的是，一个系统中存在很多类，但是有的类在系统运行的生命周期中是始终没机会创建对象，比如有个偏门的用户操作才会触发某个类创建对象。这种情况下就没必要创建对象，也就是需要延迟创建对象，在使用时才去创建。
 作为单例类，没必要去考虑通过反射会破解单例模式，定义一个类为单例，作为开发者应当遵循这个规范，而不是尝试使用反射来创建多个对象从而破坏这个规定。单例模式只防君子不防小人。
@@ -1437,7 +2852,7 @@ public class Singleton5 implements Serializable {
 }
 ```
 
-### 1.5.4. 工厂方法模式
+### 1.6.4. 工厂方法模式
 <a href="#menu" style="float:right">目录</a>
 工厂模式（Factory Pattern）是 Java 中最常用的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
 
@@ -1473,7 +2888,7 @@ public class Singleton5 implements Serializable {
     * 作为一种创建类模式，在任何需要生成复杂对象的地方，都可以使用工厂方法模式。有一点需要注意的地方就是复杂对象适合使用工厂模式，而简单对象，特别是只需要通过 new 就可以完成创建的对象，无需使用工厂模式。如果使用工厂模式，就需要引入一个工厂类，会增加系统的复杂度。
 
 
-### 1.5.5. 抽象工厂模式
+### 1.6.5. 抽象工厂模式
 <a href="#menu" style="float:right">目录</a>
 抽象工厂模式（Abstract Factory Pattern）是围绕一个超级工厂创建其他工厂。该超级工厂又称为其他工厂的工厂。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
 
@@ -1503,7 +2918,7 @@ public class Singleton5 implements Serializable {
 * 注意事项
     * 产品族难扩展，产品等级易扩展。
 
-### 1.5.6. 模板方法模式
+### 1.6.6. 模板方法模式
 <a href="#menu" style="float:right">目录</a>
 在模板模式（Template Pattern）中，一个抽象类公开定义了执行它的方法的方式/模板。它的子类可以按需要重写方法实现，但调用将以抽象类中定义的方式进行。这种类型的设计模式属于行为型模式。
 
@@ -1535,7 +2950,7 @@ public class Singleton5 implements Serializable {
 * 注意事项
     * 为防止恶意操作，一般模板方法都加上 final 关键词。
 
-### 1.5.7. 建造者模式
+### 1.6.7. 建造者模式
 <a href="#menu" style="float:right">目录</a>
 建造者模式（Builder Pattern）使用多个简单的对象一步一步构建成一个复杂的对象。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
 
@@ -1568,7 +2983,7 @@ public class Singleton5 implements Serializable {
 * 注意事项
     * 与工厂模式的区别是：建造者模式更加关注与零件装配的顺序。
     
-### 1.5.8. 代理模式
+### 1.6.8. 代理模式
 <a href="#menu" style="float:right">目录</a>
 
 代理模式（Proxy Pattern）中，一个类代表另一个类的功能。这种类型的设计模式属于结构型模式。
@@ -1614,7 +3029,7 @@ public class Singleton5 implements Serializable {
     * 和适配器模式的区别：适配器模式主要改变所考虑对象的接口，而代理模式不能改变所代理类的接口。 
     * 和装饰器模式的区别：装饰器模式为了增强功能，而代理模式是为了加以控制。
 
-### 1.5.9. 原型模式
+### 1.6.9. 原型模式
 <a href="#menu" style="float:right">目录</a>
 原型模式（Prototype Pattern）是用于创建重复的对象，同时又能保证性能。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
 
@@ -1657,7 +3072,7 @@ public class Singleton5 implements Serializable {
 * 注意事项
     * 与通过对一个类进行实例化来构造新对象不同的是，原型模式是通过拷贝一个现有对象生成新对象的。浅拷贝实现 Cloneable，重写，深拷贝是通过实现 Serializable 读取二进制流。
 
-### 1.5.10. 中介者模式
+### 1.6.10. 中介者模式
 <a href="#menu" style="float:right">目录</a>
 中介者模式（Mediator Pattern）是用来降低多个对象和类之间的通信复杂性。这种模式提供了一个中介类，该类通常处理不同类之间的通信，并支持松耦合，使代码易于维护。中介者模式属于行为型模式。
 
@@ -1693,7 +3108,7 @@ public class Singleton5 implements Serializable {
 
 ```
 
-### 1.5.11. 命令模式
+### 1.6.11. 命令模式
 <a href="#menu" style="float:right">目录</a>
 命令模式（Command Pattern）是一种数据驱动的设计模式，它属于行为型模式。请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该命令传给相应的对象，该对象执行命令。
 
@@ -1794,7 +3209,7 @@ public class CommandPatternDemo {
 }
 
 ```
-### 1.5.12. 责任链模式
+### 1.6.12. 责任链模式
 <a href="#menu" style="float:right">目录</a>
 顾名思义，责任链模式（Chain of Responsibility Pattern）为请求创建了一个接收者对象的链。这种模式给予请求的类型，对请求的发送者和接收者进行解耦。这种类型的设计模式属于行为型模式。
 
@@ -1833,7 +3248,7 @@ public class CommandPatternDemo {
 * 注意事项
     * 在 JAVA WEB 中遇到很多应用。
     
-### 1.5.13. 装饰模式
+### 1.6.13. 装饰模式
 <a href="#menu" style="float:right">目录</a>
 装饰器模式（Decorator Pattern）允许向一个现有的对象添加新的功能，同时又不改变其结构。这种类型的设计模式属于结构型模式，它是作为现有的类的一个包装。
 
@@ -1868,7 +3283,7 @@ public class CommandPatternDemo {
 * 注意事项
     * 可代替继承。
 
-### 1.5.14. 策略模式
+### 1.6.14. 策略模式
 <a href="#menu" style="float:right">目录</a>
 在策略模式（Strategy Pattern）中，一个类的行为或其算法可以在运行时更改。这种类型的设计模式属于行为型模式。
 
@@ -1954,7 +3369,7 @@ public class StrategyPatternDemo {
 
 ```
 
-### 1.5.15. 适配器模式
+### 1.6.15. 适配器模式
 <a href="#menu" style="float:right">目录</a>
 适配器模式（Adapter Pattern）是作为两个不兼容的接口之间的桥梁。这种类型的设计模式属于结构型模式，它结合了两个独立接口的功能。
 
@@ -2082,7 +3497,7 @@ public class AdapterPatternDemo {
 
 ```
 
-### 1.5.16. 迭代器模式
+### 1.6.16. 迭代器模式
 <a href="#menu" style="float:right">目录</a>
 迭代器模式（Iterator Pattern）是 Java 和 .Net 编程环境中非常常用的设计模式。这种模式用于顺序访问集合对象的元素，不需要知道集合对象的底层表示。
 
@@ -2117,7 +3532,7 @@ public class AdapterPatternDemo {
 * 注意事项
     * 迭代器模式就是分离了集合对象的遍历行为，抽象出一个迭代器类来负责，这样既可以做到不暴露集合的内部结构，又可让外部代码透明地访问集合内部的数据。
 
-### 1.5.17. 组合模式
+### 1.6.17. 组合模式
 <a href="#menu" style="float:right">目录</a>
 组合模式（Composite Pattern），又叫部分整体模式，是用于把一组相似的对象当作一个单一的对象。组合模式依据树形结构来组合对象，用来表示部分以及整体层次。这种类型的设计模式属于结构型模式，它创建了对象组的树形结构。
 
@@ -2154,7 +3569,7 @@ public class AdapterPatternDemo {
     * 定义时为具体类。
 
 
-### 1.5.18. 观察者模式
+### 1.6.18. 观察者模式
 <a href="#menu" style="float:right">目录</a>
 当对象间存在一对多关系时，则使用观察者模式（Observer Pattern）。比如，当一个对象被修改时，则会自动通知它的依赖对象。观察者模式属于行为型模式。
 
@@ -2276,7 +3691,7 @@ public class ObserverPatternDemo {
 
 ```
 
-### 1.5.19. 门面模式
+### 1.6.19. 门面模式
 <a href="#menu" style="float:right">目录</a>
 外观模式（Facade Pattern）隐藏系统的复杂性，并向客户端提供了一个客户端可以访问系统的接口。这种类型的设计模式属于结构型模式，它向现有的系统添加一个接口，来隐藏系统的复杂性。
 
@@ -2312,7 +3727,7 @@ public class ObserverPatternDemo {
 * 注意事项
     * 在层次化结构中，可以使用外观模式定义系统中每一层的入口。
 
-### 1.5.20. 备忘录模式
+### 1.6.20. 备忘录模式
 <a href="#menu" style="float:right">目录</a>
 备忘录模式（Memento Pattern）保存一个对象的某个状态，以便在适当的时候恢复对象。备忘录模式属于行为型模式。
 
@@ -2411,7 +3826,7 @@ public class MementoPatternDemo {
 ```
 
 
-### 1.5.21. 访问者模式
+### 1.6.21. 访问者模式
 <a href="#menu" style="float:right">目录</a>
 在访问者模式（Visitor Pattern）中，我们使用了一个访问者类，它改变了元素类的执行算法。通过这种方式，元素的执行算法可以随着访问者改变而改变。这种类型的设计模式属于行为型模式。根据模式，元素对象已接受访问者对象，这样访问者对象就可以处理元素对象上的操作。
 
@@ -2525,7 +3940,7 @@ public class VisitorPatternDemo {
 ```
 
 
-### 1.5.22. 状态模式
+### 1.6.22. 状态模式
 <a href="#menu" style="float:right">目录</a>
 在状态模式（State Pattern）中，类的行为是基于它的状态改变的。这种类型的设计模式属于行为型模式。
 
@@ -2622,7 +4037,7 @@ public class StatePatternDemo {
 
 
 
-### 1.5.23. 解释器模式
+### 1.6.23. 解释器模式
 <a href="#menu" style="float:right">目录</a>
 解释器模式（Interpreter Pattern）提供了评估语言的语法或表达式的方式，它属于行为型模式。这种模式实现了一个表达式接口，该接口解释一个特定的上下文。这种模式被用在 SQL 解析、符号处理引擎等。
 
@@ -2734,7 +4149,7 @@ public class InterpreterPatternDemo {
 ```
 
 
-### 1.5.24. 享元模式
+### 1.6.24. 享元模式
 <a href="#menu" style="float:right">目录</a>
 享元模式（Flyweight Pattern）主要用于减少创建对象的数量，以减少内存占用和提高性能。这种类型的设计模式属于结构型模式，它提供了减少对象数量从而改善应用所需的对象结构的方式。
 
@@ -2773,7 +4188,7 @@ public class InterpreterPatternDemo {
     * 这些类必须有一个工厂对象加以控制。
 
 
-### 1.5.25. 桥梁模式
+### 1.6.25. 桥梁模式
 <a href="#menu" style="float:right">目录</a>
 桥梁模式（Bridge）是用于把抽象化与实现化解耦，使得二者可以独立变化。这种类型的设计模式属于结构型模式，它通过提供抽象化和实现化之间的桥接结构，来实现二者的解耦。
 
@@ -2863,78 +4278,5 @@ public class BridgePatternDemo {
 
 
 
-## 1.6. Effective Java总结
-<a href="#menu" style="float:right">目录</a>
-
-### 1.6.1. 创建和销毁对象
-
-### 1.6.2. 对于所有对象都通用的方法
-
-### 1.6.3. 类和接口
-
-### 1.6.4. 范型
-
-### 1.6.5. 枚举和注解
-
-### 1.6.6. 方法
-
-
-### 1.6.7. 通用程序设计
-
-### 1.6.8. 异常
-
-### 1.6.9. 并发
-
-### 1.6.10. 序列化
-
-## 1.7. Java编程思想阅读总结
-
-### 1.7.1. 对象导论
-
-### 1.7.2. 一切都是对象
-
-### 1.7.3. 操作符
-
-### 1.7.4. 控制执行流程
-
-### 1.7.5. 初始化和清理
-
-### 1.7.6. 访问权限控制
-
-### 1.7.7. 复用类
-
-### 1.7.8. 多态
-
-### 1.7.9. 接口
-
-### 1.7.10. 内部类
-
-### 1.7.11. 持有对象
-
-
-### 1.7.12. 通过异常处理错误
-
-### 1.7.13. 字符串
-
-### 1.7.14. 类型信息
-
-
-### 1.7.15. 范型
-
-### 1.7.16. 数组
-
-
-### 1.7.17. 容器深入研究
-
-### 1.7.18. Java IO系统
-
-
-### 1.7.19. 枚举类型
-
-### 1.7.20. 注解
-
-### 1.7.21. 并发
-
-### 1.7.22.  
 
 

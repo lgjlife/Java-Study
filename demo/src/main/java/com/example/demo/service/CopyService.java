@@ -1,10 +1,15 @@
 package com.example.demo.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.FileUrlResource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.util.FileCopyUtils;
 
 import java.io.*;
 import java.sql.Array;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
 
 @Slf4j
 public class CopyService {
@@ -24,7 +29,7 @@ public class CopyService {
 
 
             fileOutputStream = new FileOutputStream(new File(basePath+"/"+allName),true);
-
+            fileNames = getFileList();
             for(String fileName:fileNames){
                 log.info("select md file = " +  fileName);
 
@@ -101,5 +106,33 @@ public class CopyService {
            }
            return str[str.length-1];
         }
+    }
+
+
+
+    private  static String[] getFileList(){
+
+        String[] names = null;
+
+       try{
+           Properties properties = PropertiesLoaderUtils.loadProperties(new FileUrlResource("/home/lgj/aProject/aRealPrj/Java-Interview/fileName.properties"));
+           String fileNames = (String)properties.get("fileName");
+           Set<String> keys=  properties.stringPropertyNames();
+
+
+           names = fileNames.split(",");
+           System.out.println(fileNames);
+
+       }
+       catch(Exception ex){
+           log.error(ex.getMessage());
+       }
+
+       return names;
+
+    }
+
+    public static void main(String args[]){
+        CopyService.getFileList();
     }
 }
