@@ -5,7 +5,7 @@
 ## 1.1. Java基础
 <a href="#menu" style="float:right">目录</a>
 
-### 1.1.2. 数据类型
+### 1.1.1. 数据类型
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -31,7 +31,7 @@
    * 任何类型和字符串类型相加，都会自动转换为字符串类型
    * byte,char,short类型之间相互运算将会自动提升为int类型，这是系统避免计算溢出。
 
-#### 1.1.2.1. Integer 缓存对象
+#### 1.1.1.1. Integer 缓存对象
 <a href="#menu" style="float:right">目录</a>
 
 缓存范围为[-128,127]，超过则创建新的对象
@@ -100,7 +100,7 @@ a1==a2?  true
 b1==b2?  false
 c1==c2?  false
 ```
-#### 1.1.2.2. 数组
+#### 1.1.1.2. 数组
 初始化
 ```java
 /创建数组，需要定义长度
@@ -116,7 +116,7 @@ int[][] arr1 = new int[][]{{1,2},{1,2}};
 int[][] arr2 =  {{1,2},{1,2}};
 ```
 数组工具类java.util.Arrays。提供排序,复制，比较，初始化等功能。
-#### 1.1.2.3. String 
+#### 1.1.1.3. String 
 <a href="#menu" style="float:right">目录</a>
 
 ```java
@@ -1801,9 +1801,15 @@ os.writeObject(person);
 
 ```
 
-### NIO
+### 1.2.9. NIO
 
-#### 
+#### 1.2.9.1. 内存映射  
+
+内存映射的方式是指操作系统将内存中的某一块区域与磁盘中的文件相关联，当访问内存中的一段数据时，转换为访问文件的某一段数据。这种方式的目的同样是减少数据从内核空间缓存到用户空间缓存的数据复制操作，因为这两个空间的数据是共享的。
+
+
+![内存映射方式](https://github.com/lgjlife/Java-Study/blob/master/pic/java/nio-storage-mapping.png?raw=true)
+
 
 Java类库中的NIO包相对于IO 包来说有一个新功能是内存映射文件，日常编程中并不是经常用到，但是在处理大文件时是比较理想的提高效率的手段。本文我主要想结合操作系统中（OS）相关方面的知识介绍一下原理。
 
@@ -2049,12 +2055,12 @@ ByteBuffer.allocate 意味着直接在 JVM堆上分配内存，所以受 新生�
 最后一点为 DirectMemory的内存只有在 JVM执行 full gc 的时候才会被回收，那么如果在其上分配过大的内存空间，那么也将出现 OutofMemoryError，即便 JVM 堆中的很多内存处于空闲状态。
 
 
-### 1.2.9. 类加载和反射
+### 1.2.10. 类加载和反射
 <a href="#menu" style="float:right">目录</a>
 
 
 
-### 1.2.10. JDBC
+### 1.2.11. JDBC
 <a href="#menu" style="float:right">目录</a>
 
 **数据库驱动**
