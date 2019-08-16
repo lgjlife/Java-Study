@@ -1,6 +1,45 @@
 
 <span id="menu"></span>
+<!-- TOC -->
 
+- [1. WEB容器](#1-web容器)
+    - [1.1. WEB容器比较](#11-web容器比较)
+    - [1.2. Servlet规范](#12-servlet规范)
+    - [1.3. Session和Cookie的区别](#13-session和cookie的区别)
+        - [1.3.1. 概念理解](#131-概念理解)
+        - [1.3.2. cookie](#132-cookie)
+        - [1.3.3. Session](#133-session)
+        - [1.3.4. 总结](#134-总结)
+        - [1.3.5. 应用场景](#135-应用场景)
+    - [1.4. SpringBoot WEB相关配置](#14-springboot-web相关配置)
+    - [1.5. Tomcat](#15-tomcat)
+        - [1.5.1. 概述](#151-概述)
+            - [1.5.1.1. Tomcat快速理解](#1511-tomcat快速理解)
+        - [1.5.2. Web服务机制](#152-web服务机制)
+            - [1.5.2.1. 通信协议](#1521-通信协议)
+        - [1.5.3. Tomcat 总体架构](#153-tomcat-总体架构)
+        - [1.5.4. Server和Service组件](#154-server和service组件)
+        - [1.5.5. Connect组件](#155-connect组件)
+        - [1.5.6. Engine组件](#156-engine组件)
+        - [1.5.7. Host容器](#157-host容器)
+        - [1.5.8. Context容器](#158-context容器)
+        - [1.5.9. Wrapper容器](#159-wrapper容器)
+        - [1.5.10. 生命周期管理](#1510-生命周期管理)
+        - [1.5.11. 日志框架和国家化](#1511-日志框架和国家化)
+        - [1.5.12. 公共与隔离类加载器](#1512-公共与隔离类加载器)
+        - [1.5.13. 请求URI映射器Mapper](#1513-请求uri映射器mapper)
+        - [1.5.14. Tomcat的JNDI](#1514-tomcat的jndi)
+        - [1.5.15. 运行、通信、及访问安全管理](#1515-运行通信及访问安全管理)
+        - [1.5.16. 处理请求和响应的管道](#1516-处理请求和响应的管道)
+        - [1.5.17. 多样化的会话管理器](#1517-多样化的会话管理器)
+        - [1.5.18. 高可用集群实现](#1518-高可用集群实现)
+        - [1.5.19. 集群通信框架](#1519-集群通信框架)
+        - [1.5.20. 监控和管理](#1520-监控和管理)
+    - [1.6. Jetty](#16-jetty)
+    - [1.7. 编码问题](#17-编码问题)
+        - [1.7.1. 常见的编码格式](#171-常见的编码格式)
+
+<!-- /TOC -->
 # 1. WEB容器
 <a href="#menu" style="float:right">目录</a>
 
@@ -26,7 +65,194 @@
     * 其它比较 
         * Jetty的应用更加快速，修改简单，对新的Servlet规范的支持较好。 
         * Tomcat目前应用比较广泛，对JavaEE和Servlet的支持更加全面，很多特性会直接集成进来。
-## 1.2. SpringBoot WEB相关配置
+    
+## 1.2. Servlet规范
+<a href="#menu" style="float:right">目录</a>
+
+**Servlet 是什么？**
+* Java Servlet 是运行在 Web 服务器或应用服务器上的程序，它是作为来自 Web 浏览器或其他 HTTP 客户端的请求和 HTTP 服务器上的数据库或应用程序之间的中间层。
+
+* 使用 Servlet，您可以收集来自网页表单的用户输入，呈现来自数据库或者其他源的记录，还可以动态创建网页。
+
+* Java Servlet 通常情况下与使用 CGI（Common Gateway Interface，公共网关接口）实现的程序可以达到异曲同工的效果。但是相比于 CGI，Servlet 有以下几点优势：
+性能明显更好。
+    * Servlet 在 Web 服务器的地址空间内执行。这样它就没有必要再创建一个单独的进程来处理每个客户端请求。
+    * Servlet 是独立于平台的，因为它们是用 Java 编写的。服务器上的 Java 安全管理器执行了一系列限制，以保护服务器计算机上的资源。因此，Servlet 是可信的。
+    * Java 类库的全部功能对 Servlet 来说都是可用的。它可以通过 sockets 和 RMI 机制与 applets、数据库或其他软件进行交互。
+
+**Servlet 任务**
+* Servlet 执行以下主要任务：
+    * 读取客户端（浏览器）发送的显式的数据。这包括网页上的 HTML 表单，或者也可以是来自 applet 或自定义的 HTTP 客户端程序的表单。
+    * 读取客户端（浏览器）发送的隐式的 HTTP 请求数据。这包括 cookies、媒体类型和浏览器能理解的压缩格式等等。
+    * 处理数据并生成结果。这个过程可能需要访问数据库，执行 RMI 或 CORBA 调用，调用 Web 服务，或者直接计算得出对应的响应。
+    * 发送显式的数据（即文档）到客户端（浏览器）。该文档的格式可以是多种多样的，包括文本文件（HTML 或 XML）、二进制文件（GIF 图像）、Excel 等。
+    * 发送隐式的 HTTP 响应到客户端（浏览器）。这包括告诉浏览器或其他客户端被返回的文档类型（例如 HTML），设置 cookies 和缓存参数，以及其他类似的任务。
+
+
+**Servlet创建方式**
+* 实现接口Servlet
+* 继承抽象类GenericServlet
+* 继承HttpServlet，并重写doGet,doPost等方法
+
+**Servlet 生命周期**
+
+* Servlet 生命周期可被定义为从创建直到毁灭的整个过程。以下是 Servlet 遵循的过程：
+    * Servlet 通过调用 init () 方法进行初始化。
+    * Servlet 调用 service() 方法来处理客户端的请求。
+    * Servlet 通过调用 destroy() 方法终止（结束）。
+    * 最后，Servlet 是由 JVM 的垃圾回收器进行垃圾回收的。
+
+* **init() 方法**
+    * init 方法被设计成只调用一次。它在第一次创建 Servlet 时被调用，在后续每次用户请求时不再调用。因此，它是用于一次性初始化，就像 Applet 的 init 方法一样。
+    * Servlet 创建于用户第一次调用对应于该 Servlet 的 URL 时，但是您也可以指定 Servlet 在服务器第一次启动时被加载。
+    * 当用户调用一个 Servlet 时，就会创建一个 Servlet 实例，每一个用户请求都会产生一个新的线程，适当的时候移交给 doGet 或 doPost 方法。init() 方法简单地创建或加载一些数据，这些数据将被用于 Servlet 的整个生命周期。
+    * init 方法的定义如下：
+```java
+public void init() throws ServletException {
+  // 初始化代码...
+}
+```
+* **service() 方法**
+    * service() 方法是执行实际任务的主要方法。Servlet 容器（即 Web 服务器）调用 service() 方法来处理来自客户端（浏览器）的请求，并把格式化的响应写回给客户端。
+    * 每次服务器接收到一个 Servlet 请求时，服务器会产生一个新的线程并调用服务。service() 方法检查 HTTP 请求类型（GET、POST、PUT、DELETE 等），并在适当的时候调用 doGet、doPost、doPut，doDelete 等方法。
+    * service() 方法由容器调用，service 方法在适当的时候调用 doGet、doPost、doPut、doDelete 等方法。所以，您不用对 service() 方法做任何动作，您只需要根据来自客户端的请求类型来重写 doGet() 或 doPost() 即可。
+```java
+public void service(ServletRequest request, 
+                    ServletResponse response) 
+      throws ServletException, IOException{
+}
+```
+* **doGet() 方法**
+    * GET 请求来自于一个 URL 的正常请求，或者来自于一个未指定 METHOD 的 HTML 表单，它由 doGet() 方法处理。
+```java
+public void doGet(HttpServletRequest request,
+                  HttpServletResponse response)
+    throws ServletException, IOException {
+    // Servlet 代码
+}
+```
+* **doPost() 方法**
+POST 请求来自于一个特别指定了 METHOD 为 POST 的 HTML 表单，它由 doPost() 方法处理。
+
+```java
+public void doPost(HttpServletRequest request,
+                   HttpServletResponse response)
+    throws ServletException, IOException {
+    // Servlet 代码
+}
+```
+* **destroy() 方法**
+    * destroy() 方法只会被调用一次，在 Servlet 生命周期结束时被调用。destroy() 方法可以让您的 Servlet 关闭数据库连接、停止后台线程、把 Cookie 列表或点击计数器写入到磁盘，并执行其他类似的清理活动。
+
+    * 在调用 destroy() 方法之后，servlet 对象被标记为垃圾回收。destroy 方法定义如下所示：
+
+```java
+  public void destroy() {
+    // 终止化代码...
+  }
+```
+* 一个典型的 Servlet 生命周期方案。
+    * 第一个到达服务器的 HTTP 请求被委派到 Servlet 容器。
+    * Servlet 容器在调用 service() 方法之前加载 Servlet。
+    * 然后 Servlet 容器处理由多个线程产生的多个请求，每个线程执行一个单一的 Servlet 实例的 service() 方法。
+![](https://www.runoob.com/wp-content/uploads/2014/07/Servlet-LifeCycle.jpg)
+
+**Servlet 编写过滤器**
+* Servlet 过滤器可以动态地拦截请求和响应，以变换或使用包含在请求或响应中的信息。
+可以将一个或多个 Servlet 过滤器附加到一个 Servlet 或一组 Servlet。Servlet 过滤器也可以附加到 JavaServer Pages (JSP) 文件和 HTML 页面。调用 Servlet 前调用所有附加的 Servlet 过滤器。
+* Servlet 过滤器是可用于 Servlet 编程的 Java 类，可以实现以下目的：
+* 在客户端的请求访问后端资源之前，拦截这些请求。
+* 在服务器的响应发送回客户端之前，处理这些响应。
+* 根据规范建议的各种类型的过滤器：
+    * 身份验证过滤器（Authentication Filters）。
+    * 数据压缩过滤器（Data compression Filters）。  
+    * 加密过滤器（Encryption Filters）。
+    * 触发资源访问事件过滤器。
+    * 图像转换过滤器（Image Conversion Filters）。
+    * 日志记录和审核过滤器（Logging and Auditing Filters）。
+    * MIME-TYPE 链过滤器（MIME-TYPE Chain Filters）。
+    * 标记化过滤器（Tokenizing Filters）。
+    * XSL/T 过滤器（XSL/T Filters），转换 XML 内容。
+
+* Servlet 过滤器方法
+    * 过滤器是一个实现了 javax.servlet.Filter 接口的 Java 类。javax.servlet.Filter 接口定义了三个方法
+        * public void doFilter (ServletRequest, ServletResponse, FilterChain)
+            * 该方法完成实际的过滤操作，当客户端请求方法与过滤器设置匹配的URL时，Servlet容器将先调用过滤器的doFilter方法。FilterChain用户访问后续过滤器。
+        * public void init(FilterConfig filterConfig)
+            * web 应用程序启动时，web 服务器将创建Filter 的实例对象，并调用其init方法，读取web.xml配置，完成对象的初始化功能，从而为后续的用户请求作好拦截的准备工作（filter对象只会创建一次，init方法也只会执行一次）。开发人员通过init方法的参数，可获得代表当前filter配置信息的FilterConfig对象。
+        * public void destroy()
+            * Servlet容器在销毁过滤器实例前调用该方法，在该方法中释放Servlet过滤器占用的资源。
+
+## 1.3. Session和Cookie的区别
+
+### 1.3.1. 概念理解
+
+首先呢，要了解session和cookie的区别先要了解以下几个概念：
+
+1、无状态的HTTP协议：
+协议，是指计算机通信网络中两台计算机之间进行通信所必须共同遵守的规定或规则，超文本传输协议(HTTP)是一种通信协议，它允许将超文本标记语言(HTML)文档从Web服务器
+传送到客户端的浏览器。
+HTTP协议是无状态的协议。一旦数据交换完毕，客户端与服务器端的连接就会关闭，再次交换数据需要建立新的连接。这就意味着服务器无法从连接上跟踪会话。
+
+2、会话（Session）跟踪：
+会话，指用户登录网站后的一系列动作，比如浏览商品添加到购物车并购买。会话（Session）跟踪是Web程序中常用的技术，用来跟踪用户的整个会话。常用的会话跟踪技术是Cookie与Session。Cookie通过在客户端记录信息确定用户身份，Session通过在服务器端记录信息确定用户身份。
+
+### 1.3.2. cookie
+
+由于HTTP是一种无状态的协议，服务器单从网络连接上无从知道客户身份。用户A购买了一件商品放入购物车内，当再次购买商品时服务器已经无法判断该购买行为是属于用户A的会话还是用户B的会话了。怎么办呢？就给客户端们颁发一个通行证吧，每人一个，无论谁访问都必须携带自己通行证。这样服务器就能从通行证上确认客户身份了。这就是Cookie 的工作原理。
+
+Cookie实际上是一小段的文本信息。客户端请求服务器，如果服务器需要记录该用户状态，就使用response向客户端浏览器颁发一个Cookie。客户端会把Cookie保存起来。当浏览器再请求该网站时，浏览器把请求的网址连同该Cookie一同提交给服务器。服务器检查该Cookie，以此来辨认用户状态。服务器还可以根据需要修改Cookie的内容。
+
+1、会话Cookie和持久Cookie
+若不设置过期时间，则表示这个cookie的生命期为浏览器会话期间，关闭浏览器窗口，cookie就消失。这种生命期为浏览器会话期的cookie被称为会话cookie。会话cookie一般不存储在硬盘上而是保存在内存里，当然这种行为并不是规范规定的。
+若设置了过期时间，浏览器就会把cookie保存到硬盘上，关闭后再次打开浏览器，这些cookie仍然有效直到超过设定的过期时间。存储在硬盘上的cookie可以在浏览器的不同进程间共享。这种称为持久Cookie。 
+
+2、Cookie具有不可跨域名性
+就是说，浏览器访问百度不会带上谷歌的cookie;
+
+### 1.3.3. Session
+
+Session是另一种记录客户状态的机制，不同的是Cookie保存在客户端浏览器中，而Session保存在服务器上。客户端浏览器访问服务器的时候，服务器把客户端信息以某种形式记录在服务器上。这就是Session。客户端浏览器再次访问时只需要从该Session中查找该客户的状态就可以了。
+每个用户访问服务器都会建立一个session，那服务器是怎么标识用户的唯一身份呢？事实上，用户与服务器建立连接的同时，服务器会自动为其分配一个SessionId。
+
+1、两个问题：
+1）什么东西可以让你每次请求都把SessionId自动带到服务器呢？显然就是cookie了，如果你想为用户建立一次会话，可以在用户授权成功时给他一个唯一的cookie。当一个用户提交了表单时，浏览器会将用户的SessionId自动附加在HTTP头信息中，（这是浏览器的自动功能，用户不会察觉到），当服务器处理完这个表单后，将结果返回给SessionId所对应的用户。试想，如果没有 SessionId，当有两个用户同时进行注册时，服务器怎样才能知道到底是哪个用户提交了哪个表单呢。
+
+2）储存需要的信息。服务器通过SessionId作为key，读写到对应的value，这就达到了保持会话信息的目的。
+
+2、session的创建：
+当程序需要为某个客户端的请求创建一个session时，服务器首先检查这个客户端的请求里是否已包含了sessionId，如果已包含则说明以前已经为此客户端创建过session，服务器就按照sessionId把这个session检索出来使用（检索不到，会新建一个），如果客户端请求不包含sessionId，则为此客户端创建一个session并且生成一个与此session相关联的sessionId，sessionId的值是一个既不会重复，又不容易被找到规律以仿造的字符串，这个sessionId将被在本次响应中返回给客户端保存。
+
+3、禁用cookie：
+如果客户端禁用了cookie，通常有两种方法实现session而不依赖cookie。
+1）URL重写，就是把sessionId直接附加在URL路径的后面。
+2）表单隐藏字段。就是服务器会自动修改表单，添加一个隐藏字段，以便在表单提交时能够把session id传递回服务器。比如： 
+
+```html
+<form name="testform" action="/xxx"> 
+<input type="hidden" name="jsessionid" value="ByOK3vjFD75aPnrF7C2HmdnV6QZcEbzWoWiBYEnLerjQ99zWpBng!-145788764"> 
+<input type="text"> 
+</form> 
+```
+
+4、Session共享：
+对于多网站(同一父域不同子域)单服务器，我们需要解决的就是来自不同网站之间SessionId的共享。由于域名不同(aaa.test.com和bbb.test.com)，而SessionId又分别储存在各自的cookie中，因此服务器会认为对于两个子站的访问,是来自不同的会话。解决的方法是通过修改cookies的域名为父域名达到cookie共享的目的,从而实现SessionId的共享。带来的弊端就是，子站间的cookie信息也同时被共享了。  
+
+### 1.3.4. 总结
+
+1、cookie数据存放在客户的浏览器上，session数据放在服务器上。
+2、cookie不是很安全，别人可以分析存放在本地的cookie并进行cookie欺骗，考虑到安全应当使用session。
+3、session会在一定时间内保存在服务器上。当访问增多，会比较占用你服务器的性能，考虑到减轻服务器性能方面，应当使用cookie。
+4、单个cookie保存的数据不能超过4K，很多浏览器都限制一个站点最多保存20个cookie。
+5、可以考虑将登陆信息等重要信息存放为session，其他信息如果需要保留，可以放在cookie中。
+
+### 1.3.5. 应用场景
+登录网站，今输入用户名密码登录了，第二天再打开很多情况下就直接打开了。这个时候用到的一个机制就是cookie。
+session一个场景是购物车，添加了商品之后客户端处可以知道添加了哪些商品，而服务器端如何判别呢，所以也需要存储一些信息就用到了session
+
+
+
+## 1.4. SpringBoot WEB相关配置
 ```properties
 # EMBEDDED SERVER CONFIGURATION (ServerProperties)
 
@@ -194,20 +420,20 @@ public class MyEmbeddedServletContainerFactory  {
 
 
 
-## 1.3. Tomcat
+## 1.5. Tomcat
 <a href="#menu" style="float:right">目录</a>
 
-### 1.3.1. 概述
+### 1.5.1. 概述
 <a href="#menu" style="float:right">目录</a>
 
 
-#### 1.3.1.1. Tomcat快速理解
+#### 1.5.1.1. Tomcat快速理解
 <a href="#menu" style="float:right">目录</a>
 
-### 1.3.2. Web服务机制
+### 1.5.2. Web服务机制
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.3.2.1. 通信协议
+#### 1.5.2.1. 通信协议
 <a href="#menu" style="float:right">目录</a>
 
 * HTTP协议
@@ -239,125 +465,8 @@ public class MyEmbeddedServletContainerFactory  {
     * 浏览器用密钥揭秘，并用Hash算法验证，确定算法与密钥
     * 双方利用此次协商好的密钥进行通信
     
-### 1.3.3. Servlet规范
-<a href="#menu" style="float:right">目录</a>
 
-**Servlet 是什么？**
-* Java Servlet 是运行在 Web 服务器或应用服务器上的程序，它是作为来自 Web 浏览器或其他 HTTP 客户端的请求和 HTTP 服务器上的数据库或应用程序之间的中间层。
-
-* 使用 Servlet，您可以收集来自网页表单的用户输入，呈现来自数据库或者其他源的记录，还可以动态创建网页。
-
-* Java Servlet 通常情况下与使用 CGI（Common Gateway Interface，公共网关接口）实现的程序可以达到异曲同工的效果。但是相比于 CGI，Servlet 有以下几点优势：
-性能明显更好。
-    * Servlet 在 Web 服务器的地址空间内执行。这样它就没有必要再创建一个单独的进程来处理每个客户端请求。
-    * Servlet 是独立于平台的，因为它们是用 Java 编写的。服务器上的 Java 安全管理器执行了一系列限制，以保护服务器计算机上的资源。因此，Servlet 是可信的。
-    * Java 类库的全部功能对 Servlet 来说都是可用的。它可以通过 sockets 和 RMI 机制与 applets、数据库或其他软件进行交互。
-
-**Servlet 任务**
-* Servlet 执行以下主要任务：
-    * 读取客户端（浏览器）发送的显式的数据。这包括网页上的 HTML 表单，或者也可以是来自 applet 或自定义的 HTTP 客户端程序的表单。
-    * 读取客户端（浏览器）发送的隐式的 HTTP 请求数据。这包括 cookies、媒体类型和浏览器能理解的压缩格式等等。
-    * 处理数据并生成结果。这个过程可能需要访问数据库，执行 RMI 或 CORBA 调用，调用 Web 服务，或者直接计算得出对应的响应。
-    * 发送显式的数据（即文档）到客户端（浏览器）。该文档的格式可以是多种多样的，包括文本文件（HTML 或 XML）、二进制文件（GIF 图像）、Excel 等。
-    * 发送隐式的 HTTP 响应到客户端（浏览器）。这包括告诉浏览器或其他客户端被返回的文档类型（例如 HTML），设置 cookies 和缓存参数，以及其他类似的任务。
-
-
-**Servlet创建方式**
-* 实现接口Servlet
-* 继承抽象类GenericServlet
-* 继承HttpServlet，并重写doGet,doPost等方法
-
-**Servlet 生命周期**
-
-* Servlet 生命周期可被定义为从创建直到毁灭的整个过程。以下是 Servlet 遵循的过程：
-    * Servlet 通过调用 init () 方法进行初始化。
-    * Servlet 调用 service() 方法来处理客户端的请求。
-    * Servlet 通过调用 destroy() 方法终止（结束）。
-    * 最后，Servlet 是由 JVM 的垃圾回收器进行垃圾回收的。
-
-* **init() 方法**
-    * init 方法被设计成只调用一次。它在第一次创建 Servlet 时被调用，在后续每次用户请求时不再调用。因此，它是用于一次性初始化，就像 Applet 的 init 方法一样。
-    * Servlet 创建于用户第一次调用对应于该 Servlet 的 URL 时，但是您也可以指定 Servlet 在服务器第一次启动时被加载。
-    * 当用户调用一个 Servlet 时，就会创建一个 Servlet 实例，每一个用户请求都会产生一个新的线程，适当的时候移交给 doGet 或 doPost 方法。init() 方法简单地创建或加载一些数据，这些数据将被用于 Servlet 的整个生命周期。
-    * init 方法的定义如下：
-```java
-public void init() throws ServletException {
-  // 初始化代码...
-}
-```
-* **service() 方法**
-    * service() 方法是执行实际任务的主要方法。Servlet 容器（即 Web 服务器）调用 service() 方法来处理来自客户端（浏览器）的请求，并把格式化的响应写回给客户端。
-    * 每次服务器接收到一个 Servlet 请求时，服务器会产生一个新的线程并调用服务。service() 方法检查 HTTP 请求类型（GET、POST、PUT、DELETE 等），并在适当的时候调用 doGet、doPost、doPut，doDelete 等方法。
-    * service() 方法由容器调用，service 方法在适当的时候调用 doGet、doPost、doPut、doDelete 等方法。所以，您不用对 service() 方法做任何动作，您只需要根据来自客户端的请求类型来重写 doGet() 或 doPost() 即可。
-```java
-public void service(ServletRequest request, 
-                    ServletResponse response) 
-      throws ServletException, IOException{
-}
-```
-* **doGet() 方法**
-    * GET 请求来自于一个 URL 的正常请求，或者来自于一个未指定 METHOD 的 HTML 表单，它由 doGet() 方法处理。
-```java
-public void doGet(HttpServletRequest request,
-                  HttpServletResponse response)
-    throws ServletException, IOException {
-    // Servlet 代码
-}
-```
-* **doPost() 方法**
-POST 请求来自于一个特别指定了 METHOD 为 POST 的 HTML 表单，它由 doPost() 方法处理。
-
-```java
-public void doPost(HttpServletRequest request,
-                   HttpServletResponse response)
-    throws ServletException, IOException {
-    // Servlet 代码
-}
-```
-* **destroy() 方法**
-    * destroy() 方法只会被调用一次，在 Servlet 生命周期结束时被调用。destroy() 方法可以让您的 Servlet 关闭数据库连接、停止后台线程、把 Cookie 列表或点击计数器写入到磁盘，并执行其他类似的清理活动。
-
-    * 在调用 destroy() 方法之后，servlet 对象被标记为垃圾回收。destroy 方法定义如下所示：
-
-```java
-  public void destroy() {
-    // 终止化代码...
-  }
-```
-* 一个典型的 Servlet 生命周期方案。
-    * 第一个到达服务器的 HTTP 请求被委派到 Servlet 容器。
-    * Servlet 容器在调用 service() 方法之前加载 Servlet。
-    * 然后 Servlet 容器处理由多个线程产生的多个请求，每个线程执行一个单一的 Servlet 实例的 service() 方法。
-![](https://www.runoob.com/wp-content/uploads/2014/07/Servlet-LifeCycle.jpg)
-
-**Servlet 编写过滤器**
-* Servlet 过滤器可以动态地拦截请求和响应，以变换或使用包含在请求或响应中的信息。
-可以将一个或多个 Servlet 过滤器附加到一个 Servlet 或一组 Servlet。Servlet 过滤器也可以附加到 JavaServer Pages (JSP) 文件和 HTML 页面。调用 Servlet 前调用所有附加的 Servlet 过滤器。
-* Servlet 过滤器是可用于 Servlet 编程的 Java 类，可以实现以下目的：
-* 在客户端的请求访问后端资源之前，拦截这些请求。
-* 在服务器的响应发送回客户端之前，处理这些响应。
-* 根据规范建议的各种类型的过滤器：
-    * 身份验证过滤器（Authentication Filters）。
-    * 数据压缩过滤器（Data compression Filters）。  
-    * 加密过滤器（Encryption Filters）。
-    * 触发资源访问事件过滤器。
-    * 图像转换过滤器（Image Conversion Filters）。
-    * 日志记录和审核过滤器（Logging and Auditing Filters）。
-    * MIME-TYPE 链过滤器（MIME-TYPE Chain Filters）。
-    * 标记化过滤器（Tokenizing Filters）。
-    * XSL/T 过滤器（XSL/T Filters），转换 XML 内容。
-
-* Servlet 过滤器方法
-    * 过滤器是一个实现了 javax.servlet.Filter 接口的 Java 类。javax.servlet.Filter 接口定义了三个方法
-        * public void doFilter (ServletRequest, ServletResponse, FilterChain)
-            * 该方法完成实际的过滤操作，当客户端请求方法与过滤器设置匹配的URL时，Servlet容器将先调用过滤器的doFilter方法。FilterChain用户访问后续过滤器。
-        * public void init(FilterConfig filterConfig)
-            * web 应用程序启动时，web 服务器将创建Filter 的实例对象，并调用其init方法，读取web.xml配置，完成对象的初始化功能，从而为后续的用户请求作好拦截的准备工作（filter对象只会创建一次，init方法也只会执行一次）。开发人员通过init方法的参数，可获得代表当前filter配置信息的FilterConfig对象。
-        * public void destroy()
-            * Servlet容器在销毁过滤器实例前调用该方法，在该方法中释放Servlet过滤器占用的资源。
-
-
-### 1.3.4. Tomcat 总体架构
+### 1.5.3. Tomcat 总体架构
 <a href="#menu" style="float:right">目录</a>
 
 Tomcat总计架构
@@ -610,11 +719,11 @@ Tomcat总计架构
 
 
 
-### 1.3.5. Server和Service组件
+### 1.5.4. Server和Service组件
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.3.6. Connect组件
+### 1.5.5. Connect组件
 <a href="#menu" style="float:right">目录</a>
 
 * http11Protocol
@@ -626,62 +735,116 @@ Tomcat总计架构
 * http11AjpProtocol
     * HTTP阻塞模式协议
 
-### 1.3.7. Engine组件
+### 1.5.6. Engine组件
 <a href="#menu" style="float:right">目录</a>
 
-### 1.3.8. Host容器
+### 1.5.7. Host容器
 <a href="#menu" style="float:right">目录</a>
 
-### 1.3.9. Context容器
-<a href="#menu" style="float:right">目录</a>
-
-
-### 1.3.10. Wrapper容器
+### 1.5.8. Context容器
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.3.11. 生命周期管理
+### 1.5.9. Wrapper容器
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.3.12. 日志框架和国家化
-<a href="#menu" style="float:right">目录</a>
-
-### 1.3.13. 公共与隔离类加载器
+### 1.5.10. 生命周期管理
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.3.14. 请求URI映射器Mapper
+### 1.5.11. 日志框架和国家化
 <a href="#menu" style="float:right">目录</a>
 
-### 1.3.15. Tomcat的JNDI
-<a href="#menu" style="float:right">目录</a>
-
-
-### 1.3.16. 运行、通信、及访问安全管理
+### 1.5.12. 公共与隔离类加载器
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.3.17. 处理请求和响应的管道
+### 1.5.13. 请求URI映射器Mapper
+<a href="#menu" style="float:right">目录</a>
+
+### 1.5.14. Tomcat的JNDI
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.3.18. 多样化的会话管理器
+### 1.5.15. 运行、通信、及访问安全管理
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.3.19. 高可用集群实现
+### 1.5.16. 处理请求和响应的管道
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.3.20. 集群通信框架
+### 1.5.17. 多样化的会话管理器
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.3.21. 监控和管理
+### 1.5.18. 高可用集群实现
+<a href="#menu" style="float:right">目录</a>
+
+
+### 1.5.19. 集群通信框架
+<a href="#menu" style="float:right">目录</a>
+
+
+### 1.5.20. 监控和管理
 <a href="#menu" style="float:right">目录</a>
 
 
 
-## 1.4. Jetty
+## 1.6. Jetty
 <a href="#menu" style="float:right">目录</a>
+
+## 1.7. 编码问题
+<a href="#menu" style="float:right">目录</a>
+
+* 需要编码的原因
+    * 计算机中存储信息的最小单位是一个字节，所能表示的字符范围是0～255
+    * 人类表示的符号太多，无法使用一个字节完全表示，比如汉字就有几千个。
+
+* 当将一种编码格式的数据转化成另一种编码格式的数据就要进行翻译
+
+### 1.7.1. 常见的编码格式
+<a href="#menu" style="float:right">目录</a>
+
+**ASCII码**
+* 总共128个，用一个字节的低7位表示。
+* 0-31是控制字符，比如换行回车等，都是不可打印的。
+* 32~126是可打印字符，可以通过键盘输入并显示出来
+
+
+**ISO-8859-1**
+* 涵盖了大多数西欧的语言字符
+* 单字节编码，总共能表示256字符
+
+**GB2312**
+* 双字节编，全称信息技术 中文编码字符集
+* 编码范围：A1-F7，A1-A9是符号区，总共包含682个字符;B0-F7是汉字区，包含6763个汉字。
+
+**GBK**
+* 全称：汉字内码扩展规范,用于扩展GB2312,加入了更多的汉字，编码和GB2312兼容，只有多出来的汉字GB2312不能表示
+
+**GB18030**
+* 全称:信息技术 中文编码字符集
+* 可能是单字节，双字节，或者四字节编码
+
+**UTF-16**
+* 两个字节表示
+* 问题:有的字符只需要一个字节就可以表示，使用两个字节就会占用更多的空间。
+
+
+**UTF-8**
+* 采用变长技术，每个编码区域有不同的字码长度，不同类型的字符可以由1-6个字节组成
+* 编码规则
+    * 如果是一个字节，以0开头，则表示这是一个ASCII字符00-7F
+    * 如果是一个字节，以11开头，则连续1的个数暗示这个字符的字节数
+    * 如果一个字节以10开始，表示不是首字节，需要向前查找才能找到首字节。
+
+```
+0111 1111 :以0开头，单字节，有效数据是 111 1111；
+1101 1111 1011 1010 ：首字节以11开头，说明有两个字节，第2个字节必须以10开头，有效数据是01 1111 11 1010.
+1111 1111 1011 1010 1011 1010 ：首字节以111开头，说明有三个字节，第2个字节必须以10开头，有效数据是01 1111 11 1010 11 1010.
+
+```
+
+
