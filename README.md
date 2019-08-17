@@ -8,6 +8,7 @@
 * [Spring](https://github.com/lgjlife/Java-Study/blob/master/spring.md)
 * [mysql](https://github.com/lgjlife/Java-Study/blob/master/mysql.md)
 * [Redis](https://github.com/lgjlife/Java-Study/blob/master/Redis.md)
+* [mybatis](https://github.com/lgjlife/Java-Study/blob/master/mybatis.md)
 * [nginx](https://github.com/lgjlife/Java-Study/blob/master/nginx.md)
 * [Web容器](https://github.com/lgjlife/Java-Study/blob/master/web-cantainer.md)
 * [netty](https://github.com/lgjlife/Java-Study/blob/master/netty.md)

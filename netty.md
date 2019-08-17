@@ -1524,7 +1524,7 @@ try {
 * 服务端创建两个线程池，用于隔离连接和IO操作
 * 尽量不要在ChannelHandler中启动用户线程(解码后用于将POJO消息派发到业务线程除外)
 * 解码放在NIO线程中进行，不要放到业务线程
-* 如果业务简单，可以很快完成，就直接在IO线程中进行处理。业务复杂，耗时较长，就另起业务线程进行处理。
+* 如果业务简单，���以很快完成，就直接在IO线程中进行处理。业务复杂，耗时较长，就另起业务线程进行处理。
 
 #### NioEventLoop 源码分析
 
@@ -1537,7 +1537,7 @@ public final class NioEventLoop extends SingleThreadEventLoop
 * NioEventLoop作用
     * IO线程的读写
     * 系统Task,通过调用NioEventLoop的execute(Runable task)方法实现，Netty有很多系统Task,创建它们的主要原因是：当IO线程和用户线程同时操作网络资源时，为了防止并发操作导致的锁竞争，将用户线程的操作封装成Task放入消息队列，由IO线程负责执行，这样就实现了局部无锁化。
-    * 定时任务,通过NioEventLoop的schedule(Runnable command, long delay, TimeUnit unit) 实现
+    * 定时任务,通过NioEventLoop的schedule(Runnable command, long delay, TimeUnit unit) 实现。
 
 ### 1.3.10. Futur和Promise
 <a href="#menu" style="float:right">目录</a>

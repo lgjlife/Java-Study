@@ -1,8 +1,32 @@
 <h1>多线程</h1>
+<!-- TOC -->
 
+- [1. 多线程](#1-多线程)
+    - [1.1. 基本概念](#11-基本概念)
+    - [1.2. Java多线程](#12-java多线程)
+        - [1.2.1. 实现方式](#121-实现方式)
+        - [1.2.2. 基本属性](#122-基本属性)
+        - [1.2.3. 常用方法](#123-常用方法)
+        - [1.2.4. 生命周期 & 线程状态](#124-生命周期--线程状态)
+        - [1.2.5. 线程监控工具](#125-线程监控工具)
+    - [1.3. Synchronized](#13-synchronized)
+        - [1.3.1. 基本概念](#131-基本概念)
+        - [1.3.2. 基本使用](#132-基本使用)
+        - [1.3.3. 实现原理](#133-实现原理)
+    - [1.4. 线程间通信](#14-线程间通信)
+        - [1.4.1. 基本概念](#141-基本概念)
+        - [1.4.2. 实现消费者和生产者](#142-实现消费者和生产者)
+    - [1.5. Java内存模型](#15-java内存模型)
+    - [1.6. volatile](#16-volatile)
+    - [1.7. Lock](#17-lock)
+    - [1.8. 线程池](#18-线程池)
+    - [1.9. 并发工具类](#19-并发工具类)
+    - [1.10. 异步编程](#110-异步编程)
 
+<!-- /TOC -->
 
-# 1. 基本概念
+# 1. 多线程
+## 1.1. 基本概念
 <a href="#menu" style="float:right">目录</a>
 * 进程
     * 受操作系统管理和资源分配的基本单元，进程之间的内存空间是相互独立的。
@@ -16,10 +40,10 @@
     * 多核CPU的时候，可以有效利用多核提高程序执行效率
     * 在程序任务阻塞的场景下，利用多线程执行其他任务，提高执行效率
 
-# 2. Java多线程
+## 1.2. Java多线程
 <a href="#menu" style="float:right">目录</a>
 
-## 2.1. 实现方式
+### 1.2.1. 实现方式
 **方式1:继承Thread类**
 ```java
 
@@ -107,13 +131,13 @@ public interface Runnable {
 ```
 通过Callable配合Future类可以获取线程的执行结果。
 
-## 2.2. 基本属性
+### 1.2.2. 基本属性
 * 线程名称，主线程为main，其他线程为Thread-1,Thread-2,可自定义，用于区分不同的线程。
 * 线程分组
 * 线程优先级
 * 守护线程标志，默认为非守护线程
 
-## 2.3. 常用方法
+### 1.2.3. 常用方法
 
 * run & start
     * run 方法是Runable接口的方法，是线程执行任务的方法，线程类需要实现该方法
@@ -162,7 +186,7 @@ public interface Runnable {
     * 用于等待调用的线程执行结束
     * 内部使用wait实现，所以会释放锁
     
-## 2.4. 生命周期 & 线程状态
+### 1.2.4. 生命周期 & 线程状态
 
 * 线程创建
 * 线程运行
@@ -188,7 +212,7 @@ public interface Runnable {
     * 阻塞状态。不会释放线程所持有的锁
 * Terminated
     * 结束状态
-## 2.5. 线程监控工具
+### 1.2.5. 线程监控工具
 * jstack
 查看线程的状态，优先级，可以检测是否存在死锁
 ```
@@ -237,9 +261,9 @@ JNI global references: 200
 * jconsole,jvisual 
 集成多个java命令，通过界面查看各个状态
 
-# 3. Synchronized
+## 1.3. Synchronized
 <a href="#menu" style="float:right">目录</a>
-### 3.0.1. 基本概念
+### 1.3.1. 基本概念
 * 为什么要同步
 看一个简单的例子：
 ```java
@@ -276,7 +300,7 @@ class Service{
 * synchronized具有可重入特性  
 * 发生未捕获的异常时，线程将会释放锁并退出。
 
-## 3.1. 基本使用
+### 1.3.2. 基本使用
 * 同步语句
 **同步方法**
 ```java
@@ -494,7 +518,7 @@ main(){
 
 
 ```
-## 3.2. 实现原理
+### 1.3.3. 实现原理
 Java 虚拟机中的同步(Synchronization)基于进入和退出Monitor对象实现， 无论是显式同步(有明确的 monitorenter 和 monitorexit 指令,即同步代码块)还是隐式同步都是如此。在 Java 语言中，同步用的最多的地方可能是被 synchronized 修饰的同步方法。同步方法 并不是由 monitorenter 和 monitorexit 指令来实现同步的，而是由方法调用指令读取运行时常量池中方法表结构的 ACC_SYNCHRONIZED 标志来隐式实现的，关于这点，稍后详细分析。
 同步代码块：monitorenter指令插入到同步代码块的开始位置，monitorexit指令插入到同步代码块的结束位置，JVM需要保证每一个monitorenter都有一个monitorexit与之相对应。任何对象都有一个monitor与之相关联，当且一个monitor被持有之后，他将处于锁定状态。线程执行到monitorenter指令时，将会尝试获取对象所对应的monitor所有权，即尝试获取对象的锁；
 在JVM中，对象在内存中的布局分为三块区域：对象头、实例变量和填充数据。如下：
@@ -547,8 +571,8 @@ Java 虚拟机中的同步(Synchronization)基于进入和退出Monitor对象实
 等待唤醒机制与synchronize：所谓等待唤醒机制本篇主要指的是notify/notifyAll和wait方法，在使用这3个方法时，必须处于synchronized代码块或者synchronized方法中，否则就会抛出IllegalMonitorStateException异常，这是因为调用这几个方法前必须拿到当前对象的监视器monitor对象，也就是说notify/notifyAll和wait方法依赖于monitor对象，在前面的分析中，我们知道monitor 存在于对象头的Mark Word 中(存储monitor引用指针)，而synchronized关键字可以获取 monitor ，这也就是为什么notify/notifyAll和wait方法必须在synchronized代码块或者synchronized方法调用的原因。
 
 
-# 4. 线程间通信
-## 4.1. 基本概念
+## 1.4. 线程间通信
+### 1.4.1. 基本概念
 ```java
 //释放锁，线程任务暂停
 public final native void wait() throws InterruptedException;
@@ -565,25 +589,25 @@ public final native void notifyAll();
 * 在等待的过程中，如果线程被中断，将会抛出异常InterruptedException。
 * 调用wait将会释放锁，sleep将不会释放锁，wait将会随机选择一个线程进行唤醒
 
-## 4.2. 实现消费者和生产者
+### 1.4.2. 实现消费者和生产者
 
 
-# 5. Java内存模型
+## 1.5. Java内存模型
 <a href="#menu" style="float:right">目录</a>   
 
-# 6. volatile
+## 1.6. volatile
 <a href="#menu" style="float:right">目录</a>
  
-# 7. Lock
+## 1.7. Lock
 <a href="#menu" style="float:right">目录</a>
 
-# 8. 线程池
-<a href="#menu" style="float:right">目录</a>
-
-
-# 9. 并发工具类
+## 1.8. 线程池
 <a href="#menu" style="float:right">目录</a>
 
 
-# 10. 异步编程
+## 1.9. 并发工具类
+<a href="#menu" style="float:right">目录</a>
+
+
+## 1.10. 异步编程
 <a href="#menu" style="float:right">目录</a>
