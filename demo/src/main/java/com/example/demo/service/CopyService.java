@@ -20,16 +20,27 @@ public class CopyService {
                                         "nginx.md","web-cantainer.md","netty.md",
                                         "performance.md","high-concurrency.md","distribution.md","web-safe.md"};
     public static void run() {
-        init();
+        init("Java知识-1.md");
+        handler("fileName1","Java知识-1.md");
+
+        init("Java知识-2.md");
+        handler("fileName2","Java知识-2.md");
+
+
+
+    }
+
+    private static void handler(String key,String distName){
         File file = new File(basePath);
 
+        log.info("保存的文件名称:"+distName);
         FileOutputStream fileOutputStream = null;
         FileInputStream  fileInputStream = null;
         try{
 
 
-            fileOutputStream = new FileOutputStream(new File(basePath+"/"+allName),true);
-            fileNames = getFileList();
+            fileOutputStream = new FileOutputStream(new File(basePath+"/"+distName),true);
+            fileNames = getFileList(key);
             for(String fileName:fileNames){
                 log.info("select md file = " +  fileName);
 
@@ -62,14 +73,12 @@ public class CopyService {
                 log.error(ex.getMessage());
             }
         }
-
-
     }
 
-    private static void init(){
-        File file = new File(basePath+"/"+allName);
+    private static void init(String fileName){
+        File file = new File(basePath+"/"+fileName);
         if(file.exists()){
-            log.info("[{}]存在,删除[{}]",allName,file.delete());
+            log.info("[{}]存在,删除[{}]",fileName,file.delete());
             ;
         }
 
@@ -110,18 +119,18 @@ public class CopyService {
 
 
 
-    private  static String[] getFileList(){
+    private  static String[] getFileList(String key ){
 
         String[] names = null;
 
        try{
            Properties properties = PropertiesLoaderUtils.loadProperties(new FileUrlResource("/home/lgj/aProject/aRealPrj/Java-Interview/fileName.properties"));
-           String fileNames = (String)properties.get("fileName");
+           String fileNames = (String)properties.get(key);
            Set<String> keys=  properties.stringPropertyNames();
 
 
            names = fileNames.split(",");
-           System.out.println(fileNames);
+         //  System.out.println(fileNames);
 
        }
        catch(Exception ex){
@@ -132,7 +141,5 @@ public class CopyService {
 
     }
 
-    public static void main(String args[]){
-        CopyService.getFileList();
-    }
+
 }

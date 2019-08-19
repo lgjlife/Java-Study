@@ -386,6 +386,7 @@ MIDI (mid)，文件头：4D546864
 ```
 
 ### DOS攻击
+<a href="#menu" style="float:right">目录</a>
 
 **定义**
 分布式拒绝服务攻击(英文意思是Distributed Denial of Service，简称DDoS)是指处于不同位置的多个攻击者同时向一个或数个目标发动攻击，或者一个攻击者控制了位于不同位置的多台机器并利用这些机器对受害者同时实施攻击。由于攻击的发出点是分布在不同地方的，这类攻击称为分布式拒绝服务攻击，其中的攻击者可以有多个。
@@ -467,21 +468,108 @@ UDP DNS Query Flood攻击采用的方法是向被攻击的服务器发送大量�
 
 
 ## 常见的安全算法
+<a href="#menu" style="float:right">目录</a>
 
 ### 数字摘要
+<a href="#menu" style="float:right">目录</a>
+
+对数据(文件字节流/消息字节流)进行类似的HASH算法之后获取到的固定长度的值(摘要)，如果原数据被修改，校验时的摘要将无法进行匹配。
+摘要一般是单向的，无法从摘要值获取原数据。
+
+常用的摘要算法
+* MD5
+    * 128位，不可逆
+    * JDK实现MessageDigest
+    * MessageDigest md5 = MessageDigest.getInstance("MD5");
+* SHA
+    * 安全散列算法
+    * 160位，比MD5慢，但是更安全
+    * JDK实现MessageDigest
+    * MessageDigest md5 = MessageDigest.getInstance("SHA-1");
+
+由于计算出的摘要可能包含无法显示和网络传输的控制字符。因此需要对生成的摘要进行编码
+* 16进制编码
+```java
+public static String bytesToHex(byte[] bytes) {  
+    StringBuffer sb = new StringBuffer();  
+    for(int i = 0; i < bytes.length; i++) {  
+        String hex = Integer.toHexString(bytes[i] & 0xFF);  
+        if(hex.length() < 2){  
+            sb.append(0);  
+        }  
+        sb.append(hex);  
+    }  
+    return sb.toString();  
+} 
+public static byte[] hexToByteArray(String inHex){  
+    int hexlen = inHex.length();  
+    byte[] result;  
+    if (hexlen % 2 == 1){  
+        //奇数  
+        hexlen++;  
+        result = new byte[(hexlen/2)];  
+        inHex="0"+inHex;  
+    }else {  
+        //偶数  
+        result = new byte[(hexlen/2)];  
+    }  
+    int j=0;  
+    for (int i = 0; i < hexlen; i+=2){  
+        result[j]=hexToByte(inHex.substring(i,i+2));  
+        j++;  
+    }  
+    return result;   
+}  
+
+```
+* BASE64编码
+JDK有提供相关的类。
+
 
 ### 对称加密算法
+<a href="#menu" style="float:right">目录</a>
+对称加密算法 是应用较早的加密算法，又称为 共享密钥加密算法。在 对称加密算法 中，使用的密钥只有一个，发送 和 接收 双方都使用这个密钥对数据进行 加密 和 解密。这就要求加密和解密方事先都必须知道加密的密钥。
+
+* 数据加密过程：在对称加密算法中，数据发送方 将 明文 (原始数据) 和 加密密钥 一起经过特殊 加密处理，生成复杂的 加密密文 进行发送。
+* 数据解密过程：数据接收方 收到密文后，若想读取原数据，则需要使用 加密使用的密钥 及相同算法的 逆算法 对加密的密文进行解密，才能使其恢复成 可读明文。
+
+**常见的对称加密算法**
+* DES
+* 3DES
+* AES
+
+
+
 
 ### 非对称加密算法
+<a href="#menu" style="float:right">目录</a>
+
+非对称加密算法，又称为公开密钥加密算法。它需要两个密钥，一个称为公开密钥 (public key)，即公钥，另一个称为私有密钥 (private key)，即私钥。因为加密和解密使用的是两个不同的密钥，所以这种算法称为非对称加密算法。
+* 如果使用 公钥 对数据 进行加密，只有用对应的 私钥 才能 进行解密。
+* 如果使用 私钥 对数据 进行加密，只有用对应的 公钥 才能 进行解密。
+
+**常见的对称加密算法**
+* RSA
+
 
 ### 数字签名
+<a href="#menu" style="float:right">目录</a>
 
 ### 数字证书
+<a href="#menu" style="float:right">目录</a>
 
 
 
 
-## 常见的安全算法
+
+
+
+
+
+
+
+
+
 
 
   

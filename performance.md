@@ -1,6 +1,43 @@
 
 <span id="menu"></span>
+<!-- TOC -->
 
+- [1. 性能调优](#1-性能调优)
+    - [1.1. 性能调优概述](#11-性能调优概述)
+    - [1.2. 操作系统性能监控](#12-操作系统性能监控)
+    - [1.3. 使用JMH做Benchmark基准测试](#13-使用jmh做benchmark基准测试)
+    - [1.4. JVM](#14-jvm)
+        - [1.4.1. JIT编译器](#141-jit编译器)
+            - [1.4.1.1. 概述](#1411-概述)
+        - [1.4.2. JVM内存模型](#142-jvm内存模型)
+        - [1.4.3. JVM的内存空间](#143-jvm的内存空间)
+            - [1.4.3.1. 对象内存布局](#1431-对象内存布局)
+            - [1.4.3.2. 对象访问定位](#1432-对象访问定位)
+        - [1.4.4. 垃圾回收算法](#144-垃圾回收算法)
+            - [1.4.4.1. 对象回收判定](#1441-对象回收判定)
+            - [1.4.4.2. 对象引用分类](#1442-对象引用分类)
+            - [1.4.4.3. 标记清除算法](#1443-标记清除算法)
+            - [1.4.4.4. 复制算法](#1444-复制算法)
+            - [1.4.4.5. 标记整理算法](#1445-标记整理算法)
+            - [1.4.4.6. 分代收集算法](#1446-分代收集算法)
+        - [1.4.5. 垃圾收集器](#145-垃圾收集器)
+            - [1.4.5.1. Serial收集器](#1451-serial收集器)
+            - [1.4.5.2. ParNew收集器](#1452-parnew收集器)
+            - [1.4.5.3. Parallel Scavenge收集器](#1453-parallel-scavenge收集器)
+            - [1.4.5.4. Serial Old收集器](#1454-serial-old收集器)
+            - [1.4.5.5. Parallel Old收集器](#1455-parallel-old收集器)
+            - [1.4.5.6. CMS收集器](#1456-cms收集器)
+            - [1.4.5.7. G1收集器](#1457-g1收集器)
+        - [1.4.6. 内存分配和回收策略](#146-内存分配和回收策略)
+        - [1.4.7. JVM相关参数介绍](#147-jvm相关参数介绍)
+        - [1.4.8. 性能监控与故障处理工具](#148-性能监控与故障处理工具)
+            - [1.4.8.1. JDK命令行工具](#1481-jdk命令行工具)
+            - [1.4.8.2. Jdk可视化工具](#1482-jdk可视化工具)
+        - [1.4.9. JVM性能调优](#149-jvm性能调优)
+        - [1.4.10. 类文件结构](#1410-类文件结构)
+        - [1.4.11. 类加载器](#1411-类加载器)
+
+<!-- /TOC -->
 
 # 1. 性能调优
 <a href="#menu" style="float:right">目录</a>
@@ -20,13 +57,237 @@ procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
  0  0      0 2600524 206892 2439504    0    0     0    91  485 1380  2  1 97  0  0
 
 ```
-
-## 1.3. JVM
+## 1.3. 使用JMH做Benchmark基准测试
 <a href="#menu" style="float:right">目录</a>
 
-### JIT编译器
+**BenchMark介绍**
+BenchMark 又叫做基准测试，主要用来测试一些方法的性能，可以根据不同的参数以不同的单位进行计算（例如可以使用吞吐量为单位，也可以使用平均时间作为单位，在 BenchmarkMode 里面进行调整）。
 
-#### 概述
+**开始前的步骤**
+项目使用的是 Maven，因此只要对 pom.xml 添加依赖即可。
+
+```XML
+<dependency>
+    <groupId>org.openjdk.jmh</groupId>
+    <artifactId>jmh-core</artifactId>
+    <version>1.19</version>
+</dependency>
+<dependency>
+    <groupId>org.openjdk.jmh</groupId>
+    <artifactId>jmh-generator-annprocess</artifactId>
+    <version>1.19</version>
+    <scope>provided</scope>
+</dependency>
+```
+
+**例子**
+
+```JAVA
+package com.psd.benchmark;
+
+import org.openjdk.jmh.annotations.*;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.Options;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * Author: Shadowdsp
+ * Date: 18/07/22
+ */
+
+@BenchmarkMode(Mode.Throughput) // 吞吐量
+@OutputTimeUnit(TimeUnit.MILLISECONDS) // 结果所使用的时间单位
+@State(Scope.Thread) // 每个测试线程分配一个实例
+@Fork(2) // Fork进行的数目
+@Warmup(iterations = 4) // 先预热4轮
+@Measurement(iterations = 10) // 进行10轮测试
+public class BenchMark {
+
+    @Param({"10", "40", "70", "100"}) // 定义四个参数，之后会分别对这四个参数进行测试
+    private int n;
+
+    private List<Integer> array;
+    private List<Integer> list;
+
+    @Setup(Level.Trial) // 初始化方法，在全部Benchmark运行之前进行
+    public void init() {
+        array = new ArrayList<>(0);
+        list = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            array.add(i);
+            list.add(i);
+        }
+    }
+
+    @Benchmark
+    public void arrayTraverse() {
+        for (int i = 0; i < n; i++) {
+            array.get(i);
+        }
+    }
+
+    @Benchmark
+    public void listTraverse() {
+        for (int i = 0; i < n; i++) {
+            list.get(i);
+        }
+    }
+
+    @TearDown(Level.Trial) // 结束方法，在全部Benchmark运行之后进行
+    public void arrayRemove() {
+        for (int i = 0; i < n; i++) {
+            array.remove(0);
+            list.remove(0);
+        }
+    }
+
+    public static void main(String[] args) throws RunnerException {
+        Options options = new OptionsBuilder().include(BenchMark.class.getSimpleName()).build();
+        new Runner(options).run();
+    }
+}
+```
+
+```
+# JMH version: 1.19
+# VM version: JDK 1.8.0_144, VM 25.144-b01
+# VM invoker: E:\Java\JDK8\jre\bin\java.exe
+# VM options: -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2017.3.1\lib\idea_rt.jar=6182:C:\Program Files\JetBrains\IntelliJ IDEA 2017.3.1\bin -Dfile.encoding=UTF-8
+# Warmup: 4 iterations, 1 s each
+# Measurement: 10 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: com.psd.benchmark.BenchMark.arrayTraverse
+# Parameters: (n = 10)
+
+# Run progress: 0.00% complete, ETA 00:03:44
+# Fork: 1 of 2
+# Warmup Iteration   1: 189538.902 ops/ms
+# Warmup Iteration   2: 287165.702 ops/ms
+# Warmup Iteration   3: 282388.510 ops/ms
+# Warmup Iteration   4: 277296.753 ops/ms
+Iteration   1: 288687.174 ops/ms
+Iteration   2: 277046.541 ops/ms
+Iteration   3: 288680.458 ops/ms
+Iteration   4: 279775.705 ops/ms
+Iteration   5: 289098.257 ops/ms
+Iteration   6: 287462.515 ops/ms
+Iteration   7: 255330.788 ops/ms
+Iteration   8: 282631.894 ops/ms
+Iteration   9: 277038.372 ops/ms
+Iteration  10: 277690.784 ops/ms
+
+# Run progress: 6.25% complete, ETA 00:03:42
+# Fork: 2 of 2
+# Warmup Iteration   1: 286568.900 ops/ms
+# Warmup Iteration   2: 288014.591 ops/ms
+# Warmup Iteration   3: 281790.934 ops/ms
+# Warmup Iteration   4: 279647.288 ops/ms
+Iteration   1: 280839.175 ops/ms
+Iteration   2: 289208.462 ops/ms
+Iteration   3: 282724.949 ops/ms
+Iteration   4: 289762.265 ops/ms
+Iteration   5: 284551.820 ops/ms
+Iteration   6: 283700.745 ops/ms
+Iteration   7: 261083.800 ops/ms
+Iteration   8: 283651.988 ops/ms
+Iteration   9: 284418.725 ops/ms
+Iteration  10: 282418.733 ops/ms
+
+
+
+
+# Run complete. Total time: 00:03:56
+(一般只需要关注这下面的东西)
+
+Benchmark                (n)   Mode  Cnt       Score       Error   Units
+BenchMark.arrayTraverse   10  thrpt   20  281290.158 ±  7750.303  ops/ms
+BenchMark.arrayTraverse   40  thrpt   20  279251.339 ±  6287.385  ops/ms
+BenchMark.arrayTraverse   70  thrpt   20  281224.067 ±  7376.077  ops/ms
+BenchMark.arrayTraverse  100  thrpt   20  269576.123 ± 14237.446  ops/ms
+BenchMark.listTraverse    10  thrpt   20   36438.771 ±  1680.987  ops/ms
+BenchMark.listTraverse    40  thrpt   20    5912.221 ±   271.819  ops/ms
+BenchMark.listTraverse    70  thrpt   20    1752.306 ±    77.143  ops/ms
+BenchMark.listTraverse   100  thrpt   20     767.444 ±    28.363  ops/ms
+
+
+Process finished with exit code 0
+
+```
+
+大多数情况只需要关注最下面的结果。
+
+可以结合 Score 和 Unit 这两列，看到方法的效率。这里显然 arrayTraverse 的效率比 listTraverse 的高很多，因为 Unit 单位是 ops/ms，即单位时间内执行的操作数。所以显然在遍历的时候，ArrayList的效率是比LinkedList高的。
+
+**注解介绍**
+
+* **@BenchmarkMode**
+Mode 表示 JMH 进行 Benchmark 时所使用的模式。通常是测量的维度不同，或是测量的方式不同。目前 JMH 共有四种模式：
+
+    Throughput: 整体吞吐量，例如“1秒内可以执行多少次调用”，单位是操作数/时间。
+    AverageTime: 调用的平均时间，例如“每次调用平均耗时xxx毫秒”，单位是时间/操作数。
+    SampleTime: 随机取样，最后输出取样结果的分布，例如“99%的调用在xxx毫秒以内，99.99%的调用在xxx毫秒以内”
+    SingleShotTime: 以上模式都是默认一次 iteration 是 1s，唯有 SingleShotTime 是只运行一次。往往同时把 warmup 次数设为0，用于测试冷启动时的性能。
+    
+* **@OutputTimeUnit**
+输出的时间单位。
+
+* **@Iteration**
+Iteration 是 JMH 进行测试的最小单位。在大部分模式下，一次 iteration 代表的是一秒，JMH 会在这一秒内不断调用需要 Benchmark 的方法，然后根据模式对其采样，计算吞吐量，计算平均执行时间等。
+
+* **@WarmUp**
+Warmup 是指在实际进行 Benchmark 前先进行预热的行为。
+
+    为什么需要预热？因为 JVM 的 JIT 机制的存在，如果某个函数被调用多次之后，JVM 会尝试将其编译成为机器码从而提高执行速度。为了让 Benchmark 的结果更加接近真实情况就需要进行预热。
+
+* **@State**
+类注解，JMH测试类必须使用 @State 注解，它定义了一个类实例的生命周期，可以类比 Spring Bean 的 Scope。由于 JMH 允许多线程同时执行测试，不同的选项含义如下：
+
+    Scope.Thread：默认的 State，每个测试线程分配一个实例；
+    Scope.Benchmark：所有测试线程共享一个实例，用于测试有状态实例在多线程共享下的性能；
+    Scope.Group：每个线程组共享一个实例；
+
+* **@Fork**
+进行 fork 的次数。如果 fork 数是2的话，则 JMH 会 fork 出两个进程来进行测试。
+
+* **@Meansurement**
+提供真正的测试阶段参数。指定迭代的次数，每次迭代的运行时间和每次迭代测试调用的数量(通常使用 @BenchmarkMode(Mode.SingleShotTime) 测试一组操作的开销——而不使用循环)
+
+* **@Setup**
+方法注解，会在执行 benchmark 之前被执行，正如其名，主要用于初始化。
+
+* **@TearDown**
+方法注解，与@Setup 相对的，会在所有 benchmark 执行结束以后执行，主要用于资源的回收等。
+
+* **@Setup/@TearDown注解使用Level参数来指定何时调用fixture：**
+
+|名称|	描述
+|---|---|	
+|Level.Trial|	默认level。全部benchmark运行(一组迭代)之前/之后	
+|Level.Iteration|	一次迭代之前/之后(一组调用)	
+|Level.Invocation|	每个方法调用之前/之后(不推荐使用，除非你清楚这样做的目的)	
+
+* **@Benchmark**
+方法注解，表示该方法是需要进行 benchmark 的对象。
+
+* **@Param**
+成员注解，可以用来指定某项参数的多种情况。特别适合用来测试一个函数在不同的参数输入的情况下的性能。@Param 注解接收一个String数组，在 @Setup 方法执行前转化为为对应的数据类型。多个 @Param 注解的成员之间是乘积关系，譬如有两个用 @Param 注解的字段，第一个有5个值，第二个字段有2个值，那么每个测试方法会跑5*2=10次。
+
+
+
+## 1.4. JVM
+<a href="#menu" style="float:right">目录</a>
+
+### 1.4.1. JIT编译器
+
+#### 1.4.1.1. 概述
 
 * JIT编译器，英文写作Just-In-Time Compiler，中文意思是即时编译器。
 JIT是一种提高程序运行效率的方法。通常，程序有两种运行方式：静态编译与动态解释。静态编译的程序在执行前全部被翻译为机器码，而动态解释执行的则是一句一句边运行边翻译。
@@ -72,11 +333,11 @@ JIT是一种提高程序运行效率的方法。通常，程序有两种运行�
 
 
 
-### 1.3.1. JVM内存模型
+### 1.4.2. JVM内存模型
 <a href="#menu" style="float:right">目录</a>
 ![](https://img2018.cnblogs.com/blog/163758/201811/163758-20181101131229284-1189515543.png)
 
-### 1.3.2. JVM的内存空间
+### 1.4.3. JVM的内存空间
 * 堆内存
     * 新生代
         * Eden区
@@ -161,7 +422,7 @@ JIT是一种提高程序运行效率的方法。通常，程序有两种运行�
         * 堆内存不足，无法分配新的内存
     * StackOverflowError
         * 递归调用导致方法深度过高
-#### 1.3.2.1. 对象内存布局
+#### 1.4.3.1. 对象内存布局
 * HotSpot对象头
     * 用于存储对象自身运行时数据
     * 类型指针，即对象指向类元数据的指针
@@ -180,7 +441,7 @@ HotSpot对象头 Mark Word
 
 Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用于存储锁标志位，1bit固定为0。
 
-#### 1.3.2.2. 对象访问定位
+#### 1.4.3.2. 对象访问定位
 
 * 句柄访问
     * 使用句柄访问方式，java堆将会划分出来一部分内存去来作为句柄池，reference中存储的就是对象的句柄地址。而句柄中则包含对象实例数据的地址和对象类型数据（如对象的类型，实现的接口、方法、父类、field等）的具体地址信息。
@@ -189,10 +450,10 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
     * 如果使用指针访问，那么java堆对象的布局中就必须考虑如何放置访问类型的相关信息（如对象的类型，实现的接口、方法、父类、field等），而reference中存储的就是对象的地址。
     * 使用指针访问的好处是访问速度快，它减少了一次指针定位的时间开销，由于java是面向对象的语言，在开发中java对象的访问非常的频繁，因此这类开销积少成多也是非常可观的，反之则提升访问速度。
 
-### 1.3.3. 垃圾回收算法
+### 1.4.4. 垃圾回收算法
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.3.3.1. 对象回收判定
+#### 1.4.4.1. 对象回收判定
 
 **引用计数法**
 * 给对象添加一个引用计数器，引用一次则计数器+1,引用失效计数器-1，当计数器为0的时候，说明没有地方引用，垃圾收集器可以将它进行回收
@@ -206,7 +467,7 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
     * 方法区中常量引用的对象
     * 本地方法栈中引用的对象
 
-#### 1.3.3.2. 对象引用分类
+#### 1.4.4.2. 对象引用分类
 **强引用**
 * Object obj = new Object();
 * 只要强引用存在，就不会被垃圾回收
@@ -231,13 +492,13 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
 * 如果一个对象与虚引用关联，则跟没有引用与之关联一样，在任何时候都可能被垃圾回收器回收。
 * 虚引用必须和引用队列关联使用，当垃圾回收器准备回收一个对象时，如果发现它还有虚引用，就会把这个虚引用加入到与之 关联的引用队列中
 
-#### 1.3.3.3. 标记清除算法
+#### 1.4.4.3. 标记清除算法
 * 先标记可回收的对象空间，在标记完成之后进行统一的回收
 * 缺点
     * 效率问题，标记和清除两个过程的效率都不高
     * 空间问题，清除后将产生内存碎片，不利于二次使用
 
-#### 1.3.3.4. 复制算法
+#### 1.4.4.4. 复制算法
 * 内存按容量分为两个区块，每次只使用一个区块用于内存分配
 * 垃圾回收时，将存活的对象复制到另一个区块，按顺序存放
 * 复制完成后，一次性清理之前的区块
@@ -248,17 +509,17 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
     * 空间利用率不高，每次只能有一块区域分配内存。
     * 复制效率不高
 
-#### 1.3.3.5. 标记整理算法
+#### 1.4.4.5. 标记整理算法
 * 标记对象，然后让存活的对象往一边移动，最后一次性清理掉端边界以外的内存。
 
-#### 1.3.3.6. 分代收集算法
+#### 1.4.4.6. 分代收集算法
 * 将内存分为老年代和新生代
 * 新创建的对象在新生代进行内存分配，经过多次垃圾回收之后仍然存活的对象将被放到老年代
 * 新生代的对象一般生命周期短，大部分都会被回收掉，因此每次垃圾收集只有很少的对象存活，因此使用复制算法效率比较高
 * 老年代的对象经过多次回收仍然存活，说明生命周期长，不容易被回收。因此每次垃圾回收只有少量的对象被回收，因此使用标记清除/标记整理算法效率比较高。
 
 
-### 1.3.4. 垃圾收集器
+### 1.4.5. 垃圾收集器
 <a href="#menu" style="float:right">目录</a>
 
 * HotSpot虚拟机的垃圾收集器
@@ -280,14 +541,14 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
     * 由于执行垃圾回收，用户线程无法执行，将会导致不可预知的错误，比如响应缓慢，任务超时等
     * 垃圾收集器应当尽量避免发生这种情况
     
-#### 1.3.4.1. Serial收集器
+#### 1.4.5.1. Serial收集器
 <a href="#menu" style="float:right">目录</a>
 * 进行垃圾收集时，将会暂停其他工作线程，直到回收完成
 * 这将导致出现"stop the world"问题，应用代码会发生不可预知的问题
 * 桌面应用场景，分配内存不多，可以使用该垃圾收集器
 * client 模式中比较好的选择
 
-#### 1.3.4.2. ParNew收集器
+#### 1.4.5.2. ParNew收集器
 <a href="#menu" style="float:right">目录</a>
 
 * Serial收集器的多线程版本
@@ -300,7 +561,7 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
     * 通过-XX：ParallelGCThreads限制线程数
 
 
-#### 1.3.4.3. Parallel Scavenge收集器
+#### 1.4.5.3. Parallel Scavenge收集器
 <a href="#menu" style="float:right">目录</a>
 
 * 使用复制算法和多线程方式实现
@@ -312,19 +573,19 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
         
 
 
-#### 1.3.4.4. Serial Old收集器
+#### 1.4.5.4. Serial Old收集器
 <a href="#menu" style="float:right">目录</a>
 
 * 老年代单线程收集算法，使用标记整理
 * 将会发生stop the world 问题
 
-#### 1.3.4.5. Parallel Old收集器
+#### 1.4.5.5. Parallel Old收集器
 <a href="#menu" style="float:right">目录</a>
 
 * Parallel Scavenge收集器的老年代版本
 * 使用标记整理算法
 
-#### 1.3.4.6. CMS收集器
+#### 1.4.5.6. CMS收集器
 <a href="#menu" style="float:right">目录</a>
 
 * 以获取最短停顿时间为目标的收集器，能够给用户带来更好的响应速度
@@ -351,7 +612,7 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
             * 执行多少次FullGC后才会进行内存碎片整理，默认为0  
 
 
-#### 1.3.4.7. G1收集器
+#### 1.4.5.7. G1收集器
 <a href="#menu" style="float:right">目录</a>
 
 * JDK7+ 默认的垃圾收集器
@@ -423,7 +684,7 @@ clean up: 垃圾清除过程，如果发现一个Region中没有存活对象，�
 **full gc**
 如果对象内存分配速度过快，mixed gc来不及回收，导致老年代被填满，就会触发一次full gc，G1的full gc算法就是单线程执行的serial old gc，会导致异常长时间的暂停时间，需要进行不断的调优，尽可能的避免full gc.
 
-### 1.3.5. 内存分配和回收策略
+### 1.4.6. 内存分配和回收策略
 <a href="#menu" style="float:right">目录</a>
 
 * 大多数情况下，对象优先在Eden区中分配，当Eden中没有足够空间，虚拟机将发生一次minor GC.
@@ -445,7 +706,7 @@ clean up: 垃圾清除过程，如果发现一个Region中没有存活对象，�
 
 
 
-### 1.3.6. JVM相关参数介绍
+### 1.4.7. JVM相关参数介绍
 <a href="#menu" style="float:right">目录</a>
 
 除少数例外外，大多数参数都是以下格式
@@ -480,10 +741,10 @@ clean up: 垃圾清除过程，如果发现一个Region中没有存活对象，�
 |---|---|---|
 
 
-### 1.3.7. 性能监控与故障处理工具
+### 1.4.8. 性能监控与故障处理工具
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.3.7.1. JDK命令行工具
+#### 1.4.8.1. JDK命令行工具
 <a href="#menu" style="float:right">目录</a>
 
 **javap**
@@ -644,7 +905,7 @@ Options:
 ****
 
 
-#### 1.3.7.2. Jdk可视化工具
+#### 1.4.8.2. Jdk可视化工具
 <a href="#menu" style="float:right">目录</a>
 
 * JConsole
@@ -652,11 +913,11 @@ Options:
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/jvm/monitor.png?raw=true)
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/jvm/thread.png?raw=true)
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/jvm/gc.png?raw=true)
-### 1.3.8. JVM性能调优
+### 1.4.9. JVM性能调优
 
-### 1.3.9. 类文件结构
+### 1.4.10. 类文件结构
 
-### 1.3.10. 类加载器
+### 1.4.11. 类加载器
 
 
 
