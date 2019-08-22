@@ -5,6 +5,7 @@
 - [1. 性能调优](#1-性能调优)
     - [1.1. 性能调优概述](#11-性能调优概述)
     - [1.2. 操作系统性能监控](#12-操作系统性能监控)
+    - [IDEA安装hsdis查看JIT编译的汇编代码](#idea安装hsdis查看jit编译的汇编代码)
     - [1.3. 使用JMH做Benchmark基准测试](#13-使用jmh做benchmark基准测试)
     - [1.4. JVM](#14-jvm)
         - [1.4.1. JIT编译器](#141-jit编译器)
@@ -57,6 +58,53 @@ procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
  0  0      0 2600524 206892 2439504    0    0     0    91  485 1380  2  1 97  0  0
 
 ```
+
+## IDEA安装hsdis查看JIT编译的汇编代码
+
+You need an hsdis plugin to use PrintAssembly. A convenient choice is the hsdis plugin based on FCML library.
+
+It can be compiled for UNIX-like systems and on Windows you can use pre-built libraries available in the FCML download section on [下载](https://sourceforge.net/projects/fcml/files/):
+
+**To install in Windows:**
+Extract the dll (it can be found in hsdis-1.1.2-win32-i386.zip and hsdis-1.1.2-win32-amd64.zip).
+Copy the dll to wherever exists java.dll (use Windows search). On my system, I found it at two locations:
+C:\Program Files\Java\jre1.8.0_45\bin\server
+C:\Program Files\Java\jdk1.8.0_45\jre\bin\server
+To install in Linux:
+Download source code, extract it
+```bash
+cd <source code dir>
+./configure && make && sudo make install
+cd example/hsdis && make && sudo make install
+sudo ln -s /usr/local/lib/libhsdis.so <JDK PATH>/lib/amd64/hsdis-amd64.so
+sudo ln -s /usr/local/lib/libhsdis.so <JDK PATH>/jre/lib/amd64/hsdis-amd64.so
+On my system, the JDK is in /usr/lib/jvm/java-8-oracle
+```
+
+**How to run it:**
+
+```bash
+java -XX:+UnlockDiagnosticVMOptions -XX:+PrintAssembly 
+-XX:+LogCompilation -XX:PrintAssemblyOptions=intel,mpad=10,cpad=10,code 
+-jar fcml-test.jar
+```
+Additional configuration parameters:
+
+code Print machine code before the mnemonic.
+intel Use the Intel syntax.
+gas Use the AT&T assembler syntax (GNU assembler compatible).
+dec Prints IMM and displacement as decimal values.
+mpad=XX Padding for the mnemonic part of the instruction.
+cpad=XX Padding for the machine code.
+seg Shows the default segment registers.
+zeros Show leading zeros in case of HEX literals.
+
+The Intel syntax is a default one in case of Windows, whereas the AT&T one is a default for the GNU/Linux.
+
+For more details see the FCML Library Reference Manual
+
+
+
 ## 1.3. 使用JMH做Benchmark基准测试
 <a href="#menu" style="float:right">目录</a>
 

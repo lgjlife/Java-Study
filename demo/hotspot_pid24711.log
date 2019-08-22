@@ -1,0 +1,3013 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<hotspot_log version='160 1' process='24711' time_ms='1566318046905'>
+<vm_version>
+<name>
+Java HotSpot(TM) 64-Bit Server VM
+</name>
+<release>
+25.191-b12
+</release>
+<info>
+Java HotSpot(TM) 64-Bit Server VM (25.191-b12) for linux-amd64 JRE (1.8.0_191-b12), built on Oct  6 2018 05:43:09 by &quot;java_re&quot; with gcc 7.3.0
+</info>
+</vm_version>
+<vm_arguments>
+<args>
+-Dvisualvm.id=132045891968330 -XX:+UnlockDiagnosticVMOptions -XX:+PrintAssembly -XX:+LogCompilation -XX:PrintAssemblyOptions=intel,mpad=10,cpad=10,code 
+</args>
+<command>
+*JITDemo.main -javaagent:/home/lgj/java/idea-IU-183.4886.37/lib/idea_rt.jar=33389:/home/lgj/java/idea-IU-183.4886.37/bin -Dfile.encoding=UTF-8 -classpath /home/lgj/java/jdk1.8.0_191/jre/lib/charsets.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/deploy.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/ext/cldrdata.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/ext/dnsns.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/ext/jaccess.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/ext/jfxrt.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/ext/localedata.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/ext/nashorn.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/ext/sunec.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/ext/sunjce_provider.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/ext/sunpkcs11.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/ext/zipfs.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/javaws.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/jce.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/jfr.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/jfxswt.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/jsse.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/management-agent.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/plugin.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/resources.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/rt.jar:/home/lgj/aProject/aRealPrj/Java-Interview/demo/target/classes:/home/lgj/.m2/repository/org/springframework/boot/spring-boot-starter/2.1.6.RELEASE/spring-boot-starter-2.1.6.RELEASE.jar:/home/lgj/.m2/repository/org/springframework/boot/spring-boot/2.1.6.RELEASE/spring-boot-2.1.6.RELEASE.jar:/home/lgj/.m2/repository/org/springframework/spring-context/5.1.8.RELEASE/spring-context-5.1.8.RELEASE.jar:/home/lgj/.m2/repository/org/springframework/spring-aop/5.1.8.RELEASE/spring-aop-5.1.8.RELEASE.jar:/home/lgj/.m2/repository/org/springframework/spring-beans/5.1.8.RELEASE/spring-beans-5.1.8.RELEASE.jar:/home/lgj/.m2/repository/org/springframework/spring-expression/5.1.8.RELEASE/spring-expression-5.1.8.RELEASE.jar:/home/lgj/.m2/repository/org/springframework/boot/spring-boot-autoconfigure/2.1.6.REL
+</command>
+<launcher>
+SUN_STANDARD
+</launcher>
+<properties>
+java.vm.specification.name=Java Virtual Machine Specification
+java.vm.version=25.191-b12
+java.vm.name=Java HotSpot(TM) 64-Bit Server VM
+java.vm.info=mixed mode, sharing
+java.ext.dirs=/home/lgj/java/jdk1.8.0_191/jre/lib/ext:/usr/java/packages/lib/ext
+java.endorsed.dirs=/home/lgj/java/jdk1.8.0_191/jre/lib/endorsed
+sun.boot.library.path=/home/lgj/java/jdk1.8.0_191/jre/lib/amd64
+java.library.path=/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+java.home=/home/lgj/java/jdk1.8.0_191/jre
+java.class.path=/home/lgj/java/idea-IU-183.4886.37/lib/bootstrap.jar:/home/lgj/java/idea-IU-183.4886.37/lib/extensions.jar:/home/lgj/java/idea-IU-183.4886.37/lib/util.jar:/home/lgj/java/idea-IU-183.4886.37/lib/jdom.jar:/home/lgj/java/idea-IU-183.4886.37/lib/log4j.jar:/home/lgj/java/idea-IU-183.4886.37/lib/trove4j.jar:/home/lgj/java/idea-IU-183.4886.37/lib/jna.jar:/home/lgj/java/idea-IU-183.4886.37/jre64/lib/tools.jar
+sun.boot.class.path=/home/lgj/java/jdk1.8.0_191/jre/lib/resources.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/rt.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/sunrsasign.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/jsse.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/jce.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/charsets.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/jfr.jar:/home/lgj/java/jdk1.8.0_191/jre/classes
+java.vm.specification.vendor=Oracle Corporation
+java.vm.specification.version=1.8
+java.vm.vendor=Oracle Corporation
+visualvm.id=132045891968330
+sun.java.command=*JITDemo.main -javaagent:/home/lgj/java/idea-IU-183.4886.37/lib/idea_rt.jar=33389:/home/lgj/java/idea-IU-183.4886.37/bin -Dfile.encoding=UTF-8 -classpath /home/lgj/java/jdk1.8.0_191/jre/lib/charsets.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/deploy.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/ext/cldrdata.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/ext/dnsns.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/ext/jaccess.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/ext/jfxrt.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/ext/localedata.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/ext/nashorn.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/ext/sunec.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/ext/sunjce_provider.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/ext/sunpkcs11.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/ext/zipfs.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/javaws.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/jce.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/jfr.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/jfxswt.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/jsse.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/management-agent.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/plugin.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/resources.jar:/home/lgj/java/jdk1.8.0_191/jre/lib/rt.jar:/home/lgj/aProject/aRealPrj/Java-Interview/demo/target/classes:/home/lgj/.m2/repository/org/springframework/boot/spring-boot-starter/2.1.6.RELEASE/spring-boot-starter-2.1.6.RELEASE.jar:/home/lgj/.m2/repository/org/springframework/boot/spring-boot/2.1.6.RELEASE/spring-boot-2.1.6.RELEASE.jar:/home/lgj/.m2/repository/org/springframework/spring-context/5.1.8.RELEASE/spring-context-5.1.8.RELEASE.jar:/home/lgj/.m2/repository/org/springframework/spring-aop/5.1.8.RELEASE/spring-aop-5.1.8.RELEASE.jar:/home/lgj/.m2/repository/org/springframework/spring-beans/5.1.8.RELEASE/spring-beans-5.1.8.RELEASE.jar:/home/lgj/.m2/repository/org/springframework/spring-expression/5.1.8.RELEASE/spring-expression-5.1.8.RELEASE.jar:/home/lgj/.m2/repository/org/springframework/boot/spring-boot-autoco
+sun.java.launcher=SUN_STANDARD
+</properties>
+</vm_arguments>
+<tty>
+<writer thread='140279188043520'/>
+<thread_logfile thread='140279188043520' filename='/tmp/hs_c140279188043520_pid24711.log'/>
+<writer thread='140279186990848'/>
+<thread_logfile thread='140279186990848' filename='/tmp/hs_c140279186990848_pid24711.log'/>
+<writer thread='140279185938176'/>
+<thread_logfile thread='140279185938176' filename='/tmp/hs_c140279185938176_pid24711.log'/>
+<writer thread='140279814989568'/>
+<task_queued compile_id='1' method='java/lang/String hashCode ()I' bytes='55' count='407' backedge_count='5120' iicount='407' level='3' stamp='0.095' comment='tiered' hot_count='407'/>
+<blob name='MethodHandlesAdapterBlob' size='32000'>
+<sect index='1' size='32000' free='31628'/>
+</blob>
+<task_queued compile_id='2' method='java/lang/String equals (Ljava/lang/Object;)Z' bytes='81' count='354' backedge_count='1024' iicount='354' level='3' stamp='0.097' comment='tiered' hot_count='354'/>
+<task_queued compile_id='3' method='java/lang/Object &lt;init&gt; ()V' bytes='1' count='1536' iicount='1536' level='3' stamp='0.098' comment='tiered' hot_count='1536'/>
+<task_queued compile_id='4' method='java/lang/String length ()I' bytes='6' count='384' iicount='384' level='3' stamp='0.099' comment='tiered' hot_count='384'/>
+<task_queued compile_id='5' method='java/lang/String charAt (I)C' bytes='29' count='1792' iicount='1792' level='3' stamp='0.099' comment='tiered' hot_count='1792'/>
+<task_queued compile_id='6' method='java/lang/Math min (II)I' bytes='11' count='640' iicount='640' level='3' stamp='0.099' comment='tiered' hot_count='640'/>
+<writer thread='140279185938176'/>
+Loaded disassembler from /home/lgj/java/jdk1.8.0_191/jre/lib/amd64/hsdis-amd64.so
+Decoding compiled method 0x00007f9559100810:
+Code:
+RIP: 0x7f9559100980 Code size: 0x00000290
+[Disassembling for mach=&apos;amd64&apos;]
+[Entry Point]
+[Constants]
+  # {method} {0x00007f9558805000} &apos;hashCode&apos; &apos;()I&apos; in &apos;java/lang/String&apos;
+  #           [sp+0x40]  (sp of caller)
+  0x00007f9559100980: 448b5608            mov       r10d,dword ptr [rsi+8h]
+  0x00007f9559100984: 49c1e203            shl       r10,3h
+  0x00007f9559100988: 4c3bd0              cmp       r10,rax
+  0x00007f955910098b: 0f85cf54f4ff        jne       7f9559045e60h
+                                                ;   {runtime_call}
+  0x00007f9559100991: 6666660f1f840000000000 nop       word ptr [rax+rax+0h]
+  0x00007f955910099c: 66666690            nop
+[Verified Entry Point]
+  0x00007f95591009a0: 89842400c0feff      mov       dword ptr [rsp+0fffffffffffec000h],eax
+  0x00007f95591009a7: 55                  push      rbp
+  0x00007f95591009a8: 4883ec30            sub       rsp,30h
+  0x00007f95591009ac: 48b830229d58957f0000 mov       rax,7f95589d2230h
+                                                ;   {metadata(method data for {method} {0x00007f9558805000} &apos;hashCode&apos; &apos;()I&apos; in &apos;java/lang/String&apos;)}
+  0x00007f95591009b6: 8bb8dc000000        mov       edi,dword ptr [rax+0dch]
+  0x00007f95591009bc: 83c708              add       edi,8h
+  0x00007f95591009bf: 89b8dc000000        mov       dword ptr [rax+0dch],edi
+  0x00007f95591009c5: 48b800508058957f0000 mov       rax,7f9558805000h
+                                                ;   {metadata({method} {0x00007f9558805000} &apos;hashCode&apos; &apos;()I&apos; in &apos;java/lang/String&apos;)}
+  0x00007f95591009cf: 81e7f81f0000        and       edi,1ff8h
+  0x00007f95591009d5: 83ff00              cmp       edi,0h
+  0x00007f95591009d8: 0f8433010000        je        7f9559100b11h
+                                                ;*aload_0
+                                                ; - java.lang.String::hashCode@0 (line 1466)
+
+  0x00007f95591009de: 8b4610              mov       eax,dword ptr [rsi+10h]
+                                                ;*getfield hash
+                                                ; - java.lang.String::hashCode@1 (line 1466)
+
+  0x00007f95591009e1: 83f800              cmp       eax,0h
+  0x00007f95591009e4: 48bf30229d58957f0000 mov       rdi,7f95589d2230h
+                                                ;   {metadata(method data for {method} {0x00007f9558805000} &apos;hashCode&apos; &apos;()I&apos; in &apos;java/lang/String&apos;)}
+  0x00007f95591009ee: 48bb0801000000000000 mov       rbx,108h
+  0x00007f95591009f8: 0f850a000000        jne       7f9559100a08h
+  0x00007f95591009fe: 48bb1801000000000000 mov       rbx,118h
+  0x00007f9559100a08: 488b141f            mov       rdx,qword ptr [rdi+rbx]
+  0x00007f9559100a0c: 488d5201            lea       rdx,[rdx+1h]
+  0x00007f9559100a10: 4889141f            mov       qword ptr [rdi+rbx],rdx
+  0x00007f9559100a14: 0f85eb000000        jne       7f9559100b05h
+                                                ;*ifne
+                                                ; - java.lang.String::hashCode@6 (line 1467)
+
+  0x00007f9559100a1a: 8b7e0c              mov       edi,dword ptr [rsi+0ch]
+  0x00007f9559100a1d: 48c1e703            shl       rdi,3h
+                                                ;*getfield value
+                                                ; - java.lang.String::hashCode@10 (line 1467)
+
+  0x00007f9559100a21: 8b5f0c              mov       ebx,dword ptr [rdi+0ch]
+                                                ;*arraylength
+                                                ; - java.lang.String::hashCode@13 (line 1467)
+                                                ; implicit exception: dispatches to 0x00007f9559100b28
+  0x00007f9559100a24: 83fb00              cmp       ebx,0h
+  0x00007f9559100a27: 48ba30229d58957f0000 mov       rdx,7f95589d2230h
+                                                ;   {metadata(method data for {method} {0x00007f9558805000} &apos;hashCode&apos; &apos;()I&apos; in &apos;java/lang/String&apos;)}
+  0x00007f9559100a31: 48b92801000000000000 mov       rcx,128h
+  0x00007f9559100a3b: 0f8e0a000000        jle       7f9559100a4bh
+  0x00007f9559100a41: 48b93801000000000000 mov       rcx,138h
+  0x00007f9559100a4b: 4c8b040a            mov       r8,qword ptr [rdx+rcx]
+  0x00007f9559100a4f: 4d8d4001            lea       r8,[r8+1h]
+  0x00007f9559100a53: 4c89040a            mov       qword ptr [rdx+rcx],r8
+  0x00007f9559100a57: 0f8ea8000000        jle       7f9559100b05h
+                                                ;*ifle
+                                                ; - java.lang.String::hashCode@14 (line 1467)
+
+  0x00007f9559100a5d: ba00000000          mov       edx,0h
+  0x00007f9559100a62: e963000000          jmp       7f9559100acah
+                                                ;*iload_3
+                                                ; - java.lang.String::hashCode@24 (line 1470)
+
+  0x00007f9559100a67: 90                  nop
+  0x00007f9559100a68: 4863ca              movsxd    rcx,edx
+  0x00007f9559100a6b: 0fb74c4f10          movzx     ecx,word ptr [rdi+rcx*2+10h]
+                                                ;*caload
+                                                ; - java.lang.String::hashCode@39 (line 1471)
+
+  0x00007f9559100a70: 4c8bc0              mov       r8,rax
+  0x00007f9559100a73: c1e005              shl       eax,5h
+  0x00007f9559100a76: 412bc0              sub       eax,r8d
+  0x00007f9559100a79: 03c1                add       eax,ecx
+  0x00007f9559100a7b: ffc2                inc       edx
+  0x00007f9559100a7d: 48b930229d58957f0000 mov       rcx,7f95589d2230h
+                                                ;   {metadata(method data for {method} {0x00007f9558805000} &apos;hashCode&apos; &apos;()I&apos; in &apos;java/lang/String&apos;)}
+  0x00007f9559100a87: 448b81e0000000      mov       r8d,dword ptr [rcx+0e0h]
+  0x00007f9559100a8e: 4183c008            add       r8d,8h
+  0x00007f9559100a92: 448981e0000000      mov       dword ptr [rcx+0e0h],r8d
+  0x00007f9559100a99: 48b900508058957f0000 mov       rcx,7f9558805000h
+                                                ;   {metadata({method} {0x00007f9558805000} &apos;hashCode&apos; &apos;()I&apos; in &apos;java/lang/String&apos;)}
+  0x00007f9559100aa3: 4181e0f8ff0000      and       r8d,0fff8h
+  0x00007f9559100aaa: 4183f800            cmp       r8d,0h
+  0x00007f9559100aae: 0f8479000000        je        7f9559100b2dh
+                                                ; OopMap{rdi=Oop rsi=Oop off=308}
+                                                ;*goto
+                                                ; - java.lang.String::hashCode@45 (line 1470)
+
+  0x00007f9559100ab4: 850546467c17        test      dword ptr [7f95708c5100h],eax
+                                                ;   {poll}
+  0x00007f9559100aba: 48b930229d58957f0000 mov       rcx,7f95589d2230h
+                                                ;   {metadata(method data for {method} {0x00007f9558805000} &apos;hashCode&apos; &apos;()I&apos; in &apos;java/lang/String&apos;)}
+  0x00007f9559100ac4: ff8168010000        inc       dword ptr [rcx+168h]
+                                                ;*goto
+                                                ; - java.lang.String::hashCode@45 (line 1470)
+
+  0x00007f9559100aca: 3bd3                cmp       edx,ebx
+  0x00007f9559100acc: 48b930229d58957f0000 mov       rcx,7f95589d2230h
+                                                ;   {metadata(method data for {method} {0x00007f9558805000} &apos;hashCode&apos; &apos;()I&apos; in &apos;java/lang/String&apos;)}
+  0x00007f9559100ad6: 49b84801000000000000 mov       r8,148h
+  0x00007f9559100ae0: 0f8d0a000000        jnl       7f9559100af0h
+  0x00007f9559100ae6: 49b85801000000000000 mov       r8,158h
+  0x00007f9559100af0: 4e8b0c01            mov       r9,qword ptr [rcx+r8]
+  0x00007f9559100af4: 4d8d4901            lea       r9,[r9+1h]
+  0x00007f9559100af8: 4e890c01            mov       qword ptr [rcx+r8],r9
+  0x00007f9559100afc: 0f8c66ffffff        jl        7f9559100a68h
+                                                ;*if_icmpge
+                                                ; - java.lang.String::hashCode@30 (line 1470)
+
+  0x00007f9559100b02: 894610              mov       dword ptr [rsi+10h],eax
+                                                ;*putfield hash
+                                                ; - java.lang.String::hashCode@50 (line 1473)
+
+  0x00007f9559100b05: 4883c430            add       rsp,30h
+  0x00007f9559100b09: 5d                  pop       rbp
+  0x00007f9559100b0a: 8505f0457c17        test      dword ptr [7f95708c5100h],eax
+                                                ;   {poll_return}
+  0x00007f9559100b10: c3                  ret
+  0x00007f9559100b11: 4889442408          mov       qword ptr [rsp+8h],rax
+  0x00007f9559100b16: 48c70424ffffffff    mov       qword ptr [rsp],0ffffffffffffffffh
+  0x00007f9559100b1e: e8fddeffff          call      7f95590fea20h
+                                                ; OopMap{rsi=Oop off=419}
+                                                ;*synchronization entry
+                                                ; - java.lang.String::hashCode@-1 (line 1466)
+                                                ;   {runtime_call}
+  0x00007f9559100b23: e9b6feffff          jmp       7f95591009deh
+  0x00007f9559100b28: e893def6ff          call      7f955906e9c0h
+                                                ; OopMap{rsi=Oop rdi=Oop off=429}
+                                                ;*arraylength
+                                                ; - java.lang.String::hashCode@13 (line 1467)
+                                                ;   {runtime_call}
+  0x00007f9559100b2d: 48894c2408          mov       qword ptr [rsp+8h],rcx
+  0x00007f9559100b32: 48c704242d000000    mov       qword ptr [rsp],2dh
+  0x00007f9559100b3a: e8e1deffff          call      7f95590fea20h
+                                                ; OopMap{rdi=Oop rsi=Oop off=447}
+                                                ;*goto
+                                                ; - java.lang.String::hashCode@45 (line 1470)
+                                                ;   {runtime_call}
+  0x00007f9559100b3f: e970ffffff          jmp       7f9559100ab4h
+  0x00007f9559100b44: 90                  nop
+  0x00007f9559100b45: 90                  nop
+  0x00007f9559100b46: 498b87a8020000      mov       rax,qword ptr [r15+2a8h]
+  0x00007f9559100b4d: 49ba0000000000000000 mov       r10,0h
+  0x00007f9559100b57: 4d8997a8020000      mov       qword ptr [r15+2a8h],r10
+  0x00007f9559100b5e: 49ba0000000000000000 mov       r10,0h
+  0x00007f9559100b68: 4d8997b0020000      mov       qword ptr [r15+2b0h],r10
+  0x00007f9559100b6f: 4883c430            add       rsp,30h
+  0x00007f9559100b73: 5d                  pop       rbp
+  0x00007f9559100b74: e9a7b4f6ff          jmp       7f955906c020h
+                                                ;   {runtime_call}
+  0x00007f9559100b79: f4                  hlt
+  0x00007f9559100b7a: f4                  hlt
+  0x00007f9559100b7b: f4                  hlt
+  0x00007f9559100b7c: f4                  hlt
+  0x00007f9559100b7d: f4                  hlt
+  0x00007f9559100b7e: f4                  hlt
+  0x00007f9559100b7f: f4                  hlt
+[Exception Handler]
+[Stub Code]
+  0x00007f9559100b80: e8dbb8ffff          call      7f95590fc460h
+                                                ;   {no_reloc}
+  0x00007f9559100b85: 48896424d8          mov       qword ptr [rsp+0ffffffffffffffd8h],rsp
+  0x00007f9559100b8a: 4881ec80000000      sub       rsp,80h
+  0x00007f9559100b91: 4889442478          mov       qword ptr [rsp+78h],rax
+  0x00007f9559100b96: 48894c2470          mov       qword ptr [rsp+70h],rcx
+  0x00007f9559100b9b: 4889542468          mov       qword ptr [rsp+68h],rdx
+  0x00007f9559100ba0: 48895c2460          mov       qword ptr [rsp+60h],rbx
+  0x00007f9559100ba5: 48896c2450          mov       qword ptr [rsp+50h],rbp
+  0x00007f9559100baa: 4889742448          mov       qword ptr [rsp+48h],rsi
+  0x00007f9559100baf: 48897c2440          mov       qword ptr [rsp+40h],rdi
+  0x00007f9559100bb4: 4c89442438          mov       qword ptr [rsp+38h],r8
+  0x00007f9559100bb9: 4c894c2430          mov       qword ptr [rsp+30h],r9
+  0x00007f9559100bbe: 4c89542428          mov       qword ptr [rsp+28h],r10
+  0x00007f9559100bc3: 4c895c2420          mov       qword ptr [rsp+20h],r11
+  0x00007f9559100bc8: 4c89642418          mov       qword ptr [rsp+18h],r12
+  0x00007f9559100bcd: 4c896c2410          mov       qword ptr [rsp+10h],r13
+  0x00007f9559100bd2: 4c89742408          mov       qword ptr [rsp+8h],r14
+  0x00007f9559100bd7: 4c893c24            mov       qword ptr [rsp],r15
+  0x00007f9559100bdb: 48bff6797a6f957f0000 mov       rdi,7f956f7a79f6h
+                                                ;   {external_word}
+  0x00007f9559100be5: 48be850b1059957f0000 mov       rsi,7f9559100b85h
+                                                ;   {internal_word}
+  0x00007f9559100bef: 488bd4              mov       rdx,rsp
+  0x00007f9559100bf2: 4883e4f0            and       rsp,0fffffffffffffff0h
+  0x00007f9559100bf6: e865a63a16          call      7f956f4ab260h
+                                                ;   {runtime_call}
+  0x00007f9559100bfb: f4                  hlt
+[Deopt Handler Code]
+  0x00007f9559100bfc: 49bafc0b1059957f0000 mov       r10,7f9559100bfch
+                                                ;   {section_word}
+  0x00007f9559100c06: 4152                push      r10
+  0x00007f9559100c08: e9f368f4ff          jmp       7f9559047500h
+                                                ;   {runtime_call}
+  0x00007f9559100c0d: f4                  hlt
+  0x00007f9559100c0e: f4                  hlt
+  0x00007f9559100c0f: f4                  hlt
+<nmethod compile_id='1' compiler='C1' level='3' entry='0x00007f9559100980' size='1448' address='0x00007f9559100810' relocation_offset='296' insts_offset='368' stub_offset='880' scopes_data_offset='1032' scopes_pcs_offset='1152' dependencies_offset='1424' nul_chk_table_offset='1432' method='java/lang/String hashCode ()I' bytes='55' count='447' backedge_count='6018' iicount='447' stamp='0.141'/>
+<writer thread='140279814989568'/>
+Decoding compiled method 0x00007f9559102e90:
+Code:
+RIP: 0x7f9559103000 Code size: 0x00000208
+[Entry Point]
+  # {method} {0x00007f9558819930} &apos;arraycopy&apos; &apos;(Ljava/lang/Object;ILjava/lang/Object;II)V&apos; in &apos;java/lang/System&apos;
+  # parm0:    rsi:rsi   = &apos;java/lang/Object&apos;
+  # parm1:    rdx       = int
+  # parm2:    rcx:rcx   = &apos;java/lang/Object&apos;
+  # parm3:    r8        = int
+  # parm4:    r9        = int
+  #           [sp+0x60]  (sp of caller)
+  0x00007f9559103000: 448b5608            mov       r10d,dword ptr [rsi+8h]
+  0x00007f9559103004: 49c1e203            shl       r10,3h
+  0x00007f9559103008: 493bc2              cmp       rax,r10
+  0x00007f955910300b: 0f8407000000        je        7f9559103018h
+  0x00007f9559103011: e94a2ef4ff          jmp       7f9559045e60h
+                                                ;   {runtime_call}
+  0x00007f9559103016: 6690                nop
+[Verified Entry Point]
+  0x00007f9559103018: 89842400c0feff      mov       dword ptr [rsp+0fffffffffffec000h],eax
+  0x00007f955910301f: 55                  push      rbp
+  0x00007f9559103020: 488bec              mov       rbp,rsp
+  0x00007f9559103023: 4883ec50            sub       rsp,50h
+  0x00007f9559103027: 4c890c24            mov       qword ptr [rsp],r9
+  0x00007f955910302b: 4d8bc8              mov       r9,r8
+  0x00007f955910302e: 48894c2418          mov       qword ptr [rsp+18h],rcx
+  0x00007f9559103033: 4883f900            cmp       rcx,0h
+  0x00007f9559103037: 4c8d442418          lea       r8,[rsp+18h]
+  0x00007f955910303c: 4c0f44442418        cmove     r8,qword ptr [rsp+18h]
+  0x00007f9559103042: 488bca              mov       rcx,rdx
+  0x00007f9559103045: 4889742408          mov       qword ptr [rsp+8h],rsi
+  0x00007f955910304a: 4883fe00            cmp       rsi,0h
+  0x00007f955910304e: 488d542408          lea       rdx,[rsp+8h]
+  0x00007f9559103053: 480f44542408        cmove     rdx,qword ptr [rsp+8h]
+  0x00007f9559103059: 49be780c388c07000000 mov       r14,78c380c78h
+                                                ;   {oop(a &apos;java/lang/Class&apos; = &apos;java/lang/System&apos;)}
+  0x00007f9559103063: 4c89742438          mov       qword ptr [rsp+38h],r14
+  0x00007f9559103068: 4c8d742438          lea       r14,[rsp+38h]
+  0x00007f955910306d: 498bf6              mov       rsi,r14
+                                                ; OopMap{[24]=Oop [8]=Oop [56]=Oop off=112}
+  0x00007f9559103070: 49ba70301059957f0000 mov       r10,7f9559103070h
+                                                ;   {section_word}
+  0x00007f955910307a: 4d8997e0010000      mov       qword ptr [r15+1e0h],r10
+  0x00007f9559103081: 4989a7d8010000      mov       qword ptr [r15+1d8h],rsp
+  0x00007f9559103088: 803d753eb41600      cmp       byte ptr [7f956fc46f04h],0h
+                                                ;   {external_word}
+  0x00007f955910308f: 0f843e000000        je        7f95591030d3h
+  0x00007f9559103095: 56                  push      rsi
+  0x00007f9559103096: 52                  push      rdx
+  0x00007f9559103097: 51                  push      rcx
+  0x00007f9559103098: 4150                push      r8
+  0x00007f955910309a: 4151                push      r9
+  0x00007f955910309c: 48be30998158957f0000 mov       rsi,7f9558819930h
+                                                ;   {metadata({method} {0x00007f9558819930} &apos;arraycopy&apos; &apos;(Ljava/lang/Object;ILjava/lang/Object;II)V&apos; in &apos;java/lang/System&apos;)}
+  0x00007f95591030a6: 498bff              mov       rdi,r15
+  0x00007f95591030a9: f7c40f000000        test      esp,0fh
+  0x00007f95591030af: 0f8412000000        je        7f95591030c7h
+  0x00007f95591030b5: 4883ec08            sub       rsp,8h
+  0x00007f95591030b9: e8529e5416          call      7f956f64cf10h
+                                                ;   {runtime_call}
+  0x00007f95591030be: 4883c408            add       rsp,8h
+  0x00007f95591030c2: e905000000          jmp       7f95591030cch
+  0x00007f95591030c7: e8449e5416          call      7f956f64cf10h
+                                                ;   {runtime_call}
+  0x00007f95591030cc: 4159                pop       r9
+  0x00007f95591030ce: 4158                pop       r8
+  0x00007f95591030d0: 59                  pop       rcx
+  0x00007f95591030d1: 5a                  pop       rdx
+  0x00007f95591030d2: 5e                  pop       rsi
+  0x00007f95591030d3: 498dbff8010000      lea       rdi,[r15+1f8h]
+  0x00007f95591030da: 41c7877002000004000000 mov       dword ptr [r15+270h],4h
+  0x00007f95591030e5: e876ba2716          call      7f956f37eb60h
+                                                ;   {runtime_call}
+  0x00007f95591030ea: c5f877              vzeroupper
+  0x00007f95591030ed: 41c7877002000005000000 mov       dword ptr [r15+270h],5h
+  0x00007f95591030f8: 418bcf              mov       ecx,r15d
+  0x00007f95591030fb: c1e904              shr       ecx,4h
+  0x00007f95591030fe: 81e1fc0f0000        and       ecx,0ffch
+  0x00007f9559103104: 49ba00408c70957f0000 mov       r10,7f95708c4000h
+                                                ;   {external_word}
+  0x00007f955910310e: 41890c0a            mov       dword ptr [r10+rcx],ecx
+  0x00007f9559103112: 813de83db51600000000 cmp       dword ptr [7f956fc56f04h],0h
+                                                ;   {external_word}
+  0x00007f955910311c: 0f850e000000        jne       7f9559103130h
+  0x00007f9559103122: 41817f3000000000    cmp       dword ptr [r15+30h],0h
+  0x00007f955910312a: 0f8419000000        je        7f9559103149h
+  0x00007f9559103130: 498bff              mov       rdi,r15
+  0x00007f9559103133: 4c8be4              mov       r12,rsp
+  0x00007f9559103136: 4883ec00            sub       rsp,0h
+  0x00007f955910313a: 4883e4f0            and       rsp,0fffffffffffffff0h
+  0x00007f955910313e: e89d975f16          call      7f956f6fc8e0h
+                                                ;   {runtime_call}
+  0x00007f9559103143: 498be4              mov       rsp,r12
+  0x00007f9559103146: 4d33e4              xor       r12,r12
+  0x00007f9559103149: 41c7877002000008000000 mov       dword ptr [r15+270h],8h
+  0x00007f9559103154: 4181bf9c02000001000000 cmp       dword ptr [r15+29ch],1h
+  0x00007f955910315f: 0f8482000000        je        7f95591031e7h
+  0x00007f9559103165: 803d983db41600      cmp       byte ptr [7f956fc46f04h],0h
+                                                ;   {external_word}
+  0x00007f955910316c: 0f8430000000        je        7f95591031a2h
+  0x00007f9559103172: 48be30998158957f0000 mov       rsi,7f9558819930h
+                                                ;   {metadata({method} {0x00007f9558819930} &apos;arraycopy&apos; &apos;(Ljava/lang/Object;ILjava/lang/Object;II)V&apos; in &apos;java/lang/System&apos;)}
+  0x00007f955910317c: 498bff              mov       rdi,r15
+  0x00007f955910317f: f7c40f000000        test      esp,0fh
+  0x00007f9559103185: 0f8412000000        je        7f955910319dh
+  0x00007f955910318b: 4883ec08            sub       rsp,8h
+  0x00007f955910318f: e88c9d5416          call      7f956f64cf20h
+                                                ;   {runtime_call}
+  0x00007f9559103194: 4883c408            add       rsp,8h
+  0x00007f9559103198: e905000000          jmp       7f95591031a2h
+  0x00007f955910319d: e87e9d5416          call      7f956f64cf20h
+                                                ;   {runtime_call}
+  0x00007f95591031a2: 49ba0000000000000000 mov       r10,0h
+  0x00007f95591031ac: 4d8997d8010000      mov       qword ptr [r15+1d8h],r10
+  0x00007f95591031b3: 49ba0000000000000000 mov       r10,0h
+  0x00007f95591031bd: 4d8997e0010000      mov       qword ptr [r15+1e0h],r10
+  0x00007f95591031c4: 498b4f38            mov       rcx,qword ptr [r15+38h]
+  0x00007f95591031c8: c7810001000000000000 mov       dword ptr [rcx+100h],0h
+  0x00007f95591031d2: c9                  leave
+  0x00007f95591031d3: 49817f0800000000    cmp       qword ptr [r15+8h],0h
+  0x00007f95591031db: 0f8501000000        jne       7f95591031e2h
+  0x00007f95591031e1: c3                  ret
+  0x00007f95591031e2: e9f9d4efff          jmp       7f95590006e0h
+                                                ;   {runtime_call}
+  0x00007f95591031e7: 4c8be4              mov       r12,rsp
+  0x00007f95591031ea: 4883ec00            sub       rsp,0h
+  0x00007f95591031ee: 4883e4f0            and       rsp,0fffffffffffffff0h
+  0x00007f95591031f2: e8f9225516          call      7f956f6554f0h
+                                                ;   {runtime_call}
+  0x00007f95591031f7: 498be4              mov       rsp,r12
+  0x00007f95591031fa: 4d33e4              xor       r12,r12
+  0x00007f95591031fd: e963ffffff          jmp       7f9559103165h
+  0x00007f9559103202: f4                  hlt
+  0x00007f9559103203: f4                  hlt
+  0x00007f9559103204: f4                  hlt
+  0x00007f9559103205: f4                  hlt
+  0x00007f9559103206: f4                  hlt
+  0x00007f9559103207: f4                  hlt
+<nmethod compile_id='7' compile_kind='c2n' level='0' entry='0x00007f9559103000' size='888' address='0x00007f9559102e90' relocation_offset='296' consts_offset='888' insts_offset='368' method='java/lang/System arraycopy (Ljava/lang/Object;ILjava/lang/Object;II)V' bytes='0' count='640' iicount='640' stamp='0.158'/>
+<writer thread='140279185938176'/>
+Decoding compiled method 0x00007f9559102490:
+Code:
+RIP: 0x7f9559102620 Code size: 0x00000550
+[Entry Point]
+[Constants]
+  # {method} {0x00007f9558804618} &apos;equals&apos; &apos;(Ljava/lang/Object;)Z&apos; in &apos;java/lang/String&apos;
+  # this:     rsi:rsi   = &apos;java/lang/String&apos;
+  # parm0:    rdx:rdx   = &apos;java/lang/Object&apos;
+  #           [sp+0x40]  (sp of caller)
+  0x00007f9559102620: 448b5608            mov       r10d,dword ptr [rsi+8h]
+  0x00007f9559102624: 49c1e203            shl       r10,3h
+  0x00007f9559102628: 4c3bd0              cmp       r10,rax
+  0x00007f955910262b: 0f852f38f4ff        jne       7f9559045e60h
+                                                ;   {runtime_call}
+  0x00007f9559102631: 6666660f1f840000000000 nop       word ptr [rax+rax+0h]
+  0x00007f955910263c: 66666690            nop
+[Verified Entry Point]
+  0x00007f9559102640: 89842400c0feff      mov       dword ptr [rsp+0fffffffffffec000h],eax
+  0x00007f9559102647: 55                  push      rbp
+  0x00007f9559102648: 4883ec30            sub       rsp,30h
+  0x00007f955910264c: 48b84012a058957f0000 mov       rax,7f9558a01240h
+                                                ;   {metadata(method data for {method} {0x00007f9558804618} &apos;equals&apos; &apos;(Ljava/lang/Object;)Z&apos; in &apos;java/lang/String&apos;)}
+  0x00007f9559102656: 8bb8dc000000        mov       edi,dword ptr [rax+0dch]
+  0x00007f955910265c: 83c708              add       edi,8h
+  0x00007f955910265f: 89b8dc000000        mov       dword ptr [rax+0dch],edi
+  0x00007f9559102665: 48b818468058957f0000 mov       rax,7f9558804618h
+                                                ;   {metadata({method} {0x00007f9558804618} &apos;equals&apos; &apos;(Ljava/lang/Object;)Z&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910266f: 81e7f81f0000        and       edi,1ff8h
+  0x00007f9559102675: 83ff00              cmp       edi,0h
+  0x00007f9559102678: 0f84c8030000        je        7f9559102a46h
+                                                ;*aload_0
+                                                ; - java.lang.String::equals@0 (line 977)
+
+  0x00007f955910267e: 483bf2              cmp       rsi,rdx
+  0x00007f9559102681: 48b84012a058957f0000 mov       rax,7f9558a01240h
+                                                ;   {metadata(method data for {method} {0x00007f9558804618} &apos;equals&apos; &apos;(Ljava/lang/Object;)Z&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910268b: 48bf0801000000000000 mov       rdi,108h
+  0x00007f9559102695: 0f850a000000        jne       7f95591026a5h
+  0x00007f955910269b: 48bf1801000000000000 mov       rdi,118h
+  0x00007f95591026a5: 488b1c38            mov       rbx,qword ptr [rax+rdi]
+  0x00007f95591026a9: 488d5b01            lea       rbx,[rbx+1h]
+  0x00007f95591026ad: 48891c38            mov       qword ptr [rax+rdi],rbx
+  0x00007f95591026b1: 0f847e030000        je        7f9559102a35h
+                                                ;*if_acmpne
+                                                ; - java.lang.String::equals@2 (line 977)
+
+  0x00007f95591026b7: 4883fa00            cmp       rdx,0h
+  0x00007f95591026bb: 7519                jne       7f95591026d6h
+  0x00007f95591026bd: 48bb4012a058957f0000 mov       rbx,7f9558a01240h
+                                                ;   {metadata(method data for {method} {0x00007f9558804618} &apos;equals&apos; &apos;(Ljava/lang/Object;)Z&apos; in &apos;java/lang/String&apos;)}
+  0x00007f95591026c7: 818b2001000000010000 or        dword ptr [rbx+120h],100h
+  0x00007f95591026d1: e9c0000000          jmp       7f9559102796h
+  0x00007f95591026d6: 48b9d01600c007000000 mov       rcx,7c00016d0h
+                                                ;   {metadata(&apos;java/lang/String&apos;)}
+  0x00007f95591026e0: 8b7a08              mov       edi,dword ptr [rdx+8h]
+  0x00007f95591026e3: 48c1e703            shl       rdi,3h
+  0x00007f95591026e7: 483bcf              cmp       rcx,rdi
+  0x00007f95591026ea: 0f858a000000        jne       7f955910277ah
+  0x00007f95591026f0: 48bb4012a058957f0000 mov       rbx,7f9558a01240h
+                                                ;   {metadata(method data for {method} {0x00007f9558804618} &apos;equals&apos; &apos;(Ljava/lang/Object;)Z&apos; in &apos;java/lang/String&apos;)}
+  0x00007f95591026fa: 8b4a08              mov       ecx,dword ptr [rdx+8h]
+  0x00007f95591026fd: 48c1e103            shl       rcx,3h
+  0x00007f9559102701: 483b8b30010000      cmp       rcx,qword ptr [rbx+130h]
+  0x00007f9559102708: 750d                jne       7f9559102717h
+  0x00007f955910270a: 4883833801000001    add       qword ptr [rbx+138h],1h
+  0x00007f9559102712: e984000000          jmp       7f955910279bh
+  0x00007f9559102717: 483b8b40010000      cmp       rcx,qword ptr [rbx+140h]
+  0x00007f955910271e: 750d                jne       7f955910272dh
+  0x00007f9559102720: 4883834801000001    add       qword ptr [rbx+148h],1h
+  0x00007f9559102728: e96e000000          jmp       7f955910279bh
+  0x00007f955910272d: 4881bb3001000000000000 cmp       qword ptr [rbx+130h],0h
+  0x00007f9559102738: 7517                jne       7f9559102751h
+  0x00007f955910273a: 48898b30010000      mov       qword ptr [rbx+130h],rcx
+  0x00007f9559102741: 48c7833801000001000000 mov       qword ptr [rbx+138h],1h
+  0x00007f955910274c: e94a000000          jmp       7f955910279bh
+  0x00007f9559102751: 4881bb4001000000000000 cmp       qword ptr [rbx+140h],0h
+  0x00007f955910275c: 7517                jne       7f9559102775h
+  0x00007f955910275e: 48898b40010000      mov       qword ptr [rbx+140h],rcx
+  0x00007f9559102765: 48c7834801000001000000 mov       qword ptr [rbx+148h],1h
+  0x00007f9559102770: e926000000          jmp       7f955910279bh
+  0x00007f9559102775: e921000000          jmp       7f955910279bh
+  0x00007f955910277a: 48bb4012a058957f0000 mov       rbx,7f9558a01240h
+                                                ;   {metadata(method data for {method} {0x00007f9558804618} &apos;equals&apos; &apos;(Ljava/lang/Object;)Z&apos; in &apos;java/lang/String&apos;)}
+  0x00007f9559102784: 4883ab2801000001    sub       qword ptr [rbx+128h],1h
+  0x00007f955910278c: e905000000          jmp       7f9559102796h
+  0x00007f9559102791: e905000000          jmp       7f955910279bh
+  0x00007f9559102796: 4833c0              xor       rax,rax
+  0x00007f9559102799: eb0a                jmp       7f95591027a5h
+  0x00007f955910279b: 48b80100000000000000 mov       rax,1h
+                                                ;*instanceof
+                                                ; - java.lang.String::equals@8 (line 980)
+
+  0x00007f95591027a5: 83f800              cmp       eax,0h
+  0x00007f95591027a8: 48b84012a058957f0000 mov       rax,7f9558a01240h
+                                                ;   {metadata(method data for {method} {0x00007f9558804618} &apos;equals&apos; &apos;(Ljava/lang/Object;)Z&apos; in &apos;java/lang/String&apos;)}
+  0x00007f95591027b2: 48bf5801000000000000 mov       rdi,158h
+  0x00007f95591027bc: 0f840a000000        je        7f95591027cch
+  0x00007f95591027c2: 48bf6801000000000000 mov       rdi,168h
+  0x00007f95591027cc: 488b1c38            mov       rbx,qword ptr [rax+rdi]
+  0x00007f95591027d0: 488d5b01            lea       rbx,[rbx+1h]
+  0x00007f95591027d4: 48891c38            mov       qword ptr [rax+rdi],rbx
+  0x00007f95591027d8: 0f8446020000        je        7f9559102a24h
+                                                ;*ifeq
+                                                ; - java.lang.String::equals@11 (line 980)
+
+  0x00007f95591027de: 4883fa00            cmp       rdx,0h
+  0x00007f95591027e2: 7519                jne       7f95591027fdh
+  0x00007f95591027e4: 48bb4012a058957f0000 mov       rbx,7f9558a01240h
+                                                ;   {metadata(method data for {method} {0x00007f9558804618} &apos;equals&apos; &apos;(Ljava/lang/Object;)Z&apos; in &apos;java/lang/String&apos;)}
+  0x00007f95591027ee: 818b7001000000010000 or        dword ptr [rbx+170h],100h
+  0x00007f95591027f8: e9c0000000          jmp       7f95591028bdh
+  0x00007f95591027fd: 48b8d01600c007000000 mov       rax,7c00016d0h
+                                                ;   {metadata(&apos;java/lang/String&apos;)}
+  0x00007f9559102807: 8b7a08              mov       edi,dword ptr [rdx+8h]
+  0x00007f955910280a: 48c1e703            shl       rdi,3h
+  0x00007f955910280e: 483bc7              cmp       rax,rdi
+  0x00007f9559102811: 0f858a000000        jne       7f95591028a1h
+  0x00007f9559102817: 48bb4012a058957f0000 mov       rbx,7f9558a01240h
+                                                ;   {metadata(method data for {method} {0x00007f9558804618} &apos;equals&apos; &apos;(Ljava/lang/Object;)Z&apos; in &apos;java/lang/String&apos;)}
+  0x00007f9559102821: 8b4208              mov       eax,dword ptr [rdx+8h]
+  0x00007f9559102824: 48c1e003            shl       rax,3h
+  0x00007f9559102828: 483b8380010000      cmp       rax,qword ptr [rbx+180h]
+  0x00007f955910282f: 750d                jne       7f955910283eh
+  0x00007f9559102831: 4883838801000001    add       qword ptr [rbx+188h],1h
+  0x00007f9559102839: e97f000000          jmp       7f95591028bdh
+  0x00007f955910283e: 483b8390010000      cmp       rax,qword ptr [rbx+190h]
+  0x00007f9559102845: 750d                jne       7f9559102854h
+  0x00007f9559102847: 4883839801000001    add       qword ptr [rbx+198h],1h
+  0x00007f955910284f: e969000000          jmp       7f95591028bdh
+  0x00007f9559102854: 4881bb8001000000000000 cmp       qword ptr [rbx+180h],0h
+  0x00007f955910285f: 7517                jne       7f9559102878h
+  0x00007f9559102861: 48898380010000      mov       qword ptr [rbx+180h],rax
+  0x00007f9559102868: 48c7838801000001000000 mov       qword ptr [rbx+188h],1h
+  0x00007f9559102873: e945000000          jmp       7f95591028bdh
+  0x00007f9559102878: 4881bb9001000000000000 cmp       qword ptr [rbx+190h],0h
+  0x00007f9559102883: 7517                jne       7f955910289ch
+  0x00007f9559102885: 48898390010000      mov       qword ptr [rbx+190h],rax
+  0x00007f955910288c: 48c7839801000001000000 mov       qword ptr [rbx+198h],1h
+  0x00007f9559102897: e921000000          jmp       7f95591028bdh
+  0x00007f955910289c: e91c000000          jmp       7f95591028bdh
+  0x00007f95591028a1: 48bb4012a058957f0000 mov       rbx,7f9558a01240h
+                                                ;   {metadata(method data for {method} {0x00007f9558804618} &apos;equals&apos; &apos;(Ljava/lang/Object;)Z&apos; in &apos;java/lang/String&apos;)}
+  0x00007f95591028ab: 4883ab7801000001    sub       qword ptr [rbx+178h],1h
+  0x00007f95591028b3: e9a5010000          jmp       7f9559102a5dh
+  0x00007f95591028b8: e900000000          jmp       7f95591028bdh
+  0x00007f95591028bd: 488bc2              mov       rax,rdx
+                                                ;*checkcast
+                                                ; - java.lang.String::equals@15 (line 981)
+
+  0x00007f95591028c0: 8b760c              mov       esi,dword ptr [rsi+0ch]
+  0x00007f95591028c3: 48c1e603            shl       rsi,3h
+                                                ;*getfield value
+                                                ; - java.lang.String::equals@20 (line 982)
+
+  0x00007f95591028c7: 8b7e0c              mov       edi,dword ptr [rsi+0ch]
+                                                ;*arraylength
+                                                ; - java.lang.String::equals@23 (line 982)
+                                                ; implicit exception: dispatches to 0x00007f9559102a66
+  0x00007f95591028ca: 8b400c              mov       eax,dword ptr [rax+0ch]
+                                                ; implicit exception: dispatches to 0x00007f9559102a6b
+  0x00007f95591028cd: 48c1e003            shl       rax,3h
+                                                ;*getfield value
+                                                ; - java.lang.String::equals@27 (line 983)
+
+  0x00007f95591028d1: 8b580c              mov       ebx,dword ptr [rax+0ch]
+                                                ;*arraylength
+                                                ; - java.lang.String::equals@30 (line 983)
+                                                ; implicit exception: dispatches to 0x00007f9559102a70
+  0x00007f95591028d4: 3bfb                cmp       edi,ebx
+  0x00007f95591028d6: 48bb4012a058957f0000 mov       rbx,7f9558a01240h
+                                                ;   {metadata(method data for {method} {0x00007f9558804618} &apos;equals&apos; &apos;(Ljava/lang/Object;)Z&apos; in &apos;java/lang/String&apos;)}
+  0x00007f95591028e0: 48baa801000000000000 mov       rdx,1a8h
+  0x00007f95591028ea: 0f850a000000        jne       7f95591028fah
+  0x00007f95591028f0: 48bab801000000000000 mov       rdx,1b8h
+  0x00007f95591028fa: 488b0c13            mov       rcx,qword ptr [rbx+rdx]
+  0x00007f95591028fe: 488d4901            lea       rcx,[rcx+1h]
+  0x00007f9559102902: 48890c13            mov       qword ptr [rbx+rdx],rcx
+  0x00007f9559102906: 0f8518010000        jne       7f9559102a24h
+                                                ;*if_icmpne
+                                                ; - java.lang.String::equals@31 (line 983)
+
+  0x00007f955910290c: bb00000000          mov       ebx,0h
+  0x00007f9559102911: e9a9000000          jmp       7f95591029bfh
+                                                ;*iload_3
+                                                ; - java.lang.String::equals@49 (line 987)
+
+  0x00007f9559102916: 6690                nop
+  0x00007f9559102918: 4863fb              movsxd    rdi,ebx
+  0x00007f955910291b: 3b5e0c              cmp       ebx,dword ptr [rsi+0ch]
+  0x00007f955910291e: 0f8351010000        jnb       7f9559102a75h
+  0x00007f9559102924: 0fb77c7e10          movzx     edi,word ptr [rsi+rdi*2+10h]
+                                                ;*caload
+                                                ; - java.lang.String::equals@60 (line 988)
+
+  0x00007f9559102929: 4863cb              movsxd    rcx,ebx
+  0x00007f955910292c: 3b580c              cmp       ebx,dword ptr [rax+0ch]
+  0x00007f955910292f: 0f8349010000        jnb       7f9559102a7eh
+  0x00007f9559102935: 0fb74c4810          movzx     ecx,word ptr [rax+rcx*2+10h]
+                                                ;*caload
+                                                ; - java.lang.String::equals@65 (line 988)
+
+  0x00007f955910293a: 3bf9                cmp       edi,ecx
+  0x00007f955910293c: 48bf4012a058957f0000 mov       rdi,7f9558a01240h
+                                                ;   {metadata(method data for {method} {0x00007f9558804618} &apos;equals&apos; &apos;(Ljava/lang/Object;)Z&apos; in &apos;java/lang/String&apos;)}
+  0x00007f9559102946: 48b9e801000000000000 mov       rcx,1e8h
+  0x00007f9559102950: 0f840a000000        je        7f9559102960h
+  0x00007f9559102956: 48b9f801000000000000 mov       rcx,1f8h
+  0x00007f9559102960: 4c8b040f            mov       r8,qword ptr [rdi+rcx]
+  0x00007f9559102964: 4d8d4001            lea       r8,[r8+1h]
+  0x00007f9559102968: 4c89040f            mov       qword ptr [rdi+rcx],r8
+  0x00007f955910296c: 0f8590000000        jne       7f9559102a02h
+                                                ;*if_icmpeq
+                                                ; - java.lang.String::equals@66 (line 988)
+
+  0x00007f9559102972: ffc3                inc       ebx
+  0x00007f9559102974: 48bf4012a058957f0000 mov       rdi,7f9558a01240h
+                                                ;   {metadata(method data for {method} {0x00007f9558804618} &apos;equals&apos; &apos;(Ljava/lang/Object;)Z&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910297e: 8b8fe0000000        mov       ecx,dword ptr [rdi+0e0h]
+  0x00007f9559102984: 83c108              add       ecx,8h
+  0x00007f9559102987: 898fe0000000        mov       dword ptr [rdi+0e0h],ecx
+  0x00007f955910298d: 48bf18468058957f0000 mov       rdi,7f9558804618h
+                                                ;   {metadata({method} {0x00007f9558804618} &apos;equals&apos; &apos;(Ljava/lang/Object;)Z&apos; in &apos;java/lang/String&apos;)}
+  0x00007f9559102997: 81e1f8ff0000        and       ecx,0fff8h
+  0x00007f955910299d: 83f900              cmp       ecx,0h
+  0x00007f95591029a0: 0f84e1000000        je        7f9559102a87h
+                                                ; OopMap{rax=Oop rsi=Oop off=902}
+                                                ;*goto
+                                                ; - java.lang.String::equals@74 (line 990)
+
+  0x00007f95591029a6: 850554277c17        test      dword ptr [7f95708c5100h],eax
+                                                ;   {poll}
+  0x00007f95591029ac: 48bf4012a058957f0000 mov       rdi,7f9558a01240h
+                                                ;   {metadata(method data for {method} {0x00007f9558804618} &apos;equals&apos; &apos;(Ljava/lang/Object;)Z&apos; in &apos;java/lang/String&apos;)}
+  0x00007f95591029b6: ff8708020000        inc       dword ptr [rdi+208h]
+  0x00007f95591029bc: 488bfa              mov       rdi,rdx
+                                                ;*goto
+                                                ; - java.lang.String::equals@74 (line 990)
+
+  0x00007f95591029bf: 488bd7              mov       rdx,rdi
+  0x00007f95591029c2: ffca                dec       edx
+  0x00007f95591029c4: 83ff00              cmp       edi,0h
+  0x00007f95591029c7: 48bf4012a058957f0000 mov       rdi,7f9558a01240h
+                                                ;   {metadata(method data for {method} {0x00007f9558804618} &apos;equals&apos; &apos;(Ljava/lang/Object;)Z&apos; in &apos;java/lang/String&apos;)}
+  0x00007f95591029d1: 48b9c801000000000000 mov       rcx,1c8h
+  0x00007f95591029db: 0f840a000000        je        7f95591029ebh
+  0x00007f95591029e1: 48b9d801000000000000 mov       rcx,1d8h
+  0x00007f95591029eb: 4c8b040f            mov       r8,qword ptr [rdi+rcx]
+  0x00007f95591029ef: 4d8d4001            lea       r8,[r8+1h]
+  0x00007f95591029f3: 4c89040f            mov       qword ptr [rdi+rcx],r8
+  0x00007f95591029f7: 0f8416000000        je        7f9559102a13h
+  0x00007f95591029fd: e916ffffff          jmp       7f9559102918h
+                                                ;*ifeq
+                                                ; - java.lang.String::equals@53 (line 987)
+
+  0x00007f9559102a02: b800000000          mov       eax,0h
+  0x00007f9559102a07: 4883c430            add       rsp,30h
+  0x00007f9559102a0b: 5d                  pop       rbp
+  0x00007f9559102a0c: 8505ee267c17        test      dword ptr [7f95708c5100h],eax
+                                                ;   {poll_return}
+  0x00007f9559102a12: c3                  ret   ;*ireturn
+                                                ; - java.lang.String::equals@70 (line 989)
+
+  0x00007f9559102a13: b801000000          mov       eax,1h
+  0x00007f9559102a18: 4883c430            add       rsp,30h
+  0x00007f9559102a1c: 5d                  pop       rbp
+  0x00007f9559102a1d: 8505dd267c17        test      dword ptr [7f95708c5100h],eax
+                                                ;   {poll_return}
+  0x00007f9559102a23: c3                  ret   ;*ireturn
+                                                ; - java.lang.String::equals@78 (line 992)
+
+  0x00007f9559102a24: b800000000          mov       eax,0h
+  0x00007f9559102a29: 4883c430            add       rsp,30h
+  0x00007f9559102a2d: 5d                  pop       rbp
+  0x00007f9559102a2e: 8505cc267c17        test      dword ptr [7f95708c5100h],eax
+                                                ;   {poll_return}
+  0x00007f9559102a34: c3                  ret   ;*ireturn
+                                                ; - java.lang.String::equals@80 (line 995)
+
+  0x00007f9559102a35: b801000000          mov       eax,1h
+  0x00007f9559102a3a: 4883c430            add       rsp,30h
+  0x00007f9559102a3e: 5d                  pop       rbp
+  0x00007f9559102a3f: 8505bb267c17        test      dword ptr [7f95708c5100h],eax
+                                                ;   {poll_return}
+  0x00007f9559102a45: c3                  ret
+  0x00007f9559102a46: 4889442408          mov       qword ptr [rsp+8h],rax
+  0x00007f9559102a4b: 48c70424ffffffff    mov       qword ptr [rsp],0ffffffffffffffffh
+  0x00007f9559102a53: e8c8bfffff          call      7f95590fea20h
+                                                ; OopMap{rsi=Oop rdx=Oop off=1080}
+                                                ;*synchronization entry
+                                                ; - java.lang.String::equals@-1 (line 977)
+                                                ;   {runtime_call}
+  0x00007f9559102a58: e921fcffff          jmp       7f955910267eh
+  0x00007f9559102a5d: 48891424            mov       qword ptr [rsp],rdx
+  0x00007f9559102a61: e85a9dffff          call      7f95590fc7c0h
+                                                ; OopMap{rsi=Oop off=1094}
+                                                ;*checkcast
+                                                ; - java.lang.String::equals@15 (line 981)
+                                                ;   {runtime_call}
+  0x00007f9559102a66: e855bff6ff          call      7f955906e9c0h
+                                                ; OopMap{rax=Oop rsi=Oop off=1099}
+                                                ;*arraylength
+                                                ; - java.lang.String::equals@23 (line 982)
+                                                ;   {runtime_call}
+  0x00007f9559102a6b: e850bff6ff          call      7f955906e9c0h
+                                                ; OopMap{rsi=Oop off=1104}
+                                                ;*getfield value
+                                                ; - java.lang.String::equals@27 (line 983)
+                                                ;   {runtime_call}
+  0x00007f9559102a70: e84bbff6ff          call      7f955906e9c0h
+                                                ; OopMap{rsi=Oop rax=Oop off=1109}
+                                                ;*arraylength
+                                                ; - java.lang.String::equals@30 (line 983)
+                                                ;   {runtime_call}
+  0x00007f9559102a75: 48891c24            mov       qword ptr [rsp],rbx
+  0x00007f9559102a79: e802c6f6ff          call      7f955906f080h
+                                                ; OopMap{rax=Oop rsi=Oop off=1118}
+                                                ;*caload
+                                                ; - java.lang.String::equals@60 (line 988)
+                                                ;   {runtime_call}
+  0x00007f9559102a7e: 48891c24            mov       qword ptr [rsp],rbx
+  0x00007f9559102a82: e8f9c5f6ff          call      7f955906f080h
+                                                ; OopMap{rax=Oop rsi=Oop off=1127}
+                                                ;*caload
+                                                ; - java.lang.String::equals@65 (line 988)
+                                                ;   {runtime_call}
+  0x00007f9559102a87: 48897c2408          mov       qword ptr [rsp+8h],rdi
+  0x00007f9559102a8c: 48c704244a000000    mov       qword ptr [rsp],4ah
+  0x00007f9559102a94: e887bfffff          call      7f95590fea20h
+                                                ; OopMap{rax=Oop rsi=Oop off=1145}
+                                                ;*goto
+                                                ; - java.lang.String::equals@74 (line 990)
+                                                ;   {runtime_call}
+  0x00007f9559102a99: e908ffffff          jmp       7f95591029a6h
+  0x00007f9559102a9e: 90                  nop
+  0x00007f9559102a9f: 90                  nop
+  0x00007f9559102aa0: 498b87a8020000      mov       rax,qword ptr [r15+2a8h]
+  0x00007f9559102aa7: 49ba0000000000000000 mov       r10,0h
+  0x00007f9559102ab1: 4d8997a8020000      mov       qword ptr [r15+2a8h],r10
+  0x00007f9559102ab8: 49ba0000000000000000 mov       r10,0h
+  0x00007f9559102ac2: 4d8997b0020000      mov       qword ptr [r15+2b0h],r10
+  0x00007f9559102ac9: 4883c430            add       rsp,30h
+  0x00007f9559102acd: 5d                  pop       rbp
+  0x00007f9559102ace: e94d95f6ff          jmp       7f955906c020h
+                                                ;   {runtime_call}
+  0x00007f9559102ad3: f4                  hlt
+  0x00007f9559102ad4: f4                  hlt
+  0x00007f9559102ad5: f4                  hlt
+  0x00007f9559102ad6: f4                  hlt
+  0x00007f9559102ad7: f4                  hlt
+  0x00007f9559102ad8: f4                  hlt
+  0x00007f9559102ad9: f4                  hlt
+  0x00007f9559102ada: f4                  hlt
+  0x00007f9559102adb: f4                  hlt
+  0x00007f9559102adc: f4                  hlt
+  0x00007f9559102add: f4                  hlt
+  0x00007f9559102ade: f4                  hlt
+  0x00007f9559102adf: f4                  hlt
+[Exception Handler]
+[Stub Code]
+  0x00007f9559102ae0: e87b99ffff          call      7f95590fc460h
+                                                ;   {no_reloc}
+  0x00007f9559102ae5: 48896424d8          mov       qword ptr [rsp+0ffffffffffffffd8h],rsp
+  0x00007f9559102aea: 4881ec80000000      sub       rsp,80h
+  0x00007f9559102af1: 4889442478          mov       qword ptr [rsp+78h],rax
+  0x00007f9559102af6: 48894c2470          mov       qword ptr [rsp+70h],rcx
+  0x00007f9559102afb: 4889542468          mov       qword ptr [rsp+68h],rdx
+  0x00007f9559102b00: 48895c2460          mov       qword ptr [rsp+60h],rbx
+  0x00007f9559102b05: 48896c2450          mov       qword ptr [rsp+50h],rbp
+  0x00007f9559102b0a: 4889742448          mov       qword ptr [rsp+48h],rsi
+  0x00007f9559102b0f: 48897c2440          mov       qword ptr [rsp+40h],rdi
+  0x00007f9559102b14: 4c89442438          mov       qword ptr [rsp+38h],r8
+  0x00007f9559102b19: 4c894c2430          mov       qword ptr [rsp+30h],r9
+  0x00007f9559102b1e: 4c89542428          mov       qword ptr [rsp+28h],r10
+  0x00007f9559102b23: 4c895c2420          mov       qword ptr [rsp+20h],r11
+  0x00007f9559102b28: 4c89642418          mov       qword ptr [rsp+18h],r12
+  0x00007f9559102b2d: 4c896c2410          mov       qword ptr [rsp+10h],r13
+  0x00007f9559102b32: 4c89742408          mov       qword ptr [rsp+8h],r14
+  0x00007f9559102b37: 4c893c24            mov       qword ptr [rsp],r15
+  0x00007f9559102b3b: 48bff6797a6f957f0000 mov       rdi,7f956f7a79f6h
+                                                ;   {external_word}
+  0x00007f9559102b45: 48bee52a1059957f0000 mov       rsi,7f9559102ae5h
+                                                ;   {internal_word}
+  0x00007f9559102b4f: 488bd4              mov       rdx,rsp
+  0x00007f9559102b52: 4883e4f0            and       rsp,0fffffffffffffff0h
+  0x00007f9559102b56: e805873a16          call      7f956f4ab260h
+                                                ;   {runtime_call}
+  0x00007f9559102b5b: f4                  hlt
+[Deopt Handler Code]
+  0x00007f9559102b5c: 49ba5c2b1059957f0000 mov       r10,7f9559102b5ch
+                                                ;   {section_word}
+  0x00007f9559102b66: 4152                push      r10
+  0x00007f9559102b68: e99349f4ff          jmp       7f9559047500h
+                                                ;   {runtime_call}
+  0x00007f9559102b6d: f4                  hlt
+  0x00007f9559102b6e: f4                  hlt
+  0x00007f9559102b6f: f4                  hlt
+<nmethod compile_id='2' compiler='C1' level='3' entry='0x00007f9559102620' size='2504' address='0x00007f9559102490' relocation_offset='296' insts_offset='400' stub_offset='1616' scopes_data_offset='1768' scopes_pcs_offset='1984' dependencies_offset='2464' nul_chk_table_offset='2472' method='java/lang/String equals (Ljava/lang/Object;)Z' bytes='81' count='428' backedge_count='1301' iicount='428' stamp='0.181'/>
+Decoding compiled method 0x00007f9559101f10:
+Code:
+RIP: 0x7f9559102080 Code size: 0x00000268
+[Entry Point]
+[Constants]
+  # {method} {0x00007f9558803db0} &apos;charAt&apos; &apos;(I)C&apos; in &apos;java/lang/String&apos;
+  # this:     rsi:rsi   = &apos;java/lang/String&apos;
+  # parm0:    rdx       = int
+  #           [sp+0x40]  (sp of caller)
+  0x00007f9559102080: 448b5608            mov       r10d,dword ptr [rsi+8h]
+  0x00007f9559102084: 49c1e203            shl       r10,3h
+  0x00007f9559102088: 4c3bd0              cmp       r10,rax
+  0x00007f955910208b: 0f85cf3df4ff        jne       7f9559045e60h
+                                                ;   {runtime_call}
+  0x00007f9559102091: 6666660f1f840000000000 nop       word ptr [rax+rax+0h]
+  0x00007f955910209c: 66666690            nop
+[Verified Entry Point]
+  0x00007f95591020a0: 89842400c0feff      mov       dword ptr [rsp+0fffffffffffec000h],eax
+  0x00007f95591020a7: 55                  push      rbp
+  0x00007f95591020a8: 4883ec30            sub       rsp,30h
+  0x00007f95591020ac: 488bfa              mov       rdi,rdx
+  0x00007f95591020af: 48b8e85f9958957f0000 mov       rax,7f9558995fe8h
+                                                ;   {metadata(method data for {method} {0x00007f9558803db0} &apos;charAt&apos; &apos;(I)C&apos; in &apos;java/lang/String&apos;)}
+  0x00007f95591020b9: 8b90dc000000        mov       edx,dword ptr [rax+0dch]
+  0x00007f95591020bf: 83c208              add       edx,8h
+  0x00007f95591020c2: 8990dc000000        mov       dword ptr [rax+0dch],edx
+  0x00007f95591020c8: 48b8b03d8058957f0000 mov       rax,7f9558803db0h
+                                                ;   {metadata({method} {0x00007f9558803db0} &apos;charAt&apos; &apos;(I)C&apos; in &apos;java/lang/String&apos;)}
+  0x00007f95591020d2: 81e2f81f0000        and       edx,1ff8h
+  0x00007f95591020d8: 83fa00              cmp       edx,0h
+  0x00007f95591020db: 0f84d5000000        je        7f95591021b6h
+                                                ;*iload_1
+                                                ; - java.lang.String::charAt@0 (line 657)
+
+  0x00007f95591020e1: 83ff00              cmp       edi,0h
+  0x00007f95591020e4: 48b8e85f9958957f0000 mov       rax,7f9558995fe8h
+                                                ;   {metadata(method data for {method} {0x00007f9558803db0} &apos;charAt&apos; &apos;(I)C&apos; in &apos;java/lang/String&apos;)}
+  0x00007f95591020ee: 48ba0801000000000000 mov       rdx,108h
+  0x00007f95591020f8: 0f8c0a000000        jl        7f9559102108h
+  0x00007f95591020fe: 48ba1801000000000000 mov       rdx,118h
+  0x00007f9559102108: 488b1c10            mov       rbx,qword ptr [rax+rdx]
+  0x00007f955910210c: 488d5b01            lea       rbx,[rbx+1h]
+  0x00007f9559102110: 48891c10            mov       qword ptr [rax+rdx],rbx
+  0x00007f9559102114: 0f8c5c000000        jl        7f9559102176h
+                                                ;*iflt
+                                                ; - java.lang.String::charAt@1 (line 657)
+
+  0x00007f955910211a: 8b460c              mov       eax,dword ptr [rsi+0ch]
+  0x00007f955910211d: 48c1e003            shl       rax,3h
+                                                ;*getfield value
+                                                ; - java.lang.String::charAt@6 (line 657)
+
+  0x00007f9559102121: 8b500c              mov       edx,dword ptr [rax+0ch]
+                                                ;*arraylength
+                                                ; - java.lang.String::charAt@9 (line 657)
+                                                ; implicit exception: dispatches to 0x00007f95591021cd
+  0x00007f9559102124: 3bfa                cmp       edi,edx
+  0x00007f9559102126: 48bae85f9958957f0000 mov       rdx,7f9558995fe8h
+                                                ;   {metadata(method data for {method} {0x00007f9558803db0} &apos;charAt&apos; &apos;(I)C&apos; in &apos;java/lang/String&apos;)}
+  0x00007f9559102130: 48be2801000000000000 mov       rsi,128h
+  0x00007f955910213a: 0f8c0a000000        jl        7f955910214ah
+  0x00007f9559102140: 48be3801000000000000 mov       rsi,138h
+  0x00007f955910214a: 488b1c32            mov       rbx,qword ptr [rdx+rsi]
+  0x00007f955910214e: 488d5b01            lea       rbx,[rbx+1h]
+  0x00007f9559102152: 48891c32            mov       qword ptr [rdx+rsi],rbx
+  0x00007f9559102156: 0f8d1a000000        jnl       7f9559102176h
+                                                ;*if_icmplt
+                                                ; - java.lang.String::charAt@10 (line 657)
+
+  0x00007f955910215c: 4863ff              movsxd    rdi,edi
+  0x00007f955910215f: 0fb7447810          movzx     eax,word ptr [rax+rdi*2+10h]
+                                                ;*caload
+                                                ; - java.lang.String::charAt@27 (line 660)
+
+  0x00007f9559102164: 81e0ffff0000        and       eax,0ffffh
+  0x00007f955910216a: 4883c430            add       rsp,30h
+  0x00007f955910216e: 5d                  pop       rbp
+  0x00007f955910216f: 85058b2f7c17        test      dword ptr [7f95708c5100h],eax
+                                                ;   {poll_return}
+  0x00007f9559102175: c3                  ret   ;*ireturn
+                                                ; - java.lang.String::charAt@28 (line 660)
+
+  0x00007f9559102176: 6690                nop
+  0x00007f9559102178: e964000000          jmp       7f95591021e1h
+                                                ;   {no_reloc}
+  0x00007f955910217d: 0000                add       byte ptr [rax],al
+  0x00007f955910217f: 0000                add       byte ptr [rax],al
+  0x00007f9559102181: 00e9                add       cl,ch
+  0x00007f9559102183: 640000              add       byte ptr fs:[rax],al
+  0x00007f9559102186: 00488b              add       byte ptr [rax+0ffffffffffffff8bh],cl
+                                                ;*new  ; - java.lang.String::charAt@13 (line 658)
+
+  0x00007f9559102189: d048be              ror       byte ptr [rax+0ffffffffffffffbeh],1h
+                                                ;   {metadata(method data for {method} {0x00007f9558803db0} &apos;charAt&apos; &apos;(I)C&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910218c: e85f995895          call      7f94ee68baf0h
+  0x00007f9559102191: 7f00                jnle      7f9559102193h
+  0x00007f9559102193: 004883              add       byte ptr [rax+0ffffffffffffff83h],cl
+  0x00007f9559102196: 864801              xchg      byte ptr [rax+1h],cl
+  0x00007f9559102199: 0000                add       byte ptr [rax],al
+  0x00007f955910219b: 01488b              add       dword ptr [rax+0ffffffffffffff8bh],ecx
+  0x00007f955910219e: d7                  xlat      byte ptr [rbx]
+  0x00007f955910219f: 488bf0              mov       rsi,rax
+                                                ;*invokespecial &lt;init&gt;
+                                                ; - java.lang.String::charAt@18 (line 658)
+
+  0x00007f95591021a2: 4889442420          mov       qword ptr [rsp+20h],rax
+  0x00007f95591021a7: e8f43ef4ff          call      7f95590460a0h
+                                                ; OopMap{[32]=Oop off=300}
+                                                ;*invokespecial &lt;init&gt;
+                                                ; - java.lang.String::charAt@18 (line 658)
+                                                ;   {optimized virtual_call}
+  0x00007f95591021ac: 488b442420          mov       rax,qword ptr [rsp+20h]
+  0x00007f95591021b1: e96a000000          jmp       7f9559102220h
+  0x00007f95591021b6: 4889442408          mov       qword ptr [rsp+8h],rax
+  0x00007f95591021bb: 48c70424ffffffff    mov       qword ptr [rsp],0ffffffffffffffffh
+  0x00007f95591021c3: e858c8ffff          call      7f95590fea20h
+                                                ; OopMap{rsi=Oop off=328}
+                                                ;*synchronization entry
+                                                ; - java.lang.String::charAt@-1 (line 657)
+                                                ;   {runtime_call}
+  0x00007f95591021c8: e914ffffff          jmp       7f95591020e1h
+  0x00007f95591021cd: e8eec7f6ff          call      7f955906e9c0h
+                                                ; OopMap{rax=Oop off=338}
+                                                ;*arraylength
+                                                ; - java.lang.String::charAt@9 (line 657)
+                                                ;   {runtime_call}
+  0x00007f95591021d2: 48ba0000000000000000 mov       rdx,0h
+                                                ;   {metadata(NULL)}
+  0x00007f95591021dc: b8000f050a          mov       eax,0a050f00h
+  0x00007f95591021e1: e83af4ffff          call      7f9559101620h
+                                                ; OopMap{off=358}
+                                                ;*new  ; - java.lang.String::charAt@13 (line 658)
+                                                ;   {runtime_call}
+  0x00007f95591021e6: eb90                jmp       7f9559102178h
+  0x00007f95591021e8: 90                  nop
+  0x00007f95591021e9: 90                  nop
+  0x00007f95591021ea: 90                  nop
+  0x00007f95591021eb: 488bd2              mov       rdx,rdx
+  0x00007f95591021ee: e8adc2f6ff          call      7f955906e4a0h
+                                                ; OopMap{off=371}
+                                                ;*new  ; - java.lang.String::charAt@13 (line 658)
+                                                ;   {runtime_call}
+  0x00007f95591021f3: eb92                jmp       7f9559102187h
+  0x00007f95591021f5: 90                  nop
+  0x00007f95591021f6: 90                  nop
+  0x00007f95591021f7: 498b87a8020000      mov       rax,qword ptr [r15+2a8h]
+  0x00007f95591021fe: 49ba0000000000000000 mov       r10,0h
+  0x00007f9559102208: 4d8997a8020000      mov       qword ptr [r15+2a8h],r10
+  0x00007f955910220f: 49ba0000000000000000 mov       r10,0h
+  0x00007f9559102219: 4d8997b0020000      mov       qword ptr [r15+2b0h],r10
+  0x00007f9559102220: 4883c430            add       rsp,30h
+  0x00007f9559102224: 5d                  pop       rbp
+  0x00007f9559102225: e9f69df6ff          jmp       7f955906c020h
+                                                ;   {runtime_call}
+  0x00007f955910222a: f4                  hlt
+  0x00007f955910222b: f4                  hlt
+  0x00007f955910222c: f4                  hlt
+  0x00007f955910222d: f4                  hlt
+  0x00007f955910222e: f4                  hlt
+  0x00007f955910222f: f4                  hlt
+  0x00007f9559102230: f4                  hlt
+  0x00007f9559102231: f4                  hlt
+  0x00007f9559102232: f4                  hlt
+  0x00007f9559102233: f4                  hlt
+  0x00007f9559102234: f4                  hlt
+  0x00007f9559102235: f4                  hlt
+  0x00007f9559102236: f4                  hlt
+  0x00007f9559102237: f4                  hlt
+  0x00007f9559102238: f4                  hlt
+  0x00007f9559102239: f4                  hlt
+  0x00007f955910223a: f4                  hlt
+  0x00007f955910223b: f4                  hlt
+  0x00007f955910223c: f4                  hlt
+  0x00007f955910223d: f4                  hlt
+  0x00007f955910223e: f4                  hlt
+  0x00007f955910223f: f4                  hlt
+[Stub Code]
+  0x00007f9559102240: 90                  nop   ;   {no_reloc}
+  0x00007f9559102241: 90                  nop
+  0x00007f9559102242: 90                  nop
+  0x00007f9559102243: 90                  nop
+  0x00007f9559102244: 90                  nop
+  0x00007f9559102245: 48bb0000000000000000 mov       rbx,0h
+                                                ;   {static_stub}
+  0x00007f955910224f: e9fbffffff          jmp       7f955910224fh
+                                                ;   {runtime_call}
+[Exception Handler]
+  0x00007f9559102254: e807a2ffff          call      7f95590fc460h
+                                                ;   {runtime_call}
+  0x00007f9559102259: 48896424d8          mov       qword ptr [rsp+0ffffffffffffffd8h],rsp
+  0x00007f955910225e: 4881ec80000000      sub       rsp,80h
+  0x00007f9559102265: 4889442478          mov       qword ptr [rsp+78h],rax
+  0x00007f955910226a: 48894c2470          mov       qword ptr [rsp+70h],rcx
+  0x00007f955910226f: 4889542468          mov       qword ptr [rsp+68h],rdx
+  0x00007f9559102274: 48895c2460          mov       qword ptr [rsp+60h],rbx
+  0x00007f9559102279: 48896c2450          mov       qword ptr [rsp+50h],rbp
+  0x00007f955910227e: 4889742448          mov       qword ptr [rsp+48h],rsi
+  0x00007f9559102283: 48897c2440          mov       qword ptr [rsp+40h],rdi
+  0x00007f9559102288: 4c89442438          mov       qword ptr [rsp+38h],r8
+  0x00007f955910228d: 4c894c2430          mov       qword ptr [rsp+30h],r9
+  0x00007f9559102292: 4c89542428          mov       qword ptr [rsp+28h],r10
+  0x00007f9559102297: 4c895c2420          mov       qword ptr [rsp+20h],r11
+  0x00007f955910229c: 4c89642418          mov       qword ptr [rsp+18h],r12
+  0x00007f95591022a1: 4c896c2410          mov       qword ptr [rsp+10h],r13
+  0x00007f95591022a6: 4c89742408          mov       qword ptr [rsp+8h],r14
+  0x00007f95591022ab: 4c893c24            mov       qword ptr [rsp],r15
+  0x00007f95591022af: 48bff6797a6f957f0000 mov       rdi,7f956f7a79f6h
+                                                ;   {external_word}
+  0x00007f95591022b9: 48be59221059957f0000 mov       rsi,7f9559102259h
+                                                ;   {internal_word}
+  0x00007f95591022c3: 488bd4              mov       rdx,rsp
+  0x00007f95591022c6: 4883e4f0            and       rsp,0fffffffffffffff0h
+  0x00007f95591022ca: e8918f3a16          call      7f956f4ab260h
+                                                ;   {runtime_call}
+  0x00007f95591022cf: f4                  hlt
+[Deopt Handler Code]
+  0x00007f95591022d0: 49bad0221059957f0000 mov       r10,7f95591022d0h
+                                                ;   {section_word}
+  0x00007f95591022da: 4152                push      r10
+  0x00007f95591022dc: e91f52f4ff          jmp       7f9559047500h
+                                                ;   {runtime_call}
+  0x00007f95591022e1: f4                  hlt
+  0x00007f95591022e2: f4                  hlt
+  0x00007f95591022e3: f4                  hlt
+  0x00007f95591022e4: f4                  hlt
+  0x00007f95591022e5: f4                  hlt
+  0x00007f95591022e6: f4                  hlt
+  0x00007f95591022e7: f4                  hlt
+<nmethod compile_id='5' compiler='C1' level='3' entry='0x00007f9559102080' size='1376' address='0x00007f9559101f10' relocation_offset='296' insts_offset='368' stub_offset='816' scopes_data_offset='992' scopes_pcs_offset='1096' dependencies_offset='1352' nul_chk_table_offset='1360' method='java/lang/String charAt (I)C' bytes='29' count='2530' iicount='2530' stamp='0.205'/>
+<writer thread='140279814989568'/>
+<task_queued compile_id='8' method='java/lang/String indexOf (II)I' bytes='70' count='201' backedge_count='5120' iicount='201' level='3' stamp='0.205' comment='tiered' hot_count='201'/>
+<writer thread='140279185938176'/>
+Decoding compiled method 0x00007f955910afd0:
+Code:
+RIP: 0x7f955910b160 Code size: 0x00000388
+[Entry Point]
+[Constants]
+  # {method} {0x00007f9558805180} &apos;indexOf&apos; &apos;(II)I&apos; in &apos;java/lang/String&apos;
+  # this:     rsi:rsi   = &apos;java/lang/String&apos;
+  # parm0:    rdx       = int
+  # parm1:    rcx       = int
+  #           [sp+0x40]  (sp of caller)
+  0x00007f955910b160: 448b5608            mov       r10d,dword ptr [rsi+8h]
+  0x00007f955910b164: 49c1e203            shl       r10,3h
+  0x00007f955910b168: 4c3bd0              cmp       r10,rax
+  0x00007f955910b16b: 0f85efacf3ff        jne       7f9559045e60h
+                                                ;   {runtime_call}
+  0x00007f955910b171: 6666660f1f840000000000 nop       word ptr [rax+rax+0h]
+  0x00007f955910b17c: 66666690            nop
+[Verified Entry Point]
+  0x00007f955910b180: 89842400c0feff      mov       dword ptr [rsp+0fffffffffffec000h],eax
+  0x00007f955910b187: 55                  push      rbp
+  0x00007f955910b188: 4883ec30            sub       rsp,30h
+  0x00007f955910b18c: 48b8502da058957f0000 mov       rax,7f9558a02d50h
+                                                ;   {metadata(method data for {method} {0x00007f9558805180} &apos;indexOf&apos; &apos;(II)I&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910b196: 8bb8dc000000        mov       edi,dword ptr [rax+0dch]
+  0x00007f955910b19c: 83c708              add       edi,8h
+  0x00007f955910b19f: 89b8dc000000        mov       dword ptr [rax+0dch],edi
+  0x00007f955910b1a5: 48b880518058957f0000 mov       rax,7f9558805180h
+                                                ;   {metadata({method} {0x00007f9558805180} &apos;indexOf&apos; &apos;(II)I&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910b1af: 81e7f81f0000        and       edi,1ff8h
+  0x00007f955910b1b5: 83ff00              cmp       edi,0h
+  0x00007f955910b1b8: 0f8403020000        je        7f955910b3c1h
+                                                ;*aload_0
+                                                ; - java.lang.String::indexOf@0 (line 1546)
+
+  0x00007f955910b1be: 8b460c              mov       eax,dword ptr [rsi+0ch]
+  0x00007f955910b1c1: 48c1e003            shl       rax,3h
+                                                ;*getfield value
+                                                ; - java.lang.String::indexOf@1 (line 1546)
+
+  0x00007f955910b1c5: 8b780c              mov       edi,dword ptr [rax+0ch]
+                                                ;*arraylength
+                                                ; - java.lang.String::indexOf@4 (line 1546)
+                                                ; implicit exception: dispatches to 0x00007f955910b3d8
+  0x00007f955910b1c8: 83f900              cmp       ecx,0h
+  0x00007f955910b1cb: 48bb502da058957f0000 mov       rbx,7f9558a02d50h
+                                                ;   {metadata(method data for {method} {0x00007f9558805180} &apos;indexOf&apos; &apos;(II)I&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910b1d5: 49b80801000000000000 mov       r8,108h
+  0x00007f955910b1df: 0f8d0a000000        jnl       7f955910b1efh
+  0x00007f955910b1e5: 49b81801000000000000 mov       r8,118h
+  0x00007f955910b1ef: 4e8b0c03            mov       r9,qword ptr [rbx+r8]
+  0x00007f955910b1f3: 4d8d4901            lea       r9,[r9+1h]
+  0x00007f955910b1f7: 4e890c03            mov       qword ptr [rbx+r8],r9
+  0x00007f955910b1fb: 0f8d1a000000        jnl       7f955910b21bh
+                                                ;*ifge
+                                                ; - java.lang.String::indexOf@7 (line 1547)
+
+  0x00007f955910b201: 48b9502da058957f0000 mov       rcx,7f9558a02d50h
+                                                ;   {metadata(method data for {method} {0x00007f9558805180} &apos;indexOf&apos; &apos;(II)I&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910b20b: ff8128010000        inc       dword ptr [rcx+128h]
+  0x00007f955910b211: b900000000          mov       ecx,0h
+  0x00007f955910b216: e938000000          jmp       7f955910b253h
+                                                ;*goto
+                                                ; - java.lang.String::indexOf@12 (line 1548)
+
+  0x00007f955910b21b: 3bcf                cmp       ecx,edi
+  0x00007f955910b21d: 48bb502da058957f0000 mov       rbx,7f9558a02d50h
+                                                ;   {metadata(method data for {method} {0x00007f9558805180} &apos;indexOf&apos; &apos;(II)I&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910b227: 49b84001000000000000 mov       r8,140h
+  0x00007f955910b231: 0f8c0a000000        jl        7f955910b241h
+  0x00007f955910b237: 49b85001000000000000 mov       r8,150h
+  0x00007f955910b241: 4e8b0c03            mov       r9,qword ptr [rbx+r8]
+  0x00007f955910b245: 4d8d4901            lea       r9,[r9+1h]
+  0x00007f955910b249: 4e890c03            mov       qword ptr [rbx+r8],r9
+  0x00007f955910b24d: 0f8d5d010000        jnl       7f955910b3b0h
+                                                ;*if_icmplt
+                                                ; - java.lang.String::indexOf@17 (line 1549)
+
+  0x00007f955910b253: 81fa00000100        cmp       edx,10000h
+  0x00007f955910b259: 48bb502da058957f0000 mov       rbx,7f9558a02d50h
+                                                ;   {metadata(method data for {method} {0x00007f9558805180} &apos;indexOf&apos; &apos;(II)I&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910b263: 49b86001000000000000 mov       r8,160h
+  0x00007f955910b26d: 0f8d0a000000        jnl       7f955910b27dh
+  0x00007f955910b273: 49b87001000000000000 mov       r8,170h
+  0x00007f955910b27d: 4e8b0c03            mov       r9,qword ptr [rbx+r8]
+  0x00007f955910b281: 4d8d4901            lea       r9,[r9+1h]
+  0x00007f955910b285: 4e890c03            mov       qword ptr [rbx+r8],r9
+  0x00007f955910b289: 0f8df9000000        jnl       7f955910b388h
+  0x00007f955910b28f: e997000000          jmp       7f955910b32bh
+                                                ;*if_icmpge
+                                                ; - java.lang.String::indexOf@25 (line 1554)
+
+  0x00007f955910b294: 0f1f4000            nop       dword ptr [rax+0h]
+  0x00007f955910b298: 4863f1              movsxd    rsi,ecx
+  0x00007f955910b29b: 3b480c              cmp       ecx,dword ptr [rax+0ch]
+  0x00007f955910b29e: 0f8339010000        jnb       7f955910b3ddh
+  0x00007f955910b2a4: 0fb7747010          movzx     esi,word ptr [rax+rsi*2+10h]
+                                                ;*caload
+                                                ; - java.lang.String::indexOf@47 (line 1559)
+
+  0x00007f955910b2a9: 3bf2                cmp       esi,edx
+  0x00007f955910b2ab: 48be502da058957f0000 mov       rsi,7f9558a02d50h
+                                                ;   {metadata(method data for {method} {0x00007f9558805180} &apos;indexOf&apos; &apos;(II)I&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910b2b5: 48bba001000000000000 mov       rbx,1a0h
+  0x00007f955910b2bf: 0f850a000000        jne       7f955910b2cfh
+  0x00007f955910b2c5: 48bbb001000000000000 mov       rbx,1b0h
+  0x00007f955910b2cf: 4c8b041e            mov       r8,qword ptr [rsi+rbx]
+  0x00007f955910b2d3: 4d8d4001            lea       r8,[r8+1h]
+  0x00007f955910b2d7: 4c89041e            mov       qword ptr [rsi+rbx],r8
+  0x00007f955910b2db: 0f8487000000        je        7f955910b368h
+                                                ;*if_icmpne
+                                                ; - java.lang.String::indexOf@49 (line 1559)
+
+  0x00007f955910b2e1: ffc1                inc       ecx
+  0x00007f955910b2e3: 48be502da058957f0000 mov       rsi,7f9558a02d50h
+                                                ;   {metadata(method data for {method} {0x00007f9558805180} &apos;indexOf&apos; &apos;(II)I&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910b2ed: 8b9ee0000000        mov       ebx,dword ptr [rsi+0e0h]
+  0x00007f955910b2f3: 83c308              add       ebx,8h
+  0x00007f955910b2f6: 899ee0000000        mov       dword ptr [rsi+0e0h],ebx
+  0x00007f955910b2fc: 48be80518058957f0000 mov       rsi,7f9558805180h
+                                                ;   {metadata({method} {0x00007f9558805180} &apos;indexOf&apos; &apos;(II)I&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910b306: 81e3f8ff0000        and       ebx,0fff8h
+  0x00007f955910b30c: 83fb00              cmp       ebx,0h
+  0x00007f955910b30f: 0f84d1000000        je        7f955910b3e6h
+                                                ; OopMap{rax=Oop off=437}
+                                                ;*goto
+                                                ; - java.lang.String::indexOf@58 (line 1558)
+
+  0x00007f955910b315: 8505e59d7b17        test      dword ptr [7f95708c5100h],eax
+                                                ;   {poll}
+  0x00007f955910b31b: 48be502da058957f0000 mov       rsi,7f9558a02d50h
+                                                ;   {metadata(method data for {method} {0x00007f9558805180} &apos;indexOf&apos; &apos;(II)I&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910b325: ff86c0010000        inc       dword ptr [rsi+1c0h]
+                                                ;*goto
+                                                ; - java.lang.String::indexOf@58 (line 1558)
+
+  0x00007f955910b32b: 3bcf                cmp       ecx,edi
+  0x00007f955910b32d: 48be502da058957f0000 mov       rsi,7f9558a02d50h
+                                                ;   {metadata(method data for {method} {0x00007f9558805180} &apos;indexOf&apos; &apos;(II)I&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910b337: 48bb8001000000000000 mov       rbx,180h
+  0x00007f955910b341: 0f8d0a000000        jnl       7f955910b351h
+  0x00007f955910b347: 48bb9001000000000000 mov       rbx,190h
+  0x00007f955910b351: 4c8b041e            mov       r8,qword ptr [rsi+rbx]
+  0x00007f955910b355: 4d8d4001            lea       r8,[r8+1h]
+  0x00007f955910b359: 4c89041e            mov       qword ptr [rsi+rbx],r8
+  0x00007f955910b35d: 0f8d14000000        jnl       7f955910b377h
+  0x00007f955910b363: e930ffffff          jmp       7f955910b298h
+                                                ;*if_icmpge
+                                                ; - java.lang.String::indexOf@40 (line 1558)
+
+  0x00007f955910b368: 488bc1              mov       rax,rcx
+  0x00007f955910b36b: 4883c430            add       rsp,30h
+  0x00007f955910b36f: 5d                  pop       rbp
+  0x00007f955910b370: 85058a9d7b17        test      dword ptr [7f95708c5100h],eax
+                                                ;   {poll_return}
+  0x00007f955910b376: c3                  ret   ;*ireturn
+                                                ; - java.lang.String::indexOf@54 (line 1560)
+
+  0x00007f955910b377: b8ffffffff          mov       eax,0ffffffffh
+  0x00007f955910b37c: 4883c430            add       rsp,30h
+  0x00007f955910b380: 5d                  pop       rbp
+  0x00007f955910b381: 8505799d7b17        test      dword ptr [7f95708c5100h],eax
+                                                ;   {poll_return}
+  0x00007f955910b387: c3                  ret   ;*ireturn
+                                                ; - java.lang.String::indexOf@62 (line 1563)
+
+  0x00007f955910b388: 488bfe              mov       rdi,rsi
+  0x00007f955910b38b: 48bb502da058957f0000 mov       rbx,7f9558a02d50h
+                                                ;   {metadata(method data for {method} {0x00007f9558805180} &apos;indexOf&apos; &apos;(II)I&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910b395: 488383d801000001    add       qword ptr [rbx+1d8h],1h
+  0x00007f955910b39d: 90                  nop
+  0x00007f955910b39e: 90                  nop
+  0x00007f955910b39f: e8fcacf3ff          call      7f95590460a0h
+                                                ; OopMap{off=580}
+                                                ;*invokespecial indexOfSupplementary
+                                                ; - java.lang.String::indexOf@66 (line 1565)
+                                                ;   {optimized virtual_call}
+  0x00007f955910b3a4: 4883c430            add       rsp,30h
+  0x00007f955910b3a8: 5d                  pop       rbp
+  0x00007f955910b3a9: 8505519d7b17        test      dword ptr [7f95708c5100h],eax
+                                                ;   {poll_return}
+  0x00007f955910b3af: c3                  ret   ;*ireturn
+                                                ; - java.lang.String::indexOf@69 (line 1565)
+
+  0x00007f955910b3b0: b8ffffffff          mov       eax,0ffffffffh
+  0x00007f955910b3b5: 4883c430            add       rsp,30h
+  0x00007f955910b3b9: 5d                  pop       rbp
+  0x00007f955910b3ba: 8505409d7b17        test      dword ptr [7f95708c5100h],eax
+                                                ;   {poll_return}
+  0x00007f955910b3c0: c3                  ret
+  0x00007f955910b3c1: 4889442408          mov       qword ptr [rsp+8h],rax
+  0x00007f955910b3c6: 48c70424ffffffff    mov       qword ptr [rsp],0ffffffffffffffffh
+  0x00007f955910b3ce: e84d36ffff          call      7f95590fea20h
+                                                ; OopMap{rsi=Oop off=627}
+                                                ;*synchronization entry
+                                                ; - java.lang.String::indexOf@-1 (line 1546)
+                                                ;   {runtime_call}
+  0x00007f955910b3d3: e9e6fdffff          jmp       7f955910b1beh
+  0x00007f955910b3d8: e8e335f6ff          call      7f955906e9c0h
+                                                ; OopMap{rsi=Oop rax=Oop off=637}
+                                                ;*arraylength
+                                                ; - java.lang.String::indexOf@4 (line 1546)
+                                                ;   {runtime_call}
+  0x00007f955910b3dd: 48890c24            mov       qword ptr [rsp],rcx
+  0x00007f955910b3e1: e89a3cf6ff          call      7f955906f080h
+                                                ; OopMap{rax=Oop off=646}
+                                                ;*caload
+                                                ; - java.lang.String::indexOf@47 (line 1559)
+                                                ;   {runtime_call}
+  0x00007f955910b3e6: 4889742408          mov       qword ptr [rsp+8h],rsi
+  0x00007f955910b3eb: 48c704243a000000    mov       qword ptr [rsp],3ah
+  0x00007f955910b3f3: e82836ffff          call      7f95590fea20h
+                                                ; OopMap{rax=Oop off=664}
+                                                ;*goto
+                                                ; - java.lang.String::indexOf@58 (line 1558)
+                                                ;   {runtime_call}
+  0x00007f955910b3f8: e918ffffff          jmp       7f955910b315h
+  0x00007f955910b3fd: 90                  nop
+  0x00007f955910b3fe: 90                  nop
+  0x00007f955910b3ff: 498b87a8020000      mov       rax,qword ptr [r15+2a8h]
+  0x00007f955910b406: 49ba0000000000000000 mov       r10,0h
+  0x00007f955910b410: 4d8997a8020000      mov       qword ptr [r15+2a8h],r10
+  0x00007f955910b417: 49ba0000000000000000 mov       r10,0h
+  0x00007f955910b421: 4d8997b0020000      mov       qword ptr [r15+2b0h],r10
+  0x00007f955910b428: 4883c430            add       rsp,30h
+  0x00007f955910b42c: 5d                  pop       rbp
+  0x00007f955910b42d: e9ee0bf6ff          jmp       7f955906c020h
+                                                ;   {runtime_call}
+  0x00007f955910b432: f4                  hlt
+  0x00007f955910b433: f4                  hlt
+  0x00007f955910b434: f4                  hlt
+  0x00007f955910b435: f4                  hlt
+  0x00007f955910b436: f4                  hlt
+  0x00007f955910b437: f4                  hlt
+  0x00007f955910b438: f4                  hlt
+  0x00007f955910b439: f4                  hlt
+  0x00007f955910b43a: f4                  hlt
+  0x00007f955910b43b: f4                  hlt
+  0x00007f955910b43c: f4                  hlt
+  0x00007f955910b43d: f4                  hlt
+  0x00007f955910b43e: f4                  hlt
+  0x00007f955910b43f: f4                  hlt
+[Stub Code]
+  0x00007f955910b440: 90                  nop   ;   {no_reloc}
+  0x00007f955910b441: 90                  nop
+  0x00007f955910b442: 90                  nop
+  0x00007f955910b443: 90                  nop
+  0x00007f955910b444: 90                  nop
+  0x00007f955910b445: 48bb0000000000000000 mov       rbx,0h
+                                                ;   {static_stub}
+  0x00007f955910b44f: e9fbffffff          jmp       7f955910b44fh
+                                                ;   {runtime_call}
+[Exception Handler]
+  0x00007f955910b454: e80710ffff          call      7f95590fc460h
+                                                ;   {runtime_call}
+  0x00007f955910b459: 48896424d8          mov       qword ptr [rsp+0ffffffffffffffd8h],rsp
+  0x00007f955910b45e: 4881ec80000000      sub       rsp,80h
+  0x00007f955910b465: 4889442478          mov       qword ptr [rsp+78h],rax
+  0x00007f955910b46a: 48894c2470          mov       qword ptr [rsp+70h],rcx
+  0x00007f955910b46f: 4889542468          mov       qword ptr [rsp+68h],rdx
+  0x00007f955910b474: 48895c2460          mov       qword ptr [rsp+60h],rbx
+  0x00007f955910b479: 48896c2450          mov       qword ptr [rsp+50h],rbp
+  0x00007f955910b47e: 4889742448          mov       qword ptr [rsp+48h],rsi
+  0x00007f955910b483: 48897c2440          mov       qword ptr [rsp+40h],rdi
+  0x00007f955910b488: 4c89442438          mov       qword ptr [rsp+38h],r8
+  0x00007f955910b48d: 4c894c2430          mov       qword ptr [rsp+30h],r9
+  0x00007f955910b492: 4c89542428          mov       qword ptr [rsp+28h],r10
+  0x00007f955910b497: 4c895c2420          mov       qword ptr [rsp+20h],r11
+  0x00007f955910b49c: 4c89642418          mov       qword ptr [rsp+18h],r12
+  0x00007f955910b4a1: 4c896c2410          mov       qword ptr [rsp+10h],r13
+  0x00007f955910b4a6: 4c89742408          mov       qword ptr [rsp+8h],r14
+  0x00007f955910b4ab: 4c893c24            mov       qword ptr [rsp],r15
+  0x00007f955910b4af: 48bff6797a6f957f0000 mov       rdi,7f956f7a79f6h
+                                                ;   {external_word}
+  0x00007f955910b4b9: 48be59b41059957f0000 mov       rsi,7f955910b459h
+                                                ;   {internal_word}
+  0x00007f955910b4c3: 488bd4              mov       rdx,rsp
+  0x00007f955910b4c6: 4883e4f0            and       rsp,0fffffffffffffff0h
+  0x00007f955910b4ca: e891fd3916          call      7f956f4ab260h
+                                                ;   {runtime_call}
+  0x00007f955910b4cf: f4                  hlt
+[Deopt Handler Code]
+  0x00007f955910b4d0: 49bad0b41059957f0000 mov       r10,7f955910b4d0h
+                                                ;   {section_word}
+  0x00007f955910b4da: 4152                push      r10
+  0x00007f955910b4dc: e91fc0f3ff          jmp       7f9559047500h
+                                                ;   {runtime_call}
+  0x00007f955910b4e1: f4                  hlt
+  0x00007f955910b4e2: f4                  hlt
+  0x00007f955910b4e3: f4                  hlt
+  0x00007f955910b4e4: f4                  hlt
+  0x00007f955910b4e5: f4                  hlt
+  0x00007f955910b4e6: f4                  hlt
+  0x00007f955910b4e7: f4                  hlt
+<nmethod compile_id='8' compiler='C1' level='3' entry='0x00007f955910b160' size='1848' address='0x00007f955910afd0' relocation_offset='296' insts_offset='400' stub_offset='1136' scopes_data_offset='1312' scopes_pcs_offset='1472' dependencies_offset='1824' nul_chk_table_offset='1832' method='java/lang/String indexOf (II)I' bytes='70' count='202' backedge_count='5216' iicount='202' stamp='0.222'/>
+Decoding compiled method 0x00007f955910b950:
+Code:
+RIP: 0x7f955910bac0 Code size: 0x00000150
+[Entry Point]
+[Constants]
+  # {method} {0x00007f9558800480} &apos;&lt;init&gt;&apos; &apos;()V&apos; in &apos;java/lang/Object&apos;
+  #           [sp+0x40]  (sp of caller)
+  0x00007f955910bac0: 448b5608            mov       r10d,dword ptr [rsi+8h]
+  0x00007f955910bac4: 49c1e203            shl       r10,3h
+  0x00007f955910bac8: 4c3bd0              cmp       r10,rax
+  0x00007f955910bacb: 0f858fa3f3ff        jne       7f9559045e60h
+                                                ;   {runtime_call}
+  0x00007f955910bad1: 6666660f1f840000000000 nop       word ptr [rax+rax+0h]
+  0x00007f955910badc: 66666690            nop
+[Verified Entry Point]
+  0x00007f955910bae0: 89842400c0feff      mov       dword ptr [rsp+0fffffffffffec000h],eax
+  0x00007f955910bae7: 55                  push      rbp
+  0x00007f955910bae8: 4883ec30            sub       rsp,30h
+  0x00007f955910baec: 48bf90749758957f0000 mov       rdi,7f9558977490h
+                                                ;   {metadata(method data for {method} {0x00007f9558800480} &apos;&lt;init&gt;&apos; &apos;()V&apos; in &apos;java/lang/Object&apos;)}
+  0x00007f955910baf6: 8b9fdc000000        mov       ebx,dword ptr [rdi+0dch]
+  0x00007f955910bafc: 83c308              add       ebx,8h
+  0x00007f955910baff: 899fdc000000        mov       dword ptr [rdi+0dch],ebx
+  0x00007f955910bb05: 48bf80048058957f0000 mov       rdi,7f9558800480h
+                                                ;   {metadata({method} {0x00007f9558800480} &apos;&lt;init&gt;&apos; &apos;()V&apos; in &apos;java/lang/Object&apos;)}
+  0x00007f955910bb0f: 81e3f81f0000        and       ebx,1ff8h
+  0x00007f955910bb15: 83fb00              cmp       ebx,0h
+  0x00007f955910bb18: 0f8419000000        je        7f955910bb37h
+  0x00007f955910bb1e: 488bfe              mov       rdi,rsi
+                                                ;*return
+                                                ; - java.lang.Object::&lt;init&gt;@0 (line 37)
+
+  0x00007f955910bb21: 4889742420          mov       qword ptr [rsp+20h],rsi
+  0x00007f955910bb26: e8f52bf6ff          call      7f955906e720h
+                                                ; OopMap{[32]=Oop off=107}
+                                                ;*return
+                                                ; - java.lang.Object::&lt;init&gt;@0 (line 37)
+                                                ;   {runtime_call}
+  0x00007f955910bb2b: 4883c430            add       rsp,30h
+  0x00007f955910bb2f: 5d                  pop       rbp
+  0x00007f955910bb30: 8505ca957b17        test      dword ptr [7f95708c5100h],eax
+                                                ;   {poll_return}
+  0x00007f955910bb36: c3                  ret
+  0x00007f955910bb37: 48897c2408          mov       qword ptr [rsp+8h],rdi
+  0x00007f955910bb3c: 48c70424ffffffff    mov       qword ptr [rsp],0ffffffffffffffffh
+  0x00007f955910bb44: e8d72effff          call      7f95590fea20h
+                                                ; OopMap{rsi=Oop off=137}
+                                                ;*synchronization entry
+                                                ; - java.lang.Object::&lt;init&gt;@-1 (line 37)
+                                                ;   {runtime_call}
+  0x00007f955910bb49: ebd3                jmp       7f955910bb1eh
+  0x00007f955910bb4b: 90                  nop
+  0x00007f955910bb4c: 90                  nop
+  0x00007f955910bb4d: 498b87a8020000      mov       rax,qword ptr [r15+2a8h]
+  0x00007f955910bb54: 49ba0000000000000000 mov       r10,0h
+  0x00007f955910bb5e: 4d8997a8020000      mov       qword ptr [r15+2a8h],r10
+  0x00007f955910bb65: 49ba0000000000000000 mov       r10,0h
+  0x00007f955910bb6f: 4d8997b0020000      mov       qword ptr [r15+2b0h],r10
+  0x00007f955910bb76: 4883c430            add       rsp,30h
+  0x00007f955910bb7a: 5d                  pop       rbp
+  0x00007f955910bb7b: e9a004f6ff          jmp       7f955906c020h
+                                                ;   {runtime_call}
+[Exception Handler]
+[Stub Code]
+  0x00007f955910bb80: e8db08ffff          call      7f95590fc460h
+                                                ;   {no_reloc}
+  0x00007f955910bb85: 48896424d8          mov       qword ptr [rsp+0ffffffffffffffd8h],rsp
+  0x00007f955910bb8a: 4881ec80000000      sub       rsp,80h
+  0x00007f955910bb91: 4889442478          mov       qword ptr [rsp+78h],rax
+  0x00007f955910bb96: 48894c2470          mov       qword ptr [rsp+70h],rcx
+  0x00007f955910bb9b: 4889542468          mov       qword ptr [rsp+68h],rdx
+  0x00007f955910bba0: 48895c2460          mov       qword ptr [rsp+60h],rbx
+  0x00007f955910bba5: 48896c2450          mov       qword ptr [rsp+50h],rbp
+  0x00007f955910bbaa: 4889742448          mov       qword ptr [rsp+48h],rsi
+  0x00007f955910bbaf: 48897c2440          mov       qword ptr [rsp+40h],rdi
+  0x00007f955910bbb4: 4c89442438          mov       qword ptr [rsp+38h],r8
+  0x00007f955910bbb9: 4c894c2430          mov       qword ptr [rsp+30h],r9
+  0x00007f955910bbbe: 4c89542428          mov       qword ptr [rsp+28h],r10
+  0x00007f955910bbc3: 4c895c2420          mov       qword ptr [rsp+20h],r11
+  0x00007f955910bbc8: 4c89642418          mov       qword ptr [rsp+18h],r12
+  0x00007f955910bbcd: 4c896c2410          mov       qword ptr [rsp+10h],r13
+  0x00007f955910bbd2: 4c89742408          mov       qword ptr [rsp+8h],r14
+  0x00007f955910bbd7: 4c893c24            mov       qword ptr [rsp],r15
+  0x00007f955910bbdb: 48bff6797a6f957f0000 mov       rdi,7f956f7a79f6h
+                                                ;   {external_word}
+  0x00007f955910bbe5: 48be85bb1059957f0000 mov       rsi,7f955910bb85h
+                                                ;   {internal_word}
+  0x00007f955910bbef: 488bd4              mov       rdx,rsp
+  0x00007f955910bbf2: 4883e4f0            and       rsp,0fffffffffffffff0h
+  0x00007f955910bbf6: e865f63916          call      7f956f4ab260h
+                                                ;   {runtime_call}
+  0x00007f955910bbfb: f4                  hlt
+[Deopt Handler Code]
+  0x00007f955910bbfc: 49bafcbb1059957f0000 mov       r10,7f955910bbfch
+                                                ;   {section_word}
+  0x00007f955910bc06: 4152                push      r10
+  0x00007f955910bc08: e9f3b8f3ff          jmp       7f9559047500h
+                                                ;   {runtime_call}
+  0x00007f955910bc0d: f4                  hlt
+  0x00007f955910bc0e: f4                  hlt
+  0x00007f955910bc0f: f4                  hlt
+<nmethod compile_id='3' compiler='C1' level='3' entry='0x00007f955910bac0' size='832' address='0x00007f955910b950' relocation_offset='296' insts_offset='368' stub_offset='560' scopes_data_offset='712' scopes_pcs_offset='744' dependencies_offset='824' method='java/lang/Object &lt;init&gt; ()V' bytes='1' count='1924' iicount='1924' stamp='0.236'/>
+<writer thread='140279814989568'/>
+<task_queued compile_id='9' method='java/lang/AbstractStringBuilder ensureCapacityInternal (I)V' bytes='27' count='384' iicount='384' level='3' stamp='0.236' comment='tiered' hot_count='384'/>
+<task_queued compile_id='10' method='java/lang/Math max (II)I' bytes='11' count='384' iicount='384' level='3' stamp='0.237' comment='tiered' hot_count='384'/>
+<writer thread='140279185938176'/>
+Decoding compiled method 0x00007f955910bcd0:
+Code:
+RIP: 0x7f955910be40 Code size: 0x00000190
+[Entry Point]
+[Verified Entry Point]
+[Constants]
+  # {method} {0x00007f95588f6520} &apos;max&apos; &apos;(II)I&apos; in &apos;java/lang/Math&apos;
+  # parm0:    rsi       = int
+  # parm1:    rdx       = int
+  #           [sp+0x40]  (sp of caller)
+  0x00007f955910be40: 89842400c0feff      mov       dword ptr [rsp+0fffffffffffec000h],eax
+  0x00007f955910be47: 55                  push      rbp
+  0x00007f955910be48: 4883ec30            sub       rsp,30h
+  0x00007f955910be4c: 48b8f892a258957f0000 mov       rax,7f9558a292f8h
+                                                ;   {metadata(method data for {method} {0x00007f95588f6520} &apos;max&apos; &apos;(II)I&apos; in &apos;java/lang/Math&apos;)}
+  0x00007f955910be56: 8bb8dc000000        mov       edi,dword ptr [rax+0dch]
+  0x00007f955910be5c: 83c708              add       edi,8h
+  0x00007f955910be5f: 89b8dc000000        mov       dword ptr [rax+0dch],edi
+  0x00007f955910be65: 48b820658f58957f0000 mov       rax,7f95588f6520h
+                                                ;   {metadata({method} {0x00007f95588f6520} &apos;max&apos; &apos;(II)I&apos; in &apos;java/lang/Math&apos;)}
+  0x00007f955910be6f: 81e7f81f0000        and       edi,1ff8h
+  0x00007f955910be75: 83ff00              cmp       edi,0h
+  0x00007f955910be78: 0f845f000000        je        7f955910beddh
+                                                ;*iload_0
+                                                ; - java.lang.Math::max@0 (line 1252)
+
+  0x00007f955910be7e: 3bf2                cmp       esi,edx
+  0x00007f955910be80: 48b8f892a258957f0000 mov       rax,7f9558a292f8h
+                                                ;   {metadata(method data for {method} {0x00007f95588f6520} &apos;max&apos; &apos;(II)I&apos; in &apos;java/lang/Math&apos;)}
+  0x00007f955910be8a: 48bf0801000000000000 mov       rdi,108h
+  0x00007f955910be94: 0f8c0a000000        jl        7f955910bea4h
+  0x00007f955910be9a: 48bf1801000000000000 mov       rdi,118h
+  0x00007f955910bea4: 488b1c38            mov       rbx,qword ptr [rax+rdi]
+  0x00007f955910bea8: 488d5b01            lea       rbx,[rbx+1h]
+  0x00007f955910beac: 48891c38            mov       qword ptr [rax+rdi],rbx
+  0x00007f955910beb0: 0f8c15000000        jl        7f955910becbh
+                                                ;*if_icmplt
+                                                ; - java.lang.Math::max@2 (line 1252)
+
+  0x00007f955910beb6: 48b8f892a258957f0000 mov       rax,7f9558a292f8h
+                                                ;   {metadata(method data for {method} {0x00007f95588f6520} &apos;max&apos; &apos;(II)I&apos; in &apos;java/lang/Math&apos;)}
+  0x00007f955910bec0: ff8028010000        inc       dword ptr [rax+128h]
+  0x00007f955910bec6: e903000000          jmp       7f955910beceh
+                                                ;*goto
+                                                ; - java.lang.Math::max@6 (line 1252)
+
+  0x00007f955910becb: 488bf2              mov       rsi,rdx
+                                                ;*ireturn
+                                                ; - java.lang.Math::max@10 (line 1252)
+
+  0x00007f955910bece: 488bc6              mov       rax,rsi
+  0x00007f955910bed1: 4883c430            add       rsp,30h
+  0x00007f955910bed5: 5d                  pop       rbp
+  0x00007f955910bed6: 850524927b17        test      dword ptr [7f95708c5100h],eax
+                                                ;   {poll_return}
+  0x00007f955910bedc: c3                  ret
+  0x00007f955910bedd: 4889442408          mov       qword ptr [rsp+8h],rax
+  0x00007f955910bee2: 48c70424ffffffff    mov       qword ptr [rsp],0ffffffffffffffffh
+  0x00007f955910beea: e8312bffff          call      7f95590fea20h
+                                                ; OopMap{off=175}
+                                                ;*synchronization entry
+                                                ; - java.lang.Math::max@-1 (line 1252)
+                                                ;   {runtime_call}
+  0x00007f955910beef: eb8d                jmp       7f955910be7eh
+  0x00007f955910bef1: 90                  nop
+  0x00007f955910bef2: 90                  nop
+  0x00007f955910bef3: 498b87a8020000      mov       rax,qword ptr [r15+2a8h]
+  0x00007f955910befa: 49ba0000000000000000 mov       r10,0h
+  0x00007f955910bf04: 4d8997a8020000      mov       qword ptr [r15+2a8h],r10
+  0x00007f955910bf0b: 49ba0000000000000000 mov       r10,0h
+  0x00007f955910bf15: 4d8997b0020000      mov       qword ptr [r15+2b0h],r10
+  0x00007f955910bf1c: 4883c430            add       rsp,30h
+  0x00007f955910bf20: 5d                  pop       rbp
+  0x00007f955910bf21: e9fa00f6ff          jmp       7f955906c020h
+                                                ;   {runtime_call}
+  0x00007f955910bf26: f4                  hlt
+  0x00007f955910bf27: f4                  hlt
+  0x00007f955910bf28: f4                  hlt
+  0x00007f955910bf29: f4                  hlt
+  0x00007f955910bf2a: f4                  hlt
+  0x00007f955910bf2b: f4                  hlt
+  0x00007f955910bf2c: f4                  hlt
+  0x00007f955910bf2d: f4                  hlt
+  0x00007f955910bf2e: f4                  hlt
+  0x00007f955910bf2f: f4                  hlt
+  0x00007f955910bf30: f4                  hlt
+  0x00007f955910bf31: f4                  hlt
+  0x00007f955910bf32: f4                  hlt
+  0x00007f955910bf33: f4                  hlt
+  0x00007f955910bf34: f4                  hlt
+  0x00007f955910bf35: f4                  hlt
+  0x00007f955910bf36: f4                  hlt
+  0x00007f955910bf37: f4                  hlt
+  0x00007f955910bf38: f4                  hlt
+  0x00007f955910bf39: f4                  hlt
+  0x00007f955910bf3a: f4                  hlt
+  0x00007f955910bf3b: f4                  hlt
+  0x00007f955910bf3c: f4                  hlt
+  0x00007f955910bf3d: f4                  hlt
+  0x00007f955910bf3e: f4                  hlt
+  0x00007f955910bf3f: f4                  hlt
+[Exception Handler]
+[Stub Code]
+  0x00007f955910bf40: e81b05ffff          call      7f95590fc460h
+                                                ;   {no_reloc}
+  0x00007f955910bf45: 48896424d8          mov       qword ptr [rsp+0ffffffffffffffd8h],rsp
+  0x00007f955910bf4a: 4881ec80000000      sub       rsp,80h
+  0x00007f955910bf51: 4889442478          mov       qword ptr [rsp+78h],rax
+  0x00007f955910bf56: 48894c2470          mov       qword ptr [rsp+70h],rcx
+  0x00007f955910bf5b: 4889542468          mov       qword ptr [rsp+68h],rdx
+  0x00007f955910bf60: 48895c2460          mov       qword ptr [rsp+60h],rbx
+  0x00007f955910bf65: 48896c2450          mov       qword ptr [rsp+50h],rbp
+  0x00007f955910bf6a: 4889742448          mov       qword ptr [rsp+48h],rsi
+  0x00007f955910bf6f: 48897c2440          mov       qword ptr [rsp+40h],rdi
+  0x00007f955910bf74: 4c89442438          mov       qword ptr [rsp+38h],r8
+  0x00007f955910bf79: 4c894c2430          mov       qword ptr [rsp+30h],r9
+  0x00007f955910bf7e: 4c89542428          mov       qword ptr [rsp+28h],r10
+  0x00007f955910bf83: 4c895c2420          mov       qword ptr [rsp+20h],r11
+  0x00007f955910bf88: 4c89642418          mov       qword ptr [rsp+18h],r12
+  0x00007f955910bf8d: 4c896c2410          mov       qword ptr [rsp+10h],r13
+  0x00007f955910bf92: 4c89742408          mov       qword ptr [rsp+8h],r14
+  0x00007f955910bf97: 4c893c24            mov       qword ptr [rsp],r15
+  0x00007f955910bf9b: 48bff6797a6f957f0000 mov       rdi,7f956f7a79f6h
+                                                ;   {external_word}
+  0x00007f955910bfa5: 48be45bf1059957f0000 mov       rsi,7f955910bf45h
+                                                ;   {internal_word}
+  0x00007f955910bfaf: 488bd4              mov       rdx,rsp
+  0x00007f955910bfb2: 4883e4f0            and       rsp,0fffffffffffffff0h
+  0x00007f955910bfb6: e8a5f23916          call      7f956f4ab260h
+                                                ;   {runtime_call}
+  0x00007f955910bfbb: f4                  hlt
+[Deopt Handler Code]
+  0x00007f955910bfbc: 49babcbf1059957f0000 mov       r10,7f955910bfbch
+                                                ;   {section_word}
+  0x00007f955910bfc6: 4152                push      r10
+  0x00007f955910bfc8: e933b5f3ff          jmp       7f9559047500h
+                                                ;   {runtime_call}
+  0x00007f955910bfcd: f4                  hlt
+  0x00007f955910bfce: f4                  hlt
+  0x00007f955910bfcf: f4                  hlt
+<nmethod compile_id='10' compiler='C1' level='3' entry='0x00007f955910be40' size='936' address='0x00007f955910bcd0' relocation_offset='296' insts_offset='368' stub_offset='624' scopes_data_offset='776' scopes_pcs_offset='816' dependencies_offset='928' method='java/lang/Math max (II)I' bytes='11' count='744' iicount='744' stamp='0.257'/>
+Decoding compiled method 0x00007f955910c090:
+Code:
+RIP: 0x7f955910c200 Code size: 0x00000190
+[Entry Point]
+[Verified Entry Point]
+[Constants]
+  # {method} {0x00007f95588f67d8} &apos;min&apos; &apos;(II)I&apos; in &apos;java/lang/Math&apos;
+  # parm0:    rsi       = int
+  # parm1:    rdx       = int
+  #           [sp+0x40]  (sp of caller)
+  0x00007f955910c200: 89842400c0feff      mov       dword ptr [rsp+0fffffffffffec000h],eax
+  0x00007f955910c207: 55                  push      rbp
+  0x00007f955910c208: 4883ec30            sub       rsp,30h
+  0x00007f955910c20c: 48b8e89f9c58957f0000 mov       rax,7f95589c9fe8h
+                                                ;   {metadata(method data for {method} {0x00007f95588f67d8} &apos;min&apos; &apos;(II)I&apos; in &apos;java/lang/Math&apos;)}
+  0x00007f955910c216: 8bb8dc000000        mov       edi,dword ptr [rax+0dch]
+  0x00007f955910c21c: 83c708              add       edi,8h
+  0x00007f955910c21f: 89b8dc000000        mov       dword ptr [rax+0dch],edi
+  0x00007f955910c225: 48b8d8678f58957f0000 mov       rax,7f95588f67d8h
+                                                ;   {metadata({method} {0x00007f95588f67d8} &apos;min&apos; &apos;(II)I&apos; in &apos;java/lang/Math&apos;)}
+  0x00007f955910c22f: 81e7f81f0000        and       edi,1ff8h
+  0x00007f955910c235: 83ff00              cmp       edi,0h
+  0x00007f955910c238: 0f845f000000        je        7f955910c29dh
+                                                ;*iload_0
+                                                ; - java.lang.Math::min@0 (line 1336)
+
+  0x00007f955910c23e: 3bf2                cmp       esi,edx
+  0x00007f955910c240: 48b8e89f9c58957f0000 mov       rax,7f95589c9fe8h
+                                                ;   {metadata(method data for {method} {0x00007f95588f67d8} &apos;min&apos; &apos;(II)I&apos; in &apos;java/lang/Math&apos;)}
+  0x00007f955910c24a: 48bf0801000000000000 mov       rdi,108h
+  0x00007f955910c254: 0f8f0a000000        jnle      7f955910c264h
+  0x00007f955910c25a: 48bf1801000000000000 mov       rdi,118h
+  0x00007f955910c264: 488b1c38            mov       rbx,qword ptr [rax+rdi]
+  0x00007f955910c268: 488d5b01            lea       rbx,[rbx+1h]
+  0x00007f955910c26c: 48891c38            mov       qword ptr [rax+rdi],rbx
+  0x00007f955910c270: 0f8f15000000        jnle      7f955910c28bh
+                                                ;*if_icmpgt
+                                                ; - java.lang.Math::min@2 (line 1336)
+
+  0x00007f955910c276: 48b8e89f9c58957f0000 mov       rax,7f95589c9fe8h
+                                                ;   {metadata(method data for {method} {0x00007f95588f67d8} &apos;min&apos; &apos;(II)I&apos; in &apos;java/lang/Math&apos;)}
+  0x00007f955910c280: ff8028010000        inc       dword ptr [rax+128h]
+  0x00007f955910c286: e903000000          jmp       7f955910c28eh
+                                                ;*goto
+                                                ; - java.lang.Math::min@6 (line 1336)
+
+  0x00007f955910c28b: 488bf2              mov       rsi,rdx
+                                                ;*ireturn
+                                                ; - java.lang.Math::min@10 (line 1336)
+
+  0x00007f955910c28e: 488bc6              mov       rax,rsi
+  0x00007f955910c291: 4883c430            add       rsp,30h
+  0x00007f955910c295: 5d                  pop       rbp
+  0x00007f955910c296: 8505648e7b17        test      dword ptr [7f95708c5100h],eax
+                                                ;   {poll_return}
+  0x00007f955910c29c: c3                  ret
+  0x00007f955910c29d: 4889442408          mov       qword ptr [rsp+8h],rax
+  0x00007f955910c2a2: 48c70424ffffffff    mov       qword ptr [rsp],0ffffffffffffffffh
+  0x00007f955910c2aa: e87127ffff          call      7f95590fea20h
+                                                ; OopMap{off=175}
+                                                ;*synchronization entry
+                                                ; - java.lang.Math::min@-1 (line 1336)
+                                                ;   {runtime_call}
+  0x00007f955910c2af: eb8d                jmp       7f955910c23eh
+  0x00007f955910c2b1: 90                  nop
+  0x00007f955910c2b2: 90                  nop
+  0x00007f955910c2b3: 498b87a8020000      mov       rax,qword ptr [r15+2a8h]
+  0x00007f955910c2ba: 49ba0000000000000000 mov       r10,0h
+  0x00007f955910c2c4: 4d8997a8020000      mov       qword ptr [r15+2a8h],r10
+  0x00007f955910c2cb: 49ba0000000000000000 mov       r10,0h
+  0x00007f955910c2d5: 4d8997b0020000      mov       qword ptr [r15+2b0h],r10
+  0x00007f955910c2dc: 4883c430            add       rsp,30h
+  0x00007f955910c2e0: 5d                  pop       rbp
+  0x00007f955910c2e1: e93afdf5ff          jmp       7f955906c020h
+                                                ;   {runtime_call}
+  0x00007f955910c2e6: f4                  hlt
+  0x00007f955910c2e7: f4                  hlt
+  0x00007f955910c2e8: f4                  hlt
+  0x00007f955910c2e9: f4                  hlt
+  0x00007f955910c2ea: f4                  hlt
+  0x00007f955910c2eb: f4                  hlt
+  0x00007f955910c2ec: f4                  hlt
+  0x00007f955910c2ed: f4                  hlt
+  0x00007f955910c2ee: f4                  hlt
+  0x00007f955910c2ef: f4                  hlt
+  0x00007f955910c2f0: f4                  hlt
+  0x00007f955910c2f1: f4                  hlt
+  0x00007f955910c2f2: f4                  hlt
+  0x00007f955910c2f3: f4                  hlt
+  0x00007f955910c2f4: f4                  hlt
+  0x00007f955910c2f5: f4                  hlt
+  0x00007f955910c2f6: f4                  hlt
+  0x00007f955910c2f7: f4                  hlt
+  0x00007f955910c2f8: f4                  hlt
+  0x00007f955910c2f9: f4                  hlt
+  0x00007f955910c2fa: f4                  hlt
+  0x00007f955910c2fb: f4                  hlt
+  0x00007f955910c2fc: f4                  hlt
+  0x00007f955910c2fd: f4                  hlt
+  0x00007f955910c2fe: f4                  hlt
+  0x00007f955910c2ff: f4                  hlt
+[Exception Handler]
+[Stub Code]
+  0x00007f955910c300: e85b01ffff          call      7f95590fc460h
+                                                ;   {no_reloc}
+  0x00007f955910c305: 48896424d8          mov       qword ptr [rsp+0ffffffffffffffd8h],rsp
+  0x00007f955910c30a: 4881ec80000000      sub       rsp,80h
+  0x00007f955910c311: 4889442478          mov       qword ptr [rsp+78h],rax
+  0x00007f955910c316: 48894c2470          mov       qword ptr [rsp+70h],rcx
+  0x00007f955910c31b: 4889542468          mov       qword ptr [rsp+68h],rdx
+  0x00007f955910c320: 48895c2460          mov       qword ptr [rsp+60h],rbx
+  0x00007f955910c325: 48896c2450          mov       qword ptr [rsp+50h],rbp
+  0x00007f955910c32a: 4889742448          mov       qword ptr [rsp+48h],rsi
+  0x00007f955910c32f: 48897c2440          mov       qword ptr [rsp+40h],rdi
+  0x00007f955910c334: 4c89442438          mov       qword ptr [rsp+38h],r8
+  0x00007f955910c339: 4c894c2430          mov       qword ptr [rsp+30h],r9
+  0x00007f955910c33e: 4c89542428          mov       qword ptr [rsp+28h],r10
+  0x00007f955910c343: 4c895c2420          mov       qword ptr [rsp+20h],r11
+  0x00007f955910c348: 4c89642418          mov       qword ptr [rsp+18h],r12
+  0x00007f955910c34d: 4c896c2410          mov       qword ptr [rsp+10h],r13
+  0x00007f955910c352: 4c89742408          mov       qword ptr [rsp+8h],r14
+  0x00007f955910c357: 4c893c24            mov       qword ptr [rsp],r15
+  0x00007f955910c35b: 48bff6797a6f957f0000 mov       rdi,7f956f7a79f6h
+                                                ;   {external_word}
+  0x00007f955910c365: 48be05c31059957f0000 mov       rsi,7f955910c305h
+                                                ;   {internal_word}
+  0x00007f955910c36f: 488bd4              mov       rdx,rsp
+  0x00007f955910c372: 4883e4f0            and       rsp,0fffffffffffffff0h
+  0x00007f955910c376: e8e5ee3916          call      7f956f4ab260h
+                                                ;   {runtime_call}
+  0x00007f955910c37b: f4                  hlt
+[Deopt Handler Code]
+  0x00007f955910c37c: 49ba7cc31059957f0000 mov       r10,7f955910c37ch
+                                                ;   {section_word}
+  0x00007f955910c386: 4152                push      r10
+  0x00007f955910c388: e973b1f3ff          jmp       7f9559047500h
+                                                ;   {runtime_call}
+  0x00007f955910c38d: f4                  hlt
+  0x00007f955910c38e: f4                  hlt
+  0x00007f955910c38f: f4                  hlt
+<nmethod compile_id='6' compiler='C1' level='3' entry='0x00007f955910c200' size='936' address='0x00007f955910c090' relocation_offset='296' insts_offset='368' stub_offset='624' scopes_data_offset='776' scopes_pcs_offset='816' dependencies_offset='928' method='java/lang/Math min (II)I' bytes='11' count='1049' iicount='1049' stamp='0.269'/>
+Decoding compiled method 0x00007f955910c450:
+Code:
+RIP: 0x7f955910c5c0 Code size: 0x00000170
+[Entry Point]
+[Constants]
+  # {method} {0x00007f9558803c60} &apos;length&apos; &apos;()I&apos; in &apos;java/lang/String&apos;
+  #           [sp+0x40]  (sp of caller)
+  0x00007f955910c5c0: 448b5608            mov       r10d,dword ptr [rsi+8h]
+  0x00007f955910c5c4: 49c1e203            shl       r10,3h
+  0x00007f955910c5c8: 4c3bd0              cmp       r10,rax
+  0x00007f955910c5cb: 0f858f98f3ff        jne       7f9559045e60h
+                                                ;   {runtime_call}
+  0x00007f955910c5d1: 6666660f1f840000000000 nop       word ptr [rax+rax+0h]
+  0x00007f955910c5dc: 66666690            nop
+[Verified Entry Point]
+  0x00007f955910c5e0: 89842400c0feff      mov       dword ptr [rsp+0fffffffffffec000h],eax
+  0x00007f955910c5e7: 55                  push      rbp
+  0x00007f955910c5e8: 4883ec30            sub       rsp,30h
+  0x00007f955910c5ec: 48b8e816a058957f0000 mov       rax,7f9558a016e8h
+                                                ;   {metadata(method data for {method} {0x00007f9558803c60} &apos;length&apos; &apos;()I&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910c5f6: 8bb8dc000000        mov       edi,dword ptr [rax+0dch]
+  0x00007f955910c5fc: 83c708              add       edi,8h
+  0x00007f955910c5ff: 89b8dc000000        mov       dword ptr [rax+0dch],edi
+  0x00007f955910c605: 48b8603c8058957f0000 mov       rax,7f9558803c60h
+                                                ;   {metadata({method} {0x00007f9558803c60} &apos;length&apos; &apos;()I&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910c60f: 81e7f81f0000        and       edi,1ff8h
+  0x00007f955910c615: 83ff00              cmp       edi,0h
+  0x00007f955910c618: 0f8416000000        je        7f955910c634h
+                                                ;*aload_0
+                                                ; - java.lang.String::length@0 (line 623)
+
+  0x00007f955910c61e: 8b460c              mov       eax,dword ptr [rsi+0ch]
+  0x00007f955910c621: 48c1e003            shl       rax,3h
+                                                ;*getfield value
+                                                ; - java.lang.String::length@1 (line 623)
+
+  0x00007f955910c625: 8b400c              mov       eax,dword ptr [rax+0ch]
+                                                ;*arraylength
+                                                ; - java.lang.String::length@4 (line 623)
+                                                ; implicit exception: dispatches to 0x00007f955910c648
+  0x00007f955910c628: 4883c430            add       rsp,30h
+  0x00007f955910c62c: 5d                  pop       rbp
+  0x00007f955910c62d: 8505cd8a7b17        test      dword ptr [7f95708c5100h],eax
+                                                ;   {poll_return}
+  0x00007f955910c633: c3                  ret
+  0x00007f955910c634: 4889442408          mov       qword ptr [rsp+8h],rax
+  0x00007f955910c639: 48c70424ffffffff    mov       qword ptr [rsp],0ffffffffffffffffh
+  0x00007f955910c641: e8da23ffff          call      7f95590fea20h
+                                                ; OopMap{rsi=Oop off=134}
+                                                ;*synchronization entry
+                                                ; - java.lang.String::length@-1 (line 623)
+                                                ;   {runtime_call}
+  0x00007f955910c646: ebd6                jmp       7f955910c61eh
+  0x00007f955910c648: e87323f6ff          call      7f955906e9c0h
+                                                ; OopMap{off=141}
+                                                ;*arraylength
+                                                ; - java.lang.String::length@4 (line 623)
+                                                ;   {runtime_call}
+  0x00007f955910c64d: 90                  nop
+  0x00007f955910c64e: 90                  nop
+  0x00007f955910c64f: 498b87a8020000      mov       rax,qword ptr [r15+2a8h]
+  0x00007f955910c656: 49ba0000000000000000 mov       r10,0h
+  0x00007f955910c660: 4d8997a8020000      mov       qword ptr [r15+2a8h],r10
+  0x00007f955910c667: 49ba0000000000000000 mov       r10,0h
+  0x00007f955910c671: 4d8997b0020000      mov       qword ptr [r15+2b0h],r10
+  0x00007f955910c678: 4883c430            add       rsp,30h
+  0x00007f955910c67c: 5d                  pop       rbp
+  0x00007f955910c67d: e99ef9f5ff          jmp       7f955906c020h
+                                                ;   {runtime_call}
+  0x00007f955910c682: f4                  hlt
+  0x00007f955910c683: f4                  hlt
+  0x00007f955910c684: f4                  hlt
+  0x00007f955910c685: f4                  hlt
+  0x00007f955910c686: f4                  hlt
+  0x00007f955910c687: f4                  hlt
+  0x00007f955910c688: f4                  hlt
+  0x00007f955910c689: f4                  hlt
+  0x00007f955910c68a: f4                  hlt
+  0x00007f955910c68b: f4                  hlt
+  0x00007f955910c68c: f4                  hlt
+  0x00007f955910c68d: f4                  hlt
+  0x00007f955910c68e: f4                  hlt
+  0x00007f955910c68f: f4                  hlt
+  0x00007f955910c690: f4                  hlt
+  0x00007f955910c691: f4                  hlt
+  0x00007f955910c692: f4                  hlt
+  0x00007f955910c693: f4                  hlt
+  0x00007f955910c694: f4                  hlt
+  0x00007f955910c695: f4                  hlt
+  0x00007f955910c696: f4                  hlt
+  0x00007f955910c697: f4                  hlt
+  0x00007f955910c698: f4                  hlt
+  0x00007f955910c699: f4                  hlt
+  0x00007f955910c69a: f4                  hlt
+  0x00007f955910c69b: f4                  hlt
+  0x00007f955910c69c: f4                  hlt
+  0x00007f955910c69d: f4                  hlt
+  0x00007f955910c69e: f4                  hlt
+  0x00007f955910c69f: f4                  hlt
+[Exception Handler]
+[Stub Code]
+  0x00007f955910c6a0: e8bbfdfeff          call      7f95590fc460h
+                                                ;   {no_reloc}
+  0x00007f955910c6a5: 48896424d8          mov       qword ptr [rsp+0ffffffffffffffd8h],rsp
+  0x00007f955910c6aa: 4881ec80000000      sub       rsp,80h
+  0x00007f955910c6b1: 4889442478          mov       qword ptr [rsp+78h],rax
+  0x00007f955910c6b6: 48894c2470          mov       qword ptr [rsp+70h],rcx
+  0x00007f955910c6bb: 4889542468          mov       qword ptr [rsp+68h],rdx
+  0x00007f955910c6c0: 48895c2460          mov       qword ptr [rsp+60h],rbx
+  0x00007f955910c6c5: 48896c2450          mov       qword ptr [rsp+50h],rbp
+  0x00007f955910c6ca: 4889742448          mov       qword ptr [rsp+48h],rsi
+  0x00007f955910c6cf: 48897c2440          mov       qword ptr [rsp+40h],rdi
+  0x00007f955910c6d4: 4c89442438          mov       qword ptr [rsp+38h],r8
+  0x00007f955910c6d9: 4c894c2430          mov       qword ptr [rsp+30h],r9
+  0x00007f955910c6de: 4c89542428          mov       qword ptr [rsp+28h],r10
+  0x00007f955910c6e3: 4c895c2420          mov       qword ptr [rsp+20h],r11
+  0x00007f955910c6e8: 4c89642418          mov       qword ptr [rsp+18h],r12
+  0x00007f955910c6ed: 4c896c2410          mov       qword ptr [rsp+10h],r13
+  0x00007f955910c6f2: 4c89742408          mov       qword ptr [rsp+8h],r14
+  0x00007f955910c6f7: 4c893c24            mov       qword ptr [rsp],r15
+  0x00007f955910c6fb: 48bff6797a6f957f0000 mov       rdi,7f956f7a79f6h
+                                                ;   {external_word}
+  0x00007f955910c705: 48bea5c61059957f0000 mov       rsi,7f955910c6a5h
+                                                ;   {internal_word}
+  0x00007f955910c70f: 488bd4              mov       rdx,rsp
+  0x00007f955910c712: 4883e4f0            and       rsp,0fffffffffffffff0h
+  0x00007f955910c716: e845eb3916          call      7f956f4ab260h
+                                                ;   {runtime_call}
+  0x00007f955910c71b: f4                  hlt
+[Deopt Handler Code]
+  0x00007f955910c71c: 49ba1cc71059957f0000 mov       r10,7f955910c71ch
+                                                ;   {section_word}
+  0x00007f955910c726: 4152                push      r10
+  0x00007f955910c728: e9d3adf3ff          jmp       7f9559047500h
+                                                ;   {runtime_call}
+  0x00007f955910c72d: f4                  hlt
+  0x00007f955910c72e: f4                  hlt
+  0x00007f955910c72f: f4                  hlt
+<nmethod compile_id='4' compiler='C1' level='3' entry='0x00007f955910c5c0' size='920' address='0x00007f955910c450' relocation_offset='296' insts_offset='368' stub_offset='592' scopes_data_offset='744' scopes_pcs_offset='784' dependencies_offset='896' nul_chk_table_offset='904' method='java/lang/String length ()I' bytes='6' count='918' iicount='918' stamp='0.281'/>
+<writer thread='140279814989568'/>
+<task_queued compile_id='11' method='java/util/Arrays copyOfRange ([CII)[C' bytes='63' count='384' iicount='384' level='3' stamp='0.281' comment='tiered' hot_count='384'/>
+<task_queued compile_id='12' method='java/lang/String &lt;init&gt; ([CII)V' bytes='82' count='384' iicount='384' level='3' stamp='0.281' comment='tiered' hot_count='384'/>
+<task_queued compile_id='13' method='java/lang/ref/Reference get ()Ljava/lang/Object;' bytes='5' count='384' iicount='384' level='1' stamp='0.282' comment='tiered' hot_count='384'/>
+<task_queued compile_id='14' method='java/io/File getPath ()Ljava/lang/String;' bytes='5' count='128' iicount='128' level='1' stamp='0.283' comment='tiered' hot_count='128'/>
+<task_queued compile_id='15' method='java/lang/AbstractStringBuilder append (Ljava/lang/String;)Ljava/lang/AbstractStringBuilder;' bytes='50' count='384' iicount='384' level='3' stamp='0.283' comment='tiered' hot_count='384'/>
+<writer thread='140279185938176'/>
+Decoding compiled method 0x00007f955910c810:
+Code:
+RIP: 0x7f955910c9e0 Code size: 0x000004f8
+[Entry Point]
+[Constants]
+  # {method} {0x00007f95588031a0} &apos;&lt;init&gt;&apos; &apos;([CII)V&apos; in &apos;java/lang/String&apos;
+  # this:     rsi:rsi   = &apos;java/lang/String&apos;
+  # parm0:    rdx:rdx   = &apos;[C&apos;
+  # parm1:    rcx       = int
+  # parm2:    r8        = int
+  #           [sp+0x70]  (sp of caller)
+  0x00007f955910c9e0: 448b5608            mov       r10d,dword ptr [rsi+8h]
+  0x00007f955910c9e4: 49c1e203            shl       r10,3h
+  0x00007f955910c9e8: 4c3bd0              cmp       r10,rax
+  0x00007f955910c9eb: 0f856f94f3ff        jne       7f9559045e60h
+                                                ;   {runtime_call}
+  0x00007f955910c9f1: 6666660f1f840000000000 nop       word ptr [rax+rax+0h]
+  0x00007f955910c9fc: 66666690            nop
+[Verified Entry Point]
+  0x00007f955910ca00: 89842400c0feff      mov       dword ptr [rsp+0fffffffffffec000h],eax
+  0x00007f955910ca07: 55                  push      rbp
+  0x00007f955910ca08: 4883ec60            sub       rsp,60h
+  0x00007f955910ca0c: 48bf304aa358957f0000 mov       rdi,7f9558a34a30h
+                                                ;   {metadata(method data for {method} {0x00007f95588031a0} &apos;&lt;init&gt;&apos; &apos;([CII)V&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910ca16: 8b9fdc000000        mov       ebx,dword ptr [rdi+0dch]
+  0x00007f955910ca1c: 83c308              add       ebx,8h
+  0x00007f955910ca1f: 899fdc000000        mov       dword ptr [rdi+0dch],ebx
+  0x00007f955910ca25: 48bfa0318058957f0000 mov       rdi,7f95588031a0h
+                                                ;   {metadata({method} {0x00007f95588031a0} &apos;&lt;init&gt;&apos; &apos;([CII)V&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910ca2f: 81e3f81f0000        and       ebx,1ff8h
+  0x00007f955910ca35: 83fb00              cmp       ebx,0h
+  0x00007f955910ca38: 0f84c8020000        je        7f955910cd06h
+                                                ;*aload_0
+                                                ; - java.lang.String::&lt;init&gt;@0 (line 190)
+
+  0x00007f955910ca3e: 488bfe              mov       rdi,rsi
+  0x00007f955910ca41: 48bb304aa358957f0000 mov       rbx,7f9558a34a30h
+                                                ;   {metadata(method data for {method} {0x00007f95588031a0} &apos;&lt;init&gt;&apos; &apos;([CII)V&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910ca4b: 4883830801000001    add       qword ptr [rbx+108h],1h
+  0x00007f955910ca53: 48bf90749758957f0000 mov       rdi,7f9558977490h
+                                                ;   {metadata(method data for {method} {0x00007f9558800480} &apos;&lt;init&gt;&apos; &apos;()V&apos; in &apos;java/lang/Object&apos;)}
+  0x00007f955910ca5d: 8b9fdc000000        mov       ebx,dword ptr [rdi+0dch]
+  0x00007f955910ca63: 83c308              add       ebx,8h
+  0x00007f955910ca66: 899fdc000000        mov       dword ptr [rdi+0dch],ebx
+  0x00007f955910ca6c: 48bf80048058957f0000 mov       rdi,7f9558800480h
+                                                ;   {metadata({method} {0x00007f9558800480} &apos;&lt;init&gt;&apos; &apos;()V&apos; in &apos;java/lang/Object&apos;)}
+  0x00007f955910ca76: 81e3f8ff7f00        and       ebx,7ffff8h
+  0x00007f955910ca7c: 83fb00              cmp       ebx,0h
+  0x00007f955910ca7f: 0f8498020000        je        7f955910cd1dh
+  0x00007f955910ca85: 83f900              cmp       ecx,0h
+  0x00007f955910ca88: 48bf304aa358957f0000 mov       rdi,7f9558a34a30h
+                                                ;   {metadata(method data for {method} {0x00007f95588031a0} &apos;&lt;init&gt;&apos; &apos;([CII)V&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910ca92: 48bb1801000000000000 mov       rbx,118h
+  0x00007f955910ca9c: 0f8d0a000000        jnl       7f955910caach
+  0x00007f955910caa2: 48bb2801000000000000 mov       rbx,128h
+  0x00007f955910caac: 488b041f            mov       rax,qword ptr [rdi+rbx]
+  0x00007f955910cab0: 488d4001            lea       rax,[rax+1h]
+  0x00007f955910cab4: 4889041f            mov       qword ptr [rdi+rbx],rax
+  0x00007f955910cab8: 0f8c08020000        jl        7f955910ccc6h
+                                                ;*ifge
+                                                ; - java.lang.String::&lt;init&gt;@5 (line 191)
+
+  0x00007f955910cabe: 4183f800            cmp       r8d,0h
+  0x00007f955910cac2: 48bf304aa358957f0000 mov       rdi,7f9558a34a30h
+                                                ;   {metadata(method data for {method} {0x00007f95588031a0} &apos;&lt;init&gt;&apos; &apos;([CII)V&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910cacc: 48bb4801000000000000 mov       rbx,148h
+  0x00007f955910cad6: 0f8f0a000000        jnle      7f955910cae6h
+  0x00007f955910cadc: 48bb5801000000000000 mov       rbx,158h
+  0x00007f955910cae6: 488b041f            mov       rax,qword ptr [rdi+rbx]
+  0x00007f955910caea: 488d4001            lea       rax,[rax+1h]
+  0x00007f955910caee: 4889041f            mov       qword ptr [rdi+rbx],rax
+  0x00007f955910caf2: 0f8f75000000        jnle      7f955910cb6dh
+                                                ;*ifgt
+                                                ; - java.lang.String::&lt;init&gt;@18 (line 194)
+
+  0x00007f955910caf8: 4183f800            cmp       r8d,0h
+  0x00007f955910cafc: 48bf304aa358957f0000 mov       rdi,7f9558a34a30h
+                                                ;   {metadata(method data for {method} {0x00007f95588031a0} &apos;&lt;init&gt;&apos; &apos;([CII)V&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910cb06: 48bb6801000000000000 mov       rbx,168h
+  0x00007f955910cb10: 0f8d0a000000        jnl       7f955910cb20h
+  0x00007f955910cb16: 48bb7801000000000000 mov       rbx,178h
+  0x00007f955910cb20: 488b041f            mov       rax,qword ptr [rdi+rbx]
+  0x00007f955910cb24: 488d4001            lea       rax,[rax+1h]
+  0x00007f955910cb28: 4889041f            mov       qword ptr [rdi+rbx],rax
+  0x00007f955910cb2c: 0f8c54010000        jl        7f955910cc86h
+                                                ;*ifge
+                                                ; - java.lang.String::&lt;init&gt;@22 (line 195)
+
+  0x00007f955910cb32: 8b7a0c              mov       edi,dword ptr [rdx+0ch]
+                                                ;*arraylength
+                                                ; - java.lang.String::&lt;init&gt;@36 (line 198)
+                                                ; implicit exception: dispatches to 0x00007f955910cd34
+  0x00007f955910cb35: 3bcf                cmp       ecx,edi
+  0x00007f955910cb37: 48bf304aa358957f0000 mov       rdi,7f9558a34a30h
+                                                ;   {metadata(method data for {method} {0x00007f95588031a0} &apos;&lt;init&gt;&apos; &apos;([CII)V&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910cb41: 48bb9801000000000000 mov       rbx,198h
+  0x00007f955910cb4b: 0f8f0a000000        jnle      7f955910cb5bh
+  0x00007f955910cb51: 48bba801000000000000 mov       rbx,1a8h
+  0x00007f955910cb5b: 488b041f            mov       rax,qword ptr [rdi+rbx]
+  0x00007f955910cb5f: 488d4001            lea       rax,[rax+1h]
+  0x00007f955910cb63: 4889041f            mov       qword ptr [rdi+rbx],rax
+  0x00007f955910cb67: 0f8e95000000        jle       7f955910cc02h
+                                                ;*if_icmpgt
+                                                ; - java.lang.String::&lt;init&gt;@37 (line 198)
+
+  0x00007f955910cb6d: 8b7a0c              mov       edi,dword ptr [rdx+0ch]
+                                                ;*arraylength
+                                                ; - java.lang.String::&lt;init&gt;@52 (line 204)
+                                                ; implicit exception: dispatches to 0x00007f955910cd39
+  0x00007f955910cb70: 412bf8              sub       edi,r8d
+  0x00007f955910cb73: 3bcf                cmp       ecx,edi
+  0x00007f955910cb75: 48bf304aa358957f0000 mov       rdi,7f9558a34a30h
+                                                ;   {metadata(method data for {method} {0x00007f95588031a0} &apos;&lt;init&gt;&apos; &apos;([CII)V&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910cb7f: 48bbb801000000000000 mov       rbx,1b8h
+  0x00007f955910cb89: 0f8e0a000000        jle       7f955910cb99h
+  0x00007f955910cb8f: 48bbc801000000000000 mov       rbx,1c8h
+  0x00007f955910cb99: 488b041f            mov       rax,qword ptr [rdi+rbx]
+  0x00007f955910cb9d: 488d4001            lea       rax,[rax+1h]
+  0x00007f955910cba1: 4889041f            mov       qword ptr [rdi+rbx],rax
+  0x00007f955910cba5: 0f8f91000000        jnle      7f955910cc3ch
+                                                ;*if_icmple
+                                                ; - java.lang.String::&lt;init&gt;@55 (line 204)
+
+  0x00007f955910cbab: 4889742438          mov       qword ptr [rsp+38h],rsi
+  0x00007f955910cbb0: 48bf304aa358957f0000 mov       rdi,7f9558a34a30h
+                                                ;   {metadata(method data for {method} {0x00007f95588031a0} &apos;&lt;init&gt;&apos; &apos;([CII)V&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910cbba: 488387e801000001    add       qword ptr [rdi+1e8h],1h
+  0x00007f955910cbc2: 4403c1              add       r8d,ecx
+  0x00007f955910cbc5: 488bf2              mov       rsi,rdx
+  0x00007f955910cbc8: 488bd1              mov       rdx,rcx
+  0x00007f955910cbcb: 498bc8              mov       rcx,r8
+                                                ;*invokestatic copyOfRange
+                                                ; - java.lang.String::&lt;init&gt;@75 (line 207)
+
+  0x00007f955910cbce: 90                  nop
+  0x00007f955910cbcf: e84c99f3ff          call      7f9559046520h
+                                                ; OopMap{[56]=Oop off=500}
+                                                ;*invokestatic copyOfRange
+                                                ; - java.lang.String::&lt;init&gt;@75 (line 207)
+                                                ;   {static_call}
+  0x00007f955910cbd4: 488b742438          mov       rsi,qword ptr [rsp+38h]
+  0x00007f955910cbd9: 4c8bd0              mov       r10,rax
+  0x00007f955910cbdc: 49c1ea03            shr       r10,3h
+  0x00007f955910cbe0: 4489560c            mov       dword ptr [rsi+0ch],r10d
+  0x00007f955910cbe4: 48c1ee09            shr       rsi,9h
+  0x00007f955910cbe8: 48ba00c06869957f0000 mov       rdx,7f956968c000h
+  0x00007f955910cbf2: c6041600            mov       byte ptr [rsi+rdx],0h
+                                                ;*putfield value
+                                                ; - java.lang.String::&lt;init&gt;@78 (line 207)
+
+  0x00007f955910cbf6: 4883c460            add       rsp,60h
+  0x00007f955910cbfa: 5d                  pop       rbp
+  0x00007f955910cbfb: 8505ff847b17        test      dword ptr [7f95708c5100h],eax
+                                                ;   {poll_return}
+  0x00007f955910cc01: c3                  ret   ;*return
+                                                ; - java.lang.String::&lt;init&gt;@81 (line 208)
+
+  0x00007f955910cc02: 48baf0a5388c07000000 mov       rdx,78c38a5f0h
+                                                ;   {oop(&quot;&quot;)}
+  0x00007f955910cc0c: 8b520c              mov       edx,dword ptr [rdx+0ch]
+                                                ; implicit exception: dispatches to 0x00007f955910cd3e
+  0x00007f955910cc0f: 48c1e203            shl       rdx,3h
+                                                ;*getfield value
+                                                ; - java.lang.String::&lt;init&gt;@43 (line 199)
+
+  0x00007f955910cc13: 4c8bd2              mov       r10,rdx
+  0x00007f955910cc16: 49c1ea03            shr       r10,3h
+  0x00007f955910cc1a: 4489560c            mov       dword ptr [rsi+0ch],r10d
+  0x00007f955910cc1e: 48c1ee09            shr       rsi,9h
+  0x00007f955910cc22: 48ba00c06869957f0000 mov       rdx,7f956968c000h
+  0x00007f955910cc2c: c6041600            mov       byte ptr [rsi+rdx],0h
+                                                ;*putfield value
+                                                ; - java.lang.String::&lt;init&gt;@46 (line 199)
+
+  0x00007f955910cc30: 4883c460            add       rsp,60h
+  0x00007f955910cc34: 5d                  pop       rbp
+  0x00007f955910cc35: 8505c5847b17        test      dword ptr [7f95708c5100h],eax
+                                                ;   {poll_return}
+  0x00007f955910cc3b: c3                  ret   ;*return
+                                                ; - java.lang.String::&lt;init&gt;@49 (line 200)
+
+  0x00007f955910cc3c: 0f1f4000            nop       dword ptr [rax+0h]
+  0x00007f955910cc40: e90d010000          jmp       7f955910cd52h
+                                                ;   {no_reloc}
+  0x00007f955910cc45: 0000                add       byte ptr [rax],al
+  0x00007f955910cc47: 0000                add       byte ptr [rax],al
+  0x00007f955910cc49: 00e9                add       cl,ch
+  0x00007f955910cc4b: 0d01000048          or        eax,48000001h
+                                                ;*new  ; - java.lang.String::&lt;init&gt;@58 (line 205)
+
+  0x00007f955910cc50: 8bd0                mov       edx,eax
+  0x00007f955910cc52: 48be304aa358957f0000 mov       rsi,7f9558a34a30h
+                                                ;   {metadata(method data for {method} {0x00007f95588031a0} &apos;&lt;init&gt;&apos; &apos;([CII)V&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910cc5c: 488386d801000001    add       qword ptr [rsi+1d8h],1h
+  0x00007f955910cc64: 4403c1              add       r8d,ecx
+  0x00007f955910cc67: 498bd0              mov       rdx,r8
+  0x00007f955910cc6a: 488bf0              mov       rsi,rax
+                                                ;*invokespecial &lt;init&gt;
+                                                ; - java.lang.String::&lt;init&gt;@65 (line 205)
+
+  0x00007f955910cc6d: 4889442440          mov       qword ptr [rsp+40h],rax
+  0x00007f955910cc72: 90                  nop
+  0x00007f955910cc73: 90                  nop
+  0x00007f955910cc74: 90                  nop
+  0x00007f955910cc75: 90                  nop
+  0x00007f955910cc76: 90                  nop
+  0x00007f955910cc77: e82494f3ff          call      7f95590460a0h
+                                                ; OopMap{[64]=Oop off=668}
+                                                ;*invokespecial &lt;init&gt;
+                                                ; - java.lang.String::&lt;init&gt;@65 (line 205)
+                                                ;   {optimized virtual_call}
+  0x00007f955910cc7c: 488b442440          mov       rax,qword ptr [rsp+40h]
+  0x00007f955910cc81: e95a010000          jmp       7f955910cde0h
+                                                ;*athrow
+                                                ; - java.lang.String::&lt;init&gt;@68 (line 205)
+
+  0x00007f955910cc86: 6690                nop
+  0x00007f955910cc88: e9eb000000          jmp       7f955910cd78h
+                                                ;   {no_reloc}
+  0x00007f955910cc8d: 0000                add       byte ptr [rax],al
+  0x00007f955910cc8f: 0000                add       byte ptr [rax],al
+  0x00007f955910cc91: 00e9                add       cl,ch
+  0x00007f955910cc93: eb00                jmp       7f955910cc95h
+  0x00007f955910cc95: 0000                add       byte ptr [rax],al
+                                                ;*new  ; - java.lang.String::&lt;init&gt;@25 (line 196)
+
+  0x00007f955910cc97: 488bd0              mov       rdx,rax
+  0x00007f955910cc9a: 48be304aa358957f0000 mov       rsi,7f9558a34a30h
+                                                ;   {metadata(method data for {method} {0x00007f95588031a0} &apos;&lt;init&gt;&apos; &apos;([CII)V&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910cca4: 4883868801000001    add       qword ptr [rsi+188h],1h
+  0x00007f955910ccac: 498bd0              mov       rdx,r8
+  0x00007f955910ccaf: 488bf0              mov       rsi,rax
+                                                ;*invokespecial &lt;init&gt;
+                                                ; - java.lang.String::&lt;init&gt;@30 (line 196)
+
+  0x00007f955910ccb2: 4889442448          mov       qword ptr [rsp+48h],rax
+  0x00007f955910ccb7: e8e493f3ff          call      7f95590460a0h
+                                                ; OopMap{[72]=Oop off=732}
+                                                ;*invokespecial &lt;init&gt;
+                                                ; - java.lang.String::&lt;init&gt;@30 (line 196)
+                                                ;   {optimized virtual_call}
+  0x00007f955910ccbc: 488b442448          mov       rax,qword ptr [rsp+48h]
+  0x00007f955910ccc1: e91a010000          jmp       7f955910cde0h
+                                                ;*athrow
+                                                ; - java.lang.String::&lt;init&gt;@33 (line 196)
+
+  0x00007f955910ccc6: 6690                nop
+  0x00007f955910ccc8: e9d1000000          jmp       7f955910cd9eh
+                                                ;   {no_reloc}
+  0x00007f955910cccd: 0000                add       byte ptr [rax],al
+  0x00007f955910cccf: 0000                add       byte ptr [rax],al
+  0x00007f955910ccd1: 00e9                add       cl,ch
+  0x00007f955910ccd3: d100                rol       dword ptr [rax],1h
+  0x00007f955910ccd5: 0000                add       byte ptr [rax],al
+                                                ;*new  ; - java.lang.String::&lt;init&gt;@8 (line 192)
+
+  0x00007f955910ccd7: 488bd0              mov       rdx,rax
+  0x00007f955910ccda: 48be304aa358957f0000 mov       rsi,7f9558a34a30h
+                                                ;   {metadata(method data for {method} {0x00007f95588031a0} &apos;&lt;init&gt;&apos; &apos;([CII)V&apos; in &apos;java/lang/String&apos;)}
+  0x00007f955910cce4: 4883863801000001    add       qword ptr [rsi+138h],1h
+  0x00007f955910ccec: 488bd1              mov       rdx,rcx
+  0x00007f955910ccef: 488bf0              mov       rsi,rax
+                                                ;*invokespecial &lt;init&gt;
+                                                ; - java.lang.String::&lt;init&gt;@13 (line 192)
+
+  0x00007f955910ccf2: 4889442450          mov       qword ptr [rsp+50h],rax
+  0x00007f955910ccf7: e8a493f3ff          call      7f95590460a0h
+                                                ; OopMap{[80]=Oop off=796}
+                                                ;*invokespecial &lt;init&gt;
+                                                ; - java.lang.String::&lt;init&gt;@13 (line 192)
+                                                ;   {optimized virtual_call}
+  0x00007f955910ccfc: 488b442450          mov       rax,qword ptr [rsp+50h]
+  0x00007f955910cd01: e9da000000          jmp       7f955910cde0h
+  0x00007f955910cd06: 48897c2408          mov       qword ptr [rsp+8h],rdi
+  0x00007f955910cd0b: 48c70424ffffffff    mov       qword ptr [rsp],0ffffffffffffffffh
+  0x00007f955910cd13: e8081dffff          call      7f95590fea20h
+                                                ; OopMap{rsi=Oop rdx=Oop off=824}
+                                                ;*synchronization entry
+                                                ; - java.lang.String::&lt;init&gt;@-1 (line 190)
+                                                ;   {runtime_call}
+  0x00007f955910cd18: e921fdffff          jmp       7f955910ca3eh
+  0x00007f955910cd1d: 48897c2408          mov       qword ptr [rsp+8h],rdi
+  0x00007f955910cd22: 48c70424ffffffff    mov       qword ptr [rsp],0ffffffffffffffffh
+  0x00007f955910cd2a: e8f11cffff          call      7f95590fea20h
+                                                ; OopMap{rsi=Oop rdx=Oop off=847}
+                                                ;*synchronization entry
+                                                ; - java.lang.Object::&lt;init&gt;@-1 (line 37)
+                                                ; - java.lang.String::&lt;init&gt;@1 (line 190)
+                                                ;   {runtime_call}
+  0x00007f955910cd2f: e951fdffff          jmp       7f955910ca85h
+  0x00007f955910cd34: e8871cf6ff          call      7f955906e9c0h
+                                                ; OopMap{rsi=Oop rdx=Oop off=857}
+                                                ;*arraylength
+                                                ; - java.lang.String::&lt;init&gt;@36 (line 198)
+                                                ;   {runtime_call}
+  0x00007f955910cd39: e8821cf6ff          call      7f955906e9c0h
+                                                ; OopMap{rsi=Oop rdx=Oop off=862}
+                                                ;*arraylength
+                                                ; - java.lang.String::&lt;init&gt;@52 (line 204)
+                                                ;   {runtime_call}
+  0x00007f955910cd3e: e87d1cf6ff          call      7f955906e9c0h
+                                                ; OopMap{rsi=Oop off=867}
+                                                ;*getfield value
+                                                ; - java.lang.String::&lt;init&gt;@43 (line 199)
+                                                ;   {runtime_call}
+  0x00007f955910cd43: 48ba0000000000000000 mov       rdx,0h
+                                                ;   {metadata(NULL)}
+  0x00007f955910cd4d: b8000f050a          mov       eax,0a050f00h
+  0x00007f955910cd52: e8c948ffff          call      7f9559101620h
+                                                ; OopMap{off=887}
+                                                ;*new  ; - java.lang.String::&lt;init&gt;@58 (line 205)
+                                                ;   {runtime_call}
+  0x00007f955910cd57: e9e4feffff          jmp       7f955910cc40h
+  0x00007f955910cd5c: 488bd2              mov       rdx,rdx
+  0x00007f955910cd5f: e83c17f6ff          call      7f955906e4a0h
+                                                ; OopMap{off=900}
+                                                ;*new  ; - java.lang.String::&lt;init&gt;@58 (line 205)
+                                                ;   {runtime_call}
+  0x00007f955910cd64: e9e6feffff          jmp       7f955910cc4fh
+  0x00007f955910cd69: 48ba0000000000000000 mov       rdx,0h
+                                                ;   {metadata(NULL)}
+  0x00007f955910cd73: b8000f050a          mov       eax,0a050f00h
+  0x00007f955910cd78: e8a348ffff          call      7f9559101620h
+                                                ; OopMap{off=925}
+                                                ;*new  ; - java.lang.String::&lt;init&gt;@25 (line 196)
+                                                ;   {runtime_call}
+  0x00007f955910cd7d: e906ffffff          jmp       7f955910cc88h
+  0x00007f955910cd82: 488bd2              mov       rdx,rdx
+  0x00007f955910cd85: e81617f6ff          call      7f955906e4a0h
+                                                ; OopMap{off=938}
+                                                ;*new  ; - java.lang.String::&lt;init&gt;@25 (line 196)
+                                                ;   {runtime_call}
+  0x00007f955910cd8a: e908ffffff          jmp       7f955910cc97h
+  0x00007f955910cd8f: 48ba0000000000000000 mov       rdx,0h
+                                                ;   {metadata(NULL)}
+  0x00007f955910cd99: b8000f050a          mov       eax,0a050f00h
+  0x00007f955910cd9e: e87d48ffff          call      7f9559101620h
+                                                ; OopMap{off=963}
+                                                ;*new  ; - java.lang.String::&lt;init&gt;@8 (line 192)
+                                                ;   {runtime_call}
+  0x00007f955910cda3: e920ffffff          jmp       7f955910ccc8h
+  0x00007f955910cda8: 488bd2              mov       rdx,rdx
+  0x00007f955910cdab: e8f016f6ff          call      7f955906e4a0h
+                                                ; OopMap{off=976}
+                                                ;*new  ; - java.lang.String::&lt;init&gt;@8 (line 192)
+                                                ;   {runtime_call}
+  0x00007f955910cdb0: e922ffffff          jmp       7f955910ccd7h
+  0x00007f955910cdb5: 90                  nop
+  0x00007f955910cdb6: 90                  nop
+  0x00007f955910cdb7: 498b87a8020000      mov       rax,qword ptr [r15+2a8h]
+  0x00007f955910cdbe: 49ba0000000000000000 mov       r10,0h
+  0x00007f955910cdc8: 4d8997a8020000      mov       qword ptr [r15+2a8h],r10
+  0x00007f955910cdcf: 49ba0000000000000000 mov       r10,0h
+  0x00007f955910cdd9: 4d8997b0020000      mov       qword ptr [r15+2b0h],r10
+  0x00007f955910cde0: 4883c460            add       rsp,60h
+  0x00007f955910cde4: 5d                  pop       rbp
+  0x00007f955910cde5: e936f2f5ff          jmp       7f955906c020h
+                                                ;   {runtime_call}
+  0x00007f955910cdea: f4                  hlt
+  0x00007f955910cdeb: f4                  hlt
+  0x00007f955910cdec: f4                  hlt
+  0x00007f955910cded: f4                  hlt
+  0x00007f955910cdee: f4                  hlt
+  0x00007f955910cdef: f4                  hlt
+  0x00007f955910cdf0: f4                  hlt
+  0x00007f955910cdf1: f4                  hlt
+  0x00007f955910cdf2: f4                  hlt
+  0x00007f955910cdf3: f4                  hlt
+  0x00007f955910cdf4: f4                  hlt
+  0x00007f955910cdf5: f4                  hlt
+  0x00007f955910cdf6: f4                  hlt
+  0x00007f955910cdf7: f4                  hlt
+  0x00007f955910cdf8: f4                  hlt
+  0x00007f955910cdf9: f4                  hlt
+  0x00007f955910cdfa: f4                  hlt
+  0x00007f955910cdfb: f4                  hlt
+  0x00007f955910cdfc: f4                  hlt
+  0x00007f955910cdfd: f4                  hlt
+  0x00007f955910cdfe: f4                  hlt
+  0x00007f955910cdff: f4                  hlt
+[Stub Code]
+  0x00007f955910ce00: 90                  nop   ;   {no_reloc}
+  0x00007f955910ce01: 90                  nop
+  0x00007f955910ce02: 90                  nop
+  0x00007f955910ce03: 90                  nop
+  0x00007f955910ce04: 90                  nop
+  0x00007f955910ce05: 48bb0000000000000000 mov       rbx,0h
+                                                ;   {static_stub}
+  0x00007f955910ce0f: e9fbffffff          jmp       7f955910ce0fh
+                                                ;   {runtime_call}
+  0x00007f955910ce14: 90                  nop
+  0x00007f955910ce15: 48bb0000000000000000 mov       rbx,0h
+                                                ;   {static_stub}
+  0x00007f955910ce1f: e9fbffffff          jmp       7f955910ce1fh
+                                                ;   {runtime_call}
+  0x00007f955910ce24: 90                  nop
+  0x00007f955910ce25: 48bb0000000000000000 mov       rbx,0h
+                                                ;   {static_stub}
+  0x00007f955910ce2f: e9fbffffff          jmp       7f955910ce2fh
+                                                ;   {runtime_call}
+  0x00007f955910ce34: 90                  nop
+  0x00007f955910ce35: 48bb0000000000000000 mov       rbx,0h
+                                                ;   {static_stub}
+  0x00007f955910ce3f: e9fbffffff          jmp       7f955910ce3fh
+                                                ;   {runtime_call}
+[Exception Handler]
+  0x00007f955910ce44: e817f6feff          call      7f95590fc460h
+                                                ;   {runtime_call}
+  0x00007f955910ce49: 48896424d8          mov       qword ptr [rsp+0ffffffffffffffd8h],rsp
+  0x00007f955910ce4e: 4881ec80000000      sub       rsp,80h
+  0x00007f955910ce55: 4889442478          mov       qword ptr [rsp+78h],rax
+  0x00007f955910ce5a: 48894c2470          mov       qword ptr [rsp+70h],rcx
+  0x00007f955910ce5f: 4889542468          mov       qword ptr [rsp+68h],rdx
+  0x00007f955910ce64: 48895c2460          mov       qword ptr [rsp+60h],rbx
+  0x00007f955910ce69: 48896c2450          mov       qword ptr [rsp+50h],rbp
+  0x00007f955910ce6e: 4889742448          mov       qword ptr [rsp+48h],rsi
+  0x00007f955910ce73: 48897c2440          mov       qword ptr [rsp+40h],rdi
+  0x00007f955910ce78: 4c89442438          mov       qword ptr [rsp+38h],r8
+  0x00007f955910ce7d: 4c894c2430          mov       qword ptr [rsp+30h],r9
+  0x00007f955910ce82: 4c89542428          mov       qword ptr [rsp+28h],r10
+  0x00007f955910ce87: 4c895c2420          mov       qword ptr [rsp+20h],r11
+  0x00007f955910ce8c: 4c89642418          mov       qword ptr [rsp+18h],r12
+  0x00007f955910ce91: 4c896c2410          mov       qword ptr [rsp+10h],r13
+  0x00007f955910ce96: 4c89742408          mov       qword ptr [rsp+8h],r14
+  0x00007f955910ce9b: 4c893c24            mov       qword ptr [rsp],r15
+  0x00007f955910ce9f: 48bff6797a6f957f0000 mov       rdi,7f956f7a79f6h
+                                                ;   {external_word}
+  0x00007f955910cea9: 48be49ce1059957f0000 mov       rsi,7f955910ce49h
+                                                ;   {internal_word}
+  0x00007f955910ceb3: 488bd4              mov       rdx,rsp
+  0x00007f955910ceb6: 4883e4f0            and       rsp,0fffffffffffffff0h
+  0x00007f955910ceba: e8a1e33916          call      7f956f4ab260h
+                                                ;   {runtime_call}
+  0x00007f955910cebf: f4                  hlt
+[Deopt Handler Code]
+  0x00007f955910cec0: 49bac0ce1059957f0000 mov       r10,7f955910cec0h
+                                                ;   {section_word}
+  0x00007f955910ceca: 4152                push      r10
+  0x00007f955910cecc: e92fa6f3ff          jmp       7f9559047500h
+                                                ;   {runtime_call}
+  0x00007f955910ced1: f4                  hlt
+  0x00007f955910ced2: f4                  hlt
+  0x00007f955910ced3: f4                  hlt
+  0x00007f955910ced4: f4                  hlt
+  0x00007f955910ced5: f4                  hlt
+  0x00007f955910ced6: f4                  hlt
+  0x00007f955910ced7: f4                  hlt
+<nmethod compile_id='12' compiler='C1' level='3' entry='0x00007f955910c9e0' size='2704' address='0x00007f955910c810' relocation_offset='296' insts_offset='464' stub_offset='1520' scopes_data_offset='1752' scopes_pcs_offset='2040' dependencies_offset='2664' nul_chk_table_offset='2672' method='java/lang/String &lt;init&gt; ([CII)V' bytes='82' count='526' iicount='526' stamp='0.304'/>
+Decoding compiled method 0x00007f955910d2d0:
+Code:
+RIP: 0x7f955910d4e0 Code size: 0x00000b38
+[Entry Point]
+[Verified Entry Point]
+[Constants]
+  # {method} {0x00007f955891b6e8} &apos;copyOfRange&apos; &apos;([CII)[C&apos; in &apos;java/util/Arrays&apos;
+  # parm0:    rsi:rsi   = &apos;[C&apos;
+  # parm1:    rdx       = int
+  # parm2:    rcx       = int
+  #           [sp+0xb0]  (sp of caller)
+  0x00007f955910d4e0: 89842400c0feff      mov       dword ptr [rsp+0fffffffffffec000h],eax
+  0x00007f955910d4e7: 55                  push      rbp
+  0x00007f955910d4e8: 4881eca0000000      sub       rsp,0a0h
+  0x00007f955910d4ef: 4c8bc6              mov       r8,rsi
+  0x00007f955910d4f2: 4c8bca              mov       r9,rdx
+  0x00007f955910d4f5: 48bbb847a358957f0000 mov       rbx,7f9558a347b8h
+                                                ;   {metadata(method data for {method} {0x00007f955891b6e8} &apos;copyOfRange&apos; &apos;([CII)[C&apos; in &apos;java/util/Arrays&apos;)}
+  0x00007f955910d4ff: 8b93dc000000        mov       edx,dword ptr [rbx+0dch]
+  0x00007f955910d505: 83c208              add       edx,8h
+  0x00007f955910d508: 8993dc000000        mov       dword ptr [rbx+0dch],edx
+  0x00007f955910d50e: 48bbe8b69158957f0000 mov       rbx,7f955891b6e8h
+                                                ;   {metadata({method} {0x00007f955891b6e8} &apos;copyOfRange&apos; &apos;([CII)[C&apos; in &apos;java/util/Arrays&apos;)}
+  0x00007f955910d518: 81e2f81f0000        and       edx,1ff8h
+  0x00007f955910d51e: 83fa00              cmp       edx,0h
+  0x00007f955910d521: 0f845a080000        je        7f955910dd81h
+                                                ;*iload_2
+                                                ; - java.util.Arrays::copyOfRange@0 (line 3661)
+
+  0x00007f955910d527: 4c8bd9              mov       r11,rcx
+  0x00007f955910d52a: 452bd9              sub       r11d,r9d
+  0x00007f955910d52d: 4183fb00            cmp       r11d,0h
+  0x00007f955910d531: 48bbb847a358957f0000 mov       rbx,7f9558a347b8h
+                                                ;   {metadata(method data for {method} {0x00007f955891b6e8} &apos;copyOfRange&apos; &apos;([CII)[C&apos; in &apos;java/util/Arrays&apos;)}
+  0x00007f955910d53b: 48ba0801000000000000 mov       rdx,108h
+  0x00007f955910d545: 0f8d0a000000        jnl       7f955910d555h
+  0x00007f955910d54b: 48ba1801000000000000 mov       rdx,118h
+  0x00007f955910d555: 488b3413            mov       rsi,qword ptr [rbx+rdx]
+  0x00007f955910d559: 488d7601            lea       rsi,[rsi+1h]
+  0x00007f955910d55d: 48893413            mov       qword ptr [rbx+rdx],rsi
+  0x00007f955910d561: 0f8cbd010000        jl        7f955910d724h
+                                                ;*ifge
+                                                ; - java.util.Arrays::copyOfRange@5 (line 3662)
+
+  0x00007f955910d567: 498bdb              mov       rbx,r11
+  0x00007f955910d56a: 48ba080200c007000000 mov       rdx,7c0000208h
+                                                ;   {metadata({type array char})}
+  0x00007f955910d574: 4863db              movsxd    rbx,ebx
+  0x00007f955910d577: 488bfb              mov       rdi,rbx
+  0x00007f955910d57a: 4881fbffffff00      cmp       rbx,0ffffffh
+  0x00007f955910d581: 0f8711080000        jnbe      7f955910dd98h
+  0x00007f955910d587: 48be1700000000000000 mov       rsi,17h
+  0x00007f955910d591: 488d345e            lea       rsi,[rsi+rbx*2]
+  0x00007f955910d595: 4883e6f8            and       rsi,0fffffffffffffff8h
+  0x00007f955910d599: 498b4760            mov       rax,qword ptr [r15+60h]
+  0x00007f955910d59d: 488d3430            lea       rsi,[rax+rsi]
+  0x00007f955910d5a1: 493b7770            cmp       rsi,qword ptr [r15+70h]
+  0x00007f955910d5a5: 0f87ed070000        jnbe      7f955910dd98h
+  0x00007f955910d5ab: 49897760            mov       qword ptr [r15+60h],rsi
+  0x00007f955910d5af: 482bf0              sub       rsi,rax
+  0x00007f955910d5b2: 48c70001000000      mov       qword ptr [rax],1h
+  0x00007f955910d5b9: 488bca              mov       rcx,rdx
+  0x00007f955910d5bc: 48c1e903            shr       rcx,3h
+  0x00007f955910d5c0: 894808              mov       dword ptr [rax+8h],ecx
+  0x00007f955910d5c3: 89580c              mov       dword ptr [rax+0ch],ebx
+  0x00007f955910d5c6: 4883ee10            sub       rsi,10h
+  0x00007f955910d5ca: 0f8411000000        je        7f955910d5e1h
+  0x00007f955910d5d0: 4833db              xor       rbx,rbx
+  0x00007f955910d5d3: 48c1ee03            shr       rsi,3h
+  0x00007f955910d5d7: 48895cf008          mov       qword ptr [rax+rsi*8+8h],rbx
+  0x00007f955910d5dc: 48ffce              dec       rsi
+  0x00007f955910d5df: 75f6                jne       7f955910d5d7h
+                                                ;*newarray
+                                                ; - java.util.Arrays::copyOfRange@40 (line 3664)
+
+  0x00007f955910d5e1: 418b700c            mov       esi,dword ptr [r8+0ch]
+                                                ;*arraylength
+                                                ; - java.util.Arrays::copyOfRange@50 (line 3665)
+                                                ; implicit exception: dispatches to 0x00007f955910dda2
+  0x00007f955910d5e5: 412bf1              sub       esi,r9d
+  0x00007f955910d5e8: 48bab847a358957f0000 mov       rdx,7f9558a347b8h
+                                                ;   {metadata(method data for {method} {0x00007f955891b6e8} &apos;copyOfRange&apos; &apos;([CII)[C&apos; in &apos;java/util/Arrays&apos;)}
+  0x00007f955910d5f2: 4883820802000001    add       qword ptr [rdx+208h],1h
+  0x00007f955910d5fa: 48bae89f9c58957f0000 mov       rdx,7f95589c9fe8h
+                                                ;   {metadata(method data for {method} {0x00007f95588f67d8} &apos;min&apos; &apos;(II)I&apos; in &apos;java/lang/Math&apos;)}
+  0x00007f955910d604: 8b8adc000000        mov       ecx,dword ptr [rdx+0dch]
+  0x00007f955910d60a: 83c108              add       ecx,8h
+  0x00007f955910d60d: 898adc000000        mov       dword ptr [rdx+0dch],ecx
+  0x00007f955910d613: 48bad8678f58957f0000 mov       rdx,7f95588f67d8h
+                                                ;   {metadata({method} {0x00007f95588f67d8} &apos;min&apos; &apos;(II)I&apos; in &apos;java/lang/Math&apos;)}
+  0x00007f955910d61d: 81e1f8ff7f00        and       ecx,7ffff8h
+  0x00007f955910d623: 83f900              cmp       ecx,0h
+  0x00007f955910d626: 0f847b070000        je        7f955910dda7h
+  0x00007f955910d62c: 413bf3              cmp       esi,r11d
+  0x00007f955910d62f: 48bae89f9c58957f0000 mov       rdx,7f95589c9fe8h
+                                                ;   {metadata(method data for {method} {0x00007f95588f67d8} &apos;min&apos; &apos;(II)I&apos; in &apos;java/lang/Math&apos;)}
+  0x00007f955910d639: 48b90801000000000000 mov       rcx,108h
+  0x00007f955910d643: 0f8f0a000000        jnle      7f955910d653h
+  0x00007f955910d649: 48b91801000000000000 mov       rcx,118h
+  0x00007f955910d653: 488b3c0a            mov       rdi,qword ptr [rdx+rcx]
+  0x00007f955910d657: 488d7f01            lea       rdi,[rdi+1h]
+  0x00007f955910d65b: 48893c0a            mov       qword ptr [rdx+rcx],rdi
+  0x00007f955910d65f: 0f8f18000000        jnle      7f955910d67dh
+                                                ;*if_icmpgt
+                                                ; - java.lang.Math::min@2 (line 1336)
+                                                ; - java.util.Arrays::copyOfRange@54 (line 3666)
+
+  0x00007f955910d665: 48bae89f9c58957f0000 mov       rdx,7f95589c9fe8h
+                                                ;   {metadata(method data for {method} {0x00007f95588f67d8} &apos;min&apos; &apos;(II)I&apos; in &apos;java/lang/Math&apos;)}
+  0x00007f955910d66f: ff8228010000        inc       dword ptr [rdx+128h]
+  0x00007f955910d675: 488bfe              mov       rdi,rsi
+  0x00007f955910d678: e903000000          jmp       7f955910d680h
+                                                ;*goto
+                                                ; - java.lang.Math::min@6 (line 1336)
+                                                ; - java.util.Arrays::copyOfRange@54 (line 3666)
+
+  0x00007f955910d67d: 498bfb              mov       rdi,r11
+                                                ;*ireturn
+                                                ; - java.lang.Math::min@10 (line 1336)
+                                                ; - java.util.Arrays::copyOfRange@54 (line 3666)
+
+  0x00007f955910d680: 48beb847a358957f0000 mov       rsi,7f9558a347b8h
+                                                ;   {metadata(method data for {method} {0x00007f955891b6e8} &apos;copyOfRange&apos; &apos;([CII)[C&apos; in &apos;java/util/Arrays&apos;)}
+  0x00007f955910d68a: 4883861802000001    add       qword ptr [rsi+218h],1h
+  0x00007f955910d692: 498bf0              mov       rsi,r8
+  0x00007f955910d695: 498bd1              mov       rdx,r9
+  0x00007f955910d698: 488bc8              mov       rcx,rax
+  0x00007f955910d69b: 41b800000000        mov       r8d,0h
+  0x00007f955910d6a1: 4c8bcf              mov       r9,rdi
+  0x00007f955910d6a4: 4889442470          mov       qword ptr [rsp+70h],rax
+  0x00007f955910d6a9: 85d2                test      edx,edx
+  0x00007f955910d6ab: 0f8c0d070000        jl        7f955910ddbeh
+  0x00007f955910d6b1: 4a8d3c0a            lea       rdi,[rdx+r9]
+  0x00007f955910d6b5: 3b7e0c              cmp       edi,dword ptr [rsi+0ch]
+  0x00007f955910d6b8: 0f8700070000        jnbe      7f955910ddbeh
+  0x00007f955910d6be: 4b8d3c08            lea       rdi,[r8+r9]
+  0x00007f955910d6c2: 3b790c              cmp       edi,dword ptr [rcx+0ch]
+  0x00007f955910d6c5: 0f87f3060000        jnbe      7f955910ddbeh
+  0x00007f955910d6cb: 4585c9              test      r9d,r9d
+  0x00007f955910d6ce: 0f8cea060000        jl        7f955910ddbeh
+  0x00007f955910d6d4: 0f8436000000        je        7f955910d710h
+  0x00007f955910d6da: 4863d2              movsxd    rdx,edx
+  0x00007f955910d6dd: 4d63c0              movsxd    r8,r8d
+  0x00007f955910d6e0: 488d7c5610          lea       rdi,[rsi+rdx*2+10h]
+  0x00007f955910d6e5: 4a8d744110          lea       rsi,[rcx+r8*2+10h]
+  0x00007f955910d6ea: 498bd1              mov       rdx,r9
+  0x00007f955910d6ed: f7c40f000000        test      esp,0fh
+  0x00007f955910d6f3: 0f8412000000        je        7f955910d70bh
+  0x00007f955910d6f9: 4883ec08            sub       rsp,8h
+  0x00007f955910d6fd: e81e51f4ff          call      7f9559052820h
+                                                ;   {runtime_call}
+  0x00007f955910d702: 4883c408            add       rsp,8h
+  0x00007f955910d706: e905000000          jmp       7f955910d710h
+  0x00007f955910d70b: e81051f4ff          call      7f9559052820h
+                                                ;*invokestatic arraycopy
+                                                ; - java.util.Arrays::copyOfRange@57 (line 3665)
+                                                ;   {runtime_call}
+  0x00007f955910d710: 488b442470          mov       rax,qword ptr [rsp+70h]
+  0x00007f955910d715: 4881c4a0000000      add       rsp,0a0h
+  0x00007f955910d71c: 5d                  pop       rbp
+  0x00007f955910d71d: 8505dd797b17        test      dword ptr [7f95708c5100h],eax
+                                                ;   {poll_return}
+  0x00007f955910d723: c3                  ret   ;*areturn
+                                                ; - java.util.Arrays::copyOfRange@62 (line 3667)
+
+  0x00007f955910d724: 898c2480000000      mov       dword ptr [rsp+80h],ecx
+  0x00007f955910d72b: 0f1f440000          nop       dword ptr [rax+rax+0h]
+  0x00007f955910d730: e9a3060000          jmp       7f955910ddd8h
+                                                ;   {no_reloc}
+  0x00007f955910d735: 0000                add       byte ptr [rax],al
+  0x00007f955910d737: 0000                add       byte ptr [rax],al
+  0x00007f955910d739: 00498b              add       byte ptr [rcx+0ffffffffffffff8bh],cl
+  0x00007f955910d73c: Fatal error: Disassembling failed with error code: 15<nmethod compile_id='11' compiler='C1' level='3' entry='0x00007f955910d4e0' size='4856' address='0x00007f955910d2d0' relocation_offset='296' insts_offset='528' stub_offset='3152' scopes_data_offset='3472' scopes_pcs_offset='4096' dependencies_offset='4832' nul_chk_table_offset='4840' oops_offset='3400' method='java/util/Arrays copyOfRange ([CII)[C' bytes='63' count='576' iicount='576' stamp='0.319'/>
+<writer thread='140279814989568'/>
+<task_queued compile_id='16' method='java/lang/Object &lt;init&gt; ()V' bytes='1' count='2560' iicount='2560' level='1' stamp='0.321' comment='tiered' hot_count='2560'/>
+<task_queued compile_id='17' method='java/util/ArrayList size ()I' bytes='5' count='128' iicount='128' level='1' stamp='0.323' comment='tiered' hot_count='128'/>
+<task_queued compile_id='18' method='java/lang/String startsWith (Ljava/lang/String;I)Z' bytes='72' count='442' backedge_count='1024' iicount='442' level='3' stamp='0.323' comment='tiered' hot_count='442'/>
+<tty_done stamp='0.327'/>
+</tty>
+<compilation_log thread='140279185938176'>
+<start_compile_thread name='C1 CompilerThread2' thread='140279185938176' process='24711' stamp='0.093'/>
+<task compile_id='1' method='java/lang/String hashCode ()I' bytes='55' count='409' backedge_count='5250' iicount='409' level='3' stamp='0.095'>
+<phase name='buildIR' stamp='0.095'>
+<type id='731' name='int'/>
+<klass id='739' name='java/lang/String' flags='17'/>
+<method id='842' holder='739' name='hashCode' return='731' flags='1' bytes='55' iicount='412'/>
+<parse method='842'  stamp='0.095'>
+<parse_done stamp='0.095'/>
+</parse>
+<phase name='optimize_blocks' stamp='0.095'>
+<phase_done name='optimize_blocks' stamp='0.095'/>
+</phase>
+<phase name='rangeCheckElimination' stamp='0.095'>
+<phase_done name='rangeCheckElimination' stamp='0.095'/>
+</phase>
+<phase name='optimize_null_checks' stamp='0.095'>
+<phase_done name='optimize_null_checks' stamp='0.095'/>
+</phase>
+<phase_done name='buildIR' stamp='0.095'/>
+</phase>
+<phase name='emit_lir' stamp='0.095'>
+<phase name='lirGeneration' stamp='0.095'>
+<phase_done name='lirGeneration' stamp='0.095'/>
+</phase>
+<phase name='linearScan' stamp='0.095'>
+<phase_done name='linearScan' stamp='0.102'/>
+</phase>
+<phase_done name='emit_lir' stamp='0.102'/>
+</phase>
+<phase name='codeemit' stamp='0.102'>
+<phase_done name='codeemit' stamp='0.103'/>
+</phase>
+<phase name='codeinstall' stamp='0.103'>
+<phase_done name='codeinstall' stamp='0.152'/>
+</phase>
+<code_cache total_blobs='226' nmethods='2' adapters='139' free_code_cache='250570880'/>
+<task_done success='1' nmsize='656' count='449' backedge_count='6050' stamp='0.152'/>
+</task>
+<task compile_id='2' method='java/lang/String equals (Ljava/lang/Object;)Z' bytes='81' count='407' backedge_count='1301' iicount='407' level='3' stamp='0.152'>
+<phase name='buildIR' stamp='0.152'>
+<type id='725' name='boolean'/>
+<klass id='738' name='java/lang/Object' flags='1'/>
+<klass id='739' name='java/lang/String' flags='17'/>
+<method id='842' holder='739' name='equals' return='725' arguments='738' flags='1' bytes='81' iicount='407'/>
+<parse method='842'  stamp='0.152'>
+<parse_done stamp='0.152'/>
+</parse>
+<phase name='optimize_blocks' stamp='0.152'>
+<phase_done name='optimize_blocks' stamp='0.152'/>
+</phase>
+<phase name='rangeCheckElimination' stamp='0.152'>
+<phase_done name='rangeCheckElimination' stamp='0.152'/>
+</phase>
+<phase name='optimize_null_checks' stamp='0.152'>
+<phase_done name='optimize_null_checks' stamp='0.152'/>
+</phase>
+<phase_done name='buildIR' stamp='0.152'/>
+</phase>
+<phase name='emit_lir' stamp='0.152'>
+<phase name='lirGeneration' stamp='0.152'>
+<phase_done name='lirGeneration' stamp='0.152'/>
+</phase>
+<phase name='linearScan' stamp='0.152'>
+<phase_done name='linearScan' stamp='0.152'/>
+</phase>
+<phase_done name='emit_lir' stamp='0.152'/>
+</phase>
+<phase name='codeemit' stamp='0.152'>
+<phase_done name='codeemit' stamp='0.152'/>
+</phase>
+<phase name='codeinstall' stamp='0.152'>
+<phase_done name='codeinstall' stamp='0.181'/>
+</phase>
+<code_cache total_blobs='227' nmethods='3' adapters='139' free_code_cache='250568320'/>
+<task_done success='1' nmsize='1360' count='428' backedge_count='1301' stamp='0.182'/>
+</task>
+<task compile_id='5' method='java/lang/String charAt (I)C' bytes='29' count='2530' iicount='2530' level='3' stamp='0.182'>
+<phase name='buildIR' stamp='0.182'>
+<type id='726' name='char'/>
+<type id='731' name='int'/>
+<klass id='739' name='java/lang/String' flags='17'/>
+<method id='842' holder='739' name='charAt' return='726' arguments='731' flags='1' bytes='29' iicount='2530'/>
+<parse method='842'  stamp='0.182'>
+<bc code='183' bci='18'/>
+<type id='733' name='void'/>
+<klass id='844' name='java/lang/StringIndexOutOfBoundsException' unloaded='1'/>
+<method id='845' holder='844' name='&lt;init&gt;' return='733' arguments='731' unloaded='1'/>
+<call method='845' instr='invokespecial'/>
+<inline_fail reason='not inlineable'/>
+<parse_done stamp='0.182'/>
+</parse>
+<phase name='optimize_blocks' stamp='0.182'>
+<phase_done name='optimize_blocks' stamp='0.182'/>
+</phase>
+<phase name='rangeCheckElimination' stamp='0.182'>
+<phase_done name='rangeCheckElimination' stamp='0.182'/>
+</phase>
+<phase name='optimize_null_checks' stamp='0.182'>
+<phase_done name='optimize_null_checks' stamp='0.182'/>
+</phase>
+<phase_done name='buildIR' stamp='0.182'/>
+</phase>
+<phase name='emit_lir' stamp='0.182'>
+<phase name='lirGeneration' stamp='0.182'>
+<phase_done name='lirGeneration' stamp='0.182'/>
+</phase>
+<phase name='linearScan' stamp='0.182'>
+<phase_done name='linearScan' stamp='0.182'/>
+</phase>
+<phase_done name='emit_lir' stamp='0.182'/>
+</phase>
+<phase name='codeemit' stamp='0.182'>
+<phase_done name='codeemit' stamp='0.182'/>
+</phase>
+<phase name='codeinstall' stamp='0.182'>
+<phase_done name='codeinstall' stamp='0.207'/>
+</phase>
+<code_cache total_blobs='228' nmethods='4' adapters='139' free_code_cache='250566912'/>
+<task_done success='1' nmsize='616' count='2783' stamp='0.207'/>
+</task>
+<task compile_id='8' method='java/lang/String indexOf (II)I' bytes='70' count='202' backedge_count='5216' iicount='202' level='3' stamp='0.207'>
+<phase name='buildIR' stamp='0.207'>
+<type id='731' name='int'/>
+<klass id='739' name='java/lang/String' flags='17'/>
+<method id='842' holder='739' name='indexOf' return='731' arguments='731 731' flags='1' bytes='70' iicount='202'/>
+<parse method='842'  stamp='0.207'>
+<bc code='183' bci='66'/>
+<method id='844' holder='739' name='indexOfSupplementary' return='731' arguments='731 731' flags='2' bytes='71' iicount='1'/>
+<call method='844' instr='invokespecial'/>
+<inline_fail reason='callee is too large'/>
+<parse_done stamp='0.208'/>
+</parse>
+<phase name='optimize_blocks' stamp='0.208'>
+<phase_done name='optimize_blocks' stamp='0.208'/>
+</phase>
+<phase name='rangeCheckElimination' stamp='0.208'>
+<phase_done name='rangeCheckElimination' stamp='0.208'/>
+</phase>
+<phase name='optimize_null_checks' stamp='0.208'>
+<phase_done name='optimize_null_checks' stamp='0.208'/>
+</phase>
+<phase_done name='buildIR' stamp='0.208'/>
+</phase>
+<phase name='emit_lir' stamp='0.208'>
+<phase name='lirGeneration' stamp='0.208'>
+<phase_done name='lirGeneration' stamp='0.208'/>
+</phase>
+<phase name='linearScan' stamp='0.208'>
+<phase_done name='linearScan' stamp='0.208'/>
+</phase>
+<phase_done name='emit_lir' stamp='0.208'/>
+</phase>
+<phase name='codeemit' stamp='0.208'>
+<phase_done name='codeemit' stamp='0.208'/>
+</phase>
+<phase name='codeinstall' stamp='0.208'>
+<phase_done name='codeinstall' stamp='0.228'/>
+</phase>
+<code_cache total_blobs='233' nmethods='5' adapters='143' free_code_cache='250562880'/>
+<task_done success='1' nmsize='904' count='215' backedge_count='5782' stamp='0.228'/>
+</task>
+<task compile_id='3' method='java/lang/Object &lt;init&gt; ()V' bytes='1' count='1924' iicount='1924' level='3' stamp='0.228'>
+<phase name='buildIR' stamp='0.228'>
+<type id='733' name='void'/>
+<klass id='738' name='java/lang/Object' flags='1'/>
+<method id='842' holder='738' name='&lt;init&gt;' return='733' flags='1' bytes='1' iicount='1924'/>
+<parse method='842'  stamp='0.228'>
+<parse_done stamp='0.228'/>
+</parse>
+<phase name='optimize_blocks' stamp='0.228'>
+<phase_done name='optimize_blocks' stamp='0.228'/>
+</phase>
+<phase name='rangeCheckElimination' stamp='0.228'>
+<phase_done name='rangeCheckElimination' stamp='0.228'/>
+</phase>
+<phase name='optimize_null_checks' stamp='0.228'>
+<phase_done name='optimize_null_checks' stamp='0.228'/>
+</phase>
+<phase_done name='buildIR' stamp='0.228'/>
+</phase>
+<phase name='emit_lir' stamp='0.228'>
+<phase name='lirGeneration' stamp='0.228'>
+<phase_done name='lirGeneration' stamp='0.228'/>
+</phase>
+<phase name='linearScan' stamp='0.228'>
+<phase_done name='linearScan' stamp='0.228'/>
+</phase>
+<phase_done name='emit_lir' stamp='0.228'/>
+</phase>
+<phase name='codeemit' stamp='0.228'>
+<phase_done name='codeemit' stamp='0.228'/>
+</phase>
+<phase name='codeinstall' stamp='0.228'>
+<phase_done name='codeinstall' stamp='0.239'/>
+</phase>
+<code_cache total_blobs='234' nmethods='6' adapters='143' free_code_cache='250561984'/>
+<task_done success='1' nmsize='336' count='2085' stamp='0.239'/>
+</task>
+<task compile_id='10' method='java/lang/Math max (II)I' bytes='11' count='744' iicount='744' level='3' stamp='0.239'>
+<phase name='buildIR' stamp='0.239'>
+<type id='731' name='int'/>
+<klass id='842' name='java/lang/Math' flags='17'/>
+<method id='843' holder='842' name='max' return='731' arguments='731 731' flags='9' bytes='11' iicount='744'/>
+<parse method='843'  stamp='0.239'>
+<parse_done stamp='0.239'/>
+</parse>
+<phase name='optimize_blocks' stamp='0.239'>
+<phase_done name='optimize_blocks' stamp='0.239'/>
+</phase>
+<phase name='rangeCheckElimination' stamp='0.239'>
+<phase_done name='rangeCheckElimination' stamp='0.239'/>
+</phase>
+<phase name='optimize_null_checks' stamp='0.239'>
+<phase_done name='optimize_null_checks' stamp='0.239'/>
+</phase>
+<phase_done name='buildIR' stamp='0.239'/>
+</phase>
+<phase name='emit_lir' stamp='0.239'>
+<phase name='lirGeneration' stamp='0.239'>
+<phase_done name='lirGeneration' stamp='0.239'/>
+</phase>
+<phase name='linearScan' stamp='0.239'>
+<phase_done name='linearScan' stamp='0.240'/>
+</phase>
+<phase_done name='emit_lir' stamp='0.240'/>
+</phase>
+<phase name='codeemit' stamp='0.240'>
+<phase_done name='codeemit' stamp='0.240'/>
+</phase>
+<phase name='codeinstall' stamp='0.240'>
+<phase_done name='codeinstall' stamp='0.257'/>
+</phase>
+<code_cache total_blobs='235' nmethods='7' adapters='143' free_code_cache='250561024'/>
+<task_done success='1' nmsize='400' count='744' stamp='0.257'/>
+</task>
+<task compile_id='6' method='java/lang/Math min (II)I' bytes='11' count='1046' iicount='1046' level='3' stamp='0.258'>
+<phase name='buildIR' stamp='0.258'>
+<type id='731' name='int'/>
+<klass id='842' name='java/lang/Math' flags='17'/>
+<method id='843' holder='842' name='min' return='731' arguments='731 731' flags='9' bytes='11' iicount='1046'/>
+<parse method='843'  stamp='0.258'>
+<parse_done stamp='0.258'/>
+</parse>
+<phase name='optimize_blocks' stamp='0.258'>
+<phase_done name='optimize_blocks' stamp='0.258'/>
+</phase>
+<phase name='rangeCheckElimination' stamp='0.258'>
+<phase_done name='rangeCheckElimination' stamp='0.258'/>
+</phase>
+<phase name='optimize_null_checks' stamp='0.258'>
+<phase_done name='optimize_null_checks' stamp='0.258'/>
+</phase>
+<phase_done name='buildIR' stamp='0.258'/>
+</phase>
+<phase name='emit_lir' stamp='0.258'>
+<phase name='lirGeneration' stamp='0.258'>
+<phase_done name='lirGeneration' stamp='0.258'/>
+</phase>
+<phase name='linearScan' stamp='0.258'>
+<phase_done name='linearScan' stamp='0.258'/>
+</phase>
+<phase_done name='emit_lir' stamp='0.258'/>
+</phase>
+<phase name='codeemit' stamp='0.258'>
+<phase_done name='codeemit' stamp='0.258'/>
+</phase>
+<phase name='codeinstall' stamp='0.258'>
+<phase_done name='codeinstall' stamp='0.269'/>
+</phase>
+<code_cache total_blobs='236' nmethods='8' adapters='143' free_code_cache='250560064'/>
+<task_done success='1' nmsize='400' count='1049' stamp='0.269'/>
+</task>
+<task compile_id='4' method='java/lang/String length ()I' bytes='6' count='886' iicount='886' level='3' stamp='0.269'>
+<phase name='buildIR' stamp='0.269'>
+<type id='731' name='int'/>
+<klass id='739' name='java/lang/String' flags='17'/>
+<method id='842' holder='739' name='length' return='731' flags='1' bytes='6' iicount='886'/>
+<parse method='842'  stamp='0.269'>
+<parse_done stamp='0.269'/>
+</parse>
+<phase name='optimize_blocks' stamp='0.269'>
+<phase_done name='optimize_blocks' stamp='0.269'/>
+</phase>
+<phase name='rangeCheckElimination' stamp='0.269'>
+<phase_done name='rangeCheckElimination' stamp='0.269'/>
+</phase>
+<phase name='optimize_null_checks' stamp='0.269'>
+<phase_done name='optimize_null_checks' stamp='0.269'/>
+</phase>
+<phase_done name='buildIR' stamp='0.269'/>
+</phase>
+<phase name='emit_lir' stamp='0.269'>
+<phase name='lirGeneration' stamp='0.269'>
+<phase_done name='lirGeneration' stamp='0.269'/>
+</phase>
+<phase name='linearScan' stamp='0.269'>
+<phase_done name='linearScan' stamp='0.269'/>
+</phase>
+<phase_done name='emit_lir' stamp='0.269'/>
+</phase>
+<phase name='codeemit' stamp='0.269'>
+<phase_done name='codeemit' stamp='0.269'/>
+</phase>
+<phase name='codeinstall' stamp='0.269'>
+<phase_done name='codeinstall' stamp='0.281'/>
+</phase>
+<code_cache total_blobs='237' nmethods='9' adapters='143' free_code_cache='250559104'/>
+<task_done success='1' nmsize='368' count='973' stamp='0.283'/>
+</task>
+<task compile_id='12' method='java/lang/String &lt;init&gt; ([CII)V' bytes='82' count='494' iicount='494' level='3' stamp='0.283'>
+<phase name='buildIR' stamp='0.283'>
+<type id='733' name='void'/>
+<klass id='831' name='[C' flags='1041'/>
+<type id='731' name='int'/>
+<klass id='739' name='java/lang/String' flags='17'/>
+<method id='842' holder='739' name='&lt;init&gt;' return='733' arguments='831 731 731' flags='1' bytes='82' iicount='494'/>
+<parse method='842'  stamp='0.283'>
+<bc code='183' bci='1'/>
+<klass id='738' name='java/lang/Object' flags='1'/>
+<method id='844' holder='738' name='&lt;init&gt;' return='733' flags='1' bytes='1' compile_id='3' compiler='C1' level='3' iicount='2349'/>
+<call method='844' instr='invokespecial'/>
+<inline_success reason='receiver is statically known'/>
+<parse method='844'>
+<parse_done stamp='0.283'/>
+</parse>
+<bc code='183' bci='13'/>
+<klass id='846' name='java/lang/StringIndexOutOfBoundsException' unloaded='1'/>
+<method id='847' holder='846' name='&lt;init&gt;' return='733' arguments='731' unloaded='1'/>
+<call method='847' instr='invokespecial'/>
+<inline_fail reason='not inlineable'/>
+<bc code='183' bci='30'/>
+<call method='847' instr='invokespecial'/>
+<inline_fail reason='not inlineable'/>
+<bc code='183' bci='65'/>
+<call method='847' instr='invokespecial'/>
+<inline_fail reason='not inlineable'/>
+<bc code='184' bci='75'/>
+<klass id='849' name='java/util/Arrays' flags='1'/>
+<method id='850' holder='849' name='copyOfRange' return='831' arguments='831 731 731' flags='9' bytes='63' iicount='537'/>
+<call method='850' instr='invokestatic'/>
+<inline_fail reason='callee is too large'/>
+<parse_done stamp='0.283'/>
+</parse>
+<phase name='optimize_blocks' stamp='0.283'>
+<phase_done name='optimize_blocks' stamp='0.283'/>
+</phase>
+<phase name='rangeCheckElimination' stamp='0.283'>
+<phase_done name='rangeCheckElimination' stamp='0.283'/>
+</phase>
+<phase name='optimize_null_checks' stamp='0.283'>
+<phase_done name='optimize_null_checks' stamp='0.283'/>
+</phase>
+<phase_done name='buildIR' stamp='0.283'/>
+</phase>
+<phase name='emit_lir' stamp='0.283'>
+<phase name='lirGeneration' stamp='0.283'>
+<phase_done name='lirGeneration' stamp='0.283'/>
+</phase>
+<phase name='linearScan' stamp='0.283'>
+<phase_done name='linearScan' stamp='0.284'/>
+</phase>
+<phase_done name='emit_lir' stamp='0.284'/>
+</phase>
+<phase name='codeemit' stamp='0.284'>
+<phase_done name='codeemit' stamp='0.284'/>
+</phase>
+<phase name='codeinstall' stamp='0.284'>
+<phase_done name='codeinstall' stamp='0.304'/>
+</phase>
+<code_cache total_blobs='238' nmethods='10' adapters='143' free_code_cache='250556352'/>
+<task_done success='1' nmsize='1272' count='526' inlined_bytes='1' stamp='0.304'/>
+</task>
+<fragment>
+<![CDATA[
+<task compile_id='11' method='java/util/Arrays copyOfRange ([CII)[C' bytes='63' count='544' iicount='544' level='3' stamp='0.304'>
+<phase name='buildIR' stamp='0.304'>
+<klass id='831' name='[C' flags='1041'/>
+<type id='731' name='int'/>
+<klass id='842' name='java/util/Arrays' flags='1'/>
+<method id='843' holder='842' name='copyOfRange' return='831' arguments='831 731 731' flags='9' bytes='63' iicount='544'/>
+<parse method='843'  stamp='0.304'>
+<bc code='183' bci='16'/>
+<type id='733' name='void'/>
+<klass id='805' name='java/lang/StringBuilder' flags='17'/>
+<method id='846' holder='805' name='&lt;init&gt;' return='733' flags='1' bytes='7' iicount='160'/>
+<call method='846' instr='invokespecial'/>
+<inline_success reason='receiver is statically known'/>
+<parse method='846'>
+<bc code='183' bci='3'/>
+<klass id='803' name='java/lang/AbstractStringBuilder' flags='1024'/>
+<method id='848' holder='803' name='&lt;init&gt;' return='733' arguments='731' flags='0' bytes='12' iicount='178'/>
+<call method='848' instr='invokespecial'/>
+<inline_success reason='receiver is statically known'/>
+<parse method='848'>
+<bc code='183' bci='1'/>
+<klass id='738' name='java/lang/Object' flags='1'/>
+<method id='850' holder='738' name='&lt;init&gt;' return='733' flags='1' bytes='1' compile_id='3' compiler='C1' level='3' iicount='2413'/>
+<call method='850' instr='invokespecial'/>
+<inline_success reason='receiver is statically known'/>
+<parse method='850'>
+<parse_done stamp='0.305'/>
+</parse>
+<parse_done stamp='0.305'/>
+</parse>
+<parse_done stamp='0.305'/>
+</parse>
+<bc code='182' bci='20'/>
+<method id='852' holder='805' name='append' return='805' arguments='731' flags='1' bytes='8' iicount='1'/>
+<call method='852' instr='invokevirtual'/>
+<inline_success reason='receiver is statically known'/>
+<parse method='852'>
+<bc code='183' bci='2'/>
+<method id='854' holder='803' name='append' return='803' arguments='731' flags='1' bytes='62' iicount='1'/>
+<call method='854' instr='invokespecial'/>
+<inline_fail reason='callee is too large'/>
+<parse_done stamp='0.305'/>
+</parse>
+<bc code='182' bci='25'/>
+<klass id='739' name='java/lang/String' flags='17'/>
+<method id='857' holder='805' name='append' return='805' arguments='739' flags='1' bytes='8' iicount='339'/>
+<call method='857' instr='invokevirtual'/>
+<inline_success reason='receiver is statically known'/>
+<parse method='857'>
+<bc code='183' bci='2'/>
+<method id='859' holder='803' name='append' return='803' arguments='739' flags='1' bytes='50' iicount='397'/>
+<call method='859' instr='invokespecial'/>
+<inline_fail reason='callee is too large'/>
+<parse_done stamp='0.305'/>
+</parse>
+<bc code='182' bci='29'/>
+<call method='852' instr='invokevirtual'/>
+<inline_success reason='receiver is statically known'/>
+<parse method='852'>
+<bc code='183' bci='2'/>
+<call method='854' instr='invokespecial'/>
+<inline_fail reason='callee is too large'/>
+<parse_done stamp='0.305'/>
+</parse>
+<bc code='182' bci='32'/>
+<method id='861' holder='805' name='toString' return='739' flags='1' bytes='17' iicount='161'/>
+<call method='861' instr='invokevirtual'/>
+<inline_success reason='receiver is statically known'/>
+<parse method='861'>
+<bc code='183' bci='13'/>
+<method id='863' holder='739' name='&lt;init&gt;' return='733' arguments='831 731 731' flags='1' bytes='82' compile_id='12' compiler='C1' level='3' iicount='529'/>
+<call method='863' instr='invokespecial'/>
+<inline_fail reason='callee is too large'/>
+<parse_done stamp='0.305'/>
+</parse>
+<bc code='183' bci='35'/>
+<klass id='845' name='java/lang/IllegalArgumentException' flags='1'/>
+<method id='865' holder='845' name='&lt;init&gt;' return='733' arguments='739' flags='1' bytes='6' iicount='1'/>
+<call method='865' instr='invokespecial'/>
+<inline_fail reason='don&apos;t inline Throwable constructors'/>
+<bc code='184' bci='54'/>
+<klass id='867' name='java/lang/Math' flags='17'/>
+<method id='868' holder='867' name='min' return='731' arguments='731 731' flags='9' bytes='11' compile_id='6' compiler='C1' level='3' iicount='1416'/>
+<call method='868' instr='invokestatic'/>
+<inline_success reason='receiver is statically known'/>
+<parse method='868'>
+<parse_done stamp='0.305'/>
+</parse>
+<bc code='184' bci='57'/>
+<klass id='744' name='java/lang/System' flags='17'/>
+<method id='870' holder='744' name='arraycopy' return='733' arguments='738 731 738 731 731' flags='265' bytes='0' compile_id='7' compile_kind='c2n' level='0' iicount='640'/>
+<call method='870' instr='invokestatic'/>
+<inline_success reason='intrinsic'/>
+<parse_done stamp='0.305'/>
+</parse>
+<phase name='optimize_blocks' stamp='0.305'>
+<phase_done name='optimize_blocks' stamp='0.305'/>
+</phase>
+<phase name='rangeCheckElimination' stamp='0.305'>
+<phase_done name='rangeCheckElimination' stamp='0.305'/>
+</phase>
+<phase name='optimize_null_checks' stamp='0.305'>
+<phase_done name='optimize_null_checks' stamp='0.305'/>
+</phase>
+<phase_done name='buildIR' stamp='0.305'/>
+</phase>
+<phase name='emit_lir' stamp='0.305'>
+<phase name='lirGeneration' stamp='0.305'>
+<phase_done name='lirGeneration' stamp='0.305'/>
+</phase>
+<phase name='linearScan' stamp='0.305'>
+<phase_done name='linearScan' stamp='0.306'/>
+</phase>
+<phase_done name='emit_lir' stamp='0.306'/>
+</phase>
+<phase name='codeemit' stamp='0.306'>
+<phase_done name='codeemit' stamp='0.306'/>
+</phase>
+<phase name='codeinstall' stamp='0.306'>
+<phase_done name='codeinstall' stamp='0.326'/>
+</phase>
+<code_cache total_blobs='242' nmethods='11' adapters='146' free_code_cache='250549888'/>
+]]>
+</fragment>
+</compilation_log>
+<compilation_log thread='140279186990848'>
+<fragment>
+<![CDATA[
+<start_compile_thread name='C2 CompilerThread1' thread='140279186990848' process='24711' stamp='0.091'/>
+]]>
+</fragment>
+</compilation_log>
+<compilation_log thread='140279188043520'>
+<fragment>
+<![CDATA[
+<start_compile_thread name='C2 CompilerThread0' thread='140279188043520' process='24711' stamp='0.088'/>
+]]>
+</fragment>
+</compilation_log>
+<hotspot_log_done stamp='0.327'/>
+</hotspot_log>
