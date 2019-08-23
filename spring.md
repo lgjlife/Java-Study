@@ -32,17 +32,32 @@
             - [1.4.2.2. 高可用注册中心](#1422-高可用注册中心)
             - [1.4.2.3. 原理说明](#1423-原理说明)
                 - [1.4.2.3.1. 基础模块说明](#14231-基础模块说明)
-                - [1.4.2.3.2. 源码分析](#14232-源码分析)
+                - [1.4.2.3.2. Region,Zone](#14232-regionzone)
+                - [1.4.2.3.3. 源码分析](#14233-源码分析)
             - [1.4.2.4. 更多配置说明](#1424-更多配置说明)
         - [1.4.3. 负载均衡Ribbon](#143-负载均衡ribbon)
-        - [1.4.4. 声明式服务调用](#144-声明式服务调用)
-        - [1.4.5. API网关服务](#145-api网关服务)
-            - [1.4.5.1. zuul](#1451-zuul)
-            - [1.4.5.2. GateWay](#1452-gateway)
-        - [1.4.6. 服务容错保护 Hystrix](#146-服务容错保护-hystrix)
+            - [1.4.3.1. 基本使用](#1431-基本使用)
+            - [1.4.3.2. 原理说明](#1432-原理说明)
+                - [1.4.3.2.1. 源码分析](#14321-源码分析)
+                - [1.4.3.2.2. 负载均衡器](#14322-负载均衡器)
+                - [1.4.3.2.3. 负载均衡策略](#14323-负载均衡策略)
+                - [1.4.3.2.4. 配置详解](#14324-配置详解)
+        - [1.4.4. 声明式服务调用feign](#144-声明式服务调用feign)
+            - [1.4.4.1. 使用案例](#1441-使用案例)
+        - [1.4.5. 服务容错保护 Hystrix](#145-服务容错保护-hystrix)
+        - [1.4.6. API网关服务](#146-api网关服务)
+            - [1.4.6.1. zuul](#1461-zuul)
+            - [1.4.6.2. GateWay](#1462-gateway)
         - [1.4.7. 分布式配置中心Config](#147-分布式配置中心config)
         - [1.4.8. 消息总线Bus](#148-消息总线bus)
         - [1.4.9. 分布式服务跟踪Sleuth](#149-分布式服务跟踪sleuth)
+            - [1.4.9.1. 基本使用](#1491-基本使用)
+            - [1.4.9.2. 跟踪原理](#1492-跟踪原理)
+                - [1.4.9.2.1. 基本实现原理](#14921-基本实现原理)
+                - [支持的组件](#支持的组件)
+                - [一些基本概念](#一些基本概念)
+                - [zipkin](#zipkin)
+                - [调用过程](#调用过程)
         - [1.4.10. 消息驱动的微服务](#1410-消息驱动的微服务)
     - [1.5. 测试](#15-测试)
         - [1.5.1. 基本测试](#151-基本测试)
@@ -1964,22 +1979,40 @@ location.run();
 微服务是系统架构上的一种设计风格， 它的主旨是将一个原本独立的系统拆分成多个小型服务，这些小型服务都在各自独立的进程中运行，服务之间通过基于HTTP的RESTful API进行通信协作。 被拆分成的每一个小型服务都围绕着系统中的某一项或一些耦合度较高的业务功能进行构建， 并且每个服务都维护着自身的数据存储、 业务开发、自动化测试案例以及独立部署机制。 由千有了轻量级的通信协作基础， 所以这些微服务可以使用不同的语言来编写
 
 **微服务主要的优势如下：**
-* 降低复杂度
+* 降低复杂度，易于开发和维护
     * 将原来偶合在一起的复杂业务拆分为单个服务，规避了原本复杂度无止境的积累。每一个微服务专注于单一功能，并通过定义良好的接口清晰表述服务边界。每个服务开发者只专注服务本身，通过使用缓存、DAL等各种技术手段来提升系统的性能，而对于消费方来说完全透明。
+* 单个微服务启动较快
+    * 代码量少，因此启动较快
 * 可独立部署
     * 由于微服务具备独立的运行进程，所以每个微服务可以独立部署。当业务迭代时只需要发布相关服务的迭代即可，降低了测试的工作量同时也降低了服务发布的风险。
+* 技术栈不受限制
+    * 只要服务间定义好接口和访问方式，可以自行利用不同的语言框架实现
 * 容错
     * 在微服务架构下，当某一组件发生故障时，故障会被隔离在单个服务中。 通过限流、熔断等方式降低错误导致的危害，保障核心业务正常运行。
 * 扩展
     * 单块架构应用也可以实现横向扩展，就是将整个应用完整的复制到不同的节点。当应用的不同组件在扩展需求上存在差异时，微服务架构便体现出其灵活性，因为每个服务可以根据实际需求独立进行扩展。
 
+**微服务带来的问题**
+* 运维要求较高
+    * 服务数量变大，会增加运维的难度
+* 分布式固有的复杂性
+    * 包括服务容错，网络延迟，分布式事务等问题都需要解决
+* 接口调整成本高
+    * 服务之间通过接口进行通信，如果接口发生修改，影响就比较大
+* 重复劳动 
+    * 有的服务可能会出现同样的功能需求，导致重复编码
+
+**微服务设计原则**
+* 单一职责原则
+* 服务自治原则
+* 轻量级通信原则
+* 微服务粒度，确定好服务边界
+
 **SpringCloud子项目**
-* SpringCloudConfig: 配置管理工具， 支持使用Git存储 配置内容， 可以使用它实现
-应用配置的外部化存储， 并支持客户端配置信息刷新、 加密／解密配置内容 等。
+* SpringCloudConfig: 配置管理工具， 支持使用Git存储 配置内容， 可以使用它实现应用配置的外部化存储， 并支持客户端配置信息刷新、 加密／解密配置内容 等。
 * SpringCloudNetflix: 核心 组件， 对多个Netflix OSS开源套件进行整合。
 * Eureka: 服务治理组件， 包含服务注册中心、 服务注册与发现机制的实现。
-* Hystrix: 容错管理组件，实现断路器模式， 帮助服务依赖中出现的延迟和为故障
-提供强大的容错能力。
+* Hystrix: 容错管理组件，实现断路器模式， 帮助服务依赖中出现的延迟和为故障提供强大的容错能力。
 * ribbon: 客户端负载均衡的服务调用组件
 * Feign: 基于伈bbon 和 Hystrix 的声明式服务调用组件。
 * Zuul: 网关组件， 提供智能路由、 访问过滤等功能。
@@ -2102,6 +2135,39 @@ public class ConsumerApplication {
 
 访问地址:http://localhost:8001/
 
+![注册中心页面](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/center.png)
+这里配置了一个消费者(8003)和两个服务提供者（8002/8012）
+
+status的UP后面的字符串即为服务的唯一标识instance-id。可以通过eureka.instance.instance-id进行修改。
+
+**给注册中心添加登录认证**
+
+* 注册中心引入POM
+```XML
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+```
+* 配置文件配置用户名和密码
+```yml
+security:
+    basic:
+        # 开启基于HTTP basic的认证
+        enable: true
+    user:
+        name: user
+        password: 123456
+```
+* 微服务配置
+给defaultZone添加用户名和密码
+```yml
+eureka:
+  client:
+    service-url:
+      defaultZone: http://user:123456@localhost:8001/eureka/
+```
+
 #### 1.4.2.2. 高可用注册中心
 
 * 注册中心可以集群部署，提高高可用
@@ -2139,21 +2205,287 @@ EurekaServer的高可用实际上就是将自己作为服务向其他服务注�
     * 消费者应用从服务注册中心获取服务列表， 从而使消费者可以知道去何处调用其所需要的服务
 
 **服务治理机制**
-![Spring Cloud服务架构图](eurekka.png)
+![Spring Cloud服务架构图](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/eureka.png)
 
 * **服务提供者**
     * 服务注册
+        * “服务提供者” 在启动的时候会通过发送REST请求的方式将自己注册到EurekaServer上，同时带上了自身服务的一些元数据信息。
+        * Eureka Server接收到这个REST请求之后，将元数据信息存储在一个双层结构Map中， 其中第一层的key是服务名， 第二层的key是具体服务的实例名。
+        * eureka.client.register-with-eureka=true默认为true。 若设置为false将不会启动注册操作。
+        * 元数据
+            * 标准元数据
+                * 主机名，IP地址，端口号，状态页和健康检查等信息
+            * 自定义元数据
+                * 通过eureka.instance.metadata-map进行配置，key-value型
     * 服务同步
+        * 如架构图中所示， 这里的两个服务提供者分别注册到了两个不同的服务注册中心上，也就是说， 它们的信息分别被两个服务注册中心所维护。 此时，由于服务注册中心之间因互相注册为服务， 当服务提供者发送注册请求到一个服务注册中心时， 它会将该请求转发给集群中相连的其他注册中心， 从而实现注册中心之间的服务同步 。 
+        * 通过服务同步，两个服务提供者的服务信息就可以通过这两台服务注册中心中的任意一台获取到。
     * 服务续约
+        * 服务注册中心和服务提供者将会进行心跳操作
+        * eureka.instance.lease-renewal-interval-in-seconds 参数用于定义服务续约任务的调用间隔时间，默认为30秒。 eureka.instance.lease-expiration-duration-in-seconds参数用于定义服务失效的时间，默认为90秒
 * **服务消费者**
     * 获取服务
+        * 启动服务消费者的时候，它会发送一个REST请求给服务注册中心，来获取上面注册的服务清单
+        * Eureka Server会维护一份只读的服务清单来返回给客户端，同时该缓存清单会每隔30秒更新一次.
+        * 获取服务是服务消费者的基础，所以必须确保eureka.c巨ent.fetch-registry=true,默认值为true
+        * 希望修改缓存清单的 更新时间，可以通过 eureka.client.registry-fetch-interval-seconds=30参数进行修改，该参数默认值为30, 单位为秒        
     * 服务调用
+        * 服务消费者在 获取服务清单后，通过服务名可以获得具体提供服务的实例名和该实例的元数据信息。 因为有这些服务实例的详细信息， 所以客户端可以根据自己的需要决定具体调用哪个实例，在ribbon中会默认采用轮询的方式进行调用，从而实现客户端的负载均衡
+        * 对于访问实例的选择，Eureka中有Region和Zone的概念， 一 个Region中可以包含多个Zone, 每个服务客户端需要被注册到 一个Zone中， 所以每个客户端对应一个Region和一个Zone。 在进行服务调用的时候， 优先访问同处一个 Zone 中的服务提供方， 若访问不到，就访问其他的Zone
     * 服务下线
+        * 当服务实例进行正常的关闭操作时， 它会触发一个服务下线的REST请求给Eurkea-Server
+        * 服务端在接收到请求 之后， 将该服务状态置为下线(DOWN), 并把该下线事件传播出去
 * **服务注册中心**
     * 失效剔除
+        * Eureka Server在启动的时候会创建一个定时任务，默认每隔一段时间（默认为60秒） 将当前清单中超时（默认为90秒）没有续约的服务剔除出去。
     * 自我保护
+        * EurekaServer在运行期间，会统计心跳失败的比例在15分钟之内是否低于85%, 如果出现低于的情况（在单机调试的时候很容易满足， 实际在生产环境上通常是由于网络不稳定导致）， EurekaServer会将当前的实例注册信息保护起来， 让这些实例不会过期， 尽可能保护这些注册信息
+        * 在这段保护期间内实例若出现问题， 那么客户端很容易拿到实际已经不存在的服务实例， 会出现调用失败的清况， 所以客户端必须要有容错机制， 比如可以使用请求重试、 断路器等机制。
+        * eureka.server.enableself-preservation=true,默认使能
 
-##### 1.4.2.3.2. 源码分析
+
+##### 1.4.2.3.2. Region,Zone
+**背景**
+用户量比较大或者用户地理位置分布范围很广的项目，一般都会有多个机房。这个时候如果上线springCloud服务的话，我们希望一个机房内的服务优先调用同一个机房内的服务，当同一个机房的服务不可用的时候，再去调用其它机房的服务，以达到减少延时的作用。
+
+**概念**
+eureka提供了region和zone两个概念来进行分区，这两个概念均来自于亚马逊的AWS：
+* region：可以简单理解为地理上的分区，比如亚洲地区，或者华北地区，再或者北京等等，没有具体大小的限制。根据项目具体的情况，可以自行合理划分region。
+* zone：可以简单理解为region内的具体机房，比如说region划分为北京，然后北京有两个机房，就可以在此region之下划分出zone1,zone2两个zone。
+
+**分区服务架构图**
+![](https://segmentfault.com/img/bV7lKo?w=865&h=343)
+如图所示，有一个region:beijing，下面有zone-1和zone-2两个分区，每个分区内有一个注册中心Eureka Server和一个服务提供者Service。
+我们在zone-1内创建一个Consumer-1服务消费者的话，其会优先调用同一个zone内的Service-1，当Service-1不可用时，才会去调用zone-2内的Service-2。
+
+**配置**
+
+* Eureka Server-1：
+```yml
+spring:
+  application:
+    name: Server-1
+server:
+  port: 30000
+eureka:
+  instance:
+    prefer-ip-address: true
+    status-page-url-path: /actuator/info
+    health-check-url-path: /actuator/health
+    hostname: localhost
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    prefer-same-zone-eureka: true
+    #地区
+    region: beijing
+    availability-zones:
+      beijing: zone-1,zone-2
+    service-url:
+      zone-1: http://localhost:30000/eureka/
+      zone-2: http://localhost:30001/eureka/
+
+```
+
+* Eureka Server-2：
+
+```yml
+spring:
+  application:
+    name: Server-2
+server:
+  port: 30001
+eureka:
+  instance:
+    prefer-ip-address: true
+    status-page-url-path: /actuator/info
+    health-check-url-path: /actuator/health
+    hostname: localhost
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    prefer-same-zone-eureka: true
+    #地区
+    region: beijing
+    availability-zones:
+      beijing: zone-2,zone-1
+    service-url:
+      zone-1: http://localhost:30000/eureka/
+      zone-2: http://localhost:30001/eureka/
+```
+
+Service-1:
+
+测试代码：
+```java
+@RestController
+public class HiController {
+    @Value("${zone.name}")
+    private String zoneName;
+    
+    @RequestMapping(value = "/hi", method = RequestMethod.GET)
+    public String hi() {
+        return zoneName;
+    }
+}
+```
+配置文件：
+
+```yml
+spring:
+  application:
+    name: service
+server:
+  port: 30010
+eureka:
+  instance:
+    prefer-ip-address: true
+    status-page-url-path: /actuator/info
+    health-check-url-path: /actuator/health
+    metadata-map:
+      zone: zone-1
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    prefer-same-zone-eureka: true
+    #地区
+    region: beijing
+    availability-zones:
+      beijing: zone-1,zone-2
+    service-url:
+      zone-1: http://localhost:30000/eureka/
+      zone-2: http://localhost:30001/eureka/
+
+zone.name: zone-
+```
+
+
+Service-2:
+```yml
+spring:
+  application:
+    name: service
+server:
+  port: 30011
+eureka:
+  instance:
+    prefer-ip-address: true
+    status-page-url-path: /actuator/info
+    health-check-url-path: /actuator/health
+    metadata-map:
+      zone: zone-2
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    prefer-same-zone-eureka: true
+    #地区
+    region: beijing
+    availability-zones:
+      beijing: zone-2,zone-1
+    service-url:
+      zone-1: http://localhost:30000/eureka/
+      zone-2: http://localhost:30001/eureka/
+
+zone.name: zone-2
+```
+
+Consumer-1:
+
+调用服务代码：
+```java
+@RestController
+public class HiController {
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @RequestMapping(value="/consumer")
+    public String hi() {
+        return restTemplate.getForObject("http://service/hi", String.class);
+    }
+}
+```
+配置文件：
+
+```yml
+spring:
+  application:
+    name: consumer
+server:
+  port: 30030
+eureka:
+  instance:
+    prefer-ip-address: true
+    status-page-url-path: /actuator/info
+    health-check-url-path: /actuator/health
+    metadata-map:
+      zone: zone-1
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    prefer-same-zone-eureka: true
+    #地区
+    region: beijing
+    availability-zones:
+      beijing: zone-1,zone-2
+    service-url:
+      zone-1: http://localhost:30000/eureka/
+      zone-2: http://localhost:30001/eureka/
+
+```
+* Consumer-1优先调用的是同一个zone-1的Service-1，这个时候，无论怎么刷新，调用多少次，都只会调用Service-1，不会调用Service-2.
+* 当我们把Service-1服务停掉，再调用的话,才会调用zone-2分区下的Service-2。
+
+**配置文件讲解**
+
+整个分区分为两步：
+* 服务注册：要保证服务注册到同一个zone内的注册中心，因为如果注册到别zone的注册中心的话，网络延时比较大，心跳检测很可能出问题。
+* 服务调用：要保证优先调用同一个zone内的服务，只有在同一个zone内的服务不可用时，才去调用别zone的服务。
+
+1. 服务注册的配置文件
+```yml
+eureka:
+  client:
+    prefer-same-zone-eureka: true
+    #地区
+    region: beijing
+    availability-zones:
+      beijing: zone-1,zone-2
+    service-url:
+      zone-1: http://localhost:30000/eureka/
+      zone-2: http://localhost:30001/eureka/
+```
+
+当一个服务（作为一个eureka client）向注册中心（eureka server）注册的时候，会根据eureka.client下的配置来进行注册。这里我们主要关心有多个注册中心的情况下，服务会注册到哪个注册中心，并且和哪个注册中心来维持心跳检测。
+注册中心选择逻辑：
+1. 如果prefer-same-zone-eureka为false，按照service-url下的 list取第一个注册中心来注册，并和其维持心跳检测。不会再向list内的其它的注册中心注册和维持心跳。只有在第一个注册失败的情况下，才会依次向其它的注册中心注册，总共重试3次，如果3个service-url都没有注册成功，则注册失败。每隔一个心跳时间，会再次尝试。
+2. 如果prefer-same-zone-eureka为true，先通过region取availability-zones内的第一个zone，然后通过这个zone取service-url下的list，并向list内的第一个注册中心进行注册和维持心跳，不会再向list内的其它的注册中心注册和维持心跳。只有在第一个注册失败的情况下，才会依次向其它的注册中心注册，总共重试3次，如果3个service-url都没有注册成功，则注册失败。每隔一个心跳时间，会再次尝试。
+
+所以说，为了保证服务注册到同一个zone的注册中心，一定要注意availability-zones的顺序，必须把同一zone写在前面
+
+2. 服务调用的配置文件
+```yml
+eureka:
+  instance:
+    metadata-map:
+      zone: zone-1
+```
+服务消费者和服务提供者分别属于哪个zone，均是通过eureka.instance.metadata-map.zone来判定的。
+服务消费者会先通过ribbon去注册中心拉取一份服务提供者的列表，然后通过eureka.instance.metadata-map.zone指定的zone进行过滤，过滤之后如果同一个zone内的服务提供者有多个实例，则会轮流调用。
+只有在同一个zone内的所有服务提供者都不可用时，才会调用其它zone内的服务提供者。
+
+* 扩展
+```yml
+eureka.instance.lease-renewal-interval-in-seconds: 30
+```
+服务和注册中心的心跳间隔时间，默认为30s
+```yml
+eureka.instance.lease-expiration-duration-in-seconds: 90
+```
+服务和注册中心的心跳超时时间，默认为90s
+
+也就是说，当一个服务异常down掉后，90s之后注册中心才会知道这个服务不可用了。在此期间，依旧会把这个服务当成正常服务。ribbon调用仍会把请求转发到这个服务上。为了避免这段期间出现无法提供服务的情况，要开启ribbon的重试功能，去进行其它服务提供者的重试。
+
+##### 1.4.2.3.3. 源码分析
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -2161,24 +2493,1328 @@ EurekaServer的高可用实际上就是将自己作为服务向其他服务注�
 #### 1.4.2.4. 更多配置说明
 <a href="#menu" style="float:right">目录</a>
 
+**前缀eureka.client**
+|参数名| 说明| 默认值|
+|---|---|---|
+|enabled| 启用Eureka客户端| true
+|registryFetcl让ntervalSeconds |从Eureka服务端获取注册信息的间隔时间，单位为秒 |30
+|instancelnfoReplicationlnterva!Seconds 更新实例信息的变化到E田eka服务端的间隔时间， 单位为秒 30
+|inItiallnstancelnfoRepIicationintervalSeconds| 初始化 实例信息到 Eureka 服务端的间隔时间， 单位为秒| 40
+|eurekaServiceUrlPolllntervalSeconds|轮询Eureka服务端地址更改的间隔时间，单位为秒。当我们与Spring Cloud Config配合，动态刷新Eureka的serv1ceURL地址时需要关注该参数|300
+|eurekaServerReadTimeoutSeconds| 读取Eureka Se1-ver信息的超时时间， 单位为秒| 8
+|eurekaServerConnectTimeoutSeconds| 连接 Eureka Server的超时时间， 单位为秒| 5
+|eurekaServerTotalConnections| 从Eureka客户端到所有Eureka服务端的连接总数| 200
+|eurekaServerTotalConnectionsPerHost |从Eureka客户端到每个Eureka服务端主机的连接总数 |50
+|eurekaConnectionldleTimeoutSeconds| Eureka服务端 连接的空闲关闭时间， 单位为秒| 30
+|heartbeatExecutorT缸eadPoolSize |心跳连接池的初始化线程数| 2
+|heartbeatExecutorExponentta!BackOffBound |心跳超时重试延迟时间的最大乘数值| 10
+|cacheRefresl让xecutorThreadPoolS1ze| 缓存刷新线程池的初始化线程数| 2
+|cacheRefreshExecutorExponentialBackOffBound |缓存刷新重试延迟时间的最大乘数值| 10
+|useDnsForFetchmgServ1ceUrls| 使用DNS来获取Eureka服务端的serviceUri| false
+|registerWitl也ureka |是否要将自身的实例信息 注册到Eureka服务端| true
+|preferSameZoneEureka |是否偏好使用处于相同Zone的Eureka服务端| true
+|filterOnlyUplnstances| 获取实例 时是否过滤， 仅保留UP状态的实例 |true
+|fetchRegistry| 是否从Eureka服务端获取注册信息|true
+
+**前缀eureka.instance**
+|参数名| 说明| 默认值|
+|---|---|---|
+|preferlpAddress| 是否优先使用IP地址作为主机名的标识| false
+|leaseRenewallntervallnSeconds| Eureka客户端向服务端发送心跳的时间间隔， 单位为秒| 30
+|leaseExpirationDurationlnSeconds |Eureka服务端在收到砓后 一次心跳之后等待的时间上限，单位为秒。 超过该时间之后服务端会将该服务实例从服务消单中剔除， 从而禁止服务调用请求被发送到该实例上 |90
+|nonSecurePort |非安全的通信端口号 |80
+|securePort |安全的通信端口号| 443
+|nonSecurePotiEnabled |是否启用非安全的通信端口号 |true
+|securePortEnabled| 是否启用安全的通信端口号
+|appname |服务名，默认取spring.application.name的配置值，如果没有则为unknown
+|hostname |主机名， 不配置的时候将根据操作系统的主机名来获取
 
 ### 1.4.3. 负载均衡Ribbon
 <a href="#menu" style="float:right">目录</a>
 
-### 1.4.4. 声明式服务调用
+Spring Cloud Ribbon 是一个基于 HTTP 和 TCP 的客户端负载均衡工具，它基于 Netflixribbon 实现。 通过 Spring Cloud 的封装， 可以让我们轻松地将面向服务的 REST 模板请求自动转换成客户端负载均衡的服务调用。 Spring Cloud Ribbon 虽然只是一个工具类框架，它不像服务注册中心、 配置中心、 API 网关那样需要独立部署， 但是它几乎存在于每一个Spring Cloud 构建的微服务和基础设施中。 因为微服务间的调用，API 网关的请求转发等内容实际上都是通过伈bbon 来实现的，包括后续我们将要介绍的 Feign, 它也是基于 Ribbon实现的工具。 所以， 对 Spring Cloud Ribbon 的理解和使用， 对于我们使用 Spring Cloud 来构建微服务非常重要。
+
+ribbon底层是基于RestTemplate实现Http请求
+org.springframework.web.client.RestTemplate
+
+#### 1.4.3.1. 基本使用
 <a href="#menu" style="float:right">目录</a>
 
-### 1.4.5. API网关服务
+**引入依赖**
+```xml
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+</dependency>
+```
+**代码**
+
+```java
+@Configuration
+public class RibbonConfig {
+
+    @Bean
+    //开启客户端负载均衡
+    @LoadBalanced
+    public RestTemplate restTemplate(){
+        return new RestTemplate();
+    }
+}
+
+@Service
+public class RibbonService {
+
+    private  static Logger log = LoggerFactory.getLogger(RibbonService.class);
+
+    //注入
+    @Autowired
+    private  RestTemplate restTemplate;
+
+    //用于容错，可以不用
+    @HystrixCommand(fallbackMethod = "ribbonFail")
+    public String  ribbon(){
+        //通过服务名称cloud-provider进行调用
+        return  restTemplate.getForObject("http://cloud-provider/ribbon",String.class);
+    }
+    public String  ribbonFail(){
+        log.info("ribbon 请求失败");
+        return  "ribbon 请求失败" + new Date().getSeconds();
+    }
+
+}
+
+
+
+```
+
+#### 1.4.3.2. 原理说明
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.4.5.1. zuul
+##### 1.4.3.2.1. 源码分析
+
+**LoadBalancerAutoConfiguration配置类**
+
+在该自动化配置类中， 主要做了下面三件事：
+• 创建了一个LoadBalancer工吐erceptor的Bean, 用千实现对客户端发起请求
+时进行拦截， 以实现客户端负载均衡。
+• 创建了 一个RestTemplateCustomizer的Bean, 用于给Res七Template增加
+LoadBalancer工nterceptor拦截器。
+• 维护了 一个被@LoadBalanced 注解修饰的RestTempl琴e对象列表， 并在这里
+进行初始化， 通过调用Res七TemplateCustomizer的实例来给需要客户端负载
+均衡的Res七Template增加LoadBalancerin七erceptor拦截器。
+
+```java
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by Fernflower decompiler)
+//
+
+package org.springframework.cloud.client.loadbalancer;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.function.Consumer;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.SmartInitializingSingleton;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.retry.support.RetryTemplate;
+import org.springframework.web.client.RestTemplate;
+
+@Configuration
+@ConditionalOnClass({RestTemplate.class})
+@ConditionalOnBean({LoadBalancerClient.class})
+@EnableConfigurationProperties({LoadBalancerRetryProperties.class})
+public class LoadBalancerAutoConfiguration {
+    @LoadBalanced
+    @Autowired(
+        required = false
+    )
+    private List<RestTemplate> restTemplates = Collections.emptyList();
+    @Autowired(
+        required = false
+    )
+    private List<LoadBalancerRequestTransformer> transformers = Collections.emptyList();
+
+    public LoadBalancerAutoConfiguration() {
+    }
+
+    @Bean
+    public SmartInitializingSingleton loadBalancedRestTemplateInitializerDeprecated(final ObjectProvider<List<RestTemplateCustomizer>> restTemplateCustomizers) {
+        return () -> {
+            restTemplateCustomizers.ifAvailable((customizers) -> {
+                Iterator var2 = this.restTemplates.iterator();
+
+                while(var2.hasNext()) {
+                    RestTemplate restTemplate = (RestTemplate)var2.next();
+                    Iterator var4 = customizers.iterator();
+
+                    while(var4.hasNext()) {
+                        RestTemplateCustomizer customizer = (RestTemplateCustomizer)var4.next();
+                        customizer.customize(restTemplate);
+                    }
+                }
+
+            });
+        };
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public LoadBalancerRequestFactory loadBalancerRequestFactory(LoadBalancerClient loadBalancerClient) {
+        return new LoadBalancerRequestFactory(loadBalancerClient, this.transformers);
+    }
+
+    @Configuration
+    @ConditionalOnClass({RetryTemplate.class})
+    public static class RetryInterceptorAutoConfiguration {
+        public RetryInterceptorAutoConfiguration() {
+        }
+
+        @Bean
+        @ConditionalOnMissingBean
+        public RetryLoadBalancerInterceptor ribbonInterceptor(LoadBalancerClient loadBalancerClient, LoadBalancerRetryProperties properties, LoadBalancerRequestFactory requestFactory, LoadBalancedRetryFactory loadBalancedRetryFactory) {
+            return new RetryLoadBalancerInterceptor(loadBalancerClient, properties, requestFactory, loadBalancedRetryFactory);
+        }
+
+        @Bean
+        @ConditionalOnMissingBean
+        public RestTemplateCustomizer restTemplateCustomizer(final RetryLoadBalancerInterceptor loadBalancerInterceptor) {
+            return (restTemplate) -> {
+                List<ClientHttpRequestInterceptor> list = new ArrayList(restTemplate.getInterceptors());
+                list.add(loadBalancerInterceptor);
+                restTemplate.setInterceptors(list);
+            };
+        }
+    }
+
+    @Configuration
+    @ConditionalOnClass({RetryTemplate.class})
+    public static class RetryAutoConfiguration {
+        public RetryAutoConfiguration() {
+        }
+
+        @Bean
+        @ConditionalOnMissingBean
+        public LoadBalancedRetryFactory loadBalancedRetryFactory() {
+            return new LoadBalancedRetryFactory() {
+            };
+        }
+    }
+
+    @Configuration
+    @ConditionalOnMissingClass({"org.springframework.retry.support.RetryTemplate"})
+    static class LoadBalancerInterceptorConfig {
+        LoadBalancerInterceptorConfig() {
+        }
+
+        @Bean
+        public LoadBalancerInterceptor ribbonInterceptor(LoadBalancerClient loadBalancerClient, LoadBalancerRequestFactory requestFactory) {
+            return new LoadBalancerInterceptor(loadBalancerClient, requestFactory);
+        }
+
+        @Bean
+        @ConditionalOnMissingBean
+        public RestTemplateCustomizer restTemplateCustomizer(final LoadBalancerInterceptor loadBalancerInterceptor) {
+            return (restTemplate) -> {
+                List<ClientHttpRequestInterceptor> list = new ArrayList(restTemplate.getInterceptors());
+                list.add(loadBalancerInterceptor);
+                restTemplate.setInterceptors(list);
+            };
+        }
+    }
+}
+
+
+```
+当 一个被@LoadBalanced 注解修饰的 RestTemplate 对象向外发起 HTTP 请求时， 会被 LoadBalancerintercep七or 类的 intercept 函数所拦截。
+
+![ribbon请求流程](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/ribbon-dorequest.png)
+
+InterceptingClientHttpRequest
+
+```java
+public ClientHttpResponse execute(HttpRequest request, byte[] body) throws IOException {
+    if (this.iterator.hasNext()) {
+        //执行拦截器
+        ClientHttpRequestInterceptor nextInterceptor = (ClientHttpRequestInterceptor)this.iterator.next();
+        return nextInterceptor.intercept(request, body, this);
+    } else {
+        HttpMethod method = request.getMethod();
+        Assert.state(method != null, "No standard HTTP method");
+        ClientHttpRequest delegate = InterceptingClientHttpRequest.this.requestFactory.createRequest(request.getURI(), method);
+        request.getHeaders().forEach((key, value) -> {
+            delegate.getHeaders().addAll(key, value);
+        });
+        if (body.length > 0) {
+            if (delegate instanceof StreamingHttpOutputMessage) {
+                StreamingHttpOutputMessage streamingOutputMessage = (StreamingHttpOutputMessage)delegate;
+                streamingOutputMessage.setBody((outputStream) -> {
+                    StreamUtils.copy(body, outputStream);
+                });
+            } else {
+                StreamUtils.copy(body, delegate.getBody());
+            }
+        }
+
+        return delegate.execute();
+    }
+}
+```
+**通过负载均衡获取服务器并执行请求**
+
+* @LoadBalanced注解 源码的注释中可以知道， 该注解用来给RestTemplate做标记， 以使用负载均衡的客户端(LoadBalancerClient)来配置它
+
+```java
+package org.springframework.cloud.client.loadbalancer;
+
+import java.io.IOException;
+import java.net.URI;
+import org.springframework.cloud.client.ServiceInstance;
+
+public interface LoadBalancerClient extends ServiceInstanceChooser {
+    <T> T execute(String serviceId, LoadBalancerRequest<T> request) throws IOException;
+
+    <T> T execute(String serviceId, ServiceInstance serviceInstance, LoadBalancerRequest<T> request) throws IOException;
+
+    URI reconstructURI(ServiceInstance instance, URI original);
+}
+```
+LoadBalancerClient的实现类是RibbonLoadBalancerClient，看下其具体实现
+```java
+public <T> T execute(String serviceId, LoadBalancerRequest<T> request) throws IOException {
+    return this.execute(serviceId, (LoadBalancerRequest)request, (Object)null);
+}
+public <T> T execute(String serviceId, LoadBalancerRequest<T> request, Object hint) throws IOException {
+
+    //获取负载均衡器
+    ILoadBalancer loadBalancer = this.getLoadBalancer(serviceId);
+    //通过负载均衡器获取服务
+    Server server = this.getServer(loadBalancer, hint);
+    if (server == null) {
+        throw new IllegalStateException("No instances available for " + serviceId);
+    } else {
+        RibbonLoadBalancerClient.RibbonServer ribbonServer = new RibbonLoadBalancerClient.RibbonServer(serviceId, server, this.isSecure(server, serviceId), this.serverIntrospector(serviceId).getMetadata(server));
+        //执行实际的Http请求
+        return this.execute(serviceId, (ServiceInstance)ribbonServer, (LoadBalancerRequest)request);
+    }
+}
+
+protected Server getServer(ILoadBalancer loadBalancer, Object hint) {
+    return loadBalancer == null ? null : loadBalancer.chooseServer(hint != null ? hint : "default");
+}
+
+    
+```
+最终是由ILoadBalancer的实现类的chooseServer（）方法负责实现，系统提供了几个，用户也可以自己实现
+```java
+public interface ILoadBalancer {
+
+    // 向负载均衡器中维护的实例列表增加服务实例。
+    void addServers(List<Server> var1);
+    //通过某种策略， 从负载均衡器中挑选出 一个具体的服务实例。
+    Server chooseServer(Object var1);
+    //用来通知和标识负载均衡器中某个具体实例已经停止服务， 不然负载均衡器在下一次获取服务实例清单前都会认为服务实例均是正常服务的
+    void markServerDown(Server var1);
+
+    /** @deprecated */
+    @Deprecated    
+    List<Server> getServerList(boolean var1);
+    //获取当前正常服务的实例列表
+    List<Server> getReachableServers();
+    //获取所有已知的服务实例列表， 包括正常服务和停止服务的实例
+    List<Server> getAllServers();
+}
+```
+![负载均衡实现类](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/loadbalance-extends.png)
+
+可以看到默认的是ZoneAwareLoadBalancer方式
+```java
+public class RibbonClientConfiguration {
+    @Bean
+    @ConditionalOnMissingBean
+    public IRule ribbonRule(IClientConfig config) {
+        if (this.propertiesFactory.isSet(IRule.class, this.name)) {
+            return (IRule)this.propertiesFactory.get(IRule.class, config, this.name);
+        } else {
+            ZoneAvoidanceRule rule = new ZoneAvoidanceRule();
+            rule.initWithNiwsConfig(config);
+            return rule;
+        }
+    }
+    @Bean
+    @ConditionalOnMissingBean
+    public ILoadBalancer ribbonLoadBalancer(IClientConfig config, ServerList<Server> serverList, ServerListFilter<Server> serverListFilter, IRule rule, IPing ping, ServerListUpdater serverListUpdater) {
+        return (ILoadBalancer)(this.propertiesFactory.isSet(ILoadBalancer.class, this.name) ? (ILoadBalancer)this.propertiesFactory.get(ILoadBalancer.class, config, this.name) : new ZoneAwareLoadBalancer(config, rule, ping, serverList, serverListFilter, serverListUpdater));
+    } 
+}
+```
+再回到 RibbonLoadBalancerC巨ent 的 execute 函数逻辑， 在通过ZoneAwareLoadBalancer 的 chooseServer 函数获取了负载均衡策略分配到的服务实例对象 Server 之后， 将其内容包装成贮bbonServer 对象（该对象除了存储了服务实例的信息之外， 还增加了服务名 service豆、 是否需要使用 HTTPS 等其他信息）， 然后使用该对象再回调 LoadBalancerinterceptor 请求拦截器中 LoadBalancerRequest的 apply(丘nal Serviceins七ance instance) 函数， 向 一个实际的具体服务实例发起请求，从而实现一开始以服务名为 host 的 URI 请求到 host:post 形式的实际访问地址的转换。
+
+RibbonLoadBalancerClient类
+```java
+//
+ public <T> T execute(String serviceId, LoadBalancerRequest<T> request, Object hint) throws IOException {
+    ILoadBalancer loadBalancer = this.getLoadBalancer(serviceId);
+    Server server = this.getServer(loadBalancer, hint);
+    if (server == null) {
+        throw new IllegalStateException("No instances available for " + serviceId);
+    } else {
+        RibbonLoadBalancerClient.RibbonServer ribbonServer = new RibbonLoadBalancerClient.RibbonServer(serviceId, server, this.isSecure(server, serviceId), this.serverIntrospector(serviceId).getMetadata(server));
+        return this.execute(serviceId, (ServiceInstance)ribbonServer, (LoadBalancerRequest)request);
+    }
+}
+
+public <T> T execute(String serviceId, ServiceInstance serviceInstance, LoadBalancerRequest<T> request) throws IOException {
+    Server server = null;
+    if (serviceInstance instanceof RibbonLoadBalancerClient.RibbonServer) {
+        server = ((RibbonLoadBalancerClient.RibbonServer)serviceInstance).getServer();
+    }
+
+    if (server == null) {
+        throw new IllegalStateException("No instances available for " + serviceId);
+    } else {
+        RibbonLoadBalancerContext context = this.clientFactory.getLoadBalancerContext(serviceId);
+        RibbonStatsRecorder statsRecorder = new RibbonStatsRecorder(context, server);
+
+        try {
+            //最终执行请求LoadBalancerRequest实现
+            T returnVal = request.apply(serviceInstance);
+            statsRecorder.recordStats(returnVal);
+            return returnVal;
+        } catch (IOException var8) {
+            statsRecorder.recordStats(var8);
+            throw var8;
+        } catch (Exception var9) {
+            statsRecorder.recordStats(var9);
+            ReflectionUtils.rethrowRuntimeException(var9);
+            return null;
+        }
+    }
+}
+
+```
+
+##### 1.4.3.2.2. 负载均衡器
+
+![负载均衡实现类](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/loadbalance-extends.png)
+
+**AbstractLoadBalancer**是ILoadBalancer接口的抽象实现。在该抽象类中定义了一个关于服务实例的分组枚举类 ServerGroup
+```java
+public abstract class AbstractLoadBalancer implements ILoadBalancer {
+    public AbstractLoadBalancer() {
+    }
+
+    public Server chooseServer() {
+        return this.chooseServer((Object)null);
+    }
+
+    public abstract List<Server> getServerList(AbstractLoadBalancer.ServerGroup var1);
+
+    public abstract LoadBalancerStats getLoadBalancerStats();
+
+    public static enum ServerGroup {
+        //所有服务实例。
+        ALL,
+        //正常服务的实例。
+        STATUS_UP,
+        //停止服务的实例
+        STATUS_NOT_UP;
+
+        private ServerGroup() {
+        }
+    }
+}
+```
+**BaseloadBalancer**
+BaseLoadBalancer 类是和bbon 负载均衡器的基础实现类，在该类中定义了很多关于负载均衡器相关的基础内容。
+* 定义并维护了两个存储服务实例 Server 对象的列表。 一个用千存储所有 服务实例的清单， 一个用于存储正常服务的实例清单。
+* 定义了之前我 们提到的用来存储负载均衡器各服务 实 例 属性和统计信息的LoadBalancerS七ats 对象
+* 定义了检查服务实例是否正常服务的工贮ng 对象， 在 BaseLoadBalancer 中默认为 null, 需要在构造时注入它的具体实现。
+* 定义了检查服务实例操作的执行策略对象工贮ngStrategy,在 BaseLoadBalancer中默认使用了该类中定义的静态内部类 SerialPingStrategy 实现。 根据源码，我们可以看到该策略采用线性遍历 ping 服务实例的方式实现检查。 该策略在当IPing 的实现速度不理想， 或是 Server 列表过大时， 可能会影响系统性能， 这时候需要通过实现 IPingS七rategy 接口并重写 pingServers(Iping ping,Server[] servers) 函数去扩展 ping 的执行策略。
+* 定 义 了负 载 均 衡的处理规 则 工Rule 对 象， 从 BaseLoadBalancer 中chooseServer(Object key) 的实现源码， 我们可以知道， 负载均衡器实际将服务实例选择任务委托给了IRule 实例中的 choose 函数来实现。 而在这里， 默认初始化了 RoundRob江Rule 为工Rule 的实现对象。 RoundRobinRule 实现了最基本且常用的线性负载均衡规则
+* 启动 ping 任务：在 BaseLoadBalancer 的默认构造函数中，会直接启动一个用于定时检查 Server 是否健康的任务。 该任务默认的执行间隔为 10 秒。
+* 实现了 ILoadBalancer 接口定义的负载均衡器应具备以下一系列基本操作。
+* addServers(List newServers): 向负载均衡器中增加新的服务实例列表，该实现将原本已经维护着的所有服务实例清单 al1Server巨st 和新传入的服务 实 例 清 单 newServers 都加入到 newList 中， 然后通 过调用setServersList 函数对 new口st 进行处理，在 BaseLoadBalancer 中实现的时候会使用新的列表覆盖旧的列表。而之后介绍的几个扩展实现类对千服务实例清单更新的优化都是通过对 setServersLi江函数的重写来实现的
+
+**DynamicServerlistloadBalancer**
+DynamicServerListLoadBalancer 类继承于 BaseLoadBalancer 类， 它是对基础负载均衡器的扩展。 在该负载均衡器中， 实现了服务实例清单在运行期的动态更新能力；同时， 它还具备了对服务实例清单的过滤功能， 也就是说， 我们可以通过过滤器来选择性地获取一批服务实例清单
+
+**ZoneAwareloadBalancer**
+ZoneAwareLoadBalancer 负载均衡器是对 DynamicServerListLoadBalancer的扩展。在 DynamicServerLis七LoadBalancer 中， 我们可以看到它并没有重写选择具体服务实例的 chooseServer 函数， 所以它依然会采用在 BaseLoadBalancer 中实现的算法。 使用 RoundRobinRule 规则， 以线性轮询的方式来选择调用的服务实例， 该算法实现简单并没有区域 (Zone) 的概念， 所以它会把所有实例视为一个 Zone下的节点来看待， 这样就会周期性地产生跨区域 (Zone) 访问的情况， 由于跨区域会产生更高的延迟，这些实例主要以防止区域性故障实现高可用为目的而不能作为常规访问的实例， 所以在多区域部署的清况下会有一定的性能问题， 而该负载均衡器则 可以避免这样的问题.
+
+##### 1.4.3.2.3. 负载均衡策略
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.4.5.2. GateWay
+* IRule
+    * 负载均衡接口
+    * AbstractLoadBalancerRule
+        * 负载均衡策略的 抽象类，在该抽象类中定义了负载均衡器ILoadBalancer对象 ，该对象能够在具体实现选择服务 策略时，获取到一些负载均衡器中维护的信息来作为分配依据， 并以此设计一些符法来实现针对特定场景的高效策略
+        * ClientConfigEnabledRoundRobinRule
+            * 该策略较为特殊， 我们一般不直接使用它。 因为它本身并没有实现什么特殊的处理逻辑
+            * 在它的内部定义了一个 RoundRobinRule 策略， 而 choose函数的实现也正是使用了 RoundRobinRule 的线性轮询机制， 所以它实现的功能实际上与 RoundRobinRule 相同
+            * 默认的 choose 就实现了线性轮询机制， 在子类中做一些高级策略时通常有可能会存在一些无法实施的情况， 那么就可以用父类的实现作为备选 
+            * BestAvailableRule
+                * 通过遍历负载均衡器中维护的所有服务实例， 会过滤掉故障的实例， 并找出并发请求数最小的一个， 所以该策略的特性是可选出最空闲的实例。
+            * PredicateBasedRule
+                * 一个抽象策略,先过滤清单， 再轮询选择
+                * ZoneAvoidanceRule
+                * AvailabilityFilteringRule
+                    * 该策略继承自上面介绍的抽象策略 Predic红eBasedRule, 所以它也继承了 “先过滤清单，再轮询选择 ”的基本处理逻辑
+                    * 过滤故障的节点
+        * RoundRobinRule
+            * 该策略实现了按照线性轮询的方式依次选择每个服务实例的功能。
+            * WeightedResponseTimeRule
+                * 该策略是对 RoundRobinRule 的扩展， 增加了根据实例的运行情况来计算权重， 并根据权重来挑选实例， 以达到更优的分配效果
+            * ResponseTimeWeightedRule
+                * 旧的实现，废弃不用
+        * RandomRule
+            * 该策略实现了从服务实例清单中随机选择 一个服务实例的功能
+        * RetryRule
+            * 该策略实现了一个具备重试机制的实例选择功能
+            * 若选择不到就根据设置的尝试结束时间为阙值 maxRetryMillis参数定义的值+ choose 方法开始执行的时间戳）， 当超过该阑值后就返回 null
+
+
+**修改负载均衡策略**
+```java
+@Configuration
+public class MyRuleConfig {
+
+    @Bean //修改轮询规则为随机
+    public IRule iRule(){
+        return new RandomRule();
+    }
+}
+```
+
+
+```java
+public interface IRule {
+    Server choose(Object var1);
+
+    void setLoadBalancer(ILoadBalancer var1);
+
+    ILoadBalancer getLoadBalancer();
+}
+```
+**AbstractLoadBalancerRule**
+负载均衡策略的 抽象类，在该抽象类中定义了负载均衡器ILoadBalancer对象 ，该对象能够在具体实现选择服务 策略时，获取到一些负载均衡器中维护的信息来作为分配依据， 并以此设计一些符法来实现针对特定场景的高效策略 。
+
+```java
+public abstract class AbstractLoadBalancerRule implements IRule, IClientConfigAware {
+    private ILoadBalancer lb;
+
+    public AbstractLoadBalancerRule() {
+    }
+
+    public void setLoadBalancer(ILoadBalancer lb) {
+        this.lb = lb;
+    }
+
+    public ILoadBalancer getLoadBalancer() {
+        return this.lb;
+    }
+}
+
+```
+
+**RandomRule**
+
+该策略实现了从服务实例清单中随机选择 一个服务实例的功能。
+
+```java
+
+public class RandomRule extends AbstractLoadBalancerRule {
+    public RandomRule() {
+    }
+
+    @SuppressWarnings({"RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"})
+    public Server choose(ILoadBalancer lb, Object key) {
+        if (lb == null) {
+            return null;
+        } else {
+            Server server = null;
+
+            while(server == null) {
+                if (Thread.interrupted()) {
+                    return null;
+                }
+
+                List<Server> upList = lb.getReachableServers();
+                List<Server> allList = lb.getAllServers();
+                int serverCount = allList.size();
+                if (serverCount == 0) {
+                    return null;
+                }
+
+                int index = this.chooseRandomInt(serverCount);
+                server = (Server)upList.get(index);
+                if (server == null) {
+                    Thread.yield();
+                } else {
+                    if (server.isAlive()) {
+                        return server;
+                    }
+
+                    server = null;
+                    Thread.yield();
+                }
+            }
+
+            return server;
+        }
+    }
+
+    protected int chooseRandomInt(int serverCount) {
+        return ThreadLocalRandom.current().nextInt(serverCount);
+    }
+
+    public Server choose(Object key) {
+        return this.choose(this.getLoadBalancer(), key);
+    }
+
+    public void initWithNiwsConfig(IClientConfig clientConfig) {
+    }
+}
+
+```
+****
+```java
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by Fernflower decompiler)
+//
+
+package com.netflix.loadbalancer;
+
+import com.netflix.client.config.IClientConfig;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class RoundRobinRule extends AbstractLoadBalancerRule {
+    private AtomicInteger nextServerCyclicCounter;
+    private static final boolean AVAILABLE_ONLY_SERVERS = true;
+    private static final boolean ALL_SERVERS = false;
+    private static Logger log = LoggerFactory.getLogger(RoundRobinRule.class);
+
+    public RoundRobinRule() {
+        this.nextServerCyclicCounter = new AtomicInteger(0);
+    }
+
+    public RoundRobinRule(ILoadBalancer lb) {
+        this();
+        this.setLoadBalancer(lb);
+    }
+
+    public Server choose(ILoadBalancer lb, Object key) {
+        if (lb == null) {
+            log.warn("no load balancer");
+            return null;
+        } else {
+            Server server = null;
+            int count = 0;
+
+            while(true) {
+                if (server == null && count++ < 10) {
+                    List<Server> reachableServers = lb.getReachableServers();
+                    List<Server> allServers = lb.getAllServers();
+                    int upCount = reachableServers.size();
+                    int serverCount = allServers.size();
+                    if (upCount != 0 && serverCount != 0) {
+                        int nextServerIndex = this.incrementAndGetModulo(serverCount);
+                        server = (Server)allServers.get(nextServerIndex);
+                        if (server == null) {
+                            Thread.yield();
+                        } else {
+                            if (server.isAlive() && server.isReadyToServe()) {
+                                return server;
+                            }
+
+                            server = null;
+                        }
+                        continue;
+                    }
+
+                    log.warn("No up servers available from load balancer: " + lb);
+                    return null;
+                }
+
+                if (count >= 10) {
+                    log.warn("No available alive servers after 10 tries from load balancer: " + lb);
+                }
+
+                return server;
+            }
+        }
+    }
+
+    private int incrementAndGetModulo(int modulo) {
+        int current;
+        int next;
+        do {
+            current = this.nextServerCyclicCounter.get();
+            next = (current + 1) % modulo;
+        } while(!this.nextServerCyclicCounter.compareAndSet(current, next));
+
+        return next;
+    }
+
+    public Server choose(Object key) {
+        return this.choose(this.getLoadBalancer(), key);
+    }
+
+    public void initWithNiwsConfig(IClientConfig clientConfig) {
+    }
+}
+
+```
+****
+```java
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by Fernflower decompiler)
+//
+
+package com.netflix.loadbalancer;
+
+import com.netflix.client.config.IClientConfig;
+import com.netflix.client.config.IClientConfigKey;
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class WeightedResponseTimeRule extends RoundRobinRule {
+    public static final IClientConfigKey<Integer> WEIGHT_TASK_TIMER_INTERVAL_CONFIG_KEY = new IClientConfigKey<Integer>() {
+        public String key() {
+            return "ServerWeightTaskTimerInterval";
+        }
+
+        public String toString() {
+            return this.key();
+        }
+
+        public Class<Integer> type() {
+            return Integer.class;
+        }
+    };
+    public static final int DEFAULT_TIMER_INTERVAL = 30000;
+    private int serverWeightTaskTimerInterval = 30000;
+    private static final Logger logger = LoggerFactory.getLogger(WeightedResponseTimeRule.class);
+    private volatile List<Double> accumulatedWeights = new ArrayList();
+    private final Random random = new Random();
+    protected Timer serverWeightTimer = null;
+    protected AtomicBoolean serverWeightAssignmentInProgress = new AtomicBoolean(false);
+    String name = "unknown";
+
+    public WeightedResponseTimeRule() {
+    }
+
+    public WeightedResponseTimeRule(ILoadBalancer lb) {
+        super(lb);
+    }
+
+    public void setLoadBalancer(ILoadBalancer lb) {
+        super.setLoadBalancer(lb);
+        if (lb instanceof BaseLoadBalancer) {
+            this.name = ((BaseLoadBalancer)lb).getName();
+        }
+
+        this.initialize(lb);
+    }
+
+    void initialize(ILoadBalancer lb) {
+        if (this.serverWeightTimer != null) {
+            this.serverWeightTimer.cancel();
+        }
+
+        this.serverWeightTimer = new Timer("NFLoadBalancer-serverWeightTimer-" + this.name, true);
+        this.serverWeightTimer.schedule(new WeightedResponseTimeRule.DynamicServerWeightTask(), 0L, (long)this.serverWeightTaskTimerInterval);
+        WeightedResponseTimeRule.ServerWeight sw = new WeightedResponseTimeRule.ServerWeight();
+        sw.maintainWeights();
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            public void run() {
+                WeightedResponseTimeRule.logger.info("Stopping NFLoadBalancer-serverWeightTimer-" + WeightedResponseTimeRule.this.name);
+                WeightedResponseTimeRule.this.serverWeightTimer.cancel();
+            }
+        }));
+    }
+
+    public void shutdown() {
+        if (this.serverWeightTimer != null) {
+            logger.info("Stopping NFLoadBalancer-serverWeightTimer-" + this.name);
+            this.serverWeightTimer.cancel();
+        }
+
+    }
+
+    List<Double> getAccumulatedWeights() {
+        return Collections.unmodifiableList(this.accumulatedWeights);
+    }
+
+    @SuppressWarnings({"RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"})
+    public Server choose(ILoadBalancer lb, Object key) {
+        if (lb == null) {
+            return null;
+        } else {
+            Server server = null;
+
+            while(server == null) {
+                List<Double> currentWeights = this.accumulatedWeights;
+                if (Thread.interrupted()) {
+                    return null;
+                }
+
+                List<Server> allList = lb.getAllServers();
+                int serverCount = allList.size();
+                if (serverCount == 0) {
+                    return null;
+                }
+
+                int serverIndex = 0;
+                double maxTotalWeight = currentWeights.size() == 0 ? 0.0D : (Double)currentWeights.get(currentWeights.size() - 1);
+                if (maxTotalWeight >= 0.001D && serverCount == currentWeights.size()) {
+                    double randomWeight = this.random.nextDouble() * maxTotalWeight;
+                    int n = 0;
+
+                    for(Iterator var13 = currentWeights.iterator(); var13.hasNext(); ++n) {
+                        Double d = (Double)var13.next();
+                        if (d >= randomWeight) {
+                            serverIndex = n;
+                            break;
+                        }
+                    }
+
+                    server = (Server)allList.get(serverIndex);
+                } else {
+                    server = super.choose(this.getLoadBalancer(), key);
+                    if (server == null) {
+                        return server;
+                    }
+                }
+
+                if (server == null) {
+                    Thread.yield();
+                } else {
+                    if (server.isAlive()) {
+                        return server;
+                    }
+
+                    server = null;
+                }
+            }
+
+            return server;
+        }
+    }
+
+    void setWeights(List<Double> weights) {
+        this.accumulatedWeights = weights;
+    }
+
+    public void initWithNiwsConfig(IClientConfig clientConfig) {
+        super.initWithNiwsConfig(clientConfig);
+        this.serverWeightTaskTimerInterval = (Integer)clientConfig.get(WEIGHT_TASK_TIMER_INTERVAL_CONFIG_KEY, 30000);
+    }
+
+    class ServerWeight {
+        ServerWeight() {
+        }
+
+        public void maintainWeights() {
+            ILoadBalancer lb = WeightedResponseTimeRule.this.getLoadBalancer();
+            if (lb != null) {
+                if (WeightedResponseTimeRule.this.serverWeightAssignmentInProgress.compareAndSet(false, true)) {
+                    try {
+                        WeightedResponseTimeRule.logger.info("Weight adjusting job started");
+                        AbstractLoadBalancer nlb = (AbstractLoadBalancer)lb;
+                        LoadBalancerStats stats = nlb.getLoadBalancerStats();
+                        if (stats != null) {
+                            double totalResponseTime = 0.0D;
+
+                            ServerStats ss;
+                            for(Iterator var6 = nlb.getAllServers().iterator(); var6.hasNext(); totalResponseTime += ss.getResponseTimeAvg()) {
+                                Server server = (Server)var6.next();
+                                ss = stats.getSingleServerStat(server);
+                            }
+
+                            Double weightSoFar = 0.0D;
+                            List<Double> finalWeights = new ArrayList();
+                            Iterator var20 = nlb.getAllServers().iterator();
+
+                            while(var20.hasNext()) {
+                                Server serverx = (Server)var20.next();
+                                ServerStats ssx = stats.getSingleServerStat(serverx);
+                                double weight = totalResponseTime - ssx.getResponseTimeAvg();
+                                weightSoFar = weightSoFar + weight;
+                                finalWeights.add(weightSoFar);
+                            }
+
+                            WeightedResponseTimeRule.this.setWeights(finalWeights);
+                            return;
+                        }
+                    } catch (Exception var16) {
+                        WeightedResponseTimeRule.logger.error("Error calculating server weights", var16);
+                        return;
+                    } finally {
+                        WeightedResponseTimeRule.this.serverWeightAssignmentInProgress.set(false);
+                    }
+
+                }
+            }
+        }
+    }
+
+    class DynamicServerWeightTask extends TimerTask {
+        DynamicServerWeightTask() {
+        }
+
+        public void run() {
+            WeightedResponseTimeRule.ServerWeight serverWeight = WeightedResponseTimeRule.this.new ServerWeight();
+
+            try {
+                serverWeight.maintainWeights();
+            } catch (Exception var3) {
+                WeightedResponseTimeRule.logger.error("Error running DynamicServerWeightTask for {}", WeightedResponseTimeRule.this.name, var3);
+            }
+
+        }
+    }
+}
+
+```
+
+
+```java
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by Fernflower decompiler)
+//
+
+package com.netflix.loadbalancer;
+
+import com.netflix.client.config.IClientConfig;
+
+public class RetryRule extends AbstractLoadBalancerRule {
+    IRule subRule = new RoundRobinRule();
+    long maxRetryMillis = 500L;
+
+    public RetryRule() {
+    }
+
+    public RetryRule(IRule subRule) {
+        this.subRule = (IRule)(subRule != null ? subRule : new RoundRobinRule());
+    }
+
+    public RetryRule(IRule subRule, long maxRetryMillis) {
+        this.subRule = (IRule)(subRule != null ? subRule : new RoundRobinRule());
+        this.maxRetryMillis = maxRetryMillis > 0L ? maxRetryMillis : 500L;
+    }
+
+    public void setRule(IRule subRule) {
+        this.subRule = (IRule)(subRule != null ? subRule : new RoundRobinRule());
+    }
+
+    public IRule getRule() {
+        return this.subRule;
+    }
+
+    public void setMaxRetryMillis(long maxRetryMillis) {
+        if (maxRetryMillis > 0L) {
+            this.maxRetryMillis = maxRetryMillis;
+        } else {
+            this.maxRetryMillis = 500L;
+        }
+
+    }
+
+    public long getMaxRetryMillis() {
+        return this.maxRetryMillis;
+    }
+
+    public void setLoadBalancer(ILoadBalancer lb) {
+        super.setLoadBalancer(lb);
+        this.subRule.setLoadBalancer(lb);
+    }
+
+    public Server choose(ILoadBalancer lb, Object key) {
+        long requestTime = System.currentTimeMillis();
+        long deadline = requestTime + this.maxRetryMillis;
+        Server answer = null;
+        answer = this.subRule.choose(key);
+        if ((answer == null || !answer.isAlive()) && System.currentTimeMillis() < deadline) {
+            InterruptTask task = new InterruptTask(deadline - System.currentTimeMillis());
+
+            while(!Thread.interrupted()) {
+                answer = this.subRule.choose(key);
+                if (answer != null && answer.isAlive() || System.currentTimeMillis() >= deadline) {
+                    break;
+                }
+
+                Thread.yield();
+            }
+
+            task.cancel();
+        }
+
+        return answer != null && answer.isAlive() ? answer : null;
+    }
+
+    public Server choose(Object key) {
+        return this.choose(this.getLoadBalancer(), key);
+    }
+
+    public void initWithNiwsConfig(IClientConfig clientConfig) {
+    }
+}
+
+```
+
+##### 1.4.3.2.4. 配置详解 
+
+**Ribbon相关的配置**
+
+* IClientConig: Ribbon 的 客户端配置 ， 默认采用 com.netflix.client.config.Defaul七ClientConfigimpl实现。
+* IRule: Ribbon 的负载均衡策略 ， 默认采用 com.netflix.loadbalancer.ZoneAvoidanceRule实现，该策略能够在多区域环境下选出最佳区域的实例进行访问。
+* IPing: Ribbon的实例检查策略，默认采用com.netflix.loadbalancer.NoOpping实现， 该 检查策略是一个特殊的实现，实际上它并不会检查实例是否可用， 而是始终返回true, 默认认为所有服务实例都是可用的 。
+* ServerList<Server>: 服务实例清单的维护机制， 默认采用 com.netflix.loadbalancer.ConfigurationBasedServerList实现。
+* ServerListFilter<Server>: 服 务 实 例 清 单过滤机 制 ， 默认采用 org.springframework.cloud.netflix.ribbon.ZonePreferenceServerListFilter实现， 该策略能够优先过滤出与请求调用 方处于同区域的服务实例。
+* ILoadBalancer: 负载均衡器， 默 认采用 com.ne七flix.loadbalancer.ZoneAwareLoadBalancer实现， 它具备了区域感知的 能力。
+
+
+```java
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by Fernflower decompiler)
+//
+
+package org.springframework.cloud.netflix.ribbon;
+
+import com.netflix.client.DefaultLoadBalancerRetryHandler;
+import com.netflix.client.RetryHandler;
+import com.netflix.client.config.CommonClientConfigKey;
+import com.netflix.client.config.DefaultClientConfigImpl;
+import com.netflix.client.config.IClientConfig;
+import com.netflix.loadbalancer.ConfigurationBasedServerList;
+import com.netflix.loadbalancer.DummyPing;
+import com.netflix.loadbalancer.ILoadBalancer;
+import com.netflix.loadbalancer.IPing;
+import com.netflix.loadbalancer.IRule;
+import com.netflix.loadbalancer.PollingServerListUpdater;
+import com.netflix.loadbalancer.Server;
+import com.netflix.loadbalancer.ServerList;
+import com.netflix.loadbalancer.ServerListFilter;
+import com.netflix.loadbalancer.ServerListUpdater;
+import com.netflix.loadbalancer.ZoneAvoidanceRule;
+import com.netflix.loadbalancer.ZoneAwareLoadBalancer;
+import com.netflix.niws.client.http.RestClient;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.client.apache4.ApacheHttpClient4;
+import java.net.URI;
+import javax.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.commons.httpclient.HttpClientConfiguration;
+import org.springframework.cloud.netflix.ribbon.apache.HttpClientRibbonConfiguration;
+import org.springframework.cloud.netflix.ribbon.okhttp.OkHttpRibbonConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+
+@Configuration
+@EnableConfigurationProperties
+@Import({HttpClientConfiguration.class, OkHttpRibbonConfiguration.class, RestClientRibbonConfiguration.class, HttpClientRibbonConfiguration.class})
+public class RibbonClientConfiguration {
+    public static final int DEFAULT_CONNECT_TIMEOUT = 1000;
+    public static final int DEFAULT_READ_TIMEOUT = 1000;
+    public static final boolean DEFAULT_GZIP_PAYLOAD = true;
+    @RibbonClientName
+    private String name = "client";
+    @Autowired
+    private PropertiesFactory propertiesFactory;
+
+    public RibbonClientConfiguration() {
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public IClientConfig ribbonClientConfig() {
+        DefaultClientConfigImpl config = new DefaultClientConfigImpl();
+        config.loadProperties(this.name);
+        config.set(CommonClientConfigKey.ConnectTimeout, 1000);
+        config.set(CommonClientConfigKey.ReadTimeout, 1000);
+        config.set(CommonClientConfigKey.GZipPayload, true);
+        return config;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public IRule ribbonRule(IClientConfig config) {
+        if (this.propertiesFactory.isSet(IRule.class, this.name)) {
+            return (IRule)this.propertiesFactory.get(IRule.class, config, this.name);
+        } else {
+            ZoneAvoidanceRule rule = new ZoneAvoidanceRule();
+            rule.initWithNiwsConfig(config);
+            return rule;
+        }
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public IPing ribbonPing(IClientConfig config) {
+        return (IPing)(this.propertiesFactory.isSet(IPing.class, this.name) ? (IPing)this.propertiesFactory.get(IPing.class, config, this.name) : new DummyPing());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ServerList<Server> ribbonServerList(IClientConfig config) {
+        if (this.propertiesFactory.isSet(ServerList.class, this.name)) {
+            return (ServerList)this.propertiesFactory.get(ServerList.class, config, this.name);
+        } else {
+            ConfigurationBasedServerList serverList = new ConfigurationBasedServerList();
+            serverList.initWithNiwsConfig(config);
+            return serverList;
+        }
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ServerListUpdater ribbonServerListUpdater(IClientConfig config) {
+        return new PollingServerListUpdater(config);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ILoadBalancer ribbonLoadBalancer(IClientConfig config, ServerList<Server> serverList, ServerListFilter<Server> serverListFilter, IRule rule, IPing ping, ServerListUpdater serverListUpdater) {
+        return (ILoadBalancer)(this.propertiesFactory.isSet(ILoadBalancer.class, this.name) ? (ILoadBalancer)this.propertiesFactory.get(ILoadBalancer.class, config, this.name) : new ZoneAwareLoadBalancer(config, rule, ping, serverList, serverListFilter, serverListUpdater));
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ServerListFilter<Server> ribbonServerListFilter(IClientConfig config) {
+        if (this.propertiesFactory.isSet(ServerListFilter.class, this.name)) {
+            return (ServerListFilter)this.propertiesFactory.get(ServerListFilter.class, config, this.name);
+        } else {
+            ZonePreferenceServerListFilter filter = new ZonePreferenceServerListFilter();
+            filter.initWithNiwsConfig(config);
+            return filter;
+        }
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public RibbonLoadBalancerContext ribbonLoadBalancerContext(ILoadBalancer loadBalancer, IClientConfig config, RetryHandler retryHandler) {
+        return new RibbonLoadBalancerContext(loadBalancer, config, retryHandler);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public RetryHandler retryHandler(IClientConfig config) {
+        return new DefaultLoadBalancerRetryHandler(config);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ServerIntrospector serverIntrospector() {
+        return new DefaultServerIntrospector();
+    }
+
+    @PostConstruct
+    public void preprocess() {
+        RibbonUtils.setRibbonProperty(this.name, CommonClientConfigKey.DeploymentContextBasedVipAddresses.key(), this.name);
+    }
+
+    static class OverrideRestClient extends RestClient {
+        private IClientConfig config;
+        private ServerIntrospector serverIntrospector;
+
+        protected OverrideRestClient(IClientConfig config, ServerIntrospector serverIntrospector) {
+            this.config = config;
+            this.serverIntrospector = serverIntrospector;
+            this.initWithNiwsConfig(this.config);
+        }
+
+        public URI reconstructURIWithServer(Server server, URI original) {
+            URI uri = RibbonUtils.updateToSecureConnectionIfNeeded(original, this.config, this.serverIntrospector, server);
+            return super.reconstructURIWithServer(server, uri);
+        }
+
+        protected Client apacheHttpClientSpecificInitialization() {
+            ApacheHttpClient4 apache = (ApacheHttpClient4)super.apacheHttpClientSpecificInitialization();
+            apache.getClientHandler().getHttpClient().getParams().setParameter("http.protocol.cookie-policy", "ignoreCookies");
+            return apache;
+        }
+    }
+}
+
+```
+
+**修改默认配置**
+
+* 方式1
+
+自定义一个Bean
+```java
+@Configuration
+public class MyRibbonConfiguration {
+    @Bean
+    public IPing ribbonPing(IClientConfig config) {
+        return new PingUrl();
+    }
+}
+```
+
+* 方式2
+通过注解RibbonClient配置，实现更加细粒度的配置
+```java
+package org.springframework.cloud.netflix.ribbon;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+
+@Configuration
+@Import({RibbonClientConfigurationRegistrar.class})
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface RibbonClient {
+    String value() default "";
+
+    String name() default "";
+
+    Class<?>[] configuration() default {};
+}
+
+//配置某个服务的的策略
+//HelloServiceConfiguration中定义了新的配置如方式1
+@Configuration
+@RibbonClient(name = "hello-service", configuration = HelloServiceConfiguration.class)
+public class RibbonConfiguration 
+}
+```
+
+### 1.4.4. 声明式服务调用feign
 <a href="#menu" style="float:right">目录</a>
 
-### 1.4.6. 服务容错保护 Hystrix
+#### 1.4.4.1. 使用案例
+
+引入依赖，因为feign底层是依赖ribbon,因此也要引入该包
+```xml
+ <dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-openfeign</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+</dependency>
+```
+
+生明调用的接口，value为服务提供者的应用名称，@GetMapping用于定义服务提供者服务的方法和URL
+```java
+@FeignClient(value = "provider")
+public interface DemoFeign {
+
+    @GetMapping("/provider/demo")
+    public String demo();
+}
+```
+启动类添加注解
+```java
+@EnableFeignClients
+@EnableDiscoveryClient
+@SpringBootApplication
+public class EurekaConsumerFeignApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(EurekaConsumerFeignApplication.class, args);
+    }
+
+}
+```
+完成。
+
+**多参数**
+
+http://xxx?key1=xx&key2=xxx
+
+
+get
+```java
+@FeignClient(value = "provider")
+public interface DemoFeign {
+
+    @GetMapping("/provider/demo")
+    public String demo(@RequestParam("key1") String key1,@RequestParam("key1") String key2);
+}
+
+//或者使用map
+@FeignClient(value = "provider")
+public interface DemoFeign {
+
+    @GetMapping("/provider/demo")
+    public String demo(@RequestParam Map<String,Object> map);
+}
+
+//调用
+map.put("key1",xxx);
+map.put("key2",xxx);
+demo(map);
+
+```
+
+post
+```java
+@FeignClient(value = "provider")
+public interface DemoFeign {
+
+    @PostMapping("/provider/demo")
+    public String demo(@RequestBody User user);
+}
+```
+
+### 1.4.5. 服务容错保护 Hystrix
 <a href="#menu" style="float:right">目录</a>
+
+
+### 1.4.6. API网关服务
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.4.6.1. zuul
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.4.6.2. GateWay
+<a href="#menu" style="float:right">目录</a>
+
+
 
 ### 1.4.7. 分布式配置中心Config
 <a href="#menu" style="float:right">目录</a>
@@ -2188,6 +3824,278 @@ EurekaServer的高可用实际上就是将自己作为服务向其他服务注�
 
 ### 1.4.9. 分布式服务跟踪Sleuth
 <a href="#menu" style="float:right">目录</a>
+
+#### 1.4.9.1. 基本使用 
+
+pom配置
+```xml
+<!--  sleuth -->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-sleuth</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-zipkin</artifactId>
+</dependency>
+```
+
+**配置文件**
+因为数据需要发送到zipkin进行可视化查看，所以要配置zipkin的地址
+```yml
+spring:
+  zipkin:
+    # ZIPKINF地址
+    base-url: http://localhost:9411
+    sleuth:
+      sampler:
+        percentage: 1.0
+```
+
+**zipkin可视化查看**
+[下载zipkin](https://github.com/openzipkin/zipkin/tree/master/zipkin-server)
+可以直接下载jar文件，默认端口是9411。
+访问：http://localhost:9411
+
+**数据说明**
+消费者发起一个请求，输出日志
+
+```
+//消费者
+2019-08-23 02:03:57.657  INFO [eureka-consumer-feign,c920e0c9f8dbb546,c920e0c9f8dbb546,false] 6682 --- [nio-8004-exec-5] c.s.e.controller.ClientController        : 客户端访问
+//服务提供者
+2019-08-23 02:03:57.667  INFO [provider,c920e0c9f8dbb546,5259cbee0117b850,false] 6558 --- [nio-8002-exec-3] c.s.e.provider.ProviderController        : THis is provider!,[null]
+
+```
+[eureka-consumer-feign,c920e0c9f8dbb546,c920e0c9f8dbb546,false]
+[provider,c920e0c9f8dbb546,5259cbee0117b850,false]
+* 第一个值： eureka-consumer-feign/provider,它记录了应用的名称，也就是spring.application.name参数配置的属性。
+* 第二个值： c920e0c9f8dbb546,Spring Cloud Sleuth生成的一个ID, 称为Trace ID,它用来标识一条请求链路。 一条请求链路中包含一个TraceID, 多个SpanID。
+* 第三个值： 5259cbee0117b850, Spring Cloud Sleuth生成的另外一个 ID, 称为SpanID, 它表示一个基本的工作单元， 比如发送一个HTTP请求。
+* 第四个值： false, 表示是否要将该信息 输出到Zipkin等服务中来收集和展示 。
+
+上面四个值中的**TraceID**和**SpanID**是Spring Cloud Sleuth实现分布式服务跟踪的核心。 在一次服务请求链路的调用过程中， 会保待并传递同一个**Trace ID**, 从而将整个分布于不同微服务进程中的请求跟踪 信息串联起来。 以上面输出内容为例， trace-1 和trace-2同属于一个前端服务请求来源，所以它们的TraceID是相同的，处于同一条请求链路中
+
+
+#### 1.4.9.2. 跟踪原理
+
+这里只讲feign和Sleuth的实现原理，其他方式基本原理上差不多。
+
+##### 1.4.9.2.1. 基本实现原理
+
+在了解其实现原理之前需要思考的问题是，假如消费者使用的Feign声明式服务调用，sleuth是如何接入的，是如何生成各种ID插入请求的？
+
+在使用feign进行调用时，最终执行调用的是feign包下的execute(Request var1, Options var2)方法执行。
+Feign使用其内部静态实现类Default进行具体的处理
+
+```java
+package feign;
+
+public interface Client {
+    Response execute(Request var1, Options var2) throws IOException;
+    public static class Default implements Client {
+        public Response execute(Request request, Options options) throws IOException {
+            HttpURLConnection connection = this.convertAndSend(request, options);
+            return this.convertResponse(connection, request);
+        }
+    }
+}
+```
+因此我们只需要继承或者使用装饰模式即可对Request进行扩展，也就是添加各种ID。
+
+```java
+//使用继承模式
+public class SleuthClient implements Client.Default {
+
+    
+    public Response execute(Request request, Options options) throws IOException {
+        request.setHeader("X-B3-Traceld",1234);
+        request.setHeader("X-B3-Spanld",1234);
+        treturn super.client(request,options);        
+    }
+}
+
+//使用装饰模式
+public class SleuthClient implements Client {
+
+    private Client client;
+
+    public SleuthClient(Client client){
+        this.client = client;
+    }
+
+    public Response execute(Request request, Options options) throws IOException {
+        request.setHeader("X-B3-Traceld",1234);
+        request.setHeader("X-B3-Spanld",1234);
+        treturn this.client(request,options);        
+    }
+}
+
+main(){
+    //使用继承模式
+    SleuthClient sleuthClient = new SleuthClient();
+    sleuthClient.excute(request,opts);
+
+    //使用装饰模式
+    Client.Default default = new Client.Default();
+    SleuthClient sleuthClient = new SleuthClient(default);
+    sleuthClient.excute(request,opts);
+}
+```
+----
+
+##### 支持的组件
+Spring Cloud Sleuth可以追踪10种类型的组件，async、Hystrix，messaging，websocket，rxjava，scheduling，web（Spring MVC Controller，Servlet），webclient（Spring RestTemplate）、Feign、Zuul。下面是常用的八种类型。
+
+![Sleuth支持的组件](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/sleuth-instructment.png?raw=true)
+**Scheduled**
+原理是AOP处理Scheduled注解TraceSchedulingAspect可以带出，只要是在IOC容器中的Bean带有@Scheduled注解的方法的调用都会被sleuth处理。
+
+**Messaging**
+原理是基于spring messaging的ChannelInterceptor。
+TraceChannelInterceptor/IntegrationTraceChannelInterceptor 
+MessagingSpanTextMapExtractor和MessagingSpanTextMapInjector
+
+**Hystrix**
+原理是使用HystrixPlugins添加trace相关的plugin，自定义了一个HystrixConcurrencyStrategy的实现SleuthHystrixConcurrencyStrategy 
+具体参考TraceCommand和SleuthHystrixConcurrencyStrategy
+
+**Feign**
+原理是实现了两个Feign Client实例，一个不带Ribbon TraceFeignClient、一个带Ribbon，TraceLoadBalancerFeignClient 
+TraceFeignAspect AOP里面的逻辑是，有地方想获取Client实例，就拦截返回自己封装的Client。
+
+**Async**
+@Async注解和ThreadPoolTaskExecutor下面的类 
+具体参看TraceAsyncAspect
+
+**RestTempate**
+原理是spring client的Interceptor机制。具体参看TraceRestTemplateInterceptor。
+
+**Zuul**
+原理是zuul的Filter机制，ZuulFilter 
+实现了三个TracePreZuulFilter、TracePostZuulFilter两个Filter。
+
+##### 一些基本概念
+
+* 为了实现请求跟踪， 当请求发送到分布式系统的入口端点时， 只需要服务跟踪框架为该请求创建一个唯一的跟踪标识， 同时在分布式系统内部流转的时候， 框架始终保待传递 该唯一标识， 直到返回给请求方为止， 这个唯一 标识就是前文中提到的TraceID。 通过TraceID 的记录， 我们就能将所有请求过程的日志关联起来。
+* 为了统计各处理单元的时间延迟， 当请求到达各个服务组件时， 或是处理逻辑到达某个状态时， 也通过一个唯一标识来标记它的开始、 具体过程以及结束， 该标识就是前文中提到的SpanID。 对于每个Span来说， 它必须有开始和结束 两个节点， 通过记录开始 Span和结束Span的时间戳，就能统计出该Span的时间延迟，除了时间戳记录之外， 它还可以包含一些其他元数据， 比如事件名称、 请求信息等
+
+
+* cs - Client Sent -客户端发起一个请求，这个annotion描述了这个span的开始
+* sr - Server Received -服务端获得请求并准备开始处理它，如果将其sr减去cs时间戳便可得到网络延迟
+* ss - Server Sent -注解表明请求处理的完成(当请求返回客户端)，如果ss减去sr时间戳便可得到服务端需要的处理请求时间
+* cr - Client Received -表明span的结束，客户端成功接收到服务端的回复，如果cr减去cs时间戳便可得到客户端从服务端获取回复的所有所需时间
+
+在请求发送到下一个应用之前， Sleuth 会在该请求的Header中增加实现跟踪需要的重要信息，主要有下面这几个
+* X-B3-Traceld: 一条请求链路 (Trace) 的唯一 标识， 必需的值。
+* X-B3-Spanld: 一个工作单元 (Span) 的唯一 标识， 必需的值。
+* X-B3-ParentSpanld: 标识当前工作单元所属的上一个工作单元 ， Root Span C 请求链路的第一个工作单元） 的该值为空。
+* X-B3-Sampled: 是否被抽样输出的标志， 1 表示需要被输出 ， 0 表示不需要被输出
+* X-B3-Flags: 用于Debug,为1代表采样
+
+```java
+package brave.propagation;
+public final class B3Propagation<K> implements Propagation<K> {
+    static final String TRACE_ID_NAME = "X-B3-TraceId";
+    static final String SPAN_ID_NAME = "X-B3-SpanId";
+    static final String PARENT_SPAN_ID_NAME = "X-B3-ParentSpanId";
+    static final String SAMPLED_NAME = "X-B3-Sampled";
+    static final String FLAGS_NAME = "X-B3-Flags";
+}
+```
+
+##### zipkin
+Zipkin是Twitter的一个开源项目，我们可以使用它来收集各个服务器上请求链路的跟踪数据，并通过它提供的API接口来辅助查询跟踪数据以分布式系统的监控程序，通过UI组件帮助我们及时发现系统中出现的延迟升高问题以及系统性能瓶颈根源。
+**基本概念**
+下面展示Zipkin的基础架构，它主要由4个核心组件构成
+
+![](https://img-blog.csdn.net/20181010190929921?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3pobGxhbnNlemhpbGlhbg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
+* Collector（收集器组件）：主要负责收集外部系统跟踪信息，转化为Zipkin内部的Span格式。
+* Storage（存储组件）：主要负责收到的跟踪信息的存储，默认为存储在内存中，同时支持存储到Mysql、Cassandra以及ElasticSearch。
+* API（Query）： 负责查询Storage中存储的数据，提供简单的JSON API获取数据，主要提供给web UI使用。
+* Web UI（展示组件）：提供简单的web界面，方便进行跟踪信息的查看以及查询，同时进行相关的分析。
+
+Instrumented Client 和Instrumented Server，是指分布式架构中使用了Trace工具的两个应用，Client会调用Server提供的服务，两者都会向Zipkin上报Trace相关信息。在Client 和 Server通过Transport上报Trace信息后，由Zipkin的Collector模块接收，并由Storage模块将数据存储在对应的存储介质中，然后Zipkin提供API供UI界面查询Trace跟踪信息。Non-Instrumented Server，指的是未使用Trace工具的Server，显然它不会上报Trace信息。
+
+**数据模型**
+我们先来看看 Zipkin中关于跟踪信息的 一些基础概念。 由于 Zipkin的实现借鉴了Google的Dapper, 所以它们有着类似的核心术语， 主要有下面几项内容。
+
+* **Span:** 它代表了一个基础的工作单元。 我们以 HTTP请求为例，一次完整的请求过程在客户端和服务端都会产生多个不同的事件状态（比如下面所说的4个核心Annotation 所标识的不同阶段）。对于同一个请求来说， 它们属于一个工作单元， 所以同一 HTTP 请求过程中的 4 个 Annotation 同属千一个 Span。每一个不同的工作单元都通过一个 64 位的 ID 来唯一标识， 称为 Span ID。 另外， 在工作单元中还存储了一个用来串联其他工作单元的 ID, 它也通过一个 64 位的 ID 来唯一标识， 称为Trace ID。 在同一条请求链路中的不同工作单元都会有不同的 Span ID, 但是它们的Trace ID 是相同的， 所以通过 Trace ID 可以将一次请求中依赖的所有依赖请求串联起来形成请求链路。 除了这两个核心的 ID 之外， Span 中还存储了一些其他信息，比如，描述信息、事件时间戳、Annotation 的键值对属性、上一级工作单元的 Span ID等。
+* **Trace:** 它是由 一系列具有相同 Trace ID 的 Span 串联形成的一个树状结构。 在复杂的分布式系统中， 每一个外部请求通常都会产生一个复杂的树状结构的 Trace。
+* **Annotation:** 它用来及时地记录一个事件的存在。我们可以把 Annotation 理解为一个包含有时间戳的事件标签， 对千一个 HTTP 请求来说， 在 Sleuth 中定义了下面 4 个核心 Annotation 来标识一个请求的开始和结束。
+    * cs (Client Send): 该 Annotation 用来记录客户端发起了一个请求， 同时它也标识了这个 HTTP 请求的开始。
+    * sr (Server Received): 该 Annotation 用来记录服务端接收到了请求， 并准备开始处理它。通过计算 sr 与 cs 两个Annotation 的时间戳之差，我们可以得到当前 HTTP请求的网络延迟。
+    * ss (Server Send): 该 Annotation 用来记录服务端处理完请求后准备发送请求响应信息。 通过计算 ss 与 sr 两个 Annotation 的时间戳之差， 我们可以得到当前服务端处理请求的时间消耗。
+    * cr (Client Received): 该 Annotation 用来记录客户端接收到服务端的回复， 同时它也标识了这个 HTTP 请求的结束。 通过计算 er 与 cs 两个 Annotation 的时间戳之差， 我们可以得到该 HTTP 请求从客户端发起到接收服务端响应的总时间消耗。
+* **BinaryAnnotation:** 它用来对跟踪信息添加一些额外的补充说明， 一般以键值对的方式出现。 比如， 在记录 HTTP 请求接收后执行具体业务逻辑时， 此时并没有默认的Annotation 来标识该事件状态， 但是有 BinaryAnnotation 信息对其进行补充。
+
+
+**追踪流程**
+流程图如下：
+![](https://img-blog.csdn.net/20181010190939687?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3pobGxhbnNlemhpbGlhbg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
+由上图可以看出，用户的应用发起Http Get（User Request）请求（请求路径/trace），经过spring cloud Sleuth的Trace框架（Trace Instrumentation）拦截，并依次经过如下步骤，最后记录Trace信息到Zipkin中：
+
+记录tags信息；
+1. 将当前调用链的Trace信息记录到Http Headers中；
+2. 记录当前调用的时间戳（timestamp）；
+3. 发送http请求，并携带Trace相关的Header，如TraceId:11aa， SpanId:22bb；
+4. 调用结束后，记录当次调用所花的时间（duration）；
+5. 将步骤1-5，汇总成一个Span（最小的Trace单元），上报该Span信息给Zipkin Collector。
+
+**sletuh+streaming+zipkin**
+这种方式通过spring cloud streaming将追踪信息发送到zipkin。spring cloud streaming目前只支持kafka和rabbitmq。Zipkin Collector从消息中间件中读取数据并存储：
+![](https://img-blog.csdn.net/20181010191040623?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3pobGxhbnNlemhpbGlhbg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
+##### 调用过程
+
+![Sleuth支持的组件](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/sleuth-request.png?raw=true)
+
+```
+消费者feign声明式调用--->中间处理--->org.springframework.cloud.openfeign.ribbon.FeignLoadBalancer.execute()--->org.springframework.cloud.openfeign.ribbon.execute()--->org.springframework.cloud.sleuth.instrument.web.client.feign.LazyTracingFeignClient.execute()--->org.springframework.cloud.sleuth.instrument.web.client.feign.TracingFeignClient.execute()--->feign.Client.Default.execute()
+```
+其中在TracingFeignClient.execute()处添加了Headers
+```java
+//TracingFeignClient.execute(),handleSend执行修改 headers处理
+Span span = this.handleSend(headers, request, (Span)null);
+//org.springframework.cloud.sleuth.instrument.web.client.feign.TracingFeignClient
+Span handleSend(Map<String, Collection<String>> headers, Request request, Span clientSpan) {
+    return clientSpan != null ? this.handler.handleSend(this.injector, headers, request, clientSpan) : this.handler.handleSend(this.injector, headers, request);
+}
+//brave.http.HttpClientHandler。这是io.zipkin.brave下的类
+public <C> Span handleSend(Injector<C> injector, C carrier, Req request, Span span) {
+    injector.inject(span.context(), carrier);
+    return this.handleStart(request, span);
+} 
+//B3Propagation类下的内部类
+static final class B3Injector<C, K> implements Injector<C> {
+final B3Propagation<K> propagation;
+final Setter<C, K> setter;
+
+B3Injector(B3Propagation<K> propagation, Setter<C, K> setter) {
+    this.propagation = propagation;
+    this.setter = setter;
+}
+
+public void inject(TraceContext traceContext, C carrier) {
+    this.setter.put(carrier, this.propagation.traceIdKey, traceContext.traceIdString());
+    this.setter.put(carrier, this.propagation.spanIdKey, traceContext.spanIdString());
+    String parentId = traceContext.parentIdString();
+    if (parentId != null) {
+        this.setter.put(carrier, this.propagation.parentSpanIdKey, parentId);
+    }
+
+    if (traceContext.debug()) {
+        this.setter.put(carrier, this.propagation.debugKey, "1");
+    } else if (traceContext.sampled() != null) {
+        this.setter.put(carrier, this.propagation.sampledKey, traceContext.sampled() ? "1" : "0");
+    }
+
+}
+}
+```
 
 ### 1.4.10. 消息驱动的微服务
 <a href="#menu" style="float:right">目录</a>
