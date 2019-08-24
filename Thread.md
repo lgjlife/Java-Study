@@ -1304,7 +1304,7 @@ Lock Record是线程私有的数据结构，每一个线程都有一个可用Loc
 
 
 那什么是Monitor？可以把它理解为 一个同步工具，也可以描述为 一种同步机制，它通常被 描述为一个对象。
-与一切皆对象一样，所有的Java对象是天生的Monitor，每一个Java对象都有成为Monitor的潜质，因为在Java的设计中 ，每一个Java对象自打娘胎里出来就带了一把看不见的锁，它叫做内部锁或者Monitor锁。
+与一切皆对象一样，所有的Java对象是天生的Monitor，每一个Java对象都有成为Monitor的潜质，因为在Java的设计中 ，每一个Java对象自打娘胎里出来就带了一把看不见的����，它叫做内部锁或者Monitor锁。
 也就是通常说Synchronized的对象锁，MarkWord锁标识位为10，其中指针指向的是Monitor对象的起始地址。在Java虚拟机（HotSpot）中，Monitor是由ObjectMonitor实现的，其主要数据结构如下（位于HotSpot虚拟机源码ObjectMonitor.hpp文件，C++实现的）：
 
 ```cpp
@@ -1908,8 +1908,6 @@ class ReorderExample {
 
 
 
-### 1.8.3. 顺序一致性
-<a href="#menu" style="float:right">目录</a>
 
 ### 1.8.4. volatile的内存语义
 <a href="#menu" style="float:right">目录</a>
@@ -1918,8 +1916,7 @@ class ReorderExample {
 * 内存可见性
     * 对一个volatile变量的读，总是能看到（任意线程）对这个volatile变量最后的写入
 * 保证变量读写是原子性的
-    * 对任意单个volatile变量的读/写具有原子性，但类似于volatile++这种复合操作不
-具有原子性。
+    * 对任意单个volatile变量的读/写具有原子性，但类似于volatile++这种复合操作不具有原子性。
 * 禁止指令重排序
 
 有volatile变量修饰的共享变量进行写操作的时候会使用CPU提供的Lock前缀指令：

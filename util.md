@@ -21,6 +21,10 @@
         - [1.3.1. 基本概念](#131-基本概念)
         - [1.3.2. 常用命令](#132-常用命令)
     - [1.4. Maven](#14-maven)
+    - [Gradle](#gradle)
+        - [基本介绍](#基本介绍)
+        - [安装](#安装)
+            - [Ubuntu下安装](#ubuntu下安装)
     - [1.5. Jenkins](#15-jenkins)
     - [1.6. Docker](#16-docker)
         - [1.6.1. Docker常用指令](#161-docker常用指令)
@@ -284,6 +288,78 @@ dia
     </exclusions>
 </dependency>
 ```
+## Gradle
+
+### 基本介绍
+Gradle 是一种构建工具，它抛弃了基于XML的构建脚本，取而代之的是采用一种基于Groovy（现在也支持 Kotlin）的内部领域特定语言
+
+**Gradle特点**
+* Gradle是很成熟的技术，可以处理大规模构建
+* Gradle对多语言、多平台支持性更好
+* Gradle关注在构建效率上
+* Gradle发布很频繁，重要feature开发计划透明化
+* Gradle社区很活跃，并且增加迅速
+
+
+### 安装
+
+#### Ubuntu下安装
+下载地址[http://services.gradle.org/distributions/](http://services.gradle.org/distributions/)
+
+这里下载gradle-5.6-all.zip包
+
+下载完成后，进入下载包所在位置，解压到/opt/gradle/
+```bash
+sudo unzip gradle-5.6-all.zip -d /opt/gradle/
+```
+修改环境配置变量文件/etc/profile
+
+```
+sudo vim /etc/profile
+```
+文件末尾添加
+```
+export GRADLE_HOME=/opt/gradle/gradle-5.6
+export PATH=$GRADLE_HOME/bin:$PATH
+```
+使之生效
+```
+source profile
+```
+
+查看是否安装成功
+```bash
+lgj@lgj-Lenovo-G470:/opt/gradle$ gradle -v
+
+Welcome to Gradle 5.6!
+
+Here are the highlights of this release:
+ - Incremental Groovy compilation
+ - Groovy compile avoidance
+ - Test fixtures for Java projects
+ - Manage plugin versions via settings script
+
+For more details see https://docs.gradle.org/5.6/release-notes.html
+
+
+------------------------------------------------------------
+Gradle 5.6
+------------------------------------------------------------
+
+Build time:   2019-08-14 21:05:25 UTC
+Revision:     f0b9d60906c7b8c42cd6c61a39ae7b74767bb012
+
+Kotlin:       1.3.41
+Groovy:       2.5.4
+Ant:          Apache Ant(TM) version 1.9.14 compiled on March 12 2019
+JVM:          1.8.0_191 (Oracle Corporation 25.191-b12)
+OS:           Linux 4.15.0-46-generic amd64
+
+```
+如果没显示，重启机器再尝试
+
+
+
 
 ## 1.5. Jenkins
 <a href="#menu" style="float:right">目录</a>

@@ -1,15 +1,31 @@
 
 
 <span id="menu"></span>
+
 <!-- TOC -->
 
 - [1. Spring 体系](#1-spring-体系)
     - [1.1. Spring](#11-spring)
         - [1.1.1. IOC容器](#111-ioc容器)
-        - [1.1.2. AOP面向切面编程](#112-aop面向切面编程)
-        - [1.1.3. Spring 事务管理](#113-spring-事务管理)
-        - [1.1.4. 常用注解](#114-常用注解)
-        - [1.1.5. 常用工具类](#115-常用工具类)
+            - [1.1.1.1. 控制反转和依赖注入](#1111-控制反转和依赖注入)
+            - [1.1.1.2. 注入方式](#1112-注入方式)
+                - [1.1.1.2.1. setter注入与构造方法注入](#11121-setter注入与构造方法注入)
+                - [1.1.1.2.2. 自动注入方式](#11122-自动注入方式)
+        - [1.1.2. IOC容器](#112-ioc容器)
+        - [1.1.3. AOP面向切面编程](#113-aop面向切面编程)
+        - [1.1.4. Spring 事务管理](#114-spring-事务管理)
+            - [1.1.4.1. 数据库事务基础知识](#1141-数据库事务基础知识)
+            - [1.1.4.2. Spring 对事务管理的支持](#1142-spring-对事务管理的支持)
+                - [1.1.4.2.1. Spring事务传播行为和隔离级别](#11421-spring事务传播行为和隔离级别)
+                - [1.1.4.2.2. 事务管理关键抽象](#11422-事务管理关键抽象)
+                - [1.1.4.2.3. 事务管理器实现类](#11423-事务管理器实现类)
+            - [1.1.4.3. 编程式事务管理](#1143-编程式事务管理)
+            - [1.1.4.4. 使用XML配置声明式事务](#1144-使用xml配置声明式事务)
+            - [1.1.4.5. 使用注解配置生命式事务](#1145-使用注解配置生命式事务)
+            - [1.1.4.6. 事务实现原理](#1146-事务实现原理)
+        - [1.1.5. Springg Cache](#115-springg-cache)
+        - [1.1.6. 常用注解](#116-常用注解)
+        - [1.1.7. 常用工具类](#117-常用工具类)
     - [1.2. Sppring MVC](#12-sppring-mvc)
         - [1.2.1. MVC体系概述](#121-mvc体系概述)
             - [1.2.1.1. MVC 架构](#1211-mvc-架构)
@@ -49,16 +65,24 @@
             - [1.4.6.1. zuul](#1461-zuul)
             - [1.4.6.2. GateWay](#1462-gateway)
         - [1.4.7. 分布式配置中心Config](#147-分布式配置中心config)
-        - [1.4.8. 消息总线Bus](#148-消息总线bus)
-        - [1.4.9. 分布式服务跟踪Sleuth](#149-分布式服务跟踪sleuth)
-            - [1.4.9.1. 基本使用](#1491-基本使用)
-            - [1.4.9.2. 跟踪原理](#1492-跟踪原理)
-                - [1.4.9.2.1. 基本实现原理](#14921-基本实现原理)
-                - [支持的组件](#支持的组件)
-                - [一些基本概念](#一些基本概念)
-                - [zipkin](#zipkin)
-                - [调用过程](#调用过程)
-        - [1.4.10. 消息驱动的微服务](#1410-消息驱动的微服务)
+            - [1.4.7.1. 基本使用](#1471-基本使用)
+                - [1.4.7.1.1. 配置中心](#14711-配置中心)
+                - [1.4.7.1.2. bootstrap.yml与application.yml区别](#14712-bootstrapyml与applicationyml区别)
+                - [1.4.7.1.3. 客户端配置](#14713-客户端配置)
+                - [1.4.7.1.4. 刷新配置](#14714-刷新配置)
+            - [1.4.7.2. 原理说明](#1472-原理说明)
+            - [1.4.7.3. 更多使用方式](#1473-更多使用方式)
+        - [1.4.8. 消息总线bus](#148-消息总线bus)
+            - [1.4.8.1. 消息代理](#1481-消息代理)
+        - [1.4.9. 消息驱动的微服务Stream](#149-消息驱动的微服务stream)
+        - [1.4.10. 分布式服务跟踪Sleuth](#1410-分布式服务跟踪sleuth)
+            - [1.4.10.1. 基本使用](#14101-基本使用)
+            - [1.4.10.2. 跟踪原理](#14102-跟踪原理)
+                - [1.4.10.2.1. 基本实现原理](#141021-基本实现原理)
+                - [1.4.10.2.2. 支持的组件](#141022-支持的组件)
+                - [1.4.10.2.3. 一些基本概念](#141023-一些基本概念)
+                - [1.4.10.2.4. zipkin](#141024-zipkin)
+                - [1.4.10.2.5. 调用过程](#141025-调用过程)
     - [1.5. 测试](#15-测试)
         - [1.5.1. 基本测试](#151-基本测试)
         - [1.5.2. 控制层测试](#152-控制层测试)
@@ -74,16 +98,1124 @@
 ### 1.1.1. IOC容器
 <a href="#menu" style="float:right">目录</a>
 
-### 1.1.2. AOP面向切面编程
+#### 1.1.1.1. 控制反转和依赖注入
 <a href="#menu" style="float:right">目录</a>
 
-### 1.1.3. Spring 事务管理
+**IoC是什么**
+　　Ioc—Inversion of Control，即“控制反转”，不是什么技术，而是一种设计思想。在Java开发中，Ioc意味着将你设计好的对象交给容器控制，而不是传统的在你的对象内部直接控制。如何理解好Ioc呢？理解好Ioc的关键是要明确“谁控制谁，控制什么，为何是反转（有反转就应该有正转了），哪些方面反转了”，那我们来深入分析一下：
+* 谁控制谁，控制什么：传统Java SE程序设计，我们直接在对象内部通过new进行创建对象，是程序主动去创建依赖对象；而IoC是有专门一个容器来创建这些对象，即由Ioc容器来控制对 象的创建；谁控制谁？当然是IoC 容器控制了对象；控制什么？那就是主要控制了外部资源获取（不只是对象包括比如文件等）。
+* 为何是反转，哪些方面反转了：有反转就有正转，传统应用程序是由我们自己在对象中主动控制去直接获取依赖对象，也就是正转；而反转则是由容器来帮忙创建及注入依赖对象；为何是反转？因为由容器帮我们查找及注入依赖对象，对象只是被动的接受依赖对象，所以是反转；哪些方面反转了？依赖对象的获取被反转了。
+
+**IoC能做什么**
+　　IoC 不是一种技术，只是一种思想，一个重要的面向对象编程的法则，它能指导我们如何设计出松耦合、更优良的程序。传统应用程序都是由我们在类内部主动创建依赖对象，从而导致类与类之间高耦合，难于测试；有了IoC容器后，把创建和查找依赖对象的控制权交给了容器，由容器进行注入组合对象，所以对象与对象之间是 松散耦合，这样也方便测试，利于功能复用，更重要的是使得程序的整个体系结构变得非常灵活。
+其实IoC对编程带来的最大改变不是从代码上，而是从思想上，发生了“主从换位”的变化。应用程序原本是老大，要获取什么资源都是主动出击，但是在IoC/DI思想中，应用程序就变成被动的了，被动的等待IoC容器来创建并注入它所需要的资源了。
+
+IoC很好的体现了面向对象设计法则之一—— 好莱坞法则：“别找我们，我们找你”；即由IoC容器帮对象找相应的依赖对象并注入，而不是由对象主动去找。
+
+**IoC和DI**
+　　DI—Dependency Injection，即“依赖注入”：组件之间依赖关系由容器在运行期决定，形象的说，即由容器动态的将某个依赖关系注入到组件之中。依赖注入的目的并非为软件系统带来更多功能，而是为了提升组件重用的频率，并为系统搭建一个灵活、可扩展的平台。通过依赖注入机制，我们只需要通过简单的配置，而无需任何代码就可指定目标需要的资源，完成自身的业务逻辑，而不需要关心具体的资源来自何处，由谁实现。
+
+理解DI的关键是：“谁依赖谁，为什么需要依赖，谁注入谁，注入了什么”，那我们来深入分析一下：
+* 谁依赖于谁：当然是应用程序依赖于IoC容器；
+* 为什么需要依赖：应用程序需要IoC容器来提供对象需要的外部资源；
+* 谁注入谁：很明显是IoC容器注入应用程序某个对象，应用程序依赖的对象；
+* 注入了什么：就是注入某个对象所需要的外部资源（包括对象、资源、常量数据）。
+
+IoC和DI由什么关系呢？其实它们是同一个概念的不同角度描述，由于控制反转概念比较含糊（可能只是理解为容器控制对象这一个层面，很难让人想到谁来维护对象关系），所以2004年大师级人物Martin Fowler又给出了一个新的名字：“依赖注入”，相对IoC 而言，“依赖注入”明确描述了“被注入对象依赖IoC容器配置依赖对象”。
+
+
+**IoC(控制反转)**
+　　首先想说说IoC（Inversion of Control，控制反转）。这是spring的核心，贯穿始终。所谓IoC，对于spring框架来说，就是由spring来负责控制对象的生命周期和对象间的关系。这是什么意思呢，举个简单的例子，我们是如何找女朋友的？常见的情况是，我们到处去看哪里有长得漂亮身材又好的mm，然后打听她们的兴趣爱好、qq号、电话号、ip号、iq号………，想办法认识她们，投其所好送其所要，然后嘿嘿……这个过程是复杂深奥的，我们必须自己设计和面对每个环节。传统的程序开发也是如此，在一个对象中，如果要使用另外的对象，就必须得到它（自己new一个，或者从JNDI中查询一个），使用完之后还要将对象销毁（比如Connection等），对象始终会和其他的接口或类藕合起来。
+
+　　那么IoC是如何做的呢？有点像通过婚介找女朋友，在我和女朋友之间引入了一个第三者：婚姻介绍所。婚介管理了很多男男女女的资料，我可以向婚介提出一个列表，告诉它我想找个什么样的女朋友，比如长得像李嘉欣，身材像林熙雷，唱歌像周杰伦，速度像卡洛斯，技术像齐达内之类的，然后婚介就会按照我们的要求，提供一个mm，我们只需要去和她谈恋爱、结婚就行了。简单明了，如果婚介给我们的人选不符合要求，我们就会抛出异常。整个过程不再由我自己控制，而是有婚介这样一个类似容器的机构来控制。Spring所倡导的开发方式就是如此，所有的类都会在spring容器中登记，告诉spring你是个什么东西，你需要什么东西，然后spring会在系统运行到适当的时候，把你要的东西主动给你，同时也把你交给其他需要你的东西。所有的类的创建、销毁都由 spring来控制，也就是说控制对象生存周期的不再是引用它的对象，而是spring。对于某个具体的对象而言，以前是它控制其他对象，现在是所有对象都被spring控制，所以这叫控制反转。
+
+**DI(依赖注入)**
+　　IoC的一个重点是在系统运行中，动态的向某个对象提供它所需要的其他对象。这一点是通过DI（Dependency Injection，依赖注入）来实现的。比如对象A需要操作数据库，以前我们总是要在A中自己编写代码来获得一个Connection对象，有了 spring我们就只需要告诉spring，A中需要一个Connection，至于这个Connection怎么构造，何时构造，A不需要知道。在系统运行时，spring会在适当的时候制造一个Connection，然后像打针一样，注射到A当中，这样就完成了对各个对象之间关系的控制。A需要依赖 Connection才能正常运行，而这个Connection是由spring注入到A中的，依赖注入的名字就这么来的。那么DI是如何实现的呢？ Java 1.3之后一个重要特征是反射（reflection），它允许程序在运行的时候动态的生成对象、执行对象的方法、改变对象的属性，spring就是通过反射来实现注入的。
+
+#### 1.1.1.2. 注入方式
+
+##### 1.1.1.2.1. setter注入与构造方法注入
+spring的两种依赖注入方式：setter注入与构造方法注入，这两种方法的不同主要就是在xml文件下对应使用property和constructor-arg属性。
+
+```java
+public class Id {  
+    private int id;  
+    private String name;  
+    public Id(int id,String name){  
+        this.id = id;  
+        this.name = name;  
+    }  
+    public int getId() {  
+        return id;  
+    }  
+    public void setId(int id) {  
+        this.id = id;  
+    }  
+    public String getName() {  
+        return name;  
+    }  
+    public void setName(String name) {  
+        this.name = name;  
+    }  
+}  
+
+```
+
+注入例子
+```xml
+<bean id="id" class="com.loster.li.Id">  
+    <property name="id" value="123"></property>  
+    <property name="name" value="xiaoli"></property>  
+</bean>  
+<bean id="id" class="com.loster.li.Id">  
+    <constructor-arg index="0" value="456"></constructor-arg>  
+    <constructor-arg index="1" value="dawang"></constructor-arg>  
+</bean>
+```
+
+**区别**
+* setter方式
+    * 设值注入需要该Bean包含这些属性的setter方法
+    * 与传统的JavaBean的写法更相似，程序开发人员更容易理解、接收。通过setter方法设定依赖关系显得更加只管。
+    * 对于复杂的依赖关系，如果采用构造注入，会导致构造器国语臃肿，难以阅读。Spring在创建Bean实例时，需要同时实例化器依赖的全部实例，因而导致性能下降。而使用设值注入，则能避免这些问题
+    * 尤其是在某些属性可选的情况况下，多参数的构造器显得更加笨重
+* 构造函数注入
+    * 构造注入需要该Bean包含带有这些属性的构造器
+    * 构造注入可以在构造器中决定依赖关系的注入顺序，优先依赖的优先注入。例如，组件中其他依赖关系的注入，常常要依赖于DataSrouce的注入。采用构造注入，可以在代码中清晰的决定注入顺序。
+    * 对于依赖关系无需变化的Bean，构造注入更有用处。因为没有Setter方法，所有的依赖关系全部在构造器内设定。因此，无需担心后续的代码对依赖关系产生破坏。
+    * 依赖关系只能在构造器中设定，则只有组件的创建者才能改变组件的依赖关系。对组件的调用者而言，组件内部的依赖关系完全透明，更符合高内聚的原则。
+
+* 建议：采用以设值注入为主，构造注入为辅的注入策略。对于依赖关系无需变化的注入，尽量采用构造注入；而其他的依赖关系的注入，则考虑采用设值注入
+
+**循环依赖问题**
+所谓的循环依赖是指，A 依赖 B，B 又依赖 A，它们之间形成了循环依赖。或者是 A 依赖 B，B 依赖 C，C 又依赖 A
+
+* 构造器参数循环依赖
+    * 表示通过构造器注入构成的循环依赖，此依赖是无法解决的，只能抛出BeanCurrentlyIn CreationException异常表示循环依赖 
+    * 因为循环依赖的问题，构造器注入的对象没有创建，构造器就无法执行，自己本身也就无法创建，那么另一个对象也无法创建。
+* setter方式单例，默认方
+    * 也是使用该方式解决循环依赖问题
+    * 使用setter注入时，两个对象已经创建完成，就不会出现构造器循环依赖的问题
+
+* setter方式原型，prototype
+    * 对于"prototype"作用域bean，Spring容器无法完成依赖注入，因为Spring容器不进行缓存"prototype"作用域的bean，因此无法提前暴露一个创建中的bean
+
+##### 1.1.1.2.2. 自动注入方式
+
+上面是传统的XML配置方式,目前很少使用，一般使用自动注入
+
+* spring自动注入的三种方式
+所谓spring自动注入，是指容器中的一个组件中需要用到另一个组件（例如聚合关系）时，依靠spring容器创建对象，而不是手动创建，主要有三种方式：
+1. @Autowired注解——由spring提供
+2. @Resource注解——由JSR-250提供
+3. @Inject注解——由JSR-330提供
+
+**@Autowired注解的使用方法**
+
+```java
+@Target({ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface Autowired {
+
+   /**
+    * Declares whether the annotated dependency is required.
+    * <p>Defaults to {@code true}.
+    */
+   boolean required() default true;
+}
+```
+
+从源码可以看出：该注解可以用在构造器、方法、参数、属性上，最常见的是用在属性上。
+该注解只有一个属性： required，默认为true，如果找不到匹配的bean则报错；设置为false，如果找不到匹配的bean则注入null，并不会报错。
+可以配合@Qualifier使用，用于精准指定要注入的bean的名称。
+可以配合@Primary使用，当容器中存在多个相同类型的组件时，用于指定优先加载哪一个，这个注解不能用在2个或更多同类型的组件上。
+ 1. 当容器中只有一个该类型的组件时
+|-不使用@Qualifier，会按bean类型查找，即applicationContext.getBean(bean.class)，然后注入这个唯一的bean。
+|-使用@Qualifier，会按Qualifier的value值跟bean名称匹配查找，即applicationContext.getBean("Qualifier的value值")。
+2. 当容器中没有该类型的组件时
+|-required=true——报错expected at least 1 bean which qualifies as autowire candidate。
+|-required=false——注入null。
+3. 当容器中存在多个该类型的组件时
+|-不使用@Qualifier和@Primary时，会按属性名跟bean名称匹配查找，即applicationContext.getBean("属性名")。
+|-使用@Primary、但不使用@Qualifier时，会优先加载带有@Primary注解的组件。
+|-使用@Qualifier时，不管有没有使用@Primary，都会直接按Qualifier的value值跟bean名称匹配查找。
+综上，当容器中存在多个同类型的组件时，加载优先级：@Qulifier>@Primary>属性名，例如下面这个容器中包含3个BookDao组件
+
+```java
+@Configuration
+@ComponentScan(basePackages = {"cn.monolog.service"})
+public class AutowiredBeanConfig {
+
+    @Bean(value = "bookDao1")
+    public BookDao bookDao1() {
+        BookDao bookDao = new BookDao();
+        bookDao.setLabel("bookDao1");
+        return bookDao;
+    }
+
+    @Bean(value = "bookDao2")
+    @Primary
+    public BookDao bookDao2() {
+        BookDao bookDao = new BookDao();
+        bookDao.setLabel("bookDao2");
+        return bookDao;
+    }
+
+    @Bean(value = "bookDao3")
+    public BookDao bookDao3() {
+        BookDao bookDao = new BookDao();
+        bookDao.setLabel("bookDao3");
+        return bookDao;
+    }
+}
+```
+
+自动注入方式是这样的：
+@Autowired
+@Qualifier(value = "bookDao1")
+private BookDao bookDao3;
+按照优先级顺序，@Qulifier(bookDao1) > @Primary(bookDao2) > 属性名(bookDao3)，最终加载的是名称为bookDao1的组件。
+ 
+**@Resource注解的使用方法**
+@Resource注解的使用跟@Autowired注解类似，但是需要注意：
+1. 不支持@Primary注解，也不支持reuqired=false，即不允许注入null；
+2. 该注解有一个属性name，类似于@Qualified精准匹配，优先级最高；
+3. 默认按照属性名跟bean的名称匹配查找，如果不存在，再按类型匹配查找。
+例如，下面这个容器中有两个CarDao组件
+```java
+@Configuration
+@ComponentScan(basePackages = {"cn.monolog.service"})
+public class ResourceBeanConfig {
+
+    @Bean(value = "carDao1")
+    public CarDao carDao1() {
+        CarDao carDao = new CarDao();
+        carDao.setLabel("1");
+        return  carDao;
+    }
+
+    @Bean(value = "carDao2")
+    public CarDao carDao() {
+        CarDao carDao = new CarDao();
+        carDao.setLabel("2");
+        return  carDao;
+    }
+}
+```
+
+自动注入方式如下，会按属性名注入carDao2组件。
+//自动注入
+@Resource
+private CarDao carDao2;
+但是改为下面这种注入方式：
+//自动注入
+@Resource(name = "carDao1")
+private CarDao carDao2;
+由于使用了name精准匹配，会忽略属性名，注入carDao1组件。
+ 
+**@Inject注解的使用方法**
+@Inject注解的使用方法跟@Autowired也基本相似，但是需要注意
+1. 使用前需要导入jar包——javax.inject；
+2. 支持@Primary注解，而且因为没有精确匹配，@Primary的优先级最高；
+2. 不支持required=false，即不能注入null，如果找不到组件肯定报错；
+3. 默认按照属性名跟bean的名称匹配查找，如果不存在，再按类型匹配查找。
+ 
+例如，下面这容器中有一个EmployeeDao组件
+```java
+@Configuration
+public class InjectBeanConfig {
+    @Bean(value = "employeeDao1")
+    public EmployeeDao employeeDao1() {
+        EmployeeDao employeeDao = new EmployeeDao();
+        employeeDao.setLabel("1");
+        return employeeDao;
+    }
+}
+```
+
+自动注入的方式如下
+```java
+@Inject
+private EmployeeDao employeeDao3;
+```
+spring会先按属性名查找名称为employeDao3的组件，即applicationContext.getBean("employeeDao3")，结果不存在；
+然后按照类型查找，即applicationContext.getBean(EmployeDao.class)，找到employeDao1组件，成功注入。
+ 
+如果容器中有多个同类型组件，例如
+```java
+@Configuration
+public class InjectBeanConfig {
+    @Bean(value = "employeeDao1")
+    public EmployeeDao employeeDao1() {
+        EmployeeDao employeeDao = new EmployeeDao();
+        employeeDao.setLabel("1");
+        return employeeDao;
+    }
+    @Bean(value = "employeeDao2")
+    public EmployeeDao employeeDao2() {
+        EmployeeDao employeeDao = new EmployeeDao();
+        employeeDao.setLabel("2");
+        return employeeDao;
+    }
+    @Bean(value = "employeeDao3")
+    public EmployeeDao employeeDao3() {
+        EmployeeDao employeeDao = new EmployeeDao();
+        employeeDao.setLabel("3");
+        return employeeDao;
+    }
+}
+```
+注入方式还是这样
+
+```java
+@Inject
+private EmployeeDao employeeDao3;
+```
+仍然会按属性名和bean的名称匹配，即applicationContext.getBean("employeeDao3")，找到employee3，成功注入。
+ 
+但是如果其中某个组件加了@Primary注解，会忽略属性名，优先注入，例如
+
+```java
+@Configuration
+public class InjectBeanConfig {
+
+    @Bean(value = "employeeDao1")
+    public EmployeeDao employeeDao1() {
+        EmployeeDao employeeDao = new EmployeeDao();
+        employeeDao.setLabel("1");
+        return employeeDao;
+    }
+
+    @Bean(value = "employeeDao2")
+    @Primary
+    public EmployeeDao employeeDao2() {
+        EmployeeDao employeeDao = new EmployeeDao();
+        employeeDao.setLabel("2");
+        return employeeDao;
+    }
+
+    @Bean(value = "employeeDao3")
+    public EmployeeDao employeeDao3() {
+        EmployeeDao employeeDao = new EmployeeDao();
+        employeeDao.setLabel("3");
+        return employeeDao;
+    }
+}
+```
+
+无论注入时使用什么样的属性名，都会注入employeeDao2。
+
+### 1.1.2. IOC容器
+
+
+
+### 1.1.3. AOP面向切面编程
 <a href="#menu" style="float:right">目录</a>
 
-### 1.1.4. 常用注解
+### 1.1.4. Spring 事务管理
 <a href="#menu" style="float:right">目录</a>
 
-### 1.1.5. 常用工具类
+#### 1.1.4.1. 数据库事务基础知识
+<a href="#menu" style="float:right">目录</a>
+
+**事务的四大特性（ACID）**
+如果一个数据库声称支持事务的操作，那么该数据库必须要具备以下四个特性：
+* 原子性（Atomicity）
+    * 原子性是指事务包含的所有操作要么全部成功，要么全部失败回滚，因此事务的操作如果成功就必须要完全应用到数据库，如果操作失败则不能对数据库有任何影响。
+* 一致性（Consistency）
+    * 一致性是指事务必须使数据库从一个一致性状态变换到另一个一致性状态，也就是说一个事务执行之前和执行之后都必须处于一致性状态。
+    * 拿转账来说，假设用户A和用户B两者的钱加起来一共是5000，那么不管A和B之间如何转账，转几次账，事务结束后两个用户的钱相加起来应该还得是5000，这就是事务的一致性。
+* 隔离性（Isolation）
+    * 隔离性是当多个用户并发访问数据库时，比如操作同一张表时，数据库为每一个用户开启的事务，不能被其他事务的操作所干扰，多个并发事务之间要相互隔离。
+    * 即要达到这么一种效果：对于任意两个并发的事务T1和T2，在事务T1看来，T2要么在T1开始之前就已经结束，要么在T1结束之后才开始，这样每个事务都感觉不到有其他事务在并发地执行。
+* 持久性（Durability）
+    * 持久性是指一个事务一旦被提交了，那么对数据库中的数据的改变就是永久性的，即便是在数据库系统遇到故障的情况下也不会丢失提交事务的操作。
+    * 例如我们在使用JDBC操作数据库时，在提交事务方法后，提示用户事务操作完成，当我们程序执行完成直到看到提示后，就可以认定事务以及正确提交，即使这时候数据库出现了问题，也必须要将我们的事务完全执行完成，否则就会造成我们看到提示事务处理完毕，但是数据库因为故障而没有执行事务的重大错误。
+
+**事务的隔离级别（默认事务级别为可重复读）**
+总的说，数据库事务无非就两种：读取事务（select）、修改事务（update,insert）。在没有事务隔离控制的时候，多个事务在同一时刻对同一数据的操作可能就会影响到最终期望的结果，通常有四种情况：
+* 两个更新事务同时修改一条数据时，很显然这种情况是最严重的了，程序中无论如何也不能出现这种情况，因为它会造成更新的丢失！
+* 一个更新事务更新一条数据时，另一个读取事务读取了还没提交的更新，这种情况下会出现读取到脏数据。
+* 一个读取事务读取一条数据时，另一个更新事务修改了这条数据，这时就会出现不可重现的读取。
+* 一个读取事务读取时，另一个插入事务（注意此处时插入）插入了一条新数据，这样就可能多读出一条数据，出现幻读。
+
+以上四种情况描述完毕，相信大家也发现规律了，前三种是对同一条数据的并发操作，对程序的结果可能产生致命影响，尤其是金融等实时性，准确性要求极高的系统，绝不容许这三中情况的出现，
+相比第四种情况不会影响数据的真实性，在很多情况下是允许的，如社交论坛等实时性要求不高的系统！
+综上四个情况，我们可以大致这样简单的理解（最初说的两种事务的自由组合2*2=4）：
+* 修改时允许修改（丢失更新）
+* 修改时允许读取（脏读）
+* 读取时允许修改（不可重复读）
+* 读取时允许插入（幻读）
+从上到下问题越来越不严重，但所需的性能开销却越大。因为不同的系统允许不同级别的情况，所以就出现了事务隔离这么一个东东，来允许我们设定数据库的并发行为。
+
+总结下如果不考虑事务的隔离性，会发生的几种问题：
+
+* 脏读
+    * 脏读是指在一个事务处理过程里读取了另一个未提交的事务中的数据。
+    * 当一个事务正在多次修改某个数据，而在这个事务中这多次的修改都还未提交，这时一个并发的事务来访问该数据，就会造成两个事务得到的数据不一致。例如：用户A向用户B转账100元，对应SQL命令如下
+        * update account set money=money+100 where name=’B’;  (此时A通知B)
+        * update account set money=money - 100 where name=’A’;
+    * 当只执行第一条SQL时，A通知B查看账户，B发现确实钱已到账（此时即发生了脏读），而之后无论第二条SQL是否执行，只要该事务不提交，则所有操作都将回滚，那么当B以后再次查看账户时就会发现钱其实并没有转。
+* 不可重复读
+    * 不可重复读是指在对于数据库中的某个数据，一个事务范围内多次查询却返回了不同的数据值，这是由于在查询间隔，被另一个事务修改并提交了。
+    * 例如事务T1在读取某一数据，而事务T2立马修改了这个数据并且提交事务给数据库，事务T1再次读取该数据就得到了不同的结果，发送了不可重复读。
+    * 不可重复读和脏读的区别是，脏读是某一事务读取了另一个事务未提交的脏数据，而不可重复读则是读取了前一事务提交的数据。
+    * 在某些情况下，不可重复读并不是问题，比如我们多次查询某个数据当然以最后查询得到的结果为主。但在另一些情况下就有可能发生问题，例如对于同一个数据A和B依次查询就可能不同，A和B就可能打起来了……
+* 虚读(幻读)
+    * 幻读是事务非独立执行时发生的一种现象。例如事务T1对一个表中所有的行的某个数据项做了从“1”修改为“2”的操作，这时事务T2又对这个表中插入了一行数据项，而这个数据项的数值还是为“1”并且提交给数据库。而操作事务T1的用户如果再查看刚刚修改的数据，会发现还有一行没有修改，其实这行是从事务T2中添加的，就好像产生幻觉一样，这就是发生了幻读。
+    * 幻读和不可重复读都是读取了另一条已经提交的事务（这点就脏读不同），所不同的是不可重复读查询的都是同一个数据项，而幻读针对的是一批数据整体（比如数据的个数）。
+
+SQL标准定义了4类隔离级别，包括了一些具体规则，用来限定事务内外的哪些改变是可见的，哪些是不可见的。低级别的隔离级一般支持更高的并发处理，并拥有更低的系统开销。
+MySQL数据库的四种事务隔离级别
+* Read Uncommitted（读取未提交内容）
+    * 在该隔离级别，所有事务都可以看到其他未提交事务的执行结果。本隔离级别很少用于实际应用，因为它的性能也不比其他级别好多少。读取未提交的数据，也被称之为脏读（Dirty Read）；
+* Read Committed（读取提交内容）
+    * 这是大多数数据库系统的默认隔离级别（但不是MySQL默认的）。它满足了隔离的简单定义：一个事务只能看见已经提交事务所做的改变。这种隔离级别 也支持所谓的不可重复读（Nonrepeatable Read），因为同一事务的其他实例在该实例处理其间可能会有新的commit，所以同一select可能返回不同结果；
+* Repeatable Read（可重读）
+    * 这是MySQL的默认事务隔离级别，它确保同一事务的多个实例在并发读取数据时，会看到同样的数据行。不过理论上，这会导致另一个棘手的问题：幻读 （Phantom Read）。
+    * 简单的说，幻读指当用户读取某一范围的数据行时，另一个事务又在该范围内插入了新行，当用户再读取该范围的数据行时，会发现有新的“幻影” 行。
+    * InnoDB和Falcon存储引擎通过多版本并发控制（MVCC，Multiversion Concurrency Control）机制解决了该问题
+* Serializable（可串行化） 
+    * 这是最高的隔离级别，它通过强制事务排序，使之不可能相互冲突，从而解决幻读问题。简言之，它是在每个读的数据行上加上共享锁。在这个级别，可能导致大量的超时现象和锁竞争。
+    * 这四种隔离级别采取不同的锁类型来实现，若读取的是同一个数据的话，就容易发生问题。例如：
+        * 脏读(Drity Read)：某个事务已更新一份数据，另一个事务在此时读取了同一份数据，由于某些原因，前一个RollBack了操作，则后一个事务所读取的数据就会是不正确的。
+        * 不可重复读(Non-repeatable read):在一个事务的两次查询之中数据不一致，这可能是两次查询过程中间插入了一个事务更新的原有的数据。
+        * 幻读(Phantom Read):在一个事务的两次查询中数据笔数不一致，例如有一个事务查询了几列(Row)数据，而另一个事务却在此时插入了新的几列数据，先前的事务在接下来的查询中，就会发现有几列数据是它先前所没有的。
+         
+在MySQL中，实现了这四种隔离级别，分别有可能产生问题如下所示：
+* Serializable (串行化)：可避免脏读、不可重复读、幻读的发生。
+* Repeatable read (可重复读)：可避免脏读、不可重复读的发生。
+* Read committed (读已提交)：可避免脏读的发生。
+* Read uncommitted (读未提交)：最低级别，任何情况都无法保证。
+
+　　以上四种隔离级别最高的是Serializable级别，最低的是Read uncommitted级别，当然级别越高，执行效率就越低。像Serializable这样的级别，就是以锁表的方式(类似于Java多线程中的锁)使得其他的线程只能在锁外等待，所以平时选用何种隔离级别应该根据实际情况。在MySQL数据库中默认的隔离级别为Repeatable read (可重复读)。
+
+　　在MySQL数据库中，支持上面四种隔离级别，默认的为Repeatable read (可重复读)；而在Oracle数据库中，只支持Serializable (串行化)级别和Read committed (读已提交)这两种级别，其中默认的为Read committed级别。
+
+
+总结：
+
+隔离级别越高，越能保证数据的完整性和一致性，但是对并发性能的影响也越大。
+大多数的数据库默认隔离级别为 Read Commited，比如 SqlServer、Oracle
+少数数据库默认隔离级别为：Repeatable Read 比如： MySQL InnoDB
+
+补充：
+　　1、SQL规范所规定的标准，不同的数据库具体的实现可能会有些差异
+　　2、mysql中默认事务隔离级别是可重复读时并不会锁住读取到的行
+　　3、事务隔离级别为读提交时，写数据只会锁住相应的行
+　　4、事务隔离级别为可重复读时，如果有索引（包括主键索引）的时候，以索引列为条件更新数据，会存在间隙锁间隙锁、行锁、下一键锁的问题，从而锁住一些行；如果没有索引，更新数据时会锁住整张表。
+    5、事务隔离级别为串行化时，读写数据都会锁住整张表
+    6、隔离级别越高，越能保证数据的完整性和一致性，但是对并发性能的影响也越大，鱼和熊掌不可兼得啊。对于多数应用程序，可以优先考虑把数据库系统的隔离级别设为Read Committed，它能够避免脏读取，而且具有较好的并发性能。尽管它会导致不可重复读、幻读这些并发问题，在可能出现这类问题的个别场合，可以由应用程序采用悲观锁或乐观锁来控制。
+
+**事务的分类**
+* 数据库分为本地事务跟全局事务
+    * 本地事务：普通事务，独立一个数据库，能保证在该数据库上操作的ACID。
+    * 分布式事务：涉及两个或多个数据库源的事务，即跨越多台同类或异类数据库的事务（由每台数据库的本地事务组成的），分布式事务旨在保证这些本地事务的所有操作的ACID，使事务可以跨越多台数据库；
+* Java事务类型分为JDBC事务跟JTA事务
+    * JDBC事务：即为上面说的数据库事务中的本地事务，通过connection对象控制管理。
+    * JTA事务：JTA指Java事务API(Java Transaction API)，是Java EE数据库事务规范， JTA只提供了事务管理接口，由应用程序服务器厂商（如WebSphere Application Server）提供实现，JTA事务比JDBC更强大，支持分布式事务。
+* 按是否通过编程分为声明式事务和编程式事务，参考http://blog.csdn.net/liaohaojian/article/details/70139151
+    * 声明式事务：通过XML配置或者注解实现。
+    * 编程式事务：通过编程代码在业务逻辑时需要时自行实现，粒度更小。
+
+**事务的基本原理**
+Spring事务的本质其实就是数据库对事务的支持，没有数据库的事务支持，spring是无法提供事务功能的。对于纯JDBC操作数据库，想要用到事务，可以按照以下步骤进行：
+
+* 获取连接 Connection con = DriverManager.getConnection()
+* 开启事务con.setAutoCommit(true/false);
+* 执行CRUD
+* 提交事务/回滚事务 con.commit() / con.rollback();
+* 关闭连接 conn.close()；
+
+使用Spring的事务管理功能后，我们可以不再写步骤 2 和 4 的代码，而是由Spirng 自动完成。那么Spring是如何在我们书写的 CRUD 之前和之后开启事务和关闭事务的呢？解决这个问题，也就可以从整体上理解Spring的事务管理实现原理了。下面简单地介绍下，注解方式为例子
+
+* 配置文件开启注解驱动，在相关的类和方法上通过注解@Transactional标识。
+* spring 在启动的时候会去解析生成相关的bean，这时候会查看拥有相关注解的类和方法，并且为这些类和方法生成代理，并根据@Transaction的相关参数进行相关配置注入，这样就在代理中为我们把相关的事务处理掉了（开启正常提交事务，异常回滚事务）。
+* 真正的数据库层的事务提交和回滚是通过binlog或者redo log实现的
+
+
+#### 1.1.4.2. Spring 对事务管理的支持
+<a href="#menu" style="float:right">目录</a>
+
+##### 1.1.4.2.1. Spring事务传播行为和隔离级别
+
+**嵌套事务**
+嵌套是子事务套在父事务中执行，子事务是父事务的一部分，在进入子事务之前，父事务建立一个回滚点，叫save point，然后执行子事务，这个子事务的执行也算是父事务的一部分，然后子事务执行结束，父事务继续执行。重点就在于那个save point。看几个问题就明了了：
+
+* 如果子事务回滚，会发生什么？
+父事务会回滚到进入子事务前建立的save point，然后尝试其他的事务或者其他的业务逻辑，父事务之前的操作不会受到影响，更不会自动回滚。
+
+* 如果父事务回滚，会发生什么？
+父事务回滚，子事务也会跟着回滚！为什么呢，因为父事务结束之前，子事务是不会提交的，我们说子事务是父事务的一部分，正是这个道理。
+
+* 事务的提交，是什么情况？
+是父事务先提交，然后子事务提交，还是子事务先提交，父事务再提交？答案是第二种情况，还是那句话，子事务是父事务的一部分，由父事务统一提交。
+
+
+**事务传播行为**
+* PROPAGATION_REQUIRED
+    * 如果存在一个事务，则支持当前事务。如果没有事务则开启一个新的事务。
+    * 默认的spring事务传播级别，使用该级别的特点是，如果上下文中已经存在事务，那么就加入到事务中执行，如果当前上下文中不存在事务，则新建事务执行。所以这个级别通常能满足处理大多数的业务场景。
+* PROPAGATION_SUPPORTS 
+    * 如果存在一个事务，支持当前事务。如果没有事务，则非事务的执行。但是对于事务同步的事务管理器，PROPAGATION_SUPPORTS与不使用事务有少许不同。
+    * 从字面意思就知道，supports，支持，该传播级别的特点是，如果上下文存在事务，则支持事务加入事务，如果没有事务，则使用非事务的方式执行。所以说，并非所有的包在transactionTemplate.execute中的代码都会有事务支持。这个通常是用来处理那些并非原子性的非核心业务逻辑操作。应用场景较少。
+* PROPAGATION_MANDATORY 
+    * 如果已经存在一个事务，支持当前事务。如果没有一个活动的事务，则抛出异常。
+    * 该级别的事务要求上下文中必须要存在事务，否则就会抛出异常！配置该方式的传播级别是有效的控制上下文调用代码遗漏添加事务控制的保证手段。比如一段代码不能单独被调用执行，但是一旦被调用，就必须有事务包含的情况，就可以使用这个传播级别。
+* PROPAGATION_REQUIRES_NEW
+    * 总是开启一个新的事务。如果一个事务已经存在，则将这个存在的事务挂起。
+    * 从字面即可知道，new，每次都要一个新事务，该传播级别的特点是，每次都会新建一个事务，并且同时将上下文中的事务挂起，执行当前新建事务完成以后，上下文事务恢复再执行。
+    * 这是一个很有用的传播级别，举一个应用场景：现在有一个发送100个红包的操作，在发送之前，要做一些系统的初始化、验证、数据记录操作，然后发送100封红包，然后再记录发送日志，发送日志要求100%的准确，如果日志不准确，那么整个父事务逻辑需要回滚。怎么处理整个业务需求呢？就是通过这个PROPAGATION_REQUIRES_NEW 级别的事务传播控制就可以完成。发送红包的子事务不会直接影响到父事务的提交和回滚。
+* PROPAGATION_NOT_SUPPORTED 
+    * 总是非事务地执行，并挂起任何存在的事务。
+    * 这个也可以从字面得知，not supported ，不支持，当前级别的特点就是上下文中存在事务，则挂起事务，执行当前逻辑，结束后恢复上下文的事务。
+    * 这个级别有什么好处？可以帮助你将事务极可能的缩小。我们知道一个事务越大，它存在的风险也就越多。所以在处理事务的过程中，要保证尽可能的缩小范围。比如一段代码，是每次逻辑操作都必须调用的，比如循环1000次的某个非核心业务逻辑操作。这样的代码如果包在事务中，势必造成事务太大，导致出现一些难以考虑周全的异常情况。所以这个事务这个级别的传播级别就派上用场了。用当前级别的事务模板抱起来就可以了。
+* PROPAGATION_NEVER
+    * 总是非事务地执行，如果存在一个活动事务，则抛出异常
+    * 该事务更严格，上面一个事务传播级别只是不支持而已，有事务就挂起，而PROPAGATION_NEVER传播级别要求上下文中不能存在事务，一旦有事务，就抛出runtime异常，强制停止执行！
+* PROPAGATION_NESTED
+    * 如果一个活动的事务存在，则运行在一个嵌套的事务中. 如果没有活动事务, 则按TransactionDefinition.PROPAGATION_REQUIRED 属性执行
+    * 字面也可知道，nested，嵌套级别事务。该传播级别特征是，如果上下文中存在事务，则嵌套事务执行，如果不存在事务，则新建事务
+
+
+**例子讲解以上七中事务传播机制**
+假设有类A的方法methodB(),有类B的方法methodB().
+![](https://img-blog.csdn.net/20170228222731090)
+
+* **PROPAGATION_REQUIRED**
+
+A.methodA()调用B的methodB()方法，那么如果A的方法包含事务，则B的方法则不重新开启事务，
+1. 如果B的methodB()抛出异常，A的methodB()没有捕获，则A和B的事务都会回滚；
+2. 如果B的methodB()运行期间异常会导致B的methodB()的回滚，A如果捕获了异常，并正常提交事务，则会发生Transaction rolled back because it has been marked as rollback-only的异常。
+3. 如果A的methodA()运行期间异常，则A和B的Method的事务都会被回滚
+
+* **PROPAGATION_SUPPORTS**
+
+A.methodA()调用B的methodB()方法，那么如果A的方法包含事务，则B运行在此事务环境中，如果A的方法不包含事务，则B运行在非事务环境；
+1. 如果A没有事务，则A和B的运行出现异常都不会回滚。
+2. 如果A有事务，A的method方法执行抛出异常，B.methodB和A.methodA都会回滚。
+3. 如果A有事务，B.method抛出异常，B.methodB和A.methodA都会回滚，如果A捕获了B.method抛出的异常，则会出现异常Transactionrolled back because it has been marked as rollback-only。
+
+ 
+
+* **PROPAGATION_MANDATORY**
+
+表示当前方法必须在一个事务中运行，如果没有事务，将抛出异常，如下图调用关系：
+B.methodB()事务传播特性定义为:PROPAGATION_MANDATORY
+1. 如果A的methoda()方法没有事务运行环境，则B的methodB()执行的时候会报如下异常：No existingtransaction found for transaction marked with propagation 'mandatory'
+2. 如果A的Methoda()方法有事务并且执行过程中抛出异常，则A.methoda（）和B.methodb（）执行的操作被回滚；
+3. 如果A的methoda()方法有事务，则B.methodB()抛出异常时，A的methoda()和B.methodB()都会被回滚；如果A捕获了B.method抛出的异常，则会出现异常Transaction rolled back because ithas been marked as rollback-only
+
+* **PROPAGATION_NESTED**
+
+B的methodB()定义的事务为PROPAGATION_NESTED；
+1. 如果A的MethodA()不存在事务，则B的methodB()运行在一个新的事务中，B.method()抛出的异常，B.methodB()回滚,但A.methodA()不回滚；如果A.methoda()抛出异常，则A.methodA()和B.methodB()操作不回。
+2. 如果A的methodA()存在事务，则A的methoda()抛出异常，则A的methoda()和B的Methodb()都会被回滚；
+3. 如果A的MethodA()存在事务，则B的methodB()抛出异常，B.methodB()回滚，如果A不捕获异常，则A.methodA()和B.methodB()都会回滚，如果A捕获异常，则B.methodB()回滚,A不回滚；
+
+* **PROPAGATION_NEVER**
+
+表示事务传播特性定义为PROPAGATION_NEVER的方法不应该运行在一个事务环境中
+
+如果B.methodB()的事务传播特性被定义为PROPAGATION_NEVER，则如果A.methodA()方法存在事务，则会出现异常Existingtransaction found for transaction marked with propagation 'never'。
+
+* **PROPAGATION_REQUIRES_NEW**
+
+表示事务传播特性定义为PROPAGATION_REQUIRES_NEW的方法需要运行在一个新的事务中。
+1. 如果A存在事务，A.methodA()抛出异常，A.methodA()的事务被回滚，但B.methodB()事务不受影响；如果B.methodB()抛出异常，A不捕获的话，A.methodA()和B.methodB()的事务都会被回滚。如果A捕获的话，A.methodA()的事务不受影响但B.methodB()的事务回滚。
+
+* **PROPAGATION_NOT_SUPPORTED**
+
+表示该方法不应该在一个事务中运行。如果有一个事务正在运行，他将在运行期被挂起，直到这个事务提交或者回滚才恢复执行。
+1. 如果A.methodA()存在事务，如果B.methodB()抛出异常，A.methodA()不捕获的话，A.methodA()的事务被回滚，而B.methodB()出现异常前数据库操作不受影响。如果A.methodA()捕获的话，则A.methodA()的事务不受影响，B.methodB()异常抛出前的数据操作不受影响。
+
+
+**实际场景中的七大事务传播行为的使用**
+1. 在一个话费充值业务处理逻辑中，有如下图所示操作:
+![](https://img-blog.csdn.net/20170228222113143?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcG1sMTg3MTA5NzMwMzY=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
+
+业务需要扣款操作和创建订单操作同成功或者失败，因此，charger()和order()的事务不能相互独立，需要包含在chargeHandle()的事务中；
+通过以上需求，可以给charge()和order()的事务传播行为定义成：PROPAGATION_MANDATORY
+只要charge()或者order()抛出异常整个chargeHandle()都一起回滚，即使chargeHandle()捕获异常也没用，不允许提交事务。
+
+2. 如果业务需求每接受到一次请求到要记录日志到数据库，如下图：
+![](https://img-blog.csdn.net/20170228222320615?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcG1sMTg3MTA5NzMwMzY=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
+
+因为log()的操作不管扣款和创建订单成功与否都要生成日志，并且日志的操作成功与否不影响充值处理，所以log()方法的事务传播行为可以定义为:PROPAGATION_REQUIRES_NEW.
+
+3. 在订单的售后处理中，更新完订单金额后，需要自动统计销售报表，如下图所示：
+![](https://img-blog.csdn.net/20170228222423429)
+根据业务可知，售后是已经处理完订单的充值请求后的功能，是对订单的后续管理，统计报表report()方法耗时较长，因此，我们需要设置report()的事务传播行为为:PROPAGATION_NEVER,表示不适合在有事务的操作中调用，因为report()太耗时。
+
+
+4. 在银行新增银行卡业务中，需要执行两个操作，一个是保存银行卡信息，一个是登记新创建的银行卡信息，其中登记银行卡信息成功与否不影响银行卡的创建。
+![](https://img-blog.csdn.net/20170228222634004)
+
+
+由以上需求，我们可知对于regster()方法的事务传播行为，可以设置为PROPAGATION_NESTED，action()事务的回滚，regster()保存的信息就没意义，也就需要跟着回滚，而regster()的回滚不影响action()事务；insert()的事务传播行为可以设置为PROPAGATION_REQUIRED, PROPAGATION_MANDATORY，即insert()回滚事务，action()的事务必须跟着回滚。
+
+
+
+
+
+**spring 什么情况下进行事务回滚**
+
+Spring、EJB的声明式事务默认情况下都是在抛出unchecked exception后才会触发事务的回滚
+
+unchecked异常,即运行时异常runntimeException 回滚事务;
+
+checked异常,即Exception可try{}捕获的不会回滚.当然也可配置spring参数让其回滚.
+
+spring的事务边界是在调用业务方法之前开始的，业务方法执行完毕之后来执行commit or rollback(Spring默认取决于是否抛出runtime异常).
+如果抛出runtime exception 并在你的业务方法中没有catch到的话，事务会回滚。
+一般不需要在业务方法中catch异常，如果非要catch，在做完你想做的工作后（比如关闭文件等）一定要抛出runtime exception，否则spring会将你的操作commit,这样就会产生脏数据.所以你的catch代码是画蛇添足。
+
+**Spring中的隔离级别**
+|常量|	解释|
+|---|---|
+|ISOLATION_DEFAULT|	这是个 PlatfromTransactionManager 默认的隔离级别，使用数据库默认的事务隔离级别。另外四个与 JDBC 的隔离级别相对应。
+|ISOLATION_READ_UNCOMMITTED	|这是事务最低的隔离级别，它充许另外一个事务可以看到这个事务未提交的数据。这种隔离级别会产生脏读，不可重复读和幻像读。
+|ISOLATION_READ_COMMITTED|	保证一个事务修改的数据提交后才能被另外一个事务读取。另外一个事务不能读取该事务未提交的数据。
+|ISOLATION_REPEATABLE_READ|	这种事务隔离级别可以防止脏读，不可重复读。但是可能出现幻像读。
+|ISOLATION_SERIALIZABLE|这是花费最高代价但是最可靠的事务隔离级别。事务被处理为顺序执行。
+
+##### 1.1.4.2.2. 事务管理关键抽象
+
+事务管理的抽象主要包含以下三个接口
+```java
+org.springframework.transaction.PlatformTransactionManager
+org.springframework.transaction.TransactionDefinition
+org.springframework.transaction.TransactionStatus
+```
+
+**org.springframework.transaction.TransactionDefinition**
+用于描述事务的隔离级别，超时时间，是否是只读事务和事务传播规则等控制事务具体行为的事务属性，这些事务属性可以通过XML方式、注解、编程方式指定
+PlatformTransactionManager根据TransactionDefinition指定的参数创建事务，并用TransactionStatus描述事务状态
+
+
+* **TransactionDefinition**
+定义了事务传播行为和隔离特性的常量
+```java
+
+package org.springframework.transaction;
+
+import org.springframework.lang.Nullable;
+
+public interface TransactionDefinition {
+
+    //事务传播行为
+	int PROPAGATION_REQUIRED = 0;
+	int PROPAGATION_SUPPORTS = 1;
+	int PROPAGATION_MANDATORY = 2;
+	int PROPAGATION_REQUIRES_NEW = 3;
+	int PROPAGATION_NOT_SUPPORTED = 4;
+	int PROPAGATION_NEVER = 5;
+	int PROPAGATION_NESTED = 6;
+    //事务隔离特性
+	int ISOLATION_DEFAULT = -1;
+	int ISOLATION_READ_UNCOMMITTED = 1;  // same as java.sql.Connection.TRANSACTION_READ_UNCOMMITTED;
+	int ISOLATION_READ_COMMITTED = 2;  // same as java.sql.Connection.TRANSACTION_READ_COMMITTED;
+	int ISOLATION_REPEATABLE_READ = 4;  // same as java.sql.Connection.TRANSACTION_REPEATABLE_READ;
+	int ISOLATION_SERIALIZABLE = 8;  // same as java.sql.Connection.TRANSACTION_SERIALIZABLE;
+
+    //事务超时时间，超时时间到就执行回滚
+	int TIMEOUT_DEFAULT = -1;
+
+
+	default int getPropagationBehavior() {
+		return PROPAGATION_REQUIRED;
+	}
+	default int getIsolationLevel() {
+		return ISOLATION_DEFAULT;
+	}
+
+	default int getTimeout() {
+		return TIMEOUT_DEFAULT;
+	}
+
+    //只读状态，只读事务会进行相关的优化，提高运行性能
+	default boolean isReadOnly() {
+		return false;
+	}
+    //事务名称
+	@Nullable
+	default String getName() {
+		return null;
+	}
+
+	static TransactionDefinition withDefaults() {
+		return StaticTransactionDefinition.INSTANCE;
+	}
+
+}
+
+```
+
+* **TransactionStatus**
+
+TransactionStatus代表一个事务的具体运行状态，事务管理器可以通过该接口获取事务运行期的状态信息，也可以通过该接口间接的回滚事务。相比于抛出异常时回滚事务的方式更具有可控性。
+SavepointManager基于JDBC3.0保存点的分段事务控制能力提供了嵌套事务的机制
+```java
+public interface SavepointManager {
+
+	/**
+	 * Create a new savepoint. You can roll back to a specific savepoint
+	 * via {@code rollbackToSavepoint}, and explicitly release a savepoint
+	 * that you don't need anymore via {@code releaseSavepoint}.
+	 * <p>Note that most transaction managers will automatically release
+	 * savepoints at transaction completion.
+	 * @return a savepoint object, to be passed into
+	 * {@link #rollbackToSavepoint} or {@link #releaseSavepoint}
+	 * @throws NestedTransactionNotSupportedException if the underlying
+	 * transaction does not support savepoints
+	 * @throws TransactionException if the savepoint could not be created,
+	 * for example because the transaction is not in an appropriate state
+	 * @see java.sql.Connection#setSavepoint
+	 */
+     //创建保存点对象
+	Object createSavepoint() throws TransactionException;
+
+	/**
+	 * Roll back to the given savepoint.
+	 * <p>The savepoint will <i>not</i> be automatically released afterwards.
+	 * You may explicitly call {@link #releaseSavepoint(Object)} or rely on
+	 * automatic release on transaction completion.
+	 * @param savepoint the savepoint to roll back to
+	 * @throws NestedTransactionNotSupportedException if the underlying
+	 * transaction does not support savepoints
+	 * @throws TransactionException if the rollback failed
+	 * @see java.sql.Connection#rollback(java.sql.Savepoint)
+	 */
+     //将事务回滚到特定的保存点上，被回滚的保存点将自动释放
+	void rollbackToSavepoint(Object savepoint) throws TransactionException;
+
+	/**
+	 * Explicitly release the given savepoint.
+	 * <p>Note that most transaction managers will automatically release
+	 * savepoints on transaction completion.
+	 * <p>Implementations should fail as silently as possible if proper
+	 * resource cleanup will eventually happen at transaction completion.
+	 * @param savepoint the savepoint to release
+	 * @throws NestedTransactionNotSupportedException if the underlying
+	 * transaction does not support savepoints
+	 * @throws TransactionException if the release failed
+	 * @see java.sql.Connection#releaseSavepoint
+	 */
+     //释放保存点，如果事务提交，则所有的保存点将会自动释放，无需手动清除
+	void releaseSavepoint(Object savepoint) throws TransactionException;
+
+}
+public interface TransactionExecution {
+
+	/**
+	 * Return whether the present transaction is new; otherwise participating
+	 * in an existing transaction, or potentially not running in an actual
+	 * transaction in the first place.
+	 */
+     //是否是一个新事务，false:当前事务是一个已经存在的事务，或者当前未运行在事务环境中
+	boolean isNewTransaction();
+
+	/**
+	 * Set the transaction rollback-only. This instructs the transaction manager
+	 * that the only possible outcome of the transaction may be a rollback, as
+	 * alternative to throwing an exception which would in turn trigger a rollback.
+	 */
+     
+	void setRollbackOnly();
+
+	/**
+	 * Return whether the transaction has been marked as rollback-only
+	 * (either by the application or by the transaction infrastructure).
+	 */
+	boolean isRollbackOnly();
+
+	/**
+	 * Return whether this transaction is completed, that is,
+	 * whether it has already been committed or rolled back.
+	 */
+     //事务是否已经结束(提交或者回滚)
+	boolean isCompleted();
+
+}
+
+
+public interface TransactionStatus extends TransactionExecution, SavepointManager, Flushable {
+
+
+	/**
+	 * Return whether this transaction internally carries a savepoint,
+	 * that is, has been created as nested transaction based on a savepoint.
+	 * <p>This method is mainly here for diagnostic purposes, alongside
+	 * {@link #isNewTransaction()}. For programmatic handling of custom
+	 * savepoints, use the operations provided by {@link SavepointManager}.
+	 * @see #isNewTransaction()
+	 * @see #createSavepoint()
+	 * @see #rollbackToSavepoint(Object)
+	 * @see #releaseSavepoint(Object)
+	 */
+     //判断当前事务是否内部创建了一个保存点
+	boolean hasSavepoint();
+
+	/**
+	 * Flush the underlying session to the datastore, if applicable:
+	 * for example, all affected Hibernate/JPA sessions.
+	 * <p>This is effectively just a hint and may be a no-op if the underlying
+	 * transaction manager does not have a flush concept. A flush signal may
+	 * get applied to the primary resource or to transaction synchronizations,
+	 * depending on the underlying resource.
+	 */
+	@Override
+	void flush();
+
+}
+```
+
+* **PlatformTransactionManager**
+
+
+```java
+
+package org.springframework.transaction;
+
+import org.springframework.lang.Nullable;
+
+/**
+
+ * @author Rod Johnson
+ * @author Juergen Hoeller
+ * @since 16.05.2003
+ * @see org.springframework.transaction.support.TransactionTemplate
+ * @see org.springframework.transaction.interceptor.TransactionInterceptor
+ */
+public interface PlatformTransactionManager extends TransactionManager {
+
+	/**
+	 * Return a currently active transaction or create a new one, according to
+	 * the specified propagation behavior.
+	 * <p>Note that parameters like isolation level or timeout will only be applied
+	 * to new transactions, and thus be ignored when participating in active ones.
+	 * <p>Furthermore, not all transaction definition settings will be supported
+	 * by every transaction manager: A proper transaction manager implementation
+	 * should throw an exception when unsupported settings are encountered.
+	 * <p>An exception to the above rule is the read-only flag, which should be
+	 * ignored if no explicit read-only mode is supported. Essentially, the
+	 * read-only flag is just a hint for potential optimization.
+	 * @param definition the TransactionDefinition instance (can be {@code null} for defaults),
+	 * describing propagation behavior, isolation level, timeout etc.
+	 * @return transaction status object representing the new or current transaction
+	 * @throws TransactionException in case of lookup, creation, or system errors
+	 * @throws IllegalTransactionStateException if the given transaction definition
+	 * cannot be executed (for example, if a currently active transaction is in
+	 * conflict with the specified propagation behavior)
+	 * @see TransactionDefinition#getPropagationBehavior
+	 * @see TransactionDefinition#getIsolationLevel
+	 * @see TransactionDefinition#getTimeout
+	 * @see TransactionDefinition#isReadOnly
+	 */
+	TransactionStatus getTransaction(@Nullable TransactionDefinition definition)
+			throws TransactionException;
+
+	/**
+	 * Commit the given transaction, with regard to its status. If the transaction
+	 * has been marked rollback-only programmatically, perform a rollback.
+	 * <p>If the transaction wasn't a new one, omit the commit for proper
+	 * participation in the surrounding transaction. If a previous transaction
+	 * has been suspended to be able to create a new one, resume the previous
+	 * transaction after committing the new one.
+	 * <p>Note that when the commit call completes, no matter if normally or
+	 * throwing an exception, the transaction must be fully completed and
+	 * cleaned up. No rollback call should be expected in such a case.
+	 * <p>If this method throws an exception other than a TransactionException,
+	 * then some before-commit error caused the commit attempt to fail. For
+	 * example, an O/R Mapping tool might have tried to flush changes to the
+	 * database right before commit, with the resulting DataAccessException
+	 * causing the transaction to fail. The original exception will be
+	 * propagated to the caller of this commit method in such a case.
+	 * @param status object returned by the {@code getTransaction} method
+	 * @throws UnexpectedRollbackException in case of an unexpected rollback
+	 * that the transaction coordinator initiated
+	 * @throws HeuristicCompletionException in case of a transaction failure
+	 * caused by a heuristic decision on the side of the transaction coordinator
+	 * @throws TransactionSystemException in case of commit or system errors
+	 * (typically caused by fundamental resource failures)
+	 * @throws IllegalTransactionStateException if the given transaction
+	 * is already completed (that is, committed or rolled back)
+	 * @see TransactionStatus#setRollbackOnly
+	 */
+	void commit(TransactionStatus status) throws TransactionException;
+
+	/**
+	 * Perform a rollback of the given transaction.
+	 * <p>If the transaction wasn't a new one, just set it rollback-only for proper
+	 * participation in the surrounding transaction. If a previous transaction
+	 * has been suspended to be able to create a new one, resume the previous
+	 * transaction after rolling back the new one.
+	 * <p><b>Do not call rollback on a transaction if commit threw an exception.</b>
+	 * The transaction will already have been completed and cleaned up when commit
+	 * returns, even in case of a commit exception. Consequently, a rollback call
+	 * after commit failure will lead to an IllegalTransactionStateException.
+	 * @param status object returned by the {@code getTransaction} method
+	 * @throws TransactionSystemException in case of rollback or system errors
+	 * (typically caused by fundamental resource failures)
+	 * @throws IllegalTransactionStateException if the given transaction
+	 * is already completed (that is, committed or rolled back)
+	 */
+	void rollback(TransactionStatus status) throws TransactionException;
+
+}
+
+```
+
+##### 1.1.4.2.3. 事务管理器实现类
+Spring 将事务管理委托给底层具体的持久化实现框架来完成。因此，Spring为不同的持久化框架提供了PlatformTransactionManager 接口的实现类。
+
+|事务|	说明|
+|---|---|
+|org.springframework.transaction.jta.JtaTransactionManager|	使用JPA进行持久化时，使用该事务管理器
+|org.springframework.orm.hibernate3.HibernateTransactionManager	|使用Hibernate X.0(X 可以为3 4 5)版本进行持久化时，使用该事务管理器
+|org.springframework.jdbc.datasource.DataSourceTransactionManager|	使用Spring JDBC  或 Mybatis 等基于DataSource数据源的持久化技术时，使用 该事务管理器
+|org.springframework.orm.jdo.JdoTransactionManager|	使用JDO进行持久化时 ，使用该事务管理器
+|org.springframework.transaction.jta.JtaTransactionManager|	具有多个数据源的全局事务使用该事务管理器(不管采用何种持久化技术)
+
+
+
+#### 1.1.4.3. 编程式事务管理
+<a href="#menu" style="float:right">目录</a>
+
+实际中很少使用
+
+#### 1.1.4.4. 使用XML配置声明式事务
+<a href="#menu" style="float:right">目录</a>
+
+**使用原始的TransactionProxyFactoryBean**
+Spring 2.0 之后， 由于可以通过aop/tx命名空间声明事务，因此该方式也不常用
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:p="http://www.springframework.org/schema/p"  
+    xsi:schemaLocation="    
+           http://www.springframework.org/schema/beans    
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd    
+           http://www.springframework.org/schema/aop    
+           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd  
+           http://www.springframework.org/schema/context    
+           http://www.springframework.org/schema/context/spring-context-3.0.xsd">  
+    <!-- 配置数据源 -->  
+    <bean id="dataSource"  
+        class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />  
+        <property name="url" value="jdbc:mysql://localhost:3306/test" />  
+        <property name="username" value="root" />  
+        <property name="password" value="christmas258@" />  
+    </bean>  
+    <!--配置一个JdbcTemplate实例，并将这个“共享的”，“安全的”实例注入到不同的DAO类中去 -->  
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">  
+        <property name="dataSource" ref="dataSource" />  
+    </bean>  
+    <!-- 声明事务管理器 -->  
+    <bean id="txManager"  
+        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+        <property name="dataSource" ref="dataSource" />  
+    </bean>  
+    <!-- 需要实施事务增强的目标业务Bean -->  
+    <bean id="libraryTarget" class="com.mucfc.dao.LibraryDaoImpl"  
+        p:jdbcTemplate-ref="jdbcTemplate" />  
+  
+    <!-- 使用事务代理工厂类为目标业务Bean提供事务增强 -->  
+    <bean id="libraryFactory"  
+        class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"  
+        p:transactionManager-ref="txManager" p:target-ref="libraryTarget">  
+        <!-- 事务属性配置 -->  
+        <property name="transactionAttributes">  
+            <props>  
+                <!-- 以get开头的方法采用只读型事务控制类型 -->  
+                <prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>  
+                <!-- 所有方法均进行事务控制，如果当前没有事务，则新建一个事务 -->  
+            <prop key="addBook">PROPAGATION_REQUIRED</prop>  
+            </props>  
+        </property>  
+  
+    </bean>  
+</beans>  
+
+
+```
+
+缺点：
+* 需要对每个需要事务支持的业务类进行单独的配置；
+* 在指定事务方法时，只能通过方法名进行定义，无法利用方法签名的其他信息进行定位（如方法入参、访问与修饰符等）；
+* 食物属性的配置串的规则比较麻烦，规则串虽然包括多项信息，但统一由逗号分隔的字符串来描述，不能利用IDE中的诱导输入功能，容易出错；
+* 为业务类Bean添加事务支持时，在容器中既需要定义业务类Bean（通常命名为xxxTarget），又需要通过TransactionProxyFactoryBean对其进行代理以生成支持事务的代理Bean。实际上，我们只会从容器中返回代理的Bean，而业务类Bean仅是为了能代理才定义的，这样就造成相似的东西有两份配置，增强了配置信息量
+
+
+
+**使用aop/tx命名空间的方式**
+```xml
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:p="http://www.springframework.org/schema/p"  
+    xmlns:tx="http://www.springframework.org/schema/tx"  
+    xsi:schemaLocation="    
+           http://www.springframework.org/schema/beans    
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd    
+           http://www.springframework.org/schema/tx    
+           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd  
+           http://www.springframework.org/schema/aop    
+           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd  
+           http://www.springframework.org/schema/context    
+           http://www.springframework.org/schema/context/spring-context-3.0.xsd">  
+    <!-- 配置数据源 -->  
+    <bean id="dataSource"  
+        class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />  
+        <property name="url" value="jdbc:mysql://localhost:3306/test" />  
+        <property name="username" value="root" />  
+        <property name="password" value="christmas258@" />  
+    </bean>  
+    <!--配置一个JdbcTemplate实例，并将这个“共享的”，“安全的”实例注入到不同的DAO类中去 -->  
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">  
+        <property name="dataSource" ref="dataSource" />  
+    </bean>  
+    <!-- 声明事务管理器 -->  
+    <bean id="txManager"  
+        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+        <property name="dataSource" ref="dataSource" />  
+    </bean>  
+    <!-- 需要实施事务增强的目标业务Bean -->  
+    <bean id="libraryTarget" class="com.mucfc.dao.LibraryDaoImpl"  
+        p:jdbcTemplate-ref="jdbcTemplate" />  
+  
+    <!-- 使用tx/aop来配置 -->  
+    <aop:config>  
+        <!-- 通过aop定义事务增强切面 -->  
+        <aop:pointcut id="serviceMethod"  
+            expression="execution(* com.mucfc.dao.LibraryDaoImpl.*(..))" />  
+        <!-- 引用事务增强 -->  
+        <aop:advisor pointcut-ref="serviceMethod" advice-ref="txAdvice" />  
+    </aop:config>  
+  
+    <!--事务增强 -->  
+    <tx:advice id="txAdvice" transaction-manager="txManager">  
+        <!-- 事务属性定义 -->  
+        <tx:attributes>  
+            <tx:method name="get*" read-only="false" />  
+            <tx:method name="add*" rollback-for="Exception" />  
+            <tx:method name="del*" />  
+        </tx:attributes>  
+    </tx:advice>  
+</beans>  
+```
+
+#### 1.1.4.5. 使用注解配置生命式事务
+<a href="#menu" style="float:right">目录</a>
+
+```java
+
+package org.springframework.transaction.annotation;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import org.springframework.core.annotation.AliasFor;
+import org.springframework.transaction.TransactionDefinition;
+
+//注解在类上或者方法上
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Inherited
+@Documented
+public @interface Transactional {
+
+	@AliasFor("transactionManager")
+	String value() default "";
+	@AliasFor("value")
+	String transactionManager() default "";
+
+	Propagation propagation() default Propagation.REQUIRED;
+	Isolation isolation() default Isolation.DEFAULT;
+	int timeout() default TransactionDefinition.TIMEOUT_DEFAULT;
+	boolean readOnly() default false;
+	Class<? extends Throwable>[] rollbackFor() default {};
+	String[] rollbackForClassName() default {};
+	Class<? extends Throwable>[] noRollbackFor() default {};
+	String[] noRollbackForClassName() default {};
+}
+```
+**transactionManager**
+表示应用那个应用那个TransactionManager.值是事务管理器的bea名称，相关的事务管理器查看上述内容几种事务管理器的说明。
+
+**propagation**
+事务传播特性
+
+**isolation**
+事务隔离特性
+
+**timeout**
+事务超时时间
+
+**readOnly**
+是否只读事务
+
+**rollbackFor/rollbackForClassName**
+导致事务回滚的异常类数组
+
+**noRollbackFor/noRollbackForClassName**
+不会导致事务回滚的异常类名字数组
+
+**@Transactional 使用应该注意的地方**
+
+* 默认情况下，如果在事务中抛出了未检查异常（继承自 RuntimeException 的异常）或者 Error，则 Spring 将回滚事务；除此之外，Spring 不会回滚事务。你如果想要在特定的异常回滚可以考虑rollbackFor()等属性
+* @Transactional 只能应用到 public 方法才有效。这是因为在使用 Spring AOP 代理时，Spring 会调用 TransactionInterceptor在目标方法执行前后进行拦截之前，DynamicAdvisedInterceptor（CglibAopProxy的内部类）的的 intercept方法或 JdkDynamicAopProxy 的 invoke 方法会间接调用 AbstractFallbackTransactionAttributeSource（Spring 通过这个类获取@Transactional 注解的事务属性配置属性信息）的 computeTransactionAttribute 方法。
+```java
+protected TransactionAttribute computeTransactionAttribute(Method method, @Nullable Class<?> targetClass) {
+		// Don't allow no-public methods as required.
+		if (allowPublicMethodsOnly() && !Modifier.isPublic(method.getModifiers())) {
+			return null;
+		}
+}
+```
+若不是 public，就不会获取@Transactional 的属性配置信息，最终会造成不会用 TransactionInterceptor 来拦截该目标方法进行事务管理。整个事务执行的时序图如下
+![](https://upload-images.jianshu.io/upload_images/5281821-fecd22fffdc8d181.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp)
+
+* Spring 的 AOP 的自调用问题
+在 Spring 的 AOP 代理下，只有目标方法由外部调用，目标方法才由 Spring 生成的代理对象来管理，这会造成自调用问题。若同一类中的其他没有@Transactional注解的方法内部调用有@Transactional注解的方法，有@Transactional注解的方法的事务被忽略，不会发生回滚。这个问题是由于Spring AOP 代理造成的(如下面代码所示）。之所以没有应用事务，是因为在内部调用，而代理后的类(把目标类作为成员变量静态代理)只是调用成员变量中的对应方法，自然也就没有aop中的advice，造成只能调用父类的方法。另外一个问题是只能应用在public方法上。为解决这两个问题，使用 AspectJ 取代 Spring AOP 代理。
+```java
+@Transactional
+public void saveUser(){
+        User user = new User();
+        user.setAge(22);
+        user.setName("mask");
+        logger.info("save the user{}",user);
+        userRepository.save(user);
+       // throw new RuntimeException("exception");
+    }
+public void saveUserBack(){
+    saveUser();   //自调用发生
+}
+```
+另外也可以把注解加到方法上来解决。
+
+
+#### 1.1.4.6. 事务实现原理
+<a href="#menu" style="float:right">目录</a>
+
+
+
+### 1.1.5. Springg Cache
+<a href="#menu" style="float:right">目录</a>
+
+### 1.1.6. 常用注解
+<a href="#menu" style="float:right">目录</a>
+
+### 1.1.7. 常用工具类
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -3819,13 +4951,374 @@ public interface DemoFeign {
 ### 1.4.7. 分布式配置中心Config
 <a href="#menu" style="float:right">目录</a>
 
-### 1.4.8. 消息总线Bus
+#### 1.4.7.1. 基本使用
+
+##### 1.4.7.1.1. 配置中心
+
+**引入依赖**
+```xml
+ <dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-config-server</artifactId>
+</dependency>
+```
+
+**SpringBoot配置文件**
+
+
+这里有两种方式，一种是从git中读取配置文件，一种是从本地读取文件
+
+* 从本地读取文件
+```yml
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+      #  git:
+       #   uri: https://github.com/lgjlife/micro-blog
+          #Spring Cloud Config Server强制从远程存储库中提取
+       #   force-pull: true
+        #  search-paths: config-repo
+        native:
+          search-locations: /home/lgj/config-repo #classpath:config-repo #
+  profiles:
+    active: native
+```
+
+* 从git中读取配置文件
+micro-blog为仓库名称，search-paths为仓库中的文件夹名称，不要以"/"开头。如果是多级，则为 aa/bb
+```yml
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/lgjlife/micro-blog
+          #Spring Cloud Config Server强制从远程存储库中提取
+          username: xxx
+          password: xxx
+          force-pull: true
+          search-paths: config-repo
+
+```
+**启动类添加注解@EnableConfigServer**
+```java
+@EnableDiscoveryClient
+@EnableConfigServer
+@SpringBootApplication
+public class ConfigServerApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ConfigServerApplication.class, args);
+    }
+
+}
+```
+**配置文件**
+读取的配置文件的命名方式为 application-profile.yml/application-profile.properties
+
+application和profile都是任意设置的,中间必须是"-"隔开。
+比如本例中config-client.yml，config-client-test.yml,config-client-dev.yml
+
+
+**运行启动,验证是否启动成功**
+通过向 Config Server 发送 GET 请求以直接的方式获取， 可用下面的链接形式。
+* 不带{label}分支信息，默认访问 master 分支， 可使用：
+    * /{application}-{profile}.yml
+    * /{application}-{profile}.properties
+* 带{label}分支信息， 可使用：
+    * /{label}/{application}-{profile}.yml
+    * /{application}/{profile} [/{label}]
+    * /{label}/{application}-{profile}.properties
+
+比如要访问上面的配置文件,config-client-dev.yml
+```yml
+name: 123456adsfd3143
+data: 7890fdff3413
+server:
+  port: 8004
+```
+使用http://localhost:9001/config-client/dev访问，可以看到返回的是JSON格式的数据，说明Config Server配置成功
+
+```json
+{"name":"config-client","profiles":["dev"],"label":null,"version":null,"state":null,"propertySources":[{"name":"file:/home/lgj/config-repo/config-client-dev.yml","source":{"name":"123456adsfd3143","data":"7890fdff3413","server.port":8004}},{"name":"file:/home/lgj/config-repo/config-client.yml","source":{"name":"default1"}}]}
+```
+使用http://localhost:9001/config-client-dev.yml访问,显示的是实际的yml结构配置
+```yml
+data: 7890fdff3413
+name: 123456adsfd3143
+server:
+  port: 8004
+```
+
+##### 1.4.7.1.2. bootstrap.yml与application.yml区别
+说明：其实yml和properties文件是一样的原理，主要是说明application和bootstrap的加载顺序。且一个项目上要么yml或者properties，二选一的存在
+
+**执行顺序**
+* bootstrap.yml（bootstrap.properties）用来程序引导时执行，应用于更加早期配置信息读取，如可以使用来配置application.yml中使用到参数等
+* application.yml（application.properties) 应用程序特有配置信息，可以用来配置后续各个模块中需使用的公共参数等。
+* bootstrap.yml 先于 application.yml 加载
+* 如果两个配置文件都有相同的配置,application.yml将会覆盖bootstrap.yml的值
+
+**典型的应用场景如下**
+* 当使用 Spring Cloud Config Server 的时候，你应该在 bootstrap.yml 里面指定 spring.application.name 和 spring.cloud.config.server.git.uri和一些加密/解密的信息
+技术上，bootstrap.yml 是被一个父级的 Spring ApplicationContext 加载的。这个父级的 Spring ApplicationContext是先加载的，在加载application.yml 的 ApplicationContext之前。
+
+为何需要把 config server 的信息放在 bootstrap.yml 里？
+当使用Spring Cloud的时候，配置信息一般是从config server加载的，为了取得配置信息（比如密码等），你需要一些提早的或引导配置。因此，把 config server 信息放在 bootstrap.yml，用来加载真正需要的配置信息。
+
+**高级使用场景**
+
+* 启动上下文
+Spring Cloud会创建一个`Bootstrap Context`，作为Spring应用的`Application Context`的父上下文。初始化的时候，`Bootstrap Context`负责从外部源加载配置属性并解析配置。这两个上下文共享一个从外部获取的`Environment`。`Bootstrap`属性有高优先级，默认情况下，它们不会被本地配置覆盖。 `Bootstrap context`和`Application Context`有着不同的约定，所以新增了一个`bootstrap.yml`文件，而不是使用`application.yml` (或者`application.properties`)。保证`Bootstrap Context`和`Application Context`配置的分离。下面是一个例子： **bootstrap.yml**
+
+```yml
+spring:
+  application:
+    name: foo
+  cloud:
+    config:
+      uri: ${SPRING_CONFIG_URI:http://localhost:8888}
+```
+推荐在`bootstrap.yml` or `application.yml`里面配置`spring.application.name`. 你可以通过设置`spring.cloud.bootstrap.enabled=false`来禁用`bootstrap`。
+
+* 应用上下文层次结构
+如果你通过`SpringApplication`或者`SpringApplicationBuilder`创建一个`Application Context`,那么会为spring应用的`Application Context`创建父上下文`Bootstrap Context`。在Spring里有个特性，子上下文会继承父类的`property sources` and `profiles` ，所以`main application context` 相对于没有使用Spring Cloud Config，会新增额外的`property sources`。额外的`property sources`有：
+
+“bootstrap” : 如果在Bootstrap Context扫描到PropertySourceLocator并且有属性，则会添加到CompositePropertySource。Spirng Cloud Config就是通过这种方式来添加的属性的，详细看源码ConfigServicePropertySourceLocator`。下面也也有一个例子自定义的例子。
+“applicationConfig: [classpath:bootstrap.yml]” ，（如果有spring.profiles.active=production则例如 applicationConfig: [classpath:/bootstrap.yml]#production）: 如果你使用bootstrap.yml来配置Bootstrap Context，他比application.yml优先级要低。它将添加到子上下文，作为Spring Boot应用程序的一部分。下文有介绍。
+由于优先级规则，Bootstrap Context不包含从bootstrap.yml来的数据，但是可以用它作为默认设置。
+
+你可以很容易的扩展任何你建立的上下文层次，可以使用它提供的接口，或者使用SpringApplicationBuilder包含的方法（parent()，child()，sibling()）。Bootstrap Context将是最高级别的父类。扩展的每一个Context都有有自己的bootstrap property source（有可能是空的）。扩展的每一个Context都有不同spring.application.name。同一层层次的父子上下文原则上也有一有不同的名称，因此，也会有不同的Config Server配置。子上下文的属性在相同名字的情况下将覆盖父上下文的属性。
+
+注意SpringApplicationBuilder允许共享Environment到所有层次，但是不是默认的。因此，同级的兄弟上下文不在和父类共享一些东西的时候不一定有相同的profiles或者property sources。
+
+* 修改Bootstrap属性配置
+源码位置BootstrapApplicationListener。
+
+```java
+String configName = environment.resolvePlaceholders("${spring.cloud.bootstrap.name:bootstrap}");
+
+String configLocation = environment.resolvePlaceholders("${spring.cloud.bootstrap.location:}");
+
+Map<String, Object> bootstrapMap = new HashMap<>();bootstrapMap.put("spring.config.name",configName);
+if(StringUtils.hasText(configLocation)){
+    bootstrapMap.put("spring.config.location", configLocation);
+}
+```
+bootstrap.yml是由spring.cloud.bootstrap.name（默认:”bootstrap”）或者spring.cloud.bootstrap.location（默认空）。这些属性行为与spring.config.*类似，通过它的Environment来配置引导ApplicationContext。如果有一个激活的profile（来源于spring.profiles.active或者Environment的Api构建），例如bootstrap-development.properties 就是配置了profile为development的配置文件.
+
+* 覆盖远程属性
+property sources被bootstrap context 添加到应用通常通过远程的方式，比如”Config Server”。默认情况下，本地的配置文件不能覆盖远程配置，但是可以通过启动命令行参数来覆盖远程配置。如果需要本地文件覆盖远程文件，需要在远程配置文件里设置授权 
+spring.cloud.config.allowOverride=true（这个配置不能在本地被设置）。一旦设置了这个权限，你可以配置更加细粒度的配置来配置覆盖的方式，
+
+比如： 
+```
+- spring.cloud.config.overrideNone=true 覆盖任何本地属性 
+- spring.cloud.config.overrideSystemProperties=false 仅仅系统属性和环境变量 
+```
+源文件见PropertySourceBootstrapProperties
+
+* 自定义启动配置
+bootstrap context是依赖/META-INF/spring.factories文件里面的org.springframework.cloud.bootstrap.BootstrapConfiguration条目下面，通过逗号分隔的Spring  @Configuration类来建立的配置。任何main application context需要的自动注入的Bean可以在这里通过这种方式来获取。这也是ApplicationContextInitializer建立@Bean的方式。可以通过@Order来更改初始化序列，默认是”last”。
+
+```yml
+# spring-cloud-context-1.1.1.RELEASE.jar
+# spring.factories
+# AutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration,\
+org.springframework.cloud.autoconfigure.RefreshAutoConfiguration,\
+org.springframework.cloud.autoconfigure.RefreshEndpointAutoConfiguration,\
+org.springframework.cloud.autoconfigure.LifecycleMvcEndpointAutoConfiguration
+
+# Application Listeners
+org.springframework.context.ApplicationListener=\
+org.springframework.cloud.bootstrap.BootstrapApplicationListener,\
+org.springframework.cloud.context.restart.RestartListener
+
+# Bootstrap components
+org.springframework.cloud.bootstrap.BootstrapConfiguration=\
+org.springframework.cloud.bootstrap.config.PropertySourceBootstrapConfiguration,\
+org.springframework.cloud.bootstrap.encrypt.EncryptionBootstrapConfiguration,\
+org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration,\
+org.springframework.boot.autoconfigure.PropertyPlaceholderAutoConfiguration
+```
+
+警告 
+小心，你添加的自定义BootstrapConfiguration类没有错误的@ComponentScanned到你的主应用上下文，他们可能是不需要的。使用一个另外的包不被@ComponentScan或者@SpringBootApplication注解覆盖到。
+
+
+bootstrap context通过spring.factories配置的类初始化的所有的Bean都会在SpingApplicatin启动前加入到它的上下文里去。
+
+自定义引导配置来源：Bootstrap Property Sources
+默认的`property source`添加额外的配置是通过配置服务（Config Server），你也可以自定义添加`property source`通过实现`PropertySourceLocator`接口来添加。你可以使用它加配置属性从不同的服务、数据库、或者其他。
+
+下面是一个自定义的例子:
+```java
+@Configuration
+public class CustomPropertySourceLocator implements PropertySourceLocator {
+
+    @Override
+    public PropertySource<?> locate(Environment environment) {
+        return new MapPropertySource("customProperty",
+                Collections.<String, Object>singletonMap("property.from.sample.custom.source", "worked as intended"));
+    }
+}
+```
+
+Environment被ApplicationContext建立，并传入property sources（可能不同个profile有不同的属性），所以，你可以从Environment寻找找一些特别的属性。比如spring.application.name，它是默认的Config Server property source。
+
+如果你建立了一个jar包，里面添加了一个META-INF/spring.factories文件：
+
+org.springframework.cloud.bootstrap.BootstrapConfiguration=sample.custom.CustomPropertySourceLocator
+那么，”customProperty“的PropertySource将会被包含到应用。
+
+
+##### 1.4.7.1.3. 客户端配置
+
+**引入依赖**
+
+```xml
+ <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-config</artifactId>
+</dependency>
+```
+
+**yml配置文件**
+```yml
+# 必须放在bootstrap.yml中
+spring:
+  application:
+    name: config-client
+  # cloud config 配置中心
+  cloud:
+    config:
+      #config server 地址
+      uri: http://localhost:9001
+      #如果服务无法连接到配置服务器，则可能希望启动服务失败
+      fail-fast: true
+      label: master
+  # 指定profiles
+  profiles:
+    active: dev
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8001/eureka/
+
+```
+
+**java代码中使用**
+
+使用@Value注解引入，由于上面设置 fail-fast: true，因此注入失败时将会报错，服务无法启动。
+```java
+@Slf4j
+@RefreshScope // curl -X POST http://localhost:8004/actuator/refresh
+@RestController
+@RequestMapping("/config")
+public class ConfigController {
+
+
+    @Value("${data}")
+    private String data;
+
+    @Value("${name}")
+    private String name;
+
+    @RequestMapping("/name")
+    public String name(){
+        log.info("name = " + name );
+        return name;
+    }
+
+    @RequestMapping("/data")
+    public String data(){
+        log.info("data = " + data );
+        return data;
+    }
+}
+```
+
+##### 1.4.7.1.4. 刷新配置
+有一种场景需要更改配置而不需要重启服务。
+
+* 客户端需要进行相关的配置
+
+必须要引入actuator依赖
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+```
+
+默认端点是不开放的，需要使能打开
+```yml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+```
+
+向客户端发送post请求http://localhost:8004/actuator/refresh即可刷新配置
+```
+curl -X POST http://localhost:8004/actuator/refresh
+```
+
+
+#### 1.4.7.2. 原理说明
 <a href="#menu" style="float:right">目录</a>
 
-### 1.4.9. 分布式服务跟踪Sleuth
+#### 1.4.7.3. 更多使用方式
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.4.9.1. 基本使用 
+### 1.4.8. 消息总线bus
+<a href="#menu" style="float:right">目录</a>
+
+Spring Cloud Bus是用轻量的消息代理将分布式的节点连接起来,可以用于广播配置文件的更改或者服务的监控管理。一个关键的思想就是,消息总线可以为微服务做监控,也可以实现应用程序之间相互通信。 Spring Cloud Bus可选的消息代理线线泡括RabbitMQ、 AMQP和Kaka等。
+     
+为什么需要用 Spring Cloud Bus去刷新配置呢?
+如果有几十个微服务,而每一个服务又是多实例,当更改配置时,需要重新启动多个微服务实例,会非常麻烦。 Spring Cloud Bus的一个功能就是让这个过程变得简单,当远程Git仓库的配置更改后,只需要向某一个微服务实例发送一个Post请求,通过消息组件通知其他微服务实例重新拉取配置文件
+
+![](https://springcloud-oss.oss-cn-shanghai.aliyuncs.com/chapter8/configbus1.jpg)
+
+根据此图我们可以看出利用Spring Cloud Bus做配置更新的步骤:
+1. 提交代码触发post给客户端A发送bus/refresh
+2. 客户端A接收到请求从Server端更新配置并且发送给Spring Cloud Bus
+3. Spring Cloud bus接到消息并通知给其它客户端
+4. 其它客户端接收到通知，请求Server端获取最新配置
+5. 全部客户端均获取到最新的配置
+
+#### 1.4.8.1. 消息代理
+消息代理 (Message Broker) 是一种消息验证、 传输、 路由的架构模式。 它在应用程序之间起到通信调度并最小化应用之间的依赖的作用， 使得应用程序可以高效地解耦通信过程。 消息代理是一个中间件产品， 它的核心是一个消息的路由程序， 用来实现接收和分发消息， 并根据设定好的消息处理流来转发给正确的应用。 它包括独立的通信和消息传递协议， 能够实现组织内部和组织间的网络通信。 设计代理的目的就是为了能够从应用程序中传入消息， 并执行一些特别的操作， 下面这些是在企业应用中， 我们经常需要使用消息代理的场景：
+* 将消息路由到一个或多个目的地
+* 消息转化为其他的表现方式。
+* 执行消息的聚集、 消息的分解， 并将结果发送到它们的目的地， 然后重新组合响应返回给消息用户。
+* 调用Web服务来检索数据。
+* 响应事件或错误。
+* 使用发布－订阅模式来提供内容或基千主题的消息路由。
+
+当前版本的Spring Cloud Bus仅支待两款中间件产品： RabbitMQ和Kafka
+
+### 1.4.9. 消息驱动的微服务Stream
+<a href="#menu" style="float:right">目录</a>
+
+### 1.4.10. 分布式服务跟踪Sleuth
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.4.10.1. 基本使用 
 
 pom配置
 ```xml
@@ -3878,11 +5371,11 @@ spring:
 上面四个值中的**TraceID**和**SpanID**是Spring Cloud Sleuth实现分布式服务跟踪的核心。 在一次服务请求链路的调用过程中， 会保待并传递同一个**Trace ID**, 从而将整个分布于不同微服务进程中的请求跟踪 信息串联起来。 以上面输出内容为例， trace-1 和trace-2同属于一个前端服务请求来源，所以它们的TraceID是相同的，处于同一条请求链路中
 
 
-#### 1.4.9.2. 跟踪原理
+#### 1.4.10.2. 跟踪原理
 
 这里只讲feign和Sleuth的实现原理，其他方式基本原理上差不多。
 
-##### 1.4.9.2.1. 基本实现原理
+##### 1.4.10.2.1. 基本实现原理
 
 在了解其实现原理之前需要思考的问题是，假如消费者使用的Feign声明式服务调用，sleuth是如何接入的，是如何生成各种ID插入请求的？
 
@@ -3945,7 +5438,7 @@ main(){
 ```
 ----
 
-##### 支持的组件
+##### 1.4.10.2.2. 支持的组件
 Spring Cloud Sleuth可以追踪10种类型的组件，async、Hystrix，messaging，websocket，rxjava，scheduling，web（Spring MVC Controller，Servlet），webclient（Spring RestTemplate）、Feign、Zuul。下面是常用的八种类型。
 
 ![Sleuth支持的组件](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/sleuth-instructment.png?raw=true)
@@ -3976,7 +5469,7 @@ TraceFeignAspect AOP里面的逻辑是，有地方想获取Client实例，就拦
 原理是zuul的Filter机制，ZuulFilter 
 实现了三个TracePreZuulFilter、TracePostZuulFilter两个Filter。
 
-##### 一些基本概念
+##### 1.4.10.2.3. 一些基本概念
 
 * 为了实现请求跟踪， 当请求发送到分布式系统的入口端点时， 只需要服务跟踪框架为该请求创建一个唯一的跟踪标识， 同时在分布式系统内部流转的时候， 框架始终保待传递 该唯一标识， 直到返回给请求方为止， 这个唯一 标识就是前文中提到的TraceID。 通过TraceID 的记录， 我们就能将所有请求过程的日志关联起来。
 * 为了统计各处理单元的时间延迟， 当请求到达各个服务组件时， 或是处理逻辑到达某个状态时， 也通过一个唯一标识来标记它的开始、 具体过程以及结束， 该标识就是前文中提到的SpanID。 对于每个Span来说， 它必须有开始和结束 两个节点， 通过记录开始 Span和结束Span的时间戳，就能统计出该Span的时间延迟，除了时间戳记录之外， 它还可以包含一些其他元数据， 比如事件名称、 请求信息等
@@ -4005,7 +5498,7 @@ public final class B3Propagation<K> implements Propagation<K> {
 }
 ```
 
-##### zipkin
+##### 1.4.10.2.4. zipkin
 Zipkin是Twitter的一个开源项目，我们可以使用它来收集各个服务器上请求链路的跟踪数据，并通过它提供的API接口来辅助查询跟踪数据以分布式系统的监控程序，通过UI组件帮助我们及时发现系统中出现的延迟升高问题以及系统性能瓶颈根源。
 **基本概念**
 下面展示Zipkin的基础架构，它主要由4个核心组件构成
@@ -4049,7 +5542,7 @@ Instrumented Client 和Instrumented Server，是指分布式架构中使用了Tr
 这种方式通过spring cloud streaming将追踪信息发送到zipkin。spring cloud streaming目前只支持kafka和rabbitmq。Zipkin Collector从消息中间件中读取数据并存储：
 ![](https://img-blog.csdn.net/20181010191040623?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3pobGxhbnNlemhpbGlhbg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
-##### 调用过程
+##### 1.4.10.2.5. 调用过程
 
 ![Sleuth支持的组件](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/sleuth-request.png?raw=true)
 
@@ -4097,8 +5590,7 @@ public void inject(TraceContext traceContext, C carrier) {
 }
 ```
 
-### 1.4.10. 消息驱动的微服务
-<a href="#menu" style="float:right">目录</a>
+
 
 
 
