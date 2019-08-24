@@ -21,9 +21,13 @@
                 - [1.1.4.2.3. 事务管理器实现类](#11423-事务管理器实现类)
             - [1.1.4.3. 编程式事务管理](#1143-编程式事务管理)
             - [1.1.4.4. 使用XML配置声明式事务](#1144-使用xml配置声明式事务)
-            - [1.1.4.5. 使用注解配置生命式事务](#1145-使用注解配置生命式事务)
+            - [1.1.4.5. 使用注解配置事务](#1145-使用注解配置事务)
             - [1.1.4.6. 事务实现原理](#1146-事务实现原理)
-        - [1.1.5. Springg Cache](#115-springg-cache)
+        - [1.1.5. Spring Cache](#115-spring-cache)
+            - [1.1.5.1. 几个重要概念&缓存注解](#1151-几个重要概念缓存注解)
+            - [SpEL上下文数据](#spel上下文数据)
+            - [基本使用](#基本使用)
+            - [整合Redis](#整合redis)
         - [1.1.6. 常用注解](#116-常用注解)
         - [1.1.7. 常用工具类](#117-常用工具类)
     - [1.2. Sppring MVC](#12-sppring-mvc)
@@ -1110,7 +1114,7 @@ Spring 2.0 之后， 由于可以通过aop/tx命名空间声明事务，因此�
 </beans>  
 ```
 
-#### 1.1.4.5. 使用注解配置生命式事务
+#### 1.1.4.5. 使用注解配置事务
 <a href="#menu" style="float:right">目录</a>
 
 ```java
@@ -1209,8 +1213,228 @@ public void saveUserBack(){
 
 
 
-### 1.1.5. Springg Cache
+### 1.1.5. Spring Cache
 <a href="#menu" style="float:right">目录</a>
+
+#### 1.1.5.1. 几个重要概念&缓存注解
+
+|名称|	解释|
+|---|---|
+|Cache|	缓存接口，定义缓存操作。实现有：RedisCache、EhCacheCache、ConcurrentMapCache等
+|CacheManager|	缓存管理器，管理各种缓存（cache）组件
+|@Cacheable	|主要针对方法配置，能够根据方法的请求参数对其进行缓存
+|@CacheEvict	|清空缓存
+|@CachePut|	保证方法被调用，又希望结果被缓存。与@Cacheable区别在于是否每次都调用方法，常用于更新
+|@EnableCaching	|开启基于注解的缓存
+|keyGenerator|	缓存数据时key生成策略
+|serialize|	缓存数据时value序列化策略
+|@CacheConfig|	统一配置本类的缓存注解的属性
+
+**@Cacheable/@CachePut/@CacheEvict 主要的参数**
+|名称|	解释|
+|---|---|
+|value|	缓存的名称，在 spring 配置文件中定义，必须指定至少一个.例如：@Cacheable(value=”mycache”) 或者@Cacheable(value={”cache1”,”cache2”}
+|key	|缓存的 key，可以为空，如果指定要按照 SpEL 表达式编写，如果不指定，则缺省按照方法的所有参数进行组合.例如：@Cacheable(value=”testcache”,key=”#id”)
+|condition|	缓存的条件，可以为空，使用 SpEL 编写，返回 true 或者 false，只有为 true 才进行缓存/清除缓存.例如：@Cacheable(value=”testcache”,condition=”#userName.length()>2”)
+|unless	|否定缓存。当条件结果为TRUE时，就不会缓存。@Cacheable(value=”testcache”,unless=”#userName.length()>2”)
+|allEntries(@CacheEvict )|	是否清空所有缓存内容，缺省为 false，如果指定为 true,则方法调用后将立即清空所有缓存.例如：@CachEvict(value=”testcache”,allEntries=true)
+|beforeInvocation(@CacheEvict)	|是否在方法执行前就清空，缺省为 false，如果指定为 true，则在方法还没有执行的时候就清空缓存，缺省情况下，如果方法执行抛出异常，则不会清空缓存,例如：@CachEvict(value=”testcache”，beforeInvocation=true)
+
+#### SpEL上下文数据
+Spring Cache提供了一些供我们使用的SpEL上下文数据，下表直接摘自Spring官方文档：
+
+|名称|	位置|	描述	|示例|
+|---|---|---|---|
+|methodName|	root对象|	当前被调用的方法名|	#root.methodname
+|method|	root对象|	当前被调用的方法|	#root.method.name
+|target	|root对象	|当前被调用的目标对象实例	|#root.target
+|targetClass|	root对象|	当前被调用的目标对象的类	|#root.targetClass
+|args	|root对象|	当前被调用的方法的参数列表|	#root.args[0]
+|caches|	root对象	|当前方法调用使用的缓存列表	|#root.caches[0].name
+|Argument Name|	执行上下文	|当前被调用的方法的参数，如findArtisan(Artisan artisan),可以通过#artsian.id获得参数|	#artsian.id
+|result|	执行上下文|	方法执行后的返回值（仅当方法执行后的判断有效，如 unless cacheEvict的beforeInvocation=false）|	#result
+
+
+注意：
+1. 当我们要使用root对象的属性作为key时我们也可以将“#root”省略，因为Spring默认使用的就是root对象的属性。 如
+@Cacheable(key = "targetClass + methodName +#p0")
+2. 使用方法参数时我们可以直接使用“#参数名”或者“#p参数index”。 如：
+@Cacheable(value="users", key="#id")
+@Cacheable(value="users", key="#p0")
+
+SpEL提供了多种运算符
+
+|类型|	运算符|
+|---|---|
+|关系	|<，>，<=，>=，==，!=，lt，gt，le，ge，eq，ne
+|算术	|+，- ，* ，/，%，^
+|逻辑	|&&，||，!，and，or，not，between，instanceof
+|条件	|?: (ternary)，?: (elvis)
+|正则表达式	|matches
+|其他类型	|?.，?[…]，![…]，^[…]，$[…]
+
+#### 基本使用
+
+**引入依赖**
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-cache</artifactId>
+</dependency>
+```
+* 启动类添加@EnableCaching 注解
+
+**缓存@Cacheable**
+@Cacheable注解会先查询是否已经有缓存，有会使用缓存，没有则会执行方法并缓存。
+
+* 注解说明
+```java
+String[] value() default {}; 
+String key() default ""; //缓存键
+String[] cacheNames() default {}; //缓存名称和value注解差不多，二选一
+String keyGenerator() default ""; //key的生成器。key/keyGenerator二选一使用
+String cacheManager() default ""; //指定缓存管理器
+String cacheResolver() default ""; //或者指定获取解析器
+String condition() default ""; //条件符合则缓存
+String unless() default ""; //条件符合则不缓存
+boolean sync() default false; //是否使用异步模式
+```
+* 例子
+```java
+@Cacheable(value = "emp" ,key = "targetClass + methodName +#p0")
+public List<NewJob> queryAll(User uid) {
+    return newJobDao.findAllByUid(uid);
+}
+```
+此处的value是必需的，它指定了你的缓存存放在哪块命名空间。
+此处的key是使用的spEL表达式，参考上章。这里有一个小坑，如果你把methodName换成method运行会报错，观察它们的返回类型，原因在于methodName是String而methoh是Method。
+此处的User实体类一定要实现序列化public class User implements Serializable，否则会报java.io.NotSerializableException异常。
+到这里，你已经可以运行程序检验缓存功能是否实现。
+
+
+
+**配置@CacheConfig**
+当我们需要缓存的地方越来越多，你可以使用@CacheConfig(cacheNames = {"myCache"})注解来统一指定value的值，这时可省略value，如果你在你的方法依旧写上了value，那么依然以方法的value值为准。
+
+使用方法如下：
+```java
+@CacheConfig(cacheNames = {"myCache"})
+public class BotRelationServiceImpl implements BotRelationService {
+    @Override
+    @Cacheable(key = "targetClass + methodName +#p0")//此处没写value
+    public List<BotRelation> findAllLimit(int num) {
+        return botRelationRepository.findAllLimit(num);
+    }
+    
+}
+```
+查看它的其它属性
+```java
+String keyGenerator() default "";  //key的生成器。key/keyGenerator二选一使用
+String cacheManager() default "";  //指定缓存管理器
+String cacheResolver() default ""; //或者指定获取解析器
+```
+
+**更新@CachePut**
+@CachePut注解的作用 主要针对方法配置，能够根据方法的请求参数对其结果进行缓存，和 @Cacheable 不同的是，它每次都会触发真实方法的调用 。简单来说就是用户更新缓存数据。但需要注意的是该注解的value 和 key 必须与要更新的缓存相同，也就是与@Cacheable 相同。示例：
+
+```java
+@CachePut(value = "emp", key = "targetClass + #p0")
+public NewJob updata(NewJob job) {
+    NewJob newJob = newJobDao.findAllById(job.getId());
+    newJob.updata(job);
+    return job;
+}
+
+@Cacheable(value = "emp", key = "targetClass +#p0")//清空缓存
+public NewJob save(NewJob job) {
+    newJobDao.save(job);
+    return job;
+}
+```
+查看它的其它属性
+```java
+String[] cacheNames() default {}; //与value二选一
+String keyGenerator() default "";  //key的生成器。key/keyGenerator二选一使用
+String cacheManager() default "";  //指定缓存管理器
+String cacheResolver() default ""; //或者指定获取解析器
+String condition() default ""; //条件符合则缓存
+String unless() default ""; //条件符合则不缓存
+```
+
+**清除@CacheEvict**
+@CachEvict 的作用 主要针对方法配置，能够根据一定的条件对缓存进行清空 。
+
+* allEntries	
+    * 是否清空所有缓存内容，缺省为 false，如果指定为 true，则方法调用后将立即清空所有缓存	
+    * @CachEvict(value=”testcache”,allEntries=true)
+* beforeInvocation	
+    * 是否在方法执行前就清空，缺省为 false，如果指定为 true，则在方法还没有执行的时候就清空缓存，缺省情况下，如果方法执行抛出异常，则不会清空缓存	
+    * @CachEvict(value=”testcache”，beforeInvocation=true)
+示例：
+```java
+@Cacheable(value = "emp",key = "#p0.id")
+public NewJob save(NewJob job) {
+    newJobDao.save(job);
+    return job;
+}
+
+//清除一条缓存，key为要清空的数据
+@CacheEvict(value="emp",key="#id")
+public void delect(int id) {
+    newJobDao.deleteAllById(id);
+}
+
+//方法调用后清空所有缓存
+@CacheEvict(value="accountCache",allEntries=true)
+public void delectAll() {
+    newJobDao.deleteAll();
+}
+
+//方法调用前清空所有缓存
+@CacheEvict(value="accountCache",beforeInvocation=true)
+public void delectAll() {
+    newJobDao.deleteAll();
+}
+```
+其他属性
+```java
+String[] cacheNames() default {}; //与value二选一
+String keyGenerator() default "";  //key的生成器。key/keyGenerator二选一使用
+String cacheManager() default "";  //指定缓存管理器
+String cacheResolver() default ""; //或者指定获取解析器
+String condition() default ""; //条件符合则清空
+```
+
+**组合@Caching**
+有时候我们可能组合多个Cache注解使用，此时就需要@Caching组合多个注解标签了。
+
+```java
+@Caching(cacheable = {
+        @Cacheable(value = "emp",key = "#p0"),
+        ...
+},
+put = {
+        @CachePut(value = "emp",key = "#p0"),
+        ...
+},evict = {
+        @CacheEvict(value = "emp",key = "#p0"),
+        ....
+})
+public User save(User user) {
+    ....
+}
+```
+
+#### 整合Redis
+就只需要这一个依赖！不需要spring-boot-starter-cache
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-redis</artifactId>
+</dependency>
+```
 
 ### 1.1.6. 常用注解
 <a href="#menu" style="float:right">目录</a>
