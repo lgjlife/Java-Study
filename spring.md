@@ -25,9 +25,8 @@
             - [1.1.4.6. 事务实现原理](#1146-事务实现原理)
         - [1.1.5. Spring Cache](#115-spring-cache)
             - [1.1.5.1. 几个重要概念&缓存注解](#1151-几个重要概念缓存注解)
-            - [SpEL上下文数据](#spel上下文数据)
-            - [基本使用](#基本使用)
-            - [整合Redis](#整合redis)
+            - [1.1.5.2. SpEL上下文数据](#1152-spel上下文数据)
+            - [1.1.5.3. 基本使用](#1153-基本使用)
         - [1.1.6. 常用注解](#116-常用注解)
         - [1.1.7. 常用工具类](#117-常用工具类)
     - [1.2. Sppring MVC](#12-sppring-mvc)
@@ -411,7 +410,7 @@ public class InjectBeanConfig {
 无论注入时使用什么样的属性名，都会注入employeeDao2。
 
 ### 1.1.2. IOC容器
-
+<a href="#menu" style="float:right">目录</a>
 
 
 ### 1.1.3. AOP面向切面编程
@@ -1240,7 +1239,7 @@ public void saveUserBack(){
 |allEntries(@CacheEvict )|	是否清空所有缓存内容，缺省为 false，如果指定为 true,则方法调用后将立即清空所有缓存.例如：@CachEvict(value=”testcache”,allEntries=true)
 |beforeInvocation(@CacheEvict)	|是否在方法执行前就清空，缺省为 false，如果指定为 true，则在方法还没有执行的时候就清空缓存，缺省情况下，如果方法执行抛出异常，则不会清空缓存,例如：@CachEvict(value=”testcache”，beforeInvocation=true)
 
-#### SpEL上下文数据
+#### 1.1.5.2. SpEL上下文数据
 Spring Cache提供了一些供我们使用的SpEL上下文数据，下表直接摘自Spring官方文档：
 
 |名称|	位置|	描述	|示例|
@@ -1273,7 +1272,7 @@ SpEL提供了多种运算符
 |正则表达式	|matches
 |其他类型	|?.，?[…]，![…]，^[…]，$[…]
 
-#### 基本使用
+#### 1.1.5.3. 基本使用
 
 **引入依赖**
 ```xml
@@ -1424,16 +1423,6 @@ put = {
 public User save(User user) {
     ....
 }
-```
-
-#### 整合Redis
-就只需要这一个依赖！不需要spring-boot-starter-cache
-
-```xml
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-data-redis</artifactId>
-</dependency>
 ```
 
 ### 1.1.6. 常用注解
@@ -2439,7 +2428,7 @@ headers 属性的用法和功能与params 属性相似。在上面的代码中�
 
 3、 @RequestMapping 标记的处理器方法支持的方法参数和返回类型
 1. 支持的方法参数类型
-（1 ）HttpServlet 对象，主要包括HttpServletRequest 、HttpServletResponse 和HttpSession 对象。 这些参数Spring 在调用处理器方法的时候会自动给它们赋值，所以当在处理器方法中需要使用到这些对象的时候，可以直接在方法上给定一个方法参数的申明，然后在方法体里面直接用就可以了。但是有一点需要注意的是在使用HttpSession 对象的时候，如果此时HttpSession 对象还没有建立起来的话就会有问题。
+（1 ）HttpServlet 对象，主要包括HttpServletRequest 、HttpServletResponse 和HttpSession 对象。 这些参数Spring 在调用处理器方法的时候���自动给它们赋值，所以当在处理器方法中需要使用到这些对象的时候，可以直接在方法上给定一个方法参数的申明，然后在方法体里面直接用就可以了。但是有一点需要注意的是在使用HttpSession 对象的时候，如果此时HttpSession 对象还没有建立起来的话就会有问题。
 （2 ）Spring 自己的WebRequest 对象。 使用该对象可以访问到存放在HttpServletRequest 和HttpSession 中的属性值。
 （3 ）InputStream 、OutputStream 、Reader 和Writer 。 InputStream 和Reader 是针对HttpServletRequest 而言的，可以从里面取数据；OutputStream 和Writer 是针对HttpServletResponse 而言的，可以往里面写数据。
 （4 ）使用@PathVariable 、@RequestParam 、@CookieValue 和@RequestHeader 标记的参数。

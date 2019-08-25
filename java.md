@@ -1,3 +1,5 @@
+
+
 <span id="menu"></span>
 
 <!-- TOC -->
@@ -98,11 +100,14 @@
 <!-- /TOC -->
 
 
+<a id="markdown-1-java与面向对象" name="1-java与面向对象"></a>
 # 1. Java与面向对象
 
+<a id="markdown-11-java基础" name="11-java基础"></a>
 ## 1.1. Java基础
 <a href="#menu" style="float:right">目录</a>
 
+<a id="markdown-111-数据类型" name="111-数据类型"></a>
 ### 1.1.1. 数据类型
 <a href="#menu" style="float:right">目录</a>
 
@@ -129,6 +134,7 @@
    * 任何类型和字符串类型相加，都会自动转换为字符串类型
    * byte,char,short类型之间相互运算将会自动提升为int类型，这是系统避免计算溢出。
 
+<a id="markdown-1111-integer-缓存对象" name="1111-integer-缓存对象"></a>
 #### 1.1.1.1. Integer 缓存对象
 <a href="#menu" style="float:right">目录</a>
 
@@ -198,6 +204,7 @@ a1==a2?  true
 b1==b2?  false
 c1==c2?  false
 ```
+<a id="markdown-1112-数组" name="1112-数组"></a>
 #### 1.1.1.2. 数组
 初始化
 ```java
@@ -214,6 +221,7 @@ int[][] arr1 = new int[][]{{1,2},{1,2}};
 int[][] arr2 =  {{1,2},{1,2}};
 ```
 数组工具类java.util.Arrays。提供排序,复制，比较，初始化等功能。
+<a id="markdown-1113-string" name="1113-string"></a>
 #### 1.1.1.3. String 
 <a href="#menu" style="float:right">目录</a>
 
@@ -259,9 +267,11 @@ String a = new String("1243");
 使用StringBuilder和StringBuffer，StringBuffer在一些方法上加上了Synchronized同步锁，一般不使用。
 
 
+<a id="markdown-12-面向对象" name="12-面向对象"></a>
 ## 1.2. 面向对象
 <a href="#menu" style="float:right">目录</a>
 
+<a id="markdown-121-三大特性" name="121-三大特性"></a>
 ### 1.2.1. 三大特性
 <a href="#menu" style="float:right">目录</a>
 
@@ -359,6 +369,7 @@ class Sub extends Base{
 
 
 
+<a id="markdown-1211-权限修饰符" name="1211-权限修饰符"></a>
 #### 1.2.1.1. 权限修饰符
 <a href="#menu" style="float:right">目录</a>
 * private 本类可见
@@ -366,6 +377,7 @@ class Sub extends Base{
 * protect 子类可见
 * public 所有可见
 
+<a id="markdown-1212-接口和抽象类" name="1212-接口和抽象类"></a>
 #### 1.2.1.2. 接口和抽象类
 **接口**
 * interface定义，implements 实现
@@ -409,6 +421,7 @@ class Sub extends Base{
 * 修饰初始化块，类加载时会先被调用
 * 与import配合，引入static元素(属性和方法)
 
+<a id="markdown-1213-建议" name="1213-建议"></a>
 #### 1.2.1.3. 建议
 * 考虑使用静态工厂方法代替构造器
     * 如果类的实例化参数较复杂，应当通过工厂方法向用户提供简单明了的实例化方法
@@ -438,6 +451,7 @@ class Sub extends Base{
     * 在应用程序的执行期间，只要对象的equals方法的比较操作所用到的信息没有被修改，那么多次调用hashCode获得的整数是一致的
     
 
+<a id="markdown-1214-内部类" name="1214-内部类"></a>
 #### 1.2.1.4. 内部类
 内部类分为普通内部类，静态内部类，局部内部类，匿名内部类。
 
@@ -514,6 +528,7 @@ func(new Handle{
 
 });
 ```
+<a id="markdown-1215-枚举类" name="1215-枚举类"></a>
 #### 1.2.1.5. 枚举类
 ```java
 public enum BlogReturnCode implements  ReturnCode{
@@ -540,9 +555,11 @@ public enum BlogReturnCode implements  ReturnCode{
     }
 }
 ```
+<a id="markdown-122-泛型" name="122-泛型"></a>
 ### 1.2.2. 泛型
 <a href="#menu" style="float:right">目录</a>
 
+<a id="markdown-123-概述" name="123-概述"></a>
 ### 1.2.3. 概述
 泛型在java中有很重要的地位，在面向对象编程及各种设计模式中有非常广泛的应用。
 
@@ -1047,6 +1064,7 @@ Integer i = (Integer) lsa[1].get(0); // OK
 ```
 
 
+<a id="markdown-124-集合" name="124-集合"></a>
 ### 1.2.4. 集合
 <a href="#menu" style="float:right">目录</a>
 
@@ -1280,6 +1298,7 @@ public interface Comparator<T> {
     * 我们不难发现：Comparable相当于“内部比较器”，而Comparator相当于“外部比较器”。
 
 
+<a id="markdown-125-异常" name="125-异常"></a>
 ### 1.2.5. 异常
 <a href="#menu" style="float:right">目录</a>
 
@@ -1473,6 +1492,7 @@ public static void main(java.lang.String[]);
 
 
 
+<a id="markdown-126-注解" name="126-注解"></a>
 ### 1.2.6. 注解
 <a href="#menu" style="float:right">目录</a>
 
@@ -1598,9 +1618,11 @@ public interface AnnotatedElement {
 }
 ```
 
+<a id="markdown-13-io" name="13-io"></a>
 ## 1.3. IO
 <a href="#menu" style="float:right">目录</a>
 
+<a id="markdown-131-file" name="131-file"></a>
 ### 1.3.1. File
 * File是java.io包下与平台无关的文件和目录操作类。
 * File能改新建，删除和重命名文件和目录。
@@ -1703,6 +1725,7 @@ public interface FileFilter {
 public File[] listFiles(FileFilter filter) ;
 public File[] listFiles(FilenameFilter filter)
 ```
+<a id="markdown-1311-io流" name="1311-io流"></a>
 #### 1.3.1.1. IO流
 
 **流的概念和作用**
@@ -1814,6 +1837,7 @@ BufferedInputStream和BufferedOutputStream这两个类分别是FilterInputStream
         * rwd : 除了rw,还要求对文件内容的每个更新都同步写入到底层的存储设备。
 * 如果seek 定位后写入内容，将会覆盖后续内容，如果需要实现插入写，需要先读出后面的内容，写入之后再追加写入读出的内容。
   
+<a id="markdown-1312-序列化" name="1312-序列化"></a>
 #### 1.3.1.2. 序列化
 * 序列化
     * 将对象转化为二进制字节数组，以方便存储到磁盘或者进行网络传输
@@ -1899,8 +1923,10 @@ os.writeObject(person);
 
 ```
 
+<a id="markdown-132-nio" name="132-nio"></a>
 ### 1.3.2. NIO
 
+<a id="markdown-1321-内存映射" name="1321-内存映射"></a>
 #### 1.3.2.1. 内存映射  
 
 内存映射的方式是指操作系统将内存中的某一块区域与磁盘中的文件相关联，当访问内存中的一段数据时，转换为访问文件的某一段数据。这种方式的目的同样是减少数据从内核空间缓存到用户空间缓存的数据复制操作，因为这两个空间的数据是共享的。
@@ -2155,6 +2181,7 @@ ByteBuffer.allocate 意味着直接在 JVM堆上分配内存，所以受 新生�
 最后一点为 DirectMemory的内存只有在 JVM执行 full gc 的时候才会被回收，那么如果在其上分配过大的内存空间，那么也将出现 OutofMemoryError，即便 JVM 堆中的很多内存处于空闲状态。
 
 
+<a id="markdown-14-javac编译原理" name="14-javac编译原理"></a>
 ## 1.4. Javac编译原理
 <a href="#menu" style="float:right">目录</a>
 
@@ -2165,38 +2192,49 @@ ByteBuffer.allocate 意味着直接在 JVM堆上分配内存，所以受 新生�
     * 语法分析器
         * 将Token流组建成更加结构化的语法树
     * 语义分析器
+<a id="markdown-141-javac编译器的基本结构" name="141-javac编译器的基本结构"></a>
 ### 1.4.1. Javac编译器的基本结构
 <a href="#menu" style="float:right">目录</a>
 
+<a id="markdown-142-javac的工作原理分析" name="142-javac的工作原理分析"></a>
 ### 1.4.2. Javac的工作原理分析
 <a href="#menu" style="float:right">目录</a>
 
 
+<a id="markdown-15-类加载和反射" name="15-类加载和反射"></a>
 ## 1.5. 类加载和反射
 <a href="#menu" style="float:right">目录</a>
 
+<a id="markdown-151-class文件结构" name="151-class文件结构"></a>
 ### 1.5.1. Class文件结构
 <a href="#menu" style="float:right">目录</a>
 
+<a id="markdown-1511-jvm指令集简介" name="1511-jvm指令集简介"></a>
 #### 1.5.1.1. JVM指令集简介
 <a href="#menu" style="float:right">目录</a>
 
+<a id="markdown-1512-class文件头的表示形式" name="1512-class文件头的表示形式"></a>
 #### 1.5.1.2. class文件头的表示形式
 <a href="#menu" style="float:right">目录</a>
 
+<a id="markdown-1513-常量池" name="1513-常量池"></a>
 #### 1.5.1.3. 常量池
 <a href="#menu" style="float:right">目录</a>
 
 
+<a id="markdown-1514-类信息" name="1514-类信息"></a>
 #### 1.5.1.4. 类信息
 <a href="#menu" style="float:right">目录</a>
 
+<a id="markdown-1515-fields和method定义" name="1515-fields和method定义"></a>
 #### 1.5.1.5. Fields和Method定义
 <a href="#menu" style="float:right">目录</a>
 
+<a id="markdown-1516-类属性描述" name="1516-类属性描述"></a>
 #### 1.5.1.6. 类属性描述
 <a href="#menu" style="float:right">目录</a>
 
+<a id="markdown-1517-javap生成的class文件结构" name="1517-javap生成的class文件结构"></a>
 #### 1.5.1.7. Javap生成的class文件结构
 <a href="#menu" style="float:right">目录</a>
 
@@ -2338,9 +2376,11 @@ public class com.code.base.javap.JavapTest {
 ```
 
 
+<a id="markdown-152-类加载器" name="152-类加载器"></a>
 ### 1.5.2. 类加载器
 <a href="#menu" style="float:right">目录</a>
 
+<a id="markdown-1521-基本概念" name="1521-基本概念"></a>
 #### 1.5.2.1. 基本概念
 <a href="#menu" style="float:right">目录</a>
 
@@ -2357,6 +2397,7 @@ public class com.code.base.javap.JavapTest {
 一个应用程序总是由n多个类组成，Java程序启动时，并不是一次把所有的类全部加载后再运行，它总是先把保证程序运行的基础类一次性加载到jvm中，其它类等到jvm用到的时候再加载，这样的好处是节省了内存的开销，因为java最早就是为嵌入式系统而设计的，内存宝贵，这是一种可以理解的机制，而用到时再加载这也是java动态性的一种体现
 
 
+<a id="markdown-1522-常见的类加载器" name="1522-常见的类加载器"></a>
 #### 1.5.2.2. 常见的类加载器
 <a href="#menu" style="float:right">目录</a>
 
@@ -2411,6 +2452,7 @@ Null
 可以看出Test是由AppClassLoader加载器加载的，AppClassLoader的Parent 加载器是 ExtClassLoader,但是ExtClassLoader的Parent为 null 是怎么回事呵，朋友们留意的话，前面有提到Bootstrap Loader是用C++语言写的，依java的观点来看，逻辑上并不存在Bootstrap Loader的类实体，所以在java程序代码里试图打印出其内容时，我们就会看到输出为null。
 
 
+<a id="markdown-1523-类加载过程" name="1523-类加载过程"></a>
 #### 1.5.2.3. 类加载过程
 <a href="#menu" style="float:right">目录</a>
 
@@ -2424,6 +2466,7 @@ Null
 
 类装载工作由ClassLoder和其子类负责。JVM在运行时会产生三个ClassLoader：根装载器，ExtClassLoader(扩展类装载器)和AppClassLoader，其中根装载器不是ClassLoader的子类，由C++编写，因此在java中看不到他，负责装载JRE的核心类库，如JRE目录下的rt.jar,charsets.jar等。ExtClassLoader是ClassLoder的子类，负责装载JRE扩展目录ext下的jar类包；AppClassLoader负责装载classpath路径下的类包，这三个类装载器存在父子层级关系****，即根装载器是ExtClassLoader的父装载器，ExtClassLoader是AppClassLoader的父装载器。默认情况下使用AppClassLoader装载应用程序的类
 
+<a id="markdown-1524-全盘委托机制" name="1524-全盘委托机制"></a>
 #### 1.5.2.4. 全盘委托机制
 <a href="#menu" style="float:right">目录</a>
 
@@ -2436,6 +2479,7 @@ Java装载类使用“全盘负责委托机制”。“全盘负责”是指当�
 **思考：假如我们自己写了一个java.lang.String的类，我们是否可以替换调JDK本身的类？**
 答案是否定的。我们不能实现。为什么呢？我看很多网上解释是说双亲委托机制解决这个问题，其实不是非常的准确。因为双亲委托机制是可以打破的，你完全可以自己写一个classLoader来加载自己写的java.lang.String类，但是你会发现也不会加载成功，具体就是因为针对java.*开头的类，jvm的实现中已经保证了必须由bootstrp来加载。
 
+<a id="markdown-1525-定义自已的classloader" name="1525-定义自已的classloader"></a>
 #### 1.5.2.5. 定义自已的ClassLoader
 <a href="#menu" style="float:right">目录</a>
 
@@ -2567,6 +2611,7 @@ public class testMyClassLoader {
 说明HelloWorld类是被我们的自定义类加载器MyClassLoader加载的
 
 
+<a id="markdown-常见加载类错误" name="常见加载类错误"></a>
 #### 常见加载类错误
 
 * ClassNotFoudException
@@ -2577,6 +2622,7 @@ public class testMyClassLoader {
     * 强制类型转换时出现得到错误，比如将A类型转换为没有继承或实现关系的B类型时出现
 * ExceptionOInInitializerError
 
+<a id="markdown-1526-线程上下文类加载器" name="1526-线程上下文类加载器"></a>
 #### 1.5.2.6. 线程上下文类加载器
 <a href="#menu" style="float:right">目录</a>
 
@@ -2587,6 +2633,7 @@ public class testMyClassLoader {
 
 
 
+<a id="markdown-1527-类加载器与web容器" name="1527-类加载器与web容器"></a>
 #### 1.5.2.7. 类加载器与Web容器
 <a href="#menu" style="float:right">目录</a>
 　　对于运行在 Java EE容器中的 Web 应用来说，类加载器的实现方式与一般的 Java 应用有所不同。不同的 Web 容器的实现方式也会有所不同。以 Apache Tomcat 来说，每个 Web 应用都有一个对应的类加载器实例。该类加载器也使用代理模式，所不同的是它是首先尝试去加载某个类，如果找不到再代理给父类加载器。这与一般类加载器的顺序是相反的。这是 Java Servlet 规范中的推荐做法，其目的是使得 Web 应用自己的类的优先级高于 Web 容器提供的类。这种代理模式的一个例外是：Java 核心库的类是不在查找范围之内的。这也是为了保证 Java 核心库的类型安全。
@@ -2597,6 +2644,7 @@ public class testMyClassLoader {
 （3）当出现找不到类的错误时，检查当前类的类加载器和当前线程的上下文类加载器是否正确。
 
 
+<a id="markdown-1528-常见问题分析" name="1528-常见问题分析"></a>
 #### 1.5.2.8. 常见问题分析
 **由不同的类加载器加载的指定类还是相同的类型吗？**
 
@@ -2854,10 +2902,12 @@ public class ClassLoaderTest {
 ```
 
  
+<a id="markdown-153-反射" name="153-反射"></a>
 ### 1.5.3. 反射
 <a href="#menu" style="float:right">目录</a>
 
 
+<a id="markdown-16-jdbc" name="16-jdbc"></a>
 ## 1.6. JDBC
 <a href="#menu" style="float:right">目录</a>
 
@@ -2983,13 +3033,16 @@ cstmt.registerOutParameter(1, java.sql.Types.TINYINT);
 cstmt.executeUpdate();  
 byte x = cstmt.getByte(1);  
 ```
+<a id="markdown-17-函数式编程" name="17-函数式编程"></a>
 ## 1.7. 函数式编程
 
 函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。
 
 函数式编程的一个特点就是，允许把函数本身作为参数传入另一个函数，还允许返回一个函数！
+<a id="markdown-18-java-8-的新特性" name="18-java-8-的新特性"></a>
 ## 1.8. Java 8 的新特性：
 
+<a id="markdown-181-java-8-lambda-表达式" name="181-java-8-lambda-表达式"></a>
 ### 1.8.1. Java 8 Lambda 表达式
 Lambda 表达式，也可称为闭包，它是推动 Java 8 发布的最重要新特性。
 Lambda 允许把函数作为一个方法的参数（函数作为参数传递进方法中）。
@@ -3026,6 +3079,7 @@ x -> 2 * x
 * lambda 表达式的局部变量可以不用声明为 final，但是必须不可被后面的代码修改（即隐性的具有 final 的语义）
 * 在Lambda 表达式当中不允许声明一个与外部局部变量同名的参数或者局部变量
 
+<a id="markdown-182-java-8-函数式接口" name="182-java-8-函数式接口"></a>
 ### 1.8.2. Java 8 函数式接口
 函数式接口(Functional Interface)就是一个有且仅有一个抽象方法，但是可以有多个非抽象方法的接口。
 
@@ -3160,6 +3214,7 @@ public class Java8Tester {
    }
 }
 ```
+<a id="markdown-183-默认方法" name="183-默认方法"></a>
 ### 1.8.3. 默认方法
 Java 8 新增了接口的默认方法。
 简单说，默认方法就是接口可以有实现方法，而且不需要实现类去实现其方法。
@@ -3177,6 +3232,7 @@ public interface Vehicle {
 默认方法也可以设置为静态。
 ```
 
+<a id="markdown-184-optional-类" name="184-optional-类"></a>
 ### 1.8.4. Optional 类
 Optional 类是一个可以为null的容器对象。如果值存在则isPresent()方法会返回true，调用get()方法会返回该对象。
 
@@ -3249,6 +3305,7 @@ public class Java8Tester {
 }
 ```
 
+<a id="markdown-185-stream" name="185-stream"></a>
 ### 1.8.5. Stream
 Java 8 API添加了一个新的抽象称为流Stream，可以让你以一种声明的方式处理数据。
 
@@ -3547,6 +3604,7 @@ public class Java8Tester {
    }
 }
 ```
+<a id="markdown-186-java-8-日期时间-api" name="186-java-8-日期时间-api"></a>
 ### 1.8.6. Java 8 日期时间 API
 
 Java 8通过发布新的Date-Time API (JSR 310)来进一步加强对日期与时间的处理。
@@ -3608,6 +3666,7 @@ public class Java8Tester {
    }
 }
 ```
+<a id="markdown-187-java8-base64" name="187-java8-base64"></a>
 ### 1.8.7. Java8 Base64
 
 
@@ -3644,6 +3703,7 @@ MIME：输出隐射到MIME友好格式。输出每行不超过76字符，并且�
 
 
 
+<a id="markdown-19-jdk版本变化" name="19-jdk版本变化"></a>
 ## 1.9. JDK版本变化
 * JDK5的新特性：
     * 自动拆装箱
@@ -3728,35 +3788,46 @@ MIME：输出隐射到MIME友好格式。输出每行不超过76字符，并且�
 
 
 
+<a id="markdown-110-设计模式" name="110-设计模式"></a>
 ## 1.10. 设计模式
 <a href="#menu" style="float:right">目录</a>
 
+<a id="markdown-1101-设计原则" name="1101-设计原则"></a>
 ### 1.10.1. 设计原则
 <a href="#menu" style="float:right">目录</a>
 
+<a id="markdown-11011-单一职责原则" name="11011-单一职责原则"></a>
 #### 1.10.1.1. 单一职责原则
 * 每个类只负责单一的功能，避免出现复杂臃肿的类。造成维护困难。
+<a id="markdown-11012-里氏替换原则" name="11012-里氏替换原则"></a>
 #### 1.10.1.2. 里氏替换原则
 * 父类出现的地方子类也可以出现。方便实现类替换，减少代码修改。
+<a id="markdown-11013-依赖倒置原则" name="11013-依赖倒置原则"></a>
 #### 1.10.1.3. 依赖倒置原则
 * 高层模块不应该依赖细节，而应该依赖其抽象
 * 也就是说定义类属性时，使用接口或者抽象类来定义，而不是实现类。
+<a id="markdown-11014-接口隔离原则" name="11014-接口隔离原则"></a>
 #### 1.10.1.4. 接口隔离原则
 * 创建单一的接口，不要创建臃肿的接口。每个接口应该只是负责单一的功能，避免增加新抽象方法时，造成较多的实现类页需要修改。
+<a id="markdown-11015-迪米特法则" name="11015-迪米特法则"></a>
 #### 1.10.1.5. 迪米特法则
 * 一个类应当降低对其他类的依赖,避免其他类修改时，使用类也要进行修改。
+<a id="markdown-11016-开闭原则" name="11016-开闭原则"></a>
 #### 1.10.1.6. 开闭原则
 * 对修改关闭，对扩展开放
 * 当需要增加新功能时，应当避免修改原类的代码，应当通过一些设计模式来进行功能扩展。比如装饰模式，这样可以达到对其他使用类的影响。
 * 以上的原则都是施行指南，开闭原则是最终目标。
 
+<a id="markdown-1102-uml图" name="1102-uml图"></a>
 ### 1.10.2. UML图
 
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/designerPattern/uml.png?raw=true)
 
+<a id="markdown-1103-单例模式" name="1103-单例模式"></a>
 ### 1.10.3. 单例模式
 <a href="#menu" style="float:right">目录</a>
 
+<a id="markdown-11031-基本概念" name="11031-基本概念"></a>
 #### 1.10.3.1. 基本概念
 
 **定义**:确保某一个类只有一个对象实例。
@@ -3768,6 +3839,7 @@ MIME：输出隐射到MIME友好格式。输出每行不超过76字符，并且�
 
 **缺点**:
 
+<a id="markdown-11032-实现" name="11032-实现"></a>
 #### 1.10.3.2. 实现
 单例模式需要注意的关键点是如何避免高并发条件下出现多例的问题。高并发环境下，任何两条语句执行之间都有可能被其他线程所抢占并执行完整的指令。这种情况处理不好，很容易产生出多例。
 还有需要关注的是，一个系统中存在很多类，但是有的类在系统运行的生命周期中是始终没机会创建对象，比如有个偏门的用户操作才会触发某个类创建对象。这种情况下就没必要创建对象，也就是需要延迟创建对象，在使用时才去创建。
@@ -3906,6 +3978,7 @@ public class Singleton5 implements Serializable {
 }
 ```
 
+<a id="markdown-1104-工厂方法模式" name="1104-工厂方法模式"></a>
 ### 1.10.4. 工厂方法模式
 <a href="#menu" style="float:right">目录</a>
 工厂模式（Factory Pattern）是 Java 中最常用的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
@@ -3942,6 +4015,7 @@ public class Singleton5 implements Serializable {
     * 作为一种创建类模式，在任何需要生成复杂对象的地方，都可以使用工厂方法模式。有一点需要注意的地方就是复杂对象适合使用工厂模式，而简单对象，特别是只需要通过 new 就可以完成创建的对象，无需使用工厂模式。如果使用工厂模式，就需要引入一个工厂类，会增加系统的复杂度。
 
 
+<a id="markdown-1105-抽象工厂模式" name="1105-抽象工厂模式"></a>
 ### 1.10.5. 抽象工厂模式
 <a href="#menu" style="float:right">目录</a>
 抽象工厂模式（Abstract Factory Pattern）是围绕一个超级工厂创建其他工厂。该超级工厂又称为其他工厂的工厂。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
@@ -3972,6 +4046,7 @@ public class Singleton5 implements Serializable {
 * 注意事项
     * 产品族难扩展，产品等级易扩展。
 
+<a id="markdown-1106-模板方法模式" name="1106-模板方法模式"></a>
 ### 1.10.6. 模板方法模式
 <a href="#menu" style="float:right">目录</a>
 在模板模式（Template Pattern）中，一个抽象类公开定义了执行它的方法的方式/模板。它的子类可以按需要重写方法实现，但调用将以抽象类中定义的方式进行。这种类型的设计模式属于行为型模式。
@@ -4004,6 +4079,7 @@ public class Singleton5 implements Serializable {
 * 注意事项
     * 为防止恶意操作，一般模板方法都加上 final 关键词。
 
+<a id="markdown-1107-建造者模式" name="1107-建造者模式"></a>
 ### 1.10.7. 建造者模式
 <a href="#menu" style="float:right">目录</a>
 建造者模式（Builder Pattern）使用多个简单的对象一步一步构建成一个复杂的对象。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
@@ -4037,6 +4113,7 @@ public class Singleton5 implements Serializable {
 * 注意事项
     * 与工厂模式的区别是：建造者模式更加关注与零件装配的顺序。
     
+<a id="markdown-1108-代理模式" name="1108-代理模式"></a>
 ### 1.10.8. 代理模式
 <a href="#menu" style="float:right">目录</a>
 
@@ -4083,6 +4160,7 @@ public class Singleton5 implements Serializable {
     * 和适配器模式的区别：适配器模式主要改变所考虑对象的接口，而代理模式不能改变所代理类的接口。 
     * 和装饰器模式的区别：装饰器模式为了增强功能，而代理模式是为了加以控制。
 
+<a id="markdown-1109-原型模式" name="1109-原型模式"></a>
 ### 1.10.9. 原型模式
 <a href="#menu" style="float:right">目录</a>
 原型模式（Prototype Pattern）是用于创建重复的对象，同时又能保证性能。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
@@ -4126,6 +4204,7 @@ public class Singleton5 implements Serializable {
 * 注意事项
     * 与通过对一个类进行实例化来构造新对象不同的是，原型模式是通过拷贝一个现有对象生成新对象的。浅拷贝实现 Cloneable，重写，深拷贝是通过实现 Serializable 读取二进制流。
 
+<a id="markdown-11010-中介者模式" name="11010-中介者模式"></a>
 ### 1.10.10. 中介者模式
 <a href="#menu" style="float:right">目录</a>
 中介者模式（Mediator Pattern）是用来降低多个对象和类之间的通信复杂性。这种模式提供了一个中介类，该类通常处理不同类之间的通信，并支持松耦合，使代码易于维护。中介者模式属于行为型模式。
@@ -4162,6 +4241,7 @@ public class Singleton5 implements Serializable {
 
 ```
 
+<a id="markdown-11011-命令模式" name="11011-命令模式"></a>
 ### 1.10.11. 命令模式
 <a href="#menu" style="float:right">目录</a>
 命令模式（Command Pattern）是一种数据驱动的设计模式，它属于行为型模式。请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该命令传给相应的对象，该对象执行命令。
@@ -4263,6 +4343,7 @@ public class CommandPatternDemo {
 }
 
 ```
+<a id="markdown-11012-责任链模式" name="11012-责任链模式"></a>
 ### 1.10.12. 责任链模式
 <a href="#menu" style="float:right">目录</a>
 顾名思义，责任链模式（Chain of Responsibility Pattern）为请求创建了一个接收者对象的链。这种模式给予请求的类型，对请求的发送者和接收者进行解耦。这种类型的设计模式属于行为型模式。
@@ -4302,6 +4383,7 @@ public class CommandPatternDemo {
 * 注意事项
     * 在 JAVA WEB 中遇到很多应用。
     
+<a id="markdown-11013-装饰模式" name="11013-装饰模式"></a>
 ### 1.10.13. 装饰模式
 <a href="#menu" style="float:right">目录</a>
 装饰器模式（Decorator Pattern）允许向一个现有的对象添加新的功能，同时又不改变其结构。这种类型的设计模式属于结构型模式，它是作为现有的类的一个包装。
@@ -4337,6 +4419,7 @@ public class CommandPatternDemo {
 * 注意事项
     * 可代替继承。
 
+<a id="markdown-11014-策略模式" name="11014-策略模式"></a>
 ### 1.10.14. 策略模式
 <a href="#menu" style="float:right">目录</a>
 在策略模式（Strategy Pattern）中，一个类的行为或其算法可以在运行时更改。这种类型的设计模式属于行为型模式。
@@ -4423,6 +4506,7 @@ public class StrategyPatternDemo {
 
 ```
 
+<a id="markdown-11015-适配器模式" name="11015-适配器模式"></a>
 ### 1.10.15. 适配器模式
 <a href="#menu" style="float:right">目录</a>
 适配器模式（Adapter Pattern）是作为两个不兼容的接口之间的桥梁。这种类型的设计模式属于结构型模式，它结合了两个独立接口的功能。
@@ -4551,6 +4635,7 @@ public class AdapterPatternDemo {
 
 ```
 
+<a id="markdown-11016-迭代器模式" name="11016-迭代器模式"></a>
 ### 1.10.16. 迭代器模式
 <a href="#menu" style="float:right">目录</a>
 迭代器模式（Iterator Pattern）是 Java 和 .Net 编程环境中非常常用的设计模式。这种模式用于顺序访问集合对象的元素，不需要知道集合对象的底层表示。
@@ -4586,6 +4671,7 @@ public class AdapterPatternDemo {
 * 注意事项
     * 迭代器模式就是分离了集合对象的遍历行为，抽象出一个迭代器类来负责，这样既可以做到不暴露集合的内部结构，又可让外部代码透明地访问集合内部的数据。
 
+<a id="markdown-11017-组合模式" name="11017-组合模式"></a>
 ### 1.10.17. 组合模式
 <a href="#menu" style="float:right">目录</a>
 组合模式（Composite Pattern），又叫部分整体模式，是用于把一组相似的对象当作一个单一的对象。组合模式依据树形结构来组合对象，用来表示部分以及整体层次。这种类型的设计模式属于结构型模式，它创建了对象组的树形结构。
@@ -4623,6 +4709,7 @@ public class AdapterPatternDemo {
     * 定义时为具体类。
 
 
+<a id="markdown-11018-观察者模式" name="11018-观察者模式"></a>
 ### 1.10.18. 观察者模式
 <a href="#menu" style="float:right">目录</a>
 当对象间存在一对多关系时，则使用观察者模式（Observer Pattern）。比如，当一个对象被修改时，则会自动通知它的依赖对象。观察者模式属于行为型模式。
@@ -4745,6 +4832,7 @@ public class ObserverPatternDemo {
 
 ```
 
+<a id="markdown-11019-门面模式" name="11019-门面模式"></a>
 ### 1.10.19. 门面模式
 <a href="#menu" style="float:right">目录</a>
 外观模式（Facade Pattern）隐藏系统的复杂性，并向客户端提供了一个客户端可以访问系统的接口。这种类型的设计模式属于结构型模式，它向现有的系统添加一个接口，来隐藏系统的复杂性。
@@ -4781,6 +4869,7 @@ public class ObserverPatternDemo {
 * 注意事项
     * 在层次化结构中，可以使用外观模式定义系统中每一层的入口。
 
+<a id="markdown-11020-备忘录模式" name="11020-备忘录模式"></a>
 ### 1.10.20. 备忘录模式
 <a href="#menu" style="float:right">目录</a>
 备忘录模式（Memento Pattern）保存一个对象的某个状态，以便在适当的时候恢复对象。备忘录模式属于行为型模式。
@@ -4880,6 +4969,7 @@ public class MementoPatternDemo {
 ```
 
 
+<a id="markdown-11021-访问者模式" name="11021-访问者模式"></a>
 ### 1.10.21. 访问者模式
 <a href="#menu" style="float:right">目录</a>
 在访问者模式（Visitor Pattern）中，我们使用了一个访问者类，它改变了元素类的执行算法。通过这种方式，元素的执行算法可以随着访问者改变而改变。这种类型的设计模式属于行为型模式。根据模式，元素对象已接受访问者对象，这样访问者对象就可以处理元素对象上的操作。
@@ -4994,6 +5084,7 @@ public class VisitorPatternDemo {
 ```
 
 
+<a id="markdown-11022-状态模式" name="11022-状态模式"></a>
 ### 1.10.22. 状态模式
 <a href="#menu" style="float:right">目录</a>
 在状态模式（State Pattern）中，类的行为是基于它的状态改变的。这种类型的设计模式属于行为型模式。
@@ -5091,6 +5182,7 @@ public class StatePatternDemo {
 
 
 
+<a id="markdown-11023-解释器模式" name="11023-解释器模式"></a>
 ### 1.10.23. 解释器模式
 <a href="#menu" style="float:right">目录</a>
 解释器模式（Interpreter Pattern）提供了评估语言的语法或表达式的方式，它属于行为型模式。这种模式实现了一个表达式接口，该接口解释一个特定的上下文。这种模式被用在 SQL 解析、符号处理引擎等。
@@ -5203,6 +5295,7 @@ public class InterpreterPatternDemo {
 ```
 
 
+<a id="markdown-11024-享元模式" name="11024-享元模式"></a>
 ### 1.10.24. 享元模式
 <a href="#menu" style="float:right">目录</a>
 享元模式（Flyweight Pattern）主要用于减少创建对象的数量，以减少内存占用和提高性能。这种类型的设计模式属于结构型模式，它提供了减少对象数量从而改善应用所需的对象结构的方式。
@@ -5242,6 +5335,7 @@ public class InterpreterPatternDemo {
     * 这些类必须有一个工厂对象加以控制。
 
 
+<a id="markdown-11025-桥梁模式" name="11025-桥梁模式"></a>
 ### 1.10.25. 桥梁模式
 <a href="#menu" style="float:right">目录</a>
 桥梁模式（Bridge）是用于把抽象化与实现化解耦，使得二者可以独立变化。这种类型的设计模式属于结构型模式，它通过提供抽象化和实现化之间的桥接结构，来实现二者的解耦。
