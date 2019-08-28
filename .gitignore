@@ -33,3 +33,5 @@ build/
 .vscode/
 *.pdf
 *.jar
+
+output/
