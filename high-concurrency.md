@@ -116,7 +116,7 @@
             - [1.8.4.9. 推送系统](#1849-推送系统)
             - [1.8.4.10. 使用TableStore的架构图](#18410-使用tablestore的架构图)
             - [1.8.4.11. 实践](#18411-实践)
-            - [最后](#最后)
+            - [1.8.4.12. 最后](#18412-最后)
     - [1.9. 系统稳定性](#19-系统稳定性)
         - [1.9.1. 在线日志分析](#191-在线日志分析)
             - [1.9.1.1. 日志分析常用命令](#1911-日志分析常用命令)
@@ -1061,7 +1061,7 @@ HystrixCommandProperties.Setter commandProperties = HystrixCommandProperties.Set
 * BucketedCounterStream：计数统计。记录一定时间窗口内的失败、超时、线程池拒绝、信号量拒绝数量。写入第N组时，用前N-1组统计，然后基于时间窗口平滑后移统计。
 ![](https://img-blog.csdn.net/20180713101312536?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1eGlhbjkw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 * RollingConcurrencyStream：最大并发数统计。如Command/ThreadPool的最大并发数。
-* RollingDistributionStream：延迟百分比统计，和HystrixRollingNumber类似，差别在于其是百分位数的统计。比如每组记录P（如100）个数值，统计时用前N-1组数据，将分组数据按从小到大排序，然后累加，处于p%位置的就是p百分位数，通过它可以实现P50、P99、P999，Hystrix用来统计延时的分布情况。
+* RollingDistributionStream：延迟百分比统计，和HystrixRollingNumber类似，差别在于其是百分位数的��计。比如每组记录P（如100）个数值，统计时用前N-1组数据，将分组数据按从小到大排序，然后累加，处于p%位置的就是p百分位数，通过它可以实现P50、P99、P999，Hystrix用来统计延时的分布情况。
 
 **1、Command、ThreadPool计数/最大并发采样统计**
 ```java
@@ -2192,7 +2192,7 @@ Feed流系统中需要存储的系统有两类，一类是账号关系（比如�
 
 上述两种方式是实现Rank的比较简单，常用的方式。
 
-#### 最后
+#### 1.8.4.12. 最后
 从上面的内容来看，表格存储(TableStore)在存储方面可以支持10PB级，推送方面可以支撑每秒千万的TPS/QPS，在Feed流系统中可以发挥很大的价值。
 
 目前，已经有不少著名公司在使用表格存储(TableStore)来构建他们自己的Feed流系统，最终为系统，产品，公司都带来了不少收益

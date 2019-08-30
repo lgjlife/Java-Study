@@ -1,5 +1,162 @@
 <span id="menu"></span>
+<!-- TOC -->
 
+- [1. MySQL](#1-mysql)
+    - [1.1. 基本概念](#11-基本概念)
+        - [1.1.1. 基本概念](#111-基本概念)
+        - [1.1.2. 常用工具](#112-常用工具)
+        - [1.1.3. 逻辑架构图](#113-逻辑架构图)
+        - [1.1.4. 常用配置](#114-常用配置)
+    - [1.2. NoSQL与关系型数据库设计理念比较](#12-nosql与关系型数据库设计理念比较)
+        - [1.2.1. 关系型数据库](#121-关系型数据库)
+        - [1.2.2. 非关系型数据库](#122-非关系型数据库)
+    - [1.3. 使用数据库](#13-使用数据库)
+    - [1.4. 数据类型](#14-数据类型)
+    - [1.5. 数据更新](#15-数据更新)
+    - [1.6. 查询入门](#16-查询入门)
+    - [1.7. 多表连接查询](#17-多表连接查询)
+    - [1.8. 函数](#18-函数)
+        - [1.8.1. 聚集函数](#181-聚集函数)
+        - [1.8.2. 数学函数](#182-数学函数)
+        - [1.8.3. 字符串函数](#183-字符串函数)
+        - [1.8.4. 日期和时间函数](#184-日期和时间函数)
+        - [1.8.5. 条件判断函数](#185-条件判断函数)
+        - [1.8.6. 系统信息函数](#186-系统信息函数)
+        - [1.8.7. 加密函数](#187-加密函数)
+        - [1.8.8. 其他函数](#188-其他函数)
+    - [1.9. 存储过程](#19-存储过程)
+        - [1.9.1. 基本概念](#191-基本概念)
+        - [1.9.2. 使用存储过程](#192-使用存储过程)
+    - [1.10. 视图](#110-视图)
+        - [1.10.1. 基本概念](#1101-基本概念)
+    - [1.11. 触发器](#111-触发器)
+        - [1.11.1. 基本概念](#1111-基本概念)
+        - [1.11.2. 触发器操作](#1112-触发器操作)
+    - [1.12. 事务](#112-事务)
+        - [1.12.1. 基本概念](#1121-基本概念)
+            - [1.12.1.1. 事务特点](#11211-事务特点)
+            - [1.12.1.2. 锁](#11212-锁)
+            - [1.12.1.3. 多版本并发控制](#11213-多版本并发控制)
+            - [1.12.1.4. 常见术语](#11214-常见术语)
+        - [1.12.2. 基本语句](#1122-基本语句)
+    - [1.13. 数据库索引](#113-数据库索引)
+        - [1.13.1. 基本概念](#1131-基本概念)
+            - [1.13.1.1. 分类](#11311-分类)
+            - [1.13.1.2. 索引用途](#11312-索引用途)
+            - [1.13.1.3. 索引的误区](#11313-索引的误区)
+            - [1.13.1.4. 索引数据结构](#11314-索引数据结构)
+    - [1.14. 存储引擎](#114-存储引擎)
+        - [1.14.1. InnoDB存储引擎](#1141-innodb存储引擎)
+        - [1.14.2. MyISAM存储引擎](#1142-myisam存储引擎)
+        - [1.14.3. MEMORY存储引擎](#1143-memory存储引擎)
+        - [1.14.4. 存储引擎的选择](#1144-存储引擎的选择)
+    - [1.15. InnoDB存储引擎](#115-innodb存储引擎)
+        - [1.15.1. 体系结构](#1151-体系结构)
+            - [1.15.1.1. 后台线程](#11511-后台线程)
+            - [1.15.1.2. 内存](#11512-内存)
+        - [1.15.2. checkpoint技术](#1152-checkpoint技术)
+        - [1.15.3. Master Thread 工作方式](#1153-master-thread-工作方式)
+        - [1.15.4. InnoDB关键特性](#1154-innodb关键特性)
+            - [1.15.4.1. 插入缓存](#11541-插入缓存)
+            - [1.15.4.2. 两次写](#11542-两次写)
+            - [1.15.4.3. 自适应哈希索引](#11543-自适应哈希索引)
+            - [1.15.4.4. 异步IO](#11544-异步io)
+            - [1.15.4.5. 刷新邻接页](#11545-刷新邻接页)
+            - [1.15.4.6. 启动、关闭与恢复](#11546-启动关闭与恢复)
+    - [1.16. 日志文件](#116-日志文件)
+        - [1.16.1. 参数文件](#1161-参数文件)
+        - [1.16.2. 日志文件](#1162-日志文件)
+        - [1.16.3. socket文件](#1163-socket文件)
+        - [1.16.4. pid文件](#1164-pid文件)
+        - [1.16.5. MySQL表结构文件](#1165-mysql表结构文件)
+        - [1.16.6. 存储引擎文件](#1166-存储引擎文件)
+    - [1.17. 表](#117-表)
+        - [1.17.1. 索引组织表](#1171-索引组织表)
+        - [1.17.2. 逻辑存储结构](#1172-逻辑存储结构)
+        - [1.17.3. 行记录格式](#1173-行记录格式)
+        - [1.17.4. 数据页结构](#1174-数据页结构)
+        - [1.17.5. Nameed File Formats机制](#1175-nameed-file-formats机制)
+        - [1.17.6. 约束](#1176-约束)
+        - [1.17.7. 视图](#1177-视图)
+        - [1.17.8. 分区表](#1178-分区表)
+    - [1.18. 索引与算法](#118-索引与算法)
+        - [1.18.1. 索引概述](#1181-索引概述)
+        - [1.18.2. 数据结构和算法](#1182-数据结构和算法)
+        - [1.18.3. B+树](#1183-b树)
+        - [1.18.4. B+树索引](#1184-b树索引)
+        - [1.18.5. B+树索引的使用](#1185-b树索引的使用)
+        - [1.18.6. 哈希算法](#1186-哈希算法)
+        - [1.18.7. 全文索引](#1187-全文索引)
+    - [1.19. 锁](#119-锁)
+        - [1.19.1. 什么是锁](#1191-什么是锁)
+            - [1.19.1.1. 锁](#11911-锁)
+        - [1.19.2. lock与latch](#1192-lock与latch)
+        - [1.19.3. Innodb存储引擎的锁](#1193-innodb存储引擎的锁)
+            - [1.19.3.1. 锁的类型](#11931-锁的类型)
+            - [1.19.3.2. 一致性非锁定读](#11932-一致性非锁定读)
+            - [1.19.3.3. 一致性锁定读](#11933-一致性锁定读)
+            - [1.19.3.4. 自增长与锁](#11934-自增长与锁)
+            - [1.19.3.5. 外键和锁](#11935-外键和锁)
+        - [1.19.4. 锁的算法](#1194-锁的算法)
+            - [1.19.4.1. 行锁的三种算法](#11941-行锁的三种算法)
+        - [1.19.5. 锁的问题](#1195-锁的问题)
+            - [1.19.1.2. 多版本并发控制MVCC](#11912-多版本并发控制mvcc)
+        - [1.19.6. 阻塞](#1196-阻塞)
+        - [1.19.7. 死锁](#1197-死锁)
+            - [1.19.7.1. 死锁的概念](#11971-死锁的概念)
+            - [1.19.7.2. 死锁的实例](#11972-死锁的实例)
+        - [1.19.8. 锁升级](#1198-锁升级)
+        - [1.19.9. 乐观锁和悲观锁](#1199-乐观锁和悲观锁)
+    - [1.20. 事务](#120-事务)
+        - [1.20.1. 认识事务](#1201-认识事务)
+            - [1.20.1.1. 事务特点](#12011-事务特点)
+            - [1.20.1.2. 常见术语](#12012-常见术语)
+            - [1.20.1.3. 基本语句](#12013-基本语句)
+            - [1.20.1.4. 事务分类](#12014-事务分类)
+        - [1.20.2. 事务的实现](#1202-事务的实现)
+            - [1.20.2.1. redo](#12021-redo)
+            - [1.20.2.2. undo](#12022-undo)
+            - [1.20.2.3. purge](#12023-purge)
+            - [1.20.2.4. group commit](#12024-group-commit)
+        - [1.20.3. 事务控制语句](#1203-事务控制语句)
+        - [1.20.4. 隐式提交的SQL语句](#1204-隐式提交的sql语句)
+        - [1.20.5. 对于事务操作的统计](#1205-对于事务操作的统计)
+        - [1.20.6. 事务的隔离级别](#1206-事务的隔离级别)
+        - [1.20.7. 分布式事务](#1207-分布式事务)
+            - [1.20.7.1. MYSQL分布式事务](#12071-mysql分布式事务)
+            - [1.20.7.2. 内部XA事务](#12072-内部xa事务)
+        - [1.20.8. 不好的事务习惯](#1208-不好的事务习惯)
+    - [1.21. 备份与恢复](#121-备份与恢复)
+    - [1.22. 性能优化基本的分析命令](#122-性能优化基本的分析命令)
+        - [1.22.1. explain](#1221-explain)
+        - [1.22.2. show indexs](#1222-show-indexs)
+    - [1.23. 分库分表](#123-分库分表)
+        - [1.23.1. 基本概念](#1231-基本概念)
+        - [1.23.2. 分布式事务](#1232-分布式事务)
+        - [1.23.3. 应对多机数据查询](#1233-应对多机数据查询)
+            - [1.23.3.1. 跨库Join](#12331-跨库join)
+            - [1.23.3.2. 外键约束](#12332-外键约束)
+    - [1.24. 文件](#124-文件)
+        - [1.24.1. 参数文件](#1241-参数文件)
+        - [1.24.2. 套接字文件](#1242-套接字文件)
+        - [1.24.3. pid文件](#1243-pid文件)
+        - [1.24.4. 表结构定义文件](#1244-表结构定义文件)
+        - [1.24.5. 日志](#1245-日志)
+            - [1.24.5.1. 错误日志](#12451-错误日志)
+            - [1.24.5.2. 查询日志](#12452-查询日志)
+            - [1.24.5.3. 二进制日志](#12453-二进制日志)
+            - [1.24.5.4. 慢查询日志](#12454-慢查询日志)
+            - [1.24.5.5. 中继日志](#12455-中继日志)
+            - [1.24.5.6. 事务日志](#12456-事务日志)
+    - [1.25. 高可用](#125-高可用)
+        - [1.25.1. 主从复制](#1251-主从复制)
+            - [1.25.1.1. 复制功能概述](#12511-复制功能概述)
+            - [1.25.1.2. 常见形式](#12512-常见形式)
+            - [1.25.1.3. 主从同步复制原理](#12513-主从同步复制原理)
+            - [1.25.1.4. 主从同步配置](#12514-主从同步配置)
+            - [1.25.1.5. 添加更多从服务器](#12515-添加更多从服务器)
+
+<!-- /TOC -->
 # 1. MySQL
 <a href="#menu" style="float:right">目录</a>
 
@@ -8,7 +165,8 @@
 
 ### 1.1.1. 基本概念
 * 基本概念
-    * 数据库: 数据库是一些关联表的集合。
+    * 数据库: 物理操作系统文件或者其他形式文件类型的集合。
+    * 数据库实例: 数据库运行之后的应用。
     * SQL:一种结构化查询语言，专门用来和数据库进行通信的语言。
     * 数据表: 表是数据的矩阵。在一个数据库中的表看起来像一个简单的电子表格。
     * 列: 一列(数据元素) 包含了相同的数据, 例如邮政编码的数据。
@@ -34,6 +192,47 @@
 FOREIGN KEY (P_Id) REFERENCES Persons(P_Id)
 ```
 
+**关系型数据库和非关系型数据库的区别**
+* 关系型数据库
+    * 关系型数据库最典型的数据结构是表，由二维表及其之间的联系所组成的一个数据组织
+    * SQLite、Oracle、mysql
+    * 特性
+        * 关系型数据库，是指采用了关系模型来组织数据的数据库；
+        * 关系型数据库的最大特点就是事务的一致性；
+        * 简单来说，关系模型指的就是二维表格模型，
+        * 而一个关系型数据库就是由二维表及其之间的联系所组成的一个数据组织
+    * 优点
+        * 容易理解：二维表结构是非常贴近逻辑世界一个概念，关系模型相对网状、层次等其他模型来说更容易理解；
+        * 使用方便：通用的SQL语言使得操作关系型数据库非常方便；
+        * 易于维护：丰富的完整性(实体完整性、参照完整性和用户定义的完整性)大大减低了数据冗余和数据不一致的概率；
+        * 支持SQL，可用于复杂的查询。
+    * 缺点
+        * 为了维护一致性所付出的巨大代价就是其读写性能比较差；
+        * 固定的表结构；
+        * 高并发读写需求；
+        * 海量数据的高效率读写；
+
+* 非关系型数据库
+    * 非关系型数据库严格上不是一种数据库，应该是一种数据结构化存储方法的集合，可以是文档或者键值对等。
+    * MongoDb、redis、HBase
+    * 特性
+        * 使用键值对存储数据；
+        * 分布式；
+        * 一般不支持ACID特性；  
+        * 非关系型数据库严格上不是一种数据库，应该是一种数据结构化存储方法的集合。
+    * 优点
+        * 无需经过sql层的解析，读写性能很高；
+        * 基于键值对，数据没有耦合性，容易扩展；
+        * 存储数据的格式：nosql的存储格式是key,value形式、文档形式、图片形式等等，文档形式、图片形式等等，而关系型数据库则只支持基础类型。
+        * 2、速度快：nosql可以使用硬盘或者随机存储器作为载体，而关系型数据库只能使用硬盘；
+        * 3、高扩展性；
+        * 4、成本低：nosql数据库部署简单，基本都是开源软件。
+    * 缺点
+        * 不提供sql支持，学习和使用成本较高；   
+        * 无事务处理，附加功能bi和报表等支持也不好；
+        * 数据结构相对复杂，复杂查询方面稍欠。
+
+
 
 ### 1.1.2. 常用工具
 * workbench 跨平台可视化客户端
@@ -54,48 +253,14 @@ FOREIGN KEY (P_Id) REFERENCES Persons(P_Id)
 ### 1.1.4. 常用配置
 <a href="#menu" style="float:right">目录</a>
 
-## 1.2. 日志文件
-<a href="#menu" style="float:right">目录</a>
-
-### 1.2.1. 参数文件
-<a href="#menu" style="float:right">目录</a>
-
-* 告诉MYSQL实例启动时在哪里可以找到数据库文件，并且指定初始化参数，这些参数定义了某种内存结构的大小等设置，还会介绍参数的类型
-也就是配置文件
-```bash
-lgj@lgj-Lenovo-G470:~$ mysql --help | grep my.cnf
-                      order of preference, my.cnf, $MYSQL_TCP_PORT,
-/etc/my.cnf /etc/mysql/my.cnf ~/.my.cnf 
-```
 
 
-### 1.2.2. 日志文件
-<a href="#menu" style="float:right">目录</a>
-* 用来记录运行时产生的日志，比如慢查询日志，二进制日志
 
-### 1.2.3. socket文件
-<a href="#menu" style="float:right">目录</a>
-* 当用UNIX域套接字进行连接时需要的文件 
-
-### 1.2.4. pid文件
-<a href="#menu" style="float:right">目录</a>
-* MYSQL实例的进程PID文件
-
-
-### 1.2.5. MySQL表结构文件
-<a href="#menu" style="float:right">目录</a>
-* 表结构定义文件 
-
-### 1.2.6. 存储引擎文件
-<a href="#menu" style="float:right">目录</a>
-* 存储了记录和索引等数据
-
-
-## 1.3. NoSQL与关系型数据库设计理念比较　　
+## 1.2. NoSQL与关系型数据库设计理念比较　　
 
 关系型数据库中的表都是存储一些格式化的数据结构，每个元组字段的组成都一样，即使不是每个元组都需要所有的字段，但数据库会为每个元组分配所有的字段，这样的结构可以便于表与表之间进行连接等操作，但从另一个角度来说它也是关系型数据库性能瓶颈的一个因素。而非关系型数据库以键值对存储，它的结构不固定，每一个元组可以有不一样的字段，每个元组可以根据需要增加一些自己的键值对，这样就不会局限于固定的结构，可以减少一些时间和空间的开销。
 
-### 1.3.1. 关系型数据库
+### 1.2.1. 关系型数据库
 <a href="#menu" style="float:right">目录</a>
 * 关系型数据库中一对多，多对一，多对多关系
     * 一对一
@@ -130,7 +295,7 @@ lgj@lgj-Lenovo-G470:~$ mysql --help | grep my.cnf
     * Oracle，Microsoft SQL Server，MySQL，PostgreSQL，DB2，
 Microsoft Access， SQLite，Teradata，MariaDB(MySQL的一个分支)，SAP
 
-### 1.3.2. 非关系型数据库
+### 1.2.2. 非关系型数据库
 <a href="#menu" style="float:right">目录</a>
 * 非关系型数据库：指非关系型的，分布式的，且一般不保证遵循ACID原则的数据存储系统。
 * 非关系型数据库结构
@@ -188,7 +353,7 @@ Microsoft Access， SQLite，Teradata，MariaDB(MySQL的一个分支)，SAP
 
 
 
-## 1.4. 使用数据库
+## 1.3. 使用数据库
 <a href="#menu" style="float:right">目录</a>
 
 * 启停数据库
@@ -212,6 +377,17 @@ Microsoft Access， SQLite，Teradata，MariaDB(MySQL的一个分支)，SAP
 * 查看数据表结构
     * show columns from table_name
     * desc table_name
+* 查看配置文件位置
+```
+lgj@lgj-Lenovo-G470:~$ mysql --help | grep my.cnf
+                      order of preference, my.cnf, $MYSQL_TCP_PORT,
+/etc/my.cnf /etc/mysql/my.cnf ~/.my.cnf 
+
+```
+按以下顺序读取配置文件
+/etc/my.cnf-->/etc/mysql/my.cnf--> ~/.my.cnf 
+mysql以读取的最后一个文件配置为准
+
 * 创建表
     * 设置默认值: default xxx
     * 不能为NULL: NOT NULL,默认为NULL
@@ -250,7 +426,7 @@ CREATE TABLE `relation`(
 
 
 
-## 1.5. 数据类型
+## 1.4. 数据类型
 <a href="#menu" style="float:right">目录</a>
 **整形数据类型**
 
@@ -269,9 +445,13 @@ CREATE TABLE `relation`(
 **浮点型数据类型**
 |数据类型|取值范围|说明|单位|
 |---|---|---|---|
-|FLOAT|（+-）3.4E38|单精度浮点数|8或4字节|
-|DOUBLE|（+-）1.79E38，（+-）2.22E308||双精度浮点数|8字节|
-|DECIMAL|可变|一般整数|自定义长度|
+|FLOAT(p,s)|（+-）3.4E38|单精度浮点数|8或4字节|
+|DOUBLE(p,s)|（+-）1.79E38，（+-）2.22E308||双精度浮点数|8字节|
+|DECIMAL(p,s)|可变|一般整数|自定义长度|
+
+当使用浮点类型时，可以指定其精度(小数点左边到右边所允许的数字总位数)和有效位(小数点右边所允许的数字位数)。
+这两个参数由p和s指定,如果数字超过了该列所定义的精度或者有效位，那么该列中存储的数据将会被四舍五入。
+float(4,2):存储4位数字，两位在左边，两位在右边。存储17.8675将会被四舍五入17.87，178.23将会报错。
 
 
 **常规字符串类型**
@@ -279,6 +459,21 @@ CREATE TABLE `relation`(
 |---|---|---|---|
 |char|0~255个字符|定长，效率高，一般用于固定长度的表单提交数据存储,例如：身份证号，手机号，电话，密码等||
 |varchar|0～65535个字符|长度可变||
+
+**enum set**
+|数据类型|取值范围|说明|单位|
+|---|---|---|---|
+|Enum("","",...)|0-65535|该类型的列只允许所列值之一或者null|
+|SET("","",...)|64|不重复的值或者null|
+
+* 不要在字符串列中存储数字，数字应当使用数字类型存储效率更高
+* 从速度方面考虑，应当使用固定的列类型(CHAR)
+* 从节省空间来看，应当使用可变的类型
+* 为了将列中的内容限制在一种选择，使用ENUM
+* 为了允许在一个列中有多余一个的条目，使用SET
+* 对于图像音乐或者其他二进制对象，应当存放在文件系统中，不要使用数据库
+
+
 
 **text和blog**
 |数据类型|取值范围|说明
@@ -291,6 +486,11 @@ CREATE TABLE `relation`(
 |MEDIUMTEXT|16777215||
 |LONGBLOG|4294967295||
 |LONGTEXT|4294967295||
+
+* 当被装载到文本列中的数据超出了该类型的最大长度，数据将会被截断
+* 在向文本装载数据列时，不会消除数据的尾部空格
+* 当使用文本列排序或者分组时，只会使用前1024个字节，当然也可以放宽这个限制
+* 
 
 **ENUM,SET**
 |数据类型|取值范围|说明
@@ -315,6 +515,21 @@ CREATE TABLE `relation`(
 |DATETIME|1000-01-01 00：00：00 - 9999-12-31 23：59：59|日期和时间|
 |TIMESTAMP|1970-01-01 00：00：00 - 2037 的时间戳||
 |YEAR|1901-2155|年份可以指定两位数字和四位数字的格式|
+
+* 日期格式的组成部分
+|组成部分|定义|范围|
+|---|---|---|
+|YYYY|年份|1000-9999|
+|MM|月份|01-12|
+|DD|日|01-31|
+|HH|小时|00-23|
+|HHH|小时(过去的)|-838～838|
+|MI|分钟|00-59|
+|SS|秒|00-59|
+
+
+
+**char和varchar的区别**
 
 char：定长，效率高，一般用于固定长度的表单提交数据存储  ；例如：身份证号，手机号，电话，密码等
 
@@ -370,7 +585,7 @@ char和varchar可以有默认值，text不能指定默认值。
 
 数据库选择合适的数据类型存储还是很有必要的，对性能有一定影响。这里在零碎记录两笔，对于int类型的，如果不需要存取负值，最好加上unsigned；对于经常出现在where语句中的字段，考虑加索引，整形的尤其适合加索引
 
-## 1.6. 数据更新
+## 1.5. 数据更新
 
 ```sql
 //插入单条数据
@@ -386,7 +601,7 @@ delete from table_name where xx=xx
 ```
 
 
-## 1.7. 查询入门
+## 1.6. 查询入门
 <a href="#menu" style="float:right">目录</a>
 
 * select 基本语法
@@ -411,8 +626,13 @@ limit start,count
 |!= 或者<>|不等于|id != 5|Not Like|||
 |is null|空值|id is null|Regexp|正则表达式||
 
-* 多条件查询 and  /  or
+* 逻辑运算符 
+AND / && /OR /|| /!/NOT 
 
+* 算数运算符
+```
++ - * / % 
+```
 * from
     * 永久表
     * 临时表
@@ -457,8 +677,44 @@ limit start,count
 * 使用时遵循的顺序
     * SELECT-->FROM-->WHERE-->GROUP BY-->HAVING-->ORDER BY-->LIMIT
 
+**正则匹配**
+|字符|描述|实例|
+|---|---|---|
+|*|零个或者多个字符匹配|
+|+|一个或者多个字符串匹配|
+|?|零个或者一个字符串匹配|
+|.|任意单个字符串匹配|
+|[xyz]|与xyz中任意一个字符匹配|
+|[A-Z]|与任意大写字符匹配|
+|[a-z]|与任意小写字符匹配|
+|[0-9]|与任意数字匹配|
+|^|匹配起始|
+|$|匹配结束|
+|\||在规则表达式中分隔字符串|
+|{n,m}|字符串次数为n-m|
+|{n}|字符串次数为n|
+|{n,}|字符串至少n次|
 
-## 1.8. 多表连接查询
+```
+select xx from xx where name regexp "^a"
+```
+例子
+```
+//字符串中出现abc
+regexp "abc";
+
+//以a开头的字符串
+regexp "^a"
+
+//g至少出现一次或者多次
+regexp "g+"
+
+//零个或者多个g
+regexp "g*"
+
+```
+
+## 1.7. 多表连接查询
 <a href="#menu" style="float:right">目录</a>
 
 * 迪卡尔积
@@ -524,10 +780,10 @@ select * from stu_info A right join stu_score  B on A.id=B.id;
 select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on xxx=xx;
 ```
 
-## 1.9. 函数
+## 1.8. 函数
 <a href="#menu" style="float:right">目录</a>
 
-### 1.9.1. 聚集函数
+### 1.8.1. 聚集函数
 * 运行在行祖上，计算和返回单个值的函数
 * avg
 * count
@@ -541,7 +797,7 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
 * min
 * sum
 
-### 1.9.2. 数学函数
+### 1.8.2. 数学函数
 * ABS(x)
     * 返回x的绝对值
 * PI()
@@ -579,7 +835,7 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
 * COT(x)
     * 返回给定弧度值x的余切
 
-### 1.9.3. 字符串函数
+### 1.8.3. 字符串函数
 * CHAR_LENGTH(str)
     * 计算字符串字符个数
 * CONCAT(s1,s2，...)
@@ -618,7 +874,7 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
     * 返回第N个字符串
 
  
-### 1.9.4. 日期和时间函数
+### 1.8.4. 日期和时间函数
 * CURDATE()、CURRENT_DATE()
     * 将当前日期按照"YYYY-MM-DD"或者"YYYYMMDD"格式的值返回，具体格式根据函数用在字符串或是数字语境中而定
 * CURRENT_TIMESTAMP()、LOCALTIME()、NOW()、SYSDATE()
@@ -638,7 +894,10 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
 * DAYOFYEAR(d)、DAYOFMONTH(d)
     * 前者返回d是一年中的第几天，后者返回d是一月中的第几天
 * YEAR(date)、QUARTER(date)、MINUTE(time)、SECOND(time)
-    * YEAR(date)返回指定日期对应的年份，范围是1970~2069；QUARTER(date)返回date对应一年中的季度，范围是1~4；MINUTE(time)返回time对应的分钟数，范围是0~59；SECOND(time)返回制定时间的秒值
+    * YEAR(date)返回指定日期对应的年份，范围是1970~2069；
+    * QUARTER(date)返回date对应一年中的季度，范围是1~4；
+    * MINUTE(time)返回time对应的分钟数，范围是0~59；
+    * SECOND(time)返回制定时间的秒值
 * EXTRACE(type FROM date)
     * 从日期中提取一部分，type可以是YEAR、YEAR_MONTH、DAY_HOUR、DAY_MICROSECOND、DAY_MINUTE、DAY_SECOND
 * TIME_TO_SEC(time)
@@ -652,7 +911,7 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
 * ADDTIME(date,expr)、SUBTIME(date,expr)
     * 前者进行date的时间加操作，后者进行date的时间减操作
 
-### 1.9.5. 条件判断函数
+### 1.8.5. 条件判断函数
 
 * IF(expr,v1,v2)
     * 如果expr是TRUE则返回v1，否则返回v2
@@ -662,7 +921,7 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
     * 如果expr等于某个vn，则返回对应位置THEN后面的结果，如果与所有值都不想等，则返回ELSE后面的rn
  
 
-### 1.9.6. 系统信息函数
+### 1.8.6. 系统信息函数
 
 * VERSION()
     * 查看MySQL版本号
@@ -677,7 +936,7 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
 
  
 
-### 1.9.7. 加密函数
+### 1.8.7. 加密函数
 
 * PASSWORD(str)
     * 从原明文密码str计算并返回加密后的字符串密码，注意这个函数的加密是单向的（不可逆），因此不应将它应用在个人的应用程序中而应该只在MySQL服务器的鉴定系统中使用
@@ -687,7 +946,7 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
     * 使用pswd_str作为密码，加密str
 * DECODE(crypt_str,pswd_str)
     * 使用pswd_str作为密码，解密加密字符串crypt_str，crypt_str是由ENCODE函数返回的字符串
-### 1.9.8. 其他函数
+### 1.8.8. 其他函数
 * FORMAT(x,n)
     * 将数字x格式化，并以四舍五入的方式保留小数点后n位，结果以字符串形式返回
 * CONV(N,from_base,to_base)
@@ -702,10 +961,10 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
     * 使用字符集charset表示字符串str
 
 
-## 1.10. 存储过程
+## 1.9. 存储过程
 <a href="#menu" style="float:right">目录</a>
 
-### 1.10.1. 基本概念
+### 1.9.1. 基本概念
 * 存储过程
     * 将多条SQL语句进行封装，类似于函数。有输入和输出。
 * 为什么使用
@@ -718,13 +977,13 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
     * 一般来说，存储过程的编写比基本SQL语句复杂，编写存储过程需要更高的技能，更丰富的经验。
     * 你可能没有创建存储过程的安全访问权限。许多数据库管理员限制存储过程的创建权限，允许用户使用存储过程，但不允许他们创建存储过程。
 
-### 1.10.2. 使用存储过程
+### 1.9.2. 使用存储过程
 
 
-## 1.11. 视图
+## 1.10. 视图
 <a href="#menu" style="float:right">目录</a>
 
-### 1.11.1. 基本概念
+### 1.10.1. 基本概念
 
 * 视图是虚拟的表，视图本身不包含数据，原始表数据更改，视图查询将会返回最新的数据
 * 使用视图的原因
@@ -749,10 +1008,10 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
     * 用DROP删除视图，其语法为DROP VIEW viewname;。
     * 更新视图时，可以先用DROP再用CREATE，也可以直接用CREATE ORREPLACE VIEW。如果要更新的视图不存在，则第2条更新语句会创建一个视图；如果要更新的视图存在，则第2条更新语句会替换原有视图。
 
-## 1.12. 触发器
+## 1.11. 触发器
 <a href="#menu" style="float:right">目录</a>
 
-### 1.12.1. 基本概念
+### 1.11.1. 基本概念
 * 触发器
     * 用于在对表进行修改（DELETE，UPDATE，INSERT）时触发其他操作。
     * 仅支持表，不支持视图
@@ -770,7 +1029,7 @@ END;
 * 应用场景
     * 在删除表数据时，将删除的数据存入其他表
     * 保证数据的一致性
-### 1.12.2. 触发器操作
+### 1.11.2. 触发器操作
 * 在创建触发器时，需要给出4条信息：
     * 唯一的触发器名(表中唯一，不同的关联表可以有相同名称的触发器)；
     * 触发器关联的表；
@@ -797,12 +1056,12 @@ FOR EACH ROW SELECT NEW.order_num;
     * OLD中的值全都是只读的，不能更新。
 
 
-## 1.13. 事务
+## 1.12. 事务
 <a href="#menu" style="float:right">目录</a>
 
-### 1.13.1. 基本概念
+### 1.12.1. 基本概念
 
-#### 1.13.1.1. 事务特点
+#### 1.12.1.1. 事务特点
 * 事务:
     * 数据库事务是指作为单个逻辑工作单元执行的一系列操作（SQL语句）。这些操作要么全部执行，要么全部不执行
 * 四个特征 ACID 特性。 
@@ -846,7 +1105,7 @@ FOR EACH ROW SELECT NEW.order_num;
 * 如果事务操作中包括事务型(InnoDB)的表和非事务型(MyISAM)的表，回滚时非事务型的表将不会回滚，使用时要注意，尽量不要混合使用。
 * 对非事务型的表进行事务操作，不会有错误提示。但是回滚无效。
 
-#### 1.13.1.2. 锁
+#### 1.12.1.2. 锁
 * 共享锁(shared lock)和排他锁(exclusive lock)
     * 读锁是共享的，可以多个线程同时读取相同的数据
     * 写锁是排他锁，任意时刻只能由一个线程操作同一个数据，否则将出现并发问题.获取到写锁时，其他线程禁止读写。
@@ -879,7 +1138,7 @@ FOR EACH ROW SELECT NEW.order_num;
         * SELECT ... LOCK IN SHARE MODE
         * SELECT ... FOR UPDATE
 
-#### 1.13.1.3. 多版本并发控制
+#### 1.12.1.3. 多版本并发控制
 
 * MVCC是行级锁的一个变种，很多情况下可以避免加锁，所以开销更低。大都实现了非阻塞读操作，写操作也只锁定必要的行。
 
@@ -888,14 +1147,14 @@ FOR EACH ROW SELECT NEW.order_num;
     * 一个列保存了行的创建版本号，一个列保存行的过期(删除)版本号
     * 每开始一个新事务，系统版本号都会自动递增。事务开始时刻的系统版本号会作为事务的版本号。用来和查询到的每行记录的版本号进行比较。
     
-#### 1.13.1.4. 常见术语
+#### 1.12.1.4. 常见术语
 * 术语：
     * 事务（transaction）指一组SQL语句；
     * 回退（rollback）指撤销指定SQL语句的过程；
     * 提交（commit）指将未存储的SQL语句结果写入数据库表；   
     * 保留点（ savepoint）指事务处理中设置的临时占位符（ placeholder），你可以对它发布回退（与回退整个事务处理不同）。
 
-### 1.13.2. 基本语句
+### 1.12.2. 基本语句
 * 启动事务
     * START TRANSATION;
 * 回滚事务
@@ -917,13 +1176,13 @@ FOR EACH ROW SELECT NEW.order_num;
     * autocommit针对单条连接，而不是MySQL服务器
 
 
-## 1.14. 数据库索引 
+## 1.13. 数据库索引 
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.14.1. 基本概念
+### 1.13.1. 基本概念
 
-#### 1.14.1.1. 分类
+#### 1.13.1.1. 分类
 * 索引类型
     * primary key 主键索引
     * normal：表示普通索引
@@ -987,7 +1246,7 @@ algorithm_option:
 lock_option:
     LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}
 ```
-#### 1.14.1.2. 索引用途
+#### 1.13.1.2. 索引用途
 <a href="#menu" style="float:right">目录</a>
 * 数据完整性
     * 使用主键索引或者唯一键来确保数据唯一性
@@ -1009,7 +1268,7 @@ lock_option:
 * 聚合操作
     * 聚合操作的字段添加索引也可以提高速度
 
-#### 1.14.1.3. 索引的误区
+#### 1.13.1.3. 索引的误区
 目前，MySQL的服务器可以提供足够大的内存来提供缓存索引相关数据，提高性能，因此有些规范不再适合当前的硬件环境。
 * 误区
     * 索引层级不要超过5层
@@ -1018,10 +1277,10 @@ lock_option:
     * 不应该索引不稳定的列
         
     
-#### 1.14.1.4. 索引数据结构
+#### 1.13.1.4. 索引数据结构
 <a href="#menu" style="float:right">目录</a>
 
-## 1.15. 存储引擎
+## 1.14. 存储引擎
 <a href="#menu" style="float:right">目录</a>
 
 * 查看存储引擎
@@ -1049,7 +1308,7 @@ Savepoints：事务中的保留点
 * 查看默认的存储引擎
     * show variable like "storage_enging%"
     
-### 1.15.1. InnoDB存储引擎
+### 1.14.1. InnoDB存储引擎
 
 InnoDB是事务型数据库的首选引擎，支持事务安全表（ACID），支持行锁定和外键，上图也看到了，InnoDB是默认的MySQL引擎。InnoDB主要特性有：
 * InnoDB给MySQL提供了具有提交、回滚和崩溃恢复能力的事物安全（ACID兼容）存储引擎。InnoDB锁定在行级并且也在SELECT语句中提供一个类似Oracle的非锁定读。这些功能增加了多用户部署和性能。在SQL查询中，可以自由地将InnoDB类型的表和其他MySQL的表类型混合起来，甚至在同一个查询中也可以混合
@@ -1059,7 +1318,7 @@ InnoDB是事务型数据库的首选引擎，支持事务安全表（ACID），�
 * InnoDB被用在众多需要高性能的大型数据库站点上
 InnoDB不创建目录，使用InnoDB时，MySQL将在MySQL数据目录下创建一个名为ibdata1的10MB大小的自动扩展数据文件，以及两个名为ib_logfile0和ib_logfile1的5MB大小的日志文件
 
-### 1.15.2. MyISAM存储引擎
+### 1.14.2. MyISAM存储引擎
 
 MyISAM基于ISAM存储引擎，并对其进行扩展。它是在Web、数据仓储和其他应用环境下最常使用的存储引擎之一。MyISAM拥有较高的插入、查询速度，但不支持事物。MyISAM主要特性有：
 * 大文件（达到63位文件长度）在支持大文件的文件系统和操作系统上被支持
@@ -1077,7 +1336,7 @@ MyISAM基于ISAM存储引擎，并对其进行扩展。它是在Web、数据仓�
 
 使用MyISAM引擎创建数据库，将产生3个文件。文件的名字以表名字开始，扩展名之处文件类型：frm文件存储表定义、数据文件的扩展名为.MYD（MYData）、索引文件的扩展名时.MYI（MYIndex）
 
-### 1.15.3. MEMORY存储引擎
+### 1.14.3. MEMORY存储引擎
 
 MEMORY存储引擎将表中的数据存储到内存中，未查询和引用其他表数据提供快速访问。MEMORY主要特性有：
 * MEMORY表的每个表可以有多达32个索引，每个索引16列，以及500字节的最大键长度
@@ -1090,10 +1349,11 @@ MEMORY存储引擎将表中的数据存储到内存中，未查询和引用其�
 * MEMORY表内存被存储在内存中，内存是MEMORY表和服务器在查询处理时的空闲中，创建的内部表共享
 * 当不再需要MEMORY表的内容时，要释放被MEMORY表使用的内存，应该执行DELETE FROM或TRUNCATE TABLE，或者删除整个表（使用DROP TABLE）
 
-### 1.15.4. 存储引擎的选择
+### 1.14.4. 存储引擎的选择
 
 不同的存储引擎都有各自的特点，以适应不同的需求，如下表所示：
 
+![](https://github.com/lgjlife/Java-Study/blob/master/pic/mysql/mysql-engines.jpeg?raw=true)
 
 |功 能|MYISAM|Memory|InnoDB|
 |---|---|---|---|
@@ -1113,10 +1373,1166 @@ MEMORY存储引擎将表中的数据存储到内存中，未查询和引用其�
 * 如果只有INSERT和SELECT操作，可以选择Archive，Archive支持高并发的插入操作，但是本身不是事务安全的。Archive非常适合存储归档数据，如记录日志信息可以使用Archive
 * 使用哪一种引擎需要灵活选择，一个数据库中多个表可以使用不同引擎以满足各种性能和实际需求，使用合适的存储引擎，将会提高整个数据库的性能
 
-## 1.16. 性能优化基本的分析命令
+## 1.15. InnoDB存储引擎
+
+### 1.15.1. 体系结构
 <a href="#menu" style="float:right">目录</a>
 
-### 1.16.1. explain
+#### 1.15.1.1. 后台线程
+<a href="#menu" style="float:right">目录</a>
+
+InnoDB存储引擎是多线程模型，其后台线程负责处理不同的任务
+
+**Master Thread**
+非常核心的后台线程，负责将缓冲池中的数据异步刷新到磁盘，保证数据的一致性，包括脏页的刷新，合并插入缓冲(INSERT buffer)、UNDO页的回收。
+
+**IO 线程**
+使用大量的AIO来处理写IO请求。可以极大提高数据库的性能。
+IO线程负责这些请求的回调处理。
+现在默认提供4个读IO线程，4个写IO线程。
+
+```
+mysql> show variables like "innodb_%io_threads";
++-------------------------+-------+
+| Variable_name           | Value |
++-------------------------+-------+
+| innodb_read_io_threads  | 4     |
+| innodb_write_io_threads | 4     |
++-------------------------+-------+
+
+```
+查看IO线程的状态
+```
+mysql> show engine innodb status \G
+*************************** 1. row ***************************
+  Type: InnoDB
+  Name: 
+Status: 
+=====================================
+2019-08-29 23:49:55 0x7f653c5d2700 INNODB MONITOR OUTPUT
+
+--------
+FILE I/O
+--------
+I/O thread 0 state: waiting for completed aio requests (insert buffer thread)
+I/O thread 1 state: waiting for completed aio requests (log thread)
+I/O thread 2 state: waiting for completed aio requests (read thread)
+I/O thread 3 state: waiting for completed aio requests (read thread)
+I/O thread 4 state: waiting for completed aio requests (read thread)
+I/O thread 5 state: waiting for completed aio requests (read thread)
+I/O thread 6 state: waiting for completed aio requests (write thread)
+I/O thread 7 state: waiting for completed aio requests (write thread)
+I/O thread 8 state: waiting for completed aio requests (write thread)
+I/O thread 9 state: waiting for completed aio requests (write thread)
+Pending normal aio reads: [0, 0, 0, 0] , aio writes: [0, 0, 0, 0] ,
+
+
+```
+
+**Purge 线程**
+事务提交以后，其所使用的undolog可能不再需要。使用Purge 线程来回收已经使用并分配的undolog页。
+
+1.1版本之前这个操作是在Master线程完成，1.1之后可以使用单独的线程。
+
+配置使用单独的线程
+```
+[mysqld]
+innodb_purge_threads=1
+```
+
+默认配置使用4个
+```
+mysql> show variables like "innodb_purge_threads";
++----------------------+-------+
+| Variable_name        | Value |
++----------------------+-------+
+| innodb_purge_threads | 4     |
++----------------------+-------+
+
+```
+
+
+#### 1.15.1.2. 内存
+<a href="#menu" style="float:right">目录</a>
+
+innodb是基于磁盘存储，并将其中的记录按照页的方式进行管理。在数据库系统中 ，由于CPU速度和磁盘速度的差异，基于磁盘的数据库系统通常使用缓冲池技术来提高数据库的整体性能。
+
+缓冲池简单来说就是一块内存，通过内存的速度来弥补磁盘速度较慢对数据库性能的影响。
+* 在数据库中进行读取页的操作，首先将从磁盘读到的页存放在缓冲池中，这个过程称为将页FIX在缓冲池。下一次再读取相同的页时，首先判断该页是否在缓冲池中，若在，则直接读取缓冲池中的数据，若不再，则从磁盘中读取。
+* 对于数据库中页的修改操作，则首先修改在缓冲池中的页，然后再以一定的频率刷新到磁盘上。刷新磁盘机制通过Checkpoint的机制刷新回磁盘。
+
+大小配置
+```
+mysql> show variables like "innodb_buffer_pool_size";
++-------------------------+-----------+
+| Variable_name           | Value     |
++-------------------------+-----------+
+| innodb_buffer_pool_size | 134217728 |
++-------------------------+-----------+
+```
+
+* **缓冲池**
+    * 数据页
+    * 插入缓冲
+    * 锁信息
+    * 索引页
+    * 自适应哈希索引
+    * 数据字典信息
+    * 重做日志缓冲
+    * 额外内存池
+
+**缓冲池实例**
+
+```
+mysql> show variables like "innodb_buffer_pool_instances";
++------------------------------+-------+
+| Variable_name                | Value |
++------------------------------+-------+
+| innodb_buffer_pool_instances | 1     |
++------------------------------+-------+
+
+```
+支持设置多个缓冲池实例。每个页根据哈希值平均分配到不同的缓冲池实例，减少数据库内部的资源竞争，增加数据库的并发处理能力。
+
+
+
+### 1.15.2. checkpoint技术
+<a href="#menu" style="float:right">目录</a>
+
+**checkpoint产生的背景**
+数据库在发生增删查改操作的时候，为了提高事物操作的效率，都是先在buffer pool中完成的，buffer pool中修改之后的数据，并没有立即写入到磁盘，这有可能会导致内存中数据与磁盘中的数据产生不一致的情况。
+事物要求之一是持久性（Durability），buffer pool与磁盘数据的不一致性的情况下发生故障，可能会导致数据无法持久化。
+为了防止在内存中修改但尚未写入到磁盘的数据，在发生故障重启数据之后产生事物未持久化的情况，是通过日志(redo log)先行的方式来保证的。
+redo log可以在故障重启之后实现“重做”，保证了事物的持久化的特性，但是redo log空间不可能无限制扩大，对于内存中已修改但尚未提交到磁盘的数据，也即脏页，也需要写入磁盘。
+对于内存中的脏页，什么时候，什么情况下，将多少脏页写入磁盘，是由多方面因素决定的。
+checkpoint的工作之一，就是对于内存中的脏页，在一定条件下将脏页刷新到磁盘。
+
+**checkpoint的分类**
+按照checkpoint刷新的方式，MySQL中的checkpoint分为两种，也即sharp checkpoint和fuzzy checkpoint。
+sharp checkpoint：在关闭数据库的时候，将buffer pool中的脏页全部刷新到磁盘中。
+fuzzy checkpoint：数据库正常运行时，在不同的时机，将部分脏页写入磁盘，进刷新部分脏页到磁盘，也是为了避免一次刷新全部的脏页造成的性能问题。
+
+ 
+
+**checkpoint发生的时机**
+checkpoint都是将buffer pool中的脏页刷新到磁盘，但是在不同的情况下，checkpoint会被以不同的方式触发，同时写入到磁盘的脏页的数量也不同。
+
+* **Master Thread checkpoint**
+　　在Master Thread中，会以每秒或者每10秒一次的频率，将部分脏页从内存中刷新到磁盘，这个过程是异步的。正常的用户线程对数据的操作不会被阻塞。
+* **FLUSH_LRU_LIST checkpoint**
+FLUSH_LRU_LIST checkpoint是在单独的page cleaner线程中执行的。
+MySQL对缓存的管理是通过buffer pool中的LRU列表实现的，LRU 空闲列表中要保留一定数量的空闲页面，来保证buffer pool中有足够的空闲页面来相应外界对数据库的请求。
+当这个空间页面数量不足的时候，发生FLUSH_LRU_LIST checkpoint。
+空闲页的数量由innodb_lru_scan_depth参数表来控制的，因此在空闲列表页面数量少于配置的值的时候，会发生checkpoint，剔除部分LRU列表尾端的页面。
+
+```mysql> show variables like "innodb_lru%";
++-----------------------+-------+
+| Variable_name         | Value |
++-----------------------+-------+
+| innodb_lru_scan_depth | 1024  |
++-----------------------+-------+
+```
+
+
+
+
+* **Async/Sync Flush checkpoint**
+Async/Sync Flush checkpoint是在单独的page cleaner线程中执行的。
+Async/Sync Flush checkpoint 发生在重做日志不可用的时候，将buffer pool中的一部分脏页刷新到磁盘中，在脏页写入磁盘之后，事物对应的重做日志也就可以释放了。
+关于redo_log文件的的大小，可以通过innodb_log_file_size来配置。
+
+```
+mysql> show variables like "innodb_log_file_size";
++----------------------+----------+
+| Variable_name        | Value    |
++----------------------+----------+
+| innodb_log_file_size | 50331648 |
++----------------------+----------+
+
+```
+对于是执行Async Flush checkpoint还是Sync Flush checkpoint，由checkpoint_age以及async_water_mark和sync_water_mark来决定。
+定义：
+　　checkpoint_age = redo_lsn-checkpoint_lsn，也即checkpoint_age等于最新的lsn减去已经刷新到磁盘的lsn的值
+　　async_water_mark 　　= 75%*innodb_log_file_size
+　　sync_water_mark 　　 =  90%*innodb_log_file_size
+　　1）当checkpoint_age<sync_water_mark的时候，无需执行Flush checkpoint。也就说，redo log剩余空间超过25%的时候，无需执行Async/Sync Flush checkpoint。
+　　2）当async_water_mark<checkpoint_age<sync_water_mark的时候，执行Async Flush checkpoint，也就说，redo log剩余空间不足25%，但是大于10%的时候，执行Async Flush checkpoint，刷新到满足条件1
+　　3）当checkpoint_age>sync_water_mark的时候，执行sync Flush checkpoint。也就说，redo log剩余空间不足10%的时候，执行Sync Flush checkpoint，刷新到满足条件1。
+　　在mysql 5.6之后，不管是Async Flush checkpoint还是Sync Flush checkpoint，都不会阻塞用户的查询进程。　
+
+
+由于磁盘是一种相对较慢的存储设备，内存与磁盘的交互是一个相对较慢的过程
+由于innodb_log_file_size定义的是一个相对较大的值，正常情况下，由前面两种checkpoint刷新脏页到磁盘，在前面两种checkpoint刷新脏页到磁盘之后，脏页对应的redo log空间随即释放，一般不会发生Async/Sync Flush checkpoint。同时也要意识到，为了避免频繁低发生Async/Sync Flush checkpoint，也应该将innodb_log_file_size配置的相对较大一些。
+
+* **Dirty Page too much Checkpoint**
+Dirty Page too much Checkpoint是在Master Thread 线程中每秒一次的频率实现的。
+Dirty Page too much 意味着buffer pool中的脏页过多，执行checkpoint脏页刷入磁盘，保证buffer pool中有足够的可用页面。
+Dirty Page 由innodb_max_dirty_pages_pct配置，innodb_max_dirty_pages_pct的默认值在innodb 1.0之前是90%，之后是75%。
+
+```
+mysql> show variables like "innodb_max_dirty_pages_pct";
++----------------------------+-----------+
+| Variable_name              | Value     |
++----------------------------+-----------+
+| innodb_max_dirty_pages_pct | 75.000000 |
++----------------------------+-----------+
+```
+**总结：**
+
+MySQL数据库（当然其他关系数据也有类似的机制），为了提高事物操作的效率，在事物提交之后并不会立即将修改后的数据写入磁盘，而是通过日志先行（write log ahead）的方式保证事物的持久性。
+对于将事物修改的数据页面，也即脏页，通过异步的方式刷新到磁盘中，checkpoint正是实现这种异步刷新脏页到磁盘的实施者。
+不同的情况下，会发生不同的checkpoint，将不同数量的脏页刷新到磁盘，从而到达管理内存（第1,2,4种checkpoint）和redo log可用空间（第3种checkpoint）的目的。 
+
+### 1.15.3. Master Thread 工作方式
+<a href="#menu" style="float:right">目录</a>
+
+### 1.15.4. InnoDB关键特性
+插入缓存（insert buffer）、两次写(double write)、自适应哈希(Adaptive Hash index)、异步IO(Async IO)、刷新邻接页(Flush Neighbor Page)
+
+
+#### 1.15.4.1. 插入缓存
+<a href="#menu" style="float:right">目录</a>
+
+**Insert Buffer**
+Insert Buffer是InnoDB存储引擎关键特性中最令人激动与兴奋的一个功能。不过这个名字可能会让人认为插入缓冲是缓冲池中的一个组成部分。其实不然，InnoDB缓冲池中有Insert Buffer信息固然不错，但是Insert Buffer和数据页一样，也是物理页的一个组成部分。
+
+一般情况下，主键是行唯一的标识符。通常应用程序中行记录的插入顺序是按照主键递增的顺序进行插入的。因此，插入聚集索引一般是顺序的，不需要磁盘的随机读取。因为，对于此类情况下的插入，速度还是非常快的。（如果主键类是UUID这样的类，那么插入和辅助索引一样，也是随机的。）
+
+如果索引是非聚集的且不唯一。在进行插入操作时，数据的存放对于非聚集索引叶子节点的插入不是顺序的，这时需要离散地访问非聚集索引页，由于随机读取的存在而导致了插入操作性能下降。这是因为B+树的特性决定了非聚集索引插入的离散性。
+
+Insert Buffer的设计，对于非聚集索引的插入和更新操作，不是每一次直接插入到索引页中，而是先判断插入非聚集索引页是否在缓冲池中，若存在，则直接插入，不存在，则先放入一个Insert Buffer对象中。数据库这个非聚集的索引已经插到叶子节点，而实际并没有，只是存放在另一个位置。然后再以一定的频率和情况进行Insert Buffer和辅助索引页子节点的merge（合并）操作，这时通常能将多个插入合并到一个操作中（因为在一个索引页中），这就大大提高了对于非聚集索引插入的性能。
+
+需要满足的两个条件：
+* 索引是辅助索引；
+* 索引不是唯一的。
+
+辅助索引不能是唯一的，因为在插入缓冲时，数据库并不去查找索引页来判断插入的记录的唯一性。如果去查找肯定又会有离散读取的情况发生，从而导致Insert Buffer失去了意义。
+
+**Change Buffer**
+InnoDB从1.0.x版本开始引入了Change Buffer，可将其视为Insert Buffer的升级。从这个版本开始，InnoDB存储引擎可以对DML操作——INSERT、DELETE、UPDATE都进行缓冲，他们分别是：Insert Buffer、Delete Buffer、Purge buffer。
+
+当然和之前Insert Buffer一样，Change Buffer适用的对象依然是非唯一的辅助索引。
+
+对一条记录进行UPDATE操作可能分为两个过程：
+* 将记录标记为已删除（Delete Buffer）；
+* 真正将记录删除（Purge buffer）。
+
+因此Delete Buffer对应UPDATE操作的第一个过程，即将记录标记为删除。Purge Buffer对应UPDATE操作的第二个过程，即将记录真正的删除。同时，InnoDB存储引擎提供了参数innodb_change_buffering，用来开启各种Buffer的选项。该参数可选的值为：inserts、deletes、purges、changes、all、none。inserts、deletes、purges就是前面讨论过的三种情况。changes表示启用inserts和deletes，all表示启用所有，none表示都不启用。该参数默认值为all。
+
+从InnoDB 1.2.x版本开始，可以通过参数innodb_change_buffer_max_size来控制Change Buffer最大使用内存的数量，innodb_change_buffer_max_size值默认为25，表示最多使用1/4的缓冲池内存空间。而需要注意的是，该参数的最大有效值为50。
+
+在MySQL 5.5版本中通过命令SHOW ENGINE INNODB STATUS，可以观察到类似如下的内容：
+
+```
+mysql> SHOW ENGINE INNODB STATUS\G;
+……
+-------------------------------------
+INSERT BUFFER AND ADAPTIVE HASH INDEX
+-------------------------------------
+Ibuf: size 1, free list len 34397, seg size 34399, 10875 merges
+ 
+merged operations:
+ 
+insert 20462, delete mark 20158, delete 4215
+ 
+discarded operations:
+ 
+insert 0, delete mark 0, delete 0
+……
+```
+可以看到这里显示了merged operations和discarded operation，并且下面具体显示Change Buffer中每个操作的次数。insert表示Insert Buffer；delete mark表示Delete Buffer；delete表示Purge Buffer；discarded operations表示当Change Buffer发生merge时，表已经被删除，此时就无需再将记录合并（merge）到辅助索引中了。
+
+**Merge Insert Buffer**
+通过前面的小节读者应该已经知道了Insert/Change Buffer是一棵B+树。若需要实现插入记录的辅助索引页不在缓冲池中，那么需要将辅助索引记录插入到这棵实际B+树中。但是Insert Buffer中的记录何时合并（merge）到真正的辅助索引中呢？
+
+概括地说，Merge Insert Buffer的操作可能发生在以下几种情况下：
+* 辅助索引页被读取到缓冲池时；
+* Insert Buffer Bitmap页追踪到该辅助索引页已无可用空间时；
+* Master Thread。
+
+第一种情况为当辅助索引页被读取到缓冲池中时，例如这在执行正常的SELECT查询操作，这时需要检查Insert Buffer Bitmap页，然后确认该辅助索引页是否有记录存放于Insert Buffer B+树中。若有，则将Insert Buffer B+树中该页的记录插入到该辅助索引页中。可以看到对该页多次的记录操作通过一次操作合并到了原有的辅助索引页中，因此性能会有大幅提高。
+
+Insert Buffer Bitmap页用来追踪每个辅助索引页的可用空间，并至少有1/32页的空间。若插入辅助索引记录时检测到插入记录后可用空间会小于1/32页，则会强制进行一个合并操作，即强制读取辅助索引页，将Insert Buffer B+树中该页的记录及待插入的记录插入到辅助索引页中。这就是上述所说的第二种情况。
+
+还有一种情况，之前在分析Master Thread时曾讲到，在Master Thread线程中每秒或每10秒会进行一次Merge Insert Buffer的操作，不同之处在于每次进行merge操作的页的数量不同。
+
+#### 1.15.4.2. 两次写
+<a href="#menu" style="float:right">目录</a>
+
+**doublewrite应用场景**
+我们知道，innodb的数据页一般大小是16KB，MySQL存取数据的最小单位也是页，而操作系统并不能保障一个数据页的原子性，也就是说当写入数据时，有可能在一个页中写入一半时（比如8K）数据库宕机，这种情况称为部分写失效（partial page write），从而导致数据丢失。
+
+大家也许会问，难道我不可以根据redo log进行数据恢复吗？答案是肯定的也是否定的，要分为两种情况：1、数据库宕机，物理文件完好无损，是可以通过redo log进行崩溃恢复。2、数据库宕机，正在刷新到磁盘的页发生partial page write，而正好在磁盘上的这个数据页由于宕机发生损坏，这时就无法通过redo log进行数据恢复了，为什么？我们必须要清楚的认识到，redo log里记录的是对页的物理操作！比如一条redo记录"page number xx，偏移量 800 写记录 “this is abc”"，那当页损坏时，这条redo记录还有意义吗？于是在这种特殊情况下，doublewrite就派上用场啦！
+
+**doublewrite体系结构及工作流程**
+doublewrite由两部分组成，一部分为内存中的doublewrite buffer，其大小为2MB，另一部分是磁盘上共享表空间（ibdata x）中连续的128个页，即2个区（extent），大小也是2M。doublewrite工作流程如下：
+
+* 当一系列机制（main函数触发、checkpoint等）触发数据缓冲池中的脏页进行刷新时，并不直接写磁盘，而是会通过memcpy函数将脏页先复制到内存中的doublewrite buffer,之后通过doublewrite buffer再分两次、每次1MB顺序写入共享表空间的物理磁盘上。
+* 马上调用fsync函数，同步脏页进磁盘。由于在这个过程中，doublewrite页的存储时连续的，因此写入磁盘为顺序写，性能很高；完成doublewrite后，再将脏页写入实际的各个表空间文件，这时写入就是离散的了。各模块协作情况如下图（第一步应为脏页产生的redo记录logbuffer，然后logbuffer写入redo log file，为简化次要步骤直接连线表示）：
+
+![](http://www.linuxidc.com/upload/2017_01/170108153616321.png)
+
+查看doublewrite工作情况，可以执行命令：
+```
+mysql> show global status like 'innodb_dblwr%'\G
+*************************** 1. row ***************************
+Variable_name: Innodb_dblwr_pages_written
+        Value: 61932183
+*************************** 2. row ***************************
+Variable_name: Innodb_dblwr_writes
+        Value: 15237891
+2 rows in set (0.00 sec)
+```
+
+以上数据显示，doublewrite一共写了 61932183个页，一共写了15237891次，从这组数据我们可以分析，之前讲过在开启doublewrite后，每次脏页刷新必须要先写doublewrite，而doublewrite存在于磁盘上的是两个连续的区，每个区由连续的页组成，一般情况下一个区最多有64个页，所以一次IO写入应该可以最多写64个页。而根据以上我这个系统Innodb_dblwr_pages_written与Innodb_dblwr_writes的比例来看，大概在4左右，远远还没到64，所以从这个角度也可以看出，系统写入压力并不高。
+
+**崩溃恢复**
+如果操作系统在将页写入磁盘的过程中发生崩溃，如上图，在恢复过程中，innodb存储引擎可以从共享表空间的doublewrite中找到该页的一个最近的副本，将其复制到表空间文件，再应用redo log，就完成了恢复过程。因为有副本所以也不担心表空间中数据页是否损坏。
+
+#### 1.15.4.3. 自适应哈希索引
+<a href="#menu" style="float:right">目录</a>
+
+哈希是一种非常快的查找方法，在一般情况时间复杂度为O(1)。而B+树的查找次数，取决于B+树的高度，在生成环境中，B+树的高度一般为3-4层，不需要查询3-4次。
+
+InnoDB存储引擎会监控对表上各索引页的查询。如果观察到简历哈希索引可以提升速度，这简历哈希索引，称之为自适应哈希索引(Adaptive Hash Index, AHI)。AHI是通过缓冲池的B+树页构造而来的。因此建立的速度非常快，且不要对整张表构建哈希索引。InnoDB存储哟inquiry会自动根据房屋的频率和陌生来自动的为某些热点页建立哈希索引。
+
+AHI有一个要求，对这个页的连续访问模式(查询条件)必须一样的。例如联合索引(a,b)其访问模式可以有以下情况:
+* WHERE a=XXX;
+* WHERE a=xxx AND b=xxx。
+
+若交替进行上述两张查询，InnoDB存储引擎不会对该页构造AHI。此外AHI还有如下要求：
+* 以该模式访问了100次；
+* 页通过该模式访问了N次，其中N=页中记录/16。
+
+根据官方文档显示，启用AHI后，读取和写入的速度可以提高2倍，负责索引的链接操作性能可以提高5倍。其设计思想是数据库自由化的，无需DBA对数据库进行人为调整。
+
+#### 1.15.4.4. 异步IO
+<a href="#menu" style="float:right">目录</a>
+
+为了提高磁盘操作性能，当前的数据库系统都采用异步IO的方式来处理磁盘操作。InnoDB也是如此。
+
+与AIO对应的是Sync IO，即每进行一次IO操作，需要等待此次操作结束才能继续接下来的操作。但是如果用户发出的是一条索引扫描的查询，那么这条SQL语句可能需要扫描多个索引页，也就是需要进行多次IO操作。在每扫描一个页并等待其完成再进行下一次扫描，这是没有必要的。用户可以在发出一个IO请求后立即再发出另外一个IO请求，当全部IO请求发送完毕后，等待所有IO操作完成，这就是AIO。
+
+AIO的另外一个优势是进行IO Merge操作，也就是将多个IO合并为一个IO操作，这样可以提高IOPS的性能。
+
+在InnoDB 1.1.x之前，AIO的实现是通过InnoDB存储引擎中的代码来模拟的。但是从这之后，提供了内核级别的AIO的支持，称为Native AIO。Native AIO需要操作系统提供支持。Windows和Linux都支持，而Mac则未提供。在选择MySQL数据库服务器的操作系统时，需要考虑这方面的因素。
+
+MySQL可以通过参数innodb_use_native_aio来决定是否启用Native AIO。在InnoDB存储引擎中，read ahead方式的读取都是通过AIO完成，脏页的刷新，也是通过AIO完成。
+
+#### 1.15.4.5. 刷新邻接页
+<a href="#menu" style="float:right">目录</a>
+
+InnoDB存储引擎在刷新一个脏页时，会检测该页所在区(extent)的所有页，如果是脏页，那么一起刷新。这样做的好处是通过AIO可以将多个IO写操作合并为一个IO操作。该工作机制在传统机械磁盘下有显著优势。但是需要考虑下吧两个问题:
+* 是不是将不怎么脏的页进行写入，而该页之后又会很快变成脏页？
+* 固态硬盘有很高IOPS，是否还需要这个特性？
+
+为此InnoDB存储引擎1.2.x版本开始提供参数innodb_flush_neighbors来决定是否启用。对于传统机械硬盘建议使用，而对于固态硬盘可以关闭。
+
+
+#### 1.15.4.6. 启动、关闭与恢复
+<a href="#menu" style="float:right">目录</a>
+
+## 1.16. 日志文件
+<a href="#menu" style="float:right">目录</a>
+
+### 1.16.1. 参数文件
+<a href="#menu" style="float:right">目录</a>
+
+* 告诉MYSQL实例启动时在哪里可以找到数据库文件，并且指定初始化参数，这些参数定义了某种内存结构的大小等设置，还会介绍参数的类型
+也就是配置文件
+```bash
+lgj@lgj-Lenovo-G470:~$ mysql --help | grep my.cnf
+                      order of preference, my.cnf, $MYSQL_TCP_PORT,
+/etc/my.cnf /etc/mysql/my.cnf ~/.my.cnf 
+```
+
+
+### 1.16.2. 日志文件
+<a href="#menu" style="float:right">目录</a>
+
+* 用来记录运行时产生的日志，比如慢查询日志，二进制日志
+
+### 1.16.3. socket文件
+<a href="#menu" style="float:right">目录</a>
+
+* 当用UNIX域套接字进行连接时需要的文件 
+
+### 1.16.4. pid文件
+<a href="#menu" style="float:right">目录</a>
+
+* MYSQL实例的进程PID文件
+
+
+### 1.16.5. MySQL表结构文件
+<a href="#menu" style="float:right">目录</a>
+
+* 表结构定义文件 
+
+### 1.16.6. 存储引擎文件
+<a href="#menu" style="float:right">目录</a>
+
+* 存储了记录和索引等数据
+
+## 1.17. 表
+
+### 1.17.1. 索引组织表
+<a href="#menu" style="float:right">目录</a>
+
+### 1.17.2. 逻辑存储结构
+<a href="#menu" style="float:right">目录</a>
+
+### 1.17.3. 行记录格式
+<a href="#menu" style="float:right">目录</a>
+
+### 1.17.4. 数据页结构
+<a href="#menu" style="float:right">目录</a>
+
+### 1.17.5. Nameed File Formats机制
+<a href="#menu" style="float:right">目录</a>
+
+### 1.17.6. 约束
+<a href="#menu" style="float:right">目录</a>
+
+### 1.17.7. 视图
+<a href="#menu" style="float:right">目录</a>
+
+### 1.17.8. 分区表
+<a href="#menu" style="float:right">目录</a>
+
+## 1.18. 索引与算法
+
+### 1.18.1. 索引概述
+<a href="#menu" style="float:right">目录</a>
+
+### 1.18.2. 数据结构和算法
+<a href="#menu" style="float:right">目录</a>
+
+### 1.18.3. B+树
+<a href="#menu" style="float:right">目录</a>
+
+### 1.18.4. B+树索引
+<a href="#menu" style="float:right">目录</a>
+
+### 1.18.5. B+树索引的使用
+<a href="#menu" style="float:right">目录</a>
+
+### 1.18.6. 哈希算法
+<a href="#menu" style="float:right">目录</a>
+
+### 1.18.7. 全文索引
+<a href="#menu" style="float:right">目录</a>
+
+
+## 1.19. 锁
+
+### 1.19.1. 什么是锁
+<a href="#menu" style="float:right">目录</a>
+
+数据库系统使用锁是为了支持对共享资源进行并发访问，提供数据一致性和完整性。
+
+
+#### 1.19.1.1. 锁
+* 共享锁(shared lock)和排他锁(exclusive lock)
+    * 读锁是共享的，可以多个线程同时读取相同的数据
+    * 写锁是排他锁，任意时刻只能由一个线程操作同一个数据，否则将出现并发问题.获取到写锁时，其他线程禁止读写。
+    * 根据SQL语句判定是读或者写，从而获取到对应的锁
+* 锁一般由存储引擎管理，但服务器会为ALTER TABLE之类的语句使用表锁，忽略存储引擎的锁机制
+* INSERT,UPDATE,DELETE,SELECT FOR UPDATE都会隐式采用行级锁，会根据实际情况确认是否升级为表锁
+* 表锁
+    * 锁定整张表
+    * 性能/内存开销最小
+    * MyISAM只支持表锁
+* 表级锁
+    
+* 行级锁
+    * 锁开销比较大
+    * 只在InnoDB和XtraDB实现
+    * 锁定一行数据，因此可以提供较大的并发访问
+* 死锁
+    * 多个事务在同一资源上互相占用，并请求锁定对方所持有的资源，如果对方无法释放该资源的锁定，将会发生死锁
+    * 多个事务以不同的顺序访问资源，有可能产生死锁
+    * 多个事务锁定同一个资源，也有可能产生死锁
+    * InnoDB解决锁超时
+        * 当发生死锁并超时时，将持有的最少行级排他锁的事务进行回滚。
+
+* 隐式和显式锁定
+    * 隐式锁定
+        * InnoDB使用两阶段锁定协议(two-phase locking protocol)
+        * 在事务执行过程中，随时都可能进行锁定
+        * 锁只有在COMMIT或ROLLBACK时才会进行释放，并且所有的锁是在同一时刻释放。
+    * 显示锁定
+        * SELECT ... LOCK IN SHARE MODE
+            * 读共享模式，其他事务可以并发获取读锁
+        * SELECT ... FOR UPDATE
+            * 将会给该行加锁
+
+
+   
+   
+
+### 1.19.2. lock与latch
+<a href="#menu" style="float:right">目录</a>
+
+* latch一般称为闩锁(轻量级的锁),因为其要求锁定的时间必须非常短。若持续的时间长,则应用的性能会非常差。在 InnoDB存储引擎中, latch又可以分为 mutex(互斥量)和 relock(读写锁)。其目的是用来保证并发线程操作临界资源的正确性,并且通常没有死锁检测的机制。
+* lock的对象是事务,用来锁定的是数据库中的对象,如表、页、行。并且一般lock的对象仅在事务 commit或 rollback后进行释放(不同事务隔离级别释放的时间可能不同)。此外,lock,正如在大多数数据库中一样,是有死锁机制的。下表显示了lock与latch的不同。
+
+lock与latch的比较
+|条目|lock	|latch|
+|---|---|---|
+|对象|	事务|	线程
+|保护	|数据库内容|	内存数据结构
+|持续时间|	整个事务过程	|临界资源
+|模式	|行锁、表锁、意向锁	读写锁、互斥量
+|死锁	|通过 waits-for graph、 time out等机制进行无死锁检测与处理机制。|	无死锁检测与处理机制。仅通过应用程序加锁的顺序( lock leveling)保证无死锁的情况发生
+|存在于|	Lock Manager的哈希表中|	每个数据结构的对象中
+
+### 1.19.3. Innodb存储引擎的锁
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.19.3.1. 锁的类型
+<a href="#menu" style="float:right">目录</a>
+
+* 行级锁
+    * 共享锁(S Lock)，允许事务读一行数据
+    * 排它锁(X Lock)，允许事务删除或更新一行数据
+    * 一个事务获取到共享锁，其他事务只能获取到共享锁。一个事务获取到共享锁，其他事务无法获取带任何锁。也就是只有读读共享。
+
+* 意向锁
+    * 意向锁是将锁定的对象分为多个层次，意味着事务希望在更细粒度上进行加锁，这种锁定方式允许在行级上和表级上的锁同时存在
+    * 意向锁为表级锁
+    * 分类
+        * 意向共享锁(IS LOCK)：事务想要获得一张表中某几行的共享锁 
+        * 意向排他锁(IX LOCK)：事务想要获得一张表中某几行的排他锁 
+
+锁的兼容性
+||IS|IX|S|X|
+|---|---|---|---|---|
+|IS|兼容|兼容|兼容|不兼容|
+|IX|兼容|兼容|不兼容|不兼容|
+|S|兼容|不兼容|兼容|不兼容|
+|X|不兼容|不兼容|不兼容|不兼容|
+
+查看锁情况
+```
+mysql> show engine innodb status \G
+
+------------
+TRANSACTIONS
+------------
+Trx id counter 518146
+Purge done for trx's n:o < 0 undo n:o < 0 state: running but idle
+History list length 0
+LIST OF TRANSACTIONS FOR EACH SESSION:
+---TRANSACTION 421547932116832, not started
+0 lock struct(s), heap size 1136, 0 row lock(s)
+```
+
+#### 1.19.3.2. 一致性非锁定读
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.19.3.3. 一致性锁定读
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.19.3.4. 自增长与锁
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.19.3.5. 外键和锁
+<a href="#menu" style="float:right">目录</a>
+
+
+### 1.19.4. 锁的算法
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.19.4.1. 行锁的三种算法
+
+* Record Lock:单个记录上的锁
+    * 锁定索引记录，如果没有定义索引，会使用隐式的主键来进行锁定
+* Gap Lock:间隙锁，锁定一个范围，但不包含记录本身
+* Next-Key Lock: Gap Lock + Record Lock,锁定一个范围，并且锁定记录本身
+    * 锁定的不是一个值，而是一个范围
+    * 比如一列的值为 10,11,12,13
+        * 可锁定的区间为 (-无穷大，10)，[10,11),[11,12),[12,无穷大),
+    * 可以解决Phantom Problem
+    * 当查询的索引含有唯一属性时，会进行优化，降级为Record Lock,仅锁住索引本身，而不是范围。
+
+**Phantom Problem文问题**
+默认的事务隔离级别下，Innodb存储引擎采用Next-Key Lock解决幻象问题(Phantom Problem)
+
+Phantom Problem:只在同一事务下，连续两次读取数据不一致(增加了行数据)。
+
+比如数据表中age列数据分别为4，5,6,7
+
+如下语句，锁的将不会是5,6,7，这三列数据，而是(4,正无穷大)范围的列。
+```
+select age from xxx where age > 4 for update;
+```
+
+### 1.19.5. 锁的问题
+<a href="#menu" style="float:right">目录</a>
+
+* 数据并发问题
+    * 脏读
+        * A事务读到B事务还未提交的更改数据，并且在这个基础上进行操作，如果B事务进行回滚，那么将会出现脏读问题。
+    * 不可重复读
+        * A事务先开启，第一次读取，B事务开启，B事务修改数据，B事务结束提交，第二次读取，两次读取的数据不一致。
+        * A事务多次读取，读取到的数据不一致。也就是读取到别人已经提交的数据。
+    * 幻象读
+        * A事务读取到B事务新增的数据。
+        * 幻象读侧重新增数据，不可重复读侧重已有数据被修改。
+        * 因此解决幻象读使用表级锁，不可重复读使用行级锁即可。
+    * 第一类丢失更新
+        * A事务开始-->查询余额为100-->B事务开始-->B事务修改余额为1000-->B事务提交--->A事务撤销--->余额被撤销到100
+        * A事务撤销，把已经提交的B事务数据给覆盖了        
+    * 第二类丢失更新
+        * A事务开始-->查询余额为100-->B事务开始-->B事务修改余额为1000-->B事务提交--->A事务修改余额为200并提交--->余额为200
+        * A事务提交覆盖B事务的提交
+
+#### 1.19.1.2. 多版本并发控制MVCC
+
+* Multi-Version Concurrency Control,乐观锁的一种实现方式
+
+* MVCC是行级锁的一个变种，很多情况下可以避免加锁，所以开销更低。大都实现了非阻塞读操作，写操作也只锁定必要的行。
+
+* InnoDB的实现
+    * 每行记录后保存两个隐藏的列来实现
+    * 一个列保存了行的创建版本号，一个列保存行的过期(删除)版本号
+    * 每开始一个新事务，系统版本号都会自动递增。事务开始时刻的系统版本号会作为事务的版本号。用来和查询到的每行记录的版本号进行比较。
+
+**特点**
+* MVCC其实广泛应用于数据库技术，像Oracle,PostgreSQL等也引入了该技术，即适用范围广
+* MVCC并没有简单的使用数据库的行锁，而是使用了行级锁，row_level_lock,而非InnoDB中的innodb_row_lock.
+
+**基本原理**
+MVCC的实现，通过保存数据在某个时间点的快照来实现的。这意味着一个事务无论运行多长时间，在同一个事务里能够看到数据一致的视图。根据事务开始的时间不同，同时也意味着在同一个时刻不同事务看到的相同表里的数据可能是不同的。
+
+**基本特征**
+* 每行数据都存在一个版本，每次数据更新时都更新该版本。
+* 修改时Copy出当前版本随意修改，各个事务之间无干扰。
+* 保存时比较版本号，如果成功（commit），则覆盖原记录；失败则放弃copy（rollback）
+
+**InnoDB存储引擎MVCC的实现策略**
+在每一行数据中额外保存两个隐藏的列：当前行创建时的版本号和删除时的版本号（可能为空，其实还有一列称为回滚指针，用于事务回滚，不在本文范畴）。这里的版本号并不是实际的时间值，而是系统版本号。每开始新的事务，系统版本号都会自动递增。事务开始时刻的系统版本号会作为事务的版本号，用来和查询每行记录的版本号进行比较。
+
+每个事务又有自己的版本号，这样事务内执行CRUD操作时，就通过版本号的比较来达到数据版本控制的目的。
+
+**MVCC下InnoDB的增删查改是怎么工作的**
+1.插入数据（insert）:记录的版本号即当前事务的版本号
+
+执行一条数据语句：insert into testmvcc values(1,"test");
+
+假设事务id为1，那么插入后的数据行如下：
+![Mysql中MVCC的使用及原理详解](http://p98.pstatp.com/large/pgc-image/1536286392011332dc79980)
+
+
+
+ 
+
+2、在更新操作的时候，采用的是先标记旧的那行记录为已删除，并且删除版本号是事务版本号，然后插入一行新的记录的方式。
+
+比如，针对上面那行记录，事务Id为2 要把name字段更新
+
+update table set name= 'new_value' where id=1;
+
+![Mysql中MVCC的使用及原理详解](http://p98.pstatp.com/large/pgc-image/15362864790262a85896e55)
+
+ 
+
+3、删除操作的时候，就把事务版本号作为删除版本号。比如
+
+delete from table where id=1;
+
+![Mysql中MVCC的使用及原理详解](http://p9.pstatp.com/large/pgc-image/15362865324150dfbc7bf66)
+
+ 
+
+4、查询操作：
+
+从上面的描述可以看到，在查询时要符合以下两个条件的记录才能被事务查询出来：
+
+1) 删除版本号未指定或者大于当前事务版本号，即查询事务开启后确保读取的行未被删除。(即上述事务id为2的事务查询时，依然能读取到事务id为3所删除的数据行)
+
+2) 创建版本号 小于或者等于 当前事务版本号 ，就是说记录创建是在当前事务中（等于的情况）或者在当前事务启动之前的其他事物进行的insert。
+
+（即事务id为2的事务只能读取到create version<=2的已提交的事务的数据集）
+
+补充：
+
+1.MVCC手段只适用于Msyql隔离级别中的读已提交（Read committed）和可重复读（Repeatable Read）.
+
+2.Read uncimmitted由于存在脏读，即能读到未提交事务的数据行，所以不适用MVCC.
+
+原因是MVCC的创建版本和删除版本只要在事务提交后才会产生。
+
+3.串行化由于是会对所涉及到的表加锁，并非行锁，自然也就不存在行的版本控制问题。
+
+4.通过以上总结，可知，MVCC主要作用于事务性的，有行锁控制的数据库模型。
+
+**关于Mysql中MVCC的总结**
+客观上，我们认为他就是乐观锁的一整实现方式，就是每行都有版本号，保存时根据版本号决定是否成功。
+
+但由于Mysql的写操作会加排他锁（前文有讲），如果锁定了还算不算是MVCC？
+
+了解乐观锁的小伙伴们，都知道其主要依靠版本控制，即消除锁定，二者相互矛盾，so从某种意义上来说，Mysql的MVCC并非真正的MVCC，他只是借用MVCC的名号实现了读的非阻塞而已。
+
+
+
+### 1.19.6. 阻塞
+<a href="#menu" style="float:right">目录</a>
+
+```
+mysql> show variables like "%innodb_lock_wait%";
++--------------------------+-------+
+| Variable_name            | Value |
++--------------------------+-------+
+| innodb_lock_wait_timeout | 50    |
++--------------------------+-------+
+mysql> show variables like "%rollback_on%";
++----------------------------+-------+
+| Variable_name              | Value |
++----------------------------+-------+
+| innodb_rollback_on_timeout | OFF   |
++----------------------------+-------+
+
+```
+innodb_lock_wait_timeout ： 等待锁的超时时间，默认50s
+innodb_rollback_on_timeout:超时是否回滚
+
+当发生超时时，数据库会抛出1205错误。
+
+### 1.19.7. 死锁
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.19.7.1. 死锁的概念
+
+死锁指两个或者两个以上的事务在执行过程中，引争夺锁资源而造成互相等待的现象。若无外力作用，事务将无法推进下去。
+
+InnoDB解决:锁并发等待时，会检测是否存在回路(互相持有对方请求的资源)，若存在则有死锁，然后选择undo量最小的事务进行回滚。
+
+
+#### 1.19.7.2. 死锁的实例
+
+|事务1|事务2|
+|---|---|
+|BEGIN;||
+|SELECT * FROM user WHERE age=1 for update;  |BEGIN;|
+||SELECT * FROM user WHERE age=2 for update;|
+|SELECT * FROM user WHERE age=2 for update;因为持有age=2的事务2还没有提交，所以这里就阻塞等待|-|
+||SELECT * FROM user WHERE age=1 for update;抛出错误，发生死锁异常|
+|||
+
+### 1.19.8. 锁升级
+<a href="#menu" style="float:right">目录</a>
+
+锁升级是将当前的锁的粒度降低，比如行锁升级为页锁，页锁升级为表锁。
+
+### 1.19.9. 乐观锁和悲观锁
+
+* 悲观锁
+    * 假定会发生并发冲突，屏蔽一切可能违反数据完整性的操作
+    * 悲观锁，从字面理解就是很悲观，每次去拿数据的时候都认为别人会修改，所以在每次拿的时候对数据上锁，这样就保证了数据的准确性。比如mysql中的表锁，行锁。
+* 乐观锁
+    * 假设不会发生并发冲突，只在提交操作时检查是否违反数据完整性。
+    * 在每次去拿数据的时候认为别人不会修改，不对数据上锁，但是在提交更新的时候会判断在此期间数据是否被更改，如果被更改则提交失败。
+    * 实现方案
+        * 增加版本字段
+        * 对字段进行比较
+
+
+## 1.20. 事务
+
+### 1.20.1. 认识事务
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.20.1.1. 事务特点
+
+* 事务:
+    * 数据库事务是指作为单个逻辑工作单元执行的一系列操作（SQL语句）。这些操作要么全部执行，要么全部不执行
+* 四个特征 ACID 特性。 
+    * 原子性 Atomicity 
+        * 事务是数据库的逻辑工作单位，事务中包含的各操作要么都做，要么都不做 
+    * 一致性 Consistency
+        * 事务执行的结果必须是使数据库从一个一致性状态变到另一个一致性状态。因此当数据库只包含成功事务提交的结果时，就说数据库处于一致性状态。如果数据库系统 运行中发生故障，有些事务尚未完成就被迫中断，这些未完成事务对数据库所做的修改有一部分已写入物理数据库，这时数据库就处于一种不正确的状态，或者说是 不一致的状态。 
+    * 隔离性 Isolation
+        * 一个事务的执行不能其它事务干扰。即一个事务内部的操作及使用的数据对其它并发事务是隔离的，并发执行的各个事务之间不能互相干扰。 
+    * 持续性 Durability
+        * 也称永久性，指一个事务一旦提交，它对数据库中的数据的改变就应该是永久性的。接下来的其它操作或故障不应该对其执行结果有任何影响。
+* 数据并发问题
+    * 脏读
+        * A事务读到B事务还未提交的更改数据，并且在这个基础上进行操作，如果B事务进行回滚，那么将会出现脏读问题。
+    * 不可重复读
+        * A事务先开启，第一次读取，B事务开启，B事务修改数据，B事务结束提交，第二次读取，两次读取的数据不一致。
+        * A事务多次读取，读取到的数据不一致。也就是读取到别人已经提交的数据。
+    * 幻象读
+        * A事务读取到B事务新增的数据。
+        * 幻象读侧重新增数据，不可重复读侧重已有数据被修改。
+        * 因此解决幻象读使用表级锁，不可重复读使用行级锁即可。
+    * 第一类丢失更新
+        * A事务开始-->查询余额为100-->B事务开始-->B事务修改余额为1000-->B事务提交--->A事务撤销--->余额被撤销到100
+        * A事务撤销，把已经提交的B事务数据给覆盖了        
+    * 第二类丢失更新
+        * A事务开始-->查询余额为100-->B事务开始-->B事务修改余额为1000-->B事务提交--->A事务修改余额为200并提交--->余额为200
+        * A事务提交覆盖B事务的提交
+
+* 事务隔离级别
+    * InnoDB使用MVCC多版本控制来解决幻读问题
+    * MySQL默认的隔离级别是，MySQL默认
+    * SERIALIZABLE会给每一行数据上加锁，可能导致大量的锁争用和锁超时。实际应用中很少使用。
+
+|隔离级别|脏读|不可重复读|幻象读|第一类丢失更新|第二类丢失更新|
+|---|---|---|---|---|---|
+|READ UNCOMMITED|出现|出现|出现|不出现|出现|
+|READ UNCOMMITED|不出现|出现|出现|不出现|出现|
+|REPEATABLE READ|不出现|不出现|出现|不出现|不出现|
+|SERIALIZABLE|不出现|不出现|不出现|不出现|不出现|
+
+* 如果事务操作中包括事务型(InnoDB)的表和非事务型(MyISAM)的表，回滚时非事务型的表将不会回滚，使用时要注意，尽量不要混合使用。
+* 对非事务型的表进行事务操作，不会有错误提示。但是回滚无效。
+
+ 
+#### 1.20.1.2. 常见术语
+* 术语：
+    * 事务（transaction）指一组SQL语句；
+    * 回退（rollback）指撤销指定SQL语句的过程；
+    * 提交（commit）指将未存储的SQL语句结果写入数据库表；   
+    * 保留点（ savepoint）指事务处理中设置的临时占位符（ placeholder），你可以对它发布回退（与回退整个事务处理不同）。
+
+#### 1.20.1.3. 基本语句
+* 启动事务
+    * START TRANSATION;
+* 回滚事务
+    * ROLLBACK;
+* 提交事务
+    * COMMIT
+* 使用保留点
+    * 简单的ROLLBACK和COMMIT语句就可以写入或撤销整个事务处理。但是，只是对简单的事务处理才能这样做，更复杂的事务处理可能需要部分提交或回退。
+    * 创建保留点
+        * SAVEPOINT point1;
+    * 回退
+        * ROLLBACK TO point1 ; 回退到point1.
+    * 可以在MySQL代码中设置任意多的保留点，因为保留点越多，你就越能按自己的意愿灵活地进行回退.
+    * 保留点在事务处理完成后自动释放
+* 更改默认的提交行为
+    * 默认自动提交，也就是事务里面多提语句时，写一句则提交一次
+    * SET autocommit=0;
+        * 取消自动提交,只有commit之后才会提交
+    * autocommit针对单条连接，而不是MySQL服务器
+
+#### 1.20.1.4. 事务分类
+
+* 扁平事务Flat Transactions
+* 带有保存点的扁平事务 Flat Transactions with savepoints
+* 链事务 Chained Transactions 
+* 嵌套事务 Nested Transactions
+* 分布式事务 Distributed Transactions
+
+**扁平事务**
+扁平事务 是事务类型中最简单的一种，但是在实际生产环境中，这可能是使用最频繁的事务，在扁平事务中，所有操作都处于同一层次，其由BEGIN WORK开始，由COMMIT WORK或ROLLBACK WORK结束，其间的操作是源自的，要么都执行，要么都回滚，因此扁平事务是应用程序称为原子操作的的基本组成模块
+
+下面显示了扁平事务的三种不同结果：
+![扁平事务](https://img-blog.csdnimg.cn/20181118105146757.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxMzMzNTgy,size_16,color_FFFFFF,t_70)
+
+
+给出的扁平事务的三种情况，同时也给出了一个典型的事务处理应用中，每个结果大概占用的百分比。再次提醒，扁平事务虽然简单，但是在实际环境中使用最为频繁，也正因为其简单，使用频繁，故每个数据库系统都实现了对扁平事务的支持。
+
+扁平事务的主要限制是不能提交或者回滚事务的某一部分，或分几个步骤提交。
+下面给出一个扁平事务不足以支持的例子。例如用户在旅行网站上进行自己的旅行度假计划，用户设想从杭州到意大利的佛罗伦萨，这两个城市没有直达的班机，需要用户预订并转呈航班，需要或者搭火车等待。用户预订旅行度假的事务为
+
+```
+S1：预订杭州到上海的高铁
+
+S2：上海浦东国际机场坐飞机，预订到米兰的航班
+
+S3：在米兰转火车前往佛罗伦萨，预订去佛罗伦萨的火车
+```
+
+但是当用户执行到S3时，发现由于飞机到达米兰的时间太晚，已经没有当天的火车，这时用户希望在米兰当地住一晚，第二天出发去佛罗伦萨。这时如果事务为扁平事务，需要回滚之前S1 S2 S3的三个操作，这个代价明显很大，因为当再次进行该事务是，S1 S2的执行计划是不变的，也就是说，如果支持有计划的回滚操作，那么不需要终止整个事务，因此就出现了带有保存点的扁平事务。
+
+**带有保存点的扁平事务**
+带有保存点的扁平事务 除了支持扁平事务支持的操作外，允许在事务执行过程中回滚同一事务中较早的一个状态。这是因为某些事务可能在执行过程中出现的错误并不会导致所有的操作都无效，放弃整个事务不合乎要求，开销太大，保存点用来通知事务系统应该记住事务当前的状态，以便当之后发生错误时，事务能回到保存点当时的状态。
+
+对于扁平的事务来说，隐式的设置了一个保存点。然而整个事务中，只有这一个保存点，因此，回滚只能会滚到事务开始时的状态，保存点用SAVE WORK函数来建立，通知系统记录当前的处理状态。当出现问题时，保存点能用作内部的重启动点，根据应用逻辑，决定是回到最近一个保存点还是其他更早的保存点。图显示了事务中使用的保存点
+
+![带有保存点的扁平事务](https://img-blog.csdnimg.cn/2018111811175949.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxMzMzNTgy,size_16,color_FFFFFF,t_70)
+
+显示了如何在事务中使用保存点，灰色背景部分表示由ROLLBACK WORK而导致部分回滚，实际并没有执行操作，当用BEGIN WORK开启一个事务时，隐式地包含了一个保存点，当事务通过ROLLBACK WORK：2发出部分回滚命令时，事务会滚到保存点2，接着依次执行，并再次执行到ROLLBACK WORK：7，知道最后COMMIT WORK操作，表示事务结束，除灰色阴影部分的操作外，其余操作都已经执行，并且提交。
+
+另一个需要注意的是，保存点在事务内部是递增的，从图中可以看出，有人可能会想，返回保存点2以后，下一个保存点可以为3，因为之前的工作已经终止，然而新的保存点编号为5，这意味着ROLLBACKU 不影响保存点的计数，并且单调递增编号能保持事务执行的整个历史过程，包括在执行过程中想法的改变。
+
+此外，当事务通过ROLLBACK WORK：2命令发出部分回滚命令时，要记住事务并没有完全被回滚，只是回滚到保存点2而已，这代表当前事务是活跃的，如果想要回滚事务，还需要执行ROLLBACKUP WORK。
+
+**链事务**
+链事务 可视为保存点模式的一种变种，带有保存点的扁平事务，当发生系统崩溃是，所有的的保存点都将消失，因为其保存点是易失的，这意味着当进行恢复时，事务需要从开始处重新执行，而不能从最近的一个保存点继续执行
+
+链事务的思想是：在提交一个事务时，释放不需要的数据对象，将必要的处理上下文隐式地传给下一个要开始的事务，提交事务操作和开始下一个事务操作 将合并为一个原子操作，这意味着下一个事务将看到上一个事务的结果，就好像一个事务中进行的一样，如图显示了链事务的工作方式：
+![链事务](https://img-blog.csdnimg.cn/20181118112120467.png)
+
+链事务与带有保存点的扁平事务不同的是，带有保存点的扁平事务能回滚到任意正确的保存点，而链事务中的回滚仅限当前事务，即只能恢复到最近的一个保存点，对于锁的处理，两者也不相同，锁事务在执行COMMIT后即释放了当前所持有的锁，而带有保存点的扁平事务不影响迄今为止所持有的锁。
+
+**嵌套事务**
+
+嵌套事务 是一个层次结构框架，由一个顶层事务(top-level transaction)控制着各个层次的事务，顶层事务之下嵌套的事务被称为子事务，其控制每一个局部的变换，结构如下
+
+![嵌套事务](https://img-blog.csdnimg.cn/2018111811245012.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxMzMzNTgy,size_16,color_FFFFFF,t_70)
+如图可以发现，在恢复时采用保存点技术比嵌套查询有更大的灵活性。例如在完成Tk3这事务时，可以会滚到保存点S2的状态。而在嵌套查询的层次结构中，这是不被允许的。
+
+* 下面给出MOSS对嵌套事务的定义
+    * 嵌套事务是由若干事务组成的一棵树，子树既可以是嵌套事务也可以是扁平事务
+    * 处在叶节点的事务是扁平事务，但是每个事务从根到叶节点的距离可以说是不同的
+    * 位于根节点的事务称为顶层事务，其他称为自事务。事务的前驱称(predecessor)为父事务(parent)，事务的下一层称为儿子事务(child)
+    * 子事务既可以提交也可以回滚。但是它的提交操作并不马上生效。除非其父事务已经提交。因此可以推论出，任何子事务都在顶层事务提交后才真正的提交
+    * 树中的任意事务回滚会引起它的所有子事务一同回滚，故子事务仅保留ACI特性而不具有D特性
+
+在Moss的理论中，实际的工作是交由叶子节点完成，即只有叶子节点的事务才能才能访问数据库、发送信息、获取其他类型的资源。而高层的事务仅负责逻辑控制。决定合适调用相关的子事务。即使一个系统不支持嵌套事务，用户也可以通过保存点技术来模拟嵌套事务，如图
+![嵌套事务](https://img-blog.csdnimg.cn/20181118112731573.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxMzMzNTgy,size_16,color_FFFFFF,t_70)
+
+但是用保存点技术来模拟嵌套事务在锁的持有方面还是与嵌套查询有些区别。当通过保存点技术来模拟嵌套事务时，用户无法选择哪些锁需要被子事务集成，哪些需要被父事务保留，这就是说，无论有多少个保存点，所有被锁住的队形都可以被得到和访问。而在嵌套查询中，不同的子事务在数据库对象上持有的锁是不同观点。例如一个父事务P1 其持有对象X和Y的排他锁，现在要开始调用子事务P11 ,那么父事务P1 可以不传递锁，也可以传递所有的锁，也可以只传递一个排他锁，如果子事务P11 中还持有对象Z的排他锁，那么通过反向继承(counter-inherited)父事务P1 将持有3个对象X Y Z的排他锁。如果这时再次调用一个子事务P12 ，那么它可以传递哪里已经持有的锁。
+
+然而，如果系统支持嵌套事务中并行地执行的各个子事务，在这种情况下，采用保存点的扁平事务来模拟嵌套事务就不切实际了。这从另一个方面反映出，想要实现事务间的并行性，需要真正支持的嵌套事务。
+
+**分布式事务**
+分布式事务 通常是一个分布式环境下运行的扁平事务，因此需要根据数据所在位置访问网络中的不同节点。
+
+假如一个用户在ATM机上进行银行的转账操作，例如持卡人从招商银行存储卡转账10 000 元到工商银行的存储卡。这种情况下，可以将ATM机视为节点A，招商银行的后台数据库视为节点B，工商银行的后台数据库视为C，这个转账的操作可分解为以下的步骤
+
+```
+节点A发出转账命令
+节点B执行存储卡中的余额减去10 000
+节点C执行存储卡终端的余额增加10 000
+节点A通知用户操作完成或者节点A通知用户操作失败
+```
+这里需要使用到分布式事务，因为节点A不能通过一台数据库就完成任务，其需要访问网络中两个节点的数据库，而在每个节点的数据库执行的实务操作有都是扁平的，对于分布式事务，其同样需要满足ACID特性，要么都发生，要么都失败。对于上述例子，如果2 3 步中任何一个操作失败，都会导致整个分布式事务回滚，若非这样，结果非常可怕。
+
+对于InnoDB存储引擎来说，其支持扁平事务，带保存点的事务，链事务，分布式事务。对于嵌套事务，其原生不支持。因此对有并发事务需求的用户来说,MySQL数据库或InnoDB存储引擎就显得无能为力，然而用户仍可以通过带保存点的事务来模拟串行的嵌套事务。
+
+### 1.20.2. 事务的实现
+<a href="#menu" style="float:right">目录</a>
+
+* redo log 称为重做日志
+    * 用来保证事务的原子性和持久性。通常是物理日志，记录的是页的物理修改操作。
+    * 基本是顺序写，在运行阶段不需要对其进行读取
+* undo log
+    * 用来保证事务的一致性。undo是逻辑日志，根据每行记录进行记录。
+    * undo log 不是redo log 的逆过程。
+    * 用来帮助实现事务回滚和MVCC功能
+    * 随机读写
+
+#### 1.20.2.1. redo
+<a href="#menu" style="float:right">目录</a>
+
+* 重做日志包含两部分
+    * 内存中的重做日志缓冲 redo log buffer，其是易失的
+    * 重做日志文件 redo log file ,其是持久的
+    * 重做日志是在存储引擎层产生
+
+* 持久性实现
+    * 当事务提交时(commit),必须将该事务所有的日志写入到重做日志文件(redo log 文件和undo log 文件)进行持久化。写入日志成功才能算提交成功。
+    * 重做日志日志是先写入日志缓冲区，再同步到硬盘
+    * 重做日志日志刷新到磁盘的策略
+        * innodb_flush_log_at_trx_commit 控制
+        * 可以根据硬盘性能，数据库性能，数据重要性做不同的选择
+        * 0:事务提交时不进行写入重做日志操作，这个操作在master thread中 完成，而该线程隔1s进行一次fstync操作。
+        * 1:事务提交时必须调用一次fsync操作
+        * 2:表示事务提交时将重做日志写入重做日志文件，但写入的是文件系统的缓存，没有fsync同步到文件。
+            * 数据库发生宕积，操作系统没有宕积，重启数据库之后仍然可以将这部分数据fsync到文件，不会发生事务丢失
+            * 操作系统宕积，会丢失还未同步到文件的事务信息
+        * 不同配置下插入50万行下的性能对比
+            * 0: 13.90秒
+            * 1: 1分53.11秒
+            * 2: 23.37秒
+
+```
++--------------------------------+-------+
+| Variable_name                  | Value |
++--------------------------------+-------+
+| innodb_flush_log_at_trx_commit | 1     |
++--------------------------------+-------+
+
+```
+
+* log block 
+    * 重做日志以512字节进行存储，意味着重做日志缓存、重做日志文件都是以块(block)的方式进行保存，称为重做日志块(log block),每块大小为512字节。
+    * 若大于512字节，则需要进行分割进行存储
+    * 由于重做日志块的大小和磁盘扇区一样都是512字节。因此重做日志的写入可以保证原子性，不需要双写技术
+* 当发生宕积时，数据库通过redo日志进行数据恢复。所以只要事务消息写入redo 日志，还没有同步到数据库文件，即使发生宕积，数据也能够恢复。
+
+#### 1.20.2.2. undo 
+<a href="#menu" style="float:right">目录</a>
+
+* undo log用于实现事务回滚。
+* 存放位置
+    * 数据库内部的一个特殊段(segment)中，这个段称为undo 段。
+    * 该段位于共享表空间内。
+* undo 并不是将数据库物理地恢复到事务执行之前的状态，而是逻辑地恢复到原来的样子
+    * 比如插入100万条数据，表空间增大，回滚后，表的空间不会因此收缩。
+    * 进行回滚时，实际做的是与之前相反的操作
+        * 对于insert,则回滚执行delete
+        * 对于delete,则回滚执行insert
+        * 对于update,则回滚执行想法的update
+* undo 的另一个功能MVCC
+    * 存储引擎的MVCC是通过undo实现的
+    * 当用户读取一行记录时，若该记录已经被其他事务占用，当前事务可以通过undo读取之前的版本信息，以实现非锁定读。
+* undo log 也会产生redo log,也就是redo luo 的产生会伴随着redo log的产生，这是因为undo log也需要持久性的保护。
+
+* 存储管理
+    * Innodb存储引擎对undo的管理采用段的方式
+    * 存储引擎有回滚段(rollback segment)，每个回滚段记录了1024个undo log segment.而在每个undo log segment段中进行undo页的申请。
+
+* 事务在undo log segment分配页并写入undo log 的这个过程同样需要写入重做日志。事务提交时，InnoDB存储引擎会做
+    * 将undo log 放入列表中，以供之后的perge操作
+    * 判断undo log 所在的页是否可以重用，若可以则分配给下个事务使用
+
+* 事务提交后并不能马上删除undo log及undo log 所在的页。这是因为可能还有其他事务需要通过undo log来得到行记录之前的版本，故事务 提交时将undo log放入一个链表中，是否删除undo log以及undo log所在的页由purge线程来判断。
+
+* 若为一个事务分配一个单独的undo页，会非常浪费存储空间，特别是对于OLTP的应用类型。因为在事务提交时，可能并不能 马上释放页。
+    * Innodb实现了undo 页的重用
+    * 当事务进行提交时，首先将undo log放入链表中，然后判断undo 页的使用空间是否小于3/4,若是则表示该页可以被重用，之后新的undo log记录在当前undo log的后面。
+    * 由于存放undo log的列表是以记录进行组织的，而undo页可能存放折不同事务的undo log。因此purge操作需要设计磁盘的离散化读取操作，因此purge是一个缓慢的操作。 
+
+```
+mysql> show variables like "%undo%";
++--------------------------+------------+
+| Variable_name            | Value      |
++--------------------------+------------+
+| innodb_max_undo_log_size | 1073741824 |
+//rollback segment文件所在的路径
+| innodb_undo_directory    | ./         |
+//
+| innodb_undo_log_truncate | OFF        |
+//rollback segment的个数
+| innodb_undo_logs         | 128        |
+//rollback segment文件的数量
+| innodb_undo_tablespaces  | 0          |
++--------------------------+------------+
+
+```
+#### 1.20.2.3. purge 
+<a href="#menu" style="float:right">目录</a>
+
+Innodb支持MVCC，所以删除和更新记录不能在事务提交时进行处理。因为这时其他事务可能正在引用这一行，故需要保存记录之前的版本。而是否删除由purge来进行判断。若该行记录已经不会被任何其他事务引用，那么就可以进行真正的删除操作。
+
+purge操作是清理之前的delete和update操作，将上述操作最终完成。
+
+#### 1.20.2.4. group commit 
+<a href="#menu" style="float:right">目录</a>
+
+为了提高fsync的效率，当前数据库都提供了group commit 的功能，即一次fsync可以刷新确保多个事务日志被写入文件。
+
+对于Innodb,事务进行提交时会有两个操作
+* 修改内存中事务对应的信息，并将日志写入重做日志缓冲
+* 调用fsync将确保日志都从重做日志缓冲写入磁盘
+ 使用group commit 的功能，可以一次fsync可以刷新确保多个事务日志被写入文件
+
+
+
+### 1.20.3. 事务控制语句
+<a href="#menu" style="float:right">目录</a>
+
+默认情况下，事务都是自动提交的，即执行SQL语句后就会马上执行COMMIT操作。可以通过SET AUTOCOMMIT=0禁止当前会话的自动提交。
+
+* 启动事务
+    * START TRANSATION;|BEGIN;
+    * 存储过程中数据库分析器会将BEGIN解析为BEGIN ... END,因此在使用存储过程时必须使用 START TRANSATION启动事务。
+* 回滚事务
+    * ROLLBACK;
+* 提交事务
+    * COMMIT
+* 使用保留点
+    * 简单的ROLLBACK和COMMIT语句就可以写入或撤销整个事务处理。但是，只是对简单的事务处理才能这样做，更复杂的事务处理可能需要部分提交或回退。
+    * 创建保留点
+        * SAVEPOINT point1;
+    * 回退
+        * ROLLBACK TO point1 ; 回退到point1.
+        * 回退并不代表结束事务，需要显示调用ROLLBACK或者COMMIT。
+    * 删除
+        * RELEASE SAVEPOINT point1;删除保留点point1
+    * 可以在MySQL代码中设置任意多的保留点，因为保留点越多，你就越能按自己的意愿灵活地进行回退.
+    * 保留点在事务处理完成后自动释放
+* 更改默认的提交行为
+    * 默认自动提交，也就是事务里面多提语句时，写一句则提交一次
+    * SET autocommit=0;
+        * 取消自动提交,只有commit之后才会提交
+    * autocommit针对单条连接，而不是MySQL服务器
+* 设置事务隔离级别
+    * SET TRANSACTION READ UNCOMMITED|READ COMMITED|REPEATABLE READ | SERIALIZABLE;
+
+    
+
+### 1.20.4. 隐式提交的SQL语句
+<a href="#menu" style="float:right">目录</a>
+
+### 1.20.5. 对于事务操作的统计
+<a href="#menu" style="float:right">目录</a>
+
+### 1.20.6. 事务的隔离级别
+<a href="#menu" style="float:right">目录</a>
+
+|隔离级别|脏读|不可重复读|幻象读|第一类丢失更新|第二类丢失更新|
+|---|---|---|---|---|---|
+|READ UNCOMMITED|出现|出现|出现|不出现|出现|
+|READ UNCOMMITED|不出现|出现|出现|不出现|出现|
+|REPEATABLE READ|不出现|不出现|出现|不出现|不出现|
+|SERIALIZABLE|不出现|不出现|不出现|不出现|不出现|
+
+Innodb默认使用REPEATABLE READ
+事务隔离级别越低，事务请求的锁越少或保持锁的时间就越短，并发性也越高，但会更容易出现数据不一致的问题。
+
+### 1.20.7. 分布式事务
+
+#### 1.20.7.1. MYSQL分布式事务
+<a href="#menu" style="float:right">目录</a>
+
+Innodb存储引擎提供了对XA事务的支持，并通过XA事务来支持分布式事务的实现。
+分布式事务指的是允许多个独立的事务参与到一个全局事务中，只要其中一个事务发生异常回滚内，其他的事务也要执行回滚操作，以保持数据的一致性，也就是分布式事务具有原子性。
+
+在使用分布式事务时，InnoDB的事务隔离级别必须设置为Serialiaable
+
+XA事务是一种规范，因此允许实现XA的数据库共同完成分布式事务。比如MySQL和Oracle.
+
+* XA事务组成
+    * 资源管理器： 提供访问事务资源的方法，通常一个数据库就是一个资源管理器
+    * 事务管理器：协调参与全局事务中的各个事务，需要和参与全局事务的所有资源管理器进行通信
+    * 应用程序： 定义事务的边界，指定全局事务中的边界
+* 分布式事务使用两阶段提交方式
+    * 阶段1: 所有参与者开始准备，告诉事务管理器它们好提交了
+    * 阶段2: 事务管理器告诉资源管理器执行ROLLBACK还是COMMIT。
+        * 如果任意一个节点不能提交，则所有的节点将被告知需要回滚。
+相关命令
+```
+XA [START|BEGIN] xid [JOIN|RESUME]
+XA END xid [SUSPEND [FOR MIGRATE]]
+XA PREPARE xid
+XA COMMIT xid [ONE PHASE]
+XA ROLLBACK xid
+XA RECOVER
+
+```
+
+#### 1.20.7.2. 内部XA事务
+<a href="#menu" style="float:right">目录</a>
+
+内部XA事务： 在存储引擎和插件之间，又或者在存储引擎与存储引擎之间使用。
+
+
+![](https://github.com/lgjlife/Java-Study/blob/master/pic/mysql/mysql-inner-transication.png?raw=true)
+
+
+### 1.20.8. 不好的事务习惯
+
+**在循环中提交**
+
+**使用自动提交**
+
+**使用自动回滚**
+
+**长事务**
+事务太长可能会导致严重的并发问题，并且回滚和记录日志也很耗时，应当将长事务进行分解成小事务。
+
+## 1.21. 备份与恢复
+
+## 1.22. 性能优化基本的分析命令
+<a href="#menu" style="float:right">目录</a>
+
+### 1.22.1. explain
 <a href="#menu" style="float:right">目录</a>
 ```SQL
 mysql> explain select * from user;
@@ -1172,7 +2588,7 @@ mysql> explain select * from user;
     * select tables optimized away：在没有group by子句的情况下，基于索引优化Min、max操作或者对于MyISAM存储引擎优化count（*），不必等到执行阶段再进行计算，查询执行计划生成的阶段即完成优化。
     * distinct：优化distinct操作，在找到第一匹配的元组后即停止找同样值的动作。
 
-### 1.16.2. show indexs
+### 1.22.2. show indexs
 <a href="#menu" style="float:right">目录</a>
 
 查看表的索引信息
@@ -1195,9 +2611,9 @@ Index_comment:
 1 row in set (0.00 sec)
 
 ```
-## 1.17. 分库分表
+## 1.23. 分库分表
 
-### 1.17.1. 基本概念
+### 1.23.1. 基本概念
 * 数据拆分
     * 垂直拆分
         * 垂直拆分是按照不同的业务进行拆分，比如用户服务，订单服务分别使用不同的数据库
@@ -1216,38 +2632,215 @@ Index_comment:
             * 针对单个表的逻辑查询可能要跨库
     * 分库分表后使用数据库中间件，比如MyCAT,sharding-jdbc
 
-### 1.17.2. 分布式事务
+### 1.23.2. 分布式事务
 <a href="#menu" style="float:right">目录</a>
 
-### 1.17.3. 应对多机数据查询
+### 1.23.3. 应对多机数据查询
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.17.3.1. 跨库Join
+#### 1.23.3.1. 跨库Join
 * 应用层处理，将单次Join操作分成多次查询
 * 数据冗余，将表增加字段，冗余其他表的数据，需要考虑数据一致性问题
 * 借助外部系统，比如搜索引擎解决一些跨库问题
-#### 1.17.3.2. 外键约束
+#### 1.23.3.2. 外键约束
 * 跨库不支持外键约束
 * 需要应用层解决跨库数据一致性问题
 
 
-## 1.18. 高可用
+## 1.24. 文件
+
+### 1.24.1. 参数文件
+
+### 1.24.2. 套接字文件
+
+### 1.24.3. pid文件
+
+### 1.24.4. 表结构定义文件
+
+
+
+### 1.24.5. 日志
+
+在MySQL中，主要有5种日志文件：
+1.错误日志(error log)：记录mysql服务的启停时正确和错误的信息，还记录启动、停止、运行过程中的错误信息。
+2.查询日志(general log)：记录建立的客户端连接和执行的语句。
+3.二进制日志(bin log)：记录所有更改数据的语句，可用于数据复制。
+4.慢查询日志(slow log)：记录所有执行时间超过long_query_time的所有查询或不使用索引的查询。
+5.中继日志(relay log)：主从复制时使用的日志。
+
+当存储事务日志的磁盘坏掉，数据是无法恢复的！因此选择一个可靠的磁盘还是相当有必要的，比如我们可以给我们的数据做raid10或者raid1（推荐使用raid10）来提供这种保障。事务日志不能帮助我们恢复数据，它的作用在于当操作系统崩溃时（比如异常断电）它能够保障已经提交的事物不丢失，而未提交的事物能回滚。如果想要恢复日志还得依赖于二进制日志。 
+
+
+#### 1.24.5.1. 错误日志
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.24.5.2. 查询日志
+<a href="#menu" style="float:right">目录</a>
+它是用来保存所有跟查询相关的日志，这种日志类型默认是关闭状态的，因为MySQL的用户有很多，如果将每个用户的查询操作都记录下来的话，对服务器的资源开销也是一件令人烦恼的事情。查询日志常见的几个参数：
+
+```
+mysql> show global variables like 'log';            　　　　　　#查看是否记录所有语句的日志信息于一般查询日志文件（general_log），默认是关闭状态。
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| log           | OFF   |
++---------------+-------+
+1 row in set (0.00 sec)
+
+mysql> show global variables like 'log_output';    　　　　　　#它有三个值，即{TABLE|FILE|NONE}，分别表示记录在表中（table），文件（file）中或是不记录（none）。注意，只有og_output的值等于 FILE时，general_log_file的参数才会有意义。且 table和file 可以同时出现，用逗号分隔即可
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| log_output    | FILE  |
++---------------+-------+
+1 row in set (0.00 sec)
+
+mysql> show global variables like 'general_log';            #查看是否启用查询日志功能
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| general_log   | OFF   |
++---------------+-------+
+1 row in set (0.00 sec)
+
+mysql> show global variables like 'general_log_file';        #定义了一般查询日志保存的文件
++------------------+----------------------------+
+| Variable_name    | Value                      |
++------------------+----------------------------+
+| general_log_file | /var/run/mysqld/mysqld.log |
++------------------+----------------------------+
+1 row in set (0.00 sec)
+
+mysql>
+```
+
+
+
+#### 1.24.5.3. 二进制日志
+<a href="#menu" style="float:right">目录</a>
+
+1>.什么是二进制文件
+　　只记录修改相关的操作，记录了当前服务器的数据修改和有潜在可能性影响数据修改的语句。它用来实现复制的基本凭据。也就是说，你可以将生成环境中的MySQL的二进制文件拿到线下的服务器上运行一下，理论上你会拿到和生成环境中一样的数据哟，因此，二进制日志也叫复制日志。二进制日志文件默认在数据目录下，通常情况下为mysql-bin#（例如：mysql-bin.000001，mysql-bin000002）。
+ 
+2>.查看MySQL日志文件
+　　由于二进制文件格式是二进制类型的，我们不能用cat等查看普通文本类命令去查看这些二进制日志，我们可以通过mysqlbinlog来查看。注意“show master status; ”查看当前使用的二进制日志和下一个事件开始时的基于的位置。
+
+```
+MariaDB [(none)]> show binlog events\G    　　#查看mysql的日志
+*************************** 1. row ***************************
+   Log_name: mysql-bin.000001
+        Pos: 4
+ Event_type: Format_desc        　　　　　　　　#事件类型
+  Server_id: 1                    　　　　　　　#指定服务器的唯一标识。
+End_log_pos: 245
+       Info: Server ver: 5.5.36-MariaDB-log, Binlog ver: 4
+```
+
+#### 1.24.5.4. 慢查询日志
+<a href="#menu" style="float:right">目录</a>
+
+查询执行时长超过指定时长的查询，即为慢查询。这里的慢不一定是查询语句存在问题，可能是因为访问你的资源当时不被许可访问，就好比你将一个一个MySQL库中的一个表添加写锁，那么别人就没有办法去查询这个表的内容啦，等到你将这个表锁解开之后，访问这张表的查询语句才会被执行。
+　　慢查询日志是我们通常拿来定位系统上查询操作执行速度过慢时常用到的一个评估工具，所以在生产环境中很有必要启用慢查询日志功能的！它默认情况下也是没有启用的哟。慢查询常见的几个参数
+
+```
+mysql> show global variables like 'slow_query_log';            　　　　　　#是否启用慢查询日志，它的输出位置也取决log_output={table|file|none}。
++----------------+-------+
+| Variable_name  | Value |
++----------------+-------+
+| slow_query_log | OFF   |
++----------------+-------+
+1 row in set (0.01 sec)
+
+mysql> show global variables like 'slow_query_log_file';                #查看定义慢查询日志的文件
++---------------------+---------------------------------+
+| Variable_name       | Value                           |
++---------------------+---------------------------------+
+| slow_query_log_file | /var/run/mysqld/mysqld-slow.log |
++---------------------+---------------------------------+
+1 row in set (0.02 sec)
+
+mysql> show global variables like 'long_query_time';                　　#慢查询的时长，超出这个时长的都被记录为慢查询。
++-----------------+-----------+
+| Variable_name   | Value     |
++-----------------+-----------+
+| long_query_time | 10.000000 |
++-----------------+-----------+
+1 row in set (0.00 sec)
+
+mysql>
+```
+
+#### 1.24.5.5. 中继日志
+<a href="#menu" style="float:right">目录</a>
+顾名思义，这是用来记录错误的日志，但是不仅仅是记录错误信息，还包括MySQL启动，关闭，复制线程（指的是从服务器）的信息哟。错误日志默认是开启的。它主要记录的信息如下：
+1>.服务器启动和关闭过程中的信息；
+2>.服务器运行过程中的错误信息
+3>.事件调度器运行一个事件时产生的信息
+4>.在复制架构中的从服务器上启动从服务器线程时产生的信息
+常见参数如下：
+
+```
+mysql> show global variables like 'log_error';            #指定错误日志文件位置。
++---------------+---------------------+
+| Variable_name | Value               |
++---------------+---------------------+
+| log_error     | /var/log/mysqld.log |
++---------------+---------------------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql> show global variables like 'log_warnings';        #是否将经过日志也记录在错误日志文件中去。
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| log_warnings  | 1     |
++---------------+-------+
+1 row in set (0.00 sec)
+
+mysql>
+```
+
+#### 1.24.5.6. 事务日志
+<a href="#menu" style="float:right">目录</a>
+
+
+## 1.25. 高可用
 
 <a href="#menu" style="float:right">目录</a>
 
-### 1.18.1. 主从复制
-#### 1.18.1.1. 常见形式
+### 1.25.1. 主从复制
+
+#### 1.25.1.1. 复制功能概述 
+
+**复制解决了什么问题**
+* 实现在不同服务器上的数据分布
+    * 利用二进制日志增量进行
+    * 不需要太多的带宽
+    * 但是使用基于行的复制在进行性大批量的更改时会对带宽带来一定的压力，特别是在跨IDC环境下进行复制，因该分批进行 
+* 实现数据读取的负载均衡
+    * 需要其他组件配合完成
+    * 利用DNS轮询的方式把程序的读连接到不同的备份数据库
+    * 使用LVS，haproxy这样的代理方式
+* 增强数据的安全性
+    * 利用备库的备份来减少主库的负载
+    * 复制并不代表备份
+    * 方便进行数据库的高可用架构的部署
+    * 避免MYSQL单点失败
+* 实现数据的高可用和故障切换
+* 实现数据库的在线升级
+
+#### 1.25.1.2. 常见形式
 * 多主方式 ，主主之间互相复制
 * 一主一从
 * 一主多从
 * 多主一从
 * 联级复制，树形结构
-#### 1.18.1.2. 主从同步复制原理
+#### 1.25.1.3. 主从同步复制原理
 * 主库将所有的写操作记录在binlog日志中，并生成log dump线程，将binlog日志传给从库的I/O线程
 * 从库生成两个线程，一个是I/O线程，另一个是SQL线程
 * I/O线程去请求主库的binlog日志，并将binlog日志中的文件写入relay log（中继日志）中
 * SQL线程会读取relay loy中的内容，并解析成具体的操作，来实现主从的操作一致，达到最终数据一致的目的
-#### 1.18.1.3. 主从同步配置
+#### 1.25.1.4. 主从同步配置
 
 * 主数据库
 ```cnf
@@ -1306,7 +2899,7 @@ mysql> show slave hosts ;
 +-----------+------+------+-----------+--------------------------------------+
 
 ```
-#### 1.18.1.4. 添加更多从服务器
+#### 1.25.1.5. 添加更多从服务器
 有时候我们希望配置多台从服务器。如果是新建立的主从环境，没有什么数据，那么无论多少从服务器，搭建方式和上面说的没有什么两样。重点是，如果在已经运行了一段时间的主从环境中添加更多的从服务器，那么这台从服务器的配置就有点不一样。原因是：在主从配置的过程中，我们需要对服务器进行锁表操作，也就是说，任何数据都不可以继续写入，且持续的时间有可能会很长，在生产环境下，基本上是不允许的。
 也就是说，我们不能在主服务器上下手，相反，我们应该在已经存在的从服务器这边下手。基本过程如下：
 

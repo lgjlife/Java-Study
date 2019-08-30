@@ -1110,7 +1110,7 @@ KEYS h[ae]llo 匹配 hello 和 hallo ，但不匹配 hillo 。
     * 这个命令和 EXPIRE 命令的作用类似，但是它以毫秒为单位设置 key 的生存时间，而不像 EXPIRE 命令那样，以秒为单位。
 * PEXPIREAT
     * PEXPIREAT key milliseconds-timestamp
-    * 这个命令和 EXPIREAT 命令类似，但它以毫秒为单位设置 key 的过期 unix 时间戳，而不是像 EXPIREAT 那样，以秒为单位。
+    * 这个命令和 EXPIREAT 命令类似，但它以毫秒为单位设置 key 的过期 unix 时间戳，而不是像 EXPIREAT 那样，以秒为���位。
 * PTTL
     * PTTL key
     * 这个命令类似于 TTL 命令，但它以毫秒为单位返回 key 的剩余生存时间，而不是像 TTL 命令那样，以秒为单位。
@@ -3469,7 +3469,7 @@ else{
 |---|---|
 |volatile-lru|使用LRU算法删除一个键，只对设置了过期时间的键有效|
 |allkeys-lru|使用LRU算法删除一个键，对所有的键有效|
-|volatile-lfu|使用LFU算法删除一个键，只对设置了过期时间的键有效|
+|volatile-lfu|使用LFU算法删除一个键，只对设置了过��时间的键有效|
 |allkeys-lfu|使用LFU算法删除一个键，只对设置了过期时间的键有效|
 |volatile-random|使用随机算法删除一个键，只对设置了过期时间的键有效|
 |allkeys-random|使用随机算法删除一个键，只对设置了过期时间的键有效|
