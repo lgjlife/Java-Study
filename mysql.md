@@ -1,5 +1,253 @@
 <span id="menu"></span>
+<!-- TOC -->
 
+- [1. MySQL](#1-mysql)
+    - [1.1. 基本概念](#11-基本概念)
+        - [1.1.1. 基本概念](#111-基本概念)
+        - [1.1.2. 常用工具](#112-常用工具)
+        - [1.1.3. 逻辑架构图](#113-逻辑架构图)
+        - [1.1.4. 常用配置](#114-常用配置)
+    - [1.2. NoSQL与关系型数据库设计理念比较](#12-nosql与关系型数据库设计理念比较)
+        - [1.2.1. 关系型数据库](#121-关系型数据库)
+        - [1.2.2. 非关系型数据库](#122-非关系型数据库)
+    - [1.3. 使用数据库](#13-使用数据库)
+    - [1.4. 数据类型](#14-数据类型)
+    - [1.5. 数据更新](#15-数据更新)
+    - [1.6. 数据查询](#16-数据查询)
+        - [1.6.1. 查询入门](#161-查询入门)
+        - [1.6.2. 多表连接查询](#162-多表连接查询)
+        - [1.6.3. union 查询](#163-union-查询)
+    - [1.7. 函数](#17-函数)
+        - [1.7.1. 聚集函数](#171-聚集函数)
+        - [1.7.2. 数学函数](#172-数学函数)
+        - [1.7.3. 字符串函数](#173-字符串函数)
+        - [1.7.4. 日期和时间函数](#174-日期和时间函数)
+        - [1.7.5. 条件判断函数](#175-条件判断函数)
+        - [1.7.6. 系统信息函数](#176-系统信息函数)
+        - [1.7.7. 加密函数](#177-加密函数)
+        - [1.7.8. 其他函数](#178-其他函数)
+    - [1.8. 存储过程](#18-存储过程)
+        - [1.8.1. 基本概念](#181-基本概念)
+        - [1.8.2. 使用存储过程](#182-使用存储过程)
+    - [1.9. 视图](#19-视图)
+        - [1.9.1. 基本概念](#191-基本概念)
+    - [1.10. 存储过程](#110-存储过程)
+        - [1.10.1. 为什么要使用存储过程](#1101-为什么要使用存储过程)
+        - [1.10.2. 使用存储过程](#1102-使用存储过程)
+        - [1.10.3. 存储过程的参数](#1103-存储过程的参数)
+        - [1.10.4. 变量](#1104-变量)
+        - [注释](#注释)
+        - [MySQL存储过程的控制语句](#mysql存储过程的控制语句)
+        - [查看存储过程](#查看存储过程)
+        - [删除](#删除)
+    - [1.11. 触发器](#111-触发器)
+        - [1.11.1. 基本概念](#1111-基本概念)
+        - [1.11.2. 触发器操作](#1112-触发器操作)
+    - [1.12. 事务](#112-事务)
+        - [1.12.1. 基本概念](#1121-基本概念)
+            - [1.12.1.1. 事务特点](#11211-事务特点)
+            - [1.12.1.2. 锁](#11212-锁)
+            - [1.12.1.3. 多版本并发控制](#11213-多版本并发控制)
+            - [1.12.1.4. 常见术语](#11214-常见术语)
+        - [1.12.2. 基本语句](#1122-基本语句)
+    - [1.13. 数据库索引](#113-数据库索引)
+        - [1.13.1. 基本概念](#1131-基本概念)
+            - [1.13.1.1. 分类](#11311-分类)
+            - [1.13.1.2. 索引用途](#11312-索引用途)
+            - [1.13.1.3. 索引的误区](#11313-索引的误区)
+            - [1.13.1.4. 索引数据结构](#11314-索引数据结构)
+    - [1.14. 存储引擎](#114-存储引擎)
+        - [1.14.1. InnoDB存储引擎](#1141-innodb存储引擎)
+        - [1.14.2. MyISAM存储引擎](#1142-myisam存储引擎)
+        - [1.14.3. MEMORY存储引擎](#1143-memory存储引擎)
+        - [1.14.4. 存储引擎的选择](#1144-存储引擎的选择)
+    - [1.15. InnoDB存储引擎](#115-innodb存储引擎)
+        - [1.15.1. 体系结构](#1151-体系结构)
+            - [1.15.1.1. 后台线程](#11511-后台线程)
+            - [1.15.1.2. 内存](#11512-内存)
+        - [1.15.2. checkpoint技术](#1152-checkpoint技术)
+        - [1.15.3. Master Thread 工作方式](#1153-master-thread-工作方式)
+        - [1.15.4. InnoDB关键特性](#1154-innodb关键特性)
+            - [1.15.4.1. 插入缓存](#11541-插入缓存)
+            - [1.15.4.2. 两次写](#11542-两次写)
+            - [1.15.4.3. 自适应哈希索引](#11543-自适应哈希索引)
+            - [1.15.4.4. 异步IO](#11544-异步io)
+            - [1.15.4.5. 刷新邻接页](#11545-刷新邻接页)
+            - [1.15.4.6. 启动、关闭与恢复](#11546-启动关闭与恢复)
+    - [1.16. 日志文件](#116-日志文件)
+        - [1.16.1. 参数文件](#1161-参数文件)
+        - [1.16.2. 日志文件](#1162-日志文件)
+        - [1.16.3. socket文件](#1163-socket文件)
+        - [1.16.4. pid文件](#1164-pid文件)
+        - [1.16.5. MySQL表结构文件](#1165-mysql表结构文件)
+        - [1.16.6. 存储引擎文件](#1166-存储引擎文件)
+    - [1.17. 表](#117-表)
+        - [1.17.1. 索引组织表](#1171-索引组织表)
+        - [1.17.2. 逻辑存储结构](#1172-逻辑存储结构)
+        - [1.17.3. 行记录格式](#1173-行记录格式)
+        - [1.17.4. 数据页结构](#1174-数据页结构)
+        - [1.17.5. Nameed File Formats机制](#1175-nameed-file-formats机制)
+        - [1.17.6. 约束](#1176-约束)
+        - [1.17.7. 视图](#1177-视图)
+        - [1.17.8. 分区表](#1178-分区表)
+    - [1.18. 索引与算法](#118-索引与算法)
+        - [1.18.1. 索引概述](#1181-索引概述)
+        - [1.18.2. 数据结构和算法](#1182-数据结构和算法)
+        - [1.18.3. B树和B+树](#1183-b树和b树)
+            - [1.18.3.1. B树](#11831-b树)
+            - [1.18.3.2. B+树](#11832-b树)
+        - [1.18.4. B+树索引](#1184-b树索引)
+            - [1.18.4.1. 聚集索引](#11841-聚集索引)
+            - [1.18.4.2. 辅助索引](#11842-辅助索引)
+            - [1.18.4.3. B+树索引的分裂](#11843-b树索引的分裂)
+            - [1.18.4.4. B+树索引的管理](#11844-b树索引的管理)
+        - [1.18.5. B+树索引的使用](#1185-b树索引的使用)
+            - [1.18.5.1. 不同应用中B+树索引的使用](#11851-不同应用中b树索引的使用)
+            - [1.18.5.2. 联合索引](#11852-联合索引)
+            - [1.18.5.3. 覆盖索引](#11853-覆盖索引)
+            - [1.18.5.4. 优化器选择不使用索引的情况](#11854-优化器选择不使用索引的情况)
+            - [1.18.5.5. 索引提示](#11855-索引提示)
+            - [1.18.5.6. Multi-Range Read优化](#11856-multi-range-read优化)
+            - [1.18.5.7. Index Condition Pushdown 优化](#11857-index-condition-pushdown-优化)
+        - [1.18.6. 哈希算法](#1186-哈希算法)
+            - [1.18.6.1. InnoDB哈希算法](#11861-innodb哈希算法)
+            - [1.18.6.2. 自适应哈希算法](#11862-自适应哈希算法)
+        - [1.18.7. 全文索引](#1187-全文索引)
+            - [1.18.7.1. 倒排索引](#11871-倒排索引)
+            - [1.18.7.2. InnoDB全文索引](#11872-innodb全文索引)
+            - [1.18.7.3. 全文索引](#11873-全文索引)
+    - [1.19. 锁](#119-锁)
+        - [1.19.1. 什么是锁](#1191-什么是锁)
+            - [1.19.1.1. 锁](#11911-锁)
+        - [1.19.2. lock与latch](#1192-lock与latch)
+        - [1.19.3. Innodb存储引擎的锁](#1193-innodb存储引擎的锁)
+            - [1.19.3.1. 锁的类型](#11931-锁的类型)
+            - [1.19.3.2. 一致性非锁定读](#11932-一致性非锁定读)
+            - [1.19.3.3. 一致性锁定读](#11933-一致性锁定读)
+            - [1.19.3.4. 自增长与锁](#11934-自增长与锁)
+            - [1.19.3.5. 外键和锁](#11935-外键和锁)
+        - [1.19.4. 锁的算法](#1194-锁的算法)
+            - [1.19.4.1. 行锁的三种算法](#11941-行锁的三种算法)
+        - [1.19.5. 锁的问题](#1195-锁的问题)
+        - [1.19.6. 阻塞](#1196-阻塞)
+        - [1.19.7. 死锁](#1197-死锁)
+            - [1.19.7.1. 死锁的概念](#11971-死锁的概念)
+            - [1.19.7.2. 死锁的实例](#11972-死锁的实例)
+        - [1.19.8. 锁升级](#1198-锁升级)
+        - [1.19.9. 乐观锁和悲观锁](#1199-乐观锁和悲观锁)
+            - [1.19.9.1. 多版本并发控制MVCC](#11991-多版本并发控制mvcc)
+    - [1.20. 事务](#120-事务)
+        - [1.20.1. 认识事务](#1201-认识事务)
+            - [1.20.1.1. 事务特点](#12011-事务特点)
+            - [1.20.1.2. 常见术语](#12012-常见术语)
+            - [1.20.1.3. 基本语句](#12013-基本语句)
+            - [1.20.1.4. 事务分类](#12014-事务分类)
+        - [1.20.2. 事务的实现](#1202-事务的实现)
+            - [1.20.2.1. redo](#12021-redo)
+            - [1.20.2.2. undo](#12022-undo)
+            - [1.20.2.3. purge](#12023-purge)
+            - [1.20.2.4. group commit](#12024-group-commit)
+        - [1.20.3. 事务控制语句](#1203-事务控制语句)
+        - [1.20.4. 隐式提交的SQL语句](#1204-隐式提交的sql语句)
+        - [1.20.5. 对于事务操作的统计](#1205-对于事务操作的统计)
+        - [1.20.6. 事务的隔离级别](#1206-事务的隔离级别)
+        - [1.20.7. 分布式事务](#1207-分布式事务)
+            - [1.20.7.1. MYSQL分布式事务](#12071-mysql分布式事务)
+            - [1.20.7.2. 内部XA事务](#12072-内部xa事务)
+        - [1.20.8. 不好的事务习惯](#1208-不好的事务习惯)
+    - [1.21. 备份与恢复](#121-备份与恢复)
+    - [1.22. 性能优化基本的分析命令](#122-性能优化基本的分析命令)
+        - [1.22.1. explain](#1221-explain)
+        - [1.22.2. show indexs](#1222-show-indexs)
+    - [1.23. 分库分表](#123-分库分表)
+        - [1.23.1. 基本概念](#1231-基本概念)
+        - [1.23.2. 分布式事务](#1232-分布式事务)
+        - [1.23.3. 应对多机数据查询](#1233-应对多机数据查询)
+            - [1.23.3.1. 跨库Join](#12331-跨库join)
+            - [1.23.3.2. 外键约束](#12332-外键约束)
+    - [1.24. 文件](#124-文件)
+        - [1.24.1. 参数文件](#1241-参数文件)
+        - [1.24.2. 套接字文件](#1242-套接字文件)
+        - [1.24.3. pid文件](#1243-pid文件)
+        - [1.24.4. 表结构定义文件](#1244-表结构定义文件)
+        - [1.24.5. 日志](#1245-日志)
+            - [1.24.5.1. 错误日志](#12451-错误日志)
+            - [1.24.5.2. 查询日志](#12452-查询日志)
+            - [1.24.5.3. 二进制日志](#12453-二进制日志)
+            - [1.24.5.4. 慢查询日志](#12454-慢查询日志)
+            - [1.24.5.5. 中继日志](#12455-中继日志)
+            - [1.24.5.6. 事务日志](#12456-事务日志)
+    - [1.25. 高可用](#125-高可用)
+        - [1.25.1. 主从复制](#1251-主从复制)
+            - [1.25.1.1. 复制功能概述](#12511-复制功能概述)
+            - [1.25.1.2. 常见形式](#12512-常见形式)
+            - [1.25.1.3. 主从同步复制原理](#12513-主从同步复制原理)
+            - [1.25.1.4. 主从同步配置](#12514-主从同步配置)
+            - [1.25.1.5. 添加更多从服务器](#12515-添加更多从服务器)
+    - [1.26. SQL实战](#126-sql实战)
+        - [1.26.1. 查找最晚入职员工的所有信息](#1261-查找最晚入职员工的所有信息)
+        - [1.26.2. 查找入职员工时间排名倒数第三的员工所有信息](#1262-查找入职员工时间排名倒数第三的员工所有信息)
+        - [1.26.3. 查找各个部门当前(to_date='9999-01-01')领导当前薪水详情以及其对应部门编号dept_no](#1263-查找各个部门当前to_date9999-01-01领导当前薪水详情以及其对应部门编号dept_no)
+        - [1.26.4. 查找所有已经分配部门的员工的last_name和first_name](#1264-查找所有已经分配部门的员工的last_name和first_name)
+        - [1.26.5. 查找所有员工的last_name和first_name以及对应部门编号dept_no，也包括展示没有分配具体部门的员工](#1265-查找所有员工的last_name和first_name以及对应部门编号dept_no也包括展示没有分配具体部门的员工)
+        - [1.26.6. 查找所有员工入职时候的薪水情况，给出emp_no以及salary， 并按照emp_no进行逆序](#1266-查找所有员工入职时候的薪水情况给出emp_no以及salary-并按照emp_no进行逆序)
+        - [1.26.7. 查找薪水涨幅超过15次的员工号emp_no以及其对应的涨幅次数t](#1267-查找薪水涨幅超过15次的员工号emp_no以及其对应的涨幅次数t)
+        - [1.26.8. 找出所有员工当前(to_date='9999-01-01')具体的薪水salary情况，对于相同的薪水只显示一次,并按照逆序显示](#1268-找出所有员工当前to_date9999-01-01具体的薪水salary情况对于相同的薪水只显示一次并按照逆序显示)
+        - [1.26.9. 获取所有部门当前manager的当前薪水情况，给出dept_no, emp_no以及salary，当前表示to_date='9999-01-01'](#1269-获取所有部门当前manager的当前薪水情况给出dept_no-emp_no以及salary当前表示to_date9999-01-01)
+        - [1.26.10. 获取所有非manager的员工emp_no](#12610-获取所有非manager的员工emp_no)
+        - [1.26.11. 获取所有员工当前的manager，如果当前的manager是自己的话结果不显示，当前表示to_date='9999-01-01'。](#12611-获取所有员工当前的manager如果当前的manager是自己的话结果不显示当前表示to_date9999-01-01)
+        - [1.26.12. 获取所有部门中当前员工薪水最高的相关信息，给出dept_no, emp_no以及其对应的salary](#12612-获取所有部门中当前员工薪水最高的相关信息给出dept_no-emp_no以及其对应的salary)
+        - [1.26.13. 从titles表获取按照title进行分组，每组个数大于等于2，给出title以及对应的数目t。](#12613-从titles表获取按照title进行分组每组个数大于等于2给出title以及对应的数目t)
+        - [1.26.14. 从titles表获取按照title进行分组，每组个数大于等于2，给出title以及对应的数目t。](#12614-从titles表获取按照title进行分组每组个数大于等于2给出title以及对应的数目t)
+        - [1.26.15. 查找employees表所有emp_no为奇数，且last_name不为Mary的员工信息，并按照hire_date逆序排列](#12615-查找employees表所有emp_no为奇数且last_name不为mary的员工信息并按照hire_date逆序排列)
+        - [1.26.16. 统计出当前各个title类型对应的员工当前薪水对应的平均工资。结果给出title以及平均工资avg。](#12616-统计出当前各个title类型对应的员工当前薪水对应的平均工资结果给出title以及平均工资avg)
+        - [1.26.17. 获取当前（to_date='9999-01-01'）薪水第二多的员工的emp_no以及其对应的薪水salary](#12617-获取当前to_date9999-01-01薪水第二多的员工的emp_no以及其对应的薪水salary)
+        - [1.26.18. 查找当前薪水(to_date='9999-01-01')排名第二多的员工编号emp_no、薪水salary、last_name以及first_name，不准使用order by](#12618-查找当前薪水to_date9999-01-01排名第二多的员工编号emp_no薪水salarylast_name以及first_name不准使用order-by)
+        - [1.26.19. 查找所有员工的last_name和first_name以及对应的dept_name，也包括暂时没有分配部门的员工](#12619-查找所有员工的last_name和first_name以及对应的dept_name也包括暂时没有分配部门的员工)
+        - [1.26.20. 查找员工编号emp_no为10001其自入职以来的薪水salary涨幅值growth](#12620-查找员工编号emp_no为10001其自入职以来的薪水salary涨幅值growth)
+        - [1.26.21. **查找所有员工自入职以来的薪水涨幅情况，给出员工编号emp_no以及其对应的薪水涨幅growth，并按照growth进行升序](#12621-查找所有员工自入职以来的薪水涨幅情况给出员工编号emp_no以及其对应的薪水涨幅growth并按照growth进行升序)
+        - [1.26.22. 统计各个部门对应员工涨幅的次数总和，给出部门编码dept_no、部门名称dept_name以及次数sum](#12622-统计各个部门对应员工涨幅的次数总和给出部门编码dept_no部门名称dept_name以及次数sum)
+        - [1.26.23. 对所有员工的当前(to_date='9999-01-01')薪水按照salary进行按照1-N的排名，相同salary并列且按照emp_no升序排列](#12623-对所有员工的当前to_date9999-01-01薪水按照salary进行按照1-n的排名相同salary并列且按照emp_no升序排列)
+        - [1.26.24. 获取所有非manager员工当前的薪水情况，给出dept_no、emp_no以及salary ，当前表示to_date='9999-01-01'](#12624-获取所有非manager员工当前的薪水情况给出dept_noemp_no以及salary-当前表示to_date9999-01-01)
+        - [1.26.25. 获取员工其当前的薪水比其manager当前薪水还高的相关信息，当前表示to_date='9999-01-01',](#12625-获取员工其当前的薪水比其manager当前薪水还高的相关信息当前表示to_date9999-01-01)
+        - [1.26.26. 汇总各个部门当前员工的title类型的分配数目，结果给出部门编号dept_no、dept_name、其当前员工所有的title以及该类型title对应的数目count](#12626-汇总各个部门当前员工的title类型的分配数目结果给出部门编号dept_nodept_name其当前员工所有的title以及该类型title对应的数目count)
+        - [1.26.27. 给出每个员工每年薪水涨幅超过5000的员工编号emp_no、薪水变更开始日期from_date以及薪水涨幅值salary_growth，并按照salary_growth逆序排列。](#12627-给出每个员工每年薪水涨幅超过5000的员工编号emp_no薪水变更开始日期from_date以及薪水涨幅值salary_growth并按照salary_growth逆序排列)
+        - [1.26.28. 查找描述信息中包括robot的电影对应的分类名称以及电影数目，而且还需要该分类对应电影数量>=5部](#12628-查找描述信息中包括robot的电影对应的分类名称以及电影数目而且还需要该分类对应电影数量5部)
+        - [1.26.29. 使用join查询方式找出没有分类的电影id以及名称](#12629-使用join查询方式找出没有分类的电影id以及名称)
+        - [1.26.30. 使用子查询的方式找出属于Action分类的所有电影对应的title,description](#12630-使用子查询的方式找出属于action分类的所有电影对应的titledescription)
+        - [1.26.31. 获取select](#12631-获取select)
+        - [1.26.32. 将employees表的所有员工的last_name和first_name拼接起来作为Name，中间以一个空格区分](#12632-将employees表的所有员工的last_name和first_name拼接起来作为name中间以一个空格区分)
+        - [1.26.33. 创建一个actor表，包含如下列信息](#12633-创建一个actor表包含如下列信息)
+        - [1.26.34. 批量插入数据](#12634-批量插入数据)
+        - [1.26.35. 批量插入数据，不使用replace操作](#12635-批量插入数据不使用replace操作)
+        - [1.26.36. 创建一个actor_name表](#12636-创建一个actor_name表)
+        - [1.26.37. 对first_name创建唯一索引uniq_idx_firstname](#12637-对first_name创建唯一索引uniq_idx_firstname)
+        - [1.26.38. 针对actor表创建视图actor_name_view](#12638-针对actor表创建视图actor_name_view)
+        - [1.26.39. 针对上面的salaries表emp_no字段创建索引idx_emp_no](#12639-针对上面的salaries表emp_no字段创建索引idx_emp_no)
+        - [1.26.40. 在last_update后面新增加一列名字为create_date](#12640-在last_update后面新增加一列名字为create_date)
+        - [1.26.41. 构造一个触发器audit_log](#12641-构造一个触发器audit_log)
+        - [1.26.42. 删除emp_no重复的记录，只保留最小的id对应的记录。](#12642-删除emp_no重复的记录只保留最小的id对应的记录)
+        - [1.26.43. 将所有to_date为9999-01-01的全部更新为NULL](#12643-将所有to_date为9999-01-01的全部更新为null)
+        - [1.26.44. 将id=5以及emp_no=10001的行数据替换成id=5以及emp_no=10005](#12644-将id5以及emp_no10001的行数据替换成id5以及emp_no10005)
+        - [1.26.45. 将titles_test表名修改为titles_2017](#12645-将titles_test表名修改为titles_2017)
+        - [1.26.46. 在audit表上创建外键约束，其emp_no对应employees_test表的主键id](#12646-在audit表上创建外键约束其emp_no对应employees_test表的主键id)
+        - [1.26.47. 如何获取emp_v和employees有相同的数据no](#12647-如何获取emp_v和employees有相同的数据no)
+        - [1.26.48. 将所有获取奖金的员工当前的薪水增加百分之十](#12648-将所有获取奖金的员工当前的薪水增加百分之十)
+        - [1.26.49. 针对库中的所有表生成select count(*)对应的SQL语句](#12649-针对库中的所有表生成select-count对应的sql语句)
+        - [1.26.50. 将employees表中的所有员工的last_name和first_name通过(')连接起来。](#12650-将employees表中的所有员工的last_name和first_name通过连接起来)
+        - [1.26.51. 查找字符串'10,A,B' 中逗号','出现的次数cnt](#12651-查找字符串10ab-中逗号出现的次数cnt)
+        - [1.26.52. 获取Employees中的first_name](#12652-获取employees中的first_name)
+        - [1.26.53. 按照dept_no进行汇总](#12653-按照dept_no进行汇总)
+        - [1.26.54. 查找排除当前最大、最小salary之后的员工的平均工资avg_salary](#12654-查找排除当前最大最小salary之后的员工的平均工资avg_salary)
+        - [1.26.55. 分页查询employees表，每5行一页，返回第2页的数据](#12655-分页查询employees表每5行一页返回第2页的数据)
+        - [1.26.56. 获取所有员工的emp_no](#12656-获取所有员工的emp_no)
+        - [1.26.57. 使用含有关键字exists查找未分配具体部门的员工的所有信息。](#12657-使用含有关键字exists查找未分配具体部门的员工的所有信息)
+        - [1.26.58. 获取employees中的行数据，且这些行也存在于emp_v中](#12658-获取employees中的行数据且这些行也存在于emp_v中)
+        - [1.26.59. 获取有奖金的员工相关信息。](#12659-获取有奖金的员工相关信息)
+        - [1.26.60. 统计salary的累计和running_total](#12660-统计salary的累计和running_total)
+        - [1.26.61. 对于employees表中，给出奇数行的first_name](#12661-对于employees表中给出奇数行的first_name)
+
+<!-- /TOC -->
 # 1. MySQL
 <a href="#menu" style="float:right">目录</a>
 
@@ -12,14 +260,16 @@
     * 数据库实例: 数据库运行之后的应用。
     * SQL:一种结构化查询语言，专门用来和数据库进行通信的语言。
     * 数据表: 表是数据的矩阵。在一个数据库中的表看起来像一个简单的电子表格。
-    * 列: 一列(数据元素) 包含了相同的数据, 例如邮政编码的数据。
+    * 列: 表的一个字段，一个表是由一个或者多个列组成
+    * 数据类型:每个列都有固定的数据类型，比如数值，字符串等
     * 行：一行（=元组，或记录）是一组相关的数据，例如一条用户订阅的数据。
     * 冗余：存储两倍数据，冗余降低了性能，但提高了数据的安全性。
     * 主键：用于唯一标识表中每个行的一个或者多个列。主键是唯一的。一个数据表中只能包含一个主键。你可以使用主键来查询数据。
-    * 外键：用于唯一标识其他表中每个行的一个或者多个列。外键用于关联两个表。
+    * 外键：用于唯一标识其他表中每个行的一个或者多个列。外键用于关联两个表。外键不能跨引擎。
     * 复合键：复合键（组合键）将多个列作为一个索引键，一般用于复合索引。
     * 索引：使用索引可快速访问数据库表中的特定信息。索引是对数据库表中一列或多列的值进行排序的一种结构。类似于书籍的目录。
     * 参照完整性: 参照的完整性要求关系中不允许引用不存在的实体。与实体完整性是关系模型必须满足的完整性约束条件，目的是保证数据的一致性。
+    * SQL:结构化查询语言，用于与数据库通信的语言
 * 主键、外键
     * 不要更新主键列中的值
     * 不能重用主键列中的值
@@ -75,10 +325,10 @@ FOREIGN KEY (P_Id) REFERENCES Persons(P_Id)
         * 无事务处理，附加功能bi和报表等支持也不好；
         * 数据结构相对复杂，复杂查询方面稍欠。
 
-
-
 ### 1.1.2. 常用工具
-* workbench 跨平台可视化客户端
+* workbench : 跨平台可视化客户端
+* MySQL Administrator : 一个图形交互客户机，用来简化MySQL服务器的管理。
+* MySQL Query Browser为一个图形交互客户机，用来编写和执行MySQL命令
 
 ### 1.1.3. 逻辑架构图
 <a href="#menu" style="float:right">目录</a>
@@ -96,6 +346,154 @@ FOREIGN KEY (P_Id) REFERENCES Persons(P_Id)
 ### 1.1.4. 常用配置
 <a href="#menu" style="float:right">目录</a>
 
+```
+[client]
+# 该目录下的内容常用来进行localhost登陆，一般不需要修改
+port = 3306	# 端口号
+socket = /var/lib/mysql/mysql.sock	# 套接字文件(localhost登陆会自动生成)
+
+[mysql]
+# 包含一些客户端mysql命令行的配置
+no-auto-rehash # 默认不自动补全	auto-rehash自动补全
+
+[mysqld]
+# mysql优化的配置目录，除硬件和环境配置外，全部优化在此配置，
+# 一般服务器安装只有此配置目录
+user = mysql	#默认启动用户，一般不需要修改，可能出现启动不成功
+port = 3306	#端口号
+socket = /var/lib/mysql/mysql.sock	#套接字文件 （套接字方式登陆比TCP/IP方式连接快）
+character-set-server = utf8	#设置数据库服务器默认编码 utf-8
+basedir = /usr/local/mysql	#数据库安装目录--指定此参数可解决相对路径造成的问题
+datadir = /data/mysql	#数据库目录，数据库目录切换时需要用到
+pid-file = /var/run/mysqld/mysqld.pid	#mysql进程文件，可指定自己的进程文件
+external-locking = FALSE	#外部锁定(非多服务器可不设置该选项，默认skip-external-locking)
+skip-external-locking	#跳过外部锁定 （避免多进程环境下的external locking--锁机制）
+skip-name-resolve	#跳过主机名解析，直接IP访问，可提升访问速度
+log-error = /data/log/mysqld.log	#错误日志文件
+log-warnings	#默认为1,表示启用警告信息记录日志,不需要置0即可,大于1时表示将错误或者失败连接记录日志
+open_files_limit = 10240	#全局只读变量,文件描述符限制 注：上限其实为OS文件描述符上限，小于OS上限时生效 可用lsof查看限制并修改相应配置
+
+#以下配置较为重要
+back_log = 600 #在MYSQL暂时停止响应新请求之前，短时间内的多少个请求可以被存在堆栈中。不超过TCP/IP监听队列，建议512倍数
+#如果系统在短时间内有很多连接，则需要增大该参数的值，该参数值指定到来的TCP/IP连接的监听队列的大小。默认值50。
+max_connections = 5000	#MySQL允许最大的进程连接数，如果经常出现Too Many Connections的错误提示，则需要增大此值
+max_connect_errors = 6000	#设置每个主机的连接请求异常中断的最大次数，当超过该次数，MYSQL服务器将禁止host的连接请求，
+#直到mysql服务器重启或通过flush hosts命令清空此host的相关信息
+max_allowed_packet = 32M	#限制接收数据包的大小,单条数据超过该值时插入或更新失败,
+#show VARIABLES like '%max_allowed_packet%'; 查看当前限制大小
+sort_buffer_size = 8M	#每个连接独享，用于优化不能通过sql或者索引优化的group和order等，设置的值应适中
+#比如：500个连接，500*8 = 4G,将消耗4G内存
+join_buffer_size = 8M	#用于表间关联缓存的大小,每个连接独享
+#thread_concurrency = 16	#应设为CPU核数的2倍. 
+thread_cache_size = 600	#线程缓存变量，减少连接的创建，一般设置规则
+#1G->8;2G->16;3G->32;根据实际情况可适当加大(个人：2^(n+2))
+thread_stack = 1024K	#设置MYSQL每个线程的堆栈大小，可设置范围为128K至4GB,默认足够大，一般不用修改
+query_cache_size = 128M	#查询缓存，设置不宜过大，主要是因为缓存越大，设置失效时间越长。如果高并发写，可以禁用该功能
+query_cache_limit = 2M	#指定单个查询能够使用的缓冲区大小，默认为1M
+query_cache_min_res_unit = 4k	#大数据查询4k,小数据查询2k,目的是提高缓存命中率
+
+#数据库引擎相关参数
+default-storage-engine = InnoDB	#默认数据库引擎
+innodb_data_file_path = ibdata1:1024M:autoextend	#指定数据文件，初始大小，指定扩展大小 注意与数据库中初始文件大小保持一致
+#格式：size-allocation[:autoextend[:max-size-allocation]] 
+innodb_read_io_threads = 16	#read IO线程,根据cpu核心线程数量设置
+innodb_write_io_threads = 16	#write IO线程,根据cpu核心线程数量设置
+innodb_thread_concurrency = 48	#服务器有几个CPU就设置为几，建议用默认设置，一般为8
+innodb_lock_wait_timeout = 120	#事务获取锁的最长等待时间，超时请求失败
+innodb_buffer_pool_size = 80G	#类似于myisam的key_pool_size 适当增加可提高命中率，专用服务器可设置为70-80%
+#innodb_flush_log_at_trx_commit = 2	#默认值1 每次提交日志记录磁盘 2 日志写入系统缓存 0 不提交也记录，不安全，不推荐
+innodb_flush_method = O_DIRECT	#控制着innodb数据文件及redo log的打开、刷写模式
+#fdatasync(默认)，调用fsync()去刷数据文件与redo log的buffer
+#O_DSYNC，innodb会使用O_SYNC方式打开和刷写redo log,使用fsync()刷写数据文件
+#O_DIRECT，innodb使用O_DIRECT打开数据文件，使用fsync()刷写数据文件跟redo log
+#fsync() 作用：数作用是flush时将与fd文件描述符所指文件有关的buffer刷写到磁盘
+innodb_log_files_in_group = 2	#以循环方式将日志文件写到多个文件，默认2
+innodb_log_file_size = 4G	#数据日志文件大小，较大可提升性能，
+innodb_log_buffer_size = 512M	#日志文件所用的内存大小，以M为单位。缓冲区更大能提高性能，但意外的故障将会丢失数据(开发人员推荐1-8M---不知道为什么)
+#innodb_file_per_table = 1	#独立表空间 innodb 默认一个表空间
+#
+innodb_autoinc_lock_mode = 2	#主要作用于自增列
+#0 这个表示tradition 传统 得到语句级别的锁，具有连续性和重复性，但影响并发的插入
+　　　　	#1 这个表示consecutive 连续 根据一次性插入的数量生成连续的值，
+#auto_inc锁不需要一直保持到语句的结束，语句得到了相应的值后就可以提前释放锁
+　　　　	#2 这个表示interleaved 交错 没有auto_inc锁，auto_incremant值可能不是连续的
+
+#Percona XtraDB Cluster 5.7. 基于同步复制的多主MySQL集群解决方案，只支持Innodb引擎
+#需要安装wsrep打过补丁的版本
+#下载地址：https://www.percona.com/downloads/
+
+pxc_strict_mode = ENFORCING	
+wsrep_cluster_address = gcomm://192.168.66.242,192.168.66.241 #集群中的节点地址，可以使用主机名或IP
+wsrep_node_address = 192.168.66.241	#本机节点地址，可以使用主机名或IP
+wsrep_provider = /usr/lib64/galera3/libgalera_smm.so
+wsrep_sst_method = xtrabackup-v2	#指定SST方式，支持rsync(最快，需要锁表)，
+#mysqldump和xtrabackup，从5.5.33-23.7.6起支持xtrabackup-v2
+wsrep_slave_threads = 8	#线程数量
+wsrep_cluster_name = Cluster	#集群名字，必须统一
+wsrep_node_name = Node1	#集群中节点名字，必须唯一
+wsrep_sst_auth = "sstuser:8jUthGnAUfWEfJ9"	#xtrabackup使用的用户名密码，第一台节点启动时创建，详见安装文档
+#wsrep_sst_donor='node3,'	#一个逗号分割的节点串作为状态转移源，
+#比如wsrep_sst_donor=node5,node3, 如果node5可用，用node5,不可用用node3,
+#如果node3不可用，最后的逗号表明让提供商自己选择一个最优的。
+
+transaction_isolation = READ-COMMITTED	#事务隔离级别 
+# 1.READ-UNCOMMITTED-读未提交 --脏读(开发生产均不建议)
+# 2.READ-COMMITTE-读已提交 --非默认
+# 3.REPEATABLE-READ -可重复读	--可能出现幻影行（Innodb 和 Falcon 通过并发解决幻读问题）
+# 4.SERIALIZABLE -串行	--最高级别 可能出现大量超时和锁竞争
+tmp_table_size = 10G	#查询生成的临时表大小超过该值时会在硬盘生成MyISAM表，如果存在大量group by 等语句，可调整大小
+max_heap_table_size = 5G	#内存表最大空间限制 表在磁盘中，数据在内存中
+explicit_defaults_for_timestamp=1	#主要针对TIMESTAMP列，不指定默认会自动加上notnull属性，第一列会自动添加current timestamp	
+table-definition-cache = 4096	#表定义相关信息缓存 实际存放的是frm与内存的映射关系
+table-open-cache = 4096	#打开表缓存 存放已打开的表句柄
+#同时设置生效
+interactive_timeout = 120	#mysql在关闭一个交互的连接之前所要等待的秒数(客户端连接)	
+wait_timeout = 864000	#mysql在关闭一个非交互的连接之前所要等待的秒数 默认8小时(应用程序调用),
+#根据应用实际情况决定 show processlist; sleep进程多则相应调小
+long_query_time = 2	#慢查询超时设置，默认10秒，记录超过查询时间的语句
+slow-query-log=1	#注意之前的版本5.6之前的版本为 log-slow-query 是否记录慢查询日志---作为数据库分析
+slow-query-log-file=/data/log/query-slow.log	#慢查询日志记录文件
+#相关二进制文件设置
+log_bin	#数据库操作二进制记录，数据库备份，复制所需
+binlog_format = ROW	#ROW(基于行的复制--安全，但是注意并发) STATEMENT(基于sql语句的复制)，MIXED(混合模式复制)
+binlog_cache_size = 4M	#二进制日志缓存，提高log-bin记录效率
+log_bin_trust_function_creators = 1	#主从复制是需要注意，为了保证主从复制完全一致，需要开启此选项，主从默认阻止函数创建
+max_binlog_size = 1G	#二进制日志文件大小默认1G 要求大于4096 小于1G
+expire_logs_days = 7	#清除过期日志
+#binlog_do_db	#此参数表示只记录指定数据库的二进制日志
+#binlog_ignore_db	#忽略某数据库记录
+
+key_buffer_size = 2048M	#提高查询命中率，最好不要超过4G,可根据缓存命中率适当调整show global status like 'key_read%';
+read_buffer_size = 16M	#顺序读缓存，每个连接独享
+read_rnd_buffer_size = 64M	#随机读缓存，每个连接独享
+bulk_insert_buffer_size = 1G	#批量插入并且只有向非空表添加数据时才使用该缓存,只对myisam表使用。
+
+
+#主从复制相关--必须开启log-bin
+server-id = 19911216	#主从复制必须，并且各服务器具有唯一性
+log_slave_updates	#配置从服务器的更新是否写入二进制日志，默认是不打开的
+replicate-ignore-db = mysql	#主从复制默认忽略的数据库，可用","分隔或使用多条记录
+#replicate-do-db=qrs,login	#主从复制指定数据库,","号隔开或使用多条记录
+
+[mysqldump]	#数据库全量备份
+quick	#强制mysqldump从服务器一次一行地检索表中的行
+max_allowed_packet = 32M	#可接收数据包大小
+
+[isamchk]	#在mysqld服务器不使用的情况下修复表或在崩溃状态下恢复表
+key_buffer = 1024M
+sort_buff_size =1024M
+read_buffer = 16M
+write_buffer = 16M
+
+[myisamchk]	#在mysqld服务器不使用的情况下修复表或在崩溃状态下恢复表
+key_buffer = 1024M	
+sort_buff_size = 1024M
+read_buffer = 16M
+write_buffer = 16M
+
+[mysqld_safe]	#safe方式启动数据库，相比于mysqld,会在服务启动后继续监控服务状态，死机时重启
+open-files-limit = 8192
+```
 
 
 
@@ -235,6 +633,10 @@ mysql以读取的最后一个文件配置为准
     * 设置默认值: default xxx
     * 不能为NULL: NOT NULL,默认为NULL
     * 注释: COMMENT "XXXX" 
+    * AUTO_INCREMENT 插入时自增
+    * PRIMARY KEY 主键
+    * ENGINE=InnoDB InnoDB|MEMORY|MyISAM 引擎
+
 ```sql
 DROP TABLE IF EXISTS `relation`;
 CREATE TABLE `relation`(
@@ -435,16 +837,40 @@ char和varchar可以有默认值，text不能指定默认值。
 insert into table_name(xx,xx) value|values (xxx,xxx)
 //插入多条数据
 insert into table_name(xx,xx) value|values (xxx,xxx), (xxx,xxx), (xxx,xxx)
+//插入检索出的数据
+insert into table1(xx,xxx) select xx,xx from table2;
+
+//
+UPDATE [LOW_PRIORITY] [IGNORE] table_reference
+    SET assignment_list
+    [WHERE where_condition]
+    [ORDER BY ...]
+    [LIMIT row_count]
+
 //更新数据
 update table_name
     set xxx=xxx
         where xx=xx
+
 //删除数据
 delete from table_name where xx=xx
 ```
 
+**IGNORE关键字** 如果用UPDATE语句更新多行，并且在更新这些行中的一行或多行时出一个现错误，则整个UPDATE操作被取消（错误发生前更新的所有行被恢复到它们原来的值）。为即使是发生错误，也继续进行更新，可使用IGNORE关键字，如下所示：UPDATE IGNORE customers…
 
-## 1.6. 查询入门
+**删除表的内容而不是表** DELETE语句从表中删除行，甚至是删除表中所有行。但是， DELETE不删除表本身。如果省略了WHERE子句，则UPDATE或DELETE将被应用到表中所有的行
+**更快的删除** 如果想从表中删除所有行，不要使用DELETE。可使用TRUNCATE TABLE语句，它完成相同的工作，但速度更快（ TRUNCATE实际是删除原来的表并重新创建一个表，而不是逐行删除表中的数据）。
+
+**使用UPDATE或DELETE时所遵循的习惯**
+* 除非确实打算更新和删除每一行，否则绝对不要使用不带WHERE子句的UPDATE或DELETE语句。
+* 保证每个表都有主键，尽可能像WHERE子句那样使用它（可以指定各主键、多个值或值的范围）。
+* 在对UPDATE或DELETE语句使用WHERE子句前，应该先用SELECT进行测试，保证它过滤的是正确的记录，以防编写的WHERE子句不正确。
+* 使用强制实施引用完整性的数据库,这样MySQL将不允许删除具有与其他表相关联的数据的行
+* MySQL没有撤销（ undo）按钮。应该非常小心地使用UPDATE和DELETE
+
+## 1.6. 数据查询
+
+### 1.6.1. 查询入门
 <a href="#menu" style="float:right">目录</a>
 
 * select 基本语法
@@ -481,7 +907,7 @@ AND / && /OR /|| /!/NOT
     * 临时表
     * 虚拟表(视图)
     * 子查询产生的表
-        * select e.xxx from table_name from (select xxx from table_name from xxx ) e;
+        * select e.xxx from table_name wheree xx in (select xxx from table_name from xxx ) e;
 
 * 表的别名
     * from  user as u
@@ -557,7 +983,7 @@ regexp "g*"
 
 ```
 
-## 1.7. 多表连接查询
+### 1.6.2. 多表连接查询
 <a href="#menu" style="float:right">目录</a>
 
 * 迪卡尔积
@@ -622,11 +1048,37 @@ select * from stu_info A right join stu_score  B on A.id=B.id;
 ```sql
 select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on xxx=xx;
 ```
+### 1.6.3. union 查询
 
-## 1.8. 函数
+UNION ALL只是简单的将两个结果合并后就返回。这样，如果返回的两个结果集中有重复的数据，那么返回的结果集就会包含重复的数据了。
+
+从效率上说，UNION ALL 要比UNION快很多，所以，如果可以确认合并的两个结果集中不包含重复的数据的话，那么就使用UNION ALL，格式如下：
+```sql
+select * from A union all select * from B  //A B数据结构一定要一样
+```
+使用Union，则所有返回的行都是唯一的，如同您已经对整个结果集合使用了DISTINCT
+使用Union all，则不会排重，返回所有的行
+
+如果想使用ORDER BY或LIMIT子句来对全部UNION结果进行分类或限制，则应对单个地SELECT语句加圆括号，并把ORDER BY或LIMIT放到最后一个的后面：　　
+
+```sql
+(SELECT uid,umobile,realname FROM users WHERE vip IN (8, 9))       
+UNION
+(SELECT uid,umobile,realname FROM users WHERE vip NOT IN (8, 9) AND amount > 0   )
+ ORDER BY uid desc limit 10
+```
+
+如果当union的几个表的数据量很大时，建议还是采用先导出文本，然后用脚本来执行.因为纯粹用sql，效率会比较低，而且它会写临时文件，如果你的磁盘空间不够大，就有可能会出错
+
+**UNION规则**
+* UNION必须由两条或两条以上的SELECT语句组成，语句之间用关键字UNION分隔（因此，如果组合4条SELECT语句，将要使用3个UNION关键字）。
+* UNION中的每个查询必须包含相同的列、表达式或聚集函数（不过各个列不需要以相同的次序列出）。
+* 列数据类型必须兼容：类型不必完全相同，但必须是DBMS可以隐含地转换的类型（例如，不同的数值类型或不同的日期类型）。
+
+## 1.7. 函数
 <a href="#menu" style="float:right">目录</a>
 
-### 1.8.1. 聚集函数
+### 1.7.1. 聚集函数
 * 运行在行祖上，计算和返回单个值的函数
 * avg
 * count
@@ -640,7 +1092,7 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
 * min
 * sum
 
-### 1.8.2. 数学函数
+### 1.7.2. 数学函数
 * ABS(x)
     * 返回x的绝对值
 * PI()
@@ -678,7 +1130,7 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
 * COT(x)
     * 返回给定弧度值x的余切
 
-### 1.8.3. 字符串函数
+### 1.7.3. 字符串函数
 * CHAR_LENGTH(str)
     * 计算字符串字符个数
 * CONCAT(s1,s2，...)
@@ -717,7 +1169,7 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
     * 返回第N个字符串
 
  
-### 1.8.4. 日期和时间函数
+### 1.7.4. 日期和时间函数
 * CURDATE()、CURRENT_DATE()
     * 将当前日期按照"YYYY-MM-DD"或者"YYYYMMDD"格式的值返回，具体格式根据函数用在字符串或是数字语境中而定
 * CURRENT_TIMESTAMP()、LOCALTIME()、NOW()、SYSDATE()
@@ -754,7 +1206,7 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
 * ADDTIME(date,expr)、SUBTIME(date,expr)
     * 前者进行date的时间加操作，后者进行date的时间减操作
 
-### 1.8.5. 条件判断函数
+### 1.7.5. 条件判断函数
 
 * IF(expr,v1,v2)
     * 如果expr是TRUE则返回v1，否则返回v2
@@ -764,7 +1216,7 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
     * 如果expr等于某个vn，则返回对应位置THEN后面的结果，如果与所有值都不想等，则返回ELSE后面的rn
  
 
-### 1.8.6. 系统信息函数
+### 1.7.6. 系统信息函数
 
 * VERSION()
     * 查看MySQL版本号
@@ -779,7 +1231,7 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
 
  
 
-### 1.8.7. 加密函数
+### 1.7.7. 加密函数
 
 * PASSWORD(str)
     * 从原明文密码str计算并返回加密后的字符串密码，注意这个函数的加密是单向的（不可逆），因此不应将它应用在个人的应用程序中而应该只在MySQL服务器的鉴定系统中使用
@@ -789,7 +1241,7 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
     * 使用pswd_str作为密码，加密str
 * DECODE(crypt_str,pswd_str)
     * 使用pswd_str作为密码，解密加密字符串crypt_str，crypt_str是由ENCODE函数返回的字符串
-### 1.8.8. 其他函数
+### 1.7.8. 其他函数
 * FORMAT(x,n)
     * 将数字x格式化，并以四舍五入的方式保留小数点后n位，结果以字符串形式返回
 * CONV(N,from_base,to_base)
@@ -804,10 +1256,10 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
     * 使用字符集charset表示字符串str
 
 
-## 1.9. 存储过程
+## 1.8. 存储过程
 <a href="#menu" style="float:right">目录</a>
 
-### 1.9.1. 基本概念
+### 1.8.1. 基本概念
 * 存储过程
     * 将多条SQL语句进行封装，类似于函数。有输入和输出。
 * 为什么使用
@@ -820,13 +1272,13 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
     * 一般来说，存储过程的编写比基本SQL语句复杂，编写存储过程需要更高的技能，更丰富的经验。
     * 你可能没有创建存储过程的安全访问权限。许多数据库管理员限制存储过程的创建权限，允许用户使用存储过程，但不允许他们创建存储过程。
 
-### 1.9.2. 使用存储过程
+### 1.8.2. 使用存储过程
 
 
-## 1.10. 视图
+## 1.9. 视图
 <a href="#menu" style="float:right">目录</a>
 
-### 1.10.1. 基本概念
+### 1.9.1. 基本概念
 
 * 视图是虚拟的表，视图本身不包含数据，原始表数据更改，视图查询将会返回最新的数据
 * 使用视图的原因
@@ -851,8 +1303,533 @@ select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on x
     * 用DROP删除视图，其语法为DROP VIEW viewname;。
     * 更新视图时，可以先用DROP再用CREATE，也可以直接用CREATE ORREPLACE VIEW。如果要更新的视图不存在，则第2条更新语句会创建一个视图；如果要更新的视图存在，则第2条更新语句会替换原有视图。
 
+## 1.10. 存储过程
+
+MySQL 5.0 版本开始支持存储过程。
+存储过程（Stored Procedure）是一种在数据库中存储复杂程序，以便外部程序调用的一种数据库对象。
+存储过程是为了完成特定功能的SQL语句集，经编译创建并保存在数据库中，用户可通过指定存储过程的名字并给定参数(需要时)来调用执行。
+存储过程思想上很简单，就是数据库 SQL 语言层面的代码封装与重用
+
+### 1.10.1. 为什么要使用存储过程
+<a href="#menu" style="float:right">目录</a>
+
+* 好处
+    * 通过把处理封装在容易使用的单元中，简化复杂的操作。
+    * 由于不要求反复建立一系列处理步骤，这保证了数据的完整性。如果所有开发人员和应用程序都使用同一（试验和测试）存储过程，则所使用的代码都是相同的。这一点的延伸就是防止错误。需要执行的步骤越多，出错的可能性就越大。防止错误保证了数据的一致性。
+    * 简化对变动的管理。如果表名、列名或业务逻辑（或别的内容）有变化，只需要更改存储过程的代码。使用它的人员甚至不需要知道这些变化。
+    * 提高性能。因为使用存储过程比使用单独的SQL语句要快。
+    * 存在一些只能用在单个请求中的MySQL元素和特性，存储过程可以使用它们来编写功能更强更灵活的代码
+* 问题
+    * 一般来说，存储过程的编写比基本SQL语句复杂，编写存储过程需要更高的技能，更丰富的经验
+    * 你可能没有创建存储过程的安全访问权限。许多数据库管理员限制存储过程的创建权限，允许用户使用存储过程，但不允许他们创建存储过程。
+    * 存储过程，往往定制化于特定的数据库上，因为支持的编程语言不同。当切换到其他厂商的数据库系统时，需要重写原有的存储过程。
+    * 存储过程的性能调校与撰写，受限于各种数据库系统。
+
+### 1.10.2. 使用存储过程
+<a href="#menu" style="float:right">目录</a>
+
+```SQL
+CREATE
+    [DEFINER = { user | CURRENT_USER }]
+　PROCEDURE sp_name ([proc_parameter[,...]])
+    [characteristic ...] routine_body
+ 
+proc_parameter:
+    [ IN | OUT | INOUT ] param_name type
+ 
+characteristic:
+    COMMENT 'string'
+  | LANGUAGE SQL
+  | [NOT] DETERMINISTIC
+  | { CONTAINS SQL | NO SQL | READS SQL DATA | MODIFIES SQL DATA }
+  | SQL SECURITY { DEFINER | INVOKER }
+ 
+routine_body:
+　　Valid SQL routine statement
+ 
+[begin_label:] BEGIN
+　　[statement_list]
+　　　　……
+END [end_label]
+```
+
+* 声明语句结束符，可以自定义:
+
+```sql
+DELIMITER $$
+或
+DELIMITER //
+```
+
+* 声明存储过程:
+```
+CREATE PROCEDURE demo_in_parameter(IN p_in int)       
+```
+
+* 存储过程开始和结束符号:
+```
+BEGIN .... END  
+```  
+
+* 变量赋值:
+```
+SET @p_in=1  
+```
+
+* 变量定义:
+```
+DECLARE l_int int unsigned default 4000000; 
+```
+* 创建mysql存储过程、存储函数:
+```
+create procedure 存储过程名(参数)
+```
+
+* 函数:
+```
+create function 存储函数名(参数)
+```
+**存储过程体**
+* 存储过程体包含了在过程调用时必须执行的语句，例如：dml、ddl语句，if-then-else和while-do语句、声明变量的declare语句等
+* 过程体格式：以begin开始，以end结束(可嵌套)
+```
+BEGIN
+　　BEGIN
+　　　　BEGIN
+　　　　　　statements; 
+　　　　END
+　　END
+END
+```
+每个嵌套块及其中的每条语句，必须以分号结束，表示过程体结束的begin-end块(又叫做复合语句compound statement)，则不需要分号
+
+**为语句块贴标签:**
+```
+[begin_label:] BEGIN
+　　[statement_list]
+END [end_label]
+```
+例如：
+```
+label1: BEGIN
+　　label2: BEGIN
+　　　　label3: BEGIN
+　　　　　　statements; 
+　　　　END label3 ;
+　　END label2;
+END label1
+```
+* 标签有两个作用：
+    * 1、增强代码的可读性
+    * 2、在某些语句(例如:leave和iterate语句)，需要用到标签
+
+
+**例子**
+```sql
+mysql> delimiter $$　　#将语句的结束符号从分号;临时改为两个$$(可以是自定义)
+mysql> CREATE PROCEDURE delete_matches(IN p_playerno INTEGER)
+    -> BEGIN
+    -> 　　DELETE FROM MATCHES
+    ->    WHERE playerno = p_playerno;
+    -> END$$
+Query OK, 0 rows affected (0.01 sec)
+ 
+mysql> delimiter;　　#将语句的结束符号恢复为分号
+
+```
+
+解析：默认情况下，存储过程和默认数据库相关联，如果想指定存储过程创建在某个特定的数据库下，那么在过程名前面加数据库名做前缀。 在定义过程时，使用 DELIMITER $$ 命令将语句的结束符号从分号 ; 临时改为两个 $$，使得过程体中使用的分号被直接传递到服务器，而不会被客户端（如mysql）解释。
+
+**调用**
+```sql
+delete_matches(10);
+```
+### 1.10.3. 存储过程的参数
+<a href="#menu" style="float:right">目录</a>
+
+MySQL存储过程的参数用在存储过程的定义，共有三种参数类型,IN,OUT,INOUT,形式如：
+```
+CREATEPROCEDURE 存储过程名([[IN |OUT |INOUT ] 参数名 数据类形...])
+```
+* IN 输入参数：表示调用者向过程传入值（传入值可以是字面量或变量）
+* OUT 输出参数：表示过程向调用者传出值(可以返回多个值)（传出值只能是变量）
+* INOUT 输入输出参数：既表示调用者向过程传入值，又表示过程向调用者传出值（值只能是变量）
+
+```sql
+mysql> delimiter $$
+mysql> create procedure in_param(in p_in int)
+    -> begin
+    -> 　　select p_in;
+    -> 　　set p_in=2;
+    ->    select P_in;
+    -> end$$
+mysql> delimiter ;
+ 
+mysql> set @p_in=1;
+ 
+mysql> call in_param(@p_in);
++------+
+| p_in |
++------+
+|    1 |
++------+
+ 
++------+
+| P_in |
++------+
+|    2 |
++------+
+ 
+mysql> select @p_in;
++-------+
+| @p_in |
++-------+
+|     1 |
++-------+
+```
+以上可以看出，p_in 在存储过程中被修改，但并不影响 @p_id 的值，因为前者为局部变量、后者为全局变量。
+```sql
+mysql> delimiter //
+mysql> create procedure out_param(out p_out int)
+    ->   begin
+    ->     select p_out;
+    ->     set p_out=2;
+    ->     select p_out;
+    ->   end
+    -> //
+mysql> delimiter ;
+ 
+mysql> set @p_out=1;
+ 
+mysql> call out_param(@p_out);
++-------+
+| p_out |
++-------+
+|  NULL |
++-------+
+　　#因为out是向调用者输出参数，不接收输入的参数，所以存储过程里的p_out为null
++-------+
+| p_out |
++-------+
+|     2 |
++-------+
+ 
+mysql> select @p_out;
++--------+
+| @p_out |
++--------+
+|      2 |
++--------+
+#调用了out_param存储过程，输出参数，改变了p_out变量的值
+```
+```sql
+mysql> delimiter $$
+mysql> create procedure inout_param(inout p_inout int)
+    ->   begin
+    ->     select p_inout;
+    ->     set p_inout=2;
+    ->     select p_inout;
+    ->   end
+    -> $$
+mysql> delimiter ;
+ 
+mysql> set @p_inout=1;
+ 
+mysql> call inout_param(@p_inout);
++---------+
+| p_inout |
++---------+
+|       1 |
++---------+
+ 
++---------+
+| p_inout |
++---------+
+|       2 |
++---------+
+ 
+mysql> select @p_inout;
++----------+
+| @p_inout |
++----------+
+|        2 |
++----------+
+#调用了inout_param存储过程，接受了输入的参数，也输出参数，改变了变量
+```
+
+### 1.10.4. 变量
+<a href="#menu" style="float:right">目录</a>
+
+**变量定义**
+局部变量声明一定要放在存储过程体的开始：
+
+```sql
+DECLAREvariable_name [,variable_name...] datatype [DEFAULT value];
+```
+其中，datatype 为 MySQL 的数据类型，如: int, float, date,varchar(length)
+
+例如:
+```sql
+DECLARE l_int int unsigned default 4000000;  
+DECLARE l_numeric number(8,2) DEFAULT 9.95;  
+DECLARE l_date date DEFAULT '1999-12-31';  
+DECLARE l_datetime datetime DEFAULT '1999-12-31 23:59:59';  
+DECLARE l_varchar varchar(255) DEFAULT 'This will not be padded';
+```
+**变量赋值**
+SET 变量名 = 表达式值 [,variable_name = expression ...]
+
+**用户变量**
+在MySQL客户端使用用户变量:
+```sql
+mysql > SELECT 'Hello World' into @x;  
+mysql > SELECT @x;  
++-------------+  
+|   @x        |  
++-------------+  
+| Hello World |  
++-------------+  
+mysql > SET @y='Goodbye Cruel World';  
+mysql > SELECT @y;  
++---------------------+  
+|     @y              |  
++---------------------+  
+| Goodbye Cruel World |  
++---------------------+  
+ 
+mysql > SET @z=1+2+3;  
+mysql > SELECT @z;  
++------+  
+| @z   |  
++------+  
+|  6   |  
++------+
+```
+在存储过程中使用用户变量
+```sql
+mysql > CREATE PROCEDURE GreetWorld( ) SELECT CONCAT(@greeting,' World');  
+mysql > SET @greeting='Hello';  
+mysql > CALL GreetWorld( );  
++----------------------------+  
+| CONCAT(@greeting,' World') |  
++----------------------------+  
+|  Hello World               |  
++----------------------------+
+在存储过程间传递全局范围的用户变量
+
+mysql> CREATE PROCEDURE p1()   SET @last_procedure='p1';  
+mysql> CREATE PROCEDURE p2() SELECT CONCAT('Last procedure was ',@last_procedure);  
+mysql> CALL p1( );  
+mysql> CALL p2( );  
++-----------------------------------------------+  
+| CONCAT('Last procedure was ',@last_proc       |  
++-----------------------------------------------+  
+| Last procedure was p1                         |  
+ +-----------------------------------------------+
+```
+
+**注意:**
+1、用户变量名一般以@开头
+2、滥用用户变量会导致程序难以理解及管理
+
+### 注释
+<a href="#menu" style="float:right">目录</a>
+
+**注释**
+MySQL 存储过程可使用两种风格的注释
+* 两个横杆--：该风格一般用于单行注释。
+* c 风格： 一般用于多行注释。
+
+例如：
+```sql
+mysql > DELIMITER //  
+mysql > CREATE PROCEDURE proc1 --name存储过程名  
+     -> (IN parameter1 INTEGER)   
+     -> BEGIN   
+     -> DECLARE variable1 CHAR(10);   
+     -> IF parameter1 = 17 THEN   
+     -> SET variable1 = 'birds';   
+     -> ELSE 
+     -> SET variable1 = 'beasts';   
+    -> END IF;   
+    -> INSERT INTO table1 VALUES (variable1);  
+    -> END   
+    -> //  
+mysql > DELIMITER ;
+```
+### MySQL存储过程的控制语句
+
+**变量作用域**
+
+内部的变量在其作用域范围内享有更高的优先权，当执行到 end。变量时，内部变量消失，此时已经在其作用域外，变量不再可见了，应为在存储过程外再也不能找到这个申明的变量，但是你可以通过 out 参数或者将其值指派给会话变量来保存其值。
+```sql
+mysql > DELIMITER //  
+mysql > CREATE PROCEDURE proc3()  
+     -> begin 
+     -> declare x1 varchar(5) default 'outer';  
+     -> begin 
+     -> declare x1 varchar(5) default 'inner';  
+      -> select x1;  
+      -> end;  
+       -> select x1;  
+     -> end;  
+     -> //  
+mysql > DELIMITER ;
+```
+
+**if-then-else 语句**
+```sql
+mysql > DELIMITER //  
+mysql > CREATE PROCEDURE proc2(IN parameter int)  
+     -> begin 
+     -> declare var int;  
+     -> set var=parameter+1;  
+     -> if var=0 then 
+     -> insert into t values(17);  
+     -> end if;  
+     -> if parameter=0 then 
+     -> update t set s1=s1+1;  
+     -> else 
+     -> update t set s1=s1+2;  
+     -> end if;  
+     -> end;  
+     -> //  
+mysql > DELIMITER ;
+```
+
+**case语句：**
+```sql
+mysql > DELIMITER //  
+mysql > CREATE PROCEDURE proc3 (in parameter int)  
+     -> begin 
+     -> declare var int;  
+     -> set var=parameter+1;  
+     -> case var  
+     -> when 0 then   
+     -> insert into t values(17);  
+     -> when 1 then   
+     -> insert into t values(18);  
+     -> else   
+     -> insert into t values(19);  
+     -> end case;  
+     -> end;  
+     -> //  
+mysql > DELIMITER ; 
+case
+    when var=0 then
+        insert into t values(30);
+    when var>0 then
+    when var<0 then
+    else
+end case
+```
+
+**while ···· end while**
+```sql
+mysql > DELIMITER //  
+mysql > CREATE PROCEDURE proc4()  
+     -> begin 
+     -> declare var int;  
+     -> set var=0;  
+     -> while var<6 do  
+     -> insert into t values(var);  
+     -> set var=var+1;  
+     -> end while;  
+     -> end;  
+     -> //  
+mysql > DELIMITER ;
+while 条件 do
+    --循环体
+endwhile
+```
+
+**repeat···· end repea**
+
+它在执行操作后检查结果，而 while 则是执行前进行检查。
+```sql
+mysql > DELIMITER //  
+mysql > CREATE PROCEDURE proc5 ()  
+     -> begin   
+     -> declare v int;  
+     -> set v=0;  
+     -> repeat  
+     -> insert into t values(v);  
+     -> set v=v+1;  
+     -> until v>=5  
+     -> end repeat;  
+     -> end;  
+     -> //  
+mysql > DELIMITER ;
+repeat
+    --循环体
+until 循环条件  
+end repeat;
+```
+**loop ·····endloop**
+
+loop 循环不需要初始条件，这点和 while 循环相似，同时和 repeat 循环一样不需要结束条件, leave 语句的意义是离开循环。
+```sql
+mysql > DELIMITER //  
+mysql > CREATE PROCEDURE proc6 ()  
+     -> begin 
+     -> declare v int;  
+     -> set v=0;  
+     -> LOOP_LABLE:loop  
+     -> insert into t values(v);  
+     -> set v=v+1;  
+     -> if v >=5 then 
+     -> leave LOOP_LABLE;  
+     -> end if;  
+     -> end loop;  
+     -> end;  
+     -> //  
+mysql > DELIMITER ;
+```
+**LABLES 标号：**
+
+标号可以用在 begin repeat while 或者 loop 语句前，语句标号只能在合法的语句前面使用。可以跳出循环，使运行指令达到复合语句的最后一步。
+
+**ITERATE迭代**
+
+ITERATE 通过引用复合语句的标号,来从新开始复合语句:
+```sql
+mysql > DELIMITER //  
+mysql > CREATE PROCEDURE proc10 ()  
+     -> begin 
+     -> declare v int;  
+     -> set v=0;  
+     -> LOOP_LABLE:loop  
+     -> if v=3 then   
+     -> set v=v+1;  
+     -> ITERATE LOOP_LABLE;  
+     -> end if;  
+     -> insert into t values(v);  
+     -> set v=v+1;  
+     -> if v>=5 then 
+     -> leave LOOP_LABLE;  
+     -> end if;  
+     -> end loop;  
+     -> end;  
+     -> //  
+mysql > DELIMITER ;
+```
+
+
+### 查看存储过程
+
+为显示用来创建一个存储过程的CREATE语句，使用SHOW CREATEPROCEDURE语句：
+为了获得包括何时、由谁创建等详细信息的存储过程列表， 使用SHOWPROCEDURE STATUS。
+
+### 删除 
+
+```SQL
+DROP PROCEDUPR pro_name;
+```
+
+
 ## 1.11. 触发器
 <a href="#menu" style="float:right">目录</a>
+
 
 ### 1.11.1. 基本概念
 * 触发器
@@ -3151,7 +4128,7 @@ mysql> show slave hosts ;
 ### 1.26.1. 查找最晚入职员工的所有信息
 <a href="#menu" style="float:right">目录</a> 
 
-```
+```SQL
 CREATE TABLE `employees` (
 `emp_no` int(11) NOT NULL,
 `birth_date` date NOT NULL,
@@ -3162,13 +4139,15 @@ CREATE TABLE `employees` (
 PRIMARY KEY (`emp_no`));
 ```
 解答
-```
+```SQL
 select * from employees 
     order by hire_date desc limit 1;
 ```
 ### 1.26.2. 查找入职员工时间排名倒数第三的员工所有信息
+
 <a href="#menu" style="float:right">目录</a> 
-```
+
+```SQL
 CREATE TABLE `employees` (
 `emp_no` int(11) NOT NULL,
 `birth_date` date NOT NULL,
@@ -3179,7 +4158,7 @@ CREATE TABLE `employees` (
 PRIMARY KEY (`emp_no`));
 ```
 使用子查询
-```
+```SQL
 select * from  employees where hire_date =  (
     select hire_date
   from employees 
@@ -3187,7 +4166,7 @@ select * from  employees where hire_date =  (
        limit 2,1 );
 ```
 不使用子查询
-```
+```SQL
 select *
   from employees 
    order by hire_date  desc 
@@ -3195,9 +4174,10 @@ select *
 ```
 
 ### 1.26.3. 查找各个部门当前(to_date='9999-01-01')领导当前薪水详情以及其对应部门编号dept_no
+
 <a href="#menu" style="float:right">目录</a> 
 
-```
+```SQL
 CREATE TABLE `dept_manager` (
 `dept_no` char(4) NOT NULL,
 `emp_no` int(11) NOT NULL,
@@ -3213,7 +4193,7 @@ CREATE TABLE `salaries` (
 PRIMARY KEY (`emp_no`,`from_date`));
 ```
 使用内连接查询
-```
+```SQL
 select s.*,d.dept_no
     from  salaries s  inner join dept_manager d 
     where d.to_date='9999-01-01' 
@@ -3224,7 +4204,7 @@ select s.*,d.dept_no
 ### 1.26.4. 查找所有已经分配部门的员工的last_name和first_name
 <a href="#menu" style="float:right">目录</a> 
 
-```
+```SQL
 CREATE TABLE `dept_emp` (
 `emp_no` int(11) NOT NULL,
 `dept_no` char(4) NOT NULL,
@@ -3242,7 +4222,7 @@ CREATE TABLE `employees` (
 PRIMARY KEY (`emp_no`));
 ```
 
-```
+```SQL
 select e.last_name ,e.first_name,d.dept_no
     from  employees e inner join dept_emp d
       where e.emp_no = d.emp_no;
@@ -3268,7 +4248,7 @@ CREATE TABLE `employees` (
 `hire_date` date NOT NULL,
 PRIMARY KEY (`emp_no`));
 ```
-```
+```SQL
 select e.last_name,e.first_name,d.dept_no
     from employees e left join  dept_emp d
       on e.emp_no = d.emp_no;
@@ -3277,7 +4257,7 @@ select e.last_name,e.first_name,d.dept_no
 ### 1.26.6. 查找所有员工入职时候的薪水情况，给出emp_no以及salary， 并按照emp_no进行逆序
 <a href="#menu" style="float:right">目录</a> 
 
-```
+```SQL
 CREATE TABLE `employees` (
 `emp_no` int(11) NOT NULL,
 `birth_date` date NOT NULL,
@@ -3296,7 +4276,7 @@ PRIMARY KEY (`emp_no`,`from_date`));
 ```
 from_date 是涨薪的起始日期，
 因为是入职时的薪水，因此需要s.from_date = e.hire_date
-```
+```SQL
 select e.emp_no,s.salary
     from  salaries s inner join   employees e 
     where s.from_date = e.hire_date
@@ -3307,7 +4287,7 @@ select e.emp_no,s.salary
 ### 1.26.7. 查找薪水涨幅超过15次的员工号emp_no以及其对应的涨幅次数t
 <a href="#menu" style="float:right">目录</a> 
 
-```
+```SQL
 CREATE TABLE `salaries` (
 `emp_no` int(11) NOT NULL,
 `salary` int(11) NOT NULL,
@@ -3320,7 +4300,7 @@ PRIMARY KEY (`emp_no`,`from_date`));
 1、用COUNT()函数和GROUP BY语句可以统计同一emp_no值的记录条数
 2、根据题意，输出的涨幅次数为t，故用AS语句将COUNT(emp_no)的值转换为t
 3、由于WHERE后不可跟COUNT()函数，故用HAVING语句来限定t>15的条件
-```
+```SQL
 SELECT emp_no, COUNT(emp_no) AS t
   FROM salaries
 	GROUP BY emp_no HAVING t > 15;
@@ -3328,7 +4308,7 @@ SELECT emp_no, COUNT(emp_no) AS t
 ### 1.26.8. 找出所有员工当前(to_date='9999-01-01')具体的薪水salary情况，对于相同的薪水只显示一次,并按照逆序显示
 <a href="#menu" style="float:right">目录</a> 
 
-```
+```SQL
 CREATE TABLE `salaries` (
 `emp_no` int(11) NOT NULL,
 `salary` int(11) NOT NULL,
@@ -3338,7 +4318,7 @@ PRIMARY KEY (`emp_no`,`from_date`));
 ```
 GROUP BY :值相同的为一组
 ORDER BY　salary desc：降序排序
-```
+```SQL
 SELECT salary 
     FROM   salaries
       WHERE to_date='9999-01-01'
@@ -3348,7 +4328,7 @@ SELECT salary
 ### 1.26.9. 获取所有部门当前manager的当前薪水情况，给出dept_no, emp_no以及salary，当前表示to_date='9999-01-01'
 <a href="#menu" style="float:right">目录</a> 
 
-```
+```SQL
 CREATE TABLE `dept_manager` (
 `dept_no` char(4) NOT NULL,
 `emp_no` int(11) NOT NULL,
@@ -3364,7 +4344,7 @@ CREATE TABLE `salaries` (
 PRIMARY KEY (`emp_no`,`from_date`));
 ```
 
-```
+```SQL
 select d.dept_no,d.emp_no,s.salary
     from dept_manager d inner join salaries s
         where d.emp_no = s.emp_no
@@ -3375,7 +4355,7 @@ select d.dept_no,d.emp_no,s.salary
 ### 1.26.10. 获取所有非manager的员工emp_no
 <a href="#menu" style="float:right">目录</a> 
 
-```
+```SQL
 CREATE TABLE `dept_manager` (
 `dept_no` char(4) NOT NULL,
 `emp_no` int(11) NOT NULL,
@@ -3393,7 +4373,7 @@ CREATE TABLE `employees` (
 PRIMARY KEY (`emp_no`));
 ```
 使用not in 和子查询来解决．
-```
+```SQL
 select emp_no 
     from employees 
       where emp_no not in 
@@ -3407,7 +4387,7 @@ select emp_no
 ### 1.26.11. 获取所有员工当前的manager，如果当前的manager是自己的话结果不显示，当前表示to_date='9999-01-01'。
 结果第一列给出当前员工的emp_no,第二列给出其manager对应的manager_no。
 
-```
+```SQL
 CREATE TABLE `dept_emp` (
 `emp_no` int(11) NOT NULL,
 `dept_no` char(4) NOT NULL,
@@ -3427,7 +4407,7 @@ dept_emp是员工表，dept_manager是部门表
 员工不一有manager，所以要通过e.dept_no = m.dept_no过滤掉没有manager的员工
 
 
-```
+```SQL
 select e.emp_no emp_no,m.emp_no manager_no 
     from  dept_manager m inner join dept_emp e
         where e.dept_no = m.dept_no
@@ -3439,7 +4419,7 @@ select e.emp_no emp_no,m.emp_no manager_no
 
 ### 1.26.12. 获取所有部门中当前员工薪水最高的相关信息，给出dept_no, emp_no以及其对应的salary
 
-```
+```SQL
 CREATE TABLE `dept_emp` (
 `emp_no` int(11) NOT NULL,
 `dept_no` char(4) NOT NULL,
@@ -3459,7 +4439,7 @@ PRIMARY KEY (`emp_no`,`from_date`));
 求解的是每个部门工资最高的员工
 所以group by　使用d.dept_no，按照部门分组．
 但是分组后
-```
+```SQL
 select d.dept_no, d.emp_no ,max(s.salary)
     from  dept_emp d inner join salaries s
        on d.emp_no = s.emp_no
@@ -3470,7 +4450,7 @@ select d.dept_no, d.emp_no ,max(s.salary)
 
 ### 1.26.13. 从titles表获取按照title进行分组，每组个数大于等于2，给出title以及对应的数目t。
 
-```
+```SQL
 CREATE TABLE IF NOT EXISTS "titles" (
 `emp_no` int(11) NOT NULL,
 `title` varchar(50) NOT NULL,
@@ -3480,7 +4460,7 @@ CREATE TABLE IF NOT EXISTS "titles" (
 
 ```
 使用group by 分组，使用count统计个数
-```
+```SQL
 select  title,count(title)
     from titles
         group by title;
@@ -3491,7 +4471,7 @@ select  title,count(title)
 
 注意对于重复的emp_no进行忽略。
 
-```
+```SQL
 CREATE TABLE IF NOT EXISTS "titles" (
 `emp_no` int(11) NOT NULL,
 `title` varchar(50) NOT NULL,
@@ -3502,7 +4482,7 @@ CREATE TABLE IF NOT EXISTS "titles" (
 
 ```
 使用distinct对结果去重
-```
+```SQL
 select  title,count(distinct emp_no) t
     from  titles
         group by title
@@ -3512,7 +4492,7 @@ select  title,count(distinct emp_no) t
 
 ### 1.26.15. 查找employees表所有emp_no为奇数，且last_name不为Mary的员工信息，并按照hire_date逆序排列
 
-```
+```SQL
 CREATE TABLE `employees` (
 `emp_no` int(11) NOT NULL,
 `birth_date` date NOT NULL,
@@ -3524,7 +4504,7 @@ PRIMARY KEY (`emp_no`));
 
 
 ```
-```
+```SQL
 select * 
     from employees 
         where (emp_no%2 = 1)
@@ -3534,7 +4514,8 @@ select *
 <a href="#menu" style="float:right">目录</a> 
 
 ### 1.26.16. 统计出当前各个title类型对应的员工当前薪水对应的平均工资。结果给出title以及平均工资avg。
-```
+
+```SQL
 CREATE TABLE `salaries` (
 `emp_no` int(11) NOT NULL,
 `salary` int(11) NOT NULL,
@@ -3549,7 +4530,7 @@ CREATE TABLE IF NOT EXISTS "titles" (
 `to_date` date DEFAULT NULL);
 
 ```
-```
+```SQL
 select t.title title ,avg(s.salary) avg
     from salaries s  inner join titles t
         where  s.emp_no = t.emp_no
@@ -3559,7 +4540,8 @@ select t.title title ,avg(s.salary) avg
 <a href="#menu" style="float:right">目录</a> 
 
 ### 1.26.17. 获取当前（to_date='9999-01-01'）薪水第二多的员工的emp_no以及其对应的薪水salary
-```
+
+```SQL
 CREATE TABLE `salaries` (
 `emp_no` int(11) NOT NULL,
 `salary` int(11) NOT NULL,
@@ -3571,7 +4553,7 @@ PRIMARY KEY (`emp_no`,`from_date`));
 ```
 因为是第二大，使用　desc降序排序
 limit 1,1限制第二条数据
-```
+```SQL
 select emp_no ,salary
     from salaries 
         where to_date='9999-01-01'
@@ -3581,7 +4563,8 @@ select emp_no ,salary
 <a href="#menu" style="float:right">目录</a> 
 
 ### 1.26.18. 查找当前薪水(to_date='9999-01-01')排名第二多的员工编号emp_no、薪水salary、last_name以及first_name，不准使用order by
-```
+
+```SQL
 CREATE TABLE `employees` (
 `emp_no` int(11) NOT NULL,
 `birth_date` date NOT NULL,
@@ -3601,7 +4584,7 @@ PRIMARY KEY (`emp_no`,`from_date`));
 
 ```
 先去除第一大，再获取第二大
-```
+```SQL
 select s.emp_no,s.salary,e.last_name,e.first_name 
     from employees e inner join salaries s
         on e.emp_no = s.emp_no
@@ -3624,7 +4607,8 @@ select s.emp_no,s.salary,e.last_name,e.first_name
 <a href="#menu" style="float:right">目录</a> 
 
 ### 1.26.19. 查找所有员工的last_name和first_name以及对应的dept_name，也包括暂时没有分配部门的员工
-```
+
+```SQL
 CREATE TABLE `departments` (
 `dept_no` char(4) NOT NULL,
 `dept_name` varchar(40) NOT NULL,
@@ -3652,7 +4636,7 @@ PRIMARY KEY (`emp_no`));
 本题思路为运用两次LEFT JOIN连接嵌套
 1、第一次LEFT JOIN连接employees表与dept_emp表，得到所有员工的last_name和first_name以及对应的dept_no，也包括暂时没有分配部门的员工
 2、第二次LEFT JOIN连接上表与departments表，即连接dept_no与dept_name，得到所有员工的last_name和first_name以及对应的dept_name，也包括暂时没有分配部门的员工
-```
+```SQL
 select  e.last_name,e.first_name,dp.dept_name
      from (employees e left join dept_emp de on e.emp_no = de.emp_no )
            left join  departments dp on de.dept_no = dp.dept_no;
@@ -3660,7 +4644,7 @@ select  e.last_name,e.first_name,dp.dept_name
 <a href="#menu" style="float:right">目录</a> 
 
 ### 1.26.20. 查找员工编号emp_no为10001其自入职以来的薪水salary涨幅值growth
-```
+```SQL
 CREATE TABLE `salaries` (
 `emp_no` int(11) NOT NULL,
 `salary` int(11) NOT NULL,
@@ -3672,7 +4656,7 @@ PRIMARY KEY (`emp_no`,`from_date`));
 ```
 to_date 是每一次薪资变化的记录时间
 所以查找to_date最大和最小时的薪资差值即可
-```
+```SQL
 select 
     (select salary
            from salaries
@@ -3691,7 +4675,8 @@ select
 <a href="#menu" style="float:right">目录</a> 
 
 ### 1.26.21. **查找所有员工自入职以来的薪水涨幅情况，给出员工编号emp_no以及其对应的薪水涨幅growth，并按照growth进行升序
-```
+
+```SQL
 CREATE TABLE `employees` (
 `emp_no` int(11) NOT NULL,
 `birth_date` date NOT NULL,
@@ -3707,11 +4692,11 @@ CREATE TABLE `salaries` (
 `from_date` date NOT NULL,
 `to_date` date NOT NULL,
 PRIMARY KEY (`emp_no`,`from_date`));
-**
+
 
 
 ```
-```
+```SQL
 select a.emp_no, (b.salary - c.salary) as growth
 from
     employees as a
@@ -3724,7 +4709,8 @@ order by growth asc
 <a href="#menu" style="float:right">目录</a> 
 
 ### 1.26.22. 统计各个部门对应员工涨幅的次数总和，给出部门编码dept_no、部门名称dept_name以及次数sum
-```
+
+```SQL
 CREATE TABLE `departments` (
 `dept_no` char(4) NOT NULL,
 `dept_name` varchar(40) NOT NULL,
@@ -3743,11 +4729,12 @@ CREATE TABLE `salaries` (
 `from_date` date NOT NULL,
 `to_date` date NOT NULL,
 PRIMARY KEY (`emp_no`,`from_date`));
+
 ```
 先dept_emp  de  inner join  salaries s　去除没有部门的员工
 再inner join  departments 获得部门表信息　
 再对dept_no进行分组
-```
+```SQL
 select dp.dept_no,dp.dept_name,count(s.salary)
     from (dept_emp  de  inner join  salaries s
             on de.emp_no = s.emp_no) 
@@ -3757,7 +4744,8 @@ select dp.dept_no,dp.dept_name,count(s.salary)
 <a href="#menu" style="float:right">目录</a> 
 
 ### 1.26.23. 对所有员工的当前(to_date='9999-01-01')薪水按照salary进行按照1-N的排名，相同salary并列且按照emp_no升序排列
-```
+
+```SQL
 CREATE TABLE `salaries` (
 `emp_no` int(11) NOT NULL,
 `salary` int(11) NOT NULL,
@@ -3767,13 +4755,12 @@ PRIMARY KEY (`emp_no`,`from_date`));
 
 
 ```
-```
-s
-```
+
 <a href="#menu" style="float:right">目录</a> 
 
 ### 1.26.24. 获取所有非manager员工当前的薪水情况，给出dept_no、emp_no以及salary ，当前表示to_date='9999-01-01'
-```
+
+```SQL
 CREATE TABLE `dept_emp` (
 `emp_no` int(11) NOT NULL,
 `dept_no` char(4) NOT NULL,
@@ -3806,19 +4793,19 @@ PRIMARY KEY (`emp_no`,`from_date`));
 
 
 ```
-```
-s
-```
+
 
 
 <a href="#menu" style="float:right">目录</a> 
 
 ### 1.26.25. 获取员工其当前的薪水比其manager当前薪水还高的相关信息，当前表示to_date='9999-01-01',
+
 结果第一列给出员工的emp_no，
 第二列给出其manager的manager_no，
 第三列给出该员工当前的薪水emp_salary,
 第四列给该员工对应的manager当前的薪水manager_salary
-```
+
+```SQL
 CREATE TABLE `dept_emp` (
 `emp_no` int(11) NOT NULL,
 `dept_no` char(4) NOT NULL,
@@ -3840,14 +4827,13 @@ CREATE TABLE `salaries` (
 `to_date` date NOT NULL,
 PRIMARY KEY (`emp_no`,`from_date`));
 ```
-```
-s
-```
+
 
 <a href="#menu" style="float:right">目录</a> 
 
 ### 1.26.26. 汇总各个部门当前员工的title类型的分配数目，结果给出部门编号dept_no、dept_name、其当前员工所有的title以及该类型title对应的数目count
-```
+
+```SQL
 CREATE TABLE `departments` (
 `dept_no` char(4) NOT NULL,
 `dept_name` varchar(40) NOT NULL,
@@ -3875,7 +4861,7 @@ s
 ### 1.26.27. 给出每个员工每年薪水涨幅超过5000的员工编号emp_no、薪水变更开始日期from_date以及薪水涨幅值salary_growth，并按照salary_growth逆序排列。
 提示：在sqlite中获取datetime时间对应的年份函数为strftime('%Y', to_date)
 
-```
+```SQL
 CREATE TABLE `salaries` (
 `emp_no` int(11) NOT NULL,
 `salary` int(11) NOT NULL,
@@ -3890,7 +4876,8 @@ s
 <a href="#menu" style="float:right">目录</a> 
 
 ### 1.26.28. 查找描述信息中包括robot的电影对应的分类名称以及电影数目，而且还需要该分类对应电影数量>=5部
-```
+
+```SQL
 film表
 字段	说明
 film_id	电影id
@@ -3923,6 +4910,7 @@ film_id  smallint(5)  NOT NULL,
 category_id  tinyint(3)  NOT NULL, `last_update` timestamp);
 
 ```
+
 ```
 s
 ```
@@ -3930,7 +4918,8 @@ s
 <a href="#menu" style="float:right">目录</a> 
 
 ### 1.26.29. 使用join查询方式找出没有分类的电影id以及名称
-```
+
+```SQL
 film表
 字段	说明
 film_id	电影id
@@ -3969,7 +4958,8 @@ s
 <a href="#menu" style="float:right">目录</a> 
 
 ### 1.26.30. 使用子查询的方式找出属于Action分类的所有电影对应的title,description
-```
+
+```SQL
 lm表
 字段	说明
 film_id	电影id
@@ -4002,7 +4992,8 @@ film_id  smallint(5)  NOT NULL,
 category_id  tinyint(3)  NOT NULL, `last_update` timestamp);
 
 ```
-```
+
+```SQL
 子查询解法：
 
 select f.title,f.description from film as f
@@ -4010,7 +5001,8 @@ where f.film_id in (select fc.film_id from film_category as fc
                where fc.category_id in (select c.category_id from category as c
                                         where c.name = 'Action'));
 ```
-```
+
+```SQL
 非子查询解法：
 
 select f.title,f.description
@@ -4019,20 +5011,22 @@ from film as f inner join film_category as fc on f.film_id = fc.film_id
 where c.name = 'Action';
 ```
 
-<a href="#menu" style="float:right">目录</a> 
-### 1.26.31. 获取select
-```
-获取select * from employees对应的执行计划
-```
+<a href="#menu" style="float:right">目录</a>
 
-```
+### 1.26.31. 获取select
+
+
+获取select * from employees对应的执行计划
+
+```SQL
 EXPLAIN SELECT * FROM employees
 ```
 
 <a href="#menu" style="float:right">目录</a> 
 
 ### 1.26.32. 将employees表的所有员工的last_name和first_name拼接起来作为Name，中间以一个空格区分
-```
+
+```SQL
 CREATE TABLE `employees` ( `emp_no` int(11) NOT NULL,
 `birth_date` date NOT NULL,
 `first_name` varchar(14) NOT NULL,
@@ -4042,7 +5036,7 @@ CREATE TABLE `employees` ( `emp_no` int(11) NOT NULL,
 PRIMARY KEY (`emp_no`));
 ```
 
-```
+```SQL
 select last_name||" "||first_name as name from employees
 select concat（last_name，‘ ’，first_name）as name from employees
 ```
@@ -4052,14 +5046,14 @@ select concat（last_name，‘ ’，first_name）as name from employees
 
 ### 1.26.33. 创建一个actor表，包含如下列信息
 
-```
+```SQL
 列表	类型	是否为NULL	含义
 actor_id	smallint(5)	not null	主键id
 first_name	varchar(45)	not null	名字
 last_name	varchar(45)	not null	姓氏
 last_update	timestamp	not null	最后更新时间，默认是系统的当前时间
 ```
-```
+```SQL
 
 根据题意，本题关键点是actor_id的主键设置与last_update的默认获取系统时间：
 1、在actor_id字段末尾加上PRIMARY KEY是将该字段设置为主键，
@@ -4078,7 +5072,8 @@ CREATE TABLE actor(
 <a href="#menu" style="float:right">目录</a> 
 
 ### 1.26.34. 批量插入数据
-```
+
+```SQL
 对于表actor批量插入如下数据
 CREATE TABLE IF NOT EXISTS actor (
 actor_id smallint(5) NOT NULL PRIMARY KEY,
@@ -4086,7 +5081,7 @@ first_name varchar(45) NOT NULL,
 last_name varchar(45) NOT NULL,
 last_update timestamp NOT NULL DEFAULT (datetime('now','localtime')))
 ```
-```
+```SQL
 方法一：利用VALUES(value1, value2, ...), (value1, value2, ...), ...(value1, value2, ...),
 INSERT INTO actor
 VALUES (1, 'PENELOPE', 'GUINESS', '2006-02-15 12:34:33'),
@@ -4109,7 +5104,7 @@ first_name varchar(45) NOT NULL,
 last_name varchar(45) NOT NULL,
 last_update timestamp NOT NULL DEFAULT (datetime('now','localtime')))
 ```
-```
+```SQL
 insert IGNORE into actor
 values(3,'ED','CHASE','2006-02-15 12:34:33');
 ```
@@ -4117,6 +5112,7 @@ values(3,'ED','CHASE','2006-02-15 12:34:33');
 <a href="#menu" style="float:right">目录</a> 
 
 ### 1.26.36. 创建一个actor_name表
+
 ```
 对于如下表actor，其对应的数据为:
 actor_id	first_name	last_name	last_update
@@ -4128,9 +5124,7 @@ actor_id	first_name	last_name	last_update
 first_name	varchar(45)	not null	名字
 last_name	varchar(45)	not null	姓氏
 ```
-```
-
-
+```SQL
 create table actor_name
 select first_name,last_name from actor;
 ```
@@ -4138,7 +5132,7 @@ select first_name,last_name from actor;
 <a href="#menu" style="float:right">目录</a> 
 
 ### 1.26.37. 对first_name创建唯一索引uniq_idx_firstname
-```
+```SQL
 针对如下表actor结构创建索引：
 CREATE TABLE IF NOT EXISTS actor (
 actor_id smallint(5) NOT NULL PRIMARY KEY,
@@ -4159,7 +5153,7 @@ CREATE INDEX idx_lastname ON actor(last_name);
 <a href="#menu" style="float:right">目录</a> 
 
 ### 1.26.38. 针对actor表创建视图actor_name_view
-```
+```SQL
 针对actor表创建视图actor_name_view，只包含first_name以及last_name两列，并对这两列重新命名，first_name为first_name_v，last_name修改为last_name_v：
 CREATE TABLE IF NOT EXISTS actor (
 actor_id smallint(5) NOT NULL PRIMARY KEY,
@@ -4167,10 +5161,7 @@ first_name varchar(45) NOT NULL,
 last_name varchar(45) NOT NULL,
 last_update timestamp NOT NULL DEFAULT (datetime('now','localtime')))
 ```
-```
-
-
-
+```SQL
 方法一：注意 CREATE VIEW ... AS ... 的 AS 是创建视图语法中的一部分，而后面的两个 AS 只是为字段创建别名
 
 CREATE VIEW actor_name_view AS
@@ -4184,7 +5175,7 @@ SELECT first_name, last_name FROM actor
 <a href="#menu" style="float:right">目录</a> 
 
 ### 1.26.39. 针对上面的salaries表emp_no字段创建索引idx_emp_no
-```
+```SQL
 针对salaries表emp_no字段创建索引idx_emp_no，查询emp_no为10005, 使用强制索引。
 CREATE TABLE `salaries` (
 `emp_no` int(11) NOT NULL,
@@ -4203,7 +5194,7 @@ SELECT * FROM salaries FORCE INDEX idx_emp_no WHERE emp_no = 10005
 
 ### 1.26.40. 在last_update后面新增加一列名字为create_date
 
-```
+```SQL
 存在actor表，包含如下列信息：
 CREATE TABLE IF NOT EXISTS actor (
 actor_id smallint(5) NOT NULL PRIMARY KEY,
@@ -4258,7 +5249,7 @@ END;
 
 ### 1.26.42. 删除emp_no重复的记录，只保留最小的id对应的记录。
 
-```
+```SQL
 删除emp_no重复的记录，只保留最小的id对应的记录。
 CREATE TABLE IF NOT EXISTS titles_test (
 id int(11) not null primary key,
@@ -4308,7 +5299,7 @@ WHERE to_date = '9999-01-01';
 
 ### 1.26.44. 将id=5以及emp_no=10001的行数据替换成id=5以及emp_no=10005
 
-```
+```SQL
 将id=5以及emp_no=10001的行数据替换成id=5以及emp_no=10005,其他数据保持不变，使用replace实现。
 CREATE TABLE IF NOT EXISTS titles_test (
 id int(11) not null primary key,
@@ -4325,10 +5316,8 @@ insert into titles_test values ('1', '10001', 'Senior Engineer', '1986-06-26', '
 ('6', '10002', 'Staff', '1996-08-03', '9999-01-01'),
 ('7', '10003', 'Senior Engineer', '1995-12-03', '9999-01-01');
 ```
-```
 
-
-
+```SQL
 方法一：全字段更新替换。由于 REPLACE 的新记录中 id=5，与表中的主键 id=5 冲突，故会替换掉表中 id=5 的记录，否则会插入一条新记录（例如新插入的记录 id = 10）。并且要将所有字段的值写出，否则将置为空。可参考：
 http://blog.csdn.net/zhangjg_blog/article/details/23267761
 
@@ -4349,7 +5338,7 @@ UPDATE titles_test SET emp_no = 10005 WHERE id = 5
 
 
 ### 1.26.45. 将titles_test表名修改为titles_2017
-```
+```SQL
 将titles_test表名修改为titles_2017。
 CREATE TABLE IF NOT EXISTS titles_test (
 id int(11) not null primary key,
@@ -4373,7 +5362,7 @@ ALTER TABLE titles_test RENAME TO titles_2017
 <a href="#menu" style="float:right">目录</a> 
 
 ### 1.26.46. 在audit表上创建外键约束，其emp_no对应employees_test表的主键id
-```
+```SQL
 在audit表上创建外键约束，其emp_no对应employees_test表的主键id。
 CREATE TABLE employees_test(
 ID INT PRIMARY KEY NOT NULL,
@@ -4388,7 +5377,7 @@ EMP_no INT NOT NULL,
 create_date datetime NOT NULL
 );
 ```
-```
+```SQL
 drop table audit;
 CREATE TABLE audit(
     EMP_no INT NOT NULL,
@@ -4399,11 +5388,11 @@ CREATE TABLE audit(
 
 <a href="#menu" style="float:right">目录</a> 
 
-### 道德规范
+
   
 ### 1.26.47. 如何获取emp_v和employees有相同的数据no
 
-```
+```SQL
 存在如下的视图：
 create view emp_v as select * from employees where emp_no >10005;
 如何获取emp_v和employees有相同的数据？
@@ -4425,9 +5414,7 @@ emp_no	birth_date	first_name	last_name	gender	hire_date
 10011	1953-11-07	Mary	Sluis	F	1990-01-22
 ```
 
-```
-
-
+```SQL
 由于视图 emp_v 的记录是从 employees 中导出的，所以要判断两者中相等的数据，只需要判断emp_no相等即可。
 方法一：用 WHERE 选取二者 emp_no 相等的记录
 
@@ -4448,9 +5435,9 @@ SELECT * FROM employees, emp_v WHERE employees.emp_no = emp_v.emp_no
 <a href="#menu" style="float:right">目录</a> 
 
 
-### 48.将所有获取奖金的员工当前的薪水增加10%
+### 1.26.48. 将所有获取奖金的员工当前的薪水增加百分之十
 
-```
+```SQL
 将所有获取奖金的员工当前的薪水增加10%。
 create table emp_bonus(
 emp_no int not null,
@@ -4462,6 +5449,7 @@ CREATE TABLE `salaries` (
 `from_date` date NOT NULL,
 `to_date` date NOT NULL, PRIMARY KEY (`emp_no`,`from_date`));
 ```
+
 ```
 
 
@@ -4478,3 +5466,426 @@ UPDATE salaries SET salary = salary * 1.1 WHERE emp_no IN
 
 UPDATE salaries SET salary = salary * 1.1 
 ```
+
+<a href="#menu" style="float:right">目录</a> 
+
+### 1.26.49. 针对库中的所有表生成select count(*)对应的SQL语句
+
+```SQL
+针对库中的所有表生成select count(*)对应的SQL语句
+CREATE TABLE `employees` (
+`emp_no` int(11) NOT NULL,
+`birth_date` date NOT NULL,
+`first_name` varchar(14) NOT NULL,
+`last_name` varchar(16) NOT NULL,
+`gender` char(1) NOT NULL,
+`hire_date` date NOT NULL,
+PRIMARY KEY (`emp_no`));
+
+create table emp_bonus(
+emp_no int not null,
+recevied datetime not null,
+btype smallint not null);
+
+CREATE TABLE `dept_emp` (
+`emp_no` int(11) NOT NULL,
+`dept_no` char(4) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`dept_no`));
+
+CREATE TABLE `dept_manager` (
+`dept_no` char(4) NOT NULL,
+`emp_no` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`dept_no`));
+
+CREATE TABLE `salaries` (
+`emp_no` int(11) NOT NULL,
+`salary` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`from_date`));
+输出格式:
+cnts
+select count(*) from employees;
+select count(*) from departments;
+select count(*) from dept_emp;
+select count(*) from dept_manager;
+select count(*) from salaries;
+select count(*) from titles;
+select count(*) from emp_bonus;
+```
+```SQL
+select concat('select count(*) from', ' ', TABLE_NAME, ';') as cnts
+ from (select table_name from information_schema.tables where table_schema='shop') as hi;
+```
+
+<a href="#menu" style="float:right">目录</a> 
+
+### 1.26.50. 将employees表中的所有员工的last_name和first_name通过(')连接起来。
+```SQL
+将employees表中的所有员工的last_name和first_name通过(')连接起来。
+CREATE TABLE `employees` (
+`emp_no` int(11) NOT NULL,
+`birth_date` date NOT NULL,
+`first_name` varchar(14) NOT NULL,
+`last_name` varchar(16) NOT NULL,
+`gender` char(1) NOT NULL,
+`hire_date` date NOT NULL,
+PRIMARY KEY (`emp_no`));
+输出格式:
+name
+Facello'Georgi
+Simmel'Bezalel
+Bamford'Parto
+Koblick'Chirstian
+Maliniak'Kyoichi
+Preusig'Anneke
+```
+```SQL
+select concat(last_name,"‘",first_name) as name 
+from employees;
+```
+
+<a href="#menu" style="float:right">目录</a> 
+
+### 1.26.51. 查找字符串'10,A,B' 中逗号','出现的次数cnt
+
+```SQL
+select length('10,A,B') -length(replace('10,A,B',",",""))
+```
+
+<a href="#menu" style="float:right">目录</a> 
+
+### 1.26.52. 获取Employees中的first_name
+```SQL
+获取Employees中的first_name，查询按照first_name最后两个字母，按照升序进行排列
+CREATE TABLE `employees` (
+`emp_no` int(11) NOT NULL,
+`birth_date` date NOT NULL,
+`first_name` varchar(14) NOT NULL,
+`last_name` varchar(16) NOT NULL,
+`gender` char(1) NOT NULL,
+`hire_date` date NOT NULL,
+PRIMARY KEY (`emp_no`));
+输出格式：
+first_name
+Chirstian
+Tzvetan
+Bezalel
+Duangkaew
+```
+```
+
+
+本题考查 substr(X,Y,Z) 或 substr(X,Y) 函数的使用。其中X是要截取的字符串。Y是字符串的起始位置（注意第一个字符的位置为1，而不为0），取值范围是±(1~length(X))，当Y等于length(X)时，则截取最后一个字符；当Y等于负整数-n时，则从倒数第n个字符处截取。Z是要截取字符串的长度，取值范围是正整数，若Z省略，则从Y处一直截取到字符串末尾；若Z大于剩下的字符串长度，也是截取到字符串末尾为止。
+
+SELECT first_name FROM employees ORDER BY substr(first_name,length(first_name)-1) 
+
+SELECT first_name FROM employees ORDER BY substr(first_name,-2) 
+```
+
+<a href="#menu" style="float:right">目录</a> 
+
+### 1.26.53. 按照dept_no进行汇总
+```SQL
+按照dept_no进行汇总，属于同一个部门的emp_no按照逗号进行连接，结果给出dept_no以及连接出的结果employees
+CREATE TABLE `dept_emp` (
+`emp_no` int(11) NOT NULL,
+`dept_no` char(4) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`dept_no`));
+输出格式:
+dept_no	employees
+d001	10001,10002
+d002	10006
+d003	10005
+```
+```SQL
+select dept_no,group_concat(emp_no SEPARATOR ',') from dept_emp group by dept_no;
+```
+
+<a href="#menu" style="float:right">目录</a> 
+
+### 1.26.54. 查找排除当前最大、最小salary之后的员工的平均工资avg_salary
+```SQL
+查找排除当前最大、最小salary之后的员工的平均工资avg_salary。
+CREATE TABLE `salaries` ( `emp_no` int(11) NOT NULL,
+`salary` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`from_date`));
+输出格式:
+avg_salary
+69462.5555555556
+```
+```SQL
+select avg(salary) as avg_salary from salaries
+where
+salary not in (select min(salary )from salaries  ) and
+salary not in  (select max(salary )from salaries  ) and
+to_date='9999-01-01'
+```
+
+<a href="#menu" style="float:right">目录</a> 
+
+### 1.26.55. 分页查询employees表，每5行一页，返回第2页的数据
+```SQL
+分页查询employees表，每5行一页，返回第2页的数据
+CREATE TABLE `employees` (
+`emp_no` int(11) NOT NULL,
+`birth_date` date NOT NULL,
+`first_name` varchar(14) NOT NULL,
+`last_name` varchar(16) NOT NULL,
+`gender` char(1) NOT NULL,
+`hire_date` date NOT NULL,
+PRIMARY KEY (`emp_no`));
+```
+
+```SQL
+根据题意，每行5页，返回第2页的数据，即返回第6~10条记录，以下有两种方法可以解决：
+方法一：利用 LIMIT 和 OFFSET 关键字。LIMIT 后的数字代表返回几条记录，OFFSET 后的数字代表从第几条记录开始返回（第一条记录序号为0），也可理解为跳过多少条记录后开始返回。
+
+SELECT * FROM employees LIMIT 5 OFFSET 5
+方法二：只利用 LIMIT 关键字。注意：在 LIMIT X,Y 中，Y代表返回几条记录，X代表从第几条记录开始返回（第一条记录序号为0），切勿记反。
+
+SELECT * FROM employees LIMIT 5,5
+```
+
+<a href="#menu" style="float:right">目录</a> 
+
+### 1.26.56. 获取所有员工的emp_no
+```SQL
+获取所有员工的emp_no、部门编号dept_no以及对应的bonus类型btype和recevied，没有分配具体的员工不显示
+CREATE TABLE `dept_emp` ( `emp_no` int(11) NOT NULL,
+`dept_no` char(4) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`dept_no`));
+
+CREATE TABLE `dept_manager` (
+`dept_no` char(4) NOT NULL,
+`emp_no` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`dept_no`));
+
+CREATE TABLE `employees` (
+`emp_no` int(11) NOT NULL,
+`birth_date` date NOT NULL,
+`first_name` varchar(14) NOT NULL,
+`last_name` varchar(16) NOT NULL,
+`gender` char(1) NOT NULL,
+`hire_date` date NOT NULL,
+PRIMARY KEY (`emp_no`));
+
+CREATE TABLE `salaries` (
+`emp_no` int(11) NOT NULL,
+`salary` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`from_date`));
+输出格式:
+e.emp_no	dept_no	btype	recevied
+10001	d001	1	2010-01-01
+10002	d001	2	2010-10-01
+10003	d004	3	2011-12-03
+```
+
+```SQL
+本题严谨的思路为，先将 employees与dept_emp 用 INNER JOIN 连接，挑选出分配了部门的员工，再用 LEFT JOIN 连接 emp_bonus（在前面的题中可看到此表），分配了奖金的员工显示奖金类型和授予时间，没分配奖金的员工则不显示。
+
+SELECT em.emp_no, de.dept_no, eb.btype, eb.recevied
+FROM employees AS em INNER JOIN dept_emp AS de
+ON em.emp_no = de.emp_no
+LEFT JOIN emp_bonus AS eb 
+ON de.emp_no = eb.emp_no
+由于dept_emp表中都是已分配部门的员工，因此只用 dept_emp表与emp_bonus表就可以解决问题：
+
+SELECT de.emp_no, de.dept_no, eb.btype, eb.recevied
+FROM dept_emp AS de LEFT JOIN emp_bonus AS eb 
+ON de.emp_no = eb.emp_no
+```
+
+<a href="#menu" style="float:right">目录</a> 
+
+### 1.26.57. 使用含有关键字exists查找未分配具体部门的员工的所有信息。
+```SQL
+使用含有关键字exists查找未分配具体部门的员工的所有信息。
+CREATE TABLE `employees` (
+`emp_no` int(11) NOT NULL,
+`birth_date` date NOT NULL,
+`first_name` varchar(14) NOT NULL,
+`last_name` varchar(16) NOT NULL,
+`gender` char(1) NOT NULL,
+`hire_date` date NOT NULL,
+PRIMARY KEY (`emp_no`));
+
+CREATE TABLE `dept_emp` (
+`emp_no` int(11) NOT NULL,
+`dept_no` char(4) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`dept_no`));
+输出格式:
+emp_no	birth_date	first_name	last_name	gender	hire_date
+10011	1953-11-07	Mary	Sluis	F	1990-01-22
+```
+```SQL
+本题用 EXISTS 关键字的方法如下：意为在 employees 中挑选出令(SELECT emp_no FROM dept_emp WHERE emp_no = employees.emp_no)不成立的记录，也就是当 employees.emp_no=10011的时候。反之，把NOT去掉，则输出 employees.emp_no=10001~10010时的记录。
+
+SELECT * FROM employees WHERE NOT EXISTS 
+(SELECT emp_no FROM dept_emp WHERE emp_no = employees.emp_no)
+由于 OJ系统没有限制我们只能使用 EXISTS 关键字，因此还能用 NOT IN 关键字替换，即在employees 中选出 dept_emp 中没有的 emp_no。
+
+SELECT * FROM employees WHERE emp_no NOT IN (SELECT emp_no FROM dept_emp)
+```
+
+<a href="#menu" style="float:right">目录</a> 
+
+### 1.26.58. 获取employees中的行数据，且这些行也存在于emp_v中
+```SQL
+存在如下的视图：
+create view emp_v as select * from employees where emp_no >10005;
+CREATE TABLE `employees` (
+`emp_no` int(11) NOT NULL,
+`birth_date` date NOT NULL,
+`first_name` varchar(14) NOT NULL,
+`last_name` varchar(16) NOT NULL,
+`gender` char(1) NOT NULL,
+`hire_date` date NOT NULL,
+PRIMARY KEY (`emp_no`));
+获取employees中的行数据，且这些行也存在于emp_v中。注意不能使用intersect关键字。
+输出格式:
+emp_no	birth_date	first_name	last_name	gender	hire_date
+10006	1953-04-20	Anneke	Preusig	F	1989-06-02
+10007	1957-05-23	Tzvetan	Zielinski	F	1989-02-10
+10008	1958-02-19	Saniya	Kalloufi	M	1994-09-15
+```
+```SQL
+链接：https://www.nowcoder.com/questionTerminal/2556c1fcc92c490d9bf331ab07dfb7dc
+来源：牛客网
+
+根据题意，不能使用 INTERSECT 关键字，但由于视图 emp_v 的记录是从 employees 中导出的，
+因此要判断两者中相等的数据，只需要判断emp_no相等即可。
+方法一：用 WHERE 选取二者 emp_no 相等的记录
+
+SELECT em.* FROM employees AS em, emp_v AS ev WHERE em.emp_no = ev.emp_no
+方法二：由于emp_v的全部记录均由 employees 导出，因此可以投机取巧，直接输出 emp_v 所有记录
+
+SELECT * FROM emp_v
+```
+
+<a href="#menu" style="float:right">目录</a> 
+
+### 1.26.59. 获取有奖金的员工相关信息。
+```SQL
+获取有奖金的员工相关信息。
+CREATE TABLE `employees` (
+`emp_no` int(11) NOT NULL,
+`birth_date` date NOT NULL,
+`first_name` varchar(14) NOT NULL,
+`last_name` varchar(16) NOT NULL,
+`gender` char(1) NOT NULL,
+`hire_date` date NOT NULL,
+PRIMARY KEY (`emp_no`));
+
+CREATE TABLE `dept_emp` (
+`emp_no` int(11) NOT NULL,
+`dept_no` char(4) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`dept_no`));
+
+create table emp_bonus(
+emp_no int not null,
+recevied datetime not null,
+btype smallint not null);
+
+CREATE TABLE `salaries` (
+`emp_no` int(11) NOT NULL,
+`salary` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL, PRIMARY KEY (`emp_no`,`from_date`));
+给出emp_no、first_name、last_name、奖金类型btype、对应的当前薪水情况salary以及奖金金额bonus。 bonus类型btype为1其奖金为薪水salary的10%，btype为2其奖金为薪水的20%，其他类型均为薪水的30%。 当前薪水表示to_date='9999-01-01'
+输出格式:
+emp_no	first_name	last_name	btype	salary	bonus
+10001	Georgi	Facello	1	88958	8895.8
+10002	Bezalel	Simmel	2	72527	14505.4
+10003	Parto	Bamford	3	43311	12993.3
+```
+```
+
+
+select e.emp_no,e.first_name,e.last_name,eb.btype,s.salary,case
+when eb.btype='1' then s.salary*0.1 
+when eb.btype='2' then s.salary*0.2
+else salary*0.3 end as bonus
+from employees e right join emp_bonus eb
+on e.emp_no = eb.emp_no left join salaries s
+on eb.emp_no = s.emp_no and s.to_date='9999-01-01';
+```
+
+
+<a href="#menu" style="float:right">目录</a> 
+
+### 1.26.60. 统计salary的累计和running_total
+```SQL
+按照salary的累计和running_total，其中running_total为前两个员工的salary累计和，其他以此类推。
+ 具体结果如下Demo展示。。
+CREATE TABLE `salaries` ( `emp_no` int(11) NOT NULL,
+`salary` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`from_date`));
+输出格式:
+emp_no	salary	running_total
+10001	88958	88958
+10002	72527	161485
+10003	43311	204796
+```
+```
+
+
+题的思路为复用 salaries 表进行子查询，最后以 s1.emp_no 排序输出求和结果。
+1、输出的第三个字段，是由一个 SELECT 子查询构成。将子查询内复用的 salaries 表记为 s2，
+主查询的 salaries 表记为 s1，当主查询的 s1.emp_no 确定时，对子查询中不大于
+ s1.emp_no 的 s2.emp_no 所对应的薪水求和
+2、注意是对员工当前的薪水求和，所以在主查询和子查询内都要加限定条件 to_date = '9999-01-01'
+
+SELECT s1.emp_no, s1.salary, 
+(SELECT SUM(s2.salary) FROM salaries AS s2 
+ WHERE s2.emp_no <= s1.emp_no AND s2.to_date = '9999-01-01') AS running_total 
+FROM salaries AS s1 WHERE s1.to_date = '9999-01-01' ORDER BY s1.emp_no
+```
+
+<a href="#menu" style="float:right">目录</a> 
+
+### 1.26.61. 对于employees表中，给出奇数行的first_name
+
+```SQL
+对于employees表中，给出奇数行的first_name
+CREATE TABLE `employees` (
+`emp_no` int(11) NOT NULL,
+`birth_date` date NOT NULL,
+`first_name` varchar(14) NOT NULL,
+`last_name` varchar(16) NOT NULL,
+`gender` char(1) NOT NULL,
+`hire_date` date NOT NULL,
+PRIMARY KEY (`emp_no`));
+输出格式:
+first_name
+Georgi
+Chirstian
+```
+```
+SELECT e1.first_name FROM
+employees e1
+WHERE
+(SELECT count(*) FROM employees e2
+WHERE e1.first_name <=e2.first_name)%2=1;
+```
+
