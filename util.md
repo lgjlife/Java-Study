@@ -1,12 +1,63 @@
 
 <span id="menu"></span>
 
-[TOC]
+<!-- TOC -->
 
-<a id="markdown-1-基础工具" name="1-基础工具"></a>
+- [1. 基础工具](#1-基础工具)
+    - [1.1. 技术社区](#11-技术社区)
+    - [1.2. 常用工具](#12-常用工具)
+        - [1.2.1. 编译器](#121-编译器)
+        - [1.2.2. IDEA插件](#122-idea插件)
+        - [1.2.3. HTTP请求](#123-http请求)
+        - [1.2.4. 前端开发编辑](#124-前端开发编辑)
+        - [1.2.5. 绘图工具](#125-绘图工具)
+            - [1.2.5.1. 思维导图](#1251-思维导图)
+            - [1.2.5.2. UML](#1252-uml)
+        - [1.2.6. 编辑器](#126-编辑器)
+        - [1.2.7. 调优工具](#127-调优工具)
+        - [1.2.8. 压测工具](#128-压测工具)
+        - [1.2.9. 版本管理](#129-版本管理)
+        - [1.2.10. 其他](#1210-其他)
+    - [1.3. Git](#13-git)
+        - [1.3.1. 基本概念](#131-基本概念)
+        - [1.3.2. 常用命令](#132-常用命令)
+    - [1.4. Maven](#14-maven)
+    - [1.5. Gradle](#15-gradle)
+        - [1.5.1. 基本介绍](#151-基本介绍)
+        - [1.5.2. 安装](#152-安装)
+            - [1.5.2.1. Ubuntu下安装](#1521-ubuntu下安装)
+    - [1.6. Jenkins](#16-jenkins)
+    - [1.7. Docker](#17-docker)
+        - [1.7.1. Docker常用指令](#171-docker常用指令)
+            - [1.7.1.1. 基本概念](#1711-基本概念)
+        - [1.7.2. 常用指令](#172-常用指令)
+        - [1.7.3. 容器](#173-容器)
+            - [1.7.3.1. 容器的管理操作](#1731-容器的管理操作)
+            - [1.7.3.2. 容器内部信息的获取](#1732-容器内部信息的获取)
+        - [1.7.4. 镜像](#174-镜像)
+            - [1.7.4.1. 基本概念](#1741-基本概念)
+            - [1.7.4.2. 本地镜像的管理](#1742-本地镜像的管理)
+        - [1.7.5. Docker File](#175-docker-file)
+        - [1.7.6. 数据卷和容器连接](#176-数据卷和容器连接)
+            - [1.7.6.1. 容器网络基础](#1761-容器网络基础)
+            - [1.7.6.2. 数据卷](#1762-数据卷)
+        - [1.7.7. 案例](#177-案例)
+            - [1.7.7.1. docker 安装Mysqk主从复制](#1771-docker-安装mysqk主从复制)
+            - [1.7.7.2. docker 安装mycat](#1772-docker-安装mycat)
+    - [1.8. VIM](#18-vim)
+    - [1.9. NMON监控工具](#19-nmon监控工具)
+    - [1.10. 正则表达式](#110-正则表达式)
+    - [1.11. curl命令](#111-curl命令)
+    - [1.12. 常见时区缩写](#112-常见时区缩写)
+    - [1.13. 面试考察](#113-面试考察)
+        - [1.13.1. 技术广度的考察](#1131-技术广度的考察)
+        - [1.13.2. 底层技术的考察](#1132-底层技术的考察)
+        - [1.13.3. 技术深度的考察](#1133-技术深度的考察)
+
+<!-- /TOC -->
+
 # 1. 基础工具
 
-<a id="markdown-11-技术社区" name="11-技术社区"></a>
 ## 1.1. 技术社区
 <a href="#menu" style="float:right">目录</a>
 
@@ -22,17 +73,14 @@
 
 
 
-<a id="markdown-12-常用工具" name="12-常用工具"></a>
 ## 1.2. 常用工具
 
 
-<a id="markdown-121-编译器" name="121-编译器"></a>
 ### 1.2.1. 编译器
 * IDEA （个人觉得IDEA比较好用）
 * Eclipse
 * MyEclipse
 
-<a id="markdown-122-idea插件" name="122-idea插件"></a>
 ### 1.2.2. IDEA插件
 * Lombok： 使用注解，免去实体类中get /set/构造器等代码 ，需要引入lombok包
 * Alibaba Java Coding Guidelines ：《阿里巴巴Java开发规约》扫描插件,安装后右键单击选择扫描，会提示哪些地方不符合规范
@@ -40,24 +88,19 @@
 * jclasslib: JClassLib不但是一个字节码阅读器而且还包含一个类库允许开发者读取,修改,写入Java Class文件与字节码
 
 
-<a id="markdown-123-http请求" name="123-http请求"></a>
 ### 1.2.3. HTTP请求
 * POSTMAN（https://www.getpostman.com/）:一款功能强大的网页调试与发送网页HTTP请求的工具
 * curl指令
 
-<a id="markdown-124-前端开发编辑" name="124-前端开发编辑"></a>
 ### 1.2.4. 前端开发编辑
 * [vscode](https://code.visualstudio.com/Download)
 * IDEA
 * Brackets   代码提示，颜色区分
 * sublime_text_3   这个Linux下安装后，不支持中文输入，网上有解决办法。
 
-<a id="markdown-125-绘图工具" name="125-绘图工具"></a>
 ### 1.2.5. 绘图工具
-<a id="markdown-1251-思维导图" name="1251-思维导图"></a>
 #### 1.2.5.1. 思维导图
 * MindMaster   多平台，免费，可以导出为图片。
-<a id="markdown-1252-uml" name="1252-uml"></a>
 #### 1.2.5.2. UML
 * https://www.draw.io/ ：在线UML绘制工具，可以保存到本地或者Github
 * Dia
@@ -67,38 +110,31 @@ sudo apt install dia
 //运行Dia
 dia
 ```
-<a id="markdown-126-编辑器" name="126-编辑器"></a>
 ### 1.2.6. 编辑器
 * VIM
 * GEDIT　
 
-<a id="markdown-127-调优工具" name="127-调优工具"></a>
 ### 1.2.7. 调优工具
 * visualVm(https://visualvm.github.io/):是一款免费的,集成了多个 JDK 命令行工具的可视化工具,它能为您提供强大的分析能力,对 Java 应用程序做性能分析和调优.
 
-<a id="markdown-128-压测工具" name="128-压测工具"></a>
 ### 1.2.8. 压测工具
 * Jmeter   可以开多个线程对接口进行压测，并分析压测结果。
 
-<a id="markdown-129-版本管理" name="129-版本管理"></a>
 ### 1.2.9. 版本管理
 * git     
 * svn
 * 码云
 * Git在线练习 [try git](https://try.github.io/)/[git real](https://www.pluralsight.com/courses/code-school-git-real)/[Learn Git Branching](https://learngitbranching.js.org/)
 
-<a id="markdown-1210-其他" name="1210-其他"></a>
 ### 1.2.10. 其他
 * SpringBoot Banner 字符生成 [根据图片生成](https://www.degraeve.com/img2txt.php)/[根据文字生成](http://patorjk.com/software/taag/#p=display&f=3D-ASCII&t=MicroBlog%0A)
 
 
 
-<a id="markdown-13-git" name="13-git"></a>
 ## 1.3. Git
 <a href="#menu" style="float:right">目录</a>
 
 
-<a id="markdown-131-基本概念" name="131-基本概念"></a>
 ### 1.3.1. 基本概念
 * 工作区：当前的工作目录
 * 本地库: 工作区有一个隐藏目录.git，这个不算工作区，而是Git的版本库
@@ -112,7 +148,6 @@ dia
 * 分支相当于给当前的文件创建一个副本，在副本上进行修改，可以创建无数个分支进行同步开发，开发完成后再进行合并操作。
 
 
-<a id="markdown-132-常用命令" name="132-常用命令"></a>
 ### 1.3.2. 常用命令
 * 查看版本
     * git --version
@@ -237,7 +272,6 @@ dia
     * 如果之前已经提交过，必须先执行如下清空缓存,否则远端的文件还是会存在。须在当前的工作目录执行。
         * git rm -r --cached .
 
-<a id="markdown-14-maven" name="14-maven"></a>
 ## 1.4. Maven
 <a href="#menu" style="float:right">目录</a>
 * mvn compile 编译源代码
@@ -265,11 +299,9 @@ dia
     </exclusions>
 </dependency>
 ```
-<a id="markdown-gradle" name="gradle"></a>
-## Gradle
+## 1.5. Gradle
 
-<a id="markdown-基本介绍" name="基本介绍"></a>
-### 基本介绍
+### 1.5.1. 基本介绍
 Gradle 是一种构建工具，它抛弃了基于XML的构建脚本，取而代之的是采用一种基于Groovy（现在也支持 Kotlin）的内部领域特定语言
 
 **Gradle特点**
@@ -280,11 +312,9 @@ Gradle 是一种构建工具，它抛弃了基于XML的构建脚本，取而代�
 * Gradle社区很活跃，并且增加迅速
 
 
-<a id="markdown-安装" name="安装"></a>
-### 安装
+### 1.5.2. 安装
 
-<a id="markdown-ubuntu下安装" name="ubuntu下安装"></a>
-#### Ubuntu下安装
+#### 1.5.2.1. Ubuntu下安装
 下载地址[http://services.gradle.org/distributions/](http://services.gradle.org/distributions/)
 
 这里下载gradle-5.6-all.zip包
@@ -342,19 +372,15 @@ OS:           Linux 4.15.0-46-generic amd64
 
 
 
-<a id="markdown-15-jenkins" name="15-jenkins"></a>
-## 1.5. Jenkins
+## 1.6. Jenkins
 <a href="#menu" style="float:right">目录</a>
 
-<a id="markdown-16-docker" name="16-docker"></a>
-## 1.6. Docker
+## 1.7. Docker
 <a href="#menu" style="float:right">目录</a>
 
-<a id="markdown-161-docker常用指令" name="161-docker常用指令"></a>
-### 1.6.1. Docker常用指令
+### 1.7.1. Docker常用指令
 
-<a id="markdown-1611-基本概念" name="1611-基本概念"></a>
-#### 1.6.1.1. 基本概念
+#### 1.7.1.1. 基本概念
 * Docker： 可以让开发者打包它们的应用和依赖包到一个可移植的容器中，然后将其发布到任何流行该的Linux机器上。利用docker,可以实现软件一次配置，出处运行。
 * DockerHub:存储DOCKER镜像远程仓库，类似GitHub,用户可以进行对镜像进行存储，分享，管理。
 * Docker是一种容器，容器是一种轻量级的虚拟技术，和容器相对应的是更为重量级的虚拟技术是虚拟机。
@@ -427,8 +453,7 @@ Server:
 
 ```
             
-<a id="markdown-162-常用指令" name="162-常用指令"></a>
-### 1.6.2. 常用指令
+### 1.7.2. 常用指令
 <a href="#menu" style="float:right">目录</a>
 * 安装
    * 安装 sudo snap install docker
@@ -441,12 +466,10 @@ Server:
 * 查看正在运行的容器: docker ps -a
 * 查看容器信息: docker inspect 容器名称/ID
 
-<a id="markdown-163-容器" name="163-容器"></a>
-### 1.6.3. 容器
+### 1.7.3. 容器
 <a href="#menu" style="float:right">目录</a>
 
-<a id="markdown-1631-容器的管理操作" name="1631-容器的管理操作"></a>
-#### 1.6.3.1. 容器的管理操作
+#### 1.7.3.1. 容器的管理操作
 * 创建容器
     * docker create image-name
         * 创建的容器处于停止状态
@@ -643,8 +666,7 @@ Options:
 ```
 sudo aa-remove-unknown
 ```
-<a id="markdown-1632-容器内部信息的获取" name="1632-容器内部信息的获取"></a>
-#### 1.6.3.2. 容器内部信息的获取
+#### 1.7.3.2. 容器内部信息的获取
 * 查看容器日志
     * docker logs -f --tail=5 name|id
 ```bash
@@ -673,12 +695,10 @@ Options:
 * 容器内执行命令
     * docker exec -it name /bin/bash 执行时确保容器处于运行状态
     
-<a id="markdown-164-镜像" name="164-镜像"></a>
-### 1.6.4. 镜像
+### 1.7.4. 镜像
 <a href="#menu" style="float:right">目录</a>
 
-<a id="markdown-1641-基本概念" name="1641-基本概念"></a>
-#### 1.6.4.1. 基本概念
+#### 1.7.4.1. 基本概念
 * 镜像是一个包含程序运行必要依赖环境和代码的只读文件，采用分层的文件系统，将每一次改变以读写层的形式增加到原来的只读文件上
 
 * Docker镜像的系统结构(由上而下)
@@ -693,8 +713,7 @@ Options:
     * 原镜像的内容都是以只读方式挂载进来的，容器会读取镜像的内容。
     * 一旦涉及到修改镜像文件，便会触发Docker从原镜像中复制这个文件到临时镜像中，所有修改均发生在临时镜像中。不会对原镜像产生任何影响。  
 
-<a id="markdown-1642-本地镜像的管理" name="1642-本地镜像的管理"></a>
-#### 1.6.4.2. 本地镜像的管理
+#### 1.7.4.2. 本地镜像的管理
 
 * 查看镜像
     * docker images
@@ -749,8 +768,7 @@ Options:
   -p, --pause            Pause container during commit (default true)
 
 ```
-<a id="markdown-165-docker-file" name="165-docker-file"></a>
-### 1.6.5. Docker File
+### 1.7.5. Docker File
 <a href="#menu" style="float:right">目录</a>
 
 **FROM**
@@ -1097,12 +1115,10 @@ OPTIONS说明：
 
 --network: 默认 default。在构建期间设置RUN指令的网络模式
 ```
-<a id="markdown-166-数据卷和容器连接" name="166-数据卷和容器连接"></a>
-### 1.6.6. 数据卷和容器连接
+### 1.7.6. 数据卷和容器连接
 <a href="#menu" style="float:right">目录</a>
 
-<a id="markdown-1661-容器网络基础" name="1661-容器网络基础"></a>
-#### 1.6.6.1. 容器网络基础
+#### 1.7.6.1. 容器网络基础
 ifconfig 可以看到docker的默认分配地址是172.17.0.1
 ```bash
 lgj@lgj-Lenovo-G470:~$ ifconfig
@@ -1150,8 +1166,7 @@ docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
 
 
 
-<a id="markdown-1662-数据卷" name="1662-数据卷"></a>
-#### 1.6.6.2. 数据卷
+#### 1.7.6.2. 数据卷
 * 数据卷作用
     * 是一个目录或者文件，绑定到容器的目录或者文件，两处内容同步更新   
     * 绕过"拷贝写"系统，以达到本地磁盘IO性能
@@ -1195,16 +1210,13 @@ Commands:
 ```
 
 
-<a id="markdown-167-案例" name="167-案例"></a>
-### 1.6.7. 案例
+### 1.7.7. 案例
 <a href="#menu" style="float:right">目录</a>
 
-<a id="markdown-1671-docker-安装mysqk主从复制" name="1671-docker-安装mysqk主从复制"></a>
-#### 1.6.7.1. docker 安装Mysqk主从复制
+#### 1.7.7.1. docker 安装Mysqk主从复制
 * https://www.cnblogs.com/songwenjie/p/9371422.html
 
-<a id="markdown-1672-docker-安装mycat" name="1672-docker-安装mycat"></a>
-#### 1.6.7.2. docker 安装mycat
+#### 1.7.7.2. docker 安装mycat
 
 
 * 安装openjdk:8镜像
@@ -1214,8 +1226,7 @@ Commands:
     * http://dl.mycat.io/1.6.7.1/
 * 
 
-<a id="markdown-17-vim" name="17-vim"></a>
-## 1.7. VIM
+## 1.8. VIM
 <a href="#menu" style="float:right">目录</a>
 
 * 安装
@@ -1229,8 +1240,7 @@ Commands:
     * 输入命令 set mouse=a
 
 
-<a id="markdown-18-nmon监控工具" name="18-nmon监控工具"></a>
-## 1.8. NMON监控工具
+## 1.9. NMON监控工具
 
 <a href="#menu" style="float:right">目录</a>
 
@@ -1250,8 +1260,7 @@ Commands:
 
 ```
 
-<a id="markdown-19-正则表达式" name="19-正则表达式"></a>
-## 1.9. 正则表达式
+## 1.10. 正则表达式
 正则表达式(regular expression)描述了一种字符串匹配的模式（pattern），可以用来检查一个串是否含有某种子串、将匹配的子串替换或者从某个串中取出符合某个条件的子串等。
 
 **非打印字符**
@@ -1417,8 +1426,8 @@ Commands:
 35.匹配ip地址：([1-9]{1,3}\.){3}[1-9]。
 ```
 
-<a id="markdown-110-curl命令" name="110-curl命令"></a>
-## 1.10. curl命令
+
+## 1.11. curl命令
 <a href="#menu" style="float:right">目录</a>
 
 curl 是一种命令行工具，作用是发出网络请求，然后获取数据，显示在"标准输出"（stdout）上面。它支持多种协议，下面列举其常用功能。
@@ -1738,13 +1747,68 @@ Options: (H) means HTTP/HTTPS only, (F) means FTP only
  -q                 If used as the first parameter disables .curlrc
 ```
 
-
-<a id="markdown-111-面试考察" name="111-面试考察"></a>
-## 1.11. 面试考察
+## 1.12. 常见时区缩写
 <a href="#menu" style="float:right">目录</a>
 
-<a id="markdown-1111-技术广度的考察" name="1111-技术广度的考察"></a>
-### 1.11.1. 技术广度的考察
+IDLE +12:00 国际日期变更线，东边 
+NZDT +13:00 新西兰夏时制 
+NZST +12:00 新西兰标准时间 
+NZT +12:00 新西兰时间 
+AESST +11:00 澳大利亚东部标准夏时制 
+ACSST +10:30 中澳大利亚标准夏时制 
+CADT +10:30 中澳大利亚夏时制 
+SADT +10:30 南澳大利亚夏时制 
+AEST +10:00 澳大利亚东部标准时间 
+EAST +10:00 东澳大利亚标准时间 
+GST +10:00 关岛标准时间，俄罗斯时区 9 
+LIGT +10:00 澳大利亚墨尔本 
+SAST +09:30 南澳大利亚标准时间 
+CAST +09:30 中澳大利亚标准时间 
+AWSST +09:00 澳大利亚西部标准夏时制 
+JST +09:00 日本标准时间，（俄罗斯时区 8） 
+KST +09:00 韩国标准时间 
+WDT +09:00 西澳大利亚夏时制
+SST +02:00 瑞典夏时制 
+BST +01:00 英国夏时制 
+CET +01:00 中欧时间
+FST +01:00 法国夏时制 
+MET +01:00 中欧时间 
+MEWT +01:00 中欧冬时制
+NDT -02:30 纽芬兰（Newfoundland）白昼时间
+ADT -03:00 大西洋白昼时间 
+AWT -03:00 (未知) 
+BRT -03:00 Brasilia 时间 
+NFT -03:30 纽芬兰（Newfoundland）标准时间 
+NST -03:30 纽芬兰（Newfoundland）标准时间 
+AST -04:00 大西洋标准时间（加拿大） 
+ACST -04:00 Atlantic/Porto Acre 夏令时 
+ACT -05:00 Atlantic/Porto Acre 标准时间 
+EDT -04:00 东部白昼时间 
+CDT -05:00 中部白昼时间 
+EST -05:00 东部标准时间 
+CST -06:00 中部标准时间 
+MDT -06:00 山区白昼时间 
+MST -07:00 山区标准时间 
+PDT -07:00 太平洋白昼时间 
+AKDT -08:00 阿拉斯加白昼时间 
+PST -08:00 太平洋标准时间 
+YDT -08:00 Yukon 白昼时间 
+AKST -09:00 阿拉斯加标准时间 
+HDT -09:00 夏威仪/阿拉斯加白昼时间 
+YST -09:00 Yukon 标准时 
+MART -09:30 马克萨司群岛时间 
+AHST -10:00 夏威夷-阿拉斯加标准时间
+HST -10:00 夏威夷标准时间 
+CAT -10:00 中阿拉斯加时间 
+NT -11:00 州时间（Nome Time） 
+IDLW -12:00 国际日期变更线，西边
+
+
+
+## 1.13. 面试考察
+<a href="#menu" style="float:right">目录</a>
+
+### 1.13.1. 技术广度的考察
 <a href="#menu" style="float:right">目录</a>
 
 首先考察候选人技术面的完整性，因为工作中是需要具备一定的技术视野的，不能说光知道消息中间件，但是分布式缓存却一无所知。
@@ -1764,8 +1828,8 @@ Options: (H) means HTTP/HTTPS only, (F) means FTP only
 
 而是说你工作几年以后，应该有一定的技术广度，开阔的技术视野。
 
-<a id="markdown-1112-底层技术的考察" name="1112-底层技术的考察"></a>
-### 1.11.2. 底层技术的考察
+
+### 1.13.2. 底层技术的考察
 <a href="#menu" style="float:right">目录</a>
 
 现在很多互联网大厂都会有基本功的考察，举个例子，Java虚拟机的核心原理、内存模型、垃圾回收、线上FullGC卡顿性能优化、线上OOM内存溢出问题你处理。
@@ -1780,8 +1844,8 @@ Netty背后的IO、网络相关的知识。
 
 而且很多时候，解决线上系统的生产故障，都需要这些技术。因此，底层技术的掌握是一个优秀工程师必须具备的素养。
 
-<a id="markdown-1113-技术深度的考察" name="1113-技术深度的考察"></a>
-### 1.11.3. 技术深度的考察
+
+### 1.13.3. 技术深度的考察
 <a href="#menu" style="float:right">目录</a>
 
 此外，我们一定会深入考察候选人平时工作中熟悉的以及常用的一些技术。
