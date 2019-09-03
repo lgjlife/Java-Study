@@ -44,15 +44,29 @@
         - [1.7.7. 案例](#177-案例)
             - [1.7.7.1. docker 安装Mysqk主从复制](#1771-docker-安装mysqk主从复制)
             - [1.7.7.2. docker 安装mycat](#1772-docker-安装mycat)
-    - [1.8. VIM](#18-vim)
-    - [1.9. NMON监控工具](#19-nmon监控工具)
-    - [1.10. 正则表达式](#110-正则表达式)
-    - [1.11. curl命令](#111-curl命令)
-    - [1.12. 常见时区缩写](#112-常见时区缩写)
-    - [1.13. 面试考察](#113-面试考察)
-        - [1.13.1. 技术广度的考察](#1131-技术广度的考察)
-        - [1.13.2. 底层技术的考察](#1132-底层技术的考察)
-        - [1.13.3. 技术深度的考察](#1133-技术深度的考察)
+    - [1.8. Docker Compose](#18-docker-compose)
+        - [1.8.1. 编排和部署](#181-编排和部署)
+        - [1.8.2. 多容器的问题](#182-多容器的问题)
+        - [1.8.3. Docker Compose 概述与安装](#183-docker-compose-概述与安装)
+        - [1.8.4. 安装 Docker Compose](#184-安装-docker-compose)
+        - [1.8.5. 基本使用](#185-基本使用)
+        - [1.8.6. 快速入门](#186-快速入门)
+        - [1.8.7. 工程、服务、容器](#187-工程服务容器)
+        - [1.8.8. Docker Compose 常用命令与配置](#188-docker-compose-常用命令与配置)
+        - [1.8.9. docker-compose.yml 属性](#189-docker-composeyml-属性)
+        - [1.8.10. Docker Compose 其它](#1810-docker-compose-其它)
+        - [1.8.11. Compose 原理](#1811-compose-原理)
+    - [1.9. VIM](#19-vim)
+        - [1.9.1. 命令模式](#191-命令模式)
+        - [1.9.2. 常用命令](#192-常用命令)
+    - [1.10. NMON监控工具](#110-nmon监控工具)
+    - [1.11. 正则表达式](#111-正则表达式)
+    - [1.12. curl命令](#112-curl命令)
+    - [1.13. 常见时区缩写](#113-常见时区缩写)
+    - [1.14. 面试考察](#114-面试考察)
+        - [1.14.1. 技术广度的考察](#1141-技术广度的考察)
+        - [1.14.2. 底层技术的考察](#1142-底层技术的考察)
+        - [1.14.3. 技术深度的考察](#1143-技术深度的考察)
 
 <!-- /TOC -->
 
@@ -1226,7 +1240,365 @@ Commands:
     * http://dl.mycat.io/1.6.7.1/
 * 
 
-## 1.8. VIM
+## 1.8. Docker Compose
+<a href="#menu" style="float:right">目录</a>
+
+### 1.8.1. 编排和部署
+
+**编排(orchestration)**
+编排指根据被部署的对象之间的耦合关系，以及被部署对象对环境的依赖，制定部署流程中各个动作的执行顺序，部署过程所需要的依赖文件和被部署文件的存储位置和获取方式，以及如何验证部署成功。这些信息都会在编排工具中以指定的格式(比如配置文件或特定的代码)来要求运维人员定义并保存起来，从而保证这个流程能够随时在全新的环境中可靠有序地重现出来。
+
+**部署(deployment)**
+部署是指按照编排所指定的内容和流程，在目标机器上执行环境初始化，存放指定的依赖文件，运行指定的部署动作，最终按照编排中的规则来确认部署成功。
+
+所以说，编排是一个指挥家，他的大脑里存储了整个乐曲此起彼伏的演奏流程，对于每一个小节每一段音乐的演奏方式都了然于胸。而部署就是整个乐队，他们严格按照指挥家的意图用乐器来完成乐谱的执行。最终，两者通过协作就能把每一位演奏者独立的演奏通过组合、重叠、衔接来形成高品位的交响乐。这也是 docker compose 要完成的使命。
+
+### 1.8.2. 多容器的问题
+
+* 要从Dockerfile build image 或者去dockerhub拉取image
+* 要创建多个container
+* 要管理这些container（启动停止删除）
+
+Docker Compose 通过文本的方式，把要处理的容器按照顺序执行，如果是多容器也就是通过一条命令就搞定了
+
+### 1.8.3. Docker Compose 概述与安装
+
+* 使用 Docker 的时候，定义 Dockerfile 文件，然后使用 docker build、docker run 等命令操作容器。然而微服务架构的应用系统一般包含若干个微服务，每个微服务一般都会部署多个实例，如果每个微服务都要手动启停，那么效率之低，维护量之大可想而知
+* 使用 Docker Compose 可以轻松、高效的管理容器，它是一个用于定义和运行多容器 Docker 的应用程序工具
+
+### 1.8.4. 安装 Docker Compose
+
+安装 Docker Compose 可以通过下面命令自动下载适应版本的 Compose，并为安装脚本添加执行权限
+```
+sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+或者
+
+sudo apt install docker-compose
+```
+
+查看安装是否成功
+```
+docker-compose -v
+```
+
+### 1.8.5. 基本使用
+
+* Compose 的使用方式非常简单，基本上就是下面的三板斧：
+    * 定义 Dockerfile
+    * 定义 docker-compose.yml
+    * 运行 docker-compose up
+    * 其实 compose 提供的命令可以管理应用的整个生命周期：
+
+* Start, stop, rebuild services
+    * 查看运行中 service 的状态
+    * 输出运行中 service 的日志
+    * 在 service 中执行一次性的命令
+
+
+
+### 1.8.6. 快速入门
+
+打包项目，获得 jar 包 docker-demo-0.0.1-SNAPSHOT.jar
+```
+mvn clean package
+```
+
+在 jar 包所在路径创建 Dockerfile 文件，添加以下内容
+```
+FROM java:8
+VOLUME /tmp
+ADD docker-demo-0.0.1-SNAPSHOT.jar app.jar
+RUN bash -c 'touch /app.jar'
+EXPOSE 9000
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","app.jar"]
+```
+
+在 jar 包所在路径创建文件 docker-compose.yml，添加以下内容
+```
+version: '2' # 表示当前的配置文件使用的语法版本。
+services: # services 中的内容指明该应用一共定义了多少个服务(容器镜像)
+  docker-demo:  # 指定服务名称
+    build: .  # 指定 Dockerfile 所在路径
+    ports:    # 指定端口映射
+      - "9000:8761"
+```
+
+在 docker-compose.yml 所在路径下执行该命令 Compose 就会自动构建镜像并使用镜像启动容器
+```
+docker-compose up
+docker-compose up -d  // 后台启动并运行容器
+```
+
+访问 http://localhost:9000/hello 即可访问微服务接口
+
+### 1.8.7. 工程、服务、容器
+
+* Docker Compose 将所管理的容器分为三层，分别是工程（project）、服务（service）、容器（container）
+* Docker Compose 运行目录下的所有文件（docker-compose.yml）组成一个工程,一个工程包含多个服务，每个服务中定义了容器运行的镜像、参数、依赖，一个服务可包括多个容器实例
+
+### 1.8.8. Docker Compose 常用命令与配置
+
+ps：列出所有运行容器
+```
+docker-compose ps
+```
+
+logs：查看服务日志输出
+```
+docker-compose logs
+```
+port：打印绑定的公共端口，下面命令可以输出 eureka 服务 8761 端口所绑定的公共端口
+```
+docker-compose port eureka 8761
+```
+build：构建或者重新构建服务
+```
+docker-compose build
+```
+start：启动指定服务已存在的容器
+```
+docker-compose start eureka
+```
+stop：停止已运行的服务的容器
+```
+docker-compose stop eureka
+```
+rm：删除指定服务的容器
+```
+docker-compose rm eureka
+```
+up：构建、启动容器
+```
+docker-compose up
+```
+
+kill：通过发送 SIGKILL 信号来停止指定服务的容器
+```
+docker-compose kill eureka
+```
+pull：下载服务镜像
+
+scale：设置指定服务运气容器的个数，以 service=num 形式指定
+```
+docker-compose scale user=3 movie=3
+```
+
+
+run：在一个服务上执行一个命令
+```
+docker-compose run web bash
+```
+
+### 1.8.9. docker-compose.yml 属性
+
+
+* version：指定 docker-compose.yml 文件的写法格式
+* services：多个容器集合
+    * 一个service代表一个container，这个container可以从dockerhub的image来创建，或者从本地的Dockerfile build出来的image来创建。
+    * service的启动类似docker run，我们可以给其指定network和volme，所以可以给service指定network和volume的引用
+* build：配置构建时，Compose 会利用它自动构建镜像，该值可以是一个路径，也可以是一个对象，用于指定 Dockerfile 参数
+
+```yml
+#docker-Compse的版本
+version: '3'
+
+#建立2个service 一个wordpress 一个 mysql
+services:
+
+  wordpress:
+    image: wordpress
+#端口映射80 映射到8080端口
+    ports:
+      - 8080:80
+#环境变量2个
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_PASSWORD: root
+    networks:
+      - my-bridge
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: wordpress
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - my-bridge
+#建立一个volumes 
+volumes:
+  mysql-data:
+#建立一个networks
+networks:
+  my-bridge:
+    driver: bridge
+```
+
+
+
+```
+build: ./dir
+---------------
+build:
+    context: ./dir
+    dockerfile: Dockerfile
+    args:
+        buildno: 1
+```
+
+
+* command：覆盖容器启动后默认执行的命令
+```
+command: bundle exec thin -p 3000
+----------------------------------
+command: [bundle,exec,thin,-p,3000]
+```
+
+
+dns：配置 dns 服务器，可以是一个值或列表
+```
+dns: 8.8.8.8
+------------
+dns:
+    - 8.8.8.8
+    - 9.9.9.9
+```
+
+
+dns_search：配置 DNS 搜索域，可以是一个值或列表
+```
+dns_search: example.com
+------------------------
+dns_search:
+    - dc1.example.com
+    - dc2.example.com
+```
+
+
+environment：环境变量配置，可以用数组或字典两种方式
+```
+environment:
+    RACK_ENV: development
+    SHOW: 'ture'
+-------------------------
+environment:
+    - RACK_ENV=development
+    - SHOW=ture
+```
+
+
+env_file：从文件中获取环境变量，可以指定一个文件路径或路径列表，其优先级低于 environment 指定的环境变量
+```
+env_file: .env
+---------------
+env_file:
+    - ./common.env
+```
+
+
+expose：暴露端口，只将端口暴露给连接的服务，而不暴露给主机
+```
+expose:
+    - "3000"
+    - "8000"
+```
+
+
+image：指定服务所使用的镜像
+```
+image: java
+```
+
+
+network_mode：设置网络模式
+```
+network_mode: "bridge"
+network_mode: "host"
+network_mode: "none"
+network_mode: "service:[service name]"
+network_mode: "container:[container name/id]"
+```
+
+
+ports：对外暴露的端口定义，和 expose 对应
+```
+ports:   # 暴露端口信息  - "宿主机端口:容器暴露端口"
+- "8763:8763"
+- "8763:8763"
+```
+
+
+links：将指定容器连接到当前连接，可以设置别名，避免ip方式导致的容器重启动态改变的无法连接情况
+```
+links:    # 指定服务名称:别名 
+    - docker-compose-eureka-server:compose-eureka
+```
+
+
+volumes：卷挂载路径
+```
+volumes:
+  - /lib
+  - /var
+```
+
+
+logs：日志输出信息
+```
+--no-color          单色输出，不显示其他颜.
+-f, --follow        跟踪日志输出，就是可以实时查看日志
+-t, --timestamps    显示时间戳
+--tail              从日志的结尾显示，--tail=200
+```
+
+### 1.8.10. Docker Compose 其它
+更新容器
+
+当服务的配置发生更改时，可使用 docker-compose up 命令更新配置
+此时，Compose 会删除旧容器并创建新容器，新容器会以不同的 IP 地址加入网络，名称保持不变，任何指向旧容起的连接都会被关闭，重新找到新容器并连接上去
+
+* links:服务之间可以使用服务名称相互访问，links 允许定义一个别名，从而使用该别名访问其它服务
+```
+version: '2'
+services:
+    web:
+        build: .
+        links:
+            - "db:database"
+    db:
+        image: postgres
+```
+
+这样 Web 服务就可以使用 db 或 database 作为 hostname 访问 db 服务了
+
+### 1.8.11. Compose 原理
+
+**project**
+通过 docker compose 管理的一个项目被抽象称为一个 project，它是由一组关联的应用容器组成的一个完整的业务单元。简单点说就是一个 docker-compose.yml 文件定义一个 project。
+我们可以在执行 docker-compose 命令时通过 -p 选项指定 project 的名称，如果不指定，则默认是 docker-compose.yml 文件所在的目录名称。
+
+**service**
+运行一个应用的容器，实际上可以是一个或多个运行相同镜像的容器。可以通过 docker-compose up 命令的 --scale 选项指定某个 service 运行的容器个数，比如：
+```
+$ docker-compose up -d --scale redis=2
+```
+compose 的调用流程
+![](https://img2018.cnblogs.com/blog/952033/201810/952033-20181014204846210-692201852.png)
+
+右上角的 docker-compose 定义了一组 service 来组成一个 project，通过 docker-compose.yml 中 service 的定义与 container 建立关系(service 与容器的对应关系)，最后使用 container 来完成对 docker-py(Python 版的 docker client) 的调用，向 docker daemon 发起 http 请求。注意，这里的 project, service 和 container 对应的都是 docker-compose 实现中的数据结构。下面让我们结合上图来介绍 docker-compose 工作的大致流程。
+
+**首先**，用户执行的 docker-compose up 命令调用了命令行中的启动方法，功能非常简单。一个 docker-compose.yml 文件定义了一个 project，docker-compose up 提供的命令行参数则作为这个 project 的启动参数交由 project 模块处理。
+
+**然后**，如果当前宿主机已经存在与该应用对应的容器，docker-compose 则进行行为逻辑判断。如果用户指定可以重新启动已有服务，docker-compose 就会执行 service 模块的容器重启方法，否则就直接启动已有容器。这两种操作的区别在于前者会停止旧的容器，创建并启动新的容器，并把旧容器移除掉。在这个过程中创建容器的各项自定义参数都是从 docker-compose up 命令和 docker-compose.yml 中传入的。
+
+**接下来**，启动容器的方法也很简洁，这个方法中完成了一个 docker 容器启动所需的主要参数的封装，并在 container 模块执行启动。
+
+**最后**，contaier 模块会调用 docker-py 客户端来执行向 docker daemon 发起创建容器的 POST 请求。
+
+
+## 1.9. VIM
 <a href="#menu" style="float:right">目录</a>
 
 * 安装
@@ -1239,8 +1611,167 @@ Commands:
 * 支持鼠标操作
     * 输入命令 set mouse=a
 
+### 1.9.1. 命令模式
 
-## 1.9. NMON监控工具
+
+基本上 vi/vim 共分为三种模式，分别是命令模式（Command mode），输入模式（Insert mode）和底线命令模式（Last line mode）。 这三种模式的作用分别是：
+
+**命令模式**：
+用户刚刚启动 vi/vim，便进入了命令模式。
+
+此状态下敲击键盘动作会被Vim识别为命令，而非输入字符。比如我们此时按下i，并不会输入一个字符，i被当作了一个命令。
+
+以下是常用的几个命令：
+* i 切换到输入模式，以输入字符。
+* x 删除当前光标所在处的字符。
+* : 切换到底线命令模式，以在最底一行输入命令。
+若想要编辑文本：启动Vim，进入了命令模式，按下i，切换到输入模式。
+
+命令模式只有一些最基本的命令，因此仍要依靠底线命令模式输入更多命令。
+
+**输入模式**
+在命令模式下按下i就进入了输入模式。
+
+在输入模式中，可以使用以下按键：
+
+* 字符按键以及Shift组合，输入字符
+* ENTER，回车键，换行
+* BACK SPACE，退格键，删除光标前一个字符
+* DEL，删除键，删除光标后一个字符
+* 方向键，在文本中移动光标
+* HOME/END，移动光标到行首/行尾
+* Page Up/Page Down，上/下翻页
+* Insert，切换光标为输入/替换模式，光标将变成竖线/下划线
+* ESC，退出输入模式，切换到命令模式
+* Ctrl+q　是 Linux 快捷键，　当 Ctrl+s 锁定屏幕后，只能用　Ctrl+q 退出
+
+**底线命令模式**
+在命令模式下按下:（英文冒号）就进入了底线命令模式。
+
+底线命令模式可以输入单个或多个字符的命令，可用的命令非常多。
+
+在底线命令模式中，基本的命令有（已经省略了冒号）：
+* q 退出程序
+* w 保存文件
+* 按ESC键可随时退出底线命令模式。
+
+
+
+### 1.9.2. 常用命令
+
+![](https://img2018.cnblogs.com/blog/685007/201902/685007-20190219103545499-1516663381.png)
+![](https://img2018.cnblogs.com/blog/685007/201902/685007-20190219103431877-1441653557.png)
+
+第一部份：一般模式可用的光标移动、复制粘贴、搜索替换等
+**移动光标的方法**
+|||
+|---|---|
+|h 或 向左箭头键(←)|	光标向左移动一个字符
+|j 或 向下箭头键(↓)|	光标向下移动一个字符
+|k 或 向上箭头键(↑)	|光标向上移动一个字符
+|l 或 向右箭头键(→)|	光标向右移动一个字符
+
+如果你将右手放在键盘上的话，你会发现 hjkl 是排列在一起的，因此可以使用这四个按钮来移动光标。 如果想要进行多次移动的话，例如向下移动 30 行，可以使用 "30j" 或 "30↓" 的组合按键， 亦即加上想要进行的次数(数字)后，按下动作即可！
+|||
+|---|---|
+|[Ctrl] + [f]|	屏幕『向下』移动一页，相当于 [Page Down]按键 (常用)
+|[Ctrl] + [b]|	屏幕『向上』移动一页，相当于 [Page Up] 按键 (常用)
+|[Ctrl] + [d]|	屏幕『向下』移动半页
+|[Ctrl] + [u]|	屏幕『向上』移动半页
+|+	|光标移动到非空格符的下一行
+|-	|光标移动到非空格符的上一行
+|n< space>	|那个 n 表示『数字』，例如 20 。按下数字后再按空格键，光标会向右移动这一行的 n 个字|符。例如 20< space> 则光标会向后面移动 20 个字符距离。
+|0 或功能键[Home]|	这是数字『 0 』：移动到这一行的最前面字符处 (常用)
+|$ 或功能键[End]|	移动到这一行的最后面字符处(常用)
+|H|	光标移动到这个屏幕的最上方那一行的第一个字符
+|M	|光标移动到这个屏幕的中央那一行的第一个字符
+|L|	光标移动到这个屏幕的最下方那一行的第一个字符
+|G|	移动到这个档案的最后一行(常用)
+|nG||	n 为数字。移动到这个档案的第 n 行。例如 20G 则会移动到这个档案的第 20 行(可配合 :set nu)
+|gg	|移动到这个档案的第一行，相当于 1G 啊！ (常用)
+|n< Enter>|	n 为数字。光标向下移动 n 行(常用)
+
+**搜索替换**
+
+|||
+|---|---|
+|/word	|向光标之下寻找一个名称为 word 的字符串。例如要在档案内搜寻 vbird 这个字符串，就输入 /vbird 即可！ (常用)
+|?word|	向光标之上寻找一个字符串名称为 word 的字符串。
+|n|	这个 n 是英文按键。代表重复前一个搜寻的动作。举例来说， 如果刚刚我们执行 /vbird 去向下搜寻 vbird 这个字符串，则按下 n 后，会向下继续搜寻下一个名称为 vbird 的字符串。如果是执行 ?vbird 的话，那么按下 n 则会向上继续搜寻名称为 vbird 的字符串！
+|N|	这个 N 是英文按键。与 n 刚好相反，为『反向』进行前一个搜寻动作。 例如 /vbird 后，按下 N 则表示『向上』搜寻 vbird 。
+|使用 /word 配合 n 及 N 是非常有帮助的！可以让你重复的找到一些你搜寻的关键词！
+|:n1,n2s/word1/word2/g	n1 与 n2 为数字。在第 n1 与 n2 行之间寻找 word1 这个字符串，并将该字符串取代为 word2 ！举例来说，在 100 到 200 行之间搜寻 vbird 并取代为 VBIRD 则：『:100,200s/vbird/VBIRD/g』。(常用)
+|:1,$s/word1/word2/g 或 :%s/word1/word2/g|	从第一行到最后一行寻找 word1 字符串，并将该字符串取代为 word2 ！(常用)
+|:1,$s/word1/word2/gc 或 :%s/word1/word2/gc|	从第一行到最后一行寻找 word1 字符串，并将该字符串取代为 word2 ！且在取代前显示提示字符给用户确认 (confirm) 是否需要取代！(常用)
+
+**删除、复制粘贴**
+
+|||
+|---|---|
+|x, X|	在一行字当中，x 为向后删除一个字符 (相当于 [del] 按键)， X 为向前删除一个字符(相当于 [backspace] 亦即是退格键) (常用)
+|nx	|n 为数字，连续向后删除 n 个字符。举例来说，我要连续删除 10 个字符， 『10x』。
+|dd	|删除游标所在的那一整行(常用)
+|ndd|	n 为数字。删除光标所在的向下 n 行，例如 20dd 则是删除 20 行 (常用)
+|d1G|	删除光标所在到第一行的所有数据
+|dG|	删除光标所在到最后一行的所有数据
+|d$|	删除游标所在处，到该行的最后一个字符
+|d0|	那个是数字的 0 ，删除游标所在处，到该行的最前面一个字符
+|yy	|复制游标所在的那一行(常用)
+|nyy|	n 为数字。复制光标所在的向下 n 行，例如 20yy 则是复制 20 行(常用)
+|y1G|	复制游标所在行到第一行的所有数据
+|yG|	复制游标所在行到最后一行的所有数据
+|y0|	复制光标所在的那个字符到该行行首的所有数据
+|y$|	复制光标所在的那个字符到该行行尾的所有数据
+|p, P|	p 为将已复制的数据在光标下一行贴上，P 则为贴在游标上一行！ 举例来说，我目前光标在第 20 行，且已经复制了 10 行数据。则按下 p 后， 那 10 行数据会贴在原本的 20 行之后，亦即由 21 行开始贴。但如果是按下 P 呢？ 那么原本的第 20 行会被推到变成 30 行。 (常用)
+|J|	将光标所在行与下一行的数据结合成同一行
+|c|	重复删除多个数据，例如向下删除 10 行，[ 10cj ]
+|u|	复原前一个动作。(常用)
+|[Ctrl]+r|	重做上一个动作。(常用)
+|这个 u 与 [Ctrl]+r 是很常用的指令！一个是复原，另一个则是重做一次～ 利用这两个功能按键，你的编辑，嘿嘿！很快乐的啦！
+|.|不要怀疑！这就是小数点！意思是重复前一个动作的意思。 如果你想要重复删除、重复贴上等等动作，按下小数点『.』就好了！ (常用)
+
+**第二部份：一般模式切换到编辑模式的可用的按钮说明**
+
+* 进入输入或取代的编辑模式
+
+|||
+|---|---|
+|i, I|	进入输入模式(Insert mode)：i 为『从目前光标所在处输入』， I 为『在目前所在行的第一个非空格符处开始输入』。 (常用)
+|a, A	|进入输入模式(Insert mode)：a 为『从目前光标所在的下一个字符处开始输入』， A 为『从光标所在行的最后一个字符处开始输入』。(常用)
+|o, O	|进入输入模式(Insert mode)：这是英文字母 o 的大小写。o 为『在目前光标所在的下一行处输入新的一行』； O 为在目前光标所在处的上一行输入新的一行！(常用)
+|r, R	|进入取代模式(Replace mode)：r 只会取代光标所在的那一个字符一次；R会一直取代光标所在的文字，直到按下 ESC 为止；(常用)
+|上面这些按键中，在 vi 画面的左下角处会出现『--INSERT--』或『--REPLACE--』的字样。 由名称就知道该动作了吧！！特别注意的是，我们上面也提过了，你想要在档案里面输入字符时， 一定要在左下角处看到 INSERT 或 REPLACE 才能输入喔！
+|[Esc]|	退出编辑模式，回到一般模式中(常用)
+
+**第三部份：一般模式切换到指令行模式的可用的按钮说明**
+* 指令行的储存、离开等指令
+
+|||
+|---|---|
+|:w	|将编辑的数据写入硬盘档案中(常用)
+|:w!|	若文件属性为『只读』时，强制写入该档案。不过，到底能不能写入， 还是跟你对该档案的档案权限有关啊！
+|:q|	离开 vi (常用)
+|:q!|	若曾修改过档案，又不想储存，使用 ! 为强制离开不储存档案。注意一下啊，那个惊叹号 (!) 在 vi 当中，常常具有『强制』的意思～
+|:wq|	储存后离开，若为 :wq! 则为强制储存后离开 (常用)
+|ZZ|	这是大写的 Z 喔！若档案没有更动，则不储存离开，若档案已经被更动过，则储存后离开！
+|:w|[filename]	将编辑的数据储存成另一个档案（类似另存新档）
+|:r| [filename]	在编辑的数据中，读入另一个档案的数据。亦即将 『filename』 这个档案内容加到游标所在行后面
+|:n1,n2 w [filename]	将 n1 到 n2 的内容储存成 filename 这个档案。
+|:! command	|暂时离开 vi 到指令行模式下执行 command 的显示结果！例如『:! ls /home』即可在 vi 当中察看 /home 底下以 ls 输出的档案信息！
+
+* vim 环境的变更
+
+|||
+|---|---|
+|:set nu|	显示行号，设定之后，会在每一行的前缀显示该行的行号
+|:set nonu	|与 set nu 相反，为取消行号！
+
+特别注意，在 vi/vim 中，数字是很有意义的！数字通常代表重复做几次的意思！ 也有可能是代表去到第几个什么什么的意思。
+
+举例来说，要删除 50 行，则是用 『50dd』 对吧！ 数字加在动作之前，如我要向下移动 20 行呢？那就是『20j』或者是『20↓』即可。
+
+
+## 1.10. NMON监控工具
 
 <a href="#menu" style="float:right">目录</a>
 
@@ -1260,7 +1791,7 @@ Commands:
 
 ```
 
-## 1.10. 正则表达式
+## 1.11. 正则表达式
 正则表达式(regular expression)描述了一种字符串匹配的模式（pattern），可以用来检查一个串是否含有某种子串、将匹配的子串替换或者从某个串中取出符合某个条件的子串等。
 
 **非打印字符**
@@ -1427,7 +1958,7 @@ Commands:
 ```
 
 
-## 1.11. curl命令
+## 1.12. curl命令
 <a href="#menu" style="float:right">目录</a>
 
 curl 是一种命令行工具，作用是发出网络请求，然后获取数据，显示在"标准输出"（stdout）上面。它支持多种协议，下面列举其常用功能。
@@ -1747,7 +2278,7 @@ Options: (H) means HTTP/HTTPS only, (F) means FTP only
  -q                 If used as the first parameter disables .curlrc
 ```
 
-## 1.12. 常见时区缩写
+## 1.13. 常见时区缩写
 <a href="#menu" style="float:right">目录</a>
 
 IDLE +12:00 国际日期变更线，东边 
@@ -1805,10 +2336,10 @@ IDLW -12:00 国际日期变更线，西边
 
 
 
-## 1.13. 面试考察
+## 1.14. 面试考察
 <a href="#menu" style="float:right">目录</a>
 
-### 1.13.1. 技术广度的考察
+### 1.14.1. 技术广度的考察
 <a href="#menu" style="float:right">目录</a>
 
 首先考察候选人技术面的完整性，因为工作中是需要具备一定的技术视野的，不能说光知道消息中间件，但是分布式缓存却一无所知。
@@ -1829,7 +2360,7 @@ IDLW -12:00 国际日期变更线，西边
 而是说你工作几年以后，应该有一定的技术广度，开阔的技术视野。
 
 
-### 1.13.2. 底层技术的考察
+### 1.14.2. 底层技术的考察
 <a href="#menu" style="float:right">目录</a>
 
 现在很多互联网大厂都会有基本功的考察，举个例子，Java虚拟机的核心原理、内存模型、垃圾回收、线上FullGC卡顿性能优化、线上OOM内存溢出问题你处理。
@@ -1845,7 +2376,7 @@ Netty背后的IO、网络相关的知识。
 而且很多时候，解决线上系统的生产故障，都需要这些技术。因此，底层技术的掌握是一个优秀工程师必须具备的素养。
 
 
-### 1.13.3. 技术深度的考察
+### 1.14.3. 技术深度的考察
 <a href="#menu" style="float:right">目录</a>
 
 此外，我们一定会深入考察候选人平时工作中熟悉的以及常用的一些技术。

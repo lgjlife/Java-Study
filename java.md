@@ -2612,7 +2612,7 @@ public class testMyClassLoader {
 
 
 <a id="markdown-常见加载类错误" name="常见加载类错误"></a>
-#### 常见加载类错误
+#### 1.5.2.6. 常见加载类错误
 
 * ClassNotFoudException
     * 类不存在
@@ -2623,7 +2623,7 @@ public class testMyClassLoader {
 * ExceptionOInInitializerError
 
 <a id="markdown-1526-线程上下文类加载器" name="1526-线程上下文类加载器"></a>
-#### 1.5.2.6. 线程上下文类加载器
+#### 1.5.2.7. 线程上下文类加载器
 <a href="#menu" style="float:right">目录</a>
 
 　　线程上下文类加载器（context class loader）是从 JDK 1.2 开始引入的。类 java.lang.Thread中的方法 getContextClassLoader()和 setContextClassLoader(ClassLoader cl)用来获取和设置线程的上下文类加载器。如果没有通过 setContextClassLoader(ClassLoader cl)方法进行设置的话，线程将继承其父线程的上下文类加载器。Java 应用运行的初始线程的上下文类加载器是系统类加载器。在线程中运行的代码可以通过此类加载器来加载类和资源。
@@ -2634,7 +2634,7 @@ public class testMyClassLoader {
 
 
 <a id="markdown-1527-类加载器与web容器" name="1527-类加载器与web容器"></a>
-#### 1.5.2.7. 类加载器与Web容器
+#### 1.5.2.8. 类加载器与Web容器
 <a href="#menu" style="float:right">目录</a>
 　　对于运行在 Java EE容器中的 Web 应用来说，类加载器的实现方式与一般的 Java 应用有所不同。不同的 Web 容器的实现方式也会有所不同。以 Apache Tomcat 来说，每个 Web 应用都有一个对应的类加载器实例。该类加载器也使用代理模式，所不同的是它是首先尝试去加载某个类，如果找不到再代理给父类加载器。这与一般类加载器的顺序是相反的。这是 Java Servlet 规范中的推荐做法，其目的是使得 Web 应用自己的类的优先级高于 Web 容器提供的类。这种代理模式的一个例外是：Java 核心库的类是不在查找范围之内的。这也是为了保证 Java 核心库的类型安全。
 　　
@@ -2645,7 +2645,7 @@ public class testMyClassLoader {
 
 
 <a id="markdown-1528-常见问题分析" name="1528-常见问题分析"></a>
-#### 1.5.2.8. 常见问题分析
+#### 1.5.2.9. 常见问题分析
 **由不同的类加载器加载的指定类还是相同的类型吗？**
 
 　　在Java中，一个类用其完全匹配类名(fully qualified class name)作为标识，这里指的完全匹配类名包括包名和类名。但在JVM中，一个类用其 全名 和 一个ClassLoader的实例 作为唯一标识，不同类加载器加载的类将被置于不同的命名空间。我们可以用两个自定义类加载器去加载某自定义类型（注意不要将自定义类型的字节码放置到系统路径或者扩展路径中，否则会被系统类加载器或扩展类加载器抢先加载），然后用获取到的两个Class实例进行java.lang.Object.equals（…）判断，将会得到不相等的结果，如下所示：
@@ -2761,7 +2761,7 @@ sun.misc.Launcher$AppClassLoader@73d16e93
 
 　　JVM规范中规定如果用户自定义的类加载器将父类加载器强制设置为null，那么会自动将启动类加载器设置为当前用户自定义类加载器的父类加载器（这个问题前面已经分析过了）。同时，我们可以得出如下结论：即使用户自定义类加载器不指定父类加载器，那么，同样可以加载到<JAVA_HOME>/lib下的类，但此时就不能够加载<JAVA_HOME>/lib/ext目录下的类了。
 
-　　Ps：问题3和问题4的推断结论是基于用户自定义的类加载器本身延续了java.lang.ClassLoader.loadClass（…）默认委派逻辑，如果用户对这一默认委派逻辑进行了改变，以上推断结论就不一定成立了，详见问题5。
+　　Ps：���题3和问题4的推断结论是基于用户自定义的类加载器本身延续了java.lang.ClassLoader.loadClass（…）默认委派逻辑，如果用户对这一默认委派逻辑进行了改变，以上推断结论就不一定成立了，详见问题5。
 
 **编写自定义类加载器时，一般有哪些注意点？**
 
@@ -4163,7 +4163,7 @@ public class Singleton5 implements Serializable {
 <a id="markdown-1109-原型模式" name="1109-原型模式"></a>
 ### 1.10.9. 原型模式
 <a href="#menu" style="float:right">目录</a>
-原型模式（Prototype Pattern）是用于创建重复的对象，同时又能保证性能。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
+原型模式（Prototype Pattern���是用于创建重复的对象，同时又能保证性能。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
 
 这种模式是实现了一个原型接口，该接口用于创建当前对象的克隆。当直接创建对象的代价比较大时，则采用这种模式。例如，一个对象需要在一个高代价的数据库操作之后被创建。我们可以缓存该对象，在下一个请求时返回它的克隆，在需要的时候更新数据库，以此来减少数据库调用。
 

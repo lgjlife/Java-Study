@@ -29,10 +29,10 @@
 
 <a href="#menu" style="float:right">目录</a>
 
-## 为什么要使用分布式文件系统
+## 1.1. 为什么要使用分布式文件系统
 <a href="#menu" style="float:right">目录</a>
 
-### 单机时代
+### 1.1.1. 单机时代
 初创时期由于时间紧迫，在各种资源有限的情况下，通常就直接在项目目录下建立静态文件夹，用于用户存放项目中的文件资源。如果按不同类型再细分，可以在项目目录下再建立不同的子目录来区分。例如：resources\static\file、resources\static\img等。
 
 * 优点
@@ -40,7 +40,7 @@
 * 缺点
     * 如果只是后台系统的使用一般也不会有什么问题，但是作为一个前端网站使用的话就会存在弊端。一方面，文件和代码耦合在一起，文件越多存放越混乱；另一方面，如果流量比较大，静态文件访问会占据一定的资源，影响正常业务进行，不利于网站快速发展。
 
-### 独立文件服务器
+### 1.1.2. 独立文件服务器
 随着公司业务不断发展，将代码和文件放在同一服务器的弊端就会越来越明显。为了解决上面的问题引入独立图片服务器，工作流程如下：项目上传文件时，首先通过ftp或者ssh将文件上传到图片服务器的某个目录下，再通过ngnix或者apache来访问此目录下的文件，返回一个独立域名的图片URL地址，前端使用文件时就通过这个URL地址读取。
 
 * 优点
@@ -48,7 +48,7 @@
 * 缺点
     * 单机存在性能瓶颈，容灾、垂直扩展性稍差
 
-### 分布式文件系统
+### 1.1.3. 分布式文件系统
 通过独立文件服务器可以解决一些问题，如果某天存储文件的那台服务突然down了怎么办？可能你会说，定时将文件系统备份，这台down机的时候，迅速切换到另一台就OK了，但是这样处理需要人工来干预。另外，当存储的文件超过100T的时候怎么办？单台服务器的性能问题？这个时候我们就应该考虑分布式文件系统了。
 
 业务继续发展，单台服务器存储和响应也很快到达了瓶颈，新的业务需要文件访问具有高响应性、高可用性来支持系统。分布式文件系统，一般分为三块内容来配合，服务的存储、访问的仲裁系统，文件存储系统，文件的容灾系统来构成，仲裁系统相当于文件服务器的大脑，根据一定的算法来决定文件存储的位置，文件存储系统负责保存文件，容灾系统负责文件系统和自己的相互备份。
@@ -64,10 +64,10 @@
 
 
 
-## 1.1. 基本概念
+## 1.2. 基本概念
 <a href="#menu" style="float:right">目录</a>
 
-### 什么是FastDFS
+### 1.2.1. 什么是FastDFS
 FastDFS是一个开源的轻量级分布式文件系统。它解决了大数据量存储和负载均衡等问题。特别适合以中小文件（建议范围：4KB < file_size <500MB）为载体的在线服务，如相册网站、视频网站等等。在UC基于FastDFS开发向用户提供了：网盘，社区，广告和应用下载等业务的存储服务。
 
 FastDFS是一款开源的轻量级分布式文件系统纯C实现，支持Linux、FreeBSD等UNIX系统类google FS，不是通用的文件系统，只能通过专有API访问，目前提供了C、Java和PHP API为互联网应用量身定做，解决大容量文件存储问题，追求高性能和高扩展性FastDFS可以看做是基于文件的key value pair存储系统，称作分布式文件存储服务更为合适。
@@ -137,10 +137,10 @@ Tracker需要管理的元信息很少，会全部存储在内存中；另外trac
 
 
 
-## 1.2. 工作流程
+## 1.3. 工作流程
 <a href="#menu" style="float:right">目录</a>
 
-### 1.2.1. 文件上传
+### 1.3.1. 文件上传
 <a href="#menu" style="float:right">目录</a>
 
 首先客户端请求Tracker服务获取到存储服务器的ip地址和端口，然后客户端根据返回的IP地址和端口号请求上传文件，存储服务器接收到请求后生产文件，并且将文件内容写入磁盘并返回给客户端file_id、路径信息、文件名等信息，客户端保存相关信息上传完毕。
@@ -198,7 +198,7 @@ Tracker需要管理的元信息很少，会全部存储在内存中；另外trac
 
 
 
-### 1.2.2. 文件下载
+### 1.3.2. 文件下载
 <a href="#menu" style="float:right">目录</a>
 客户端带上文件名信息请求Tracker服务获取到存储服务器的ip地址和端口，然后客户端根据返回的IP地址和端口号请求下载文件，存储服务器接收到请求后返回文件给客户端。
 ![文件下载](https://img-blog.csdn.net/20161225092601950?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveXhmbG92ZWdzMjAxMg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
@@ -219,14 +219,14 @@ tracker发送download请求给某个tracker，必须带上文件名信息，trac
 
 
 
-## 1.3. FastDFS为什么要结合Nginx
+## 1.4. FastDFS为什么要结合Nginx
 <a href="#menu" style="float:right">目录</a>
 
 我们在使用FastDFS部署一个分布式文件系统的时候，通过FastDFS的客户端API来进行文件的上传、下载、删除等操作。同时通过FastDFS的HTTP服务器来提供HTTP服务。但是FastDFS的HTTP服务较为简单，无法提供负载均衡等高性能的服务，所以FastDFS的开发者——淘宝的架构师余庆同学，为我们提供了Nginx上使用的FastDFS模块（也可以叫FastDFS的Nginx模块）。其使用非常简单。
 
 FastDFS通过Tracker服务器,将文件放在Storage服务器存储,但是同组之间的服务器需要复制文件,有延迟的问题.假设Tracker服务器将文件上传到了192.168.1.80,文件ID已经返回客户端,这时,后台会将这个文件复制到192.168.1.30,如果复制没有完成,客户端就用这个ID在192.168.1.30取文件,肯定会出现错误。这个fastdfs-nginx-module可以重定向连接到源服务器取文件,避免客户端由于复制延迟的问题,出现错误.
 
-## 1.4. 配置文件说明
+## 1.5. 配置文件说明
 <a href="#menu" style="float:right">目录</a>
 
 **track.conf**
@@ -905,7 +905,7 @@ work_threads=4
  
 ```
 
-## 1.5. FastDFS 同步机制说明：
+## 1.6. FastDFS 同步机制说明：
 
 写文件时，客户端将文件写至group内一个storage server即认为写文件成功，storage server写完文件后，会由后台线程将文件同步至同group内其他的storage server。
 每个storage写文件后，同时会写一份binlog，binlog里不包含文件数据，只包含文件名等元信息，这份binlog用于后台同步，storage会记录向group内其他storage同步的进度，以便重启后能接上次的进度继续同步；进度以时间戳的方式进行记录，所以最好能保证集群内所有server的时钟保持同步。
@@ -942,12 +942,12 @@ server分配向storage server A同步已有数据的源storage server为B。同�
 B向storage server A同步完所有数据，暂时没有数据要同步时，storage server B请求tracker server将storage server A的状态设置为FDFS_STORAGE_STATUS_ONLINE；
 4 当storage server A向tracker server发起heart beat时，tracker server将其状态更改为FDFS_STORAGE_STATUS_ACTIVE。
 
-## 1.6. 安装配置
+## 1.7. 安装配置
 <a href="#menu" style="float:right">目录</a>
 
 [参考](https://www.cnblogs.com/chiangchou/p/fastdfs.html)
 
-## 1.7. Java客户端使用
+## 1.8. Java客户端使用
 <a href="#menu" style="float:right">目录</a>
 
 ```xml

@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>web-safe.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
+	font-size: 14px;
+	padding: 0 12px;
+	line-height: 22px;
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	color: #4080D0;
+	text-decoration: none;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code {
+	font-size: inherit;
+	line-height: auto;
+}
+
+a:hover {
+	color: #4080D0;
+	text-decoration: underline;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left: 5px solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 14px;
+	line-height: 19px;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+.mac code {
+	font-size: 12px;
+	line-height: 18px;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+/** Theming */
+
+.vscode-light,
+.vscode-light pre code {
+	color: rgb(30, 30, 30);
+}
+
+.vscode-dark,
+.vscode-dark pre code {
+	color: #DDD;
+}
+
+.vscode-high-contrast,
+.vscode-high-contrast pre code {
+	color: white;
+}
+
+.vscode-light code {
+	color: #A31515;
+}
+
+.vscode-dark code {
+	color: #D7BA7D;
+}
+
+.vscode-light pre:not(.hljs),
+.vscode-light code > div {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre:not(.hljs),
+.vscode-dark code > div {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre:not(.hljs),
+.vscode-high-contrast code > div {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+.vscode-light blockquote,
+.vscode-dark blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.vscode-high-contrast blockquote {
+	background: transparent;
+	border-color: #fff;
+}
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family:  "Meiryo", "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+</head>
+<body>
+<!-- TOC -->
+<ul>
+<li><a href="#1-%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8">1. 网络安全</a>
+<ul>
+<li><a href="#11-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AE%89%E5%85%A8">1.1. 浏览器安全</a>
+<ul>
+<li><a href="#111-%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5">1.1.1. 同源策略</a></li>
+</ul>
+</li>
+<li><a href="#12-%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBxss">1.2. 跨站脚本攻击XSS</a>
+<ul>
+<li><a href="#121-%E7%AE%80%E4%BB%8B">1.2.1. 简介</a></li>
+<li><a href="#122-xss%E6%94%BB%E5%87%BB">1.2.2. XSS攻击</a></li>
+<li><a href="#123-xss%E9%98%B2%E5%BE%A1">1.2.3. XSS防御</a></li>
+</ul>
+</li>
+<li><a href="#13-%E8%B7%A8%E7%AB%99%E7%82%B9%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0csrf">1.3. 跨站点请求伪造CSRF</a>
+<ul>
+<li><a href="#131-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5">1.3.1. 基本概念</a></li>
+</ul>
+</li>
+<li><a href="#14-%E7%82%B9%E5%87%BB%E5%8A%AB%E6%8C%81">1.4. 点击劫持</a></li>
+<li><a href="#15-html5%E5%AE%89%E5%85%A8">1.5. HTML5安全</a></li>
+<li><a href="#16-%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB">1.6. 注入攻击</a></li>
+<li><a href="#17-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E">1.7. 文件上传漏洞</a></li>
+<li><a href="#18-%E8%AE%A4%E8%AF%81%E5%92%8C%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86">1.8. 认证和会话管理</a></li>
+<li><a href="#19-%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6">1.9. 访问控制</a></li>
+<li><a href="#110-%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%92%8C%E9%9A%8F%E6%9C%BA%E6%95%B0">1.10. 加密算法和随机数</a></li>
+<li><a href="#111-web%E6%A1%86%E6%9E%B6%E5%AE%89%E5%85%A8">1.11. WEB框架安全</a></li>
+<li><a href="#112-%E5%BA%94%E7%94%A8%E6%8B%92%E7%BB%9D%E6%9C%8D%E5%8A%A1%E6%94%BB%E5%87%BB">1.12. 应用拒绝服务攻击</a></li>
+<li><a href="#113-web-server%E9%85%8D%E7%BD%AE%E5%AE%89%E5%85%A8">1.13. WEB SERVER配置安全</a></li>
+</ul>
+</li>
+</ul>
+<!-- /TOC -->
+<p><span id="menu"></span></p>
+<h1 id="1-%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8">1. 网络安全</h1>
+<h2 id="11-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AE%89%E5%85%A8">1.1. 浏览器安全</h2>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="111-%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5">1.1.1. 同源策略</h3>
+<ul>
+<li>
+<p>定义</p>
+<ul>
+<li>脚本只访问同源的服务器</li>
+<li>同源策略是浏览器的行为，是为了保护本地数据不被JavaScript代码获取回来的数据污染，因此拦截的是客户端发出的请求回来的数据接收，即请求发送了，服务器响应了，但是无法被浏览器接收</li>
+<li>html中的 img / a /link / script /  ifame 等标签不受此限制，脚本访问才会受限制</li>
+<li>DOM,Cookie,XMLHttpRequest(ajax)受同源限制,以及浏览器加载的第三方插件比如Flash,JavaApplet等有自己的控制策略</li>
+<li>脚本访问不同源的数据叫跨域访问</li>
+</ul>
+</li>
+<li>
+<p>同源区分</p>
+<ul>
+<li>协议</li>
+<li>host</li>
+<li>端口</li>
+<li>子域名</li>
+</ul>
+</li>
+<li>
+<p>破解跨域访问</p>
+<ul>
+<li>通过响应的HTTP头来授权</li>
+<li>Access-Control-Allow-Origin
+<ul>
+<li>https://www.zhoutao123.com</li>
+<li>标明允许https://www.zhoutao123.com	发起跨域请求</li>
+</ul>
+</li>
+<li>Access-Control-Max-Age
+<ul>
+<li>3628800</li>
+<li>表明在3628800秒内，不需要再发送预检验请求</li>
+</ul>
+</li>
+<li>Access-Control-Allow-Methods
+<ul>
+<li>GET，PUT, DELETE	允许GET、PUT、DELETE的外域请求</li>
+</ul>
+</li>
+<li>Access-Control-Allow-Headers
+<ul>
+<li>content-type</li>
+<li>允许跨域请求包含content-type头</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Spring Boot开启
+方式1：</p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">@Target</span>({ ElementType.METHOD, ElementType.TYPE })
+<span class="hljs-meta">@Retention</span>(RetentionPolicy.RUNTIME)
+<span class="hljs-meta">@Documented</span>
+<span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> CrossOrigin {
+    
+    <span class="hljs-comment">//允许跨域的服务器</span>
+    <span class="hljs-meta">@AliasFor</span>(<span class="hljs-string">"origins"</span>)
+    String[] value() <span class="hljs-keyword">default</span> {};
+    
+    <span class="hljs-comment">//和上面是一样的 AliasFor</span>
+    <span class="hljs-meta">@AliasFor</span>(<span class="hljs-string">"value"</span>)
+    String[] origins() <span class="hljs-keyword">default</span> {};
+
+    <span class="hljs-comment">//允许头部</span>
+    String[] allowedHeaders() <span class="hljs-keyword">default</span> {};
+
+    String[] exposedHeaders() <span class="hljs-keyword">default</span> {};
+    
+    <span class="hljs-comment">/**
+     * The list of supported HTTP request methods.
+     * &lt;p&gt;By default the supported methods are the same as the ones to which a
+     * controller method is mapped.
+     */</span>
+    RequestMethod[] methods() <span class="hljs-keyword">default</span> {};
+    
+    <span class="hljs-function">String <span class="hljs-title">allowCredentials</span><span class="hljs-params">()</span> <span class="hljs-keyword">default</span> ""</span>;
+    
+    <span class="hljs-comment">/**
+     * The maximum age (in seconds) of the cache duration for preflight responses.
+     * &lt;p&gt;This property controls the value of the {<span class="hljs-doctag">@code</span> Access-Control-Max-Age}
+     * response header of preflight requests.
+     * &lt;p&gt;Setting this to a reasonable value can reduce the number of preflight
+     * request/response interactions required by the browser.
+     * A negative value means &lt;em&gt;undefined&lt;/em&gt;.
+     * &lt;p&gt;By default this is set to {<span class="hljs-doctag">@code</span> 1800} seconds (30 minutes).
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">long</span> <span class="hljs-title">maxAge</span><span class="hljs-params">()</span> <span class="hljs-keyword">default</span> -1</span>;
+}
+ <span class="hljs-comment">//根据CrossOrigin的注释可以再请求参数的不存在的时候,CORS支持的方法和Mapper支持的方法一致</span>
+<span class="hljs-meta">@CrossOrigin</span>(origins = <span class="hljs-string">"http://localhost:9000"</span>)
+<span class="hljs-meta">@GetMapping</span>(<span class="hljs-string">"/test"</span>)
+<span class="hljs-function"><span class="hljs-keyword">public</span> Greeting <span class="hljs-title">greeting</span><span class="hljs-params">(@RequestParam(required=<span class="hljs-keyword">false</span>, defaultValue=<span class="hljs-string">"World"</span>)</span> String name) </span>{
+    System.out.println(<span class="hljs-string">"==== in tesing ===="</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-string">"SUCCESS"</span>;
+}
+</div></code></pre>
+<p>方式2</p>
+<pre class="hljs"><code><div> <span class="hljs-meta">@Bean</span>
+  <span class="hljs-meta">@SuppressWarnings</span>(<span class="hljs-string">"deprecation"</span>)
+  <span class="hljs-function"><span class="hljs-keyword">public</span> WebMvcConfigurer <span class="hljs-title">corsConfigurer</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> WebMvcConfigurerAdapter() {
+      <span class="hljs-meta">@Override</span>
+      <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">addCorsMappings</span><span class="hljs-params">(CorsRegistry registry)</span> </span>{
+        log.info(<span class="hljs-string">"CORS 配置参数 origins = {}  url = {}"</span>, allowedOrigins, allowedUrl);
+        registry
+            .addMapping(<span class="hljs-string">"/**"</span>)
+            .allowedMethods(<span class="hljs-string">"GET"</span>, <span class="hljs-string">"POST"</span>, <span class="hljs-string">"PATCH"</span>, <span class="hljs-string">"DELETE"</span>, <span class="hljs-string">"PUT"</span>, <span class="hljs-string">"OPTIONS"</span>)
+            .allowedOrigins(<span class="hljs-string">"http://localhost:9090"</span>);
+      }
+    };
+  }
+</div></code></pre>
+<h2 id="%E5%B8%B8%E8%A7%81%E7%9A%84web%E6%94%BB%E5%87%BB%E6%89%8B%E6%AE%B5">常见的WEB攻击手段</h2>
+<h3 id="12-%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBxss">1.2. 跨站脚本攻击XSS</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<p><strong>基础概念</strong>
+　　XSS（Cross Site Scripting）攻击全称跨站脚本攻击，是为不和层叠样式表(Cascading Style Sheets, CSS)的缩写混淆，故将跨站脚本攻击缩写为XSS，XSS是一种经常出现在web应用中的计算机安全漏洞，它允许恶意web用户将代码植入到提供给其它用户使用的页面中。比如这些代码包括HTML代码和客户端脚本。（摘自百度百科）</p>
+<p><strong>主要危害</strong>
+1、盗取各类用户帐号，如机器登录帐号、用户网银帐号、各类管理员帐号
+2、控制企业数据，包括读取、篡改、添加、删除企业敏感数据的能力
+3、盗窃企业重要的具有商业价值的资料
+4、非法转账
+5、强制发送电子邮件
+6、网站挂马
+7、控制受害者机器向其它网站发起攻击</p>
+<p><strong>攻击方式</strong>
+1、反射型
+　反射型XSS，也叫非持久型XSS，是指发生请求时，XSS代码出现在请求URL中，作为参数提交到服务器，服务器解析并响应。响应结果中包含XSS代码，最后浏览器解析并执行。从概念上可以看出，反射型XSS代码是首先出现在URL中的，然后需要服务端解析，最后需要浏览器解析之后XSS代码才能够攻击。</p>
+<p>这类通常使用URL，具体流程：
+1、Alice给Bob发送一个恶意构造了Web的URL。
+2、Bob点击并查看了这个URL。
+3、恶意页面中的JavaScript打开一个具有漏洞的HTML页面并将其安装在Bob电脑上。
+4、具有漏洞的HTML页面包含了在Bob电脑本地域执行的JavaScript。
+5、Alice的恶意脚本可以在Bob的电脑上执行Bob所持有的权限下的命令。</p>
+<p>举个列子：
+http://localhost:8080/helloController/search?name=<script>alert(&quot;hey!&quot;)</script>
+http://localhost:8080/helloController/search?name=<img src='w.123' onerror='alert("hey!")'>
+http://localhost:8080/helloController/search?name=<a onclick='alert("hey!")'>点我</a></p>
+<p>服务端代码片段，只做了一个简单的字符串连接就返回给客户端。
+<img src="https://images2018.cnblogs.com/blog/976001/201808/976001-20180811173613221-1624378045.png" alt="">
+<img src="https://images2018.cnblogs.com/blog/976001/201808/976001-20180811171704722-737520172.png" alt="">
+<img src="https://images2018.cnblogs.com/blog/976001/201808/976001-20180811171720157-1963269620.png" alt=""></p>
+<p><img src="https://images2018.cnblogs.com/blog/976001/201808/976001-20180811171929834-200684964.png" alt="">
+　　
+我们可以看到Google Chrome是有做处理的相对比较安全，但是Firefox就没有。</p>
+<p>2、存储型
+　　存储型XSS，也叫持久型XSS，主要是将XSS代码发送到服务器（不管是数据库、内存还是文件系统等。），然后在下次请求页面的时候就不用带上XSS代码了。最典型的就是留言板XSS。用户提交了一条包含XSS代码的留言到数据库。当目标用户查询留言时，那些留言的内容会从服务器解析之后加载出来。浏览器发现有XSS代码，就当做正常的HTML和JS解析执行。XSS攻击就发生了。</p>
+<p>常用来干嘛？
+1、窃取用户信息，如cookie，token，账号密码等。
+例如：张三发了一篇帖子，李四进行回复：但内容却是一段js脚本，这篇帖子被他人浏览的时候就会中招，例子中的只是一个alert()，但脚本可以写的比较复杂一点盗用用户cookie等等操作。
+<img src="https://images2018.cnblogs.com/blog/976001/201808/976001-20180811161936913-1572944108.png" alt=""></p>
+<p>2、除了这种hacker还有个很惯用的伎俩，例如存储型XSS生成一些诱人的图片，文字（你懂的！），然后用户去点击的时候就可以执行某些坏事，窃取信息或者诱导到钓鱼网站。</p>
+<pre class="hljs"><code><div><span class="hljs-tag">&lt; <span class="hljs-attr">img</span> <span class="hljs-attr">onclick</span>=<span class="hljs-string">"window.location.href='http://www.baidu.com'"</span> <span class="hljs-attr">width</span>=<span class="hljs-string">'300'</span> <span class="hljs-attr">src</span>=<span class="hljs-string">'img/webwxgetmsgimg.jpg'</span>/&gt;</span>
+</div></code></pre>
+<p><img src="https://images2018.cnblogs.com/blog/976001/201808/976001-20180811163711085-2044434057.png" alt=""></p>
+<p><img src="https://images2018.cnblogs.com/blog/976001/201808/976001-20180811163733106-1179998230.png" alt="">
+点击图片后，就会进入到目标网站了。
+<img src="https://images2018.cnblogs.com/blog/976001/201808/976001-20180811163742523-848373955.png" alt="">
+<img src="file:///home/lgj/aProject/aRealPrj/Java-Interview" alt=""></p>
+<p>3、劫持流量实现恶意跳转
+用户打开的网址，会默认跳转至指定网站，脚本如下：</p>
+<pre class="hljs"><code><div>　&lt;script&gt;<span class="hljs-built_in">window</span>.location.href=<span class="hljs-string">"http://www.baidu.com"</span>;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+</div></code></pre>
+<p><strong>防范手段</strong>
+1、入参字符过滤
+　　在源头控制，把输入的一些不合法的东西都过滤掉，从而保证安全性。如移除用户提交的的DOM属性如onerror，移除用户上传的Style节点，<iframe>, <script>，<a>节点等
+2、出参进行编码
+　　如果源头没控制好，就得后期补救了：像一些常见的符号，如&lt;&gt;在输出的时候要对其进行转换编码，这样做浏览器是不会对该标签进行解释执行的，同时也不影响显示效果。例如：对&lt;&gt;做编码如：&quot;&lt;&quot;用:&quot;&lt;&quot;,&quot;&gt;&quot;用:&quot;&gt;&quot;来代替。
+3、入参长度限制
+　　通过以上的案例我们不难发现xss攻击要能达成往往需要较长的字符串，因此对于一些可以预期的输入可以通过限制长度强制截断来进行防御。
+4、设置cookie httponly为true</p>
+<h3 id="13-%E8%B7%A8%E7%AB%99%E7%82%B9%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0csrf">1.3. 跨站点请求伪造CSRF</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<p><strong>CSRF概念</strong>
+CSRF跨站点请求伪造(Cross—Site Request Forgery)，跟XSS攻击一样，存在巨大的危害性，你可以这样来理解：攻击者盗用了你的身份，以你的名义发送恶意请求，对服务器来说这个请求是完全合法的，但是却完成了攻击者所期望的一个操作，比如以你的名义发送邮件、发消息，盗取你的账号，添加系统管理员，甚至于购买商品、虚拟货币转账等。 如下：其中Web A为存在CSRF漏洞的网站，Web B为攻击者构建的恶意网站，User C为Web A网站的合法用户。</p>
+<p><strong>CSRF攻击介绍及防御</strong></p>
+<ul>
+<li>CSRF攻击攻击原理及过程如下：
+<ul>
+<li>用户C打开浏览器，访问受信任网站A，输入用户名和密码请求登录网站A；</li>
+<li>在用户信息通过验证后，网站A产生Cookie信息并返回给浏览器，此时用户登录网站A成功，可以正常发送请求到网站A；</li>
+<li>用户未退出网站A之前，在同一浏览器中，打开一个TAB页访问网站B；</li>
+<li>网站B接收到用户请求后，返回一些攻击性代码，并发出一个请求要求访问第三方站点A；</li>
+<li>浏览器在接收到这些攻击性代码后，根据网站B的请求，在用户不知情的情况下携带Cookie信息，向网站A发出请求。网站A并不知道该请求其实是由B发起的，所以会根据用户C的Cookie信息以C的权限处理该请求，导致来自网站B的恶意代码被执行。</li>
+</ul>
+</li>
+</ul>
+<p><strong>CSRF攻击实例</strong></p>
+<p>受害者 Bob 在银行有一笔存款，通过对银行的网站发送请求 http://bank.example/withdraw?account=bob&amp;amount=1000000&amp;for=bob2 可以使 Bob 把 1000000 的存款转到 bob2 的账号下。通常情况下，该请求发送到网站后，服务器会先验证该请求是否来自一个合法的 session，并且该 session 的用户 Bob 已经成功登陆。</p>
+<p>黑客 Mallory 自己在该银行也有账户，他知道上文中的 URL 可以把钱进行转帐操作。Mallory 可以自己发送一个请求给银行：http://bank.example/withdraw?account=bob&amp;amount=1000000&amp;for=Mallory。但是这个请求来自 Mallory 而非 Bob，他不能通过安全认证，因此该请求不会起作用。</p>
+<p>这时，Mallory 想到使用 CSRF 的攻击方式，他先自己做一个网站，在网站中放入如下代码： src=”http://bank.example/withdraw?account=bob&amp;amount=1000000&amp;for=Mallory ”，并且通过广告等诱使 Bob 来访问他的网站。当 Bob 访问该网站时，上述 url 就会从 Bob 的浏览器发向银行，而这个请求会附带 Bob 浏览器中的 cookie 一起发向银行服务器。大多数情况下，该请求会失败，因为他要求 Bob 的认证信息。但是，如果 Bob 当时恰巧刚访问他的银行后不久，他的浏览器与银行网站之间的 session 尚未过期，浏览器的 cookie 之中含有 Bob 的认证信息。这时，悲剧发生了，这个 url 请求就会得到响应，钱将从 Bob 的账号转移到 Mallory 的账号，而 Bob 当时毫不知情。等以后 Bob 发现账户钱少了，即使他去银行查询日志，他也只能发现确实有一个来自于他本人的合法请求转移了资金，没有任何被攻击的痕迹。而 Mallory 则可以拿到钱后逍遥法外。</p>
+<p><strong>CSRF漏洞检测：</strong>
+检测CSRF漏洞是一项比较繁琐的工作，最简单的方法就是抓取一个正常请求的数据包，去掉Referer字段后再重新提交，如果该提交还有效，那么基本上可以确定存在CSRF漏洞。</p>
+<p>随着对CSRF漏洞研究的不断深入，不断涌现出一些专门针对CSRF漏洞进行检测的工具，如CSRFTester，CSRF Request Builder等。</p>
+<p>以CSRFTester工具为例，CSRF漏洞检测工具的测试原理如下：使用CSRFTester进行测试时，首先需要抓取我们在浏览器中访问过的所有链接以及所有的表单等信息，然后通过在CSRFTester中修改相应的表单等信息，重新提交，这相当于一次伪造客户端请求。如果修改后的测试请求成功被网站服务器接受，则说明存在CSRF漏洞，当然此款工具也可以被用来进行CSRF攻击。</p>
+<p><strong>防御CSRF攻击：</strong>
+目前防御 CSRF 攻击主要有三种策略：验证 HTTP Referer 字段；在请求地址中添加 token 并验证；在 HTTP 头中自定义属性并验证。</p>
+<ul>
+<li>
+<p>验证 HTTP Referer 字段</p>
+<ul>
+<li>根据 HTTP 协议，在 HTTP 头中有一个字段叫 Referer，它记录了该 HTTP 请求的来源地址。在通常情况下，访问一个安全受限页面的请求来自于同一个网站，比如需要访问 http://bank.example/withdraw?account=bob&amp;amount=1000000&amp;for=Mallory，用户必须先登陆 bank.example，然后通过点击页面上的按钮来触发转账事件。这时，该转帐请求的 Referer 值就会是转账按钮所在的页面的 URL，通常是以 bank.example 域名开头的地址。而如果黑客要对银行网站实施 CSRF 攻击，他只能在他自己的网站构造请求，当用户通过黑客的网站发送请求到银行时，该请求的 Referer 是指向黑客自己的网站。因此，要防御 CSRF 攻击，银行网站只需要对于每一个转账请求验证其 Referer 值，如果是以 bank.example 开头的域名，则说明该请求是来自银行网站自己的请求，是合法的。如果 Referer 是其他网站的话，则有可能是黑客的 CSRF 攻击，拒绝该请求。</li>
+<li>这种方法的显而易见的好处就是简单易行，网站的普通开发人员不需要操心 CSRF 的漏洞，只需要在最后给所有安全敏感的请求统一增加一个拦截器来检查 Referer 的值就可以。特别是对于当前现有的系统，不需要改变当前系统的任何已有代码和逻辑，没有风险，非常便捷。</li>
+<li>然而，这种方法并非万无一失。Referer 的值是由浏览器提供的，虽然 HTTP 协议上有明确的要求，但是每个浏览器对于 Referer 的具体实现可能有差别，并不能保证浏览器自身没有安全漏洞。使用验证 Referer 值的方法，就是把安全性都依赖于第三方（即浏览器）来保障，从理论上来讲，这样并不安全。事实上，对于某些浏览器，比如 IE6 或 FF2，目前已经有一些方法可以篡改 Referer 值。如果 bank.example 网站支持 IE6 浏览器，黑客完全可以把用户浏览器的 Referer 值设为以 bank.example 域名开头的地址，这样就可以通过验证，从而进行 CSRF 攻击。</li>
+<li>即便是使用最新的浏览器，黑客无法篡改 Referer 值，这种方法仍然有问题。因为 Referer 值会记录下用户的访问来源，有些用户认为这样会侵犯到他们自己的隐私权，特别是有些组织担心 Referer 值会把组织内网中的某些信息泄露到外网中。因此，用户自己可以设置浏览器使其在发送请求时不再提供 Referer。当他们正常访问银行网站时，网站会因为请求没有 Referer 值而认为是 CSRF 攻击，拒绝合法用户的访问。</li>
+</ul>
+</li>
+<li>
+<p>在请求地址中添加 token 并验证</p>
+<ul>
+<li>CSRF 攻击之所以能够成功，是因为黑客可以完全伪造用户的请求，该请求中所有的用户验证信息都是存在于 cookie 中，因此黑客可以在不知道这些验证信息的情况下直接利用用户自己的 cookie 来通过安全验证。要抵御 CSRF，关键在于在请求中放入黑客所不能伪造的信息，并且该信息不存在于 cookie 之中。可以在 HTTP 请求中以参数的形式加入一个随机产生的 token，并在服务器端建立一个拦截器来验证这个 token，如果请求中没有 token 或者 token 内容不正确，则认为可能是 CSRF 攻击而拒绝该请求。</li>
+<li>这种方法要比检查 Referer 要安全一些，token 可以在用户登陆后产生并放于 session 之中，然后在每次请求时把 token 从 session 中拿出，与请求中的 token 进行比对，但这种方法的难点在于如何把 token 以参数的形式加入请求。对于 GET 请求，token 将附在请求地址之后，这样 URL 就变成 http://url?csrftoken=tokenvalue。 而对于 POST 请求来说，要在 form 的最后加上 <input type=”hidden” name=”csrftoken” value=”tokenvalue”/>，这样就把 token 以参数的形式加入请求了。但是，在一个网站中，可以接受请求的地方非常多，要对于每一个请求都加上 token 是很麻烦的，并且很容易漏掉，通常使用的方法就是在每次页面加载时，使用 javascript 遍历整个 dom 树，对于 dom 中所有的 a 和 form 标签后加入 token。这样可以解决大部分的请求，但是对于在页面加载之后动态生成的 html 代码，这种方法就没有作用，还需要程序员在编码时手动添加 token。</li>
+<li>该方法还有一个缺点是难以保证 token 本身的安全。特别是在一些论坛之类支持用户自己发表内容的网站，黑客可以在上面发布自己个人网站的地址。由于系统也会在这个地址后面加上 token，黑客可以在自己的网站上得到这个 token，并马上就可以发动 CSRF 攻击。为了避免这一点，系统可以在添加 token 的时候增加一个判断，如果这个链接是链到自己本站的，就在后面添加 token，如果是通向外网则不加。不过，即使这个 csrftoken 不以参数的形式附加在请求之中，黑客的网站也同样可以通过 Referer 来得到这个 token 值以发动 CSRF 攻击。这也是一些用户喜欢手动关闭浏览器 Referer 功能的原因。</li>
+</ul>
+</li>
+<li>
+<p>在 HTTP 头中自定义属性并验证</p>
+<ul>
+<li>这种方法也是使用 token 并进行验证，和上一种方法不同的是，这里并不是把 token 以参数的形式置于 HTTP 请求之中，而是把它放到 HTTP 头中自定义的属性里。通过 XMLHttpRequest 这个类，可以一次性给所有该类请求加上 csrftoken 这个 HTTP 头属性，并把 token 值放入其中。这样解决了上种方法在请求中加入 token 的不便，同时，通过 XMLHttpRequest 请求的地址不会被记录到浏览器的地址栏，也不用担心 token 会透过 Referer 泄露到其他网站中去。</li>
+<li>然而这种方法的局限性非常大。XMLHttpRequest 请求通常用于 Ajax 方法中对于页面局部的异步刷新，并非所有的请求都适合用这个类来发起，而且通过该类请求得到的页面不能被浏览器所记录下，从而进行前进，后退，刷新，收藏等操作，给用户带来不便。另外，对于没有进行 CSRF 防护的遗留系统来说，要采用这种方法来进行防护，要把所有请求都改为 XMLHttpRequest 请求，这样几乎是要重写整个网站，这代价无疑是不能接受的。</li>
+</ul>
+</li>
+</ul>
+<h3 id="sql%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB">SQL注入攻击</h3>
+<p><strong>什么是SQL注入攻击?</strong></p>
+<p>SQL注入(SQL injection，SQLi)攻击是指：攻击者通过执行恶意SQL语句，来控制某个Web应用的数据库服务器，进而未经授权地访问、修改或删除各种数据。</p>
+<p>在互联网发展的早期，构建网站曾是一个非常简单的过程：既没有JavaScript，又没有CSS，且少有图像。但是，随着各类网站的普及，人们对于先进技术和动态网站的需求也在不断增长。这就导致了JSP和PHP等服务器端脚本语言的不断发展。</p>
+<p>同时，各类网站也开始在数据库中存储丰富的用户输入内容。如今，MySQL已经成为了访问和操作数据库的最流行、且标准化的应用。不过，黑客当然也找到了利用SQL技术漏洞的新方法，SQL注入攻击就是最常用的数据库入侵方式之一。黑客使用定制化的SQL语句来入侵数据库，以欺骗系统执行各种异常的、且不应该的操作。</p>
+<p><strong>SQL注入攻击有何危害?</strong></p>
+<p>在易受攻击的网站上，攻击者可以利用SQL注入实现许多操作与目的。可以说，只要客观条件满足，攻击者就能够执行如下各项操作：</p>
+<ul>
+<li>绕过Web应用的授权机制，以提取敏感信息。</li>
+<li>基于数据库中不同数据，轻松地控制应用程序的各种行为。</li>
+<li>伴随着用户访问应用的过程，注入更多需要执行的恶意代码。</li>
+<li>添加、修改和删除数据，破坏数据库，以及迫使应用的服务不可用。</li>
+<li>在某个网站上，通过枚举以获取已注册用户的详细身份信息，并将其用于攻击其他站点。</li>
+</ul>
+<p>虽然上述一切都取决于攻击者的技巧与能力，但不可否认的是，有时候SQL注入在整个攻击过程中，对他们能够成功并完全地接管数据库和Web应用起到了关键性的作用。下面我们来深入了解此类攻击是如何实现的。</p>
+<p><strong>SQL注入攻击如何运作的?</strong></p>
+<p>开发人员通过定义某种SQL查询，在对应的应用程序运行过程中，让数据库执行一系列操作。此类查询通常带有一到两个参数，以便根据用户所提供的合适参数值，返回预期的查询记录。</p>
+<p>不过，SQL注入攻击会在如下两个阶段发生：</p>
+<ul>
+<li>研究 - 攻击者提供一些随机的异常参数值，以观察应用程序将如何做出响应，进而决定进行何种攻击尝试。</li>
+<li>攻击 - 在此，攻击者会提供精心设计的参数值。应用程序将解析整条SQL命令，而不仅仅是数据。然后，数据库会按照攻击者所修改意图，来执行该SQL命令。
+让我们来观察一下如下示例。在登录表单的过程中，网站用户可以更改下面语句中的$user和$password参数值：</li>
+</ul>
+<pre class="hljs"><code><div>$statement = "<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">users</span> <span class="hljs-keyword">WHERE</span> username =<span class="hljs-string">'$user'</span> <span class="hljs-keyword">AND</span> <span class="hljs-keyword">password</span> <span class="hljs-string">'$password'</span><span class="hljs-string">";  
+</span></div></code></pre>
+<p>在服务器端，这一特定的SQL语句会被传递给相应的函数，而那个函数又将该字符串发送给已连接的数据库。接着，该数据库对其进行解析、执行并返回相应的结果。</p>
+<pre class="hljs"><code><div>#Define POST variables 
+uname = request.POST['username'] 
+passwd = request.POST['password'] 
+#SQL query vulnerable to SQLi 
+sql = "<span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">id</span> <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">users</span> <span class="hljs-keyword">WHERE</span> username=<span class="hljs-string">'" + uname + "'</span> <span class="hljs-keyword">AND</span> <span class="hljs-keyword">password</span>=<span class="hljs-string">'" + passwd + "'</span><span class="hljs-string">" 
+#Execute the SQL statement  
+database.execute(sql) 
+</span></div></code></pre>
+<p>那么，如果用户的输入没有得到应用程序的适当“消毒”，攻击者则可以轻松地植入精心设计的参数值。例如下面这条输入语句：</p>
+<pre class="hljs"><code><div>$statement = "<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">users</span> <span class="hljs-keyword">WHERE</span> username =<span class="hljs-string">'Dean'</span> <span class="hljs-keyword">OR</span> <span class="hljs-string">'1'</span>=<span class="hljs-string">'1'</span><span class="hljs-comment">-- ' AND password = 'WinchesterS'";  </span>
+</div></code></pre>
+<p>深入分析上述语句，我们可以注意到它包含的两个特殊部分：</p>
+<p>OR'1'='1' - 是一个永远为真的条件，因此它会被应用程序无条件地接受为有效的输入。
+--(双连字符) - 是告诉SQL解析器：该行的其余部分为注释，不必执行。
+因此，一旦该查询被执行之后，SQL注入就能够有效地跳过密码验证，进而导致身份验证环节的缺失。而且，凭借着此类查询的记录，攻击者能够很容易地使用获取到的第一手数据库帐户，即管理员用户的信息，进而成功地登录到对应的应用程序之中。</p>
+<p>值得注意的是，上面只是通过SQL的查询，以非正式的方式获取必要的信息。而实际上，SQL注入攻击还有许多种类型。</p>
+<p><strong>SQL注入攻击有哪些不同类型?</strong></p>
+<p>正所谓“条条道路通罗马”。下面我们来看看攻击者可以使用哪些类型的SQL注入漏洞，从服务器上提取数据。一般而言，SQL注入可分为如下种类：</p>
+<ol>
+<li>带内(In-Band)SQL注入</li>
+</ol>
+<p>此类是最常见的SQL注入攻击。它通常发生在攻击者能够使用相同的通信信道，来发起攻击和收集各种结果。因此，最为常见的带内SQL注入类型分别是：</p>
+<p>基于错误的(Error-based)SQL注入 - 这种技术是根据数据库服务器所抛出的错误异常消息，来获取有关数据库结构方面的信息。有时候，这种简单的攻击方式足以让攻击者通过枚举的手段获悉整个数据库。
+基于联合的(Union-based)SQL注入 – 这种技术是利用UNION SQL操作符将两到多个SELECT语句的结果合并为一个，然后作为HTTP响应的一部分予以返回。
+在上述两种注入类型中，各种数据实际上并未通过Web应用程序进行传输。因此，攻击者也就无法直观地看到攻击的结果。下面，攻击者可以通过发送有效的负载，并观察Web应用的响应，以及数据库服务器的结果行为，来对数据库结构进行重建。因此，我们称如下两种SQL注入为推理类型：</p>
+<p>基于布尔的(Boolean-based)SQL注入 – 这种技术根据查询的返回结果是TRUE还是FALSE，来产生不同的结果。也就是说，根据结果的真伪​​，以决定HTTP响应中的内容是要被更改，还是保持不变。
+基于时间的(Time-based)SQL注入 - 这种技术是在向数据库发送SQL查询的过程中，强制在数据库响应之前等待指定的时长(以秒为单位)。也就是说，某个网站的响应耗时，将能够向攻击者表明其查询结果是TRUE还是FALSE。
+2. 带外(Out-of-Band)SQL注入</p>
+<p>此类SQL注入攻击的特点是：不但最不常见，而且通常也是最难以被执行。它们通常涉及到，将各种数据直接从数据库服务器发送到由攻击者所控制的计算机上。从某种程度上说，带外技术为攻击者提供了SQL带内或盲注式攻击的替代方法，其主要针对的是服务器响应并不十分稳定的情况。</p>
+<p>可见，服务端脚本(server-scripting)语言并不能够确定SQL查询字符串是否存在着格式错误。他们所能做的只是将某个字符串发送到数据库服务器上，并等待解析的完成与响应。不过话说回来，我们总能找到各种办法来对用户的输入进行“消毒”，并确保SQL注入攻击无法得逞。</p>
+<p><strong>如何防御SQL注入攻击?</strong></p>
+<p>现如今，我们有许多种简单的方法，以避免网站陷入SQL注入攻击，并抑制它们可能造成的危害。下面，我们仅列举其中的一小部分：</p>
+<ul>
+<li>通过使用静态和动态测试，定期检查并发现应用程序中的SQL注入漏洞。</li>
+<li>通过使用参数化查询和对象关系映射(Object Relational Mappers，ORM)，来避免和修复注入漏洞。此类查询通过指定参数的占位符，以便数据库始终将它们视为数据，而非SQL命令的一部分。</li>
+<li>使用转义字符，来修复SQL注入漏洞，以便忽略掉一些特殊字符。</li>
+<li>通过对数据库强制执行最小权限原则，来减缓SQL注入漏洞的影响。籍此，应用程序的每一个软件组件都只能访问、并仅影响它所需要的资源。</li>
+<li>对访问数据库的Web应用程序采用Web应用防火墙(Web Application Firewall，WAF)。这有助于识别出针对SQL注入的各种尝试，进而防止此类尝试作用到应用程序上。</li>
+</ul>
+<h3 id="17-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E">1.7. 文件上传漏洞</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<p><strong>基本概念</strong>
+恶意攻击者利用一些网站站点没有对上传的文件进行完善的校验漏洞，上传一些可执行文件或者脚本，并且通过脚本获取服务器上相应的权利。或者通过诱导其他用户下载并运行上传的恶意文件，最终达到攻击的目的。</p>
+<p>由于上传的文件后缀名是可以进行更改的，对于上传的文件，不能通过文件后缀名进行判断。可以通过文件模数进行判断。</p>
+<pre class="hljs"><code><div>JPEG (jpg)，文件头：FFD8FF 
+PNG (png)，文件头：89504E47 
+GIF (gif)，文件头：47494638 
+TIFF (tif)，文件头：49492A00 
+Windows Bitmap (bmp)，文件头：424D 
+CAD (dwg)，文件头：41433130 
+Adobe Photoshop (psd)，文件头：38425053 
+Rich Text Format (rtf)，文件头：7B5C727466 
+XML (xml)，文件头：3C3F786D6C 
+HTML (html)，文件头：68746D6C3E 
+Email [thorough only] (eml)，文件头：44656C69766572792D646174653A 
+Outlook Express (dbx)，文件头：CFAD12FEC5FD746F 
+Outlook (pst)，文件头：2142444E 
+MS Word/Excel (xls.or.doc)，文件头：D0CF11E0 
+MS Access (mdb)，文件头：5374616E64617264204A 
+WordPerfect (wpd)，文件头：FF575043 
+Postscript (eps.or.ps)，文件头：252150532D41646F6265 
+Adobe Acrobat (pdf)，文件头：255044462D312E 
+Quicken (qdf)，文件头：AC9EBD8F 
+Windows Password (pwl)，文件头：E3828596 
+ZIP Archive (zip)，文件头：504B0304 
+RAR Archive (rar)，文件头：52617221 
+Wave (wav)，文件头：57415645 
+AVI (avi)，文件头：41564920 
+Real Audio (ram)，文件头：2E7261FD 
+Real Media (rm)，文件头：2E524D46 
+MPEG (mpg)，文件头：000001BA 
+MPEG (mpg)，文件头：000001B3 
+Quicktime (mov)，文件头：6D6F6F76 
+Windows Media (asf)，文件头：3026B2758E66CF11 
+MIDI (mid)，文件头：4D546864 
+</div></code></pre>
+<h3 id="dos%E6%94%BB%E5%87%BB">DOS攻击</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<p><strong>定义</strong>
+分布式拒绝服务攻击(英文意思是Distributed Denial of Service，简称DDoS)是指处于不同位置的多个攻击者同时向一个或数个目标发动攻击，或者一个攻击者控制了位于不同位置的多台机器并利用这些机器对受害者同时实施攻击。由于攻击的发出点是分布在不同地方的，这类攻击称为分布式拒绝服务攻击，其中的攻击者可以有多个。</p>
+<p><strong>攻击原理</strong>
+分布式拒绝服务攻击原理分布式拒绝服务攻击DDoS是一种基于DoS的特殊形式的拒绝服务攻击，是一种分布的、协同的大规模攻击方式。单一的DoS攻击一般是采用一对一方式的，它利用网络协议和操作系统的一些缺陷，采用欺骗和伪装的策略来进行网络攻击，使网站服务器充斥大量要求回复的信息，消耗网络带宽或系统资源，导致网络或系统不胜负荷以至于瘫痪而停止提供正常的网络服务。与DoS攻击由单台主机发起攻击相比较，分布式拒绝服务攻击DDoS是借助数百、甚至数千台被入侵后安装了攻击进程的主机同时发起的集团行为
+一个完整的DDoS攻击体系由攻击者、主控端、代理端和攻击目标四部分组成。主控端和代理端分别用于控制和实际发起攻击，其中主控端只发布命令而不参与实际的攻击，代理端发出DDoS的实际攻击包。对于主控端和代理端的计算机，攻击者有控制权或者部分控制权．它在攻击过程中会利用各种手段隐藏自己不被别人发现。真正的攻击者一旦将攻击的命令传送到主控端，攻击者就可以关闭或离开网络．而由主控端将命令发布到各个代理主机上。这样攻击者可以逃避追踪。每一个攻击代理主机都会向目标主机发送大量的服务请求数据包，这些数据包经过伪装，无法识别它的来源，而且这些数据包所请求的服务往往要消耗大量的系统资源，造成目标主机无法为用户提供正常服务。甚至导致系统崩溃。</p>
+<p><strong>分类</strong></p>
+<ul>
+<li>基于自动化程度分类
+<ul>
+<li>手工的DDoS攻击。
+<ul>
+<li>早期的DDoS攻击全是采用手动配置的，即发动DDoS攻击时，扫描远端有漏洞的计算机，侵入它们并且安装代码全是手动完成的。</li>
+</ul>
+</li>
+<li>半自动化的DDoS攻击。
+<ul>
+<li>在半自动化的攻击中，DDoS攻击属于主控端一代理端的攻击模型，攻击者用自动化的Scripts来扫描，主控端的机器对主控端和代理端之间进行协商攻击的类型、受害者的地址、何时发起攻击等信息由进行详细记录。</li>
+</ul>
+</li>
+<li>自动化的DDoS攻击。
+<ul>
+<li>在这类攻击中。攻击者和代理端机器之间的通信是绝对不允许的。这类攻击的攻击阶段绝大部分被限制用一个单一的命令来实现，攻击的所有特征，例如攻击的类型，持续的时间和受害者的地址在攻击代码中都预先用程序实现。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>基于系统及协议的弱点分类
+<ul>
+<li>洪水攻击。
+在洪水攻击中。傀儡机向受害者系统发送大量的数据流为了充塞受害者系统的带宽，影响小的则降低受害者提供的服务，影响大的则使整个网络带宽持续饱和，以至于网络服务瘫痪。典型的洪水攻击有UDP洪水攻击和ICMP洪水攻击。</li>
+<li>扩大攻击。
+<ul>
+<li>扩大攻击分为两种，一种是利用广播lP地址的特性，一种是利用反射体来发动攻击。前一种攻击者是利用了广播IP地址的特性来扩大和映射攻击，导致路由器将数据包发送到整个网络的广播地址列表中的所有的广播IP地址。这些恶意的流量将减少受害者系统可提供的带宽。典型的扩大攻击有Smurf和Fraggle攻击。</li>
+</ul>
+</li>
+<li>利用协议的攻击。
+<ul>
+<li>该类攻击则是利用某些协议的特性或者利用了安装在受害者机器上的协议中存在的漏洞来耗尽它的大量资源。典型的利用协议攻击的例子是TCP SYN攻击。</li>
+</ul>
+</li>
+<li>畸形数据包攻击。
+<ul>
+<li>攻击者通过向受害者发送不正确的IP地址的数据包，导致受害系统崩溃。畸形数据包攻击可分为两种类型：IP地址攻击和IP数据包属性攻击。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>基于攻击速率分类
+<ul>
+<li>DDoS攻击从基于速率上进行分类，可以分为持续速率和可变速率的攻击。持续速率的攻击是指只要开始发起攻击，就用全力不停顿也不消减力量。像这种攻击的影响是非常快的。可变速率的攻击，从名字就可以看出，用不同的攻击速率，基于这种速率改变的机制，可以把这种攻击分为增加速率和波动的速率。</li>
+</ul>
+</li>
+<li>基于影响力进行分类
+<ul>
+<li>DDoS攻击从基于影响力方面可以分为网络服务彻底崩溃和降低网络服务的攻击。服务彻底崩溃的攻击将导致受害者的服务器完全拒绝对客户端提供服务。降低网络服务的攻击，消耗受害者系统的一部分资源，这将延迟攻击被发现的时间，同时对受害者造成一定的破坏。</li>
+</ul>
+</li>
+<li>基于入侵目标分类
+<ul>
+<li>DDoS攻击从基于入侵目标，可以将DDoS攻击分为带宽攻击和连通性攻击，带宽攻击通过使用大量的数据包来淹没整个网络，使得有效的网络资源被浪费，合法朋户的请求得不到响应，大大降低了效率。而连通性攻击是通过发送大量的请求来使的计算机瘫痪，所有有效的操作系统资源被耗尽，导致计算机不能够再处理合法的用户请求。</li>
+</ul>
+</li>
+<li>基于攻击路线分类
+<ul>
+<li>直接攻击：攻击者和主控端通信，主控端接到攻击者的命令后，再控制代理端向受害者发动攻击数据流。代理端向受害者系统发送大量的伪IP地址的网络数据流，这样攻击者很难被追查到。</li>
+<li>反复式攻击通过利用反射体，发动更强大的攻击流。反射体是任何一台主机只要发送一个数据包就能收到一个数据包，反复式攻击就是攻击者利用中间的网络节点发动攻击。</li>
+</ul>
+</li>
+<li>基于攻击特征分类
+<ul>
+<li>从攻击特征的角度，可以将DDoS攻击分为攻击行为特征可提取和攻击行为特征不可提取两类。攻击行为特征可提取的DDoS攻击又可以细分为可过滤型和不可过滤型。可过滤型的DDoS攻击主要指那些使用畸形的非法数据包。不可过滤型DDoS攻击通过使用精心设计的数据包，模仿合法用户的正常请求所用的数据包，一旦这类数据包被过滤将会影响合法用户的正常使用。</li>
+</ul>
+</li>
+</ul>
+<p><strong>攻击现象</strong>
+DDoS的表现形式主要有两种，一种为流量攻击，主要是针对网络带宽的攻击，即大量攻击包导致网络带宽被阻塞，合法网络包被虚假的攻击包淹没而无法到达主机；另一种为资源耗尽攻击，主要是针对服务器主机的攻击，即通过大量攻击包导致主机的内存被耗尽或CPU被内核及应用程序占完而造成无法提供网络服务。当被DDoS攻击时，主要表现为：
+(1)被攻击主机上有大量等待的TCP连接。
+(2)网络中充斥着大量的无用的数据包，源地址为假。<br>
+(3)制造高流量无用数据，造成网络拥塞，使受害主机无法正常和外界通讯。
+(4)利用受害主机提供的服务或传输协议上的缺陷，反复高速地发出特定的服务请求，使受害主机无法及时处理所有正常请求。
+(5)严重时会造成系统死机。</p>
+<p><strong>攻击流程</strong>
+攻击者进行一次DDoS攻击大概需要经过了解攻击目标、攻占傀儡机、实际攻击三个主要步骤，下面依次说明每一步骤的具体过程：
+1、了解攻击目标就是对所要攻击的目标有一个全面和准确的了解，以便对将来的攻击做到心中有数。主要关心的内容包括被攻击目标的主机数目、地址情况。目标主机的配置、性能、目标的带宽等等。对于DDoS攻击者来说，攻击互联网上的某个站点，有一个重点就是确定到底有多少台主机在支持这个站点，一个大的网站可能有很多台主机利用负载均衡技术提供服务。所有这些攻击目标的信息都关系到后面两个阶段的实施目标和策略，如果盲目的发动DDoS攻击就不能保证攻击目的的完成，还可能过早的暴露攻击者的身份，所以了解攻击目标是有经验的攻击者必经的步骤。
+2、攻占傀儡主机就是控制尽可能多的机器，然后安装相应的攻击程序。在主控机上安装控制攻击的程序，而攻击机则安装DDoS攻击的发包程序。攻击者最感兴趣，也最有可能成为别人的傀儡主机的机器包括那些链路状态好、性能好同时安全管理水平差的主机。攻击者一般会利用已有的或者未公布的一些系统或者应用软件的漏洞．取得一定的控制权，起码可以安装攻击实施所需要的程序，更厉害的可能还会取得最高控制权、留下后门等等。在早期的DDoS攻击过程中，攻占傀儡主机这一步主要是攻击者自己手动完成的，亲自扫描网络，发现安全性比较差的主机，将其攻占并且安装攻击程序。但是后来随着DDoS攻击和蠕虫的融合，攻占傀儡机变成了一个自动化的过程，攻击者只要将蠕虫放入网络中，蠕虫就会在不断扩散中不停地攻占主机，这样所能联合的攻击机将变得非常巨大，DDoS攻击的威力更大。
+3、DDoS攻击的最后一个阶段就是实际的攻击过程，攻击者通过主控机向攻击机发出攻击指令，或者按照原先设定好的攻击时间和目标，攻击机不停的向目标或者反射服务器发送大量的攻击包，来吞没被攻击者，达到拒绝服务的最终日的。和前两个过程相比，实际攻击过程倒是最简单的一个阶段，一些有经验的攻击者可能还会在攻击的同时通过各种手段检查攻击效果，甚至在攻击过程中动态调整攻击策略，尽可能清除在主控机和攻击机上留下的蛛丝马迹。</p>
+<p><strong>攻击方式</strong>
+1、SYN Flood攻击
+SYN Flood攻击是当前网络上最为常见的DDoS攻击，它利用了TCP协议实现上的一个缺陷。通过向网络服务所在端口发送大量的伪造源地址的攻击报文，就可能造成目标服务器中的半开连接队列被占满，从而阻止其他合法用户进行访问。
+2、UDP Flood攻击
+UDP Flood是日渐猖厥的流量型DDoS攻击，原理也很简单。常见的情况是利用大量UDP小包冲击DNS服务器或Radius认证服务器、流媒体视频服务器。由于UDP协议是一种无连接的服务，在UDP Flood攻击中，攻击者可发送大量伪造源IP地址的小UDP包。
+3、ICMP Flood攻击
+ICMP Flood攻击属于流量型的攻击方式，是利用大的流量给服务器带来较大的负载，影响服务器的正常服务。由于目前很多防火墙直接过滤ICMP报文。因此ICMP Flood出现的频度较低。 [7]
+4、Connection Flood攻击
+Connection Flood是典型的利用小流量冲击大带宽网络服务的攻击方式，这种攻击的原理是利用真实的IP地址向服务器发起大量的连接。并且建立连接之后很长时间不释放，占用服务器的资源，造成服务器上残余连接(WAIT状态)过多，效率降低，甚至资源耗尽，无法响应其他客户所发起的链接。<br>
+5、HTTP Get攻击
+这种攻击主要是针对存在ASP、JSP、PHP、CGI等脚本程序，特征是和服务器建立正常的TCP连接，并不断的向脚本程序提交查询、列表等大量耗费数据库资源的调用。这种攻击的特点是可以绕过普通的防火墙防护，可通过Proxy代理实施攻击，缺点是攻击静态页面的网站效果不佳，会暴露攻击者的lP地址。
+6、UDP DNS Query Flood攻击
+UDP DNS Query Flood攻击采用的方法是向被攻击的服务器发送大量的域名解析请求，通常请求解析的域名是随机生成或者是网络世界上根本不存在的域名。域名解析的过程给服务器带来了很大的负载，每秒钟域名解析请求超过一定的数星就会造成DNS服务器解析域名超时。</p>
+<p><strong>应对策略</strong></p>
+<ul>
+<li>防御措施
+<ul>
+<li>不但是对DDoS，而且是对于所有网络的攻击，都应该是采取尽可能周密的防御措施，同时加强对系统的检测，建立迅速有效的应对策略。应该采取的防御措施有：
+<ul>
+<li>(1)全面综合地设计网络的安全体系，注意所使用的安全产品和网络设备。</li>
+<li>(2)提高网络管理人员的素质，关注安全信息，遵从有关安全措施，及时地升级系统，加强系统抗击攻击的能力。</li>
+<li>(3)在系统中加装防火墙系统，利用防火墙系统对所有出入的数据包进行过滤，检查边界安全规则，确保输出的包受到正确限制。</li>
+<li>(4)优化路由及网络结构。对路由器进行合理设置，降低攻击的可能性。</li>
+<li>(5)优化对外提供服务的主机，对所有在网上提供公开服务的主机都加以限制。</li>
+<li>(6)安装入侵检测工具(如NIPC、NGREP)，经常扫描检查系统，解决系统的漏洞，对系统文件和应用程序进行加密，并定期检查这些文件的变化。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>防御原则
+<ul>
+<li>在响应方面，虽然还没有很好的对付攻击行为的方法，但仍然可以采取措施使攻击的影响降至最小。对于提供信息服务的主机系统，应对的根本原则是：</li>
+<li>尽可能地保持服务、迅速恢复服务。由于分布式攻击入侵网络上的大量机器和网络设备，所以要对付这种攻击归根到底还是要解决网络的整体安全问题。真正解决安全问题一定要多个部门的配合，从边缘设备到骨干网络都要认真做好防范攻击的准备，一旦发现攻击就要及时地掐断最近攻击来源的那个路径，限制攻击力度的无限增强。网络用户、管理者以及ISP之间应经常交流，共同制订计划，提高整个网络的安全性。</li>
+</ul>
+</li>
+</ul>
+<h2 id="%E5%B8%B8%E8%A7%81%E7%9A%84%E5%AE%89%E5%85%A8%E7%AE%97%E6%B3%95">常见的安全算法</h2>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="%E6%95%B0%E5%AD%97%E6%91%98%E8%A6%81">数字摘要</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<p>对数据(文件字节流/消息字节流)进行类似的HASH算法之后获取到的固定长度的值(摘要)，如果原数据被修改，校验时的摘要将无法进行匹配。
+摘要一般是单向的，无法从摘要值获取原数据。</p>
+<p>常用的摘要算法</p>
+<ul>
+<li>MD5
+<ul>
+<li>128位，不可逆</li>
+<li>JDK实现MessageDigest</li>
+<li>MessageDigest md5 = MessageDigest.getInstance(&quot;MD5&quot;);</li>
+</ul>
+</li>
+<li>SHA
+<ul>
+<li>安全散列算法</li>
+<li>160位，比MD5慢，但是更安全</li>
+<li>JDK实现MessageDigest</li>
+<li>MessageDigest md5 = MessageDigest.getInstance(&quot;SHA-1&quot;);</li>
+</ul>
+</li>
+</ul>
+<p>由于计算出的摘要可能包含无法显示和网络传输的控制字符。因此需要对生成的摘要进行编码</p>
+<ul>
+<li>16进制编码</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title">bytesToHex</span><span class="hljs-params">(<span class="hljs-keyword">byte</span>[] bytes)</span> </span>{  
+    StringBuffer sb = <span class="hljs-keyword">new</span> StringBuffer();  
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; bytes.length; i++) {  
+        String hex = Integer.toHexString(bytes[i] &amp; <span class="hljs-number">0xFF</span>);  
+        <span class="hljs-keyword">if</span>(hex.length() &lt; <span class="hljs-number">2</span>){  
+            sb.append(<span class="hljs-number">0</span>);  
+        }  
+        sb.append(hex);  
+    }  
+    <span class="hljs-keyword">return</span> sb.toString();  
+} 
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">byte</span>[] hexToByteArray(String inHex){  
+    <span class="hljs-keyword">int</span> hexlen = inHex.length();  
+    <span class="hljs-keyword">byte</span>[] result;  
+    <span class="hljs-keyword">if</span> (hexlen % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>){  
+        <span class="hljs-comment">//奇数  </span>
+        hexlen++;  
+        result = <span class="hljs-keyword">new</span> <span class="hljs-keyword">byte</span>[(hexlen/<span class="hljs-number">2</span>)];  
+        inHex=<span class="hljs-string">"0"</span>+inHex;  
+    }<span class="hljs-keyword">else</span> {  
+        <span class="hljs-comment">//偶数  </span>
+        result = <span class="hljs-keyword">new</span> <span class="hljs-keyword">byte</span>[(hexlen/<span class="hljs-number">2</span>)];  
+    }  
+    <span class="hljs-keyword">int</span> j=<span class="hljs-number">0</span>;  
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; hexlen; i+=<span class="hljs-number">2</span>){  
+        result[j]=hexToByte(inHex.substring(i,i+<span class="hljs-number">2</span>));  
+        j++;  
+    }  
+    <span class="hljs-keyword">return</span> result;   
+}  
+
+</div></code></pre>
+<ul>
+<li>BASE64编码
+JDK有提供相关的类。</li>
+</ul>
+<h3 id="%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95">对称加密算法</h3>
+<p><a href="#menu" style="float:right">目录</a>
+对称加密算法 是应用较早的加密算法，又称为 共享密钥加密算法。在 对称加密算法 中，使用的密钥只有一个，发送 和 接收 双方都使用这个密钥对数据进行 加密 和 解密。这就要求加密和解密方事先都必须知道加密的密钥。</p>
+<ul>
+<li>数据加密过程：在对称加密算法中，数据发送方 将 明文 (原始数据) 和 加密密钥 一起经过特殊 加密处理，生成复杂的 加密密文 进行发送。</li>
+<li>数据解密过程：数据接收方 收到密文后，若想读取原数据，则需要使用 加密使用的密钥 及相同算法的 逆算法 对加密的密文进行解密，才能使其恢复成 可读明文。</li>
+</ul>
+<p><strong>常见的对称加密算法</strong></p>
+<ul>
+<li>DES</li>
+<li>3DES</li>
+<li>AES</li>
+</ul>
+<h3 id="%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95">非对称加密算法</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<p>非对称加密算法，又称为公开密钥加密算法。它需要两个密钥，一个称为公开密钥 (public key)，即公钥，另一个称为私有密钥 (private key)，即私钥。因为加密和解密使用的是两个不同的密钥，所以这种算法称为非对称加密算法。</p>
+<ul>
+<li>如果使用 公钥 对数据 进行加密，只有用对应的 私钥 才能 进行解密。</li>
+<li>如果使用 私钥 对数据 进行加密，只有用对应的 公钥 才能 进行解密。</li>
+</ul>
+<p><strong>常见的对称加密算法</strong></p>
+<ul>
+<li>RSA</li>
+</ul>
+<h3 id="%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D">数字签名</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6">数字证书</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+
+</body>
+</html>
