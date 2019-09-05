@@ -2,71 +2,52 @@
 <span id="menu"></span>
 <!-- TOC -->
 
-- [1. WEB容器](#1-web容器)
-    - [1.1. WEB容器比较](#11-web容器比较)
-    - [1.2. Servlet规范](#12-servlet规范)
-    - [1.3. Session和Cookie的区别](#13-session和cookie的区别)
-        - [1.3.1. 概念理解](#131-概念理解)
-        - [1.3.2. cookie](#132-cookie)
-        - [1.3.3. Session](#133-session)
-        - [1.3.4. 总结](#134-总结)
-        - [1.3.5. 应用场景](#135-应用场景)
-    - [1.4. SpringBoot WEB相关配置](#14-springboot-web相关配置)
-    - [1.5. Tomcat](#15-tomcat)
-        - [1.5.1. 概述](#151-概述)
-            - [1.5.1.1. Tomcat快速理解](#1511-tomcat快速理解)
-        - [1.5.2. Web服务机制](#152-web服务机制)
-            - [1.5.2.1. 通信协议](#1521-通信协议)
-        - [1.5.3. Tomcat 总体架构](#153-tomcat-总体架构)
-        - [1.5.4. Server和Service组件](#154-server和service组件)
-        - [1.5.5. Connect组件](#155-connect组件)
-        - [1.5.6. Engine组件](#156-engine组件)
-        - [1.5.7. Host容器](#157-host容器)
-        - [1.5.8. Context容器](#158-context容器)
-        - [1.5.9. Wrapper容器](#159-wrapper容器)
-        - [1.5.10. 生命周期管理](#1510-生命周期管理)
-        - [1.5.11. 日志框架和国家化](#1511-日志框架和国家化)
-        - [1.5.12. 公共与隔离类加载器](#1512-公共与隔离类加载器)
-        - [1.5.13. 请求URI映射器Mapper](#1513-请求uri映射器mapper)
-        - [1.5.14. Tomcat的JNDI](#1514-tomcat的jndi)
-        - [1.5.15. 运行、通信、及访问安全管理](#1515-运行通信及访问安全管理)
-        - [1.5.16. 处理请求和响应的管道](#1516-处理请求和响应的管道)
-        - [1.5.17. 多样化的会话管理器](#1517-多样化的会话管理器)
-        - [1.5.18. 高可用集群实现](#1518-高可用集群实现)
-        - [1.5.19. 集群通信框架](#1519-集群通信框架)
-        - [1.5.20. 监控和管理](#1520-监控和管理)
-    - [1.6. Jetty](#16-jetty)
-    - [1.7. 编码问题](#17-编码问题)
-        - [1.7.1. 常见的编码格式](#171-常见的编码格式)
+- [1. WEB相关](#1-web相关)
+    - [1.1. Servlet规范](#11-servlet规范)
+    - [1.2. Session和Cookie的区别](#12-session和cookie的区别)
+        - [1.2.1. 概念理解](#121-概念理解)
+        - [1.2.2. cookie](#122-cookie)
+        - [1.2.3. Session](#123-session)
+        - [1.2.4. 总结](#124-总结)
+        - [1.2.5. 应用场景](#125-应用场景)
+    - [1.3. SpringBoot WEB相关配置](#13-springboot-web相关配置)
+    - [1.4. 短网址生成方案](#14-短网址生成方案)
+        - [1.4.1. 实现思路](#141-实现思路)
+        - [1.4.2. 进制转换](#142-进制转换)
+    - [1.5. WEB容器](#15-web容器)
+    - [1.6. Tomcat](#16-tomcat)
+        - [1.6.1. 概述](#161-概述)
+            - [1.6.1.1. Tomcat快速理解](#1611-tomcat快速理解)
+        - [1.6.2. Web服务机制](#162-web服务机制)
+            - [1.6.2.1. 通信协议](#1621-通信协议)
+        - [1.6.3. Tomcat 总体架构](#163-tomcat-总体架构)
+        - [1.6.4. Server和Service组件](#164-server和service组件)
+        - [1.6.5. Connect组件](#165-connect组件)
+        - [1.6.6. Engine组件](#166-engine组件)
+        - [1.6.7. Host容器](#167-host容器)
+        - [1.6.8. Context容器](#168-context容器)
+        - [1.6.9. Wrapper容器](#169-wrapper容器)
+        - [1.6.10. 生命周期管理](#1610-生命周期管理)
+        - [1.6.11. 日志框架和国家化](#1611-日志框架和国家化)
+        - [1.6.12. 公共与隔离类加载器](#1612-公共与隔离类加载器)
+        - [1.6.13. 请求URI映射器Mapper](#1613-请求uri映射器mapper)
+        - [1.6.14. Tomcat的JNDI](#1614-tomcat的jndi)
+        - [1.6.15. 运行、通信、及访问安全管理](#1615-运行通信及访问安全管理)
+        - [1.6.16. 处理请求和响应的管道](#1616-处理请求和响应的管道)
+        - [1.6.17. 多样化的会话管理器](#1617-多样化的会话管理器)
+        - [1.6.18. 高可用集群实现](#1618-高可用集群实现)
+        - [1.6.19. 集群通信框架](#1619-集群通信框架)
+        - [1.6.20. 监控和管理](#1620-监控和管理)
+    - [1.7. Jetty](#17-jetty)
+    - [1.8. 编码问题](#18-编码问题)
+        - [1.8.1. 常见的编码格式](#181-常见的编码格式)
 
 <!-- /TOC -->
-# 1. WEB容器
-<a href="#menu" style="float:right">目录</a>
 
 
-## 1.1. WEB容器比较
-<a href="#menu" style="float:right">目录</a>
+# 1. WEB相关
 
-**Jetty和tomcat的比较**
-* 相同点：
-    * Tomcat和Jetty都是一种Servlet引擎，他们都支持标准的servlet规范和JavaEE的规范。
-* 不同点：
-    * 架构比较 
-        * Jetty的架构比Tomcat的更为简单 
-        * Jetty的架构是基于Handler来实现的，主要的扩展功能都可以用Handler来实现，扩展简单。 
-        * Tomcat的架构是基于容器设计的，进行扩展是需要了解Tomcat的整体设计结构，不易扩展。
-    * 性能比较 
-        * Jetty和Tomcat性能方面差异不大 
-        * Jetty可以同时处理大量连接而且可以长时间保持连接，适合于web聊天应用等等。 
-        * Jetty的架构简单，因此作为服务器，Jetty可以按需加载组件，减少不需要的组件，减少了服务器内存开销，从而提高服务器性能。 
-        * Jetty默认采用NIO结束在处理I/O请求上更占优势，在处理静态资源时，性能较高
-        * 少数非常繁忙;Tomcat适合处理少数非常繁忙的链接，也就是说链接生命周期短的话，Tomcat的总体性能更高。 
-        * Tomcat默认采用BIO处理I/O请求，在处理静态资源时，性能较差。
-    * 其它比较 
-        * Jetty的应用更加快速，修改简单，对新的Servlet规范的支持较好。 
-        * Tomcat目前应用比较广泛，对JavaEE和Servlet的支持更加全面，很多特性会直接集成进来。
-    
-## 1.2. Servlet规范
+## 1.1. Servlet规范
 <a href="#menu" style="float:right">目录</a>
 
 **Servlet 是什么？**
@@ -183,9 +164,9 @@ public void doPost(HttpServletRequest request,
         * public void destroy()
             * Servlet容器在销毁过滤器实例前调用该方法，在该方法中释放Servlet过滤器占用的资源。
 
-## 1.3. Session和Cookie的区别
+## 1.2. Session和Cookie的区别
 
-### 1.3.1. 概念理解
+### 1.2.1. 概念理解
 
 首先呢，要了解session和cookie的区别先要了解以下几个概念：
 
@@ -197,7 +178,7 @@ HTTP协议是无状态的协议。一旦数据交换完毕，客户端与服务�
 2、会话（Session）跟踪：
 会话，指用户登录网站后的一系列动作，比如浏览商品添加到购物车并购买。会话（Session）跟踪是Web程序中常用的技术，用来跟踪用户的整个会话。常用的会话跟踪技术是Cookie与Session。Cookie通过在客户端记录信息确定用户身份，Session通过在服务器端记录信息确定用户身份。
 
-### 1.3.2. cookie
+### 1.2.2. cookie
 
 由于HTTP是一种无状态的协议，服务器单从网络连接上无从知道客户身份。用户A购买了一件商品放入购物车内，当再次购买商品时服务器已经无法判断该购买行为是属于用户A的会话还是用户B的会话了。怎么办呢？就给客户端们颁发一个通行证吧，每人一个，无论谁访问都必须携带自己通行证。这样服务器就能从通行证上确认客户身份了。这就是Cookie 的工作原理。
 
@@ -210,7 +191,7 @@ Cookie实际上是一小段的文本信息。客户端请求服务器，如果�
 2、Cookie具有不可跨域名性
 就是说，浏览器访问百度不会带上谷歌的cookie;
 
-### 1.3.3. Session
+### 1.2.3. Session
 
 Session是另一种记录客户状态的机制，不同的是Cookie保存在客户端浏览器中，而Session保存在服务器上。客户端浏览器访问服务器的时候，服务器把客户端信息以某种形式记录在服务器上。这就是Session。客户端浏览器再次访问时只需要从该Session中查找该客户的状态就可以了。
 每个用户访问服务器都会建立一个session，那服务器是怎么标识用户的唯一身份呢？事实上，用户与服务器建立连接的同时，服务器会自动为其分配一个SessionId。
@@ -238,7 +219,7 @@ Session是另一种记录客户状态的机制，不同的是Cookie保存在客�
 4、Session共享：
 对于多网站(同一父域不同子域)单服务器，我们需要解决的就是来自不同网站之间SessionId的共享。由于域名不同(aaa.test.com和bbb.test.com)，而SessionId又分别储存在各自的cookie中，因此服务器会认为对于两个子站的访问,是来自不同的会话。解决的方法是通过修改cookies的域名为父域名达到cookie共享的目的,从而实现SessionId的共享。带来的弊端就是，子站间的cookie信息也同时被共享了。  
 
-### 1.3.4. 总结
+### 1.2.4. 总结
 
 1、cookie数据存放在客户的浏览器上，session数据放在服务器上。
 2、cookie不是很安全，别人可以分析存放在本地的cookie并进行cookie欺骗，考虑到安全应当使用session。
@@ -246,13 +227,13 @@ Session是另一种记录客户状态的机制，不同的是Cookie保存在客�
 4、单个cookie保存的数据不能超过4K，很多浏览器都限制一个站点最多保存20个cookie。
 5、可以考虑将登陆信息等重要信息存放为session，其他信息如果需要保留，可以放在cookie中。
 
-### 1.3.5. 应用场景
+### 1.2.5. 应用场景
 登录网站，今输入用户名密码登录了，第二天再打开很多情况下就直接打开了。这个时候用到的一个机制就是cookie。
 session一个场景是购物车，添加了商品之后客户端处可以知道添加了哪些商品，而服务器端如何判别呢，所以也需要存储一些信息就用到了session
 
 
 
-## 1.4. SpringBoot WEB相关配置
+## 1.3. SpringBoot WEB相关配置
 ```properties
 # EMBEDDED SERVER CONFIGURATION (ServerProperties)
 
@@ -415,25 +396,357 @@ public class MyEmbeddedServletContainerFactory  {
 
 ```
 
-
-
-
-
-
-## 1.5. Tomcat
-<a href="#menu" style="float:right">目录</a>
-
-### 1.5.1. 概述
+## 1.4. 短网址生成方案
 <a href="#menu" style="float:right">目录</a>
 
 
-#### 1.5.1.1. Tomcat快速理解
+### 1.4.1. 实现思路
 <a href="#menu" style="float:right">目录</a>
 
-### 1.5.2. Web服务机制
+网页短链接是指将原本较长的网址转化成较短的网址，从而便于用户的记忆与社交软件上的传播。很多互联网公司都提供了生成短链接的服务，比如新浪微博短网址服务等
+
+* 实现短链接服务的关键是两个步骤
+    * 如何把一个任意长的字符串转化成一个较短的字符串；
+    * 从短网址如何还原出长网址
+
+**实现方案**
+
+* 转换过程:
+    * 长网址---对应唯一ID--->ID(数据库自增主键)--多进制实现-->短网址
+* 逆过程
+    * 短网址--多进制-->ID--查表--->长网址--->重定向
+    
+* 创建表
+    * 我们可以创建一个用于保存长网址的数据表，比如就叫Url，这张表很简单，只需要两个字段，一个主键用于保存id，一个url字段用于存放原始的长网址，每个长网址都在这张表有一条记录。
+* 获取长网址对应的ID
+    * 当进行长网址转换时，先检查数据表中是否存在该长网址，若是直接获取该记录的id，否则在数据表中创建一条新记录，并返回其id。
+* 多进制实现
+    * 对于这个id，我们可以得到一个多进制表示下的新值，比如在以“0-9a-z”这36个字符表示的36进制中，一亿这个数字可以被表示成1njchs，只需要6个字符即可，将这6个字符拼接到准备好的域名后即可得到一个对应的短网址返回给用户。由于一亿个网址只需要6个字符，因此这种方式足够满足大部分网站的需求。
+* 还原长网址
+    * 而当用户点击了我们生成的短网址后，只需要将代表多进制的这部分提取出来，还原成十进制的数字ID后查表即可得到原始的长网址，再根据网址做一个重定向即可让用户访问到原始的网页
+
+### 1.4.2. 进制转换
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.5.2.1. 通信协议
+**把10进制转成N进制：除N取余，逆序排列**
+
+这里逆序排列使用StringBuilder类的reverse()函数来实现。
+```java
+/**
+ * 10进制整数转换为N进制整数。 10进制转换为N进制的方法是：这个10进制数除以N,求出余数，并把余数倒叙排列。 除N取余，倒叙排列
+ * @param tenRadix
+ *            十进制整数
+ * @param radix
+ *            要转换的进制数，例如，要转成2进制数，radix就传入2
+ * @return radix进制的字符串
+ */
+public static String string10ToN(int tenRadix, int radix)
+{
+    // 进制编码支持9+26=35进制
+    String code = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    StringBuilder buf = new StringBuilder();
+    int remainder = 0;
+    while (tenRadix != 0)
+    {
+        remainder = tenRadix % radix;// 求余数
+        tenRadix = tenRadix / radix;// 除以基数
+        buf.append(code.charAt(remainder));// 保存余数，记得要倒叙排列
+    }
+    buf.reverse();// 倒叙排列
+    return buf.toString();
+}
+```
+
+**把N进制数转成10进制数：按权展开**
+
+(1)这里的权就是N的ex次幂，例如2进制：1110=1*2^3+1*2^2+1*2^1+0*2^0 =8+4+2+0=14
+
+所以这里需要一个求x的ex次幂的方法，这里用一个自定义的方法：
+```java
+/**
+ * 返回x的ex次幂。
+ * @param x
+ *            底数
+ * @param ex
+ *            幂指数
+ * @return x的ex次幂
+ */
+public static int pow(int x, int ex)
+{
+	int result = 1;
+	for (int i = 0; i < ex; i++)
+	{
+		result *= x;
+	}
+	return result;
+}
+```
+当然也可以使用Math.pow()方法
+
+下面是N进制转10进制的按权展开的方法：
+```java
+	/**
+ * 返回N进制对应的10进制数。
+ * 
+ * @param N_num
+ *            N进制数
+ * @param radix
+ *            N进制计数
+ * @return N进制数对应的10进制数
+ */
+public static int stringNTo10(String N_num, int radix)
+{
+    StringBuilder stringBuilder = new StringBuilder(N_num);
+    stringBuilder.reverse();// 反转字符，为了把权重最大的放在最右边，便于下面从左到右遍历，根据下标求权重。
+    //如果不反转，从右向左遍历(从字符串下标大的一端)也可以
+    char bitCh;
+    int result = 0;
+    for (int i = 0; i < stringBuilder.length(); i++)
+    {
+        bitCh = stringBuilder.charAt(i);
+        if (bitCh >= '0' && bitCh <= '9')
+        {
+            // '0'对应的ASCII码整数：48
+            result += (int) (bitCh - '0') * pow(radix, i);
+        } else if (bitCh >= 'A' && bitCh <= 'Z')
+        {
+            // 减去'A'的ASCII码值(65),再加上10
+            result += ((int) (bitCh - 'A') + 10) * pow(radix, i);
+        } else if (bitCh >= 'a' && bitCh <= 'z')
+        {
+            // 减去'a'的ASCII码值(97),再加上10
+            result += ((int) (bitCh - 'a') + 10) * pow(radix, i);
+        }
+    }
+    return result;
+}
+```
+有了这两个核心的方法，其他的方法如十进制转2进制，十进制转8进制，十进制转16进制。N进制转M进制都可调用上面的两个方法来实现了：
+
+**N进制转M进制方法：**
+```java
+/**
+ * 把nRadix进制数nRadixNum转换为m进制数字符串并返回。
+ * 具体做法是先把nRadix的nRadixNum转换成10进制数，然后再把这个10进制数转换成mRadix进制数。
+ * 
+ * @param nRadixNum
+ *            n进制数
+ * @param nRadix
+ *            n进制的基数
+ * @param mRadix
+ *            要转成的进制数基数m
+ * @return m进制数字符串
+ */
+public static String stringNToM(String nRadixNum, int nRadix, int mRadix)
+{
+    return string10ToN(stringNTo10(nRadixNum, nRadix), mRadix);
+}
+```
+
+**10进转2进制，10进制转8进制，10进制转16进制，调用十进制转N进制方法即可**
+
+```java
+public static String string10To2(int tenRadixNum)
+{
+	return string10ToN(tenRadixNum, 2);
+}
+public static String string10To8(int tenRadixNum)
+{
+	return string10ToN(tenRadixNum, 8);
+}
+public static String string10To16(int tenRadixNum)
+{
+	return string10ToN(tenRadixNum, 16);
+}
+```
+同理2进制转10进制，8进制转10进制，16进制转10进制，也只要调用N进制转10进制的方法即可，这里不再累赘。
+
+**完整代码**
+
+```java
+package lan.java.jinzhizhuanhuan;
+ 
+public class TheMoronicCowmpouter
+{
+	public static void main(String[] args)
+	{
+		String HexNum = "f9";
+		System.out.println(
+				"16进制数：" + HexNum + "对应的2 进制数：" + stringNToM(HexNum, 16, 2));
+		System.out.println(
+				"16进制数：" + HexNum + "对应的10进制数：" + string16To10(HexNum));
+		System.out.println(
+				"16进制数：" + HexNum + "对应的32进制数：" + stringNToM(HexNum, 16, 32));
+	}
+	/**
+	 * 返回N进制对应的10进制数。
+	 * 
+	 * @param N_num
+	 *            N进制数
+	 * @param radix
+	 *            N进制计数
+	 * @return N进制数对应的10进制数
+	 */
+	public static int stringNTo10(String N_num, int radix)
+	{
+		StringBuilder stringBuilder = new StringBuilder(N_num);
+		stringBuilder.reverse();// 反转字符
+		char bitCh;
+		int result = 0;
+		for (int i = 0; i < stringBuilder.length(); i++)
+		{
+			bitCh = stringBuilder.charAt(i);
+			if (bitCh >= '0' && bitCh <= '9')
+			{
+				// '0'对应的ASCII码整数：48
+				result += (int) (bitCh - '0') * pow(radix, i);
+			} else if (bitCh >= 'A' && bitCh <= 'Z')
+			{
+				// 减去'A'的ASCII码值(65),再加上10
+				result += ((int) (bitCh - 'A') + 10) * pow(radix, i);
+			} else if (bitCh >= 'a' && bitCh <= 'z')
+			{
+				// 减去'a'的ASCII码值(97),再加上10
+				result += ((int) (bitCh - 'a') + 10) * pow(radix, i);
+			}
+		}
+		return result;
+	}
+	public static int string2To10(String tenRadixNum)
+	{
+		return stringNTo10(tenRadixNum, 2);
+	}
+	public static int string8To10(String tenRadixNum)
+	{
+		return stringNTo10(tenRadixNum, 8);
+	}
+	public static int string16To10(String tenRadixNum)
+	{
+		return stringNTo10(tenRadixNum, 16);
+	}
+	/**
+	 * 返回x的ex次幂。
+	 * 
+	 * @param x
+	 *            底数
+	 * @param ex
+	 *            幂指数
+	 * @return x的ex次幂
+	 */
+	public static int pow(int x, int ex)
+	{
+		int result = 1;
+		for (int i = 0; i < ex; i++)
+		{
+			result *= x;
+		}
+		return result;
+	}
+	/**
+	 * 10进制整数转换为N进制整数。 10进制转换为N进制的方法是：这个10进制数除以N,求出余数，并把余数倒叙排列。 除N取余，倒叙排列
+	 * 
+	 * @param tenRadix
+	 *            十进制整数
+	 * @param radix
+	 *            要转换的进制数，例如，要转成2进制数，radix就传入2
+	 * @return radix进制的字符串
+	 */
+	public static String string10ToN(int tenRadix, int radix)
+	{
+		// 进制编码支持9+26=35进制
+		String code = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		StringBuilder buf = new StringBuilder();
+		int remainder = 0;
+		while (tenRadix != 0)
+		{
+			remainder = tenRadix % radix;// 求余数
+			tenRadix = tenRadix / radix;// 除以2
+			buf.append(code.charAt(remainder));// 保存余数，记得要倒叙排列
+		}
+		buf.reverse();// 倒叙排列
+		return buf.toString();
+	}
+	public static String string10To2(int tenRadixNum)
+	{
+		return string10ToN(tenRadixNum, 2);
+	}
+	public static String string10To8(int tenRadixNum)
+	{
+		return string10ToN(tenRadixNum, 8);
+	}
+	public static String string10To16(int tenRadixNum)
+	{
+		return string10ToN(tenRadixNum, 16);
+	}
+	/**
+	 * 把nRadix进制数nRadixNum转换为m进制数字符串并返回。
+	 * 具体做法是先把nRadix的nRadixNum转换成10进制数，然后再把这个10进制数转换成mRadix进制数。
+	 * 
+	 * @param nRadixNum
+	 *            n进制数
+	 * @param nRadix
+	 *            n进制的基数
+	 * @param mRadix
+	 *            要转成的进制数基数m
+	 * @return m进制数字符串
+	 */
+	public static String stringNToM(String nRadixNum, int nRadix, int mRadix)
+	{
+		return string10ToN(stringNTo10(nRadixNum, nRadix), mRadix);
+	}
+}
+```
+运行结果：
+
+16进制数：f9对应的2 进制数：11111001
+16进制数：f9对应的10进制数：249
+16进制数：f9对应的32进制数：7P
+这上面只支持到9+26=35进制以内的整数之间的进制相互转换，大于35进制的我不方便符号化就算了，知道进制转换的原理就行了，主要是10进制转N进制，以及N进制转10进制这两个重要的转换方法。
+
+
+
+
+
+## 1.5. WEB容器
+<a href="#menu" style="float:right">目录</a>
+
+
+**Jetty和tomcat的比较**
+* 相同点：
+    * Tomcat和Jetty都是一种Servlet引擎，他们都支持标准的servlet规范和JavaEE的规范。
+* 不同点：
+    * 架构比较 
+        * Jetty的架构比Tomcat的更为简单 
+        * Jetty的架构是基于Handler来实现的，主要的扩展功能都可以用Handler来实现，扩展简单。 
+        * Tomcat的架构是基于容器设计的，进行扩展是需要了解Tomcat的整体设计结构，不易扩展。
+    * 性能比较 
+        * Jetty和Tomcat性能方面差异不大 
+        * Jetty可以同时处理大量连接而且可以长时间保持连接，适合于web聊天应用等等。 
+        * Jetty的架构简单，因此作为服务器，Jetty可以按需加载组件，减少不需要的组件，减少了服务器内存开销，从而提高服务器性能。 
+        * Jetty默认采用NIO结束在处理I/O请求上更占优势，在处理静态资源时，性能较高
+        * 少数非常繁忙;Tomcat适合处理少数非常繁忙的链接，也就是说链接生命周期短的话，Tomcat的总体性能更高。 
+        * Tomcat默认采用BIO处理I/O请求，在处理静态资源时，性能较差。
+    * 其它比较 
+        * Jetty的应用更加快速，修改简单，对新的Servlet规范的支持较好。 
+        * Tomcat目前应用比较广泛，对JavaEE和Servlet的支持更加全面，很多特性会直接集成进来。
+   
+
+
+
+## 1.6. Tomcat
+<a href="#menu" style="float:right">目录</a>
+
+### 1.6.1. 概述
+<a href="#menu" style="float:right">目录</a>
+
+
+#### 1.6.1.1. Tomcat快速理解
+<a href="#menu" style="float:right">目录</a>
+
+### 1.6.2. Web服务机制
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.6.2.1. 通信协议
 <a href="#menu" style="float:right">目录</a>
 
 * HTTP协议
@@ -466,7 +779,7 @@ public class MyEmbeddedServletContainerFactory  {
     * 双方利用此次协商好的密钥进行通信
     
 
-### 1.5.3. Tomcat 总体架构
+### 1.6.3. Tomcat 总体架构
 <a href="#menu" style="float:right">目录</a>
 
 Tomcat总计架构
@@ -719,11 +1032,11 @@ Tomcat总计架构
 
 
 
-### 1.5.4. Server和Service组件
+### 1.6.4. Server和Service组件
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.5.5. Connect组件
+### 1.6.5. Connect组件
 <a href="#menu" style="float:right">目录</a>
 
 * http11Protocol
@@ -735,67 +1048,67 @@ Tomcat总计架构
 * http11AjpProtocol
     * HTTP阻塞模式协议
 
-### 1.5.6. Engine组件
+### 1.6.6. Engine组件
 <a href="#menu" style="float:right">目录</a>
 
-### 1.5.7. Host容器
+### 1.6.7. Host容器
 <a href="#menu" style="float:right">目录</a>
 
-### 1.5.8. Context容器
-<a href="#menu" style="float:right">目录</a>
-
-
-### 1.5.9. Wrapper容器
+### 1.6.8. Context容器
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.5.10. 生命周期管理
+### 1.6.9. Wrapper容器
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.5.11. 日志框架和国家化
-<a href="#menu" style="float:right">目录</a>
-
-### 1.5.12. 公共与隔离类加载器
+### 1.6.10. 生命周期管理
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.5.13. 请求URI映射器Mapper
+### 1.6.11. 日志框架和国家化
 <a href="#menu" style="float:right">目录</a>
 
-### 1.5.14. Tomcat的JNDI
-<a href="#menu" style="float:right">目录</a>
-
-
-### 1.5.15. 运行、通信、及访问安全管理
+### 1.6.12. 公共与隔离类加载器
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.5.16. 处理请求和响应的管道
+### 1.6.13. 请求URI映射器Mapper
+<a href="#menu" style="float:right">目录</a>
+
+### 1.6.14. Tomcat的JNDI
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.5.17. 多样化的会话管理器
+### 1.6.15. 运行、通信、及访问安全管理
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.5.18. 高可用集群实现
+### 1.6.16. 处理请求和响应的管道
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.5.19. 集群通信框架
+### 1.6.17. 多样化的会话管理器
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.5.20. 监控和管理
+### 1.6.18. 高可用集群实现
+<a href="#menu" style="float:right">目录</a>
+
+
+### 1.6.19. 集群通信框架
+<a href="#menu" style="float:right">目录</a>
+
+
+### 1.6.20. 监控和管理
 <a href="#menu" style="float:right">目录</a>
 
 
 
-## 1.6. Jetty
+## 1.7. Jetty
 <a href="#menu" style="float:right">目录</a>
 
-## 1.7. 编码问题
+## 1.8. 编码问题
 <a href="#menu" style="float:right">目录</a>
 
 * 需要编码的原因
@@ -804,7 +1117,7 @@ Tomcat总计架构
 
 * 当将一种编码格式的数据转化成另一种编码格式的数据就要进行翻译
 
-### 1.7.1. 常见的编码格式
+### 1.8.1. 常见的编码格式
 <a href="#menu" style="float:right">目录</a>
 
 **ASCII码**

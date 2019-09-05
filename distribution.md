@@ -1,5 +1,6 @@
 
 <span id="menu"></span>
+
 <!-- TOC -->
 
 - [1. 分布式系统](#1-分布式系统)
@@ -18,18 +19,54 @@
         - [1.4.1. Thrift](#141-thrift)
         - [1.4.2. gRPC](#142-grpc)
     - [1.5. Dubbo](#15-dubbo)
-        - [1.5.1. 架构](#151-架构)
-        - [1.5.2. 功能](#152-功能)
-        - [1.5.3. 连接协议](#153-连接协议)
-            - [1.5.3.1. dubbo](#1531-dubbo)
-            - [1.5.3.2. rmi](#1532-rmi)
-            - [1.5.3.3. hessian](#1533-hessian)
-            - [1.5.3.4. http](#1534-http)
-            - [1.5.3.5. webservice](#1535-webservice)
-            - [1.5.3.6. thrift](#1536-thrift)
-            - [1.5.3.7. memcached](#1537-memcached)
-            - [1.5.3.8. redis](#1538-redis)
-            - [1.5.3.9. rest](#1539-rest)
+        - [1.5.1. 服务架构发展](#151-服务架构发展)
+        - [1.5.2. 架构](#152-架构)
+        - [1.5.3. 功能](#153-功能)
+            - [1.5.3.1. 启动时检查](#1531-启动时检查)
+            - [1.5.3.2. 线程模型](#1532-线程模型)
+            - [1.5.3.3. 直连提供者](#1533-直连提供者)
+            - [1.5.3.4. 只订阅](#1534-只订阅)
+            - [1.5.3.5. 只注册](#1535-只注册)
+            - [1.5.3.6. 多协议](#1536-多协议)
+            - [1.5.3.7. 多注册中心](#1537-多注册中心)
+            - [1.5.3.8. 服务分组](#1538-服务分组)
+            - [1.5.3.9. 多版本](#1539-多版本)
+            - [1.5.3.10. 分组聚合](#15310-分组聚合)
+            - [1.5.3.11. 参数验证](#15311-参数验证)
+            - [1.5.3.12. 结果缓存](#15312-结果缓存)
+            - [1.5.3.13. 泛化引用](#15313-泛化引用)
+            - [1.5.3.14. 泛化实现](#15314-泛化实现)
+            - [1.5.3.15. 上下文信息](#15315-上下文信息)
+            - [1.5.3.16. 隐式参数](#15316-隐式参数)
+            - [1.5.3.17. 异步调用](#15317-异步调用)
+            - [1.5.3.18. 异步执行](#15318-异步执行)
+            - [1.5.3.19. 本地调用](#15319-本地调用)
+            - [1.5.3.20. 参数回调](#15320-参数回调)
+            - [1.5.3.21. 事件通知](#15321-事件通知)
+            - [1.5.3.22. 本地存根](#15322-本地存根)
+            - [1.5.3.23. 本地伪装](#15323-本地伪装)
+            - [1.5.3.24. 延迟暴露](#15324-延迟暴露)
+            - [1.5.3.25. 并发控制](#15325-并发控制)
+            - [1.5.3.26. 连接控制](#15326-连接控制)
+            - [1.5.3.27. 延迟连接](#15327-延迟连接)
+            - [1.5.3.28. 粘滞连接](#15328-粘滞连接)
+            - [1.5.3.29. 令牌验证](#15329-令牌验证)
+            - [1.5.3.30. 路由规则](#15330-路由规则)
+            - [1.5.3.31. 配置规则](#15331-配置规则)
+            - [1.5.3.32. 优雅停机](#15332-优雅停机)
+        - [1.5.4. 连接协议](#154-连接协议)
+            - [1.5.4.1. dubbo](#1541-dubbo)
+            - [1.5.4.2. rmi](#1542-rmi)
+            - [1.5.4.3. hessian](#1543-hessian)
+            - [1.5.4.4. http](#1544-http)
+            - [1.5.4.5. webservice](#1545-webservice)
+            - [1.5.4.6. thrift](#1546-thrift)
+            - [1.5.4.7. memcached](#1547-memcached)
+            - [1.5.4.8. redis](#1548-redis)
+            - [1.5.4.9. rest](#1549-rest)
+        - [1.5.5. 框架原理](#155-框架原理)
+            - [1.5.5.1. 架构图](#1551-架构图)
+        - [1.5.6. Dubbo 面试](#156-dubbo-面试)
     - [1.6. 架构演进](#16-架构演进)
     - [1.7. Java 中间件](#17-java-中间件)
     - [1.8. 序列化机制](#18-序列化机制)
@@ -66,7 +103,6 @@
     - [1.22. 客户端优化](#122-客户端优化)
 
 <!-- /TOC -->
-
 # 1. 分布式系统
 <a href="#menu" style="float:right">目录</a>
 
@@ -465,9 +501,28 @@ RPC(Remote Procedure Call,远程过程调用)一般用来实现部署在不同�
 * 默认为protocol buffers序列化协议，也可以用其他序列化协议，比如json
 
 ## 1.5. Dubbo
+<a href="#menu" style="float:right">目录</a>
 
-### 1.5.1. 架构
-![](http://dubbo.apache.org/docs/zh-cn/user/sources/images/dubbo-architecture.jpg)
+### 1.5.1. 服务架构发展
+<a href="#menu" style="float:right">目录</a>
+
+**一应用架构**
+当网站流量很小时，只需一个应用，将所有功能都部署在一起，以减少部署节点和成本。此时，用于简化增删改查工作量的数据访问框架(ORM)是关键。
+
+**垂直应用架构**
+当访问量逐渐增大，单一应用增加机器带来的加速度越来越小，将应用拆成互不相干的几个应用，以提升效率。此时，用于加速前端页面开发的Web框架(MVC)是关键。
+
+**分布式服务架构**
+当垂直应用越来越多，应用之间交互不可避免，将核心业务抽取出来，作为独立的服务，逐渐形成稳定的服务中心，使前端应用能更快速的响应多变的市场需求。此时，用于提高业务复用及整合的分布式服务框架(RPC)是关键。
+
+**流动计算架构**
+当服务越来越多，容量的评估，小服务资源的浪费等问题逐渐显现，此时需增加一个调度中心基于访问压力实时管理集群容量，提高集群利用率。此时，用于提高机器利用率的资源调度和治理中心(SOA)是关键。
+
+### 1.5.2. 架构
+<a href="#menu" style="float:right">目录</a>
+
+![基本架构](http://dubbo.apache.org/docs/zh-cn/user/sources/images/dubbo-architecture.jpg)
+![服务治理](http://dubbo.apache.org/docs/zh-cn/user/sources/images/dubbo-service-governance.jpg)
 
 **节点角色说明**
 
@@ -510,9 +565,11 @@ RPC(Remote Procedure Call,远程过程调用)一般用来实现部署在不同�
 * 注册中心为对等集群，可动态增加机器部署实例，所有客户端将自动发现新的注册中心
 * 服务提供者无状态，可动态增加机器部署实例，注册中心将推送新的服务提供者信息给消费者
 
-### 1.5.2. 功能
+### 1.5.3. 功能
 
-**启动时检查**
+#### 1.5.3.1. 启动时检查
+<a href="#menu" style="float:right">目录</a>
+
 * 启动时检查依赖的服务是否可用，不可用时会抛出异常，导致应用无法启动
 * 通过该强制保证依赖的服务必须先启动
 * 默认为检查，通过check=true|false进行配置
@@ -545,7 +602,7 @@ RPC(Remote Procedure Call,远程过程调用)一般用来实现部署在不同�
     * 当某一台提供者挂时，原本发往该提供者的请求，基于虚拟节点，平摊到其它提供者，不会引起剧烈变动。
     * 算法参见：http://en.wikipedia.org/wiki/Consistent_hashing
 
-**线程模型**
+#### 1.5.3.2. 线程模型
 
 * 如果事件处理的逻辑能迅速完成，并且不会发起新的 IO 请求，比如只是在内存中记个标识，则直接在 IO 线程上处理更快，因为减少了线程池调度。
 
@@ -575,17 +632,17 @@ RPC(Remote Procedure Call,远程过程调用)一般用来实现部署在不同�
     * eager
         *  优先创建Worker线程池。在任务数量大于corePoolSize但是小于maximumPoolSize时，优先创建Worker来处理任务。当任务数量大于maximumPoolSize时，将任务放入阻塞队列中。阻塞队列充满时抛出RejectedExecutionException。(相比于cached:cached在任务数量超过maximumPoolSize时直接抛出异常而不是将任务放入阻塞队列)
 
-**直连提供者**
+#### 1.5.3.3. 直连提供者
 * 在开发及测试环境下，经常需要绕过注册中心，只测试指定服务提供者，这时候可能需要点对点直连，点对点直连方式，将以服务接口为单位，忽略注册中心的提供者列表，A 接口配置点对点，不影响 B 接口从注册中心获取列表。
 
-**只订阅**
+#### 1.5.3.4. 只订阅
 * 为方便开发测试，经常会在线下共用一个所有服务可用的注册中心，这时，如果一个正在开发中的服务提供者注册，可能会影响消费者不能正常运行。
 * 可以让服务提供者开发方，只订阅服务(开发的服务可能依赖其它服务)，而不注册正在开发的服务，通过直连测试正在开发的服务。
 
-**只注册**
+#### 1.5.3.5. 只注册
 * 如果有两个镜像环境，两个注册中心，有一个服务只在其中一个注册中心有部署，另一个注册中心还没来得及部署，而两个注册中心的其它应用都需要依赖此服务。这个时候，可以让服务提供者方只注册服务到另一注册中心，而不从另一注册中心订阅服务。
 
-**多协议**
+#### 1.5.3.6. 多协议
 * dubbo 
 * rmi
 * hessian
@@ -596,24 +653,24 @@ RPC(Remote Procedure Call,远程过程调用)一般用来实现部署在不同�
 * redis
 * rest
 
-**多注册中心**
+#### 1.5.3.7. 多注册中心
 * Multicast
 * Zookeeper
 * Nacos
 * Redis
 * Simple
 
-**服务分组**
+#### 1.5.3.8. 服务分组
 * 当服务有多个版本时，可以通过分组进行区分
 
-**多版本**
+#### 1.5.3.9. 多版本
 * 一般用于本版升级，对比新版本和旧版本，如果新版本有问题，可以很快进行切换 
 
-**分组聚合**
+#### 1.5.3.10. 分组聚合
 按组合并返回结果，比如菜单服务，接口一样，但有多种实现，用group区分，现在消费方需从每种group中调用一次返回结果，合并结果返回，这样就可以实现聚合菜单项。
 
 
-**参数验证**
+#### 1.5.3.11. 参数验证
 参数验证功能是基于 JSR303 实现的，用户只需标识 JSR303 标准的验证 annotation，并通过声明 filter 来实现验证。
 ```xml
 <dependency>
@@ -643,7 +700,7 @@ RPC(Remote Procedure Call,远程过程调用)一般用来实现部署在不同�
 ```
 
 
-**结果缓存**
+#### 1.5.3.12. 结果缓存
 * 结果缓存，用于加速热门数据的访问速度，Dubbo 提供声明式缓存，以减少用户加缓存的工作量。
 * 缓存类型
     * lru 基于最近最少使用原则删除多余缓存，保持最热的数据被缓存。
@@ -651,10 +708,10 @@ RPC(Remote Procedure Call,远程过程调用)一般用来实现部署在不同�
     * jcache 与 JSR107 集成，可以桥接各种缓存实现。
 
 
-**泛化引用**
+#### 1.5.3.13. 泛化引用
 * 泛化接口调用方式主要用于客户端没有 API 接口及模型类元的情况，参数及返回值中的所有 POJO 均用 Map 表示，通常用于框架集成，比如：实现一个通用的服务测试框架，可通过 GenericService 调用所有服务实现。
 
-**泛化实现**
+#### 1.5.3.14. 泛化实现
 泛接口实现方式主要用于服务器端没有API接口及模型类元的情况，参数及返回值中的所有POJO均用Map表示，通常用于框架集成，比如：实现一个通用的远程服务Mock框架，可通过实现GenericService接口处理所有服务请求。
 
 在 Java 代码中实现 GenericService 接口：
@@ -710,7 +767,7 @@ EchoService echoService = (EchoService) memberService; // 强制转型为EchoSer
 String status = echoService.$echo("OK"); 
 assert(status.equals("OK"));
 ```
-**上下文信息**
+#### 1.5.3.15. 上下文信息
 
 上下文中存放的是当前调用过程中所需的环境信息。所有配置信息都将转换为 URL 的参数，参见 schema 配置参考手册 中的对应URL参数一列。
 
@@ -749,7 +806,7 @@ public class XxxServiceImpl implements XxxService {
 ```
 
 
-**隐式参数**
+#### 1.5.3.16. 隐式参数
 可以通过 RpcContext 上的 setAttachment 和 getAttachment 在服务消费方和提供方之间进行参数的隐式传递。
 在服务消费方端设置隐式参数
 setAttachment 设置的 KV 对，在完成下面一次远程调用会被清空，即多次远程调用要多次设置。
@@ -765,38 +822,85 @@ public class XxxServiceImpl implements XxxService {
     }
 }
 ```
-**异步调用**
-**异步执行**
-**本地调用**
-**参数回调**
-**事件通知**
-**本地存根**
-**本地伪装**
-**延迟暴露**
-**并发控制**
-**连接控制**
-**延迟连接**
-**粘滞连接**
-**令牌验证**
-**路由规则**
-**配置规则**
-**服务降级**
-**优雅停机**
-**主机绑定**
-**日志适配**
-**访问日志**
-**服务容器**
-**配置缓存**
-**分布式事务**
-**线程栈自动dump**
-**Netty4**
-**Kryo与Fst序列化**
-**简化注册中心URL**
-
-### 1.5.3. 连接协议
+#### 1.5.3.17. 异步调用
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.5.3.1. dubbo
+#### 1.5.3.18. 异步执行
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.3.19. 本地调用
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.3.20. 参数回调
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.3.21. 事件通知
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.3.22. 本地存根
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.3.23. 本地伪装
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.3.24. 延迟暴露
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.3.25. 并发控制
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.3.26. 连接控制
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.3.27. 延迟连接
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.3.28. 粘滞连接
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.3.29. 令牌验证
+
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.3.30. 路由规则
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.3.31. 配置规则
+<a href="#menu" style="float:right">目录</a>
+
+
+#### 1.5.3.32. 优雅停机
+<a href="#menu" style="float:right">目录</a>
+
+Dubbo 是通过 JDK 的 ShutdownHook 来完成优雅停机的，所以如果用户使用 kill -9 PID 等强制关闭指令，是不会执行优雅停机的，只有通过 kill PID 时，才会执行。
+
+原理
+服务提供方
+停止时，先标记为不接收新请求，新请求过来时直接报错，让客户端重试其它机器。
+然后，检测线程池中的线程是否正在运行，如果有，等待所有线程执行完成，除非超时，则强制关闭。
+服务消费方
+停止时，不再发起新的调用请求，所有新的调用在客户端即报错。
+然后，检测有没有请求的响应还没有返回，等待响应返回，除非超时，则强制关闭。
+设置方式
+设置优雅停机超时时间，缺省超时时间是 10 秒，如果超时则强制关闭。
+
+
+    
+### 1.5.4. 连接协议
+<a href="#menu" style="float:right">目录</a>
+
+**ubbo**： 单一长连接和NIO异步通讯，适合大并发小数据量的服务调用，以及消费者远大于提供者。传输协议TCP，异步，Hessian序列化；
+**rmi**： 采用JDK标准的rmi协议实现，传输参数和返回参数对象需要实现Serializable接口，使用java标准序列化机制，使用阻塞式短连接，传输数据包大小混合，消费者和提供者个数差不多，可传文件，传输协议TCP。
+多个短连接，TCP协议传输，同步传输，适用常规的远程服务调用和rmi互操作。在依赖低版本的Common-Collections包，java序列化存在安全漏洞；
+**webservice**： 基于WebService的远程调用协议，集成CXF实现，提供和原生WebService的互操作。多个短连接，基于HTTP传输，同步传输，适用系统集成和跨语言调用；
+**http**： 基于Http表单提交的远程调用协议，使用Spring的HttpInvoke实现。多个短连接，传输协议HTTP，传入参数大小混合，提供者个数多于消费者，需要给应用程序和浏览器JS调用；
+**hessian**： 集成Hessian服务，基于HTTP通讯，采用Servlet暴露服务，Dubbo内嵌Jetty作为服务器时默认实现，提供与Hession服务互操作。多个短连接，同步HTTP传输，Hessian序列化，传入参数较大，提供者大于消费者，提供者压力较大，可传文件；
+**memcache**： 基于memcached实现的RPC协议
+**redis**： 基于redis实现的RPC协议
+
+
+
+#### 1.5.4.1. dubbo
 Dubbo 缺省协议采用单一长连接和 NIO 异步通讯，适合于小数据量大并发的服务调用，以及服务消费者机器数远大于服务提供者机器数的情况。
 
 反之，Dubbo 缺省协议不适合传送大数据量的服务，比如传文件，传视频等，除非请求量很低。
@@ -843,7 +947,7 @@ Dubbo 缺省协议采用单一长连接和 NIO 异步通讯，适合于小数据
 * 为什么采用异步单一长连接?
     * 因为服务的现状大都是服务提供者少，通常只有几台机器，而服务的消费者多，可能整个网站都在访问该服务，比如 Morgan 的提供者只有 6 台提供者，却有上百台消费者，每天有 1.5 亿次调用，如果采用常规的 hessian 服务，服务提供者很容易就被压跨，通过单一连接，保证单一消费者不会压死提供者，长连接，减少连接握手验证等，并使用异步 IO，复用线程池，防止 C10K 问题。
 
-#### 1.5.3.2. rmi
+#### 1.5.4.2. rmi
 * RMI 协议采用 JDK 标准的 java.rmi.* 实现，采用阻塞式短连接和 JDK 标准序列化方式。
 
 * 注意：如果正在使用 RMI 提供服务给外部访问 [1]，同时应用里依赖了老的 common-collections 包 [2] 的情况下，存在反序列化安全风险 [3]。
@@ -860,7 +964,7 @@ Dubbo 缺省协议采用单一长连接和 NIO 异步通讯，适合于小数据
 * 参数及返回值需实现 Serializable 接口
 * dubbo 配置中的超时时间对 RMI 无效，需使用 java 启动参数设置：-Dsun.rmi.transport.tcp.responseTimeout=3000，参见下面的 RMI 配置
 
-#### 1.5.3.3. hessian
+#### 1.5.4.3. hessian
 Hessian [1] 协议用于集成 Hessian 的服务，Hessian 底层采用 Http 通讯，采用 Servlet 暴露服务，Dubbo 缺省内嵌 Jetty 作为服务器实现。
 
 Dubbo 的 Hessian 协议可以和原生 Hessian 服务互操作，即：
@@ -889,7 +993,7 @@ Dubbo 的 Hessian 协议可以和原生 Hessian 服务互操作，即：
 * 参数及返回值不能自定义实现 List, Map, Number, Date, Calendar 等接口，只能用 JDK 自带的实现，因为 hessian 会做特殊处理，自定义实现类中的属性值都会丢失。
 
 
-#### 1.5.3.4. http
+#### 1.5.4.4. http
 基于 HTTP 表单的远程调用协议，采用 Spring 的 HttpInvoker 实现 [1]
 
 **特性**
@@ -904,7 +1008,7 @@ Dubbo 的 Hessian 协议可以和原生 Hessian 服务互操作，即：
 **约束**
 参数及返回值需符合 Bean 规范
 
-#### 1.5.3.5. webservice
+#### 1.5.4.5. webservice
 基于 WebService 的远程调用协议，基于 Apache CXF [1] 的 frontend-simple 和 transports-http 实现 [2]。
 
 可以和原生 WebService 服务互操作，即：
@@ -937,7 +1041,7 @@ Dubbo 的 Hessian 协议可以和原生 Hessian 服务互操作，即：
 * 参数及返回值需实现 Serializable 接口
 * 参数尽量使用基本类型和 POJO
 
-#### 1.5.3.6. thrift
+#### 1.5.4.6. thrift
 基于 WebService 的远程调用协议，基于 Apache CXF [1] 的 frontend-simple 和 transports-http 实现 [2]。
 
 可以和原生 WebService 服务互操作，即：
@@ -970,9 +1074,9 @@ Dubbo 的 Hessian 协议可以和原生 Hessian 服务互操作，即：
 * 参数及返回值需实现 Serializable 接口
 * 参数尽量使用基本类型和 POJO
 
-#### 1.5.3.7. memcached
-#### 1.5.3.8. redis
-#### 1.5.3.9. rest
+#### 1.5.4.7. memcached
+#### 1.5.4.8. redis
+#### 1.5.4.9. rest
 基于标准的Java REST API——JAX-RS 2.0（Java API for RESTful Web Services的简写）实现的REST调用支持
 
 **快速入门**
@@ -1305,7 +1409,7 @@ dubbo中的rest协议默认将采用80端口，如果想修改端口，直接配
 
 只需要添加如下contextpath属性即可：
 
-<dubbo:protocol name="rest" port="8888" contextpath="services"/>
+< dubbo:protocol name="rest" port="8888" contextpath="services"/>
 以前面代码为例：
 ```xml
 @Path("/users")
@@ -1552,8 +1656,38 @@ public class MyValidationExceptionMapper extends RpcExceptionMapper {
 <dubbo:protocol name="rest" port="8888" extension="xxx.MyValidationExceptionMapper"/>
 ```
 
+### 1.5.5. 框架原理
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.5.1. 架构图
+<a href="#menu" style="float:right">目录</a>
+![](https://youzhixueyuan.com/blog/wp-content/uploads/2019/07/20190731230051_40168.jpg)
+
+**Dubbo框架设计一共划分了10个层：**
+* **服务接口层（Service）**：该层是与实际业务逻辑相关的，根据服务提供方和服务消费方的业务设计对应的接口和实现。
+* **配置层（Config）**：对外配置接口，以ServiceConfig和ReferenceConfig为中心。
+* **服务代理层（Proxy）**：服务接口透明代理，生成服务的客户端Stub和服务器端Skeleton。
+* **服务注册层（Registry）**：封装服务地址的注册与发现，以服务URL为中心。
+* **集群层（Cluster）**：封装多个提供者的路由及负载均衡，并桥接注册中心，以Invoker为中心。
+* **监控层（Monitor）**：RPC调用次数和调用时间监控。
+* **远程调用层（Protocol）**：封将RPC调用，以Invocation和Result为中心，扩展接口为Protocol、Invoker和Exporter。
+* **信息交换层（Exchange）**：封装请求响应模式，同步转异步，以Request和Response为中心。
+* **网络传输层（Transport）**：抽象mina和netty为统一接口，以Message为中心。
+
+**Dubbo的服务调用流程**
+
+
+### 1.5.6. Dubbo 面试
+<a href="#menu" style="float:right">目录</a>
+
+
+
+-------------------------
+
 ## 1.6. 架构演进
 <a href="#menu" style="float:right">目录</a>
+![](https://youzhixueyuan.com/blog/wp-content/uploads/2019/07/20190731230122_69758.jpg)
+
 
 
 [来源](https://segmentfault.com/a/1190000018626163)
