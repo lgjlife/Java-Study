@@ -65,11 +65,18 @@
     - [1.13. 常见时区缩写](#113-常见时区缩写)
     - [1.14. 日志](#114-日志)
         - [1.14.1. SLF4J](#1141-slf4j)
-        - [1.14.2. LOG4J](#1142-log4j)
-        - [1.14.3. LOGBACK](#1143-logback)
+        - [1.14.2. LOG4J2](#1142-log4j2)
+            - [1.14.2.1. 基本特性](#11421-基本特性)
+            - [1.14.2.2. 配置文件优先级](#11422-配置文件优先级)
+            - [1.14.2.3. 配置文件](#11423-配置文件)
+        - [1.14.3. 执行流程](#1143-执行流程)
+        - [1.14.4. 同步日志和异步日志](#1144-同步日志和异步日志)
+            - [1.14.4.1. AsyncAppender](#11441-asyncappender)
+            - [1.14.4.2. AsyncLogger](#11442-asynclogger)
+        - [1.14.5. LOGBACK](#1145-logback)
     - [1.15. IDEA](#115-idea)
         - [1.15.1. 常用快捷键](#1151-常用快捷键)
-        - [常用插件](#常用插件)
+        - [1.15.2. 常用插件](#1152-常用插件)
     - [1.16. 面试考察](#116-面试考察)
         - [1.16.1. 技术广度的考察](#1161-技术广度的考察)
         - [1.16.2. 底层技术的考察](#1162-底层技术的考察)
@@ -378,13 +385,13 @@ For more details see https://docs.gradle.org/5.6/release-notes.html
 Gradle 5.6
 ------------------------------------------------------------
 
-Build time:   2019-08-14 21:05:25 UTC
+Build time:  2019-08-1421:05:25 UTC
 Revision:     f0b9d60906c7b8c42cd6c61a39ae7b74767bb012
 
 Kotlin:       1.3.41
-Groovy:       2.5.4
-Ant:          Apache Ant(TM) version 1.9.14 compiled on March 12 2019
-JVM:          1.8.0_191 (Oracle Corporation 25.191-b12)
+Groovy:      2.5.4
+Ant:          Apache Ant(TM) version 1.9.14 compiled on March 122019
+JVM:          1.8.0_191 (Oracle Corporation25.191-b12)
 OS:           Linux 4.15.0-46-generic amd64
 
 ```
@@ -457,7 +464,7 @@ Client:
  API version:       1.38
  Go version:        go1.10.3
  Git commit:        d7080c1
- Built:             Wed Feb 20 02:28:10 2019
+ Built:             Wed Feb20 02:28:102019
  OS/Arch:           linux/amd64
  Experimental:      false
 
@@ -467,7 +474,7 @@ Server:
   API version:      1.38 (minimum version 1.12)
   Go version:       go1.10.3
   Git commit:       d7080c1
-  Built:            Wed Feb 20 02:26:34 2019
+  Built:            Wed Feb20 02:26:342019
   OS/Arch:          linux/amd64
   Experimental:     false
 
@@ -588,7 +595,7 @@ Options:
                                        processes
   -i, --interactive                    Keep STDIN open even if not attached
       --ip string                      IPv4 address (e.g., 172.30.100.104)
-      --ip6 string                     IPv6 address (e.g., 2001:db8::33)
+      --ip6 string                     IPv6 address (e.g.,2001:db8::33)
       --ipc string                     IPC mode to use
       --isolation string               Container isolation technology
       --kernel-memory bytes            Kernel memory limit
@@ -700,10 +707,10 @@ Fetch the logs of a container
 Options:
       --details        Show extra details provided to logs
   -f, --follow         Follow log output //动态更新
-      --since string   Show logs since timestamp (e.g. 2013-01-02T13:23:37) or relative (e.g. 42m for 42 minutes)
+      --since string   Show logs since timestamp (e.g.2013-01-02T13:23:37) or relative (e.g. 42m for 42 minutes)
       --tail string    Number of lines to show from the end of the logs (default "all") //显示行数
   -t, --timestamps     Show timestamps
-      --until string   Show logs before a timestamp (e.g. 2013-01-02T13:23:37) or relative (e.g. 42m for 42 minutes)
+      --until string   Show logs before a timestamp (e.g.2013-01-02T13:23:37) or relative (e.g. 42m for 42 minutes)
 
 ```
 
@@ -1144,7 +1151,7 @@ ifconfig 可以看到docker的默认分配地址是172.17.0.1
 ```bash
 lgj@lgj-Lenovo-G470:~$ ifconfig
 docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
-        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
+        inet 172.17.0.1  netmask255.255.0.0  broadcast 172.17.255.255
         ether 02:42:d8:73:72:ea  txqueuelen 0  (Ethernet)
         RX packets 0  bytes 0 (0.0 B)
         RX errors 0  dropped 0  overruns 0  frame 0
@@ -1687,14 +1694,14 @@ compose 的调用流程
 |[Ctrl] + [u]|	屏幕『向上』移动半页
 |+	|光标移动到非空格符的下一行
 |-	|光标移动到非空格符的上一行
-|n< space>	|那个 n 表示『数字』，例如 20 。按下数字后再按空格键，光标会向右移动这一行的 n 个字|符。例如 20< space> 则光标会向后面移动 20 个字符距离。
+|n< space>	|那个 n 表示『数字』，例如20 。按下数字后再按空格键，光标会向右移动这一行的 n 个字|符。例如20< space> 则光标会向后面移动20 个字符距离。
 |0 或功能键[Home]|	这是数字『 0 』：移动到这一行的最前面字符处 (常用)
 |$ 或功能键[End]|	移动到这一行的最后面字符处(常用)
 |H|	光标移动到这个屏幕的最上方那一行的第一个字符
 |M	|光标移动到这个屏幕的中央那一行的第一个字符
 |L|	光标移动到这个屏幕的最下方那一行的第一个字符
 |G|	移动到这个档案的最后一行(常用)
-|nG||	n 为数字。移动到这个档案的第 n 行。例如 20G 则会移动到这个档案的第 20 行(可配合 :set nu)
+|nG||	n 为数字。移动到这个档案的第 n 行。例如20G 则会移动到这个档案的第20 行(可配合 :set nu)
 |gg	|移动到这个档案的第一行，相当于 1G 啊！ (常用)
 |n< Enter>|	n 为数字。光标向下移动 n 行(常用)
 
@@ -1707,7 +1714,7 @@ compose 的调用流程
 |n|	这个 n 是英文按键。代表重复前一个搜寻的动作。举例来说， 如果刚刚我们执行 /vbird 去向下搜寻 vbird 这个字符串，则按下 n 后，会向下继续搜寻下一个名称为 vbird 的字符串。如果是执行 ?vbird 的话，那么按下 n 则会向上继续搜寻名称为 vbird 的字符串！
 |N|	这个 N 是英文按键。与 n 刚好相反，为『反向』进行前一个搜寻动作。 例如 /vbird 后，按下 N 则表示『向上』搜寻 vbird 。
 |使用 /word 配合 n 及 N 是非常有帮助的！可以让你重复的找到一些你搜寻的关键词！
-|:n1,n2s/word1/word2/g	n1 与 n2 为数字。在第 n1 与 n2 行之间寻找 word1 这个字符串，并将该字符串取代为 word2 ！举例来说，在 100 到 200 行之间搜寻 vbird 并取代为 VBIRD 则：『:100,200s/vbird/VBIRD/g』。(常用)
+|:n1,n2s/word1/word2/g	n1 与 n2 为数字。在第 n1 与 n2 行之间寻找 word1 这个字符串，并将该字符串取代为 word2 ！举例来说，在 100 到200 行之间搜寻 vbird 并取代为 VBIRD 则：『:100,200s/vbird/VBIRD/g』。(常用)
 |:1,$s/word1/word2/g 或 :%s/word1/word2/g|	从第一行到最后一行寻找 word1 字符串，并将该字符串取代为 word2 ！(常用)
 |:1,$s/word1/word2/gc 或 :%s/word1/word2/gc|	从第一行到最后一行寻找 word1 字符串，并将该字符串取代为 word2 ！且在取代前显示提示字符给用户确认 (confirm) 是否需要取代！(常用)
 
@@ -1718,18 +1725,18 @@ compose 的调用流程
 |x, X|	在一行字当中，x 为向后删除一个字符 (相当于 [del] 按键)， X 为向前删除一个字符(相当于 [backspace] 亦即是退格键) (常用)
 |nx	|n 为数字，连续向后删除 n 个字符。举例来说，我要连续删除 10 个字符， 『10x』。
 |dd	|删除游标所在的那一整行(常用)
-|ndd|	n 为数字。删除光标所在的向下 n 行，例如 20dd 则是删除 20 行 (常用)
+|ndd|	n 为数字。删除光标所在的向下 n 行，例如20dd 则是删除20 行 (常用)
 |d1G|	删除光标所在到第一行的所有数据
 |dG|	删除光标所在到最后一行的所有数据
 |d$|	删除游标所在处，到该行的最后一个字符
 |d0|	那个是数字的 0 ，删除游标所在处，到该行的最前面一个字符
 |yy	|复制游标所在的那一行(常用)
-|nyy|	n 为数字。复制光标所在的向下 n 行，例如 20yy 则是复制 20 行(常用)
+|nyy|	n 为数字。复制光标所在的向下 n 行，例如20yy 则是复制20 行(常用)
 |y1G|	复制游标所在行到第一行的所有数据
 |yG|	复制游标所在行到最后一行的所有数据
 |y0|	复制光标所在的那个字符到该行行首的所有数据
 |y$|	复制光标所在的那个字符到该行行尾的所有数据
-|p, P|	p 为将已复制的数据在光标下一行贴上，P 则为贴在游标上一行！ 举例来说，我目前光标在第 20 行，且已经复制了 10 行数据。则按下 p 后， 那 10 行数据会贴在原本的 20 行之后，亦即由 21 行开始贴。但如果是按下 P 呢？ 那么原本的第 20 行会被推到变成 30 行。 (常用)
+|p, P|	p 为将已复制的数据在光标下一行贴上，P 则为贴在游标上一行！ 举例来说，我目前光标在第20 行，且已经复制了 10 行数据。则按下 p 后， 那 10 行数据会贴在原本的20 行之后，亦即由21 行开始贴。但如果是按下 P 呢？ 那么原本的第20 行会被推到变成 30 行。 (常用)
 |J|	将光标所在行与下一行的数据结合成同一行
 |c|	重复删除多个数据，例如向下删除 10 行，[ 10cj ]
 |u|	复原前一个动作。(常用)
@@ -1775,7 +1782,7 @@ compose 的调用流程
 
 特别注意，在 vi/vim 中，数字是很有意义的！数字通常代表重复做几次的意思！ 也有可能是代表去到第几个什么什么的意思。
 
-举例来说，要删除 50 行，则是用 『50dd』 对吧！ 数字加在动作之前，如我要向下移动 20 行呢？那就是『20j』或者是『20↓』即可。
+举例来说，要删除 50 行，则是用 『50dd』 对吧！ 数字加在动作之前，如我要向下移动20 行呢？那就是『20j』或者是『20↓』即可。
 
 
 ## 1.10. NMON监控工具
@@ -1895,10 +1902,10 @@ compose 的调用流程
 　　| 或
 　　\ 转义
 　　$ 结尾
-　　[A-Z] 26个大写字母
-　　[a-z] 26个小写字母
+　　[A-Z]26个大写字母
+　　[a-z]26个小写字母
 　　[0-9] 0至9数字
-[A-Za-z0-9] 26个大写字母、26个小写字母和0至9数字
+[A-Za-z0-9]26个大写字母、26个小写字母和0至9数字
 　　， 分割
 　　.
 　　
@@ -1998,10 +2005,10 @@ $ curl -L www.sina.com
 $ curl -i www.sina.com
 HTTP/1.1 301 Moved Permanently
 Server: nginx
-Date: Tue, 23 Aug 2016 08:30:16 GMT
+Date: Tue,23 Aug2016 08:30:16 GMT
 Content-Type: text/html
 Location: http://www.sina.com.cn/
-Expires: Tue, 23 Aug 2016 08:32:16 GMT
+Expires: Tue,23 Aug2016 08:32:16 GMT
 Cache-Control: max-age=120
 Age: 102
 Content-Length: 178
@@ -2022,7 +2029,7 @@ X-Cache: HIT from xd33-83.sina.com.cn
 $ curl -v www.sina.com
 * Rebuilt URL to: www.sina.com/
 * Hostname was NOT found in DNS cache
-*   Trying 202.108.33.60...
+*   Trying202.108.33.60...
 * Connected to www.sina.com (202.108.33.60) port 80 (#0)
 > GET / HTTP/1.1
 > User-Agent: curl/7.35.0
@@ -2032,10 +2039,10 @@ $ curl -v www.sina.com
 < HTTP/1.1 301 Moved Permanently
 * Server nginx is not blacklisted
 < Server: nginx
-< Date: Tue, 23 Aug 2016 08:48:14 GMT
+< Date: Tue,23 Aug2016 08:48:14 GMT
 < Content-Type: text/html
 < Location: http://www.sina.com.cn/
-< Expires: Tue, 23 Aug 2016 08:50:14 GMT
+< Expires: Tue,23 Aug2016 08:50:14 GMT
 < Cache-Control: max-age=120
 < Age: 40
 < Content-Length: 178
@@ -2176,7 +2183,7 @@ Options: (H) means HTTP/HTTPS only, (F) means FTP only
      --hostpubmd5 MD5  Hex encoded MD5 string of the host public key. (SSH)
  -0, --http1.0       Use HTTP 1.0 (H)
      --http1.1       Use HTTP 1.1 (H)
-     --http2.0       Use HTTP 2.0 (H)
+     --http2.0       Use HTTP2.0 (H)
      --ignore-content-length  Ignore the HTTP Content-Length header
  -i, --include       Include protocol headers in the output (H/F)
  -k, --insecure      Allow connections to SSL sites without certs (H)
@@ -2211,7 +2218,7 @@ Options: (H) means HTTP/HTTPS only, (F) means FTP only
      --no-sessionid  Disable SSL session-ID reusing (SSL)
      --noproxy       List of hosts which do not use proxy
      --ntlm          Use HTTP NTLM authentication (H)
-     --oauth2-bearer TOKEN  OAuth 2 Bearer Token (IMAP, POP3, SMTP)
+     --oauth2-bearer TOKEN  OAuth2 Bearer Token (IMAP, POP3, SMTP)
  -o, --output FILE   Write output to <file> instead of stdout
      --pass PASS     Pass phrase for the private key (SSL/SSH)
      --post301       Do not switch to GET after following a 301 redirect (H)
@@ -2354,12 +2361,362 @@ slf4j是门面模式的典型应用.门面模式，其核心为外部与一个�
 
 当我们调用接口时，接口的工厂会自动寻找恰当的实现(通过寻找类路径中是否有相关的实现类，比如log4j,logback)，返回一个实现的实例给我服务。这些过程都是透明化的，用户不需要进行任何操作
 
+* 日志实现(log4j、logback、log4j2)
+    * log4j是apache实现的一个开源日志组件
+    * logback同样是由log4j的作者设计完成的，拥有更好的特性，用来取代log4j的一个日志框架，是slf4j的原生实现
+    * log4j2是log4j 1.x和logback的改进版，据说采用了一些新技术（无锁异步、等等），使得日志的吞吐量、性能比log4j 1.x提高10倍，并解决了一些死锁的bug，而且配置更加简单灵活。
 
-### 1.14.2. LOG4J
+
+**为什么需要日志接口，直接使用具体的实现不就行了吗？**
+接口用于定制规范，可以有多个实现，使用时是面向接口的(导入的包都是slf4j的包而不是具体某个日志框架中的包)，即直接和接口交互，不直接使用实现，所以可以任意的更换实现而不用更改代码中的日志相关代码。
+
+比如：slf4j定义了一套日志接口，项目中使用的日志框架是logback，开发中调用的所有接口都是slf4j的，不直接使用logback，调用是 自己的工程调用slf4j的接口，slf4j的接口去调用logback的实现，可以看到整个过程应用程序并没有直接使用logback，当项目需要更换更加优秀的日志框架时(如log4j2)只需要引入Log4j2的jar和Log4j2对应的配置文件即可，完全不用更改Java代码中的日志相关的代码logger.info(“xxx”)，也不用修改日志相关的类的导入的包(import org.slf4j.Logger; import org.slf4j.LoggerFactory;)
+
+使用日志接口便于更换为其他日志框架
+log4j、logback、log4j2都是一种日志具体实现框架，所以既可以单独使用也可以结合slf4j一起搭配使用。
+
+
+
+### 1.14.2. LOG4J2
 
 <a href="#menu" style="float:right">目录</a>
 
-### 1.14.3. LOGBACK
+#### 1.14.2.1. 基本特性
+<a href="#menu" style="float:right">目录</a>
+
+* Log4j2旨在用作审计日志框架。 Log4j 1.x和Logback都会在重新配置时丢失事件。 Log4j2不会。在Logback中，Appender中的异常永远不会对应用程序可见。在Log4j中，可以将Appender配置为允许异常渗透到应用程序。
+* Log4j2包含基于LMAX Disruptor库的下一代异步记录器。在多线程场景中，异步记录器的吞吐量比Log4j 1.x和Logback高10倍，延迟低几个数量级。
+* Log4j2对于独立应用程序是无垃圾的，对于稳定状态日志记录期间的Web应用程序来说是低垃圾。这减少了垃圾收集器的压力，并且可以提供更好的响应时间性能。
+* Log4j2使用插件系统，通过添加新的Appender，过滤器，布局，查找和模式转换器，可以非常轻松地扩展框架，而无需对Log4j进行任何更改。
+* 由于插件系统配置更简单。配置中的条目不需要指定类名。
+* 支持自定义日志级别。可以在代码或配置中定义自定义日志级别。
+* 支持lambda表达式。只有在启用了请求的日志级别时，在Java 8上运行的客户端代码才能使用lambda表达式来延迟构造日志消息。不需要显式级别检查，从而产生更清晰的代码。
+* 支持Message对象。消息允许支持有趣和复杂的构造通过日志系统传递并被有效地操作。用户可以自由创建自己的消息类型，并编写自定义布局，过滤器和查找来操作它们。
+* Log4j 1.x支持Appender上的过滤器。 Logback添加了TurboFilters，允许在事件由Logger处理之前过滤事件。 Log4j2支持可以配置为在Logger处理事件之前处理事件的过滤器，因为它们由Logger或Appender处理。
+* 许多Logback Appender不接受布局，只会以固定格式发送数据。大多数Log4j2 Appender接受布局，允许以任何所需格式传输数据。
+* Log4j 1.x和Logback中的布局返回一个String。这导致了Logback Encoders中讨论的问题。 Log4j2采用更简单的方法，Layouts总是返回一个字节数组。这样做的好处是，它意味着它们几乎可以在任何Appender中使用，而不仅仅是写入OutputStream的Appender。
+* Syslog Appender支持TCP和UDP，并支持BSD syslog和RFC 5424格式。
+* Log4j2利用Java 5并发支持并在尽可能低的级别执行锁定。 Log4j 1.x已知死锁问题。其中许多都是在Logback中修复的，但许多Logback类仍然需要在相当高的级别进行同步。
+* 它是一个Apache Software Foundation项目，遵循所有ASF项目使用的社区和支持模型。如果您想贡献或获得提交更改的权利，请按照贡献中列出的路径进行操作。
+
+![](http://logging.apache.org/log4j/2.x/images/Log4jClasses.jpg)
+
+#### 1.14.2.2. 配置文件优先级
+<a href="#menu" style="float:right">目录</a>
+
+* Log4j will inspect the "log4j.configurationFile" system property and, if set, will attempt to load the configuration using the ConfigurationFactory that matches the file extension.
+* If no system property is set the properties ConfigurationFactory will look for log4j2-test.properties in the classpath.
+* If no such file is found the YAML ConfigurationFactory will look for log4j2-test.yaml or log4j2-test.yml in the classpath.
+* If no such file is found the JSON ConfigurationFactory will look for log4j2-test.json or log4j2-test.jsn in the classpath.
+* If no such file is found the XML ConfigurationFactory will look for log4j2-test.xml in the classpath.
+* If a test file cannot be located the properties ConfigurationFactory will look for log4j2.properties on the classpath.
+* If a properties file cannot be located the YAML ConfigurationFactory will look for log4j2.yaml or log4j2.yml on the classpath.
+* If a YAML file cannot be located the JSON ConfigurationFactory will look for log4j2.json or log4j2.jsn on the classpath.
+* If a JSON file cannot be located the XML ConfigurationFactory will try to locate log4j2.xml on the classpath.
+* If no configuration file could be located the DefaultConfiguration will be used. This will cause logging output to go to the console.
+
+#### 1.14.2.3. 配置文件
+<a href="#menu" style="float:right">目录</a>
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+ <!--日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
+ <!--Configuration后面的status，这个用于设置log4j2自身内部的信息输出，可以不设置，当设置成trace时，你会看到log4j2内部各种详细输出-->
+ <!--monitorInterval：Log4j能够自动检测修改配置 文件和重新配置本身，设置间隔秒数-->
+ <configuration status="WARN" monitorInterval="30">
+     <!--先定义所有的appender-->
+     <appenders>
+     <!--这个输出控制台的配置-->
+         <console name="Console" target="SYSTEM_OUT">
+         <!--输出日志的格式-->
+             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+         </console>
+     <!--文件会打印出所有信息，这个log每次运行程序会自动清空，由append属性决定，这个也挺有用的，适合临时测试用-->
+     <File name="log" fileName="log/test.log" append="false">
+        <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+     </File>
+     <!-- 这个会打印出所有的info及以下级别的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档-->
+         <RollingFile name="RollingFileInfo" fileName="${sys:user.home}/logs/info.log"
+                      filePattern="${sys:user.home}/logs/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
+             <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->        
+             <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+             <Policies>
+                 <TimeBasedTriggeringPolicy/>
+                 <SizeBasedTriggeringPolicy size="100 MB"/>
+             </Policies>
+         </RollingFile>
+         <RollingFile name="RollingFileWarn" fileName="${sys:user.home}/logs/warn.log"
+                      filePattern="${sys:user.home}/logs/$${date:yyyy-MM}/warn-%d{yyyy-MM-dd}-%i.log">
+             <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+             <Policies>
+                 <TimeBasedTriggeringPolicy/>
+                 <SizeBasedTriggeringPolicy size="100 MB"/>
+             </Policies>
+         <!-- DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了20 -->
+             <DefaultRolloverStrategy max="20"/>
+         </RollingFile>
+         <RollingFile name="RollingFileError" fileName="${sys:user.home}/logs/error.log"
+                      filePattern="${sys:user.home}/logs/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log">
+             <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+             <Policies>
+                 <TimeBasedTriggeringPolicy/>
+                 <SizeBasedTriggeringPolicy size="100 MB"/>
+             </Policies>
+         </RollingFile>
+     </appenders>
+     <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效-->
+     <loggers>
+         <!--过滤掉spring和mybatis的一些无用的DEBUG信息-->
+         <logger name="org.springframework" level="INFO"></logger>
+         <logger name="org.mybatis" level="INFO"></logger>
+         <root level="all">
+             <appender-ref ref="Console"/>
+             <appender-ref ref="RollingFileInfo"/>
+             <appender-ref ref="RollingFileWarn"/>
+             <appender-ref ref="RollingFileError"/>
+         </root>
+     </loggers>
+ </configuration>
+```
+**对于Appender的理解**
+* 简单说Appender就是一个管道，定义了日志内容的去向(保存位置)。
+* 配置一个或者多个Filter，Filter的过滤机制和Servlet的Filter有些差别，下文会进行说明。
+* 配置Layout来控制日志信息的输出格式。
+* 配置Policies以控制日志何时(When)进行滚动。
+* 配置Strategy以控制日志如何(How)进行滚动。
+
+**对于Logger的理解**
+简单说Logger就是一个路由器，指定类、包中的日志信息流向哪个管道，以及控制他们的流量(日志级别)
+
+
+* 配置文件节点解析　　　　
+    * 根节点Configuration有两个属性:status和monitorinterval,有两个子节点:Appenders和Loggers(表明可以定义多个Appender和Logger).
+        * status用来指定log4j本身的打印日志的级别.
+        * monitorinterval用于指定log4j自动重新配置的监测间隔时间，单位是s,最小是5s.
+    * Appenders节点，常见的有三种子节点:Console、RollingFile、File.
+        * Console节点用来定义输出到控制台的Appender.
+        * name:指定Appender的名字.
+        * target:SYSTEM_OUT 或 SYSTEM_ERR,一般只设置默认:SYSTEM_OUT.
+        * PatternLayout:输出格式，不设置默认为:%m%n.
+        * File节点用来定义输出到指定位置的文件的Appender.
+        * name:指定Appender的名字.
+        * fileName:指定输出日志的目的文件带全路径的文件名.
+        * PatternLayout:输出格式，不设置默认为:%m%n.
+        * RollingFile节点用来定义超过指定大小自动删除旧的创建新的的Appender.
+        * name:指定Appender的名字.
+        * fileName:指定输出日志的目的文件带全路径的文件名.
+        * PatternLayout:输出格式，不设置默认为:%m%n.
+        * filePattern:指定新建日志文件的名称格式.
+        * Policies:指定滚动日志的策略，就是什么时候进行新建日志文件输出日志.
+        * TimeBasedTriggeringPolicy:Policies子节点，基于时间的滚动策略，interval属性用来指定多久滚动一次，默认是1 hour。modulate=true用来调整时间：比如现在是早上3am，interval是4，那么第一次滚动是在4am，接着是8am，12am...而不是7am.
+        * SizeBasedTriggeringPolicy:Policies子节点，基于指定文件大小的滚动策略，size属性用来定义每个日志文件的大小.
+        * DefaultRolloverStrategy:用来指定同一个文件夹下最多有几个日志文件时开始删除最旧的，创建新的(通过max属性)。
+    * Loggers节点，常见的有两种:Root和Logger.
+        * Root节点用来指定项目的根日志，如果没有单独指定Logger，那么就会默认使用该Root日志输出
+            * level:日志输出级别，共有8个级别，按照从低到高为：All < Trace < Debug < Info < Warn < Error < Fatal < OFF.
+            * AppenderRef：Root的子节点，用来指定该日志输出到哪个Appender.
+        * Logger节点用来单独指定日志的形式，比如要为指定包下的class指定不同的日志级别等。
+            * level:日志输出级别，共有8个级别，按照从低到高为：All < Trace < Debug < Info < Warn < Error < Fatal < OFF.
+            * name:用来指定该Logger所适用的类或者类所在的包全路径,继承自Root节点.
+            * AppenderRef：Logger的子节点，用来指定该日志输出到哪个Appender,如果没有指定，就会默认继承自Root.如果指定了，那么会在指定的这个Appender和Root的Appender中都会输出，此时我们可以设置Logger的additivity="false"只在自定义的Appender中进行输出。
+        * 关于日志level.
+            * 共有8个级别，按照从低到高为：All < Trace < Debug < Info < Warn < Error < Fatal < OFF.
+                * All:最低等级的，用于打开所有日志记录.
+                * Trace:是追踪，就是程序推进以下，你就可以写个trace输出，所以trace应该会特别多，不过没关系，我们可以设置最低日志级别不让他输出.
+                * Debug:指出细粒度信息事件对调试应用程序是非常有帮助的.
+                * Info:消息在粗粒度级别上突出强调应用程序的运行过程.
+                * Warn:输出警告及warn以下级别的日志.
+                * Error:输出错误信息日志.
+                * Fatal:输出每个严重的错误事件将会导致应用程序的退出的日志.
+                * OFF:最高等级的，用于关闭所有日志记录.
+            * 程序会打印高于或等于所设置级别的日志，设置的日志等级越高，打印出来的日志就越少。
+
+**Pattern及各个参数的意义**
+
+```xml
+<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+```
+
+|参数| 意义|
+|---|---|
+|%d|日期格式，默认形式为2012-11-02 14:34:02,781
+|%p|日志级别
+|%c{1.}|%c表示Logger名字，{1.}表示精确度。若Logger名字为org.apache.commons.Foo，则输出o.a.c.Foo。
+|%t|处理LogEvent的线程的名字
+|%m|日志内容
+|%n|行分隔符。"\n"或"\r\n"。
+
+### 1.14.3. 执行流程
+
+* Log4j2中日志输出的详细过程如下：
+    * 1.首先使用全局Filter对日志事件进行过滤。
+        * Log4j2中的日志Level分为8个级别，优先级从高到低依次为OFF、FATAL、ERROR、WARN、INFO、DEBUG、TRACE、 ALL。
+        * 全局Filter的Level为ALL，表示允许输出所有级别的日志。logger.info()请求输出INFO级别的日志，通过。
+    * 2.使用Logger的Level对日志事件进行过滤。
+        * Logger的Level为TRACE，表示允许输出TRACE级别及以上级别的日志。logger.info()请求输出INFO级别的日志，通过。
+    * 3.生成日志输出内容Message。
+        * 使用占位符的方式输出日志，输出语句为logger.info("increase {} from {} to {}", arg1, arg2, arg3)的形式，最终输出时{}占位符处的内容将用arg1,arg2,arg3的字符串填充。
+        * log4j2用Object[]保存参数信息，在这一阶段会将Object[]转换为String[]，生成含有输出模式串"increase {} from {} to {}"和参数数组String[]的Message，为后续日志格式化输出做准备。
+    * 4.生成LogEvent。
+        * LogEvent中含有loggerName（日志的输出者），level（日志级别），timeMillis（日志的输出时间），message（日志输出内容），threadName（线程名称）等信息。
+        * 在上述程序中，生成的LogEvent的属性值为loggerName=com.meituan.Main，Level=INFO，timeMillis=1505659461759，message为步骤3中创建的Message，threadNama=main。
+    * 5.使用Logger配置的Filter对日志事件进行过滤。
+        * Logger配置的Filter的Level为DEBUG，表示允许输出DEBUG及以上级别的日志。logger.info()请求输出INFO级别的日志，通过。
+    * 6.使用Logger对应的Appender配置的Filter对日志事件进行过滤。
+        * Appender配置的Filter配置的INFO级别日志onMatch=ACCEPT，表示允许输出INFO级别的日志。logger.info()请求输出INFO级别的日志，通过。
+    * 7.判断是否需要触发rollover。
+        * 此步骤不是日志输出的必须步骤，如配置的Appender为无需进行rollover的Appender，则无此步骤。
+        * 因为使用RollingFileAppender，且配置了基于文件大小的rollover触发策略，在此阶段会判断是否需要触发rollover。判断方式为当前的文件大小是否达到了指定的size，如果达到了，触发rollover操作。关于Log4j2中的RollingFileAppender的rollover，可参见Log4j2中RollingFile的文件滚动更新机制。
+    * 8.PatternLayout对LogEvent进行格式化，生成可输出的字符串。
+        * PatternLayout将根据Pattern的模式，利用各种Converter对LogEvent的相关信息进行转换，最终拼接成可输出的日志字符串。
+        * 如DatePatternConverter对LogEvent的日志输出时间进行格式化转换；LevelPatternConverter对LogEvent的日志级别信息进行格式化转换；
+        * LoggerPatternConverter对*LogEvent的Logger的名字进行格式化转换；MessagePatternConverter对LogEvent的日志输出内容进行格式化转换等
+    * 使用OutputStream，将日志输出到文件。
+        * 将日志字符串序列化为字节数组，使用字节流OutoutStream将日志输出到文件中。如果配置了immediateFlush为true，打开app.log就可观察到输出的日志了
+
+### 1.14.4. 同步日志和异步日志
+<a href="#menu" style="float:right">目录</a>
+
+所谓同步日志，即当输出日志时，必须等待日志输出语句执行完毕后，才能执行后面的业务逻辑语句。
+
+使用异步日志进行输出时，日志输出语句与业务逻辑语句并不是在同一个线程中运行，而是有专门的线程用于进行日志输出操作，处理业务逻辑的主线程不用等待即可执行后续业务逻辑。
+
+Log4j2中的异步日志实现方式有AsyncAppender和AsyncLogger两种。
+
+其中，AsyncAppender采用了ArrayBlockingQueue来保存需要异步输出的日志事件；AsyncLogger则使用了Disruptor框架来实现高吞吐。
+
+
+ 
+||日志输出方式|
+|---|---|
+|sync	|同步打印日志，日志输出与业务逻辑在同一线程内，当日志输出完毕，才能进行后续业务逻辑操作
+|Async Appender	|异步打印日志，内部采用ArrayBlockingQueue，对每个AsyncAppender创建一个线程用于处理日志输出。
+|Async Logger	|异步打印日志，采用了高性能并发框架Disruptor，创建一个线程用于处理日志输出。
+
+
+#### 1.14.4.1. AsyncAppender
+
+```XML
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn">
+  <Appenders>
+    <RollingFile name="MyFile" fileName="logs/app.log">
+      <PatternLayout>
+        <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+      </PatternLayout>
+      <SizeBasedTriggeringPolicy size="500MB"/>
+    </RollingFile>
+
+    
+    <Async name="Async">
+      <AppenderRef ref="MyFile"/>
+    </Async>
+
+
+  </Appenders>
+  <Loggers>
+    <Root level="error">
+      <AppenderRef ref="Async"/>
+    </Root>
+  </Loggers>
+</Configuration>
+```
+AsyncAppender的常用参数
+
+|参数名| 类型| 说明|
+|---|---|---|
+|name	|String	|Async Appender的名字。
+|AppenderRef	|String| 异步调用的Appender的名字，可以配置多个。
+|blocking|	boolean|	默认为true。如果为true，appender将一直等待直到queue中有空闲；如果为false，当队列满的时候，日志事件将被丢弃。(如果配置了error appender，要丢弃的日志事件将由error appender处理)
+|bufferSize|	integer|	队列中可存储的日志事件的最大数量，默认为128。(源码中为128，Log4j2官网为1024，官网信息有误)
+
+![](https://img2018.cnblogs.com/blog/676975/201908/676975-20190827212857292-1887643935.png)
+
+
+每个Async Appender，内部维护了一个ArrayBlockingQueue，并将创建一个线程用于输出日志事件，如果配置了多个AppenderRef，将分别使用对应的Appender进行日志输出。
+
+#### 1.14.4.2. AsyncLogger
+
+Log4j2中的AsyncLogger的内部使用了Disruptor框架。
+
+**Disruptor简介**
+Disruptor是英国外汇交易公司LMAX开发的一个高性能队列，基于Disruptor开发的系统单线程能支撑每秒600万订单。
+
+目前，包括Apache Strom、Log4j2在内的很多知名项目都应用了Disruptor来获取高性能。
+
+Disruptor框架内部核心数据结构为RingBuffer，其为无锁环形队列
+![](https://img2018.cnblogs.com/blog/676975/201908/676975-20190827212953252-997291815.png)
+
+* 单线程每秒能够处理600万订单，Disruptor为什么这么快？
+    * a.lock-free-使用了CAS来实现线程安全
+        * ArrayBlockingQueue使用锁实现并发控制，当get或put时，当前访问线程将上锁，当多生产者、多消费者的大量并发情形下，由于锁竞争、线程切换等，会有性能损失。
+        * Disruptor通过CAS实现多生产者、多消费者对RingBuffer的并发访问。CAS相当于乐观锁，其性能优于Lock的性能。
+    * b.使用缓存行填充解决伪共享问题
+        * 计算机体系结构中，内存的访问速度远远低于CPU的运行速度，在内存和CPU之间，加入Cache，CPU首先访问Cache中的数据，CaChe未命中，才访问内存中的数据。
+        * 伪共享：Cache是以缓存行（cache line）为单位存储的，当多个线程修改互相独立的变量时，如果这些变量共享同一个缓存行，就会无意中影响彼此的性能。
+
+```XML
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug" name="MyApp" packages="">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+        </Console>
+        <RollingFile name="RollingFile" fileName="logs/app.log"
+                     filePattern="logs/app-%d{yyyy-MM-dd HH}.log">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="500MB"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="RollingFile2" fileName="logs/app2.log"
+                     filePattern="logs/app2-%d{yyyy-MM-dd HH}.log">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="500MB"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <AsyncLogger name="com.meituan.Main" level="trace" additivity="false">
+            <appender-ref ref="RollingFile"/>
+        </AsyncLogger>
+        <AsyncLogger name="RollingFile2" level="trace" additivity="false">
+            <appender-ref ref="RollingFile2"/>
+        </AsyncLogger>
+        <Root level="debug">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingFile"/>
+        </Root>
+    </Loggers>
+</Configuration>
+```
+
+上述log4j2.xml中配置了两个AsyncLogger，名字分别为com.meituan.Main和RollingFile2
+并且，在main方法中分别使用两个logger来输出两条日志。 
+
+在加载log4j2.xml的启动阶段，如果检测到配置了AsyncRoot或AsyncLogger，将启动一个disruptor实例。
+![](https://img2018.cnblogs.com/blog/676975/201908/676975-20190827213227668-1176986869.png)
+
+上述程序中，main线程作为生产者，EventProcessor线程作为消费者。
+**生产者生产消息**
+当运行到类似于logger.info、logger.debug的输出语句时，将生成的LogEvent放入RingBuffer中。
+**消费者消费消息**
+如果RingBuffer中有LogEvent需要处理，EventProcessor线程从RingBuffer中取出LogEvent，调用Logger相关联的Appender输出LogEvent（具体输出过程与同步过程相同，同样需要过滤器过滤、PatternLayout格式化等步骤）。
+
+如果RingBuffer中没有LogEvent需要处理，EventProcessor线程将处于等待阻塞状态（默认策略）。
+
+需要注意的是，虽然在log4j2.xml中配置了多个AsyncLogger，但是并不是每个AsyncLogger对应着一个处理线程，而是仅仅有一个EventProcessor线程进行日志的异步处理。
+
+
+### 1.14.5. LOGBACK
 <a href="#menu" style="float:right">目录</a>
 
 ## 1.15. IDEA 
@@ -2503,7 +2860,7 @@ Ctrl+Alt+F7，显示用法
 Ctrl+F7，在文件中查找用法
 Ctrl+Shift+F7，在文件中高亮显示用法
 
-### 常用插件
+### 1.15.2. 常用插件
 <a href="#menu" style="float:right">目录</a>
 
 **Maven Helper**
@@ -2529,8 +2886,10 @@ Lombok必须安装该插件才能使用
 阿里代码规约检测：
 
 **Key promoter X**
-快捷键提示工具
+快捷键提示工
 
+**IdeaJad**
+查看class文件
 
 **CodeMaker**
 代码生成工具
