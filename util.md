@@ -69,11 +69,11 @@
             - [1.14.2.1. 基本特性](#11421-基本特性)
             - [1.14.2.2. 配置文件优先级](#11422-配置文件优先级)
             - [1.14.2.3. 配置文件](#11423-配置文件)
-        - [1.14.3. 执行流程](#1143-执行流程)
-        - [1.14.4. 同步日志和异步日志](#1144-同步日志和异步日志)
-            - [1.14.4.1. AsyncAppender](#11441-asyncappender)
-            - [1.14.4.2. AsyncLogger](#11442-asynclogger)
-        - [1.14.5. LOGBACK](#1145-logback)
+            - [1.14.2.4. 执行流程](#11424-执行流程)
+            - [1.14.2.5. 同步日志和异步日志](#11425-同步日志和异步日志)
+                - [1.14.2.5.1. AsyncAppender](#114251-asyncappender)
+                - [1.14.2.5.2. AsyncLogger](#114252-asynclogger)
+        - [1.14.3. LOGBACK](#1143-logback)
     - [1.15. IDEA](#115-idea)
         - [1.15.1. 常用快捷键](#1151-常用快捷键)
         - [1.15.2. 常用插件](#1152-常用插件)
@@ -2537,19 +2537,106 @@ log4j、logback、log4j2都是一种日志具体实现框架，所以既可以�
 **Pattern及各个参数的意义**
 
 ```xml
-<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+<PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+```
+* %c
+    * 列出logger名字空间的全称，如果加上{<层数>}表示列出从最内层算起的指定层数的名字空间
+    * 例子
+        * 假设当前logger名字空间是"a.b.c"
+        * %c	a.b.c
+        * %c{2}	b.c
+        * %20c	（若名字空间长度小于20，则左边用空格填充）
+        * %-20c	（若名字空间长度小于20，则右边用空格填充）
+        * %.30c	（若名字空间长度超过30，截去多余字符）
+        * %20.30c	（若名字空间长度小于20，则左边用空格填充；若名字空间长度超过30，截去多余字符）
+        * %-20.30c	（若名字空间长度小于20，则右边用空格填充；若名字空间长度超过30，截去多余字符）
+        * %c{1}	org.apache.commons.Foo ---	Foo
+        * %c{2}	org.apache.commons.Foo---	commons.Foo
+        * %c{10}	org.apache.commons.Foo	---org.apache.commons.Foo
+        * %c{-1}	org.apache.commons.Foo	---apache.commons.Foo
+        * %c{-2}	org.apache.commons.Foo	---commons.Foo
+        * %c{-10}	org.apache.commons.Foo	---org.apache.commons.Foo
+        * %c{1.}	org.apache.commons.Foo	---o.a.c.Foo
+        * %c{1.1.~.~}	org.apache.commons.test.Foo	  ---o.a.~.~.Foo
+        * %c{.}	org.apache.commons.test.Foo	---....Foo
+* %C
+    * 列出调用logger的类的全名（包含包路径）
+    * 例子
+        * 假设当前类是"org.apache.xyz.SomeClass"
+        * %C	org.apache.xyz.SomeClass
+        * %C{1}	SomeClass
+* %d
+    * 显示日志记录时间，{<日期格式>}使用ISO8601定义的日期格式
+    * 例子
+        * %d{ISO8601}	2005-10-12 22:23:30,117
+        * %d{DATE}	12 Oct 2005 22:23:30,117
+        * %d{ABSOLUTE}	22:23:30,117
+        * %d{yyyy/MM/dd HH:mm:ss,SSS}	2005/10/12 22:23:30,117
+* %F
+    * 显示调用logger的源文件名
+    * 例子
+        * %F	MyClass.java
+        
+* %l
+    * 输出日志事件的发生位置，包括类目名、发生的线程，以及在代码中的行数
+    * 例子
+        * %l	MyClass.main(MyClass.java:129)
+* %L
+    * 显示调用logger的代码行
+    * 例子
+        * %L	129
+* %m
+    * 显示输出消息
+    * 例子
+        * %m	This is a message for debug
+* %M
+    * 显示调用logger的方法名
+    * 例子
+        * %M	main
+* %n
+    * 当前平台下的换行符
+    * 例子
+        * %n	Windows平台下表示rn UNIX平台下表示n
+* %p
+    * 显示该条日志的优先级
+    * 例子
+        * %p	INFO
+* %r
+    * 显示从程序启动时到记录该条日志时已经经过的毫秒数
+    * 例子
+        * %r	1215
+* %t
+    * 输出产生该日志事件的线程名
+    * 例子
+        * %t	MyClass
+* %x
+    * 按NDC（Nested Diagnostic Context，线程堆栈）顺序输出日志
+    * 例子
+        * 假设某程序调用顺序是MyApp调用com.foo.Bar
+        * %c %x - %m%n	MyApp - Call com.foo.Bar.com.foo.Bar - Log in Bar MyApp - Return to MyApp.
+* %X
+    * 按MDC（Mapped Diagnostic Context，线程映射表）输出日志。通常用于多个客户端连接同一台服务器，方便服务器区分是那个客户端访问留下来的日志。
+    * 例子
+        * %X{5}	（记录代号为5的客户端的日志）
+* %%
+    * 显示一个百分号
+    * 例子
+        * %%	% 
+        
+有些特殊符号不能直接打印，需要使用实体名称或者编号
 ```
 
-|参数| 意义|
-|---|---|
-|%d|日期格式，默认形式为2012-11-02 14:34:02,781
-|%p|日志级别
-|%c{1.}|%c表示Logger名字，{1.}表示精确度。若Logger名字为org.apache.commons.Foo，则输出o.a.c.Foo。
-|%t|处理LogEvent的线程的名字
-|%m|日志内容
-|%n|行分隔符。"\n"或"\r\n"。
+//
+& —— &amp; 或者 &#38;
+< —— &lt;  或者 &#60;
+> —— &gt;  或者 &#62;
+“ —— &quot; 或者 &#34;
+‘ —— &apos; 或者 &#39;
+```
 
-### 1.14.3. 执行流程
+[更多配置参考官网文档：http://logging.apache.org/log4j/2.x/manual/layouts.html](http://logging.apache.org/log4j/2.x/manual/layouts.html)
+
+#### 1.14.2.4. 执行流程
 
 * Log4j2中日志输出的详细过程如下：
     * 1.首先使用全局Filter对日志事件进行过滤。
@@ -2577,7 +2664,7 @@ log4j、logback、log4j2都是一种日志具体实现框架，所以既可以�
     * 使用OutputStream，将日志输出到文件。
         * 将日志字符串序列化为字节数组，使用字节流OutoutStream将日志输出到文件中。如果配置了immediateFlush为true，打开app.log就可观察到输出的日志了
 
-### 1.14.4. 同步日志和异步日志
+#### 1.14.2.5. 同步日志和异步日志
 <a href="#menu" style="float:right">目录</a>
 
 所谓同步日志，即当输出日志时，必须等待日志输出语句执行完毕后，才能执行后面的业务逻辑语句。
@@ -2597,7 +2684,7 @@ Log4j2中的异步日志实现方式有AsyncAppender和AsyncLogger两种。
 |Async Logger	|异步打印日志，采用了高性能并发框架Disruptor，创建一个线程用于处理日志输出。
 
 
-#### 1.14.4.1. AsyncAppender
+##### 1.14.2.5.1. AsyncAppender
 
 ```XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -2638,9 +2725,21 @@ AsyncAppender的常用参数
 
 每个Async Appender，内部维护了一个ArrayBlockingQueue，并将创建一个线程用于输出日志事件，如果配置了多个AppenderRef，将分别使用对应的Appender进行日志输出。
 
-#### 1.14.4.2. AsyncLogger
+##### 1.14.2.5.2. AsyncLogger
 
 Log4j2中的AsyncLogger的内部使用了Disruptor框架。
+
+使用时必须引入该依赖
+
+```xml
+<!-- https://mvnrepository.com/artifact/com.lmax/disruptor -->
+<dependency>
+    <groupId>com.lmax</groupId>
+    <artifactId>disruptor</artifactId>
+    <version>3.4.2</version>
+</dependency>
+
+```
 
 **Disruptor简介**
 Disruptor是英国外汇交易公司LMAX开发的一个高性能队列，基于Disruptor开发的系统单线程能支撑每秒600万订单。
@@ -2698,6 +2797,11 @@ Disruptor框架内部核心数据结构为RingBuffer，其为无锁环形队列
     </Loggers>
 </Configuration>
 ```
+**additivity属性**
+它是 子Logger 是否继承 父Logger 的 输出源（appender）的标志位。具体说，默认情况下子Logger会继承父Logger的appender，也就是说子Logger会在父Logger的appender里输出。若是additivity设为false，则子Logger只会在自己的appender里输出，而不会在父Logger的appender里输出。
+
+优化Log4j2的配置方案：1） 混合异步和同步Logger；root logger 为同步，其它为异步；2）AsyncLogger 的additivity属性设置为false；
+
 
 上述log4j2.xml中配置了两个AsyncLogger，名字分别为com.meituan.Main和RollingFile2
 并且，在main方法中分别使用两个logger来输出两条日志。 
@@ -2715,8 +2819,13 @@ Disruptor框架内部核心数据结构为RingBuffer，其为无锁环形队列
 
 需要注意的是，虽然在log4j2.xml中配置了多个AsyncLogger，但是并不是每个AsyncLogger对应着一个处理线程，而是仅仅有一个EventProcessor线程进行日志的异步处理。
 
+* Log4j 2的异步记录日志在一定程度上提供更好的吞吐量，但是一旦队列已满，appender线程需要等待，这个时候就需要设置等待策略，AsyncAppender是依赖于消费者最序列最后的消费者，会持续等待。至于异步性能图可以看下官方提供的吞吐量比较图，差异很明显。
+* 因为AsyncAppender是采用Disruptor，通过环形队列无阻塞队列作为缓冲，多生产者多线程的竞争是通过CAS实现，无锁化实现，可以降低极端大的日志量时候的延迟尖峰，Disruptor 可是号称一个线程里每秒处理600万订单的高性能队列。
 
-### 1.14.5. LOGBACK
+![吞吐量比较图](http://logging.apache.org/log4j/2.x/images/async-throughput-comparison.png)
+
+
+### 1.14.3. LOGBACK
 <a href="#menu" style="float:right">目录</a>
 
 ## 1.15. IDEA 
