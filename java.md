@@ -40,17 +40,7 @@
             - [1.5.1.5. Fields和Method定义](#1515-fields和method定义)
             - [1.5.1.6. 类属性描述](#1516-类属性描述)
             - [1.5.1.7. Javap生成的class文件结构](#1517-javap生成的class文件结构)
-        - [1.5.2. 类加载器](#152-类加载器)
-            - [1.5.2.1. 基本概念](#1521-基本概念)
-            - [1.5.2.2. 常见的类加载器](#1522-常见的类加载器)
-            - [1.5.2.3. 类加载过程](#1523-类加载过程)
-            - [1.5.2.4. 全盘委托机制](#1524-全盘委托机制)
-            - [1.5.2.5. 定义自已的ClassLoader](#1525-定义自已的classloader)
-            - [常见加载类错误](#常见加载类错误)
-            - [1.5.2.6. 线程上下文类加载器](#1526-线程上下文类加载器)
-            - [1.5.2.7. 类加载器与Web容器](#1527-类加载器与web容器)
-            - [1.5.2.8. 常见问题分析](#1528-常见问题分析)
-        - [1.5.3. 反射](#153-反射)
+        - [1.5.2. 反射](#152-反射)
     - [1.6. JDBC](#16-jdbc)
     - [1.7. 函数式编程](#17-函数式编程)
     - [1.8. Java 8 的新特性：](#18-java-8-的新特性)
@@ -61,53 +51,57 @@
         - [1.8.5. Stream](#185-stream)
         - [1.8.6. Java 8 日期时间 API](#186-java-8-日期时间-api)
         - [1.8.7. Java8 Base64](#187-java8-base64)
-    - [1.9. JDK版本变化](#19-jdk版本变化)
-    - [1.10. 设计模式](#110-设计模式)
-        - [1.10.1. 设计原则](#1101-设计原则)
-            - [1.10.1.1. 单一职责原则](#11011-单一职责原则)
-            - [1.10.1.2. 里氏替换原则](#11012-里氏替换原则)
-            - [1.10.1.3. 依赖倒置原则](#11013-依赖倒置原则)
-            - [1.10.1.4. 接口隔离原则](#11014-接口隔离原则)
-            - [1.10.1.5. 迪米特法则](#11015-迪米特法则)
-            - [1.10.1.6. 开闭原则](#11016-开闭原则)
-        - [1.10.2. UML图](#1102-uml图)
-        - [1.10.3. 单例模式](#1103-单例模式)
-            - [1.10.3.1. 基本概念](#11031-基本概念)
-            - [1.10.3.2. 实现](#11032-实现)
-        - [1.10.4. 工厂方法模式](#1104-工厂方法模式)
-        - [1.10.5. 抽象工厂模式](#1105-抽象工厂模式)
-        - [1.10.6. 模板方法模式](#1106-模板方法模式)
-        - [1.10.7. 建造者模式](#1107-建造者模式)
-        - [1.10.8. 代理模式](#1108-代理模式)
-        - [1.10.9. 原型模式](#1109-原型模式)
-        - [1.10.10. 中介者模式](#11010-中介者模式)
-        - [1.10.11. 命令模式](#11011-命令模式)
-        - [1.10.12. 责任链模式](#11012-责任链模式)
-        - [1.10.13. 装饰模式](#11013-装饰模式)
-        - [1.10.14. 策略模式](#11014-策略模式)
-        - [1.10.15. 适配器模式](#11015-适配器模式)
-        - [1.10.16. 迭代器模式](#11016-迭代器模式)
-        - [1.10.17. 组合模式](#11017-组合模式)
-        - [1.10.18. 观察者模式](#11018-观察者模式)
-        - [1.10.19. 门面模式](#11019-门面模式)
-        - [1.10.20. 备忘录模式](#11020-备忘录模式)
-        - [1.10.21. 访问者模式](#11021-访问者模式)
-        - [1.10.22. 状态模式](#11022-状态模式)
-        - [1.10.23. 解释器模式](#11023-解释器模式)
-        - [1.10.24. 享元模式](#11024-享元模式)
-        - [1.10.25. 桥梁模式](#11025-桥梁模式)
+    - [1.9. Java-SPI机制](#19-java-spi机制)
+        - [1.9.1. Java--SPI机制](#191-java--spi机制)
+        - [1.9.2. 使用场景](#192-使用场景)
+            - [实现方式](#实现方式)
+        - [1.9.3. spi使用](#193-spi使用)
+        - [1.9.4. 原理解析](#194-原理解析)
+        - [1.9.5. 总结](#195-总结)
+    - [1.10. JDK版本变化](#110-jdk版本变化)
+    - [1.11. 设计模式](#111-设计模式)
+        - [1.11.1. 设计原则](#1111-设计原则)
+            - [1.11.1.1. 单一职责原则](#11111-单一职责原则)
+            - [1.11.1.2. 里氏替换原则](#11112-里氏替换原则)
+            - [1.11.1.3. 依赖倒置原则](#11113-依赖倒置原则)
+            - [1.11.1.4. 接口隔离原则](#11114-接口隔离原则)
+            - [1.11.1.5. 迪米特法则](#11115-迪米特法则)
+            - [1.11.1.6. 开闭原则](#11116-开闭原则)
+        - [1.11.2. UML图](#1112-uml图)
+        - [1.11.3. 单例模式](#1113-单例模式)
+            - [1.11.3.1. 基本概念](#11131-基本概念)
+            - [1.11.3.2. 实现](#11132-实现)
+        - [1.11.4. 工厂方法模式](#1114-工厂方法模式)
+        - [1.11.5. 抽象工厂模式](#1115-抽象工厂模式)
+        - [1.11.6. 模板方法模式](#1116-模板方法模式)
+        - [1.11.7. 建造者模式](#1117-建造者模式)
+        - [1.11.8. 代理模式](#1118-代理模式)
+        - [1.11.9. 原型模式](#1119-原型模式)
+        - [1.11.10. 中介者模式](#11110-中介者模式)
+        - [1.11.11. 命令模式](#11111-命令模式)
+        - [1.11.12. 责任链模式](#11112-责任链模式)
+        - [1.11.13. 装饰模式](#11113-装饰模式)
+        - [1.11.14. 策略模式](#11114-策略模式)
+        - [1.11.15. 适配器模式](#11115-适配器模式)
+        - [1.11.16. 迭代器模式](#11116-迭代器模式)
+        - [1.11.17. 组合模式](#11117-组合模式)
+        - [1.11.18. 观察者模式](#11118-观察者模式)
+        - [1.11.19. 门面模式](#11119-门面模式)
+        - [1.11.20. 备忘录模式](#11120-备忘录模式)
+        - [1.11.21. 访问者模式](#11121-访问者模式)
+        - [1.11.22. 状态模式](#11122-状态模式)
+        - [1.11.23. 解释器模式](#11123-解释器模式)
+        - [1.11.24. 享元模式](#11124-享元模式)
+        - [1.11.25. 桥梁模式](#11125-桥梁模式)
 
 <!-- /TOC -->
 
 
-<a id="markdown-1-java与面向对象" name="1-java与面向对象"></a>
 # 1. Java与面向对象
 
-<a id="markdown-11-java基础" name="11-java基础"></a>
 ## 1.1. Java基础
 <a href="#menu" style="float:right">目录</a>
 
-<a id="markdown-111-数据类型" name="111-数据类型"></a>
 ### 1.1.1. 数据类型
 <a href="#menu" style="float:right">目录</a>
 
@@ -134,7 +128,6 @@
    * 任何类型和字符串类型相加，都会自动转换为字符串类型
    * byte,char,short类型之间相互运算将会自动提升为int类型，这是系统避免计算溢出。
 
-<a id="markdown-1111-integer-缓存对象" name="1111-integer-缓存对象"></a>
 #### 1.1.1.1. Integer 缓存对象
 <a href="#menu" style="float:right">目录</a>
 
@@ -204,7 +197,8 @@ a1==a2?  true
 b1==b2?  false
 c1==c2?  false
 ```
-<a id="markdown-1112-数组" name="1112-数组"></a>
+
+
 #### 1.1.1.2. 数组
 初始化
 ```java
@@ -221,7 +215,7 @@ int[][] arr1 = new int[][]{{1,2},{1,2}};
 int[][] arr2 =  {{1,2},{1,2}};
 ```
 数组工具类java.util.Arrays。提供排序,复制，比较，初始化等功能。
-<a id="markdown-1113-string" name="1113-string"></a>
+
 #### 1.1.1.3. String 
 <a href="#menu" style="float:right">目录</a>
 
@@ -266,12 +260,12 @@ String a = new String("1243");
 * 由于String变量相加时，会创建新的对象。因此效率较低。
 使用StringBuilder和StringBuffer，StringBuffer在一些方法上加上了Synchronized同步锁，一般不使用。
 
+* String.intern()方法获得在常量池中的字符串引用，如果常量池中没有该常量字符串，该方法会将该字符串加入常量池。但并不表示任何字符串调用intern()都返回同样的引用，因为可能中间发生过垃圾回收被回收掉了。
 
-<a id="markdown-12-面向对象" name="12-面向对象"></a>
+
 ## 1.2. 面向对象
 <a href="#menu" style="float:right">目录</a>
 
-<a id="markdown-121-三大特性" name="121-三大特性"></a>
 ### 1.2.1. 三大特性
 <a href="#menu" style="float:right">目录</a>
 
@@ -369,7 +363,6 @@ class Sub extends Base{
 
 
 
-<a id="markdown-1211-权限修饰符" name="1211-权限修饰符"></a>
 #### 1.2.1.1. 权限修饰符
 <a href="#menu" style="float:right">目录</a>
 * private 本类可见
@@ -377,7 +370,6 @@ class Sub extends Base{
 * protect 子类可见
 * public 所有可见
 
-<a id="markdown-1212-接口和抽象类" name="1212-接口和抽象类"></a>
 #### 1.2.1.2. 接口和抽象类
 **接口**
 * interface定义，implements 实现
@@ -421,7 +413,6 @@ class Sub extends Base{
 * 修饰初始化块，类加载时会先被调用
 * 与import配合，引入static元素(属性和方法)
 
-<a id="markdown-1213-建议" name="1213-建议"></a>
 #### 1.2.1.3. 建议
 * 考虑使用静态工厂方法代替构造器
     * 如果类的实例化参数较复杂，应当通过工厂方法向用户提供简单明了的实例化方法
@@ -451,7 +442,6 @@ class Sub extends Base{
     * 在应用程序的执行期间，只要对象的equals方法的比较操作所用到的信息没有被修改，那么多次调用hashCode获得的整数是一致的
     
 
-<a id="markdown-1214-内部类" name="1214-内部类"></a>
 #### 1.2.1.4. 内部类
 内部类分为普通内部类，静态内部类，局部内部类，匿名内部类。
 
@@ -528,7 +518,6 @@ func(new Handle{
 
 });
 ```
-<a id="markdown-1215-枚举类" name="1215-枚举类"></a>
 #### 1.2.1.5. 枚举类
 ```java
 public enum BlogReturnCode implements  ReturnCode{
@@ -555,11 +544,9 @@ public enum BlogReturnCode implements  ReturnCode{
     }
 }
 ```
-<a id="markdown-122-泛型" name="122-泛型"></a>
 ### 1.2.2. 泛型
 <a href="#menu" style="float:right">目录</a>
 
-<a id="markdown-123-概述" name="123-概述"></a>
 ### 1.2.3. 概述
 泛型在java中有很重要的地位，在面向对象编程及各种设计模式中有非常广泛的应用。
 
@@ -1064,7 +1051,6 @@ Integer i = (Integer) lsa[1].get(0); // OK
 ```
 
 
-<a id="markdown-124-集合" name="124-集合"></a>
 ### 1.2.4. 集合
 <a href="#menu" style="float:right">目录</a>
 
@@ -1298,7 +1284,6 @@ public interface Comparator<T> {
     * 我们不难发现：Comparable相当于“内部比较器”，而Comparator相当于“外部比较器”。
 
 
-<a id="markdown-125-异常" name="125-异常"></a>
 ### 1.2.5. 异常
 <a href="#menu" style="float:right">目录</a>
 
@@ -1492,7 +1477,6 @@ public static void main(java.lang.String[]);
 
 
 
-<a id="markdown-126-注解" name="126-注解"></a>
 ### 1.2.6. 注解
 <a href="#menu" style="float:right">目录</a>
 
@@ -1618,11 +1602,9 @@ public interface AnnotatedElement {
 }
 ```
 
-<a id="markdown-13-io" name="13-io"></a>
 ## 1.3. IO
 <a href="#menu" style="float:right">目录</a>
 
-<a id="markdown-131-file" name="131-file"></a>
 ### 1.3.1. File
 * File是java.io包下与平台无关的文件和目录操作类。
 * File能改新建，删除和重命名文件和目录。
@@ -1725,7 +1707,6 @@ public interface FileFilter {
 public File[] listFiles(FileFilter filter) ;
 public File[] listFiles(FilenameFilter filter)
 ```
-<a id="markdown-1311-io流" name="1311-io流"></a>
 #### 1.3.1.1. IO流
 
 **流的概念和作用**
@@ -1837,7 +1818,6 @@ BufferedInputStream和BufferedOutputStream这两个类分别是FilterInputStream
         * rwd : 除了rw,还要求对文件内容的每个更新都同步写入到底层的存储设备。
 * 如果seek 定位后写入内容，将会覆盖后续内容，如果需要实现插入写，需要先读出后面的内容，写入之后再追加写入读出的内容。
   
-<a id="markdown-1312-序列化" name="1312-序列化"></a>
 #### 1.3.1.2. 序列化
 * 序列化
     * 将对象转化为二进制字节数组，以方便存储到磁盘或者进行网络传输
@@ -1923,10 +1903,8 @@ os.writeObject(person);
 
 ```
 
-<a id="markdown-132-nio" name="132-nio"></a>
 ### 1.3.2. NIO
 
-<a id="markdown-1321-内存映射" name="1321-内存映射"></a>
 #### 1.3.2.1. 内存映射  
 
 内存映射的方式是指操作系统将内存中的某一块区域与磁盘中的文件相关联，当访问内存中的一段数据时，转换为访问文件的某一段数据。这种方式的目的同样是减少数据从内核空间缓存到用户空间缓存的数据复制操作，因为这两个空间的数据是共享的。
@@ -2181,7 +2159,6 @@ ByteBuffer.allocate 意味着直接在 JVM堆上分配内存，所以受 新生�
 最后一点为 DirectMemory的内存只有在 JVM执行 full gc 的时候才会被回收，那么如果在其上分配过大的内存空间，那么也将出现 OutofMemoryError，即便 JVM 堆中的很多内存处于空闲状态。
 
 
-<a id="markdown-14-javac编译原理" name="14-javac编译原理"></a>
 ## 1.4. Javac编译原理
 <a href="#menu" style="float:right">目录</a>
 
@@ -2192,49 +2169,38 @@ ByteBuffer.allocate 意味着直接在 JVM堆上分配内存，所以受 新生�
     * 语法分析器
         * 将Token流组建成更加结构化的语法树
     * 语义分析器
-<a id="markdown-141-javac编译器的基本结构" name="141-javac编译器的基本结构"></a>
 ### 1.4.1. Javac编译器的基本结构
 <a href="#menu" style="float:right">目录</a>
 
-<a id="markdown-142-javac的工作原理分析" name="142-javac的工作原理分析"></a>
 ### 1.4.2. Javac的工作原理分析
 <a href="#menu" style="float:right">目录</a>
 
 
-<a id="markdown-15-类加载和反射" name="15-类加载和反射"></a>
 ## 1.5. 类加载和反射
 <a href="#menu" style="float:right">目录</a>
 
-<a id="markdown-151-class文件结构" name="151-class文件结构"></a>
 ### 1.5.1. Class文件结构
 <a href="#menu" style="float:right">目录</a>
 
-<a id="markdown-1511-jvm指令集简介" name="1511-jvm指令集简介"></a>
 #### 1.5.1.1. JVM指令集简介
 <a href="#menu" style="float:right">目录</a>
 
-<a id="markdown-1512-class文件头的表示形式" name="1512-class文件头的表示形式"></a>
 #### 1.5.1.2. class文件头的表示形式
 <a href="#menu" style="float:right">目录</a>
 
-<a id="markdown-1513-常量池" name="1513-常量池"></a>
 #### 1.5.1.3. 常量池
 <a href="#menu" style="float:right">目录</a>
 
 
-<a id="markdown-1514-类信息" name="1514-类信息"></a>
 #### 1.5.1.4. 类信息
 <a href="#menu" style="float:right">目录</a>
 
-<a id="markdown-1515-fields和method定义" name="1515-fields和method定义"></a>
 #### 1.5.1.5. Fields和Method定义
 <a href="#menu" style="float:right">目录</a>
 
-<a id="markdown-1516-类属性描述" name="1516-类属性描述"></a>
 #### 1.5.1.6. 类属性描述
 <a href="#menu" style="float:right">目录</a>
 
-<a id="markdown-1517-javap生成的class文件结构" name="1517-javap生成的class文件结构"></a>
 #### 1.5.1.7. Javap生成的class文件结构
 <a href="#menu" style="float:right">目录</a>
 
@@ -2375,539 +2341,11 @@ public class com.code.base.javap.JavapTest {
 
 ```
 
-
-<a id="markdown-152-类加载器" name="152-类加载器"></a>
-### 1.5.2. 类加载器
-<a href="#menu" style="float:right">目录</a>
-
-<a id="markdown-1521-基本概念" name="1521-基本概念"></a>
-#### 1.5.2.1. 基本概念
-<a href="#menu" style="float:right">目录</a>
-
-类加载器是负责将可能是网络上、也可能是磁盘上的class文件加载到内存中。并为其生成对应的java.lang.class对象。一旦一个类被载入JVM了，同一个类就不会被再次加载。那么怎样才算是同一个类？在JAVA中一个类用其全限定类名（包名和类名）作为其唯一标识，但是在JVM中，一个类用其全限定类名和其类加载器作为其唯一标识。也就是说，在JAVA中的同一个类，如果用不同的类加载器加载，则生成的class对象认为是不同的。
-
-**JAVA类装载方式**
-* 隐式加载
-    * 不通过在代码里调用ClassLoader来加载需要的类。而是通过JVM来自动加载需要的类到内存的方式
-    * 例如，当我们在类中继承或者引用某个类时，JVM在解析当前这个类时发现引用的类不存在，那么就会自动将这些类加载到内存中。
-* 显示加载
-    * 显示调用ClassLoader的相关方法加载类
-
-**类加载的动态性体现:**
-一个应用程序总是由n多个类组成，Java程序启动时，并不是一次把所有的类全部加载后再运行，它总是先把保证程序运行的基础类一次性加载到jvm中，其它类等到jvm用到的时候再加载，这样的好处是节省了内存的开销，因为java最早就是为嵌入式系统而设计的，内存宝贵，这是一种可以理解的机制，而用到时再加载这也是java动态性的一种体现
-
-
-<a id="markdown-1522-常见的类加载器" name="1522-常见的类加载器"></a>
-#### 1.5.2.2. 常见的类加载器
-<a href="#menu" style="float:right">目录</a>
-
-* JDK 默认提供了如下几种ClassLoader
-    * Bootstrp loader
-        * Bootstrp加载器是用C++语言写的，它是在Java虚拟机启动后初始化的，它主要负责加载%JAVA_HOME%/jre/lib,-Xbootclasspath参数指定的路径以及%JAVA_HOME%/jre/classes中的类。
-    * ExtClassLoader  
-        * Bootstrp loader加载ExtClassLoader,并且将ExtClassLoader的父加载器设置为Bootstrp loader.ExtClassLoader是用Java写的，具体来说就是 sun.misc.Launcher$ExtClassLoader，ExtClassLoader主要加载%JAVA_HOME%/jre/lib/ext，此路径下的所有classes目录以及java.ext.dirs系统变量指定的路径中类库。
-        * ExtClassLoader的父类不是Bootstrp loader
-    * AppClassLoader 
-        * Bootstrp loader加载完ExtClassLoader后，就会加载AppClassLoader,并且将AppClassLoader的父加载器指定为 ExtClassLoader。AppClassLoader也是用Java写成的，它的实现类是 sun.misc.Launcher$AppClassLoader，另外我们知道ClassLoader中有个getSystemClassLoader方法,此方法返回的正是AppclassLoader.AppClassLoader主要负责加载classpath所指定的位置的类或者是jar文档，它也是Java程序默认的类加载器。
-
-![java类装载器](http://static.oschina.net/uploads/img/201405/09113619_cx03.png)
-
-* 为什么要有三个类加载器
-    * 一方面是分工，各自负责各自的区块，另一方面为了实现委托模型。
-
- 类加载器之间是如何协调工作的
-
-前面说了，java中有三个类加载器，问题就来了，碰到一个类需要加载时，它们之间是如何协调工作的，即java是如何区分一个类该由哪个类加载器来完成呢。 在这里java采用了委托模型机制，这个机制简单来讲，就是“类装载器有载入类的需求时，会先请示其Parent使用其搜索路径帮忙载入，如果Parent 找不到,那么才由自己依照自己的搜索路径搜索类”
-
-下面举一个例子来说明，为了更好的理解，先弄清楚几行代码：
-
-```Java
-Public class Test{
  
-    Public static void main(String[] arg){
- 
-      ClassLoader c  = Test.class.getClassLoader();  //获取Test类的类加载器
- 
-        System.out.println(c); 
- 
-      ClassLoader c1 = c.getParent();  //获取c这个类加载器的父类加载器
- 
-        System.out.println(c1);
- 
-      ClassLoader c2 = c1.getParent();//获取c1这个类加载器的父类加载器
- 
-        System.out.println(c2);
- 
-  }
- 
-}
-```
-运行结果：
-```
-……AppClassLoader……
- 
-……ExtClassLoader……
-Null
-``` 
-可以看出Test是由AppClassLoader加载器加载的，AppClassLoader的Parent 加载器是 ExtClassLoader,但是ExtClassLoader的Parent为 null 是怎么回事呵，朋友们留意的话，前面有提到Bootstrap Loader是用C++语言写的，依java的观点来看，逻辑上并不存在Bootstrap Loader的类实体，所以在java程序代码里试图打印出其内容时，我们就会看到输出为null。
-
-
-<a id="markdown-1523-类加载过程" name="1523-类加载过程"></a>
-#### 1.5.2.3. 类加载过程
-<a href="#menu" style="float:right">目录</a>
-
-类装载器就是寻找类或接口字节码文件进行解析并构造JVM内部对象表示的组件，在java中类装载器把一个类装入JVM，经过以下步骤：
-* 装载：查找和导入Class文件 
-* 链接：其中解析步骤是可以选择的 
-    * 检查：检查载入的class文件数据的正确性 
-    * 准备：给类的静态变量分配存储空间 
-    * 解析：将符号引用转成直接引用 
-* 初始化：对静态变量，静态代码块执行初始化工作
-
-类装载工作由ClassLoder和其子类负责。JVM在运行时会产生三个ClassLoader：根装载器，ExtClassLoader(扩展类装载器)和AppClassLoader，其中根装载器不是ClassLoader的子类，由C++编写，因此在java中看不到他，负责装载JRE的核心类库，如JRE目录下的rt.jar,charsets.jar等。ExtClassLoader是ClassLoder的子类，负责装载JRE扩展目录ext下的jar类包；AppClassLoader负责装载classpath路径下的类包，这三个类装载器存在父子层级关系****，即根装载器是ExtClassLoader的父装载器，ExtClassLoader是AppClassLoader的父装载器。默认情况下使用AppClassLoader装载应用程序的类
-
-<a id="markdown-1524-全盘委托机制" name="1524-全盘委托机制"></a>
-#### 1.5.2.4. 全盘委托机制
-<a href="#menu" style="float:right">目录</a>
-
-Java装载类使用“全盘负责委托机制”。“全盘负责”是指当一个ClassLoder装载一个类时，除非显示的使用另外一个ClassLoder，该类所依赖及引用的类也由这个ClassLoder载入；“委托机制”是指先委托父类装载器寻找目标类，只有在找不到的情况下才从自己的类路径中查找并装载目标类。这一点是从安全方面考虑的，试想如果一个人写了一个恶意的基础类（如java.lang.String）并加载到JVM将会引起严重的后果，但有了全盘负责制，java.lang.String永远是由根装载器来装载，避免以上情况发生 除了JVM默认的三个ClassLoder以外，第三方可以编写自己的类装载器，以实现一些特殊的需求。类文件被装载解析后，在JVM中都有一个对应的java.lang.Class对象，提供了类结构信息的描述。数组，枚举及基本数据类型，甚至void都拥有对应的Class对象。Class类没有public的构造方法，Class对象是在装载类时由JVM通过调用类装载器中的defineClass()方法自动构造的。
-
-**为什么要使用这种双亲委托模式呢？**
-因为这样可以避免重复加载，当父亲已经加载了该类的时候，就没有必要子ClassLoader再加载一次。
-考虑到安全因素，我们试想一下，如果不使用这种委托模式，那我们就可以随时使用自定义的String来动态替代java核心api中定义类型，这样会存在非常大的安全隐患，而双亲委托的方式，就可以避免这种情况，因为String已经在启动时被加载，所以用户自定义类是无法加载一个自定义的ClassLoader。
-
-**思考：假如我们自己写了一个java.lang.String的类，我们是否可以替换调JDK本身的类？**
-答案是否定的。我们不能实现。为什么呢？我看很多网上解释是说双亲委托机制解决这个问题，其实不是非常的准确。因为双亲委托机制是可以打破的，你完全可以自己写一个classLoader来加载自己写的java.lang.String类，但是你会发现也不会加载成功，具体就是因为针对java.*开头的类，jvm的实现中已经保证了必须由bootstrp来加载。
-
-<a id="markdown-1525-定义自已的classloader" name="1525-定义自已的classloader"></a>
-#### 1.5.2.5. 定义自已的ClassLoader
-<a href="#menu" style="float:right">目录</a>
-
-* 有以下几个情景是值得我们花费时间实现自己的classLoader的:
-    * 我们需要的类不一定存放在已经设置好的classPath下(有系统类加载器AppClassLoader加载的路径)，对于自定义路径中的class类文件的加载，我们需要自己的ClassLoader
-    * 有时我们不一定是从类文件中读取类，可能是从网络的输入流中读取类，这就需要做一些加密和解密操作，这就需要自己实现加载类的逻辑，当然其他的特殊处理也同样适用。
-    * 可以定义类的实现机制，实现类的热部署,如OSGi中的bundle模块就是通过实现自己的ClassLoader实现的。
- 
-* 定义自已的类加载器分为两步：
-    * 继承java.lang.ClassLoader
-    * 重写父类的findClass方法
- 
-父类有那么多方法，为什么偏偏只重写findClass方法？
-```java
-protected synchronized Class<?> loadClass ( String name , boolean resolve ) throws ClassNotFoundException{
-    //检查指定类是否被当前类加载器加载过
-    Class c = findLoadedClass(name);
-    if( c == null ){//如果没被加载过，委派给父加载器加载
-        try{
-            if( parent != null )
-                c = parent.loadClass(name,resolve);
-            else 
-                c = findBootstrapClassOrNull(name);
-        }catch ( ClassNotFoundException e ){
-            //如果父加载器无法加载
-        }
-        if( c == null ){//父类不能加载，由当前的类加载器加载
-            c = findClass(name);
-        }
-    }
-    if( resolve ){//如果要求立即链接，那么加载完类直接链接
-        resolveClass();
-    }
-    //将加载过这个类对象直接返回
-    return c;
-}
-
-```
-从上面的代码中，我们可以看到在父加载器不能完成加载任务时，会调用findClass(name)函数，这个就是我们自己实现的ClassLoader的查找类文件的规则，所以在继承后，我们只需要覆盖findClass()这个函数，实现我们在本加载器中的查找逻辑，而且还不会破坏双亲委托模型
-
-```java
-public class MyClassLoader extends ClassLoader{
-
-    private String rootPath;
-    
-    public MyClassLoader(String rootPath){
-        this.rootPath = rootPath;
-    }
-    
-    @Override
-    protected Class<?> findClass(String name) throws ClassNotFoundException {
-        //check if the class have been loaded
-        Class<?> c = findLoadedClass(name);        
-        if(c!=null){
-            return c;
-        }
-        //load the class
-        byte[] classData = getClassData(name);
-        if(classData==null){
-            throw new ClassNotFoundException();
-        }
-        else{
-            c = defineClass(name,classData, 0, classData.length);
-            return c;
-        }    
-    }
-    
-    private byte[] getClassData(String className){
-        String path = rootPath+"/"+className.replace('.', '/')+".class";
-        
-        InputStream is = null;
-        ByteArrayOutputStream bos = null;
-        try {
-            is = new FileInputStream(path);
-            bos = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            int temp = 0;
-            while((temp = is.read(buffer))!=-1){
-                bos.write(buffer,0,temp);
-            }
-            return bos.toByteArray();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally{
-            try {
-                is.close();
-                bos.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }            
-        }
-        
-        return null;        
-    }    
-
-}
-
-```
-
-测试自定义的类加载器
-
-创建一个测试类HelloWorld
-
-```java
-package testOthers;
-
-public class HelloWorld {
-
-}
-```
-在D盘根目录创建一个testOthers文件夹，编译HelloWorld.java，将得到的class文件放到testOthers文件夹下。
-
-利用如下代码进行测试
-
-```java
-public class testMyClassLoader {
-    @Test
-    public void test() throws Exception{
-        MyClassLoader loader = new MyClassLoader("D:");
-        Class<?> c = loader.loadClass("testOthers.HelloWorld");
-        System.out.println(c.getClassLoader());
-    }
-}
-```
-输出：
-
- 
-
-说明HelloWorld类是被我们的自定义类加载器MyClassLoader加载的
-
-
-<a id="markdown-常见加载类错误" name="常见加载类错误"></a>
-#### 1.5.2.6. 常见加载类错误
-
-* ClassNotFoudException
-    * 类不存在
-* NoClassDefFoundError
-* UnsatisfiedLinkError
-* ClassCastException
-    * 强制类型转换时出现得到错误，比如将A类型转换为没有继承或实现关系的B类型时出现
-* ExceptionOInInitializerError
-
-<a id="markdown-1526-线程上下文类加载器" name="1526-线程上下文类加载器"></a>
-#### 1.5.2.7. 线程上下文类加载器
-<a href="#menu" style="float:right">目录</a>
-
-　　线程上下文类加载器（context class loader）是从 JDK 1.2 开始引入的。类 java.lang.Thread中的方法 getContextClassLoader()和 setContextClassLoader(ClassLoader cl)用来获取和设置线程的上下文类加载器。如果没有通过 setContextClassLoader(ClassLoader cl)方法进行设置的话，线程将继承其父线程的上下文类加载器。Java 应用运行的初始线程的上下文类加载器是系统类加载器。在线程中运行的代码可以通过此类加载器来加载类和资源。
-
-　　前面提到的类加载器的代理模式并不能解决 Java 应用开发中会遇到的类加载器的全部问题。Java 提供了很多服务提供者接口（Service Provider Interface，SPI），允许第三方为这些接口提供实现。常见的 SPI 有 JDBC、JCE、JNDI、JAXP 和 JBI 等。这些 SPI 的接口由 Java 核心库来提供，如 JAXP 的 SPI 接口定义包含在 javax.xml.parsers包中。这些 SPI 的实现代码很可能是作为 Java 应用所依赖的 jar 包被包含进来，可以通过类路径（CLASSPATH）来找到，如实现了 JAXP SPI 的 Apache Xerces所包含的 jar 包。SPI 接口中的代码经常需要加载具体的实现类。如 JAXP 中的 javax.xml.parsers.DocumentBuilderFactory类中的 newInstance()方法用来生成一个新的 DocumentBuilderFactory的实例。这里的实例的真正的类是继承自 javax.xml.parsers.DocumentBuilderFactory，由 SPI 的实现所提供的。如在 Apache Xerces 中，实现的类是 org.apache.xerces.jaxp.DocumentBuilderFactoryImpl。而问题在于，SPI 的接口是 Java 核心库的一部分，是由引导类加载器来加载的；SPI 实现的 Java 类一般是由系统类加载器来加载的。引导类加载器是无法找到 SPI 的实现类的，因为它只加载 Java 的核心库。它也不能代理给系统类加载器，因为它是系统类加载器的祖先类加载器。也就是说，类加载器的代理模式无法解决这个问题。
-　　线程上下文类加载器正好解决了这个问题。如果不做任何的设置，Java 应用的线程的上下文类加载器默认就是系统上下文类加载器。在 SPI 接口的代码中使用线程上下文类加载器，就可以成功的加载到 SPI 实现的类。线程上下文类加载器在很多 SPI 的实现中都会用到。
-
-
-
-<a id="markdown-1527-类加载器与web容器" name="1527-类加载器与web容器"></a>
-#### 1.5.2.8. 类加载器与Web容器
-<a href="#menu" style="float:right">目录</a>
-　　对于运行在 Java EE容器中的 Web 应用来说，类加载器的实现方式与一般的 Java 应用有所不同。不同的 Web 容器的实现方式也会有所不同。以 Apache Tomcat 来说，每个 Web 应用都有一个对应的类加载器实例。该类加载器也使用代理模式，所不同的是它是首先尝试去加载某个类，如果找不到再代理给父类加载器。这与一般类加载器的顺序是相反的。这是 Java Servlet 规范中的推荐做法，其目的是使得 Web 应用自己的类的优先级高于 Web 容器提供的类。这种代理模式的一个例外是：Java 核心库的类是不在查找范围之内的。这也是为了保证 Java 核心库的类型安全。
-　　
-绝大多数情况下，Web 应用的开发人员不需要考虑与类加载器相关的细节。下面给出几条简单的原则：
-（1）每个 Web 应用自己的 Java 类文件和使用的库的 jar 包，分别放在 WEB-INF/classes和 WEB-INF/lib目录下面。
-（2）多个应用共享的 Java 类文件和 jar 包，分别放在 Web 容器指定的由所有 Web 应用共享的目录下面。
-（3）当出现找不到类的错误时，检查当前类的类加载器和当前线程的上下文类加载器是否正确。
-
-
-<a id="markdown-1528-常见问题分析" name="1528-常见问题分析"></a>
-#### 1.5.2.9. 常见问题分析
-**由不同的类加载器加载的指定类还是相同的类型吗？**
-
-　　在Java中，一个类用其完全匹配类名(fully qualified class name)作为标识，这里指的完全匹配类名包括包名和类名。但在JVM中，一个类用其 全名 和 一个ClassLoader的实例 作为唯一标识，不同类加载器加载的类将被置于不同的命名空间。我们可以用两个自定义类加载器去加载某自定义类型（注意不要将自定义类型的字节码放置到系统路径或者扩展路径中，否则会被系统类加载器或扩展类加载器抢先加载），然后用获取到的两个Class实例进行java.lang.Object.equals（…）判断，将会得到不相等的结果，如下所示：
-
-```java
-public class TestBean {
-
-    public static void main(String[] args) throws Exception {
-        // 一个简单的类加载器，逆向双亲委派机制
-        // 可以加载与自己在同一路径下的Class文件
-        ClassLoader myClassLoader = new ClassLoader() {
-            @Override
-            public Class<?> loadClass(String name)
-                    throws ClassNotFoundException {
-                try {
-                    String filename = name.substring(name.lastIndexOf(".") + 1)
-                            + ".class";
-                    InputStream is = getClass().getResourceAsStream(filename);
-                    if (is == null) {
-                        return super.loadClass(name);   // 递归调用父类加载器
-                    }
-                    byte[] b = new byte[is.available()];
-                    is.read(b);
-                    return defineClass(name, b, 0, b.length);
-                } catch (Exception e) {
-                    throw new ClassNotFoundException(name);
-                }
-            }
-        };
-
-        Object obj = myClassLoader.loadClass("classloader.test.bean.TestBean")
-                .newInstance();
-        System.out.println(obj.getClass());
-        System.out.println(obj instanceof classloader.test.bean.TestBean);
-    }
-}/* Output: 
-        class classloader.test.bean.TestBean
-        false  
- *///:~    
-```
-　　我们发现，obj 确实是类classloader.test.bean.TestBean实例化出来的对象，但当这个对象与类classloader.test.bean.TestBean做所属类型检查时却返回了false。这是因为虚拟机中存在了两个TestBean类，一个是由系统类加载器加载的，另一个则是由我们自定义的类加载器加载的，虽然它们来自同一个Class文件，但依然是两个独立的类，因此做所属类型检查时返回false。
-
-**在代码中直接调用Class.forName(String name)方法，到底会触发那个类加载器进行类加载行为？**
-
-Class.forName(String name)默认会使用调用类的类加载器来进行类加载。我们直接来分析一下对应的jdk的代码：
-
-```java
-//java.lang.Class.java  
-public static Class<?> forName(String className) throws ClassNotFoundException {  
-    return forName0(className, true, ClassLoader.getCallerClassLoader());  
-}  
-
-//java.lang.ClassLoader.java  
-//Returns the invoker's class loader, or null if none.  
-static ClassLoader getCallerClassLoader() {  
-    // 获取调用类（caller）的类型  
-    Class caller = Reflection.getCallerClass(3);  
-    // This can be null if the VM is requesting it  
-    if (caller == null) {  
-        return null;  
-    }  
-    // 调用java.lang.Class中本地方法获取加载该调用类（caller）的ClassLoader  
-    return caller.getClassLoader0();  
-}  
-
-//java.lang.Class.java  
-//虚拟机本地实现，获取当前类的类加载器，前面介绍的Class的getClassLoader()也使用此方法  
-native ClassLoader getClassLoader0(); 
-
-```
-
-**在编写自定义类加载器时，如果没有设定父加载器，那么父加载器是谁？**
-　　前面讲过，在不指定父类加载器的情况下，默认采用系统类加载器。可能有人觉得不明白，现在我们来看一下JDK对应的代码实现。众所周知，我们编写自定义的类加载器直接或者间接继承自java.lang.ClassLoader抽象类，对应的无参默认构造函数实现如下：
-
-```java
-//摘自java.lang.ClassLoader.java  
-protected ClassLoader() {  
-    SecurityManager security = System.getSecurityManager();  
-    if (security != null) {  
-        security.checkCreateClassLoader();  
-    }  
-    this.parent = getSystemClassLoader();  
-    initialized = true;  
-} 
-```
-
-我们再来看一下对应的getSystemClassLoader()方法的实现：
-```java
-private static synchronized void initSystemClassLoader() {  
-    //...  
-    sun.misc.Launcher l = sun.misc.Launcher.getLauncher();  
-    scl = l.getClassLoader();  
-    //...  
-}  
-```
-我们可以写简单的测试代码来测试一下：
-```java
-System.out.println(sun.misc.Launcher.getLauncher().getClassLoader());  
-```
-本机对应输出如下：
-```java
-sun.misc.Launcher$AppClassLoader@73d16e93 
-```
-　　所以，我们现在可以相信当自定义类加载器没有指定父类加载器的情况下，默认的父类加载器即为系统类加载器。同时，我们可以得出如下结论：即使用户自定义类加载器不指定父类加载器，那么，同样可以加载如下三个地方的类：
-
-```
-<Java_Runtime_Home>/lib下的类；
-<Java_Runtime_Home>/lib/ext下或者由系统变量java.ext.dir指定位置中的类；
-```
-当前工程类路径下或者由系统变量java.class.path指定位置中的类。
-
-**在编写自定义类加载器时，如果将父类加载器强制设置为null，那么会有什么影响？如果自定义的类加载器不能加载指定类，就肯定会加载失败吗？**
-
-　　JVM规范中规定如果用户自定义的类加载器将父类加载器强制设置为null，那么会自动将启动类加载器设置为当前用户自定义类加载器的父类加载器（这个问题前面已经分析过了）。同时，我们可以得出如下结论：即使用户自定义类加载器不指定父类加载器，那么，同样可以加载到<JAVA_HOME>/lib下的类，但此时就不能够加载<JAVA_HOME>/lib/ext目录下的类了。
-
-　　Ps：���题3和问题4的推断结论是基于用户自定义的类加载器本身延续了java.lang.ClassLoader.loadClass（…）默认委派逻辑，如果用户对这一默认委派逻辑进行了改变，以上推断结论就不一定成立了，详见问题5。
-
-**编写自定义类加载器时，一般有哪些注意点？**
-
-1)、一般尽量不要覆写已有的loadClass(…)方法中的委派逻辑（Old Generation）
-
-　　一般在JDK 1.2之前的版本才这样做，而且事实证明，这样做极有可能引起系统默认的类加载器不能正常工作。在JVM规范和JDK文档中（1.2或者以后版本中），都没有建议用户覆写loadClass(…)方法，相比而言，明确提示开发者在开发自定义的类加载器时覆写findClass(…)逻辑。举一个例子来验证该问题：
-
-```java
-//用户自定义类加载器WrongClassLoader.Java（覆写loadClass逻辑）  
-public class WrongClassLoader extends ClassLoader {  
-
-    public Class<?> loadClass(String name) throws ClassNotFoundException {  
-        return this.findClass(name);  
-    }  
-
-    protected Class<?> findClass(String name) throws ClassNotFoundException {  
-        // 假设此处只是到工程以外的特定目录D:\library下去加载类  
-        // 具体实现代码省略  
-    }  
-}  
-```
-　　通过前面的分析我们已经知道，这个自定义类加载器WrongClassLoader的默认类加载器是系统类加载器，但是现在问题4中的结论就不成立了。大家可以简单测试一下，现在JAVA_HOME/lib、JAVA_HOME/lib/ext 和 工程类路径上的类都加载不上了。
-
-```java
-//问题5测试代码一  
-public class WrongClassLoaderTest {  
-    publicstaticvoid main(String[] args) {  
-        try {  
-            WrongClassLoader loader = new WrongClassLoader();  
-            Class classLoaded = loader.loadClass("beans.Account");  
-            System.out.println(classLoaded.getName());  
-            System.out.println(classLoaded.getClassLoader());  
-        } catch (Exception e) {  
-            e.printStackTrace();  
-        }  
-    }  
-}/* Output: 
-        java.io.FileNotFoundException: D:"classes"java"lang"Object.class (系统找不到指定的路径。)  
-        at java.io.FileInputStream.open(Native Method)  
-        at java.io.FileInputStream.<init>(FileInputStream.java:106)  
-        at WrongClassLoader.findClass(WrongClassLoader.java:40)  
-        at WrongClassLoader.loadClass(WrongClassLoader.java:29)  
-        at java.lang.ClassLoader.loadClassInternal(ClassLoader.java:319)  
-        at java.lang.ClassLoader.defineClass1(Native Method)  
-        at java.lang.ClassLoader.defineClass(ClassLoader.java:620)  
-        at java.lang.ClassLoader.defineClass(ClassLoader.java:400)  
-        at WrongClassLoader.findClass(WrongClassLoader.java:43)  
-        at WrongClassLoader.loadClass(WrongClassLoader.java:29)  
-        at WrongClassLoaderTest.main(WrongClassLoaderTest.java:27)  
-Exception in thread "main" java.lang.NoClassDefFoundError: java/lang/Object  
-        at java.lang.ClassLoader.defineClass1(Native Method)  
-        at java.lang.ClassLoader.defineClass(ClassLoader.java:620)  
-        at java.lang.ClassLoader.defineClass(ClassLoader.java:400)  
-        at WrongClassLoader.findClass(WrongClassLoader.java:43)  
-        at WrongClassLoader.loadClass(WrongClassLoader.java:29)  
-        at WrongClassLoaderTest.main(WrongClassLoaderTest.java:27)  
- *///:~    
-```
-　　注意，这里D:”classes”beans”Account.class是物理存在的。这说明，连要加载的类型的超类型java.lang.Object都加载不到了。这里列举的由于覆写loadClass()引起的逻辑错误明显是比较简单的，实际引起的逻辑错误可能复杂的多。
-
-```java
-//问题5测试二  
-//用户自定义类加载器WrongClassLoader.Java(不覆写loadClass逻辑)  
-public class WrongClassLoader extends ClassLoader {  
-    protected Class<?> findClass(String name) throws ClassNotFoundException {  
-        //假设此处只是到工程以外的特定目录D:\library下去加载类  
-        //具体实现代码省略  
-    }  
-}/* Output: 
-        beans.Account  
-        WrongClassLoader@1c78e57  
- *///:~  
-```
-　　将自定义类加载器代码WrongClassLoader.Java做以上修改后，再运行测试代码，输出正确。
-
-2). 正确设置父类加载器
-
-　　通过上面问题4和问题5的分析我们应该已经理解，个人觉得这是自定义用户类加载器时最重要的一点，但常常被忽略或者轻易带过。有了前面JDK代码的分析作为基础，我想现在大家都可以随便举出例子了。
-
-3). 保证findClass(String name)方法的逻辑正确性
-
-　　事先尽量准确理解待定义的类加载器要完成的加载任务，确保最大程度上能够获取到对应的字节码内容。
-
-**如何在运行时判断系统类加载器能加载哪些路径下的类？**
-
-　　一是可以直接调用ClassLoader.getSystemClassLoader()或者其他方式获取到系统类加载器（系统类加载器和扩展类加载器本身都派生自URLClassLoader），调用URLClassLoader中的getURLs()方法可以获取到。二是可以直接通过获取系统属性java.class.path来查看当前类路径上的条目信息 ：System.getProperty(“java.class.path”)。如下所示，
-```java
-public class Test {
-    public static void main(String[] args) {
-        System.out.println("Rico");
-        Gson gson = new Gson();
-        System.out.println(gson.getClass().getClassLoader());
-        System.out.println(System.getProperty("java.class.path"));
-    }
-}/* Output: 
-        Rico
-        sun.misc.Launcher$AppClassLoader@6c68bcef
-        I:\AlgorithmPractice\TestClassLoader\bin;I:\Java\jars\Gson\gson-2.3.1.jar
- *///:~ 
-```
-　　如上述程序所示，Test类和Gson类由系统类加载器加载，并且其加载路径就是用户类路径，包括当前类路径和引用的第三方类库的路径。
-
-**如何在运行时判断标准扩展类加载器能加载哪些路径下的类？**
-
-利用如下方式即可判断：
-
-```java
-import java.net.URL;
-import java.net.URLClassLoader;  
-
-public class ClassLoaderTest {  
-
-    /** 
-     * @param args the command line arguments 
-     */  
-    public static void main(String[] args) {  
-        try {  
-            URL[] extURLs = ((URLClassLoader) ClassLoader.getSystemClassLoader().getParent()).getURLs();  
-            for (int i = 0; i < extURLs.length; i++) {  
-                System.out.println(extURLs[i]);  
-            }  
-        } catch (Exception e) {  
-            //…  
-        }  
-    }  
-} 
-/* Output: 
-        file:/C:/Program%20Files/Java/jdk1.7.0_79/jre/lib/ext/access-bridge-64.jar
-        file:/C:/Program%20Files/Java/jdk1.7.0_79/jre/lib/ext/dnsns.jar
-        file:/C:/Program%20Files/Java/jdk1.7.0_79/jre/lib/ext/jaccess.jar
-        file:/C:/Program%20Files/Java/jdk1.7.0_79/jre/lib/ext/localedata.jar
-        file:/C:/Program%20Files/Java/jdk1.7.0_79/jre/lib/ext/sunec.jar
-        file:/C:/Program%20Files/Java/jdk1.7.0_79/jre/lib/ext/sunjce_provider.jar
-        file:/C:/Program%20Files/Java/jdk1.7.0_79/jre/lib/ext/sunmscapi.jar
-        file:/C:/Program%20Files/Java/jdk1.7.0_79/jre/lib/ext/zipfs.jar
- */
-
-```
-
- 
-<a id="markdown-153-反射" name="153-反射"></a>
-### 1.5.3. 反射
+### 1.5.2. 反射
 <a href="#menu" style="float:right">目录</a>
 
 
-<a id="markdown-16-jdbc" name="16-jdbc"></a>
 ## 1.6. JDBC
 <a href="#menu" style="float:right">目录</a>
 
@@ -3033,16 +2471,13 @@ cstmt.registerOutParameter(1, java.sql.Types.TINYINT);
 cstmt.executeUpdate();  
 byte x = cstmt.getByte(1);  
 ```
-<a id="markdown-17-函数式编程" name="17-函数式编程"></a>
 ## 1.7. 函数式编程
 
 函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。
 
 函数式编程的一个特点就是，允许把函数本身作为参数传入另一个函数，还允许返回一个函数！
-<a id="markdown-18-java-8-的新特性" name="18-java-8-的新特性"></a>
 ## 1.8. Java 8 的新特性：
 
-<a id="markdown-181-java-8-lambda-表达式" name="181-java-8-lambda-表达式"></a>
 ### 1.8.1. Java 8 Lambda 表达式
 Lambda 表达式，也可称为闭包，它是推动 Java 8 发布的最重要新特性。
 Lambda 允许把函数作为一个方法的参数（函数作为参数传递进方法中）。
@@ -3079,7 +2514,6 @@ x -> 2 * x
 * lambda 表达式的局部变量可以不用声明为 final，但是必须不可被后面的代码修改（即隐性的具有 final 的语义）
 * 在Lambda 表达式当中不允许声明一个与外部局部变量同名的参数或者局部变量
 
-<a id="markdown-182-java-8-函数式接口" name="182-java-8-函数式接口"></a>
 ### 1.8.2. Java 8 函数式接口
 函数式接口(Functional Interface)就是一个有且仅有一个抽象方法，但是可以有多个非抽象方法的接口。
 
@@ -3214,8 +2648,9 @@ public class Java8Tester {
    }
 }
 ```
-<a id="markdown-183-默认方法" name="183-默认方法"></a>
 ### 1.8.3. 默认方法
+<a href="#menu" style="float:right">目录</a>
+
 Java 8 新增了接口的默认方法。
 简单说，默认方法就是接口可以有实现方法，而且不需要实现类去实现其方法。
 我们只需在方法名前面加个 default 关键字即可实现默认方法。
@@ -3232,8 +2667,9 @@ public interface Vehicle {
 默认方法也可以设置为静态。
 ```
 
-<a id="markdown-184-optional-类" name="184-optional-类"></a>
 ### 1.8.4. Optional 类
+<a href="#menu" style="float:right">目录</a>
+
 Optional 类是一个可以为null的容器对象。如果值存在则isPresent()方法会返回true，调用get()方法会返回该对象。
 
 Optional 是个容器：它可以保存类型T的值，或者仅仅保存null。Optional提供很多有用的方法，这样我们就不用显式进行空值检测。
@@ -3243,8 +2679,10 @@ Optional 类的引入很好的解决空指针异常。
 类声明
 以下是一个 java.util.Optional<T> 类的声明：
 
-public final class Optional<T>
-extends Object
+```JAVA
+public final class Optional<T> extends Object
+```
+
 类方法
 |序号|	方法 & 描述
 |---|---|
@@ -3305,8 +2743,9 @@ public class Java8Tester {
 }
 ```
 
-<a id="markdown-185-stream" name="185-stream"></a>
 ### 1.8.5. Stream
+<a href="#menu" style="float:right">目录</a>
+
 Java 8 API添加了一个新的抽象称为流Stream，可以让你以一种声明的方式处理数据。
 
 Stream 使用一种类似用 SQL 语句从数据库查询数据的直观方式来提供一种对 Java 集合运算和表达的高阶抽象。
@@ -3604,8 +3043,8 @@ public class Java8Tester {
    }
 }
 ```
-<a id="markdown-186-java-8-日期时间-api" name="186-java-8-日期时间-api"></a>
 ### 1.8.6. Java 8 日期时间 API
+<a href="#menu" style="float:right">目录</a>
 
 Java 8通过发布新的Date-Time API (JSR 310)来进一步加强对日期与时间的处理。
 在旧版的 Java 中，日期时间 API 存在诸多问题，其中有：
@@ -3666,9 +3105,8 @@ public class Java8Tester {
    }
 }
 ```
-<a id="markdown-187-java8-base64" name="187-java8-base64"></a>
 ### 1.8.7. Java8 Base64
-
+<a href="#menu" style="float:right">目录</a>
 
 在Java 8中，Base64编码已经成为Java类库的标准。
 
@@ -3701,10 +3139,174 @@ MIME：输出隐射到MIME友好格式。输出每行不超过76字符，并且�
 |7|	static Base64.Encoder getUrlEncoder()返回一个 Base64.Encoder ，编码使用 URL 和文件名安全型 base64 编码方案。
 
 
+## 1.9. Java-SPI机制
+<a href="#menu" style="float:right">目录</a>
+
+### 1.9.1. Java--SPI机制
+
+SPI全称为Service Provider Interface，是JDK内置的一种服务提供发现机制。简单来说，它就是一种动态替换发现机制。例如：有个接口想在运行时才发现具体的实现类，那么你只需要在程序运行前添加一个实现即可，并把新加的实现描述给JDK即可。此外，在程序的运行过程中，也可以随时对该描述进行修改，完成具体实现的替换。
+
+Java SPI 实际上是“基于接口的编程＋策略模式＋配置文件”组合实现的动态加载机制。
+系统设计的各个抽象，往往有很多不同的实现方案，在面向的对象的设计里，一般推荐模块之间基于接口编程，模块之间不对实现类进行硬编码。一旦代码里涉及具体的实现类，就违反了可拔插的原则，如果需要替换一种实现，就需要修改代码。为了实现在模块装配的时候能不在程序里动态指明，这就需要一种服务发现机制。
+Java SPI就是提供这样的一个机制：为某个接口寻找服务实现的机制。有点类似IOC的思想，就是将装配的控制权移到程序之外，在模块化设计中这个机制尤其重要。所以SPI的核心思想就是解耦。
 
 
-<a id="markdown-19-jdk版本变化" name="19-jdk版本变化"></a>
-## 1.9. JDK版本变化
+
+Java提供了很多服务提供者接口（Service Provider Interface，SPI），允许第三方为这些接口提供实现。常见的SPI有JDBC、JCE、JNDI、JAXP和JBI等。
+
+这些SPI的接口是由Java核心库来提供，而SPI的实现则是作为Java应用所依赖的jar包被包含进类路径（CLASSPATH）中。例如：JDBC的实现mysql就是通过maven被依赖进来。
+
+那么问题来了，SPI的接口是Java核心库的一部分，是由引导类加载器(Bootstrap Classloader)来加载的。SPI的实现类是由系统类加载器(System ClassLoader)来加载的。
+
+引导类加载器在加载时是无法找到SPI的实现类的，因为双亲委派模型中规定，引导类加载器BootstrapClassloader无法委派系统类加载器AppClassLoader来加载。这时候，该如何解决此问题？
+线程上下文类加载由此诞生，它的出现也破坏了类加载器的双亲委派模型，使得程序可以进行逆向类加载。
+
+### 1.9.2. 使用场景
+概括地说，适用于：调用者根据实际使用需要，启用、扩展、或者替换框架的实现策略
+比较常见的例子：
+
+* 数据库驱动加载接口实现类的加载
+    * JDBC加载不同类型数据库的驱动
+* 日志门面接口实现类加载
+    * SLF4J加载不同提供商的日志实现类
+* Spring
+    * Spring中大量使用了SPI,比如：对servlet3.0规范对ServletContainerInitializer的实现、自动类型转换Type Conversion SPI(Converter SPI、Formatter SPI)等
+* Dubbo
+    * Dubbo中也大量使用SPI的方式实现框架的扩展, 不过它对Java提供的原生SPI做了封装，允许用户扩展实现Filter接口
+
+#### 实现方式
+
+* 标准制定者制定接口
+* 不同厂商编写针对于该接口的实现类，并在jar的“classpath:META-INF/services/全接口名称”文件中指定相应的实现类全类名
+* 开发者直接引入相应的jar，就可以实现为接口自动寻找实现类的功能
+
+
+
+### 1.9.3. spi使用
+首先，通过一张图来看，完成spi的实现，需要哪些操作，需要遵循哪些规范？
+
+![spi使用](https://upload-images.jianshu.io/upload_images/5621908-679688568081a389.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/860/format/webp)
+
+1. 代码编写
+既然是spi，那么就必须先定义好接口。其次，就是定义好接口的实现类。
+
+```JAVA
+public interface HelloService {
+
+    void hello();
+}
+```
+```JAVA
+public class HelloService1Impl implements HelloService {
+
+    @Override
+    public void hello() {
+        System.out.println("hello jiaboyan");
+    }
+}
+
+public class HelloService2Impl implements HelloService {
+    @Override
+    public void hello() {
+        System.out.println("hello world");
+    }
+}
+```
+
+2. 创建一个文件夹
+在项目的\src\main\resources\下创建\META-INF\services目录
+
+
+3. 文件夹下增加配置文件
+在上面META-INF\services的目录下再增加一个配置文件，这个文件必须以接口的全限定类名保持一致，例如：com.jiaboyan.test.HelloService
+
+4. 配置文件增加描述
+上面介绍spi时说道，除了代码上的接口实现之外，你还需要把该实现的描述提供给JDK。那么，此步骤就是在配置文件中撰写接口实现描述。很简单，就是在配置文件中写入具体实现类的全限定类名，如有多个便换行写入。
+```JAVA
+com.jiaboyan.test.impl.HelloService1Impl
+com.jiaboyan.test.impl.HelloService2Impl
+```
+
+5. 使用JDK来载入
+编写main()方法，输出测试接口。使用JDK提供的ServiceLoader.load()来加载配置文件中的描述信息，完成类加载操作。
+
+```JAVA
+public class Test {
+
+    public static void main(String[] agrs) {
+        ServiceLoader<HelloService> loaders = ServiceLoader.load(HelloService.class);
+        for (HelloService helloService : loaders) {
+            helloService.hello();
+        }
+    }
+}
+```
+### 1.9.4. 原理解析
+首先看ServiceLoader类的签名类的成员变量：
+```java
+public final class ServiceLoader<S> implements Iterable<S>{
+
+    //定义实现类的接口文件所在的目录
+    private static final String PREFIX = "META-INF/services/";
+
+    // 代表被加载的类或者接口
+    private final Class<S> service;
+
+    // 用于定位，加载和实例化providers的类加载器
+    private final ClassLoader loader;
+
+    // 创建ServiceLoader时采用的访问控制上下文
+    private final AccessControlContext acc;
+
+    // 缓存providers，按实例化的顺序排列
+    private LinkedHashMap<String,S> providers = new LinkedHashMap<>();
+
+    // 懒查找迭代器
+    private LazyIterator lookupIterator;
+  
+    ......
+}
+```
+参考具体ServiceLoader具体源码，代码量不多，加上注释一共587行，梳理了一下，实现的流程如下：
+* 应用程序调用ServiceLoader.load方法.ServiceLoader.load方法内先创建一个新的ServiceLoader，并实例化该类中的成员变量，包括：
+    * loader(ClassLoader类型，类加载器)
+    * acc(AccessControlContext类型，访问控制器)
+    * providers(LinkedHashMap<String,S>类型，用于缓存加载成功的类)
+    * lookupIterator(实现迭代器功能)
+* 应用程序通过迭代器接口获取对象实例.ServiceLoader先判断成员变量providers对象中(LinkedHashMap<String,S>类型)是否有缓存实例对象，如果有缓存，直接返回。
+如果没有缓存，执行类的装载，实现如下：
+(1) 读取META-INF/services/下的配置文件，获得所有能被实例化的类的名称，值得注意的是，ServiceLoader可以跨越jar包获取META-INF下的配置文件，具体加载配置的实现代码如下：
+
+```java
+try {
+    String fullName = PREFIX + service.getName();
+    if (loader == null)
+        configs = ClassLoader.getSystemResources(fullName);
+    else
+        configs = loader.getResources(fullName);
+} catch (IOException x) {
+    fail(service, "Error locating configuration files", x);
+}
+```
+
+(2) 通过反射方法Class.forName()加载类对象，并用instance()方法将类实例化。
+(3) 把实例化后的类缓存到providers对象中，(LinkedHashMap<String,S>类型）然后返回实例对象。
+
+
+
+### 1.9.5. 总结
+
+* 优点：
+    * 使用Java SPI机制的优势是实现解耦，使得第三方服务模块的装配控制的逻辑与调用者的业务代码分离，而不是耦合在一起。应用程序可以根据实际业务情况启用框架扩展或替换框架组件。
+* 缺点：
+    * 虽然ServiceLoader也算是使用的延迟加载，但是基本只能通过遍历全部获取，也就是接口的实现类全部加载并实例化一遍。如果你并不想用某些实现类，它也被加载并实例化了，这就造成了浪费。获取某个实现类的方式不够灵活，只能通过Iterator形式获取，不能根据某个参数来获取对应的实现类。
+    * 多个并发多线程使用ServiceLoader类的实例是不安全的。
+
+
+
+## 1.10. JDK版本变化
+<a href="#menu" style="float:right">目录</a>
+
 * JDK5的新特性：
     * 自动拆装箱
     * Foreach
@@ -3788,47 +3390,36 @@ MIME：输出隐射到MIME友好格式。输出每行不超过76字符，并且�
 
 
 
-<a id="markdown-110-设计模式" name="110-设计模式"></a>
-## 1.10. 设计模式
+## 1.11. 设计模式
 <a href="#menu" style="float:right">目录</a>
 
-<a id="markdown-1101-设计原则" name="1101-设计原则"></a>
-### 1.10.1. 设计原则
+### 1.11.1. 设计原则
 <a href="#menu" style="float:right">目录</a>
 
-<a id="markdown-11011-单一职责原则" name="11011-单一职责原则"></a>
-#### 1.10.1.1. 单一职责原则
+#### 1.11.1.1. 单一职责原则
 * 每个类只负责单一的功能，避免出现复杂臃肿的类。造成维护困难。
-<a id="markdown-11012-里氏替换原则" name="11012-里氏替换原则"></a>
-#### 1.10.1.2. 里氏替换原则
+#### 1.11.1.2. 里氏替换原则
 * 父类出现的地方子类也可以出现。方便实现类替换，减少代码修改。
-<a id="markdown-11013-依赖倒置原则" name="11013-依赖倒置原则"></a>
-#### 1.10.1.3. 依赖倒置原则
+#### 1.11.1.3. 依赖倒置原则
 * 高层模块不应该依赖细节，而应该依赖其抽象
 * 也就是说定义类属性时，使用接口或者抽象类来定义，而不是实现类。
-<a id="markdown-11014-接口隔离原则" name="11014-接口隔离原则"></a>
-#### 1.10.1.4. 接口隔离原则
+#### 1.11.1.4. 接口隔离原则
 * 创建单一的接口，不要创建臃肿的接口。每个接口应该只是负责单一的功能，避免增加新抽象方法时，造成较多的实现类页需要修改。
-<a id="markdown-11015-迪米特法则" name="11015-迪米特法则"></a>
-#### 1.10.1.5. 迪米特法则
+#### 1.11.1.5. 迪米特法则
 * 一个类应当降低对其他类的依赖,避免其他类修改时，使用类也要进行修改。
-<a id="markdown-11016-开闭原则" name="11016-开闭原则"></a>
-#### 1.10.1.6. 开闭原则
+#### 1.11.1.6. 开闭原则
 * 对修改关闭，对扩展开放
 * 当需要增加新功能时，应当避免修改原类的代码，应当通过一些设计模式来进行功能扩展。比如装饰模式，这样可以达到对其他使用类的影响。
 * 以上的原则都是施行指南，开闭原则是最终目标。
 
-<a id="markdown-1102-uml图" name="1102-uml图"></a>
-### 1.10.2. UML图
+### 1.11.2. UML图
 
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/designerPattern/uml.png?raw=true)
 
-<a id="markdown-1103-单例模式" name="1103-单例模式"></a>
-### 1.10.3. 单例模式
+### 1.11.3. 单例模式
 <a href="#menu" style="float:right">目录</a>
 
-<a id="markdown-11031-基本概念" name="11031-基本概念"></a>
-#### 1.10.3.1. 基本概念
+#### 1.11.3.1. 基本概念
 
 **定义**:确保某一个类只有一个对象实例。
 **衍生**：有限多例，比如对象池技术，使用缓存将创建的对象缓存起来。
@@ -3839,8 +3430,7 @@ MIME：输出隐射到MIME友好格式。输出每行不超过76字符，并且�
 
 **缺点**:
 
-<a id="markdown-11032-实现" name="11032-实现"></a>
-#### 1.10.3.2. 实现
+#### 1.11.3.2. 实现
 单例模式需要注意的关键点是如何避免高并发条件下出现多例的问题。高并发环境下，任何两条语句执行之间都有可能被其他线程所抢占并执行完整的指令。这种情况处理不好，很容易产生出多例。
 还有需要关注的是，一个系统中存在很多类，但是有的类在系统运行的生命周期中是始终没机会创建对象，比如有个偏门的用户操作才会触发某个类创建对象。这种情况下就没必要创建对象，也就是需要延迟创建对象，在使用时才去创建。
 作为单例类，没必要去考虑通过反射会破解单例模式，定义一个类为单例，作为开发者应当遵循这个规范，而不是尝试使用反射来创建多个对象从而破坏这个规定。单例模式只防君子不防小人。
@@ -3978,8 +3568,7 @@ public class Singleton5 implements Serializable {
 }
 ```
 
-<a id="markdown-1104-工厂方法模式" name="1104-工厂方法模式"></a>
-### 1.10.4. 工厂方法模式
+### 1.11.4. 工厂方法模式
 <a href="#menu" style="float:right">目录</a>
 工厂模式（Factory Pattern）是 Java 中最常用的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
 
@@ -4015,8 +3604,7 @@ public class Singleton5 implements Serializable {
     * 作为一种创建类模式，在任何需要生成复杂对象的地方，都可以使用工厂方法模式。有一点需要注意的地方就是复杂对象适合使用工厂模式，而简单对象，特别是只需要通过 new 就可以完成创建的对象，无需使用工厂模式。如果使用工厂模式，就需要引入一个工厂类，会增加系统的复杂度。
 
 
-<a id="markdown-1105-抽象工厂模式" name="1105-抽象工厂模式"></a>
-### 1.10.5. 抽象工厂模式
+### 1.11.5. 抽象工厂模式
 <a href="#menu" style="float:right">目录</a>
 抽象工厂模式（Abstract Factory Pattern）是围绕一个超级工厂创建其他工厂。该超级工厂又称为其他工厂的工厂。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
 
@@ -4046,8 +3634,7 @@ public class Singleton5 implements Serializable {
 * 注意事项
     * 产品族难扩展，产品等级易扩展。
 
-<a id="markdown-1106-模板方法模式" name="1106-模板方法模式"></a>
-### 1.10.6. 模板方法模式
+### 1.11.6. 模板方法模式
 <a href="#menu" style="float:right">目录</a>
 在模板模式（Template Pattern）中，一个抽象类公开定义了执行它的方法的方式/模板。它的子类可以按需要重写方法实现，但调用将以抽象类中定义的方式进行。这种类型的设计模式属于行为型模式。
 
@@ -4079,8 +3666,7 @@ public class Singleton5 implements Serializable {
 * 注意事项
     * 为防止恶意操作，一般模板方法都加上 final 关键词。
 
-<a id="markdown-1107-建造者模式" name="1107-建造者模式"></a>
-### 1.10.7. 建造者模式
+### 1.11.7. 建造者模式
 <a href="#menu" style="float:right">目录</a>
 建造者模式（Builder Pattern）使用多个简单的对象一步一步构建成一个复杂的对象。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
 
@@ -4113,8 +3699,7 @@ public class Singleton5 implements Serializable {
 * 注意事项
     * 与工厂模式的区别是：建造者模式更加关注与零件装配的顺序。
     
-<a id="markdown-1108-代理模式" name="1108-代理模式"></a>
-### 1.10.8. 代理模式
+### 1.11.8. 代理模式
 <a href="#menu" style="float:right">目录</a>
 
 代理模式（Proxy Pattern）中，一个类代表另一个类的功能。这种类型的设计模式属于结构型模式。
@@ -4160,8 +3745,7 @@ public class Singleton5 implements Serializable {
     * 和适配器模式的区别：适配器模式主要改变所考虑对象的接口，而代理模式不能改变所代理类的接口。 
     * 和装饰器模式的区别：装饰器模式为了增强功能，而代理模式是为了加以控制。
 
-<a id="markdown-1109-原型模式" name="1109-原型模式"></a>
-### 1.10.9. 原型模式
+### 1.11.9. 原型模式
 <a href="#menu" style="float:right">目录</a>
 原型模式（Prototype Pattern���是用于创建重复的对象，同时又能保证性能。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
 
@@ -4204,8 +3788,7 @@ public class Singleton5 implements Serializable {
 * 注意事项
     * 与通过对一个类进行实例化来构造新对象不同的是，原型模式是通过拷贝一个现有对象生成新对象的。浅拷贝实现 Cloneable，重写，深拷贝是通过实现 Serializable 读取二进制流。
 
-<a id="markdown-11010-中介者模式" name="11010-中介者模式"></a>
-### 1.10.10. 中介者模式
+### 1.11.10. 中介者模式
 <a href="#menu" style="float:right">目录</a>
 中介者模式（Mediator Pattern）是用来降低多个对象和类之间的通信复杂性。这种模式提供了一个中介类，该类通常处理不同类之间的通信，并支持松耦合，使代码易于维护。中介者模式属于行为型模式。
 
@@ -4241,8 +3824,7 @@ public class Singleton5 implements Serializable {
 
 ```
 
-<a id="markdown-11011-命令模式" name="11011-命令模式"></a>
-### 1.10.11. 命令模式
+### 1.11.11. 命令模式
 <a href="#menu" style="float:right">目录</a>
 命令模式（Command Pattern）是一种数据驱动的设计模式，它属于行为型模式。请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该命令传给相应的对象，该对象执行命令。
 
@@ -4343,8 +3925,7 @@ public class CommandPatternDemo {
 }
 
 ```
-<a id="markdown-11012-责任链模式" name="11012-责任链模式"></a>
-### 1.10.12. 责任链模式
+### 1.11.12. 责任链模式
 <a href="#menu" style="float:right">目录</a>
 顾名思义，责任链模式（Chain of Responsibility Pattern）为请求创建了一个接收者对象的链。这种模式给予请求的类型，对请求的发送者和接收者进行解耦。这种类型的设计模式属于行为型模式。
 
@@ -4383,8 +3964,7 @@ public class CommandPatternDemo {
 * 注意事项
     * 在 JAVA WEB 中遇到很多应用。
     
-<a id="markdown-11013-装饰模式" name="11013-装饰模式"></a>
-### 1.10.13. 装饰模式
+### 1.11.13. 装饰模式
 <a href="#menu" style="float:right">目录</a>
 装饰器模式（Decorator Pattern）允许向一个现有的对象添加新的功能，同时又不改变其结构。这种类型的设计模式属于结构型模式，它是作为现有的类的一个包装。
 
@@ -4419,8 +3999,7 @@ public class CommandPatternDemo {
 * 注意事项
     * 可代替继承。
 
-<a id="markdown-11014-策略模式" name="11014-策略模式"></a>
-### 1.10.14. 策略模式
+### 1.11.14. 策略模式
 <a href="#menu" style="float:right">目录</a>
 在策略模式（Strategy Pattern）中，一个类的行为或其算法可以在运行时更改。这种类型的设计模式属于行为型模式。
 
@@ -4506,8 +4085,7 @@ public class StrategyPatternDemo {
 
 ```
 
-<a id="markdown-11015-适配器模式" name="11015-适配器模式"></a>
-### 1.10.15. 适配器模式
+### 1.11.15. 适配器模式
 <a href="#menu" style="float:right">目录</a>
 适配器模式（Adapter Pattern）是作为两个不兼容的接口之间的桥梁。这种类型的设计模式属于结构型模式，它结合了两个独立接口的功能。
 
@@ -4635,8 +4213,7 @@ public class AdapterPatternDemo {
 
 ```
 
-<a id="markdown-11016-迭代器模式" name="11016-迭代器模式"></a>
-### 1.10.16. 迭代器模式
+### 1.11.16. 迭代器模式
 <a href="#menu" style="float:right">目录</a>
 迭代器模式（Iterator Pattern）是 Java 和 .Net 编程环境中非常常用的设计模式。这种模式用于顺序访问集合对象的元素，不需要知道集合对象的底层表示。
 
@@ -4671,8 +4248,7 @@ public class AdapterPatternDemo {
 * 注意事项
     * 迭代器模式就是分离了集合对象的遍历行为，抽象出一个迭代器类来负责，这样既可以做到不暴露集合的内部结构，又可让外部代码透明地访问集合内部的数据。
 
-<a id="markdown-11017-组合模式" name="11017-组合模式"></a>
-### 1.10.17. 组合模式
+### 1.11.17. 组合模式
 <a href="#menu" style="float:right">目录</a>
 组合模式（Composite Pattern），又叫部分整体模式，是用于把一组相似的对象当作一个单一的对象。组合模式依据树形结构来组合对象，用来表示部分以及整体层次。这种类型的设计模式属于结构型模式，它创建了对象组的树形结构。
 
@@ -4709,8 +4285,7 @@ public class AdapterPatternDemo {
     * 定义时为具体类。
 
 
-<a id="markdown-11018-观察者模式" name="11018-观察者模式"></a>
-### 1.10.18. 观察者模式
+### 1.11.18. 观察者模式
 <a href="#menu" style="float:right">目录</a>
 当对象间存在一对多关系时，则使用观察者模式（Observer Pattern）。比如，当一个对象被修改时，则会自动通知它的依赖对象。观察者模式属于行为型模式。
 
@@ -4832,8 +4407,7 @@ public class ObserverPatternDemo {
 
 ```
 
-<a id="markdown-11019-门面模式" name="11019-门面模式"></a>
-### 1.10.19. 门面模式
+### 1.11.19. 门面模式
 <a href="#menu" style="float:right">目录</a>
 外观模式（Facade Pattern）隐藏系统的复杂性，并向客户端提供了一个客户端可以访问系统的接口。这种类型的设计模式属于结构型模式，它向现有的系统添加一个接口，来隐藏系统的复杂性。
 
@@ -4869,8 +4443,7 @@ public class ObserverPatternDemo {
 * 注意事项
     * 在层次化结构中，可以使用外观模式定义系统中每一层的入口。
 
-<a id="markdown-11020-备忘录模式" name="11020-备忘录模式"></a>
-### 1.10.20. 备忘录模式
+### 1.11.20. 备忘录模式
 <a href="#menu" style="float:right">目录</a>
 备忘录模式（Memento Pattern）保存一个对象的某个状态，以便在适当的时候恢复对象。备忘录模式属于行为型模式。
 
@@ -4969,8 +4542,7 @@ public class MementoPatternDemo {
 ```
 
 
-<a id="markdown-11021-访问者模式" name="11021-访问者模式"></a>
-### 1.10.21. 访问者模式
+### 1.11.21. 访问者模式
 <a href="#menu" style="float:right">目录</a>
 在访问者模式（Visitor Pattern）中，我们使用了一个访问者类，它改变了元素类的执行算法。通过这种方式，元素的执行算法可以随着访问者改变而改变。这种类型的设计模式属于行为型模式。根据模式，元素对象已接受访问者对象，这样访问者对象就可以处理元素对象上的操作。
 
@@ -5084,8 +4656,7 @@ public class VisitorPatternDemo {
 ```
 
 
-<a id="markdown-11022-状态模式" name="11022-状态模式"></a>
-### 1.10.22. 状态模式
+### 1.11.22. 状态模式
 <a href="#menu" style="float:right">目录</a>
 在状态模式（State Pattern）中，类的行为是基于它的状态改变的。这种类型的设计模式属于行为型模式。
 
@@ -5182,8 +4753,7 @@ public class StatePatternDemo {
 
 
 
-<a id="markdown-11023-解释器模式" name="11023-解释器模式"></a>
-### 1.10.23. 解释器模式
+### 1.11.23. 解释器模式
 <a href="#menu" style="float:right">目录</a>
 解释器模式（Interpreter Pattern）提供了评估语言的语法或表达式的方式，它属于行为型模式。这种模式实现了一个表达式接口，该接口解释一个特定的上下文。这种模式被用在 SQL 解析、符号处理引擎等。
 
@@ -5295,8 +4865,7 @@ public class InterpreterPatternDemo {
 ```
 
 
-<a id="markdown-11024-享元模式" name="11024-享元模式"></a>
-### 1.10.24. 享元模式
+### 1.11.24. 享元模式
 <a href="#menu" style="float:right">目录</a>
 享元模式（Flyweight Pattern）主要用于减少创建对象的数量，以减少内存占用和提高性能。这种类型的设计模式属于结构型模式，它提供了减少对象数量从而改善应用所需的对象结构的方式。
 
@@ -5335,8 +4904,7 @@ public class InterpreterPatternDemo {
     * 这些类必须有一个工厂对象加以控制。
 
 
-<a id="markdown-11025-桥梁模式" name="11025-桥梁模式"></a>
-### 1.10.25. 桥梁模式
+### 1.11.25. 桥梁模式
 <a href="#menu" style="float:right">目录</a>
 桥梁模式（Bridge）是用于把抽象化与实现化解耦，使得二者可以独立变化。这种类型的设计模式属于结构型模式，它通过提供抽象化和实现化之间的桥接结构，来实现二者的解耦。
 

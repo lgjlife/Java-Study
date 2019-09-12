@@ -1,52 +1,315 @@
 
 <span id="menu"></span>
+
 <!-- TOC -->
 
 - [1. 性能调优](#1-性能调优)
     - [1.1. 性能调优概述](#11-性能调优概述)
+        - [1.1.1. 性能分析的两种方法：自顶向下和自底向上](#111-性能分析的两种方法自顶向下和自底向上)
+            - [1.1.1.1. 自顶向下](#1111-自顶向下)
+            - [1.1.1.2. 自底向上](#1112-自底向上)
     - [1.2. 操作系统性能监控](#12-操作系统性能监控)
-    - [IDEA安装hsdis查看JIT编译的汇编代码](#idea安装hsdis查看jit编译的汇编代码)
-    - [1.3. 使用JMH做Benchmark基准测试](#13-使用jmh做benchmark基准测试)
-    - [1.4. JVM](#14-jvm)
-        - [1.4.1. JIT编译器](#141-jit编译器)
-            - [1.4.1.1. 概述](#1411-概述)
-        - [1.4.2. JVM内存模型](#142-jvm内存模型)
-        - [1.4.3. JVM的内存空间](#143-jvm的内存空间)
-            - [1.4.3.1. 对象内存布局](#1431-对象内存布局)
-            - [1.4.3.2. 对象访问定位](#1432-对象访问定位)
-        - [1.4.4. 垃圾回收算法](#144-垃圾回收算法)
-            - [1.4.4.1. 对象回收判定](#1441-对象回收判定)
-            - [1.4.4.2. 对象引用分类](#1442-对象引用分类)
-            - [1.4.4.3. 标记清除算法](#1443-标记清除算法)
-            - [1.4.4.4. 复制算法](#1444-复制算法)
-            - [1.4.4.5. 标记整理算法](#1445-标记整理算法)
-            - [1.4.4.6. 分代收集算法](#1446-分代收集算法)
-        - [1.4.5. 垃圾收集器](#145-垃圾收集器)
-            - [1.4.5.1. Serial收集器](#1451-serial收集器)
-            - [1.4.5.2. ParNew收集器](#1452-parnew收集器)
-            - [1.4.5.3. Parallel Scavenge收集器](#1453-parallel-scavenge收集器)
-            - [1.4.5.4. Serial Old收集器](#1454-serial-old收集器)
-            - [1.4.5.5. Parallel Old收集器](#1455-parallel-old收集器)
-            - [1.4.5.6. CMS收集器](#1456-cms收集器)
-            - [1.4.5.7. G1收集器](#1457-g1收集器)
-        - [1.4.6. 内存分配和回收策略](#146-内存分配和回收策略)
-        - [1.4.7. JVM相关参数介绍](#147-jvm相关参数介绍)
-        - [1.4.8. 性能监控与故障处理工具](#148-性能监控与故障处理工具)
-            - [1.4.8.1. JDK命令行工具](#1481-jdk命令行工具)
-            - [1.4.8.2. Jdk可视化工具](#1482-jdk可视化工具)
-        - [1.4.9. JVM性能调优](#149-jvm性能调优)
-        - [1.4.10. 类文件结构](#1410-类文件结构)
-        - [1.4.11. 类加载器](#1411-类加载器)
+        - [1.2.1. 定义](#121-定义)
+        - [1.2.2. Linux系统监控常用命令](#122-linux系统监控常用命令)
+            - [1.2.2.1. 评价参数](#1221-评价参数)
+            - [1.2.2.2. 显示系统总体资源使用情况工具TOP](#1222-显示系统总体资源使用情况工具top)
+            - [1.2.2.3. 监控内存和CPU工具vmstat](#1223-监控内存和cpu工具vmstat)
+            - [1.2.2.4. 监控IO工具iostat](#1224-监控io工具iostat)
+            - [1.2.2.5. 多功能诊断器pidstat](#1225-多功能诊断器pidstat)
+            - [1.2.2.6. 查看网络接口信息的命令ifconfig](#1226-查看网络接口信息的命令ifconfig)
+            - [1.2.2.7. 网络流量统计实用工具nicstat](#1227-网络流量统计实用工具nicstat)
+            - [1.2.2.8. 监控TCP/IP网络netstat](#1228-监控tcpip网络netstat)
+            - [1.2.2.9. 查看磁盘空间du&df](#1229-查看磁盘空间dudf)
+    - [1.3. IDEA安装hsdis查看JIT编译的汇编代码](#13-idea安装hsdis查看jit编译的汇编代码)
+    - [1.4. 使用JMH做Benchmark基准测试](#14-使用jmh做benchmark基准测试)
+    - [1.5. JVM](#15-jvm)
+        - [1.5.1. Java 虚拟机](#151-java-虚拟机)
+            - [1.5.1.1. Java虚拟机规范](#1511-java虚拟机规范)
+        - [1.5.2. HotSpot VM的基本架构](#152-hotspot-vm的基本架构)
+        - [1.5.3. Javac编译器和JIT编译器](#153-javac编译器和jit编译器)
+            - [1.5.3.1. 解释执行和编译执行](#1531-解释执行和编译执行)
+            - [1.5.3.2. 编译过程](#1532-编译过程)
+            - [1.5.3.3. Javac编译](#1533-javac编译)
+            - [1.5.3.4. JIT编译](#1534-jit编译)
+                - [1.5.3.4.1. 概述](#15341-概述)
+                - [1.5.3.4.2. 客户端版或服务器版](#15342-客户端版或服务器版)
+            - [1.5.3.5. Java 与 C/C++ 的编译器对比](#1535-java-与-cc-的编译器对比)
+                - [1.5.3.5.1. Java 编译器“劣势”的原因](#15351-java-编译器劣势的原因)
+                - [1.5.3.5.2. Java 编译器的“优势”](#15352-java-编译器的优势)
+                - [1.5.3.5.3. 总结](#15353-总结)
+        - [1.5.4. JVM内存模型](#154-jvm内存模型)
+            - [1.5.4.1. JVM的内存空间](#1541-jvm的内存空间)
+            - [1.5.4.2. 对象内存布局](#1542-对象内存布局)
+            - [1.5.4.3. 对象访问定位](#1543-对象访问定位)
+            - [1.5.4.4. 内存泄漏和内存溢出](#1544-内存泄漏和内存溢出)
+        - [1.5.5. 垃圾回收算法](#155-垃圾回收算法)
+            - [1.5.5.1. 对象回收判定](#1551-对象回收判定)
+            - [1.5.5.2. Minor GC和Major GC](#1552-minor-gc和major-gc)
+            - [1.5.5.3. 对象引用分类](#1553-对象引用分类)
+            - [1.5.5.4. 标记清除算法](#1554-标记清除算法)
+            - [1.5.5.5. 复制算法](#1555-复制算法)
+            - [1.5.5.6. 标记整理算法](#1556-标记整理算法)
+            - [1.5.5.7. 分代收集算法](#1557-分代收集算法)
+        - [1.5.6. 垃圾收集器](#156-垃圾收集器)
+            - [1.5.6.1. 基本概念](#1561-基本概念)
+            - [1.5.6.2. 垃圾收集器评价指标](#1562-垃圾收集器评价指标)
+            - [1.5.6.3. 并行垃圾收集器&串行垃圾收集器&并发垃圾收集器](#1563-并行垃圾收集器串行垃圾收集器并发垃圾收集器)
+                - [1.5.6.3.1. 串行垃圾收集器](#15631-串行垃圾收集器)
+                - [1.5.6.3.2. 并行垃圾收集器](#15632-并行垃圾收集器)
+                - [1.5.6.3.3. 并发标记清除垃圾收集器CMS](#15633-并发标记清除垃圾收集器cms)
+                - [1.5.6.3.4. 收集器概括总结](#15634-收集器概括总结)
+            - [1.5.6.4. Serial收集器](#1564-serial收集器)
+            - [1.5.6.5. ParNew收集器](#1565-parnew收集器)
+            - [1.5.6.6. Parallel Scavenge收集器](#1566-parallel-scavenge收集器)
+            - [1.5.6.7. Serial Old收集器](#1567-serial-old收集器)
+            - [1.5.6.8. Parallel Old收集器](#1568-parallel-old收集器)
+            - [1.5.6.9. CMS收集器](#1569-cms收集器)
+        - [1.5.7. G1收集器](#157-g1收集器)
+            - [1.5.7.1. 综述](#1571-综述)
+            - [1.5.7.2. 完整的G1垃圾收集日志](#1572-完整的g1垃圾收集日志)
+            - [1.5.7.3. G1相关参数](#1573-g1相关参数)
+        - [1.5.8. 深入G1垃圾收集器](#158-深入g1垃圾收集器)
+            - [1.5.8.1. 背景](#1581-背景)
+            - [1.5.8.2. G1中的垃圾收集](#1582-g1中的垃圾收集)
+            - [1.5.8.3. 年轻代](#1583-年轻代)
+            - [1.5.8.4. 年轻代收集暂停](#1584-年轻代收集暂停)
+            - [1.5.8.5. 对象老化以及老年代](#1585-对象老化以及老年代)
+            - [1.5.8.6. 巨型区分](#1586-巨型区分)
+            - [1.5.8.7. 混合收集](#1587-混合收集)
+            - [1.5.8.8. 收集集合及其重要性](#1588-收集集合及其重要性)
+            - [1.5.8.9. 并发优化线程以及栅栏](#1589-并发优化线程以及栅栏)
+            - [1.5.8.10. G1 GC的并发标记](#15810-g1-gc的并发标记)
+            - [1.5.8.11. 并发标记阶段](#15811-并发标记阶段)
+            - [1.5.8.12. 初始标记](#15812-初始标记)
+            - [1.5.8.13. 根分区扫描](#15813-根分区扫描)
+            - [1.5.8.14. 并发标记](#15814-并发标记)
+            - [1.5.8.15. 重新标记](#15815-重新标记)
+            - [1.5.8.16. 清除](#15816-清除)
+            - [1.5.8.17. 转移失败与FULL收集](#15817-转移失败与full收集)
+        - [1.5.9. G1性能优化](#159-g1性能优化)
+            - [1.5.9.1. 年轻代收集的各阶段](#1591-年轻代收集的各阶段)
+            - [1.5.9.2. 所有并行活动的开始](#1592-所有并行活动的开始)
+            - [1.5.9.3. 外部根分区](#1593-外部根分区)
+            - [1.5.9.4. 已记忆集合总结](#1594-已记忆集合总结)
+            - [1.5.9.5. 转移和回收](#1595-转移和回收)
+            - [1.5.9.6. 终止](#1596-终止)
+            - [1.5.9.7. GC外部的并行活动](#1597-gc外部的并行活动)
+            - [1.5.9.8. 所有并行活动总结](#1598-所有并行活动总结)
+            - [1.5.9.9. 其他串行活动](#1599-其他串行活动)
+            - [1.5.9.10. 年轻代优化](#15910-年轻代优化)
+            - [1.5.9.11. 并发标记阶段调优](#15911-并发标记阶段调优)
+            - [1.5.9.12. 混合垃圾收集阶段回顾](#15912-混合垃圾收集阶段回顾)
+            - [1.5.9.13. 混合垃圾收集阶段调优](#15913-混合垃圾收集阶段调优)
+            - [1.5.9.14. 避免转移失败](#15914-避免转移失败)
+            - [1.5.9.15. 引用处理](#15915-引用处理)
+            - [1.5.9.16. 观察引用处理](#15916-观察引用处理)
+            - [1.5.9.17. 引用处理调优](#15917-引用处理调优)
+        - [1.5.10. GC模式](#1510-gc模式)
+        - [1.5.11. 内存分配和回收策略](#1511-内存分配和回收策略)
+        - [1.5.12. JVM相关参数介绍](#1512-jvm相关参数介绍)
+        - [1.5.13. 调优总结](#1513-调优总结)
+        - [1.5.14. 性能监控与故障处理工具](#1514-性能监控与故障处理工具)
+            - [1.5.14.1. JDK命令行工具](#15141-jdk命令行工具)
+                - [1.5.14.1.1. javap](#151411-javap)
+                - [1.5.14.1.2. 查看Java进程 jps](#151412-查看java进程-jps)
+                - [1.5.14.1.3. 查看虚拟机运行时些信息jstat](#151413-查看虚拟机运行时些信息jstat)
+                - [1.5.14.1.4. 查看虚拟机参数jinfo](#151414-查看虚拟机参数jinfo)
+                - [1.5.14.1.5. 导出堆到文件jmap](#151415-导出堆到文件jmap)
+                - [1.5.14.1.6. 虚拟机堆转储快照分析工具jhat](#151416-虚拟机堆转储快照分析工具jhat)
+                - [1.5.14.1.7. 查看线程堆栈jstack](#151417-查看线程堆栈jstack)
+                - [1.5.14.1.8. jcmd](#151418-jcmd)
+            - [1.5.14.2. Jdk可视化工具](#15142-jdk可视化工具)
+            - [1.5.14.3. 重要的垃圾收集数据](#15143-重要的垃圾收集数据)
+        - [1.5.15. JVM性能调优案例](#1515-jvm性能调优案例)
+            - [1.5.15.1. 常用参数](#15151-常用参数)
+            - [1.5.15.2. 调整堆的大小](#15152-调整堆的大小)
+            - [1.5.15.3. 代空间调整](#15153-代空间调整)
+            - [1.5.15.4. 永久代和元空空间](#15154-永久代和元空空间)
+            - [1.5.15.5. 控制并发](#15155-控制并发)
+            - [1.5.15.6. 自适应调整](#15156-自适应调整)
+            - [1.5.15.7. 将新对象预留在新生代](#15157-将新对象预留在新生代)
+            - [1.5.15.8. 大对象进入老年代](#15158-大对象进入老年代)
+            - [1.5.15.9. 设置对象进入老年代的年龄](#15159-设置对象进入老年代的年龄)
+            - [1.5.15.10. 稳定与震荡的堆大小](#151510-稳定与震荡的堆大小)
+            - [1.5.15.11. 吞吐量优先案例](#151511-吞吐量优先案例)
+            - [1.5.15.12. 使用大页案例](#151512-使用大页案例)
+            - [1.5.15.13. 降低停顿案例](#151513-降低停顿案例)
+            - [1.5.15.14. 堆快照（堆Dump）](#151514-堆快照堆dump)
+            - [1.5.15.15. 控制GC](#151515-控制gc)
+        - [1.5.16. 类文件结构](#1516-类文件结构)
+            - [1.5.16.1. 模数和Class文件的版本](#15161-模数和class文件的版本)
+            - [1.5.16.2. 常量池](#15162-常量池)
+            - [1.5.16.3. 访问标志](#15163-访问标志)
+            - [1.5.16.4. 类索引，父类索引与接口集合](#15164-类索引父类索引与接口集合)
+            - [1.5.16.5. 字段表集合](#15165-字段表集合)
+            - [1.5.16.6. 方法表集合](#15166-方法表集合)
+            - [1.5.16.7. 属性表集合](#15167-属性表集合)
+        - [1.5.17. 类加载过程](#1517-类加载过程)
+            - [1.5.17.1. 类装载流程](#15171-类装载流程)
+                - [1.5.17.1.1. 类加载条件](#151711-类加载条件)
+                - [1.5.17.1.2. 加载类](#151712-加载类)
+                - [1.5.17.1.3. 连接](#151713-连接)
+                    - [1.5.17.1.3.1. 验证类](#1517131-验证类)
+                    - [1.5.17.1.3.2. 准备](#1517132-准备)
+                    - [1.5.17.1.3.3. 解析](#1517133-解析)
+                - [1.5.17.1.4. 初始化](#151714-初始化)
+        - [1.5.18. 类加载器](#1518-类加载器)
+            - [1.5.18.1. 基本概念](#15181-基本概念)
+            - [1.5.18.2. 常见的类加载器](#15182-常见的类加载器)
+            - [1.5.18.3. 类加载过程](#15183-类加载过程)
+            - [1.5.18.4. 全盘负责与双亲委托机制](#15184-全盘负责与双亲委托机制)
+            - [1.5.18.5. 双亲委托机制的弊端](#15185-双亲委托机制的弊端)
+            - [1.5.18.6. 双亲委托模式的补充](#15186-双亲委托模式的补充)
+            - [1.5.18.7. 突破双亲模式](#15187-突破双亲模式)
+            - [1.5.18.8. 定义自已的ClassLoader](#15188-定义自已的classloader)
+            - [1.5.18.9. 常见加载类错误](#15189-常见加载类错误)
+            - [1.5.18.10. 线程上下文类加载器](#151810-线程上下文类加载器)
+            - [1.5.18.11. 类加载器与Web容器](#151811-类加载器与web容器)
+            - [1.5.18.12. 常见问题分析](#151812-常见问题分析)
+        - [1.5.19. 字节码执行](#1519-字节码执行)
+            - [1.5.19.1. 查看类文件的字节码工具javap](#15191-查看类文件的字节码工具javap)
+            - [1.5.19.2. 虚拟机常用指令](#15192-虚拟机常用指令)
+            - [1.5.19.3. 常见的字节码操作工具](#15193-常见的字节码操作工具)
+            - [1.5.19.4. ASM字节码操作工具](#15194-asm字节码操作工具)
+                - [1.5.19.4.1. 什么是ASM](#151941-什么是asm)
+                - [1.5.19.4.2. ASM框架中的核心类](#151942-asm框架中的核心类)
+                - [1.5.19.4.3. 为什么选择 ASM](#151943-为什么选择-asm)
+                - [1.5.19.4.4. ASM编程框架](#151944-asm编程框架)
+                - [1.5.19.4.5. AOP 底层技术比较](#151945-aop-底层技术比较)
+                - [1.5.19.4.6. 例子](#151946-例子)
+                    - [1.5.19.4.6.1. 使用ASM实现方法耗时计算的AOP功能](#1519461-使用asm实现方法耗时计算的aop功能)
+                - [1.5.19.4.7. 建议](#151947-建议)
+        - [高效并发](#高效并发)
 
 <!-- /TOC -->
-
 # 1. 性能调优
 <a href="#menu" style="float:right">目录</a>
 
 ## 1.1. 性能调优概述
 
+### 1.1.1. 性能分析的两种方法：自顶向下和自底向上
+<a href="#menu" style="float:right">目录</a>
+
+自顶向下和自底向上是两种常用的性能分析方法。
+自顶向下（Top Down）着眼于应用顶层，从上往下寻找软件栈中的优化机会和问题。
+自底向上（Bottom Up）则从软件栈最底层的CPU统计数据（例如CPU缓存未命中率、CPU指令效率）开始，逐渐上升到应用自身的结构或该应用常见的使用方式。
+应用开发人员常常使用自顶向下的方法，而性能问题专家则通常采用自底向上的方法，用以辨别因不同硬件架构、操作系统或不同的Java虚拟机实现所导致的性能差异。如你所想，不同方法可以用来查找不同类型的性能问题。
+
+#### 1.1.1.1. 自顶向下
+<a href="#menu" style="float:right">目录</a>
+
+自顶向下是最常用的性能调优方法。如果调优涉及软件栈顶层应用代码的更改，也常用这招。
+自顶向下时，你通常会从干系人发现性能问题的负载开始监控应用。应用的配置变化或日常负荷变化都可能导致性能降低，所以需要持续监控应用。此外，一旦应用的性能和扩展性需求发生变化，应用就可能无法满足新要求，所以也要监控应用程序的性能。
+不管何种原因引起的性能调优，自顶向下的第一步总是对运行在特定负载之下的应用进行监控。监控的范围包括操作系统、Java虚拟机、Java EE容器以及应用的性能测量统计指标。基于监控信息所给出的提示再开展下一步工作，例如JVM垃圾收集器调优、JVM命令行选项调优、操作系统调优，或者应用程序性能分析。性能分析可能导致应用程序的更改，或者发现第三方库或Java SE类库在实现上的不足。
+
+#### 1.1.1.2. 自底向上
+<a href="#menu" style="float:right">目录</a>
+
+在不同平台（指底层的CPU架构或CPU数量不同）上进行应用性能调优时，性能专家常使用自底向上的方法。将应用迁移到其他操作系统上时，也常用这种方法改善性能。在无法更改应用源代码，例如应用已经部署在生产环境中，或者系统供应商为了在竞争中占得先机而必须将性能发挥到极致时，也常常会使用这种方法。
+
+自底向上需要收集和监控最底层CPU的性能统计数据。监控的CPU统计数据包括执行特定任务所需要的CPU指令数（通常称为路径长度，Path Length），以及应用在一定负载下运行时的CPU高速缓存未命中率。虽然还有其他重要的CPU统计数据，但这两项是自底向上中最常用的。在一定负载下，应用执行和扩展所需的CPU指令越少，运行得就越快。降低CPU高速缓存未命中率也能改善应用的性能，因为CPU高速缓存未命中会导致CPU为了等待从内存获取数据而浪费若干个周期，而降低CPU高速缓存未命中率，意味着CPU可以减少等待内存数据的时间，应用也就能运行得更快。
+
+自底向上关注的通常是在不更改应用的前提下，改善CPU使用率。假如应用可以更改，自底向上也能为如何修改应用提供建议。这些更改包括应用源代码的变动，如将经常使用的数据移到一起，使得只要访问一条CPU高速缓存行（CPU Cache Line）就能获取所有这些数据，而不用从内存获取数据。这个改动可以降低CPU高速缓存未命中率，从而减少CPU等待内存数据的时间。
+
+现代Java虚拟机集成了成熟的JIT编译器，可以在Java应用的执行过程中进行优化，比如依据应用的内存访问模式或应用特定的代码路径，生成更有效的机器码。也可以调整操作系统的设置来改善性能，例如更改CPU调度算法，或者修改操作系统的等待时间（操作系统在将应用执行线程迁移到其他CPU硬件线程之前所花费的时间）。
+
+如果你觉得可以用自底向上的方法，那应该先从收集操作系统和JVM的统计数据开始。监控这些统计数据可以为下一步应该关注哪些重点提供线索。依据这些数据，你再判断对应用和JVM进行性能分析是否有意义。应用和JVM的性能分析可以借助于工具。Oracle Solaris SPARC、Oracle Solaris x86/x64及Linux x86/x64上可以用Oracle Solaris Studio Performance Analyzer进行性能分析。其他流行的工具如Intel VTune或AMD的CodeAnalyst Performance Analyzer在Windows和Linux上也可以提供类似的信息。这3种工具都可以收集特定的CPU计数器信息，例如Java虚拟机执行特定Java方法或功能所用的CPU指令数和CPU高速缓存未命中率。如何在自底向上中使用这些性能分析工具非常重要。
+
 ## 1.2. 操作系统性能监控
 <a href="#menu" style="float:right">目录</a>
+
+### 1.2.1. 定义
+<a href="#menu" style="float:right">目录</a>
+
+改善性能涉及3种不同的活动：性能监控、性能分析以及性能调优。
+* **性能监控**是一种以非侵入式方式收集或查看应用运行性能数据的活动。监控通常是指一种在生产、质量评估或者开发环境中实施的带有预防或主动性的活动。当应用的干系人报出性能问题却没有足以定位根本原因的线索时，首先会进行性能监控，随后是性能分析。
+* **性能分析**是一种以侵入式方式收集运行性能数据的活动，它会影响应用的吞吐量或响应性。性能分析是对性能监控或是对干系人所报问题的回应，关注的范围通常比性能监控更集中。性能分析很少在生产环境中进行，通常是在质量评估、测试或开发环境中，常常是性能监控之后的行动。
+* **性能调优**是一种为改善应用响应性或吞吐量而更改参数、源代码、或属性配置的活动。性能调优通常是在性能监控或性能分析之后进行。
+
+
+### 1.2.2. Linux系统监控常用命令
+
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.2.2.1. 评价参数
+
+* CPU utilization：最直观最重要的就是CPU的使用率。如果长期超过80%，则表明CPU遇到了瓶颈；
+* User time: 用户进程使用的CPU；该数值越高越好，表明越多的CPU用在了用户实际的工作上；
+* System time: 内核使用的CPU，包括了硬中断、软中断使用的CPU；该数值越低越好，太高表明在网络和驱动层遇到瓶颈；
+* Waiting: CPU花在等待IO操作上的时间；该数值很高，表明IO子系统遇到瓶颈；
+* Idel time: CPU空闲的时间；
+* Load average: 在特定时间间隔内运行队列中(在CPU上运行或者等待运行多少进程)的平均进程数；在Linux中，进程分为三种状态:一种是阻塞的进程blocked process，一种是可运行的进程runnableprocess，另外就是正在运行的进程runningprocess。当进程阻塞时，进程会等待I/O设备的数据或者系统调用。进程可运行状态时，它处在一个运行队列run queue中，与其他可运行进程争夺CPU时间。 系统的load是指正在运行running one和准备好运行runnableone的进程的总数。比如现在系统有2个正在运行的进程，3个可运行进程，那么系统的load就是5，load average就是一定时间内的load数量均值；
+* Context Switch: 上下文切换。
+
+#### 1.2.2.2. 显示系统总体资源使用情况工具TOP
+
+```
+lgj@lgj-Lenovo-G470:~$ top
+
+top - 15:42:15 up 1 day,  5:26,  1 user,  load average: 1.05, 0.85, 0.88
+Tasks: 287 total,   1 running, 237 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  4.8 us,  1.4 sy,  0.0 ni, 93.7 id,  0.0 wa,  0.0 hi,  0.2 si,  0.0 st
+KiB Mem : 10174540 total,   465444 free,  6383888 used,  3325208 buff/cache
+KiB Swap:  2097148 total,  2097148 free,        0 used.  3206432 avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND                                                                        2003 lgj       20   0 3518024 236512  77784 S  10.9  2.3  19:57.87 gnome-shell                                                                    1762 lgj       20   0  629204 153588 104216 S  10.6  1.5  20:23.80 Xorg                                                                           8520 lgj       20   0  670000  44544  31016 S   5.0  0.4   0:11.43 gnome-terminal-                                                                3829 lgj       20   0 1628536 148496  96356 S   3.0  1.5  14:15.51 code                                                                           1063 root      20   0    4552    760    696 S   1.0  0.0   1:13.36 acpid                                                                          15936 lgj       20   0 2674372 284760  88684 S   1.0  2.8  11:35.65 FoxitReader 
+```
+**第一行：**
+```
+top - 15:42:15 up 1 day,  5:26,  1 user,  load average: 1.05, 0.85, 0.88
+```
+分别表示的是：当前系统时间；up 1 day表示已经系统已经运行1天； 1 users：表示系统中有1个登录用户；load average: 分别表示最近 1 分钟， 5 分钟， 15分钟 CPU的负载的平均值。
+
+这一行最重要的就是 load average。
+
+**第二行：**
+```
+Tasks: 287 total,   1 running, 237 sleeping,   0 stopped,   0 zombie
+```
+分别表示系统中的进程数：总共287个进程， 1个在运行，237个在sleep，0个stopped, 0个僵尸。
+
+**第三行：**
+```
+%Cpu(s):  4.8 us,  1.4 sy,  0.0 ni, 93.7 id,  0.0 wa,  0.0 hi,  0.2 si,  0.0 st
+```
+这一行提供了关于CPU使用率的最重要的信息，分别表示 users time, system time, nice time, idle time, wait time, hard interrupte time, soft interrupted time, steal time; 其中最终要的是：users time, system time, wait time ,idle time 等等。nice time 表示用于调准进程nice level所花的时间。
+
+**第四行：**
+
+```
+KiB Mem : 10174540 total,   465444 free,  6383888 used,  3325208 buff/cache
+```
+提供的是关于内存的信息，因为Linux会尽量的来使用内存来进行缓存，所以这些信息没有多大的价值，free数值小，并不代表存在内存瓶颈。
+
+**第五行：**
+```
+KiB Swap:  2097148 total,  2097148 free,        0 used.  3206432 avail Mem 
+```
+提供的是关于swap分区的使用情况，这些信息也没有太大的价值，因为Linux的使用内存的机制决定的。used值很大并不代表存在内存瓶颈。
+
+剩下是关于每个进程使用的资源的情况，进程的各种信息，按照使用CPU的多少排序，每个字段的含义如下：
+* PID: 表示进程ID；
+* USER: 表示运行进程的用户；
+* PR：表示进程优先级；
+* NI：表示进程nice值，默认为0；
+* VIRT：The  total  amount  of  virtual  memory  used by the task.进程占用的虚拟内存大小，包括了swap out的内存page。
+* RES: Resident size (kb).The non-swapped physical memory a task is using. 进程使用的常驻内存大小，没有包括swap out的内存。
+* SHR：Shared Mem size (kb).The amount of shared memory used by a task.  It simply reflects memory that could be potentially shared with other processes. 其实应该就是使用 shmget() 系统调用分配的共享内存，可以在多个进程之间共享访问。
+* S: 表示进程处于哪种状态：R: Running; S: sleeping; T: stoped; D: interrupted; Z:zomobie;
+* %CPU: 进程占用的CPU；
+* %MEM：进程占用的内存；
+* %TIME+: 进程运行时间；
+* COMMAND: 进程运行命令；
+
+上面的 top 命令默认是以 进程为单位来显示的，我们也可以以线程为单位来显示： top -H
+
+如果仅仅想查看 CPU 的 load average，使用uptime命令就行了：
+```
+lgj@lgj-Lenovo-G470:~$ uptime
+ 15:48:51 up 1 day,  5:32,  1 user,  load average: 0.70, 0.89, 0.90
+```
+
+#### 1.2.2.3. 监控内存和CPU工具vmstat
 
 **vmstat**
 
@@ -59,7 +322,414 @@ procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
 
 ```
 
-## IDEA安装hsdis查看JIT编译的汇编代码
+```
+FIELD DESCRIPTION FOR VM MODE
+   Procs
+       r: The number of processes waiting for run time.等待运行的进程数
+       b: The number of processes in uninterruptible sleep.处在非中断睡眠的进程数
+   Memory
+       swpd: the amount of virtual memory used.
+       free: the amount of idle memory.
+       buff: the amount of memory used as buffers.
+       cache: the amount of memory used as cache.
+       inact: the amount of inactive memory. (-a option)
+       active: the amount of active memory. (-a option)
+   Swap
+       si: Amount of memory swapped in from disk (/s).
+       so: Amount of memory swapped to disk (/s).
+   IO
+       bi: Blocks received from a block device (blocks/s).
+       bo: Blocks sent to a block device (blocks/s).
+   System
+       in: The number of interrupts per second, including the clock.
+       cs: The number of context switches per second.
+   CPU
+       These are percentages of total CPU time.
+       us: Time spent running non-kernel code. (user time, including nice time)
+       sy: Time spent running kernel code. (system time)
+       id: Time spent idle. Prior to Linux 2.5.41, this includes IO-wait time.
+       wa: Time spent waiting for IO. Prior to Linux 2.5.41, included in idle.
+       st: Time stolen from a virtual machine. Prior to Linux 2.6.11, unknown.
+```
+和CPU相关的信息有 user time, system time, idle time, wait time, steal time;
+另外提供了关于中断和上下文切换的信息。System 中的in，表示每秒的中断数，cs表示每秒的上下文切换数；
+其它的字段是关于内存和磁盘的。
+
+#### 1.2.2.4. 监控IO工具iostat 
+
+```
+lgj@lgj-Lenovo-G470:~$ iostat
+Linux 4.15.0-46-generic (lgj-Lenovo-G470) 	09/08/19 	_x86_64_	(4 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           4.21    0.01    1.50    0.37    0.00   93.91
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
+loop0             0.00         0.00         0.00        330          0
+loop1             0.00         0.00         0.00         46          0
+loop2             0.00         0.01         0.00        663          0
+
+```
+tps：设备每秒的传输次数
+kB_read/s：每秒从设备读取的数据量
+kB_wrtn/s：每秒从设备写入的数据量
+kB_read：读取的总数据量
+kB_wrtn：写入的总数据量
+
+#### 1.2.2.5. 多功能诊断器pidstat  
+
+pidstat是进程分析的终极利器，利用它可以分析进程(包括进程中所有每个线程)的各种信息：
+cpu使用(默认就是cpu， -u 也是cpu),  内存使用(-r 包括page fault)，IO情况(-d)，进程切换(-w)，pidstat 可以使用 -p xxx 指定进程pid，单独分析一个进程及其所有线程；也可以是所有进程 -p ALL，或者是所有活动进程(默认是所有活动进程)：
+默认是所有活动进程的 CPU信息：
+```
+lgj@lgj-Lenovo-G470:~$ pidstat  
+Linux 4.15.0-46-generic (lgj-Lenovo-G470) 	09/08/19 	_x86_64_	(4 CPU)
+
+15:53:18      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+15:53:18        0         1    0.00    0.03    0.00    0.02    0.04     3  systemd
+15:53:18        0         2    0.00    0.00    0.00    0.00    0.00     3  kthreadd
+15:53:18        0         7    0.00    0.01    0.00    0.01    0.01     0  ksoftirqd/0
+15:53:18        0         8    0.00    0.22    0.00    0.06    0.22     1  rcu_sched
+15:53:18        0        11    0.00    0.00    0.00    0.00    0.00     0  watchdog/0
+15:53:18        0        14    0.00    0.00    0.00    0.00    0.00     1  watchdog/1
+15:53:18        0        15    0.00    0.00    0.00    0.00    0.00     1  migration/1
+
+```
+
+#### 1.2.2.6. 查看网络接口信息的命令ifconfig
+<a href="#menu" style="float:right">目录</a>
+
+ifconfig：  最常用的配置和查看网络接口信息的命令，服务器上执行此命令会得到类下文的内容，一下内容可看到多个设备和设备状态、信息。
+
+```
+lgj@lgj-Lenovo-G470:~$ ifconfig
+br-4b7cc08aeb43: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        inet 172.18.0.1  netmask 255.255.0.0  broadcast 172.18.255.255
+        ether 02:42:7f:e3:39:51  txqueuelen 0  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
+        ether 02:42:f0:9b:99:39  txqueuelen 0  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+enp7s0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        ether dc:0e:a1:84:e2:67  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 143450  bytes 47837466 (47.8 MB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 143450  bytes 47837466 (47.8 MB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+wlp8s0b1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.1.104  netmask 255.255.255.0  broadcast 192.168.1.255
+        inet6 fe80::929c:df46:dae:5a8b  prefixlen 64  scopeid 0x20<link>
+        ether 7c:e9:d3:64:43:16  txqueuelen 1000  (Ethernet)
+        RX packets 1628873  bytes 2205910252 (2.2 GB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 1111356  bytes 117686490 (117.6 MB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+```
+
+#### 1.2.2.7. 网络流量统计实用工具nicstat
+<a href="#menu" style="float:right">目录</a>
+
+**安装**
+```
+sudo apt install nicstat
+```
+
+**使用命令**
+```
+lgj@lgj-Lenovo-G470:~$ nicstat --help
+nicstat: invalid option -- '-'
+USAGE: nicstat [-hvnsxpztualMU] [-i int[,int...]]
+   [-S int:mbps[,int:mbps...]] [interval [count]]
+
+         -h                 # help
+         -v                 # show version (1.95)
+         -i interface       # track interface only
+         -n                 # show non-local interfaces only (exclude lo0)
+         -s                 # summary output
+         -x                 # extended output 查看扩展信息
+         -p                 # parseable output
+         -z                 # skip zero value lines
+         -t                 # show TCP statistics 查看tcp相关信息
+         -u                 # show UDP statistics  
+         -a                 # equivalent to "-x -u -t"
+         -l                 # list interface(s)
+         -M                 # output in Mbits/sec 默认使用KB/S，更改为使用MB/S
+         -U                 # separate %rUtil and %wUtil
+         -S int:mbps[fd|hd] # tell nicstat the interface
+                            # speed (Mbits/sec) and duplex
+    eg,
+       nicstat              # print summary since boot only
+       nicstat 1            # print every 1 second
+       nicstat 1 5          # print 5 times only
+       nicstat -z 1         # print every 1 second, skip zero lines
+       nicstat -i hme0 1    # print hme0 only every 1 second
+
+```
+**基本使用**
+```
+lgj@lgj-Lenovo-G470:~$ nicstat
+    Time      Int   rKB/s   wKB/s   rPk/s   wPk/s    rAvs    wAvs %Util    Sat
+01:19:42 wlp8s0b1   72.08    3.83   54.48   37.15  1354.9   105.7  0.00   0.00
+01:19:42       lo    1.56    1.56    4.80    4.80   333.7   333.7  0.00   0.00
+
+```
+Time列:表示当前采样的响应时间.
+lo and eth0 : 网卡名称.
+rKB/s : 每秒接收到千字节数.
+wKB/s : 每秒写的千字节数.
+rPk/s : 每秒接收到的数据包数目.
+wPk/s : 每秒写的数据包数目.
+rAvs : 接收到的数据包平均大小.
+wAvs : 传输的数据包平均大小.
+%Util : 网卡利用率(百分比).
+Sat : 网卡每秒的错误数.网卡是否接近饱满的一个指标.尝试去诊断网络问题的时候,推荐使用-x选项去查看更多的统计信息.
+
+
+**查看tcp相关信息(-t):**
+```
+[root@centos192 nicstat-1.92]# ./nicstat.sh -t
+05:15:05    InKB   OutKB   InSeg  OutSeg Reset  AttF %ReTX InConn OutCon Drops
+TCP         0.00    0.00    4.01    3.50  0.00  0.01 0.000   0.05   0.09  0.0
+```
+
+InKB : 表示每秒接收到的千字节.
+OutKB : 表示每秒传输的千字节.
+InSeg : 表示每秒接收到的TCP数据段(TCP Segments).
+OutSeg : 表示每秒传输的TCP数据段(TCP Segments).
+Reset : 表示TCP连接从ESTABLISHED或CLOSE-WAIT状态直接转变为CLOSED状态的次数.
+AttF : 表示TCP连接从SYN-SENT或SYN-RCVD状态直接转变为CLOSED状态的次数,再加上TCP连接从SYN-RCVD状态直接转变为LISTEN状态的次数
+%ReTX : 表示TCP数据段(TCP Segments)重传的百分比.即传输的TCP数据段包含有一个或多个之前传输的八位字节.
+InConn : 表示TCP连接从LISTEN状态直接转变为SYN-RCVD状态的次数.
+OutCon : 表示TCP连接从CLOSED状态直接转变为SYN-SENT状态的次数.
+Drops : 表示从完成连接(completed connection)的队列和未完成连接(incomplete connection)的队列中丢弃的连接次数.
+
+**查看udp相关信息(-u):**
+```
+[root@centos192 nicstat-1.92]# ./nicstat.sh -u
+06:39:42                    InDG   OutDG     InErr  OutErr
+UDP                         0.01    0.01      0.00    0.00
+```
+InDG : 每秒接收到的UDP数据报(UDP Datagrams)
+OutDG : 每秒传输的UDP数据报(UDP Datagrams)
+InErr : 接收到的因包含错误而不能被处理的数据包
+OutErr :因错误而不能成功传输的数据包.
+
+#### 1.2.2.8. 监控TCP/IP网络netstat
+<a href="#menu" style="float:right">目录</a>
+
+**基本使用**
+```
+lgj@lgj-Lenovo-G470:~$ netstat -h
+usage: netstat [-vWeenNcCF] [<Af>] -r         netstat {-V|--version|-h|--help}
+       netstat [-vWnNcaeol] [<Socket> ...]
+       netstat { [-vWeenNac] -i | [-cnNe] -M | -s [-6tuw] }
+
+        -r, --route              display routing table
+        -i, --interfaces         display interface table
+        -g, --groups             display multicast group memberships
+        -s, --statistics         display networking statistics (like SNMP)
+        -M, --masquerade         display masqueraded connections
+
+        -v, --verbose            be verbose
+        -W, --wide               don't truncate IP addresses
+        -n, --numeric            don't resolve names
+        --numeric-hosts          don't resolve host names
+        --numeric-ports          don't resolve port names
+        --numeric-users          don't resolve user names
+        -N, --symbolic           resolve hardware names
+        -e, --extend             display other/more information
+        -p, --programs           display PID/Program name for sockets
+        -o, --timers             display timers
+        -c, --continuous         continuous listing
+
+        -l, --listening          display listening server sockets
+        -a, --all                display all sockets (default: connected)
+        -F, --fib                display Forwarding Information Base (default)
+        -C, --cache              display routing cache instead of FIB
+        -Z, --context            display SELinux security context for sockets
+
+  <Socket>={-t|--tcp} {-u|--udp} {-U|--udplite} {-S|--sctp} {-w|--raw}
+           {-x|--unix} --ax25 --ipx --netrom
+  <AF>=Use '-6|-4' or '-A <af>' or '--<af>'; default: inet
+  List of possible address families (which support routing):
+    inet (DARPA Internet) inet6 (IPv6) ax25 (AMPR AX.25) 
+    netrom (AMPR NET/ROM) ipx (Novell IPX) ddp (Appletalk DDP) 
+    x25 (CCITT X.25) 
+
+```
+```
+-a或--all：显示所有连线中的Socket； 
+-A<网络类型>或--<网络类型>：列出该网络类型连线中的相关地址； 
+-c或--continuous：持续列出网络状态； 
+-C或--cache：显示路由器配置的快取信息； 
+-e或--extend：显示网络其他相关信息； 
+-F或--fib：显示FIB； 
+-g或--groups：显示多重广播功能群组组员名单； 
+-h或--help：在线帮助； 
+-i或--interfaces：显示网络界面信息表单； 
+-l或--listening：显示监控中的服务器的Socket； 
+-M或--masquerade：显示伪装的网络连线； 
+-n或--numeric：直接使用ip地址，而不通过域名服务器； 
+-N或--netlink或--symbolic：显示网络硬件外围设备的符号连接名称； 
+-o或--timers：显示计时器； 
+-p或--programs：显示正在使用Socket的程序识别码和程序名称； 
+-r或--route：显示Routing Table； 
+-s或--statistice：显示网络工作信息统计表； 
+-t或--tcp：显示TCP传输协议的连线状况； 
+-u或--udp：显示UDP传输协议的连线状况； 
+-v或--verbose：显示指令执行过程； 
+-V或--version：显示版本信息； 
+-w或--raw：显示RAW传输协议的连线状况； 
+-x或--unix：此参数的效果和指定"-A unix"参数相同； 
+--ip或--inet：此参数的效果和指定"-A inet"参数相同。
+```
+
+```
+lgj@lgj-Lenovo-G470:~$ netstat
+Active Internet connections (w/o servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State      
+tcp        0      0 localhost:51188         localhost:46561         ESTABLISHED
+tcp        0      1 bogon:52244             tsa03s02-in-f14.1:https SYN_SENT   
+tcp        0      1 bogon:52232             tsa03s02-in-f14.1:https SYN_SENT   
+tcp        0      1 bogon:52230             tsa03s02-in-f14.1:https SYN_SENT 
+```
+
+#### 1.2.2.9. 查看磁盘空间du&df
+<a href="#menu" style="float:right">目录</a>
+
+* **du : 显示每个文件和目录的磁盘使用空间~~~文件的大小**
+    * -a   显示目录中文件的大小  单位 KB 。
+    * -b  显示目录中文件的大小，以字节byte为单位。
+    * -c  显示目录中文件的大小，同时也显示总和；单位KB。
+    * -k 、-m  显示目录中文件的大小，-k 单位KB，-m 单位MB.
+    * -s  仅显示目录的总值，单位KB。
+    * -h  以K  M  G为单位显示，提高可读性~~~（最常用的一个~也可能只用这一个就满足需求了）
+    * -x  以一开始处理时的文件系统为准，若遇上其它不同的文件系统目录则略过。 
+    * -L  显示选项中所指定符号链接的源文件大小。   
+    * -S  显示个别目录的大小时，并不含其子目录的大小。 
+    * -X  在<文件>指定目录或文件。   
+    * --exclude=<目录或文件>    略过指定的目录或文件。    
+    * -D   显示指定符号链接的源文件大小。   
+    * -H或--si 与-h参数相同，但是K，M，G是以1000为换算单位。   
+    * -l 重复计算硬件链接的文件。
+
+```
+lgj@lgj-Lenovo-G470:~/aProject/aRealPrj/Java-Interview$ du -h
+52K	./.git/hooks
+4.0K	./.git/branches
+8.0K	./.git/info
+12K	./.git/logs/refs/remotes/origin
+16K	./.git/logs/refs/remotes
+16K	./.git/logs/refs/heads
+36K	./.git/logs/refs
+52K	./.git/logs
+164K	./.git/objects/4f
+28K	./.git/objects/08
+356K	./.git/objects/d5
+
+```
+
+* **df：显示磁盘分区上可以使用的磁盘空间**
+    * -a   查看全部文件系统，单位默认KB
+    * -h   使用-h选项以KB、MB、GB的单位来显示，可读性高~~~（最常用）
+```
+lgj@lgj-Lenovo-G470:~/aProject/aRealPrj/Java-Interview$ df   
+Filesystem     1K-blocks     Used Available Use% Mounted on
+udev             5065656        0   5065656   0% /dev
+tmpfs            1017456     2180   1015276   1% /run
+/dev/sdb2       72417352 58251612  10444064  85% /
+tmpfs            5087268    79772   5007496   2% /dev/shm
+tmpfs               5120        4      5116   1% /run/lock
+tmpfs            5087268        0   5087268   0% /sys/fs/cgroup
+/dev/loop0         15104    15104         0 100% /snap/gnome-characters/296
+/dev/loop1          1024     1024         0 100% /snap/gnome-logs/57
+/dev/loop2         36224    36224         0 100% /snap/gtk-common-themes/1198
+/dev/loop6        153600   153600         0 100% /snap/gnome-3-28-1804/71
+/dev/loop7          4224     4224         0 100% /snap/gnome-calculator/352
+/dev/loop8          2304     2304         0 100% /snap/gnome-calculator/260
+/dev/loop10         4224     4224         0 100% /snap/gnome-calculator/406
+
+----
+lgj@lgj-Lenovo-G470:~/aProject/aRealPrj/Java-Interview$ df -a
+Filesystem     1K-blocks     Used Available Use% Mounted on
+sysfs                  0        0         0    - /sys
+proc                   0        0         0    - /proc
+udev             5065656        0   5065656   0% /dev
+devpts                 0        0         0    - /dev/pts
+tmpfs            1017456     2180   1015276   1% /run
+/dev/sdb2       72417352 58251708  10443968  85% /
+securityfs             0        0         0    - /sys/kernel/security
+tmpfs            5087268    79772   5007496   2% /dev/shm
+tmpfs               5120        4      5116   1% /run/lock
+tmpfs            5087268        0   5087268   0% /sys/fs/cgroup
+cgroup                 0        0         0    - /sys/fs/cgroup/unified
+cgroup                 0        0         0    - /sys/fs/cgroup/systemd
+
+---
+lgj@lgj-Lenovo-G470:~/aProject/aRealPrj/Java-Interview$ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+udev            4.9G     0  4.9G   0% /dev
+tmpfs           994M  2.2M  992M   1% /run
+/dev/sdb2        70G   56G   10G  85% /
+tmpfs           4.9G   79M  4.8G   2% /dev/shm
+tmpfs           5.0M  4.0K  5.0M   1% /run/lock
+tmpfs           4.9G     0  4.9G   0% /sys/fs/cgroup
+/dev/loop0       15M   15M     0 100% /snap/gnome-characters/296
+/dev/loop1      1.0M  1.0M     0 100% /snap/gnome-logs/57
+/dev/loop2       36M   36M     0 100% /snap/gtk-common-themes/1198
+/dev/loop6      150M  150M     0 100% /snap/gnome-3-28-1804/71
+/dev/loop7      4.2M  4.2M     0 100% /snap/gnome-calculator/352
+
+```
+* **free  可以显示Linux系统中空闲的、已用的物理内存及swap内存,及被内核使用的buffer**
+    * 命令格式：free [参数]
+    * -b 　以Byte为单位显示内存使用情况。   
+    * -k 　以KB为单位显示内存使用情况。 
+    * -m 　以MB为单位显示内存使用情况。
+    * -g   以GB为单位显示内存使用情况。 
+    * -o 　不显示缓冲区调节列。 
+    * -s<间隔秒数> 　持续观察内存使用状况。 
+    * -t 　显示内存总和列。 
+    * -V 　显示版本信息。 
+```bash
+lgj@lgj-Lenovo-G470:~/aProject/aRealPrj/Java-Interview$ free -b -s 5
+              total        used        free      shared  buff/cache   available
+Mem:    10418728960  6505390080   513257472   621293568  3400081408  3327586304
+Swap:    2147479552           0  2147479552
+
+              total        used        free      shared  buff/cache   available
+Mem:    10418728960  6507880448   510742528   621293568  3400105984  3325095936
+Swap:    2147479552           0  2147479552
+
+              total        used        free      shared  buff/cache   available
+Mem:    10418728960  6504284160   514330624   621293568  3400114176  3328692224
+Swap:    2147479552           0  2147479552
+
+```
+
+
+
+## 1.3. IDEA安装hsdis查看JIT编译的汇编代码
 
 You need an hsdis plugin to use PrintAssembly. A convenient choice is the hsdis plugin based on FCML library.
 
@@ -105,7 +775,7 @@ For more details see the FCML Library Reference Manual
 
 
 
-## 1.3. 使用JMH做Benchmark基准测试
+## 1.4. 使用JMH做Benchmark基准测试
 <a href="#menu" style="float:right">目录</a>
 
 **BenchMark介绍**
@@ -330,12 +1000,127 @@ Warmup 是指在实际进行 Benchmark 前先进行预热的行为。
 
 
 
-## 1.4. JVM
+## 1.5. JVM
 <a href="#menu" style="float:right">目录</a>
 
-### 1.4.1. JIT编译器
 
-#### 1.4.1.1. 概述
+### 1.5.1. Java 虚拟机
+
+所谓虚拟机，就是一台虚拟计算机。它是一款软件，用来执行一系列虚拟计算机指令。
+虚拟机可以分为系统虚拟机和程序虚拟机。
+* 系统虚拟机
+    * Visual Box , VMware
+    * 对物理计算机的仿真，提供了一个可运行完整操作系统的软件平台
+* 程序虚拟机
+    * JVM
+    * 专门为执行单个计算机程序而设计
+* 无论是什么虚拟机，在上面运行的软件都被限制于虚拟机提供的资源中
+
+* 每个平台都有不同的虚拟机，将程序代码编译为符合该平台的可运行代码，从而实现软件的跨平台特性
+
+* 目前Java相关的虚拟机常用的是Hotspot虚拟机
+
+
+#### 1.5.1.1. Java虚拟机规范
+
+* 定义了虚拟机的内部结构
+* 定义了虚拟机执行的字节码类型和功能
+* 定义了类的装载，连接和初始化
+* 定义了类文件的结构
+
+
+
+
+### 1.5.2. HotSpot VM的基本架构
+
+ HotSpot VM有三个组件：VM运行时，JIT编译器，以及内存管理器
+ 
+
+### 1.5.3. Javac编译器和JIT编译器
+
+
+
+#### 1.5.3.1. 解释执行和编译执行
+
+**解释执行**：将编译好的字节码一行一行地翻译为机器码执行。
+**编译执行**：以方法为单位，将字节码一次性翻译为机器码后执行
+
+在编译示时期，我们通过将源代码编译成.class ，配合JVM这种跨平台的抽象，屏蔽了底层计算机操作系统和硬件的区别，实现了“一次编译，到处运行” 。 而在运行时期，目前主流的JVM 都是混合模式（-Xmixed），即解释运行 和编译运行配合使用。
+
+　　以 Oracle JDK提供的HotSpot虚拟机为例，在HotSpot虚拟机中，提供了两种编译模式：解释执行 和 即时编译（JIT，Just-In-Time）。解释执行即逐条翻译字节码为可运行的机器码，而即时编译则以方法为单位将字节码翻译成机器码（上述提到的“编译执行”）。前者的优势在于不用等待，后者则在实际运行当中效率更高。
+
+　　即时编译存在的意义在于它是提高程序性能的重要手段之一。根据“二八定律”（即：百分之二十的代码占据百分之八十的系统资源），对于大部分不常用的代码，我们无需耗时间将之编译为机器码，而是采用解释执行的方式，用到就去逐条解释运行；对于一些仅占据小部分的热点代码（可认为是反复执行的重要代码），则可将之翻译为符合机器的机器码高效执行，提高程序的效率，此为运行时的即时编译。
+
+　　为了满足不同的场景，HotSpot虚拟机内置了多个即时编译器：C1,C2与Graal。Graal 是Java10正式引入的实验性即时编译器
+C1：即Client编译器，面向对启动性能有要求的客户端GUI程序，采用的优化手段比较简单，因此编译的时间较短。
+C2：即Server编译器，面向对性能峰值有要求的服务端程序，采用的优化手段复杂，因此编译时间长，但是在运行过程中性能更好。
+
+　　从Java7开始，HotSpot虚拟机默认采用分层编译的方式：热点方法首先被C1编译器编译，而后 热点方法中的热点再进一步被C2编译（理解为二次编译，根据前面的运行计算出更优的编译优化）。为了不干扰程序的正常运行，JIT编译时放在额外的线程中执行的，HotSpot根据实际CPU的资源，以 1:2的比例分配给C1和C2线程数。在计算机资源充足的情况，字节码的解释运行和编译运行时可以同时进行，编译执行完后的机器码会在下次调用该方法时启动，已替换原本的解释执行（意思就是已经翻译出效率更高的机器码，自然替换原来的相对低效率执行的方法）。
+
+　　以上，可以看出在Java中不单单是解释执行，即时编译（编译执行）在Java性能优化中彰显重要的作用，所以现在应该说：Java是解释执行和编译执行共同存在的，至少大部分是这样。
+
+
+
+
+#### 1.5.3.2. 编译过程
+
+不论是物理机还是虚拟机，大部分的程序代码从开始编译到最终转化成物理机的目标代码或虚拟机能执行的指令集之前，都会按照如下图所示的各个步骤进行：
+![](https://img-blog.csdn.net/20140108200742312)
+
+其中绿色的模块可以选择性实现。很容易看出，上图中间的那条分支是解释执行的过程（即一条字节码一条字节码地解释执行，如JavaScript），而下面的那条分支就是传统编译原理中从源代码到目标机器代码的生成过程。
+
+如今，基于物理机、虚拟机等的语言，大多都遵循这种基于现代经典编译原理的思路，在执行前先对程序源码进行词法解析和语法解析处理，把源码转化为抽象语法树。对于一门具体语言的实现来说，词法和语法分析乃至后面的优化器和目标代码生成器都可以选择独立于执行引擎，形成一个完整意义的编译器去实现，这类代表是C/C++语言。也可以把抽象语法树或指令流之前的步骤实现一个半独立的编译器，这类代表是Java语言。又或者可以把这些步骤和执行引擎全部集中在一起实现，如大多数的JavaScript执行器。
+
+
+#### 1.5.3.3. Javac编译
+   
+在Java中提到“编译”，自然很容易想到Javac编译器将*.java文件编译成为*.class文件的过程，这里的Javac编译器称为前端编译器，其他的前端编译器还有诸如Eclipse JDT中的增量式编译器ECJ等。相对应的还有后端编译器，它在程序运行期间将字节码转变成机器码（现在的Java程序在运行时基本都是解释执行加编译执行），如HotSpot虚拟机自带的JIT（Just In Time Compiler）编译器（分Client端和Server端）。另外，有时候还有可能会碰到静态提前编译器（AOT，Ahead Of Time Compiler）直接把*.java文件编译成本地机器代码，如GCJ、Excelsior JET等，这类编译器我们应该比较少遇到。
+
+下面简要说下Javac编译（前端编译）的过程。
+
+* 词法、语法分析
+    * 词法分析是将源代码的字符流转变为标记（Token）集合。单个字符是程序编写过程中的的最小元素，而标记则是编译过程的最小元素，关键字、变量名、字面量、运算符等都可以成为标记，比如整型标志int由三个字符构成，但是它只是一个标记，不可拆分。
+    * 语法分析是根据Token序列来构造抽象语法树的过程。抽象语法树是一种用来描述程序代码语法结构的树形表示方式，语法树的每一个节点都代表着程序代码中的一个语法结构，如bao、类型、修饰符、运算符等。经过这个步骤后，编译器就基本不会再对源码文件进行操作了，后续的操作都建立在抽象语法树之上。
+
+* 填充符号表
+    * 完成了语法分析和词法分析之后，下一步就是填充符号表的过程。符号表是由一组符号地址和符号信息构成的表格。符号表中所登记的信息在编译的不同阶段都要用到，在语义分析（后面的步骤）中，符号表所登记的内容将用于语义检查和产生中间代码，在目标代码生成阶段，党对符号名进行地址分配时，符号表是地址分配的依据。
+* 语义分析
+    * 语法树能表示一个结构正确的源程序的抽象，但无法保证源程序是符合逻辑的。而语义分析的主要任务是读结构上正确的源程序进行上下文有关性质的审查。语义分析过程分为标注检查和数据及控制流分析两个步骤：
+        * 标注检查步骤检查的内容包括诸如变量使用前是否已被声明、变量和赋值之间的数据类型是否匹配等。
+        * 数据及控制流分析是对程序上下文逻辑更进一步的验证，它可以检查出诸如程序局部变量在使用前是否有赋值、方法的每条路径是否都有返回值、是否所有的受查异常都被正确处理了等问题。
+* 字节码生成
+    * 字节码生成是Javac编译过程的最后一个阶段。字节码生成阶段不仅仅是把前面各个步骤所生成的信息转化成字节码写到磁盘中，编译器还进行了少量的代码添加和转换工作。 实例构造器< init>（）方法和类构造器< clinit>（）方法就是在这个阶段添加到语法树之中的（这里的实例构造器并不是指默认的构造函数，而是指我们自己重载的构造函数，如果用户代码中没有提供任何构造函数，那编译器会自动添加一个没有参数、访问权限与当前类一致的默认构造函数，这个工作在填充符号表阶段就已经完成了）。
+
+#### 1.5.3.4. JIT编译
+    Java程序最初是仅仅通过解释器解释执行的，即对字节码逐条解释执行，这种方式的执行速度相对会比较慢，尤其当某个方法或代码块运行的特别频繁时，这种方式的执行效率就显得很低。于是后来在虚拟机中引入了JIT编译器（即时编译器），当虚拟机发现某个方法或代码块运行特别频繁时，就会把这些代码认定为“Hot Spot Code”（热点代码），为了提高热点代码的执行效率，在运行时，虚拟机将会把这些代码编译成与本地平台相关的机器码，并进行各层次的优化，完成这项任务的正是JIT编译器。
+
+    现在主流的商用虚拟机（如Sun HotSpot、IBM J9）中几乎都同时包含解释器和编译器（三大商用虚拟机之一的JRockit是个例外，它内部没有解释器，因此会有启动相应时间长之类的缺点，但它主要是面向服务端的应用，这类应用一般不会重点关注启动时间）。二者各有优势：当程序需要迅速启动和执行时，解释器可以首先发挥作用，省去编译的时间，立即执行；当程序运行后，随着时间的推移，编译器逐渐会返回作用，把越来越多的代码编译成本地代码后，可以获取更高的执行效率。解释执行可以节约内存，而编译执行可以提升效率。
+
+    HotSpot虚拟机中内置了两个JIT编译器：Client Complier和Server Complier，分别用在客户端和服务端，目前主流的HotSpot虚拟机中默认是采用解释器与其中一个编译器直接配合的方式工作。
+
+运行过程中会被即时编译器编译的“热点代码”有两类：
+* 被多次调用的方法。
+* 被多次调用的循环体。
+  
+  两种情况，编译器都是以整个方法作为编译对象，这种编译也是虚拟机中标准的编译方式。要知道一段代码或方法是不是热点代码，是不是需要触发即时编译，需要进行Hot Spot Detection（热点探测）。目前主要的热点 判定方式有以下两种：
+* 基于采样的热点探测：采用这种方法的虚拟机会周期性地检查各个线程的栈顶，如果发现某些方法经常出现在栈顶，那这段方法代码就是“热点代码”。这种探测方法的好处是实现简单高效，还可以很容易地获取方法调用关系，缺点是很难精确地确认一个方法的热度，容易因为受到线程阻塞或别的外界因素的影响而扰乱热点探测。
+* 基于计数器的热点探测：采用这种方法的虚拟机会为每个方法，甚至是代码块建立计数器，统计方法的执行次数，如果执行次数超过一定的阀值，就认为它是“热点方法”。这种统计方法实现复杂一些，需要为每个方法建立并维护计数器，而且不能直接获取到方法的调用关系，但是它的统计结果相对更加精确严谨。
+
+在HotSpot虚拟机中使用的是第二种——基于计数器的热点探测方法，因此它为每个方法准备了两个计数器：方法调用计数器和回边计数器。
+* 方法调用计数器用来统计方法调用的次数，在默认设置下，方法调用计数器统计的并不是方法被调用的绝对次数，而是一个相对的执行频率，即一段时间内方法被调用的次数。
+* 回边计数器用于统计一个方法中循环体代码执行的次数（准确地说，应该是回边的次数，因为并非所有的循环都是回边），在字节码中遇到控制流向后跳转的指令就称为“回边”。
+
+    在确定虚拟机运行参数的前提下，这两个计数器都有一个确定的阀值，当计数器的值超过了阀值，就会触发JIT编译。触发了JIT编译后，在默认设置下，执行引擎并不会同步等待编译请求完成，而是继续进入解释器按照解释方式执行字节码，直到提交的请求被编译器编译完成为止（编译工作在后台线程中进行）。当编译工作完成后，下一次调用该方法或代码时，就会使用已编译的版本。
+
+    由于方法计数器触发即时编译的过程与回边计数器触发即时编译的过程类似，因此这里仅给出方法调用计数器触发即时编译的流程：
+
+![](https://img-blog.csdn.net/20140108202856171)
+
+**Javac字节码编译器与虚拟机内的JIT编译器的执行过程合起来其实就等同于一个传统的编译器所执行的编译过程。**
+
+
+
+##### 1.5.3.4.1. 概述
 
 * JIT编译器，英文写作Just-In-Time Compiler，中文意思是即时编译器。
 JIT是一种提高程序运行效率的方法。通常，程序有两种运行方式：静态编译与动态解释。静态编译的程序在执行前全部被翻译为机器码，而动态解释执行的则是一句一句边运行边翻译。
@@ -363,29 +1148,65 @@ JIT是一种提高程序运行效率的方法。通常，程序有两种运行�
         * 由解释执行转换为编译执行
         * 跳过了方法查询阶段(直接调用String的equals方法)
 
-**客户端版或服务器版**
+##### 1.5.3.4.2. 客户端版或服务器版
 一般只需要选择是使用客户端版或者服务器版的JIT编译器即可。
 * 客户端版的JIT编译器使用：
     * -client
-* 指定，服务器版的使用：
+* 服务器版的使用：
     * -server
 * 选择哪种类型一般和硬件的配置相关，当然随着硬件的发展，也没有一个确定的标准哪种硬件适合哪种配置。
 * 两种JIT编译器的区别：
-    * Client版对于代码的编译早于Server版，也意味着代码的执行速度在程序执行早期Client版更快。
-    * Server版对代码的编译会稍晚一些，这是为了获取到程序本身的更多信息，以便编译得到优化程度更高的代码。因为运行在Server上的程序通常都会持续很久。
+    * Client版对于代码的编译早于Server版，也意味着代码的执行速度在程序执行早期(程序启动阶段)Client版更快。
+    * Server版对代码的编译会稍慢一些，这是为了获取到程序本身的更多信息，以便编译得到优化程度更高的代码。因为运行在Server上的程序通常都会持续很久。
+        * 只有在该模式下，才可以启用逃逸分许技术
 * Tiered编译的原理：
-    * XX:+TieredCompilation
+    * -XX:+TieredCompilation
     * JVM启动之初使用Client版JIT编译器
     * 当HotSpot形成之后使用Server版JIT编译器再次编译
 * 在Java 8中，默认使用Tiered编译方式。
 
+#### 1.5.3.5. Java 与 C/C++ 的编译器对比
 
+##### 1.5.3.5.1. Java 编译器“劣势”的原因
+Java虚拟机的即时编译器与C/C++的静态优化编译器相比，可能会由于下列原因，而导致输出的本地代码有一些劣势（下面列举的也包括一些虚拟机执行子系统的性能劣势）：
 
-### 1.4.2. JVM内存模型
+第一，因为即时编译器运行占用的是用户程序的运行时间，具有很大的时间压力，它能提供的优化手段也严重受制于编译成本。如果编译速度达不到要求，那用户将在启动程序或程序的某部分察觉到重大延迟，这点使得即时编译器不敢随便引入大规模的优化技术，而编译的时间成本在静态优化编译器中并不是主要的关注点。
+
+第二，Java语言是动态的类型安全语言，这就意味着需要由虚拟机来确保程序不会违反语言语义或访问非结构化内存。从实现层面上看，这就意味着虚拟机必须频繁地进行动态检查，如实例方法访问时检查空指针、数组元素访问时检查上下界范围、类型转换时检查继承关系等。对于这类程序代码没有明确写出的检查行为，尽管编译器会努力进行优化，但是总体上仍然要消耗不少的运行时间。
+
+第三，Java语言中虽然没有virtual关键字，但是使用虚方法的频率却远远大于C/C++语言，这意味着运行时对方法接收者进行多态选择的频率要远远大于C/C++语言，也意味着即时编译器在进行一些优化（如方法内联）时的难度要远远大于C/C++的静态优化编译器。
+
+第四，Java语言是可以动态扩展的语言，运行时加载新的类可能改变程序类型的继承关系，这使得很多全局的优化难以进行，因为编译器无法看清程序的全貌，许多全局的优化都只能以激进优化的方式来完成，编译器不得不时刻注意并随着类型的变化而在运行时撤销或重新进行一些优化。
+
+第五，Java语言的对象内存是在堆上，只有方法的局部变量才能在栈上分配，而C/C++的对象则有多重内存分配方式，既可能在堆上分配，又可能在栈上分配，如果可以在栈上分配线程私有的对象，将减轻内存回收的压力。另外，C/C++中主要由用户用程序代码来回收分配的内存，这就不存在无用对象筛选的过程，因此效率上（仅是运行效率，排除开发效率）也比Java的垃圾收集机制要高。
+
+##### 1.5.3.5.2. Java 编译器的“优势”
+上面所了一堆Java语言在性能上的劣势，这些都是为了换取「开发效率」上的优势而付出的代价，动态安全、动态扩展、垃圾回收这些“拖后腿”的特性，都为Java语言的开发效率做出了很大贡献。
+何况，还有许多优化是Java的即时编译器能做，而C/C++的静态优化编译器不能做或者不好做的。例如，在C/C++中，别名分析（Alias Analysis）的难度就要远远高于Java。Java的类型安全保证了在类似如下代码中，只要ClassA和ClassB没有继承关系，那对象objA和objB就绝不可能是同一个对象，即不会是同一块内存两个不同别名。
+
+void foo(ClassA objA, ClassB objB) {
+    objA.x = 123;
+    objB.y = 456;
+    // 只要objB.y不是objA.x的别名，下面就可以保证输出为123
+    print(objA.x);
+}
+确定了objA和objB并非对方的别名后，许多与数据依赖相关的优化才可以进行（重排序、变量替换）。具体到这个例子中，就是无需担心objB.y与objA.x指向同一块内存，这样就可以安全地确定打印语句中的objA.x为123。
+
+Java编译器另外一个红利是由它的动态性所带来的，由于C/C++编译器所有优化都在编译期完成，以运行期性能监控为基础的优化措施它都无法进行，如：
+
+调用频率预测：Call Frequency Prediction
+分支频率预测：Branch Frequency Prediction
+裁剪未被选择的分支：UNtaken Branch Pruning
+这些都是Java语言独有的性能优势。
+
+##### 1.5.3.5.3. 总结
+随着Java JIT编译技术的发展，Java的运行速度已经足够快。Java能够在运行时动态加载类（可以从zip包、网络、运行时计算、其他文件生成），C/C++则完全做不到这一点。总的来说，Java的动态安全、动态扩展、垃圾回收等特性，使得开发效率很高，并且足够灵活；同时随着编译技术的不断发展，性能的劣势正在逐渐减小。
+
+### 1.5.4. JVM内存模型
 <a href="#menu" style="float:right">目录</a>
 ![](https://img2018.cnblogs.com/blog/163758/201811/163758-20181101131229284-1189515543.png)
 
-### 1.4.3. JVM的内存空间
+#### 1.5.4.1. JVM的内存空间
 * 堆内存
     * 新生代
         * Eden区
@@ -411,14 +1232,25 @@ JIT是一种提高程序运行效率的方法。通常，程序有两种运行�
 
 * **方法区（Method Area）**
     * 方法区也称"永久代"，它用于存储虚拟机加载的类信息、常量、静态变量、是各个线程共享的内存区域。
+    * 如果系统定义的类太多，导致空间不足，导致方法区溢出，虚拟机同样会抛出内存溢出错误
     * 在JDK8之前的HotSpot JVM，存放这些”永久的”的区域叫做“永久代(permanent generation)”。永久代是一片连续的堆空间，在JVM启动之前通过在命令行设置参数-XX:MaxPermSize来设定永久代最大可分配的内存空间，默认大小是64M（64位JVM默认是85M）。
     * 随着JDK8的到来，JVM不再有 永久代(PermGen)。但类的元数据信息（metadata）还在，只不过不再是存储在连续的堆空间上，而是移动到叫做“Metaspace”的本地内存（Native memory。
+        * -XX:MaxMetadataspaceSize指定最大值，如果不指定，会耗尽操作系统的所有物理内存
     * 方法区是一种规范，永久代和元空间只是实现方式
     * 由于永久代使用应用内存，很可能导致OOM，因此更换为元空间，可以无限制使用本地内存
 * **虚拟机栈(JVM Stack)**
-    * 描述的是java方法执行的内存模型：每个方法被执行的时候都会创建一个"栈帧",用于存储局部变量表(包括参数)、操作栈、方法出口等信息。每个方法被调用到执行完的过程，就对应着一个栈帧在虚拟机栈中从入栈到出栈的过程。
+    * 描述的是java方法执行的内存模型：每个方法被执行的时候都会创建一个"栈帧",用于存储局部变量表(包括参数)、操作数栈、方法出口等信息。每个方法被调用到执行完的过程，就对应着一个栈帧在虚拟机栈中从入栈到出栈的过程。
+        * 局部变量表
+            * 保存函数的参数和局部变量
+            * 由于局部变量表在栈帧中，因此如果函数的参数和局部变量比较多，会使得局部变量表膨胀，从而每一次函数调用就会占用更多的栈空间，最终导致函数的嵌套调用次数减少(在栈空间固定的情况下)。
+        * 操作数栈
+            * 用于保存计算过程中的中间结果，同时作为计算过程中变量临时的存储空间
+            * 操作数栈也是一个先进后出的数据结构，只支持入栈和出栈两种操作
+        * 帧数据区
+            * 保存访问常量池的指针，方便程序访问常量池
     * 本地方法栈(Native Stack)
     * 本地方法栈（Native Method Stacks）与虚拟机栈所发挥的作用是非常相似的，其区别不过是虚拟机栈为虚拟机执行Java方法（也就是字节码）服务，而本地方法栈则是为虚拟机使用到的Native方法服务。
+    * 栈的大小通过-Xss来设置，当栈中存储数据比较多时，需要适当调大这个值，否则会出现java.lang.StackOverflowError异常。常见的出现这个异常的是无法返回的递归，因为此时栈中保存的信息都是方法返回的记录点。
 
 * **程序计数器（PC Register）**
     *  程序计数器是用于标识当前线程执行的字节码文件的行号指示器。多线程情况下，每个线程都具有各自独立的程序计数器，所以该区域是非线程共享的内存区域。
@@ -426,6 +1258,58 @@ JIT是一种提高程序运行效率的方法。通常，程序有两种运行�
 
 * **直接内存**
     * 直接内存并不是虚拟机内存的一部分，也不是Java虚拟机规范中定义的内存区域。jdk1.4中新加入的NIO，引入了通道与缓冲区的IO方式，它可以调用Native方法直接分配堆外内存，这个堆外内存就是本机内存，不会影响到堆内存的大小。
+
+* **为什么要把堆和栈区分出来呢？栈中不是也可以存储数据吗？**
+    * 从软件设计的角度看，栈代表了处理逻辑，而堆代表了数据。这样分开，使得处理逻辑更为清晰。分而治之的思想。这种隔离、模块化的思想在软件设计的方方面面都有体现。
+    * 堆与栈的分离，使得堆中的内容可以被多个栈共享（也可以理解为多个线程访问同一个对象）。这种共享的收益是很多的。一方面这种共享提供了一种有效的数据交互方式(如：共享内存)，另一方面，堆中的共享常量和缓存可以被所有栈访问，节省了空间。
+    * 栈因为运行时的需要，比如保存系统运行的上下文，需要进行地址段的划分。由于栈只能向上增长，因此就会限制住栈存储内容的能力。而堆不同，堆中的对象是可以根据需要动态增长的，因此栈和堆的拆分，使得动态增长成为可能，相应栈中只需记录堆中的一个地址即可。
+    * 面向对象就是堆和栈的完美结合。其实，面向对象方式的程序与以前结构化的程序在执行上没有任何区别。但是，面向对象的引入，使得对待问题的思考方式发生了改变，而更接近于自然方式的思考。当我们把对象拆开，你会发现，对象的属性其实就是数据，存放在堆中；而对象的行为（方法），就是运行逻辑，放在栈中。我们在编写对象的时候，其实即编写了数据结构，也编写的处理数据的逻辑。不得不承认，面向对象的设计，确实很美。
+
+* 在Java中，Main函数就是栈的起始点，也是程序的起始点。程序要运行总是有一个起点的。同C语言一样，java中的Main就是那个起点。无论什么java程序，找到main就找到了程序执行的入口
+
+* 堆中存什么？栈中存什么？
+    * 堆中存的是对象。栈中存的是基本数据类型和堆中对象的引用。一个对象的大小是不可估计的，或者说是可以动态变化的，但是在栈中，一个对象只对应了一个4btye的引用（堆栈分离的好处：））。
+    * 为什么不把基本类型放堆中呢？因为其占用的空间一般是1~8个字节——需要空间比较少，而且因为是基本类型，所以不会出现动态增长的情况——长度固定，因此栈中存储就够了，如果把他存在堆中是没有什么意义的（还会浪费空间，后面说明）。可以这么说，基本类型和对象的引用都是存放在栈中，而且都是几个字节的一个数，因此在程序运行时，他们的处理方式是统一的。但是基本类型、对象引用和对象本身就有所区别了，因为一个是栈中的数据一个是堆中的数据。最常见的一个问题就是，Java中参数传递时的问题
+
+* Java中的参数传递时传值呢？还是传引用？
+    * 不要试图与C进行类比，Java中没有指针的概念
+    * 程序运行永远都是在栈中进行的，因而参数传递时，只存在传递基本类型和对象引用的问题。不会直接传对象本身
+    * 明确以上两点后。Java在方法调用传递参数时，因为没有指针，所以它都是进行传值调用（这点可以参考C的传值调用）。因此，很多书里面都说Java是进行传值调用，这点没有问题，而且也简化的C中复杂性。
+    * 但是传引用的错觉是如何造成的呢？在运行栈中，基本类型和引用的处理是一样的，都是传值，所以，如果是传引用的方法调用，也同时可以理解为“传引用值”的传值调用，即引用的处理跟基本类型是完全一样的。但是当进入被调用方法时，被传递的这个引用的值，被程序解释（或者查找）到堆中的对象，这个时候才对应到真正的对象。如果此时进行修改，修改的是引用对应的对象，而不是引用本身，即：修改的是堆中的数据。所以这个修改是可以保持的了。
+    * 对象，从某种意义上说，是由基本类型组成的。可以把一个对象看作为一棵树，对象的属性如果还是对象，则还是一颗树（即非叶子节点），基本类型则为树的叶子节点。程序参数传递时，被传递的值本身都是不能进行修改的，但是，如果这个值是一个非叶子节点（即一个对象引用），则可以修改这个节点下面的所有内容
+
+堆和栈中，栈是程序运行最根本的东西。程序运行可以没有堆，但是不能没有栈。而堆是为栈进行数据存储服务，说白了堆就是一块共享的内存。不过，正是因为堆和栈的分离的思想，才使得Java的垃圾回收成为可能
+
+**栈上分配**
+栈上分配是虚拟机一项优化技术。基本思想是，对于线程私有的对象(不会被其他线程访问的对象)，可以将它们打散分配在堆上。分配在栈上的好处是可以在函数调用结束后自行销毁，而不需要垃圾回收器的介入，从而提高系统的性能。
+
+栈上分配的基础是进行逃逸分析。逃逸分析的目的是判断对象是否有可能逃逸出函数体。
+
+```java
+
+//不会逃逸出本体
+public void func1(){
+
+    User user = new User();
+}
+//可能会逃逸出本体从而在其他地方使用
+public User func1(){
+
+    User user = new User();
+    return user;
+}
+
+```
+对于第一种情况，虚拟机就有可能将User分配在栈上而不是堆上。
+
+一些指令
+* -server :只有在server模式下，才可能启用逃逸分析技术
+* -XX:+DoESCAPEaNALYSIS启用逃逸分析
+* -XX:EliminateAllocations开启了标量替换，允许将对象打散分配在栈上，比如对象有id和name,这两个字段将会被视为两个独立的局部变量进行分配。
+
+可以做个测试，使用以上参数，测试不存在逃逸条件下，大量分配内存是否会发生GC。
+
+
 
 * **JVM内存参数设置**             
     * -Xms设置堆的最小空间大小。
@@ -438,6 +1322,10 @@ JIT是一种提高程序运行效率的方法。通常，程序有两种运行�
     * -Xss设置每个线程的堆栈大小
     * -XX:+UseParallelGC:选择垃圾收集器为并行收集器。此配置仅对年轻代有效。即上述配置下,年轻代使用并发收集,而年老代仍旧使用串行收集。
     * -XX:ParallelGCThreads=20:配置并行收集器的线程数,即:同时多少个线程一起进行垃圾回收。此值最好配置与处理器数目相等。
+
+```
+java -Xmx3550m -Xms3550m -Xmn2g –Xss128k
+```
 
 * 内存泄露
     * 强引用所指向的对象不会被回收，可能导致内存泄漏，虚拟机宁愿抛出OOM也不会去回收他指向的对象
@@ -470,7 +1358,7 @@ JIT是一种提高程序运行效率的方法。通常，程序有两种运行�
         * 堆内存不足，无法分配新的内存
     * StackOverflowError
         * 递归调用导致方法深度过高
-#### 1.4.3.1. 对象内存布局
+#### 1.5.4.2. 对象内存布局
 * HotSpot对象头
     * 用于存储对象自身运行时数据
     * 类型指针，即对象指向类元数据的指针
@@ -489,7 +1377,7 @@ HotSpot对象头 Mark Word
 
 Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用于存储锁标志位，1bit固定为0。
 
-#### 1.4.3.2. 对象访问定位
+#### 1.5.4.3. 对象访问定位
 
 * 句柄访问
     * 使用句柄访问方式，java堆将会划分出来一部分内存去来作为句柄池，reference中存储的就是对象的句柄地址。而句柄中则包含对象实例数据的地址和对象类型数据（如对象的类型，实现的接口、方法、父类、field等）的具体地址信息。
@@ -498,24 +1386,116 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
     * 如果使用指针访问，那么java堆对象的布局中就必须考虑如何放置访问类型的相关信息（如对象的类型，实现的接口、方法、父类、field等），而reference中存储的就是对象的地址。
     * 使用指针访问的好处是访问速度快，它减少了一次指针定位的时间开销，由于java是面向对象的语言，在开发中java对象的访问非常的频繁，因此这类开销积少成多也是非常可观的，反之则提升访问速度。
 
-### 1.4.4. 垃圾回收算法
+#### 1.5.4.4. 内存泄漏和内存溢出
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.4.4.1. 对象回收判定
+* 内存泄漏memory leak :是指程序在申请内存后，无法释放已申请的内存空间，一次内存泄漏似乎不会有大的影响，但内存泄漏堆积后的后果就是内存溢出。 
+* 内存溢出 out of memory :指程序申请内存时，没有足够的内存供申请者使用，或者说，给了你一块存储int类型数据的存储空间，但是你却存储long类型的数据，那么结果就是内存不够用，此时就会报错OOM,即所谓的内存溢出。 
+
+* 二者的关系
+    * 内存泄漏的堆积最终会导致内存溢出内存溢出就是你要的内存空间超过了系统实际分配给你的空间，此时系统相当于没法满足你的需求，就会报内存溢出的错误。内存泄漏是指你向系统申请分配内存进行使用(new)，可是使用完了以后却不归还(delete)，结果你申请到的那块内存你自己也不能再访问（也许你把它的地址给弄丢了），而系统也不能再次将它分配给需要的程序。就相当于你租了个带钥匙的柜子，你存完东西之后把柜子锁上之后，把钥匙丢了或者没有将钥匙还回去，那么结果就是这个柜子将无法供给任何人使用，也无法被垃圾回收器回收，因为找不到他的任何信息。内存溢出：一个盘子用尽各种方法只能装4个果子，你装了5个，结果掉倒地上不能吃了。这就是溢出。比方说栈，栈满时再做进栈必定产生空间溢出，叫上溢，栈空时再做退栈也产生空间溢出，称为下溢。就是分配的内存不足以放下数据项序列,称为内存溢出。说白了就是我承受不了那么多，那我就报错，
+
+* 内存泄漏的分类（按发生方式来分类）
+    * 常发性内存泄漏。发生内存泄漏的代码会被多次执行到，每次被执行的时候都会导致一块内存泄漏。
+    * 偶发性内存泄漏。发生内存泄漏的代码只有在某些特定环境或操作过程下才会发生。
+    * 常发性和偶发性是相对的。对于特定的环境，偶发性的也许就变成了常发性的。所以测试环境和测试方法对检测内存泄漏至关重要。一次性内存泄漏。发生内存泄漏的代码只会被执行一次，或者由于算法上的缺陷，导致总会有一块仅且一块内存发生泄漏。比如，在类的构造函数中分配内存，在析构函数中却没有释放该内存，所以内存泄漏只会发生一次。隐式内存泄漏。程序在运行过程中不停的分配内存，但是直到结束的时候才释放内存。严格的说这里并没有发生内存泄漏，因为最终程序释放了所有申请的内存。但是对于一个服务器程序，需要运行几天，几周甚至几个月，不及时释放内存也可能导致最终耗尽系统的所有内存。所以，我们称这类内存泄漏为隐式内存泄漏。
+
+* 内存溢出的原因及解决方法：
+    * 内存溢出原因： 
+        * 内存中加载的数据量过于庞大，如一次从数据库取出过多数据； 
+        * 集合类中有对对象的引用，使用完后未清空，使得JVM不能回收； 
+        * 代码中存在死循环或循环产生过多重复的对象实体； 
+        * 使用的第三方软件中的BUG； 
+        * 启动参数内存值设定的过小
+    * 内存溢出的解决方案： 
+        * 第一步，修改JVM启动参数，直接增加内存。(-Xms，-Xmx参数一定不要忘记加。)
+        * 第二步，检查错误日志，查看“OutOfMemory”错误前是否有其 它异常或错误。
+        * 第三步，对代码进行走查和分析，找出可能发生内存溢出的位置。
+            * 重点排查以下几点： 
+                * 检查对数据库查询中，是否有一次获得全部数据的查询。一般来说，如果一次取十万条记录到内存，就可能引起内存溢出。这个问题比较隐蔽，在上线前，数据库中数据较少，不容易出问题，上线后，数据库中数据多了，一次查询就有可能引起内存溢出。因此对于数据库查询尽量采用分页的方式查询。
+                * 检查代码中是否有死循环或递归调用。
+                * 检查是否有大循环重复产生新对象实体。
+                * 检查对数据库查询中，是否有一次获得全部数据的查询。一般来说，如果一次取十万条记录到内存，就可能引起内存溢出。这个问题比较隐蔽，在上线前，数据库中数据较少，不容易出问题，上线后，数据库中数据多了，一次查询就有可能引起内存溢出。因此对于数据库查询尽量采用分页的方式查询。
+                * 检查List、MAP等集合对象是否有使用完后，未清除的问题。List、MAP等集合对象会始终存有对对象的引用，使得这些对象不能被GC回收。
+        * 第四步，使用内存查看工具动态查看内存使用情况
+
+### 1.5.5. 垃圾回收算法
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.5.1. 对象回收判定
 
 **引用计数法**
 * 给对象添加一个引用计数器，引用一次则计数器+1,引用失效计数器-1，当计数器为0的时候，说明没有地方引用，垃圾收集器可以将它进行回收
-* 缺点：无法解决循环引用
+* 缺点
+    * 无法解决循环引用
 
 **可达性分析算法**
 * 以GC ROOTS为起始点，从这些节点开始向下搜索，搜索所走过的路径称为引用链，当一个对象到GC ROOTS没有引用链相连时，说明不可达，也说明没有任何引用。
+* 可达对象:指通过对象进行引用搜索，最终可以达到的对象
+* 不可达对象:通过根对象进行引用搜索，最终没有被引用到的对象
 * GC Roots对象
     * 虚拟机栈中引用的对象
     * 方法区中类静态对象引用的对象
     * 方法区中常量引用的对象
     * 本地方法栈中引用的对象
 
-#### 1.4.4.2. 对象引用分类
+#### 1.5.5.2. Minor GC和Major GC
+
+
+
+**Minor GC/young gc**
+* Minor GC：简单理解就是发生在年轻代的GC。
+* Minor GC的触发条件为：当产生一个新对象，新对象优先在Eden区分配。如果Eden区放不下这个对象，虚拟机会使用复制算法发生一次Minor GC，清除掉无用对象，同时将存活对象移动到Survivor的其中一个区(fromspace区或者tospace区)。虚拟机会给每个对象定义一个对象年龄(Age)计数器，对象在Survivor区中每“熬过”一次GC，年龄就会+1。待到年龄到达一定岁数(默认是15岁)，虚拟机就会将对象移动到年老代。如果新生对象在Eden区无法分配空间时，此时发生Minor GC。发生MinorGC，对象会从Eden区进入Survivor区，如果Survivor区放不下从Eden区过来的对象时，此时会使用分配担保机制将对象直接移动到年老代。
+
+
+|参数|含义
+|---|---|
+|-XX:MaxGCPauseMillis|设置G1收集过程目标时间，默认值200ms
+|-XX:G1NewSizePercent|新生代最小值，默认值5%
+|-XX:G1MaxNewSizePercent|新生代最大值，默认值60%
+
+**mixed gc**
+当越来越多的对象晋升到老年代old region时，为了避免堆内存被耗尽，虚拟机会触发一个混合的垃圾收集器，即mixed gc，该算法并不是一个old gc，除了回收整个young region，还会回收一部分的old region，这里需要注意：是一部分老年代，而不是全部老年代，可以选择哪些old region进行收集，从而可以对垃圾回收的耗时时间进行控制。
+那么mixed gc什么时候被触发？
+先回顾一下cms的触发机制，如果添加了以下参数：
+-XX:CMSInitiatingOccupancyFraction=80 
+-XX:+UseCMSInitiatingOccupancyOnly
+
+当老年代的使用率达到80%时，就会触发一次cms gc。相对的，mixed gc中也有一个阈值参数 -XX:InitiatingHeapOccupancyPercent，当老年代大小占整个堆大小百分比达到该阈值时，会触发一次mixed gc.
+mixed gc的执行过程有点类似cms，主要分为以下几个步骤：
+
+initial mark: 初始标记过程，整个过程STW，标记了从GC Root可达的对象
+concurrent marking: 并发标记过程，整个过程gc collector线程与应用线程可以并行执行，标记出GC Root可达对象衍生出去的存活对象，并收集各个Region的存活对象信息
+remark: 最终标记过程，整个过程STW，标记出那些在并发标记过程中遗漏的，或者内部引用发生变化的对象
+clean up: 垃圾清除过程，如果发现一个Region中没有存活对象，则把该Region加入到空闲列表中
+
+**Major GC/full gc**
+如果对象内存分配速度过快，mixed gc来不及回收，导致老年代被填满，就会触发一次full gc，G1的full gc算法就是单线程执行的serial old gc，会导致异常长时间的暂停时间，需要进行不断的调优，尽可能的避免full gc.
+
+* Major GC的触发条件：Major GC又称为Full GC。当年老代空间不够用的时候，虚拟机会使用“标记—清除”或者“标记—整理”算法清理出连续的内存空间，分配对象使用。
+
+**full GC触发的条件**
+除直接调用System.gc外，触发Full GC执行的情况有如下四种。
+1. 旧生代空间不足
+旧生代空间只有在新生代对象转入及创建为大对象、大数组时才会出现不足的现象，当执行Full GC后空间仍然不足，则抛出如下错误：
+java.lang.OutOfMemoryError: Java heap space 
+为避免以上两种状况引起的FullGC，调优时应尽量做到让对象在Minor GC阶段被回收、让对象在新生代多存活一段时间及不要创建过大的对象及数组。
+2. Permanet Generation空间满
+PermanetGeneration中存���的为一些class的信息等，当系统中要加载的类、反射的类和调用的方法较多时，Permanet Generation可能会被占满，在未配置为采用CMS GC的情况下会执行Full GC。如果经过Full GC仍然回收不了，那么JVM会抛出如下错误信息：
+java.lang.OutOfMemoryError: PermGen space 
+为避免Perm Gen占满造成Full GC现象，可采用的方法为增大Perm Gen空间或转为使用CMS GC。
+3. CMS GC时出现promotion failed和concurrent mode failure
+对于采用CMS进行旧生代GC的程序而言，尤其要注意GC日志中是否有promotion failed和concurrent mode failure两种状况，当这两种状况出现时可能会触发Full GC。
+promotionfailed是在进行Minor GC时，survivor space放不下、对象只能放入旧生代，而此时旧生代也放不下造成的；concurrent mode failure是在执行CMS GC的过程中同时有对象要放入旧生代，而此时旧生代空间不足造成的。
+应对措施为：增大survivorspace、旧生代空间或调低触发并发GC的比率，但在JDK 5.0+、6.0+的版本中有可能会由于JDK的bug29导致CMS在remark完毕后很久才触发sweeping动作。对于这种状况，可通过设置-XX:CMSMaxAbortablePrecleanTime=5（单位为ms）来避免。
+4. 统计得到的Minor GC晋升到旧生代的平均大小大于旧生代的剩余空间
+这是一个较为复杂的触发情况，Hotspot为了避免由于新生代对象晋升到旧生代导致旧生代空间不足的现象，在进行Minor GC时，做了一个判断，如果之前统计所得到的Minor GC晋升到旧生代的平均大小大于旧生代的剩余空间，那么就直接触发Full GC。
+例如程序第一次触发MinorGC后，有6MB的对象晋升到旧生代，那么当下一次Minor GC发生时，首先检查旧生代的剩余空间是否大于6MB，如果小于6MB，则执行Full GC。
+当新生代采用PSGC时，方式稍有不同，PS GC是在Minor GC后也会检查，例如上面的例子中第一次Minor GC后，PS GC会检查此时旧生代的剩余空间是否大于6MB，如小于，则触发对旧生代的回收。
+除了以上4种状况外，对于使用RMI来进行RPC或管理的Sun JDK应用而言，默认情况下会一小时执行一次Full GC。可通过在启动时通过- java-Dsun.rmi.dgc.client.gcInterval=3600000来设置Full GC执行的间隔时间或通过-XX:+ DisableExplicitGC来禁止RMI调用System.gc。
+
+
+#### 1.5.5.3. 对象引用分类
 **强引用**
 * Object obj = new Object();
 * 只要强引用存在，就不会被垃圾回收
@@ -540,13 +1520,13 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
 * 如果一个对象与虚引用关联，则跟没有引用与之关联一样，在任何时候都可能被垃圾回收器回收。
 * 虚引用必须和引用队列关联使用，当垃圾回收器准备回收一个对象时，如果发现它还有虚引用，就会把这个虚引用加入到与之 关联的引用队列中
 
-#### 1.4.4.3. 标记清除算法
+#### 1.5.5.4. 标记清除算法
 * 先标记可回收的对象空间，在标记完成之后进行统一的回收
 * 缺点
     * 效率问题，标记和清除两个过程的效率都不高
     * 空间问题，清除后将产生内存碎片，不利于二次使用
 
-#### 1.4.4.4. 复制算法
+#### 1.5.5.5. 复制算法
 * 内存按容量分为两个区块，每次只使用一个区块用于内存分配
 * 垃圾回收时，将存活的对象复制到另一个区块，按顺序存放
 * 复制完成后，一次性清理之前的区块
@@ -557,18 +1537,22 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
     * 空间利用率不高，每次只能有一块区域分配内存。
     * 复制效率不高
 
-#### 1.4.4.5. 标记整理算法
+#### 1.5.5.6. 标记整理算法
 * 标记对象，然后让存活的对象往一边移动，最后一次性清理掉端边界以外的内存。
 
-#### 1.4.4.6. 分代收集算法
+#### 1.5.5.7. 分代收集算法
 * 将内存分为老年代和新生代
 * 新创建的对象在新生代进行内存分配，经过多次垃圾回收之后仍然存活的对象将被放到老年代
 * 新生代的对象一般生命周期短，大部分都会被回收掉，因此每次垃圾收集只有很少的对象存活，因此使用复制算法效率比较高
 * 老年代的对象经过多次回收仍然存活，说明生命周期长，不容易被回收。因此每次垃圾回收只有少量的对象被回收，因此使用标记清除/标记整理算法效率比较高。
 
 
-### 1.4.5. 垃圾收集器
+### 1.5.6. 垃圾收集器
 <a href="#menu" style="float:right">目录</a>
+
+#### 1.5.6.1. 基本概念
+<a href="#menu" style="float:right">目录</a>
+
 
 * HotSpot虚拟机的垃圾收集器
     * 年轻代
@@ -582,21 +1566,80 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
         * Parallel Old收集器
         * G1收集器
 
-* 并发和并行
-    * 并发:多条垃圾收集线程并行工作，此时用户线程处于等待状态
-    * 并发:用户线程和垃圾收集线程同时进行，此时用户线程也可以工作，垃圾收集线程在另一个CPU工作
+* 按系统线程分
+    * 串行收集:串行收集使用单线程处理所有垃圾回收工作，因为无需多线程交互，实现容易，而且效率比较高。但是，其局限性也比较明显，即无法使用多处理器的优势，所以此收集适合单处理器机器。当然，此收集器也可以用在小数据量（100M左右）情况下的多处理器机器上。
+    * 并行收集:并行收集使用多线程处理垃圾回收工作，因而速度快，效率高。而且理论上CPU数目越多，越能体现出并行收集器的优势。
+    * 并发收集:用户线程和垃圾收集线程同时进行，此时用户线程也可以工作，垃圾收集线程在另一个CPU工作.相对于串行收集和并行收集而言，前面两个在进行垃圾回收工作时，需要暂停整个运行环境，而只有垃圾回收程序在运行，因此，系统在垃圾回收时会有明显的暂停，而且暂停时间会因为堆越大而越长。
+
 * stop the world
     * 由于执行垃圾回收，用户线程无法执行，将会导致不可预知的错误，比如响应缓慢，任务超时等
     * 垃圾收集器应当尽量避免发生这种情况
-    
-#### 1.4.5.1. Serial收集器
+
+**如何解决同时存在的对象创建和对象回收问题**
+垃圾回收线程是回收内存的，而程序运行线程则是消耗（或分配）内存的，一个回收内存，一个分配内存，从这点看，两者是矛盾的。因此，在现有的垃圾回收方式中，要进行垃圾回收前，一般都需要暂停整个应用（即：暂停内存的分配），然后进行垃圾回收，回收完成后再继续应用。这种实现方式是最直接，而且最有效的解决二者矛盾的方式。
+
+但是这种方式有一个很明显的弊端，就是当堆空间持续增大时，垃圾回收的时间也将会相应的持续增大，对应应用暂停的时间也会相应的增大。一些对相应时间要求很高的应用，比如最大暂停时间要求是几百毫秒，那么当堆空间大于几个G时，就很有可能超过这个限制，在这种情况下，垃圾回收将会成为系统运行的一个瓶颈。为解决这种矛盾，有了并发垃圾回收算法，使用这种算法，垃圾回收线程与程序运行线程同时运行。在这种方式下，解决了暂停的问题，但是因为需要在新生成对象的同时又要回收对象，算法复杂性会大大增加，系统的处理能力也会相应降低，同时，“碎片”问题将会比较难解决
+
+
+#### 1.5.6.2. 垃圾收集器评价指标
 <a href="#menu" style="float:right">目录</a>
+
+* 吞吐量
+    * 在应用程序的生命周期内，应用程序所花费的时间和系统总运行时间的比值。
+* 垃圾回收器负载
+    * 垃圾回收耗时和系统运行时间的比值
+* 停顿时间
+    * 垃圾回收式，应用线程停止的时间长度
+* 垃圾回收频率
+    * 指垃圾回收器多长时间运行一次，回收频率越低越好，可以减少总的停顿时间
+* 反应时间
+    * 指当一个对象称为垃圾后，多长时间内，它锁占据的内存空间会被释放
+* 堆分配
+    * 不同的垃圾回收器对堆内存的分配方式可能是不同的，一个良好的垃圾收集器应该有一个合理的堆内存区间划分
+
+#### 1.5.6.3. 并行垃圾收集器&串行垃圾收集器&并发垃圾收集器
+<a href="#menu" style="float:right">目录</a>
+
+##### 1.5.6.3.1. 串行垃圾收集器
+
+* 使用单线程处理所有的垃圾收集任务，导致的问题是STW时间变长。
+* -XX:+UserSerialGC
+
+
+##### 1.5.6.3.2. 并行垃圾收集器
+
+* 每发生一次垃圾收集器，就会停掉所有的应用线程，并使用多线程处理垃圾回收任务。因此垃圾回收工作可以不受任何中断非常高效的完成。
+* 并行垃圾回收器是为了应对服务端要求吞吐量最优化的使用场景。
+* 在并行垃圾回收器中，年轻代和老年代的回收都是并行的。年轻代并行，但是老年代是单线程处理。而且会stop-the-world.老年代的回收还会同时进行压缩动作。压缩可以将相邻的对象移动到一起，以消除它们之间被浪费的空间。形成一个最理想的堆布局。然而压缩可能会花费较多的时间。
+* 随着堆空间的增大以及老年代中存活对象的数量和大小不断增加，老年代收集的时间也越来越长，因此推出了增强型的并行垃圾收集器(JAVA 6)。年轻代和老年代都是多线程并行处理。降低了收集和压缩堆的时间开销。参数使用:-XX:+UseParalleOldGC.JDK 7U4中-XX:+UseParalleGC也会使能。
+
+* 在以下场景中优先使用并行垃圾收集器
+    * 对应用吞吐量的要求远远高于对延迟的要求
+        * 批处理的应用就是一个例子，因为是非交互性质的，当你启动一个批量执行，你会希望它越快执行完越好
+    * 如果能满足应用的最差延迟要求，并行垃圾收集器将提供最佳吞吐量。最差延迟要求包含两个方面:最差延迟时间和中断发生的频度，比如说，一个应用可能会有这样的延迟需求，超过500ms的暂停每两个小时不能多于1次，同时所有暂停不超过3s
+    * 对于满足这些要求的应用来说，并行垃圾收集器可以工作得很好。但对于那些不满足要求的应用来说，暂停时间会变得很长，因为一次full GC必须标记整个Java堆空间，同时还要压缩老年代空间，导致一个结果就是随着Java堆空间的增大，暂停时间也会随之增加。
+
+
+##### 1.5.6.3.3. 并发标记清除垃圾收集器CMS
+
+* 并行垃圾收集器与CMS垃圾收集器主要的区别是在老年代的收集上。CMS收集器的老年代收集活动试图避免应用线程的长时间中断。
+* 并发标记清除垃圾收集器是牺牲吞吐量，但是减少了停顿的时间。
+* 
+
+##### 1.5.6.3.4. 收集器概括总结
+
+上面的收集器都有几个共同的问题。一个就是所有老年代收集器的大部分操作都必须扫描整个老年代空间，比如标记，清除以及压缩。这意味着执行工作的时间将随着Java堆空间的变化而线性地增加或者减少。另一个问题是因为年轻代和老年代是独立的连续内存块，所以要先决定年轻代和老年代放在虚拟地址空间的什么位置。
+
+
+#### 1.5.6.4. Serial收集器
+<a href="#menu" style="float:right">目录</a>
+
 * 进行垃圾收集时，将会暂停其他工作线程，直到回收完成
 * 这将导致出现"stop the world"问题，应用代码会发生不可预知的问题
 * 桌面应用场景，分配内存不多，可以使用该垃圾收集器
 * client 模式中比较好的选择
 
-#### 1.4.5.2. ParNew收集器
+#### 1.5.6.5. ParNew收集器
 <a href="#menu" style="float:right">目录</a>
 
 * Serial收集器的多线程版本
@@ -609,7 +1652,7 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
     * 通过-XX：ParallelGCThreads限制线程数
 
 
-#### 1.4.5.3. Parallel Scavenge收集器
+#### 1.5.6.6. Parallel Scavenge收集器
 <a href="#menu" style="float:right">目录</a>
 
 * 使用复制算法和多线程方式实现
@@ -621,34 +1664,45 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
         
 
 
-#### 1.4.5.4. Serial Old收集器
+#### 1.5.6.7. Serial Old收集器
 <a href="#menu" style="float:right">目录</a>
 
 * 老年代单线程收集算法，使用标记整理
 * 将会发生stop the world 问题
 
-#### 1.4.5.5. Parallel Old收集器
+#### 1.5.6.8. Parallel Old收集器
 <a href="#menu" style="float:right">目录</a>
 
 * Parallel Scavenge收集器的老年代版本
 * 使用标记整理算法
 
-#### 1.4.5.6. CMS收集器
+#### 1.5.6.9. CMS收集器
 <a href="#menu" style="float:right">目录</a>
+
+* CMS垃圾收集器3种基本操作
+    * CMS收集器会对新生代对象进行回收(所有的应用线程都会停止)
+    * CMS收集器会启动一个并发线程对老年代空间的垃圾进行回收
+    * 如果有必要，CMS会发起Full GC
+
+* CMS也是将Eden区和s区的对象移动到另一个s区或者老年代空间。
+
 
 * 以获取最短停顿时间为目标的收集器，能够给用户带来更好的响应速度
 * 标记清除算法
 * 垃圾收集过程
     * 初始标记
         * 需要 stop the world
+        * 找到堆中所有的垃圾回收根节点对象
         * 标记GC Roots能之间关联到的对象 
     * 并发标记
-        * 需要 stop the world
+        * 应用线程可以执行
+        * 仅仅是用于标记
         * 进行GC Roots Tracing 的过程
     * 重新标记
         * 修正并发标记期间由于用户线程工作而产生标记变动的那一部分对象的标记记录
         * 停顿时间比初始标记时间长，比并发标记时间短很多
     * 并发清除
+        * 回收线程和应用线程一起工作
 * 问题
     * 对CPU资源敏感
     * 无法处理浮动垃圾（Floating Garbage）,可能出现Concurrent Mode Failure失败而导致另一次Fullgc.
@@ -660,8 +1714,31 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
             * 执行多少次FullGC后才会进行内存碎片整理，默认为0  
 
 
-#### 1.4.5.7. G1收集器
+### 1.5.7. G1收集器
 <a href="#menu" style="float:right">目录</a>
+
+
+#### 1.5.7.1. 综述
+<a href="#menu" style="float:right">目录</a>
+
+**垃圾回收的瓶颈**
+传统分代垃圾回收方式，已经在一定程度上把垃圾回收给应用带来的负担降到了最小，把应用的吞吐量推到了一个极限。但是他无法解决的一个问题，就是Full GC所带来的应用暂停。在一些对实时性要求很高的应用场景下，GC暂停所带来的请求堆积和请求失败是无法接受的。这类应用可能要求请求的返回时间在几百甚至几十毫秒以内，如果分代垃圾回收方式要达到这个指标，只能把最大堆的设置限制在一个相对较小范围内，但是这样有限制了应用本身的处理能力，同样也是不可接收的。
+分代垃圾回收方式确实也考虑了实时性要求而提供了并发回收器，支持最大暂停时间的设置，但是受限于分代垃圾回收的内存划分模型，其效果也不是很理想。
+为了达到实时性的要求（其实Java语言最初的设计也是在嵌入式系统上的），一种新垃圾回收方式呼之欲出，它既支持短的暂停时间，又支持大的内存空间分配。可以很好的解决传统分代方式带来的问题。
+
+**增量收集的演进**
+增量收集的方式在理论上可以解决传统分代方式带来的问题。增量收集把对堆空间划分成一系列内存块，使用时，先使用其中一部分（不会全部用完），垃圾收集时把之前用掉的部分中的存活对象再放到后面没有用的空间中，这样可以实现一直边使用边收集的效果，避免了传统分代方式整个使用完了再暂停的回收的情况。当然，传统分代收集方式也提供了并发收集，但是他有一个很致命的地方，就是把整个堆做为一个内存块，这样一方面会造成碎片（无法压缩），另一方面他的每次收集都是对整个堆的收集，无法进行选择，在暂停时间的控制上还是很弱。而增量方式，通过内存空间的分块，恰恰可以解决上面问题。
+
+**G1收集器**
+* 支持很大的堆
+* 高吞吐量
+    * 支持多CPU和垃圾回收线程
+    * 在主线程暂停的情况下，使用并行收集
+    * 在主线程运行的情况下，使用并发收集
+* 实时目标：可配置在N毫秒内最多只占用M毫秒的时间进行垃圾回收
+当然G1要达到实时性的要求，相对传统的分代回收算法，在性能上会有一些损失
+
+---
 
 * JDK7+ 默认的垃圾收集器
 * 场景
@@ -671,14 +1748,17 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
     * 不希望牺牲太多的吞吐性能
     * 不需要很大的Java堆
 * 特点
-    * 并行和并发
-        * 充分利用多核来缩短stop the world时间
-    * 分代收集
-    * 空间整合
-        * 从整体看是标记-整理算法，从局部看是基于复制算法
-        * 收集后不产生内存碎片
-    * 可预测的停顿
-        * 让使用者指定Mms的时间片段内，垃圾收集的时间不超过Mms.
+    * 并行性
+        * G1在回收期间，可以由多个GC线程同时工作，有效利用多核计算能力
+    * 并发性
+        * G1拥有与应用程序交替执行的能力，部分工作可以和应用程序同时执行，因此不会在整个回收期间完全阻塞应用程序
+    * 分代GC
+        * G1仍然是一个分代收集器，但是和之前回收器不同，它同时兼顾年轻代和老年代。对比其他回收器，它们或者工作在年轻代，或者工作在老年代
+    * 空间整理
+        * G1在回收的过程中，会进行适当的对象移动，不像CMS，只是简单地标记清理对象，在若干次GC后，CMS必须进行一次碎片整理，而G1不同，它每次回收都有效地复制对象。减少空间碎片
+    * 可预见性
+        * 由于分区的原因，G1可以只选取部分区域进行内存回收，这样缩小了回收的范围，因此对于全局停顿也能得到较好的控制
+
 
 **内存结构**
 * 以往的垃圾回收算法，如CMS，使用的堆内存结构如下：
@@ -691,6 +1771,7 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
 
 * 在G1算法中，采用了另外一种完全不同的方式组织堆内存，堆内存被划分为多个大小相等的内存块（Region），每个Region是逻辑连续的一段内存，结构如下：
 ![](https://upload-images.jianshu.io/upload_images/2184951-715388c6f6799bd9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp)
+
 * 每个Region被标记了E、S、O和H，说明每个Region在运行时都充当了一种角色，其中H是以往算法中没有的，它代表Humongous，这表示这些Region存储的是巨型对象（humongous object，H-obj），当新建对象大小超过Region大小一半时，直接在新的一个或多个连续Region中分配，并标记为H。
 
 **Region**
@@ -699,40 +1780,411 @@ Mark Word有32bit,25bit对象哈希码，4bit存储对象分代年龄，2bit用�
 
 默认把堆内存按照2048份均分，最后得到一个合理的大小。
 
-**GC模式**
+
+
+G1可谓博采众家之长，力求到达一种完美。他吸取了增量收集优点，把整个堆划分为一个一个等大小的区域（region）。内存的回收和划分都以region为单位；同时，他也吸取了CMS的特点，把这个垃圾回收过程分为几个阶段，分散一个垃圾回收过程；而且，G1也认同分代垃圾回收的思想，认为不同对象的生命周期不同，可以采取不同收集方式，因此，它也支持分代的垃圾回收。为了达到对回收时间的可预计性，G1在扫描了region以后，对其中的活跃对象的大小进行排序，首先会收集那些活跃对象小的region，以便快速回收空间（要复制的活跃对象少了），因为活跃对象小，里面可以认为多数都是垃圾，所以这种方式被称为Garbage First（G1）的垃圾回收算法，即：垃圾优先的回收
+
+* G1收集过程
+    * 新生代GC
+        * 新生代GC主要回收eden和survivor区，一旦eden区被占满，新生代GC就会启动
+        * 回收后，所有的eden区都会被清空，s区会保留一部分数据，也就是至少存在一个survivor区，类比其他的新生代收集器
+        * 老年代可能会增多，因为可能有部分eden和survivor区晋升为老年代
+    * 并发标记周期
+        * 初始标记
+            * 标记从根节点直接可达的对象。这个阶段会伴随一次新生代GC，它是会产生全局停顿的，应用程序线程在这个阶段必须停止执行
+        * 根区域扫描
+            * 由于初始初始标记会伴随一次新生代GC，所以在初始化后，eden被清空，并且存活对象被移动到survivor区。
+            * 在这个阶段，将扫描由survivor区直接可达的老年代区域，并且标记这些可达的对象。
+            * 这个过程是可以和应用程序并发执行的，但是根区域扫描不能和新生代GC同时执行(因为根区域扫描依赖survivor区的对象，而新生代GC会修改这个区域)，因此如果恰巧在此时需要进行新生代GC，GC就需要等待根区域扫描结束后才能进行，如果发生这种情况，这次新生代GC的时间就会延长。
+        * 并发标记
+            * 和CMS类似，并发标记会扫描整个堆的存活对象，并做好标记，这是一个并发的过程，并且这个过程可以被一次新生代GC打断
+        * 重新标记
+            * 和CMS一样，重新标记也会产生应用程序停顿
+            * 由于并发标记过程中，应用程序依然在运行，因此标记结果可能要进行修正，所以在此对上一次标记的结果进行补充。
+            * 在G1中，这个过程使用SATB(Snapshot-At-The-Beginning算法完成，即G1会在标记之初为存活对象创建一个快照，这个快照有助于加速重新标记的速度
+        * 独占清理
+            * 这个阶段会引起停顿的
+            * 它将计算各个区域的存活对象和GC回收比例并进行排序，识别可供混合回收的区域，在这个阶段，还会更新记忆集
+            * 该阶段给出了需要被混合回收的区域并进行了标记，在混合回收阶段，需要这些信息。
+        * 并发清理
+            * 这里会识别并清理完全空闲的区域，它是并发的清理，不会出现停顿
+    * 混合回收
+        * 在并发标记周期中，虽然有部分对象被回收，但是总体上，回收的比例是相当低的。
+        * 但是在并发标记周期后，G1已经明确哪些区域含有较多的垃圾对象，在混合回收阶段，就可以专门针对这些区域进行回收。
+        * 当然，G1会优先回收垃圾比例较高的区域，因此回收这些区域的性价比也比较高。
+        * 这个阶段叫做含混和回收，是因为在这个阶段，既会执行正常的年轻代GC，又会选取一些被标记的老年代进行回收，它同时处理了新生代和老年代。
+    * 如果需要，可能会进行Full GC
+        * 和CMS类似，并发收集由于让应用程序和GC线程交替工作，因此总是不能完全避免在特别繁忙的场合会出现在回收过程中内存不充足的情况。当遇到这种情况时，G1也会转入一个FullGC进行回收
+
+
+
+
+* 回收步骤
+    * **初始标记（Initial Marking）**
+        * G1对于每个region都保存了两个标识用的bitmap，一个为previous marking bitmap，一个为nextmarking bitmap，bitmap中包含了一个bit的地址信息来指向对象的起始点
+        * 开始Initial Marking之前，首先并发的清空next marking bitmap，然后停止所有应用线程，并扫描标识出每个region中root可直接访问到的对象，将region中top的值放入next top at mark start（TAMS）中，之后恢复所有应用线程。
+        * 触发这个步骤执行的条件为：
+            * G1定义了一个JVM Heap大小的百分比的阀值，称为h，另外还有一个H，H的值为(1-h)*HeapSize，目前这个h的值是固定的，后续G1也许会将其改为动态的，根据jvm的运行情况来动态的调整，在分代方式下，G1还定义了一个u以及soft limit，soft limit的值为H-u*Heap Size，当Heap中使用的内存超过了soft limit值时，就会在一次clean up执行完毕后在应用允许的GC暂停时间范围内尽快的执行此步骤；
+            * 在pure方式下，G1将marking与clean up组成一个环，以便clean up能充分的使用marking的信息，当clean up开始回收时，首先回收能够带来最多内存空间的regions，当经过多次的clean up，回收到没多少空间的regions时，G1重新初始化一个新的marking与clean up构成的环。
+
+    * **并发标记（Concurrent Marking）**
+        * 按照之前Initial Marking扫描到的对象进行遍历，以识别这些对象的下层对象的活跃状态，对于在此期间应用线程并发修改的对象的以来关系则记录到remembered set logs中，新创建的对象则放入比top值更高的地址区间中，这些新创建的对象默认状态即为活跃的，同时修改top值。
+    * **最终标记暂停（Final Marking Pause）**
+        * 当应用线程的remembered set logs未满时，是不会放入filled RS buffers中的，在这样的情况下，这些remebered set logs中记录的card的修改就会被更新了，因此需要这一步，这一步要做的就是把应用线程中存在的remembered set logs的内容进行处理，并相应的修改remembered sets，这一步需要暂停应用，并行的运行。
+        
+**存活对象计算及清除（Live Data Counting and Cleanup）**
+值得注意的是，在G1中，并不是说Final Marking Pause执行完了，就肯定执行Cleanup这步的，由于这步需要暂停应用，G1为了能够达到准实时的要求，需要根据用户指定的最大的GC造成的暂停时间来合理的规划什么时候执行Cleanup，另外还有几种情况也是会触发这个步骤的执行的：G1采用的是复制方法来进行收集，必须保证每次的”to space”的空间都是够的，因此G1采取的策略是当已经使用的内存空间达到了H时，就执行Cleanup这个步骤；
+
+对于full-young和partially-young的分代模式的G1而言，则还有情况会触发Cleanup的执行，fullyoung模式下，G1根据应用可接受的暂停时间、回收young regions需要消耗的时间来估算出一个yound regions的数量值，当JVM中分配对象的young regions的数量达到此值时，Cleanup就会执行；partially-young模式下，则会尽量频繁的在应用可接受的暂停时间范围内执行Cleanup，并最大限度的去执行non-young regions的Cleanup
+
+
+#### 1.5.7.2. 完整的G1垃圾收集日志
+
+```
+-Xms80m -Xmx100m -Xmn40m  -XX:+PrintHeapAtGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseG1GC
+```
+1. 如果设置PrintHeapAtGC参数,则HotSpot在GC前后都会将GC堆的概要状况输出到log中
+```
+//前
+{Heap before GC invocations=0 (full 0):
+ garbage-first heap   total 81920K, used 2048K [0x00000000f9c00000, 0x00000000f9d00280, 0x0000000100000000)
+  region size 1024K, 3 young (3072K), 0 survivors (0K)
+ Metaspace       used 3036K, capacity 4496K, committed 4864K, reserved 1056768K
+  class space    used 332K, capacity 388K, committed 512K, reserved 1048576K
+
+//后
+Heap after GC invocations=1 (full 0):
+ garbage-first heap   total 81920K, used 460K [0x00000000f9c00000, 0x00000000f9d00280, 0x0000000100000000)
+  region size 1024K, 1 young (1024K), 1 survivors (1024K)
+ Metaspace       used 3036K, capacity 4496K, committed 4864K, reserved 1056768K
+  class space    used 332K, capacity 388K, committed 512K, reserved 1048576K
+}
+
+```
+
+2. -XX:+PrintGCDetails 打印GGC时的详细日志
+
+3. -XX:+PrintGCTimeStamps 打印gc时已经启动的时间
+
+4. -XX:+UseG1GC 使用G1收集器
+
+```
+{Heap before GC invocations=0 (full 0):
+ garbage-first heap   total 81920K, used 2048K [0x00000000f9c00000, 0x00000000f9d00280, 0x0000000100000000)
+  region size 1024K, 3 young (3072K), 0 survivors (0K)
+ Metaspace       used 3036K, capacity 4496K, committed 4864K, reserved 1056768K
+  class space    used 332K, capacity 388K, committed 512K, reserved 1048576K
+1.222: [GC pause (G1 Humongous Allocation) (young) (initial-mark), 0.0020575 secs]
+   [Parallel Time: 1.5 ms, GC Workers: 4]
+      [GC Worker Start (ms): Min: 1221.8, Avg: 1221.9, Max: 1221.9, Diff: 0.1]
+      [Ext Root Scanning (ms): Min: 0.5, Avg: 0.7, Max: 1.4, Diff: 0.9, Sum: 3.0]
+      [Update RS (ms): Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]
+         [Processed Buffers: Min: 0, Avg: 0.0, Max: 0, Diff: 0, Sum: 0]
+      [Scan RS (ms): Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]
+      [Code Root Scanning (ms): Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]
+      [Object Copy (ms): Min: 0.0, Avg: 0.5, Max: 0.7, Diff: 0.7, Sum: 2.1]
+      [Termination (ms): Min: 0.0, Avg: 0.1, Max: 0.2, Diff: 0.2, Sum: 0.5]
+         [Termination Attempts: Min: 1, Avg: 1.0, Max: 1, Diff: 0, Sum: 4]
+      [GC Worker Other (ms): Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.1]
+      [GC Worker Total (ms): Min: 1.4, Avg: 1.4, Max: 1.4, Diff: 0.1, Sum: 5.6]
+      [GC Worker End (ms): Min: 1223.3, Avg: 1223.3, Max: 1223.3, Diff: 0.0]
+   [Code Root Fixup: 0.0 ms]
+   [Code Root Purge: 0.0 ms]
+   [Clear CT: 0.1 ms]
+   [Other: 0.5 ms]
+      [Choose CSet: 0.0 ms]
+      [Ref Proc: 0.3 ms]
+      [Ref Enq: 0.0 ms]
+      [Redirty Cards: 0.1 ms]
+      [Humongous Register: 0.0 ms]
+      [Humongous Reclaim: 0.0 ms]
+      [Free CSet: 0.0 ms]
+   [Eden: 3072.0K(40.0M)->0.0B(39.0M) Survivors: 0.0B->1024.0K Heap: 2562.0K(80.0M)->461.0K(80.0M)]
+Heap after GC invocations=1 (full 0):
+ garbage-first heap   total 81920K, used 460K [0x00000000f9c00000, 0x00000000f9d00280, 0x0000000100000000)
+  region size 1024K, 1 young (1024K), 1 survivors (1024K)
+ Metaspace       used 3036K, capacity 4496K, committed 4864K, reserved 1056768K
+  class space    used 332K, capacity 388K, committed 512K, reserved 1048576K
+}
+ [Times: user=0.00 sys=0.00, real=0.01 secs] 
+1.224: [GC concurrent-root-region-scan-start]
+1.225: [GC concurrent-root-region-scan-end, 0.0008394 secs]
+1.225: [GC concurrent-mark-start]
+1.225: [GC concurrent-mark-end, 0.0000886 secs]
+1.248: [GC remark 1.248: [Finalize Marking, 0.0001961 secs] 1.248: [GC ref-proc, 0.0001534 secs] 1.248: [Unloading, 0.0007679 secs], 0.0013138 secs]
+ [Times: user=0.00 sys=0.01, real=0.00 secs] 
+1.249: [GC cleanup 50M->50M(80M), 0.0002353 secs]
+ [Times: user=0.00 sys=0.00, real=0.00 secs] 
+
+```
+
+
+1. 表示应用程序在开启1.222秒时发生了一次新生代的GC，这是在初始标记时发生的，耗时0.0020575 secs，意味着应用程序暂停了0.0020575 secs
+```
+1.222: [GC pause (G1 Humongous Allocation) (young) (initial-mark), 0.0020575 secs]
+```
+2. 表示GC线程总的花费时间，这里为1.5ms
+
+```
+[Parallel Time: 1.5 ms, GC Workers: 4]
+```
+3. 给出每一个GC线程的执行情况。diff表示最大值和最小值的差值
+
+```
+[GC Worker Start (ms): Min: 1221.8, Avg: 1221.9, Max: 1221.9, Diff: 0.1]
+```
+4. 根扫描的耗时
+```
+[Ext Root Scanning (ms): Min: 0.5, Avg: 0.7, Max: 1.4, Diff: 0.9, Sum: 3.0]
+```
+
+5. 更新记忆集(Remembered Sets)的耗时
+```
+[Update RS (ms): Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]
+         [Processed Buffers: Min: 0, Avg: 0.0, Max: 0, Diff: 0, Sum: 0]
+```
+
+记忆集是G1中维护一个数据结构，简称RS.每一个G1区域都有一个RS与其关联。由于G1回收时，是按照区域回收的，比如在回收区域A的对象时，很可能并不回收区域B的对象。此时，为了回收区域A的对象，要扫描区域B甚至整个堆区来判定区域A的对象是否可达，这样的代价很大。因此G1在A的RS中，记录了在区域A中被其他区域引用的对象，这样在回收A时，只要将RS视为A根集的一部分即可，从而可以避免做整个堆的扫描。由于系统在运行的过程中，对象的引用关系是时刻变化的，因此为了更加高效地跟踪这些引用关系，会将这些变化记录在Update Buffers中。这里的Processed Buffers 指的是处理这些Update Buffers数据。
+
+6.  扫描RS的时间
+
+```
+[Scan RS (ms): Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]
+```
+
+7. 在正式回收时，G1会对被回收区域的对象进行疏散，即将存活对象放置在其他区域中，因此需要进行对象的复制
+
+```
+[Object Copy (ms): Min: 0.0, Avg: 0.5, Max: 0.7, Diff: 0.7, Sum: 2.1]
+```
+
+8. GC工作线程的终止信息
+
+这里的终止时间是线程花在终止阶段的耗时。在GC线程终止前，它们会检查其他GC线程的工作队列，查看是否仍然还有对象引用没有处理完，如果其他线程仍然有没有处理完的数据，请求终止的GC线程就会帮助它尽快完成，随后后，再尝试终止，其中Termination Attempts展示了每一个工作线程尝试终止的次数
+
+```
+[Termination (ms): Min: 0.0, Avg: 0.1, Max: 0.2, Diff: 0.2, Sum: 0.5]
+         [Termination Attempts: Min: 1, Avg: 1.0, Max: 1, Diff: 0, Sum: 4]
+```
+
+9. 
+* GC工作线程花费在其他任务中的耗时
+* GC工作线程存活时间
+* GC工作线程完成时间
+
+```
+[GC Worker Other (ms): Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.1]
+[GC Worker Total (ms): Min: 1.4, Avg: 1.4, Max: 1.4, Diff: 0.1, Sum: 5.6]
+[GC Worker End (ms): Min: 1223.3, Avg: 1223.3, Max: 1223.3, Diff: 0.0]
+```
+
+10. 清空CardTable的时间,RS就是依靠CardTable来记录哪些是存活的对象
+
+```
+[Clear CT: 0.1 ms]
+```
+
+11. 显示了其他几个任务的耗时
+
+```
+[Other: 0.5 ms]
+        //选择Collection Set的时间
+      [Choose CSet: 0.0 ms]
+      //处理弱引用，软引用的时间
+      [Ref Proc: 0.3 ms]
+      //弱引用软引用入队的时间
+      [Ref Enq: 0.0 ms]
+      [Redirty Cards: 0.1 ms]
+      [Humongous Register: 0.0 ms]
+      [Humongous Reclaim: 0.0 ms]
+      //释放被回收的CSet中区域的时间
+      [Free CSet: 0.0 ms]
+```
+
+12. 垃圾收集堆变化情况
+
+(40.0M)->0.0B(39.0M) --》回收前->回收后(可用空间)
+```
+ [Eden: 3072.0K(40.0M)->0.0B(39.0M) Survivors: 0.0B->1024.0K Heap: 2562.0K(80.0M)->461.0K(80.0M)]
+Heap after GC invocations=1 (full 0):
+ garbage-first heap   total 81920K, used 460K [0x00000000f9c00000, 0x00000000f9d00280, 0x0000000100000000)
+  region size 1024K, 1 young (1024K), 1 survivors (1024K)
+ Metaspace       used 3036K, capacity 4496K, committed 4864K, reserved 1056768K
+  class space    used 332K, capacity 388K, committed 512K, reserved 1048576K
+```
+#### 1.5.7.3. G1相关参数
+<a href="#menu" style="float:right">目录</a>
+
+* -XX:+UseG1GC
+    * 启用G1垃圾收集器
+* -XX:G1HeapRegionSize=n
+    * 区域的大小。值是2的幂，范围是1 MB到32 MB之间。目标是根据最小的Java 堆大小划分出约 2048 个区域。这个值的默认值是根据堆的大小决定的。
+* -XX:MaxGCPauseMillis=200
+    * 最长暂停时间设置目标值。默认值是200 毫秒。
+* -XX:InitiatingHeapOccupancyPercent=45
+    * 触发标记周期的Java堆占用率阈值。默认占用率是整个Java堆的 45%。
+* -XX:G1ReservePercent=10
+    * 作为空闲空间的预留内存百分比，以降低目标空间溢出的风险。默认值是10%。保留的空间用于年代之间的提升，注意这个空间保留后就不会用在年轻代。
+* -XX:G1HeapWastePercent=5
+    * 可容忍的浪费堆空间百分比。如果可回收百分比小于该设置的百分比，JVM不会启动混合垃圾回收周期。
+* -XX:G1MixedGCCountTarget=8
+    * 标记周期完成后，对要执行垃圾回收的候选old区域收集完毕需要执行Mixed GC的目标次数。默认值是8。MixedGC的目标是要控制在此目标次数以内完成对上次标记周期标记出的候选old region的回收。该值设置过小，会导致每次Mixed GC疏散的old region数量过多，导致停顿时间变长。该值可以限制每次Mixed GC最少要回收的old region数量。
+* -XX:G1OldCSetRegionThresholdPercent=10
+    * 混合垃圾收集期间，每次能进入CSet的old region的最大阈值（进入CSet表示要垃圾收集）。默认值是Java堆的 10%。如果该值设置过大，则每次Mixed GC需要疏散的old region数量会变多，导致停顿时间拉长。该值可以限制每次Mixed GC最多能回收的old region数量。
+* -XX:ParallelGCThreads=n
+    * STW时并行工作的线程数。一般可以将 n 的值设置为逻辑处理器数的 5/8 左右。
+* -XX:ConcGCThreads=n
+    * 并行标记的线程数。可以将 n 设置为并行垃圾回收线程数 (ParallelGCThreads) 的 1/4 左右。
+* -XX:+ParallelRefProcEnabled
+    * 并行处理Ref Proc阶段，默认HotSpot使用单线程处理引用对象。
+* -XX:+UnlockExperimentalVMOptions
+    * 要更改实验性标志的值，必须先对其解锁。显式地设置该参数。
+* -XX:G1NewSizePercent=5
+    * 设置年轻代大小最小值的堆百分比。默认值是Java 堆的5%。这是一个实验性的标志。
+* -XX:G1MaxNewSizePercent=60
+    * 设置要用作年轻代大小最大值的堆大小百分比。默认值是Java堆的 60%。这是一个实验性的标志。
+* -XX:+G1PrintRegionLivenessInfo
+    * 打印堆内存里每个Region的存活对象信息。这个信息在标记结束后打印出来。这是一个实验性的标志。
+* -XX:+G1TraceConcRefinement
+    * 如果启用，并行回收阶段的日志就会被详细打印出来；这是一个实验性的标志。
+* -XX:+G1TraceEagerReclaimHumongousObject
+    * 如果启用，会打印大对象的回收日志；这是一个实验性的标志。
+* -XX:+UseStringDeduplication
+    * 开启Java String对象的分割工作，这个是JDK8u20之后新增的参数，主要用于相同String避免重复申请内存，节约Region的使用。
+* -XX:G1MixedGCLiveThresholdPercent=85
+    * 在并发标记阶段怎么识别old region需要被回收而标记成candidate old region，以便在Mixed GC阶段进入CSet而被回收呢？是通过G1MixedGCLiveThresholdPercent来控制的，当region中的存活数据占比率不超过该阈值时，则表示要被回收，默认占用率为85%。
+    * 在并发标记阶段每个region中的存活数据占比率会被重新计算，那些存活数据占比较多的region，疏散时的代价相对较昂贵，它们还会被标记为expensive region。如果在MixedGC阶段这种region大量进入CSet中可能会导致MixedGC的停顿时间过长。G1为了区分开这些region而做了分开标记，在MixedGC阶段优先回收candidate old region，如果代价许可，会尝试回收expensive region。
+
+
+### 1.5.8. 深入G1垃圾收集器
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.8.1. 背景
+<a href="#menu" style="float:right">目录</a>
+
+* 是一种压缩型收集器。基本原则是首先收集尽可能多的垃圾。G1 GC有增量并行的STW方式的暂停，它是通过拷贝的方式来实现压缩，同时还有并行的多级并发标记，这有助于将标记、重新标记、以及因清除导致的暂停减少到最小程度。
+
+* HotSpot将传统的各个代必须相邻的堆布局方式，改变为现在这种由多个不相邻分区组合而成的方式。因此，对于一个有效的Java堆。特定的分区既可以是eden,也可以是survicor或老年代的组成部分，或者成为一个巨型分区，甚至是个空闲分区。这些分区汇集起来组成一个逻辑上的代，这个代也符合过去HotSpot垃圾收集器中对代空间概念的常规定义。
+
+#### 1.5.8.2. G1中的垃圾收集
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.8.3. 年轻代
+<a href="#menu" style="float:right">目录</a>
+
+G1垃圾收集器是一种分代卡及收集器，它由年轻代和老年代组成。除了一些例外的情况，比如巨型对象本身，还有那些小于巨型对象但依然很大，以至于无法放入分配线程的本地分配缓冲区(TLAB)的对象，大部分特定线程的分配结果则都将落到线程的TLAB中。因为独享的Java线程
+
+#### 1.5.8.4. 年轻代收集暂停
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.8.5. 对象老化以及老年代
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.8.6. 巨型区分
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.8.7. 混合收集
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.8.8. 收集集合及其重要性
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.8.9. 并发优化线程以及栅栏
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.8.10. G1 GC的并发标记
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.8.11. 并发标记阶段
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.8.12. 初始标记 
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.8.13. 根分区扫描
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.8.14. 并发标记
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.8.15. 重新标记
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.8.16. 清除
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.8.17. 转移失败与FULL收集
+<a href="#menu" style="float:right">目录</a>
+
+
+
+
+### 1.5.9. G1性能优化
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.9.1. 年轻代收集的各阶段
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.9.2. 所有并行活动的开始
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.9.3. 外部根分区
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.9.4. 已记忆集合总结
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.9.5. 转移和回收 
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.9.6. 终止
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.9.7. GC外部的并行活动
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.9.8. 所有并行活动总结
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.9.9. 其他串行活动
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.9.10. 年轻代优化
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.9.11. 并发标记阶段调优
+<a href="#menu" style="float:right">目录</a>
+
+
+#### 1.5.9.12. 混合垃圾收集阶段回顾
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.9.13. 混合垃圾收集阶段调优
+<a href="#menu" style="float:right">目录</a>
+
+
+#### 1.5.9.14. 避免转移失败   
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.9.15. 引用处理
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.9.16. 观察引用处理
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.9.17. 引用处理调优
+<a href="#menu" style="float:right">目录</a>
+
+
+
+### 1.5.10. GC模式
+<a href="#menu" style="float:right">目录</a>
 
 G1中提供了三种模式垃圾回收模式，young gc、mixed gc 和 full gc，在不同的条件下被触发。
 
-**young gc**
-发生在年轻代的GC算法，一般对象（除了巨型对象）都是在eden region中分配内存，当所有eden region被耗尽无法申请内存时，就会触发一次young gc，这种触发机制和之前的young gc差不多，执行完一次young gc，活跃对象会被拷贝到survivor region或者晋升到old region中，空闲的region会被放入空闲列表中，等待下次被使用。
 
 
-
-|参数|含义
-|---|---|
-|-XX:MaxGCPauseMillis|设置G1收集过程目标时间，默认值200ms
-|-XX:G1NewSizePercent|新生代最小值，默认值5%
-|-XX:G1MaxNewSizePercent|新生代最大值，默认值60%
-
-**mixed gc**
-当越来越多的对象晋升到老年代old region时，为了避免堆内存被耗尽，虚拟机会触发一个混合的垃圾收集器，即mixed gc，该算法并不是一个old gc，除了回收整个young region，还会回收一部分的old region，这里需要注意：是一部分老年代，而不是全部老年代，可以选择哪些old region进行收集，从而可以对垃圾回收的耗时时间进行控制。
-那么mixed gc什么时候被触发？
-先回顾一下cms的触发机制，如果添加了以下参数：
--XX:CMSInitiatingOccupancyFraction=80 
--XX:+UseCMSInitiatingOccupancyOnly
-
-当老年代的使用率达到80%时，就会触发一次cms gc。相对的，mixed gc中也有一个阈值参数 -XX:InitiatingHeapOccupancyPercent，当老年代大小占整个堆大小百分比达到该阈值时，会触发一次mixed gc.
-mixed gc的执行过程有点类似cms，主要分为以下几个步骤：
-
-initial mark: 初始标记过程，整个过程STW，标记了从GC Root可达的对象
-concurrent marking: 并发标记过程，整个过程gc collector线程与应用线程可以并行执行，标记出GC Root可达对象衍生出去的存活对象，并收集各个Region的存活对象信息
-remark: 最终标记过程，整个过程STW，标记出那些在并发标记过程中遗漏的，或者内部引用发生变化的对象
-clean up: 垃圾清除过程，如果发现一个Region中没有存活对象，则把该Region加入到空闲列表中
-
-**full gc**
-如果对象内存分配速度过快，mixed gc来不及回收，导致老年代被填满，就会触发一次full gc，G1的full gc算法就是单线程执行的serial old gc，会导致异常长时间的暂停时间，需要进行不断的调优，尽可能的避免full gc.
-
-### 1.4.6. 内存分配和回收策略
+### 1.5.11. 内存分配和回收策略
 <a href="#menu" style="float:right">目录</a>
 
 * 大多数情况下，对象优先在Eden区中分配，当Eden中没有足够空间，虚拟机将发生一次minor GC.
@@ -754,8 +2206,45 @@ clean up: 垃圾清除过程，如果发现一个Region中没有存活对象，�
 
 
 
-### 1.4.7. JVM相关参数介绍
+### 1.5.12. JVM相关参数介绍
 <a href="#menu" style="float:right">目录</a>
+
+**JVM内存参数设置**             
+* -Xms设置堆的最小空间大小。
+* -Xmx设置堆的最大空间大小。
+* -Xmn:设置年轻代大小
+* -XX:NewSize设置新生代最小空间大小。
+* -XX:MaxNewSize设置新生代最大空间大小。
+* -XX:PermSize设置永久代最小空间大小。
+* -XX:MaxPermSize设置永久代最大空间大小。
+* -Xss设置每个线程的堆栈大小
+* -XX:+UseParallelGC:选择垃圾收集器为并行收集器。此配置仅对年轻代有效。即上述配置下,年轻代使用并发收集,而年老代仍旧使用串行收集。
+* -XX:ParallelGCThreads=20:配置并行收集器的线程数,即:同时多少个线程一起进行垃圾回收。此值最好配置与处理器数目相等。
+
+```
+java -Xmx3550m -Xms3550m -Xmn2g –Xss128k
+```
+
+**收集器设置**
+* -XX:+UseSerialGC:设置串行收集器
+* -XX:+UseParallelGC:设置并行收集器
+* -XX:+UseParalledlOldGC:设置并行年老代收集器
+* -XX:+UseConcMarkSweepGC:设置并发收集器
+
+**垃圾回收统计信息**
+* -XX:+PrintGC
+* -XX:+PrintGCDetails
+* -XX:+PrintGCTimeStamps
+* -Xloggc:filename
+
+**并行收集器设置**
+* -XX:ParallelGCThreads=n:设置并行收集器收集时使用的CPU数。并行收集线程数。
+* -XX:MaxGCPauseMillis=n:设置并行收集最大暂停时间
+* -XX:GCTimeRatio=n:设置垃圾回收时间占程序运行时间的百分比。公式为1/(1+n)
+
+**并发收集器设置**
+* -XX:+CMSIncrementalMode:设置为增量模式。适用于单CPU情况。
+* -XX:ParallelGCThreads=n:设置并发收集器年轻代收集方式为并行收集时，使用的CPU数。并行收集线程数。
 
 除少数例外外，大多数参数都是以下格式
 * 布尔标志
@@ -789,13 +2278,38 @@ clean up: 垃圾清除过程，如果发现一个Region中没有存活对象，�
 |---|---|---|
 
 
-### 1.4.8. 性能监控与故障处理工具
+### 1.5.13. 调优总结
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.4.8.1. JDK命令行工具
+**年轻代大小选择**
+* 响应时间优先的应用：尽可能设大，直到接近系统的最低响应时间限制（根据实际情况选择）。在此种情况下，年轻代收集发生的频率也是最小的。同时，减少到达年老代的对象。
+* 吞吐量优先的应用：尽可能的设置大，可能到达Gbit的程度。因为对响应时间没有要求，垃圾收集可以并行进行，一般适合8CPU以上的应用。
+
+**年老代大小选择**
+响应时间优先的应用：年老代使用并发收集器，所以其大小需要小心设置，一般要考虑并发会话率和会话持续时间等一些参数。如果堆设置小了，可以会造成内存碎片、高回收频率以及应用暂停而使用传统的标记清除方式；如果堆大了，则需要较长的收集时间。最优化的方案，一般需要参考以下数据获得：
+1. 并发垃圾收集信息
+2. 持久代并发收集次数
+3. 传统GC信息
+4. 花在年轻代和年老代回收上的时间比例
+减少年轻代和年老代花费的时间，一般会提高应用的效率
+
+**吞吐量优先的应用**
+一般吞吐量优先的应用都有一个很大的年轻代和一个较小的年老代。原因是，这样可以尽可能回收掉大部分短期对象，减少中期的对象，而年老代尽存放长期存活对象。
+
+**较小堆引起的碎片问题**
+因为年老代的并发收集器使用标记、清除算法，所以不会对堆进行压缩。当收集器回收时，他会把相邻的空间进行合并，这样可以分配给较大的对象。但是，当堆空间较小时，运行一段时间以后，就会出现“碎片”，如果并发收集器找不到足够的空间，那么并发收集器将会停止，然后使用传统的标记、清除方式进行回收。如果出现“碎片”，可能需要进行如下配置：
+1. -XX:+UseCMSCompactAtFullCollection：使用并发收集器时，开启对年老代的压缩。
+2. -XX:CMSFullGCsBeforeCompaction=0：上面配置开启的情况下，这里设置多少次Full GC后，对年老代进行压缩
+
+
+
+### 1.5.14. 性能监控与故障处理工具
 <a href="#menu" style="float:right">目录</a>
 
-**javap**
+#### 1.5.14.1. JDK命令行工具
+<a href="#menu" style="float:right">目录</a>
+
+##### 1.5.14.1.1. javap
 * 反编译工具,可用来查看java编译器生成的字节码
     * -help 帮助
     * -l 输出行和变量的表
@@ -808,7 +2322,7 @@ clean up: 垃圾清除过程，如果发现一个Region中没有存活对象，�
     * -verbose 输出栈大小，方法参数的个数
     * -constants 输出静态final常量
     
-**jps**
+##### 1.5.14.1.2. 查看Java进程 jps
 * 虚拟机进程状况工具
 
 ```
@@ -819,8 +2333,12 @@ Definitions:
     <hostid>:      <hostname>[:<port>]
     
 ```
+-q: 只输出进程ID
+-m：传递给main函数的参数
+-l:输出主函数的完整路径
+-v：传递给虚拟机的参数
 
-**jstat**
+##### 1.5.14.1.3. 查看虚拟机运行时些信息jstat
 * 虚拟机统计信息监视工具
 ```
 Usage: jstat -help|-options
@@ -844,7 +2362,261 @@ Definitions:
   <count>       Number of samples to take before terminating.
   -J<flag>      Pass <flag> directly to the runtime system.
 ```
-**jinfo**
+
+Jstat是JDK自带的一个轻量级小工具。全称“Java Virtual Machine statistics monitoring tool”，它位于java的bin目录下，主要利用JVM内建的指令对Java应用程序的资源和性能进行实时的命令行的监控，包括了对Heap size和垃圾回收状况的监控。可见，Jstat是轻量级的、专门针对JVM的工具，非常适用。
+
+jstat工具特别强大，有众多的可选项，详细查看堆内各个部分的使用量，以及加载类的数量。使用时，需加上查看进程的进程id，和所选参数。参考格式如下：
+
+jstat -options 
+
+
+
+可以列出当前JVM版本支持的选项，常见的有
+
+* options
+    * class (类加载器) 
+    * compiler (JIT) 
+    * gc (GC堆状态) 
+    * gccapacity (各区大小) 
+    * gccause (最近一次GC统计和原因) 
+    * gcnew (新区统计)
+    * gcnewcapacity (新区大小)
+    * gcold (老区统计)
+    * gcoldcapacity (老区大小)
+    * gcpermcapacity (永久区大小)
+    * gcutil (GC统计汇总)
+    * printcompilation (HotSpot编译统计)
+* 其他参数
+    * -t: 显示程序的运行时间
+    * -h: 指定周期性输出多少行数据后跟着输出一个表头信息
+    * interval: 周期输出间隔时间    
+    * count：指定输出的行数
+
+* jstat –class < pid> : 显示加载class的数量，及所占空间等信息。
+    * Loaded
+        * 装载的类的数量
+    * Bytes
+        * 装载类所占用的字节数
+    * Unloaded
+        * 卸载类的数量
+    * Bytes
+        * 卸载类的字节数
+    * Time
+        * 装载和卸载类所花费的时间
+
+* jstat -compiler < pid>显示VM实时编译的数量等信息。
+    * Compiled
+        * 编译任务执行数量
+    * Failed
+        * 编译任务执行失败数量
+    * Invalid  
+        * 编译任务执行失效数量
+    * Time  
+        * 编译任务消耗时间
+    * FailedType
+        * 最后一个编译失败任务的类型
+    * FailedMethod
+        * 最后一个编译失败任务所在的类及方法
+
+* jstat -gc < pid>: 可以显示gc的信息，查看gc的次数，及时间。
+    * S0C   
+        * 年轻代中第一个survivor（幸存区）的容量 (字节)
+    * S1C   
+        * 年轻代中第二个survivor（幸存区）的容量 (字节)
+    * S0U   
+        * 年轻代中第一个survivor（幸存区）目前已使用空间 (字节)
+    * S1U     
+        * 年轻代中第二个survivor（幸存区）目前已使用空间 (字节)
+    * EC      
+        * 年轻代中Eden（伊甸园）的容量 (字节)
+    * EU       
+        * 年轻代中Eden（伊甸园）目前已使用空间 (字节)
+    * OC        
+        * Old代的容量 (字节)
+    * OU      
+        * Old代目前已使用空间 (字节)
+    * MC    
+        * Metadata的容量 (字节)
+    * MU
+        * Metadata目前已使用空间 (字节)
+    * YGC    
+        * 从应用程序启动到采样时年轻代中gc次数
+    * YGCT   
+        * 从应用程序启动到采样时年轻代中gc所用时间(s)
+    * FGC   
+        * 从应用程序启动到采样时old代(全gc)gc次数
+    * FGCT    
+        * 从应用程序启动到采样时old代(全gc)gc所用时间(s)
+    * GCT
+        * 从应用程序启动到采样时gc用的总时间(s)
+
+* jstat -gccapacity < pid>:可以显示，VM内存中三代（young,old,perm）对象的使用和占用大小
+    * NGCMN   
+        * 年轻代(young)中初始化(最小)的大小(字节)
+    * NGCMX    
+        * 年轻代(young)的最大容量 (字节)
+    * NGC    
+        * 年轻代(young)中当前的容量 (字节)
+    * S0C  
+        * 年轻代中第一个survivor（幸存区）的容量 (字节)
+    * S1C      
+        * 年轻代中第二个survivor（幸存区）的容量 (字节)
+    * EC     
+        * 年轻代中Eden（伊甸园）的容量 (字节)
+    * OGCMN     
+        * old代中初始化(最小)的大小 (字节)
+    * OGCMX      
+        * old代的最大容量(字节)
+    * OGC
+        * old代当前新生成的容量 (字节)
+    * OC     
+        * Old代的容量 (字节)
+    * PGCMN   
+        * perm代中初始化(最小)的大小 (字节)
+    * PGCMX    
+        * perm代的最大容量 (字节)  
+    * PGC      
+        * perm代当前新生成的容量 (字节)
+    * PC    
+        * Perm(持久代)的容量 (字节)
+    * YGC   
+        * 从应用程序启动到采样时年轻代中gc次数
+    * FGC
+        * 从应用程序启动到采样时old代(全gc)gc次数
+
+* jstat -gcutil < pid>:统计gc信息
+    * S0    
+        * 年轻代中第一个survivor（幸存区）已使用的占当前容量百分比
+    * S1    
+        * 年轻代中第二个survivor（幸存区）已使用的占当前容量百分比
+    * E     
+        * 年轻代中Eden（伊甸园）已使用的占当前容量百分比
+    * O     
+        * old代已使用的占当前容量百分比
+    * P    
+        * perm代已使用的占当前容量百分比
+    * YGC       
+        * 从应用程序启动到采样时年轻代中gc次数
+    * YGCT   
+        * 从应用程序启动到采样时年轻代中gc所用时间(s)
+    * FGC   
+        * 从应用程序启动到采样时old代(全gc)gc次数
+    * FGCT    
+        * 从应用程序启动到采样时old代(全gc)gc所用时间(s)
+    * GCT
+        * 从应用程序启动到采样时gc用的总时间(s)
+* jstat -gcnew < pid>:年轻代对象的信息。
+    * S0C   
+        * 年轻代中第一个survivor（幸存区）的容量 (字节)
+    * S1C   
+        * 年轻代中第二个survivor（幸存区）的容量 (字节)
+    * S0U   
+        * 年轻代中第一个survivor（幸存区）目前已使用空间 (字节)
+    * S1U  
+        * 年轻代中第二个survivor（幸存区）目前已使用空间 (字节)
+    * TT
+        * 持有次数限制
+    * MTT 
+        * 最大持有次数限制
+    * EC      
+        * 年轻代中Eden（伊甸园）的容量 (字节)
+    * EU    
+        * 年轻代中Eden（伊甸园）目前已使用空间 (字节)
+    * YGC    
+        * 从应用程序启动到采样时年轻代中gc次数
+    * YGCT
+        * 从应用程序启动到采样时年轻代中gc所用时间(s)
+
+* jstat -gcnewcapacity< pid>: 年轻代对象的信息及其占用量。
+    * NGCMN     
+        * 年轻代(young)中初始化(最小)的大小(字节)
+    * NGCMX      
+        * 年轻代(young)的最大容量 (字节)
+    * NGC     
+        * 年轻代(young)中当前的容量 (字节)
+    * S0CMX    
+        * 年轻代中第一个survivor（幸存区）的最大容量 (字节)
+    * S0C    
+        * 年轻代中第一个survivor（幸存区）的容量 (字节)
+    * S1CMX    
+        * 年轻代中第二个survivor（幸存区）的最大容量 (字节)
+    * S1C      
+        * 年轻代中第二个survivor（幸存区）的容量 (字节)
+    * ECMX
+        * 年轻代中Eden（伊甸园）的最大容量 (字节)
+    * EC     
+        * 年轻代中Eden（伊甸园）的容量 (字节)
+    * YGC
+        * 从应用程序启动到采样时年轻代中gc次数
+    * FGC
+        * 从应用程序启动到采样时old代(全gc)gc次数
+
+* jstat -gcold < pid>：old代对象的信息。
+    * PC      
+        * Perm(持久代)的容量 (字节)
+    * PU       
+        * Perm(持久代)目前已使用空间 (字节)
+    * OC         
+        * Old代的容量 (字节)
+    * OU      
+        * Old代目前已使用空间 (字节)
+    * YGC   
+        * 从应用程序启动到采样时年轻代中gc次数
+    * FGC   
+        * 从应用程序启动到采样时old代(全gc)gc次数
+    * FGCT    
+        * 从应用程序启动到采样时old代(全gc)gc所用时间(s)
+    * GCT
+        * 从应用程序启动到采样时gc用的总时间(s)
+
+* stat -gcoldcapacity < pid>: old代对象的信息及其占用量。
+    * OGCMN      
+        * old代中初始化(最小)的大小 (字节)
+    * OGCMX       
+        * old代的最大容量(字节)
+    * OGC        
+        * old代当前新生成的容量 (字节)
+    * OC      
+        * Old代的容量 (字节)
+    * YGC  
+        * 从应用程序启动到采样时年轻代中gc次数
+    * FGC   
+        * 从应用程序启动到采样时old代(全gc)gc次数
+    * FGCT    
+        * 从应用程序启动到采样时old代(全gc)gc所用时间(s)
+    * GCT
+        * 从应用程序启动到采样时gc用的总时间(s)
+
+* jstat -gcpermcapacity< pid>: perm对象的信息及其占用量。
+    * PGCMN     
+        * perm代中初始化(最小)的大小 (字节)
+    * PGCMX      
+        * perm代的最大容量 (字节)  
+    * PGC        
+        * perm代当前新生成的容量 (字节)
+    * PC     
+        * Perm(持久代)的容量 (字节)
+    * YGC  
+        * 从应用程序启动到采样时年轻代中gc次数
+    * FGC   
+        * 从应用程序启动到采样时old代(全gc)gc次数
+    * FGCT    
+        * 从应用程序启动到采样时old代(全gc)gc所用时间(s)
+    * GCT
+        * 从应用程序启动到采样时gc用的总时间(s)
+
+* jstat -printcompilation < pid>：当前VM执行的信息。
+    * Compiled 
+        * 编译任务的数目
+    * Size 
+        * 方法生成的字节码的大小
+    * Type
+        * 编译类型
+    * Method
+        * 类名和方法名用来标识编译的方法。类名使用/做为一个命名空间分隔符。方法名是给定类中的方法。上述格式是由-XX:+PrintComplation选项进行设置的
+
+
+##### 1.5.14.1.4. 查看虚拟机参数jinfo
 * Java配置信息工具类
 ```
 Usage:
@@ -865,7 +2637,10 @@ where <option> is one of:
     -h | -help           to print this help message
 
 ```
-**jmap**
+##### 1.5.14.1.5. 导出堆到文件jmap
+
+jmap可以生成程序的堆Dump文件，也可以查看堆内对象实例的统计信息，查看ClassLoader的信息以及finalizer队列。
+
 Java内存映像工具
 ```
 Usage:
@@ -899,7 +2674,213 @@ where <option> is one of:
 
 
 ```
-**jhat**
+
+* 参数：
+    * option： 选项参数。
+    * pid： 需要打印配置信息的进程ID。
+    * executable： 产生核心dump的Java可执行文件。
+    * core： 需要打印配置信息的核心文件。
+    * server-id 可选的唯一id，如果相同的远程主机上运行了多台调试服务器，用此选项参数标识服务器。
+    * remote server IP or hostname 远程调试服务器的IP地址或主机名。
+* option
+    * no option： 查看进程的内存映像信息,类似 Solaris pmap 命令。
+    * heap： 显示Java堆详细信息
+    * histo[:live]： 显示堆中对象的统计信息
+    * clstats：打印类加载器信息
+    * finalizerinfo： 显示在F-Queue队列等待Finalizer线程执行finalizer方法的对象
+    * dump:< dump-options>：生成堆转储快照
+    * F： 当-dump没有响应时，使用-dump或者-histo参数. 在这个模式下,live子参数无效.
+    * help：打印帮助信息
+    * J< flag>：指定传递给运行jmap的JVM的参数
+
+**ubuntu下执行出错解决**
+
+出错表现
+```
+lgj@lgj-Lenovo-G470:~/Downloads$ jmap 10028
+Attaching to process ID 10028, please wait...
+Error attaching to process: sun.jvm.hotspot.debugger.DebuggerException: Can't attach to the process: ptrace(PTRACE_ATTACH, ..) failed for 10028: Operation not permitted
+sun.jvm.hotspot.debugger.DebuggerException: sun.jvm.hotspot.debugger.DebuggerException: Can't attach to the process: ptrace(PTRACE_ATTACH, ..) failed for 10028: Operation not permitted
+
+```
+解决方式
+```
+lgj@lgj-Lenovo-G470:~/Downloads$ echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+```
+
+**例子**
+
+* **示例一：no option**
+命令：jmap pid
+描述：查看进程的内存映像信息
+```
+lgj@lgj-Lenovo-G470:~/Downloads$ jmap 10028
+Attaching to process ID 10028, please wait...
+Debugger attached successfully.
+Server compiler detected.
+JVM version is 25.191-b12
+0x0000000000400000	8K	/home/lgj/java/jdk1.8.0_191/bin/java
+0x00007f7110caa000	110K	/home/lgj/java/jdk1.8.0_191/jre/lib/amd64/libnet.so
+0x00007f714cf22000	123K	/home/lgj/java/jdk1.8.0_191/jre/lib/amd64/libzip.so
+0x00007f714d13e000	46K	/lib/x86_64-linux-gnu/libnss_files-2.27.so
+0x00007f714d350000	94K	/lib/x86_64-linux-gnu/libnsl-2.27.so
+0x00007f714d56a000	46K	/lib/x86_64-linux-gnu/libnss_nis-2.27.so
+0x00007f714d776000	38K	/lib/x86_64-linux-gnu/libnss_compat-2.27.so
+0x00007f714d980000	50K	/home/lgj/java/jdk1.8.0_191/jre/lib/amd64/libinstrument.so
+0x00007f714db8b000	226K	/home/lgj/java/jdk1.8.0_191/jre/lib/amd64/libjava.so
+0x00007f714ddba000	64K	/home/lgj/java/jdk1.8.0_191/jre/lib/amd64/libverify.so
+0x00007f714dfc9000	30K	/lib/x86_64-linux-gnu/librt-2.27.so
+0x00007f714e1d1000	1660K	/lib/x86_64-linux-gnu/libm-2.27.so
+0x00007f714e56f000	16623K	/home/lgj/java/jdk1.8.0_191/jre/lib/amd64/server/libjvm.so
+0x00007f714f553000	1982K	/lib/x86_64-linux-gnu/libc-2.27.so
+0x00007f714f944000	14K	/lib/x86_64-linux-gnu/libdl-2.27.so
+0x00007f714fb48000	106K	/home/lgj/java/jdk1.8.0_191/lib/amd64/jli/libjli.so
+0x00007f714fd60000	141K	/lib/x86_64-linux-gnu/libpthread-2.27.so
+0x00007f714ff7f000	166K	/lib/x86_64-linux-gnu/ld-2.27.so
+
+```
+* **示例二：heap**
+命令：jmap -heap pid
+描述：显示Java堆详细信息
+
+打印一个堆的摘要信息，包括使用的GC算法、堆配置信息和各内存区域内存使用信息
+
+
+```
+lgj@lgj-Lenovo-G470:~/Downloads$ jmap -heap 10028
+Attaching to process ID 10028, please wait...
+Debugger attached successfully.
+Server compiler detected.
+JVM version is 25.191-b12
+
+using thread-local object allocation.
+Garbage-First (G1) GC with 4 thread(s)
+
+Heap Configuration:
+   MinHeapFreeRatio         = 40
+   MaxHeapFreeRatio         = 70
+   MaxHeapSize              = 104857600 (100.0MB)
+   NewSize                  = 41943040 (40.0MB)
+   MaxNewSize               = 41943040 (40.0MB)
+   OldSize                  = 5452592 (5.1999969482421875MB)
+   NewRatio                 = 2
+   SurvivorRatio            = 8
+   MetaspaceSize            = 21807104 (20.796875MB)
+   CompressedClassSpaceSize = 1073741824 (1024.0MB)
+   MaxMetaspaceSize         = 17592186044415 MB
+   G1HeapRegionSize         = 1048576 (1.0MB)
+
+Heap Usage:
+G1 Heap:
+   regions  = 100
+   capacity = 104857600 (100.0MB)
+   used     = 3145728 (3.0MB)
+   free     = 101711872 (97.0MB)
+   3.0% used
+G1 Young Generation:
+Eden Space:
+   regions  = 3
+   capacity = 44040192 (42.0MB)
+   used     = 3145728 (3.0MB)
+   free     = 40894464 (39.0MB)
+   7.142857142857143% used
+Survivor Space:
+   regions  = 0
+   capacity = 0 (0.0MB)
+   used     = 0 (0.0MB)
+   free     = 0 (0.0MB)
+   0.0% used
+G1 Old Generation:
+   regions  = 0
+   capacity = 39845888 (38.0MB)
+   used     = 0 (0.0MB)
+   free     = 39845888 (38.0MB)
+   0.0% used
+
+```
+
+* **示例三：histo[:live]**
+命令：jmap -histo:live pid
+描述：显示堆中对象的统计信息
+其中包括每个Java类、对象数量、内存大小(单位：字节)、完全限定的类名。打印的虚拟机内部的类名称将会带有一个’*’前缀。如果指定了live子选项，则只计算活动的对象。
+
+```
+lgj@lgj-Lenovo-G470:~/Downloads$ jmap -histo 10028
+
+ num     #instances         #bytes  class name
+----------------------------------------------
+   1:           633        1318328  [I
+   2:          1896        1255704  [B
+   3:          6206         626184  [C
+   4:          4740         113760  java.lang.String
+   5:           661          75496  java.lang.Class
+   6:          1292          58120  [Ljava.lang.Object;
+   7:           639          25560  java.util.LinkedHashMap$Entry
+   8:           318          16320  [Ljava.lang.String;
+   9:            39          12112  [Ljava.util.HashMap$Node;
+  10:           375          12000  java.util.HashMap$Node
+  11:           152          10944  java.lang.reflect.Field
+  12:           387           9288  java.lang.StringBuilder
+
+```
+* **示例四：clstats**
+命令：jmap -clstats pid
+描述：打印类加载器信息
+-clstats是-permstat的替代方案，在JDK8之前，-permstat用来打印类加载器的数据
+打印Java堆内存的永久保存区域的类加载器的智能统计信息。对于每个类加载器而言，它的名称、活跃度、地址、父类加载器、它所加载的类的数量和大小都会被打印。此外，包含的字符串数量和大小也会被打印。
+
+```
+lgj@lgj-Lenovo-G470:~/Downloads$ jmap  -clstats 10028
+Attaching to process ID 10028, please wait...
+Debugger attached successfully.
+Server compiler detected.
+JVM version is 25.191-b12
+finding class loader instances ..done.
+computing per loader stat ..done.
+please wait.. computing liveness.....................done.
+class_loader	classes	bytes	parent_loader	alive?	type
+
+<bootstrap>	577	1082828	  null  	live	<internal>
+0x00000000feb3cbc0	0	0	  null  	live	sun/misc/Launcher$ExtClassLoader@0x000000010000fc80
+0x00000000fe80e608	0	0	0x00000000feb62768	live	java/util/ResourceBundle$RBClassLoader@0x000000010005e9b0
+0x00000000feb62768	4	5126	0x00000000feb3cbc0	live	sun/misc/Launcher$AppClassLoader@0x000000010000f8d8
+
+total = 4	581	1087954	    N/A    	alive=4, dead=0	    N/A  
+```
+
+* **示例五：finalizerinfo**
+命令：jmap -finalizerinfo pid
+描述：打印等待终结的对象信息
+
+```
+lgj@lgj-Lenovo-G470:~/Downloads$ jmap  -finalizerinfo  10028
+Attaching to process ID 10028, please wait...
+Debugger attached successfully.
+Server compiler detected.
+JVM version is 25.191-b12
+Number of objects pending for finalization: 0
+
+```
+
+* **示例六：dump:< dump-options>**
+命令：jmap -dump:format=b,file=heapdump.phrof pid
+描述：生成堆转储快照dump文件。
+以hprof二进制格式转储Java堆到指定filename的文件中。live子选项是可选的。如果指定了live子选项，堆中只有活动的对象会被转储。想要浏览heap dump，你可以使用jhat(Java堆分析工具)读取生成的文件。
+
+这个命令执行，JVM会将整个heap的信息dump写入到一个文件，heap如果比较大的话，就会导致这个过程比较耗时，并且执行的过程中为了保证dump的信息是可靠的，所以会暂停应用， 线上系统慎用。
+
+
+```
+lgj@lgj-Lenovo-G470:~/Downloads$ jmap -dump:format=b,file=heapdump.phrof 10028
+Dumping heap to /home/lgj/Downloads/heapdump.phrof ...
+
+```
+然后使用 jvisualvm 或者jhat等工具导入进行分析
+
+##### 1.5.14.1.6. 虚拟机堆转储快照分析工具jhat
+
+主要是用来分析java堆的命令，可以将堆中的对象以html的形式显示出来，包括对象的数量，大小等等，并支持对象查询语言。
+
 * 虚拟机堆转储快照分析工具
 ```
 Usage:  jhat [-stack <bool>] [-refs <bool>] [-port <port>] [-baseline <file>] [-debug <int>] [-version] [-h|-help] <file>
@@ -929,7 +2910,24 @@ by appending "#<number>" to the file name, i.e. "foo.hprof#3".
 All boolean options default to "true"
 
 ```
-**jstack**
+分析jmap生成的堆快照文件heapdump.phrof 
+```
+lgj@lgj-Lenovo-G470:~/Downloads$ jhat heapdump.phrof 
+Reading from heapdump.phrof...
+Dump file created Wed Sep 11 16:26:25 CST 2019
+Snapshot read, resolving...
+Resolving 20815 objects...
+Chasing references, expect 4 dots....
+Eliminating duplicate references....
+Snapshot resolved.
+Started HTTP server on port 7000
+Server is ready.
+
+```
+访问 www.localhost:7000 就可以访问html页面。可以通过-port配置端口。
+
+##### 1.5.14.1.7. 查看线程堆栈jstack
+
 * Java堆栈跟踪工具
 ```
 Usage:
@@ -944,28 +2942,1860 @@ Usage:
 
 Options:
     -F  to force a thread dump. Use when jstack <pid> does not respond (process is hung)
-    -m  to print both java and native frames (mixed mode)
-    -l  long listing. Prints additional information about locks
+    -m  to print both java and native frames (mixed mode) 打印java和本地混合调用栈.
+    -l  long listing. Prints additional information about locks 打印锁的附加信息
     -h or -help to print this help message
 
 
 ```
-****
 
 
-#### 1.4.8.2. Jdk可视化工具
+说明：
+Attach Listener是线程名称, prio优先级, tid java线程id, nid native线程id. java.lang.Thread.State:WAITING线程状态.
+locked <0x00000007955b0850>已经进入临界区
+waiting:线程等待被唤醒
+
+```
+
+lgj@lgj-Lenovo-G470:~/Downloads$ jstack 10028
+2019-09-11 16:37:32
+Full thread dump Java HotSpot(TM) 64-Bit Server VM (25.191-b12 mixed mode):
+
+"Attach Listener" #11 daemon prio=9 os_prio=0 tid=0x00007f70f0001000 nid=0x2755 waiting on condition [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"Service Thread" #10 daemon prio=9 os_prio=0 tid=0x00007f7148296000 nid=0x2742 runnable [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"C1 CompilerThread2" #9 daemon prio=9 os_prio=0 tid=0x00007f7148289000 nid=0x2741 waiting on condition [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"C2 CompilerThread1" #8 daemon prio=9 os_prio=0 tid=0x00007f7148287800 nid=0x2740 waiting on condition [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"C2 CompilerThread0" #7 daemon prio=9 os_prio=0 tid=0x00007f7148284800 nid=0x273f waiting on condition [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"Monitor Ctrl-Break" #6 daemon prio=5 os_prio=0 tid=0x00007f7148283800 nid=0x273e runnable [0x00007f71112c3000]
+   java.lang.Thread.State: RUNNABLE
+	at java.net.SocketInputStream.socketRead0(Native Method)
+	at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+	at java.net.SocketInputStream.read(SocketInputStream.java:171)
+	at java.net.SocketInputStream.read(SocketInputStream.java:141)
+	at sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:284)
+	at sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:326)
+	at sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178)
+	- locked <0x00000000fea37fd0> (a java.io.InputStreamReader)
+	at java.io.InputStreamReader.read(InputStreamReader.java:184)
+	at java.io.BufferedReader.fill(BufferedReader.java:161)
+	at java.io.BufferedReader.readLine(BufferedReader.java:324)
+	- locked <0x00000000fea37fd0> (a java.io.InputStreamReader)
+	at java.io.BufferedReader.readLine(BufferedReader.java:389)
+	at com.intellij.rt.execution.application.AppMainV2$1.run(AppMainV2.java:64)
+
+"Signal Dispatcher" #5 daemon prio=9 os_prio=0 tid=0x00007f7148162800 nid=0x273d runnable [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"Surrogate Locker Thread (Concurrent GC)" #4 daemon prio=9 os_prio=0 tid=0x00007f7148161000 nid=0x273c waiting on condition [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"Finalizer" #3 daemon prio=8 os_prio=0 tid=0x00007f7148129800 nid=0x273b in Object.wait() [0x00007f71117fe000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0x00000000feb08ed0> (a java.lang.ref.ReferenceQueue$Lock)
+	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:144)
+	- locked <0x00000000feb08ed0> (a java.lang.ref.ReferenceQueue$Lock)
+	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:165)
+	at java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:216)
+
+"Reference Handler" #2 daemon prio=10 os_prio=0 tid=0x00007f7148127000 nid=0x273a in Object.wait() [0x00007f713812a000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0x00000000feb06bf8> (a java.lang.ref.Reference$Lock)
+	at java.lang.Object.wait(Object.java:502)
+	at java.lang.ref.Reference.tryHandlePending(Reference.java:191)
+	- locked <0x00000000feb06bf8> (a java.lang.ref.Reference$Lock)
+	at java.lang.ref.Reference$ReferenceHandler.run(Reference.java:153)
+
+"main" #1 prio=5 os_prio=0 tid=0x00007f714800e800 nid=0x272d waiting on condition [0x00007f7150189000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+	at java.lang.Thread.sleep(Native Method)
+	at com.code.base.jvm.JvmDemo.main(JvmDemo.java:18)
+
+"VM Thread" os_prio=0 tid=0x00007f714811d000 nid=0x2739 runnable 
+
+"Gang worker#0 (Parallel GC Threads)" os_prio=0 tid=0x00007f7148025800 nid=0x272e runnable 
+
+"Gang worker#1 (Parallel GC Threads)" os_prio=0 tid=0x00007f7148027800 nid=0x272f runnable 
+
+"Gang worker#2 (Parallel GC Threads)" os_prio=0 tid=0x00007f7148029000 nid=0x2730 runnable 
+
+"Gang worker#3 (Parallel GC Threads)" os_prio=0 tid=0x00007f714802b000 nid=0x2731 runnable 
+
+"G1 Main Concurrent Mark GC Thread" os_prio=0 tid=0x00007f7148040800 nid=0x2737 runnable 
+
+"Gang worker#0 (G1 Parallel Marking Threads)" os_prio=0 tid=0x00007f7148042800 nid=0x2738 runnable 
+
+"G1 Concurrent Refinement Thread#0" os_prio=0 tid=0x00007f7148034800 nid=0x2736 runnable 
+
+"G1 Concurrent Refinement Thread#1" os_prio=0 tid=0x00007f7148032800 nid=0x2735 runnable 
+
+"G1 Concurrent Refinement Thread#2" os_prio=0 tid=0x00007f7148031000 nid=0x2734 runnable 
+
+"G1 Concurrent Refinement Thread#3" os_prio=0 tid=0x00007f714802f000 nid=0x2733 runnable 
+
+"G1 Concurrent Refinement Thread#4" os_prio=0 tid=0x00007f714802d800 nid=0x2732 runnable 
+
+"VM Periodic Task Thread" os_prio=0 tid=0x00007f7148299800 nid=0x2743 waiting on condition 
+
+JNI global references: 12
+
+
+```
+
+##### 1.5.14.1.8. jcmd
+
+命令说明
+```
+Usage: jcmd <pid | main class> <command ...|PerfCounter.print|-f file>
+   or: jcmd -l                                                    
+   or: jcmd -h                                                    
+                                                                  
+  command must be a valid jcmd command for the selected jvm.      
+  Use the command "help" to see which commands are available.   
+  If the pid is 0, commands will be sent to all Java processes.   
+  The main class argument will be used to match (either partially 
+  or fully) the class used to start Java.                         
+  If no options are given, lists Java processes (same as -p).     
+                                                                  
+  PerfCounter.print display the counters exposed by this process  
+  -f  read and execute commands from the file                     
+  -l  list JVM processes on the local machine                     
+  -h  this help 
+```
+
+* 描述
+    * pid：接收诊断命令请求的进程ID。
+    * main class ：接收诊断命令请求的进程的main类。匹配进程时，main类名称中包含指定子字符串的任何进程均是匹配的。如果多个正在运行的Java进程共享同一个main类，诊断命令请求将会发送到所有的这些进程中。
+    * command：接收诊断命令请求的进程的main类。匹配进程时，main类名称中包含指定子字符串的任何进程均是匹配的。如果多个正在运行的Java进程共享同一个main类，诊断命令请求将会发送到所有的这些进程中。
+        * 注意: 如果任何参数含有空格，你必须使用英文的单引号或双引号将其包围起来。 此外，你必须使用转义字符来转移参数中的单引号或双引号，以阻止操作系统shell处理这些引用标记。当然，你也可以在参数两侧加上单引号，然后在参数内使用双引号(或者，在参数两侧加上双引号，在参数中使用单引号)。
+    * Perfcounter.print：打印目标Java进程上可用的性能计数器。性能计数器的列表可能会随着Java进程的不同而产生变化。
+    * -f file：从文件file中读取命令，然后在目标Java进程上调用这些命令。在file中，每个命令必须写在单独的一行。以"#"开头的行会被忽略。当所有行的命令被调用完毕后，或者读取到含有stop关键字的命令，将会终止对file的处理。
+    * -l：查看所有的进程列表信息。
+    * -h：查看帮助信息。（同 -help）
+
+
+
+
+#### 1.5.14.2. Jdk可视化工具
 <a href="#menu" style="float:right">目录</a>
 
 * JConsole
+jdk自带，功能简单，但是可以在系统有一定负荷的情况下使用。对垃圾回收算法有很详细的跟踪
+
+* JProfiler
+商业软件，需要付费。功能强大
+
 * JVisualVM
+VisualVM：JDK自带，功能强大，与JProfiler类似。推荐。
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/jvm/monitor.png?raw=true)
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/jvm/thread.png?raw=true)
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/jvm/gc.png?raw=true)
-### 1.4.9. JVM性能调优
 
-### 1.4.10. 类文件结构
+#### 1.5.14.3. 重要的垃圾收集数据
+<a href="#menu" style="float:right">目录</a>
 
-### 1.4.11. 类加载器
+* 当前使用的垃圾收集器
+* Java堆的大小
+* 新生代和老年到的大小
+* Minor GC的持续时间
+* Minor GC的频率
+* Minor GC的空间回收量
+* Full GC的持续时间
+* Full GC的频率
+* 每个并发垃圾收集器周期内的空间回收量
+* 垃圾收集前后的Java堆的占用量
+* 垃圾收集前后新生代和老年代的占用量
+
+**GC相关参数总结**
+
+* 与串行回收器相关的参数
+    * -XX:+UseSerialGC：在新生代和老年代使用串行回收器。
+    * -XX:+SuivivorRatio：设置 eden 区大小和 survivor 区大小的比例。
+    * -XX:+PretenureSizeThreshold：设置大对象直接进入老年代的阈值。当对象的大小超过这个值时，将直接在老年代分配。
+    * -XX:MaxTenuringThreshold：设置对象进入老年代的年龄的最大值。每一次 Minor GC 后，对象年龄就加 1。任何大于这个年龄的对象，一定会进入老年代。
+* 与并行 GC 相关的参数
+    * -XX:+UseParNewGC：在新生代使用并行回收收集器。
+    * -XX:+UseParallelOldGC：老年代使用并行回收收集器。
+    * -XX:ParallelGCThreads：设置用于垃圾回收的线程数。通常情况下可以和 CPU 数量相等。但在 CPU 数量比较多的情况下，设置相对较小的数值也是合理的。
+    * -XX:MaxGCPauseMills：设置最大垃圾收集停顿时间。它的值是一个大于 0 的整数。收集器在工作时，会调整 Java 堆大小或者其他一些参数，尽可能地把停顿时间控制在 MaxGCPauseMills 以内。
+    * -XX:GCTimeRatio：设置吞吐量大小，它的值是一个 0-100 之间的整数。假设 GCTimeRatio 的值为 n，那么系统将花费不超过 1/(1+n) 的时间用于垃圾收集。
+    * -XX:+UseAdaptiveSizePolicy：打开自适应 GC 策略。在这种模式下，新生代的大小，eden 和 survivor 的比例、晋升老年代的对象年龄等参数会被自动调整，以达到在堆大小、吞吐量和停顿时间之间的平衡点。
+* 与 CMS 回收器相关的参数
+    * -XX:+UseConcMarkSweepGC：新生代使用并行收集器，老年代使用 CMS+串行收集器。
+    * -XX:+ParallelCMSThreads：设定 CMS 的线程数量。
+    * -XX:+CMSInitiatingOccupancyFraction：设置 CMS 收集器在老年代空间被使用多少后触发，默认为 68%。
+    * -XX:+UseFullGCsBeforeCompaction：设定进行多少次 CMS 垃圾回收后，进行一次内存压缩。
+    * -XX:+CMSClassUnloadingEnabled：允许对类元数据进行回收。
+    * -XX:+CMSParallelRemarkEndable：启用并行重标记。
+    * -XX:CMSInitatingPermOccupancyFraction：当永久区占用率达到这一百分比后，启动 CMS 回收 (前提是-XX:+CMSClassUnloadingEnabled 激活了)。
+    * -XX:UseCMSInitatingOccupancyOnly：表示只在到达阈值的时候，才进行 CMS 回收。
+    * -XX:+CMSIncrementalMode：使用增量模式，比较适合单 CPU。
+* 与 G1 回收器相关的参数
+    * -XX:+UseG1GC：使用 G1 回收器。
+    * -XX:+UnlockExperimentalVMOptions:允许使用实验性参数。
+    * -XX:+MaxGCPauseMills:设置最大垃圾收集停顿时间。
+    * -XX:+GCPauseIntervalMills:设置停顿间隔时间。
+* 其他参数
+    * -XX:+DisableExplicitGC: 禁用显示 GC
+
+
+### 1.5.15. JVM性能调优案例
+
+#### 1.5.15.1. 常用参数
+<a href="#menu" style="float:right">目录</a>
+
+* -XX:+PrintGCTimeStamps输出格式：
+```
+289.556: [GC [PSYoungGen: 314113K->15937K(300928K)] 405513K->107901K(407680K), 0.0178568 secs] [Times: user=0.06 sys=0.00, real=0.01 secs] 
+293.271: [GC [PSYoungGen: 300865K->6577K(310720K)] 392829K->108873K(417472K), 0.0176464 secs] [Times: user=0.06 sys=0.00, real=0.01 secs] 
+```
+详解：
+293.271是从jvm启动直到垃圾收集发生所经历的时间，GC表示这是一次Minor GC（新生代垃圾收集）；[PSYoungGen: 300865K->6577K(310720K)] 提供了新生代空间的信息，PSYoungGen，表示新生代使用的是多线程垃圾收集器Parallel Scavenge。300865K表示垃圾收集之前新生代占用空间，6577K表示垃圾收集之后新生代的空间。新生代又细分为一个Eden区和两个Survivor区,Minor GC之后Eden区为空，6577K就是Survivor占用的空间。
+括号里的310720K表示整个年轻代的大小。
+392829K->108873K(417472K),表示垃圾收集之前（392829K）与之后（108873K）Java堆的大小（总堆417472K，堆大小包括新生代和年老代）
+由新生代和Java堆占用大小可以算出年老代占用空间，如，Java堆大小417472K，新生代大小310720K那么年老代占用空间是417472K-310720K=106752k；垃圾收集之前老年代占用的空间为392829K-300865K=91964k 垃圾收集之后老年代占用空间108873K-6577K=102296k.
+0.0176464 secs表示垃圾收集过程所消耗的时间。
+[Times: user=0.06 sys=0.00, real=0.01 secs] 提供cpu使用及时间消耗，user是用户模式垃圾收集消耗的cpu时间，实例中垃圾收集器消耗了0.06秒用户态cpu时间，sys是消耗系统态cpu时间,real是指垃圾收集器消耗的实际时间。
+
+ 
+
+* -XX:+PrintGCDetails输出格式：
+```
+293.289: [Full GC [PSYoungGen: 6577K->0K(310720K)] 
+
+[PSOldGen: 102295K->102198K(134208K)] 108873K->102198K(444928K) 
+
+[PSPermGen: 59082K->58479K(104192K)], 0.3332354 secs] 
+
+[Times: user=0.33 sys=0.00, real=0.33 secs] 
+```
+说明：
+
+Full GC表示执行全局垃圾回收
+
+[PSYoungGen: 6577K->0K(310720K)] 提供新生代空间信息，解释同上
+
+[PSOldGen: 102295K->102198K(134208K)]提供了年老代空间信息；
+
+108873K->102198K(444928K)整个堆空间信息；
+
+[PSPermGen: 59082K->58479K(104192K)]提供了持久代空间信息。
+
+```
+************************************jdk  1.8  ***************************************
+
+928.242: [GC (Allocation Failure) [PSYoungGen: 1253249K->30225K(1289728K)] 1779754K->556738K(2020864K), 0.0356346 secs] [Times: user=0.11 sys=0.00, real=0.03 secs] 
+931.770: [GC (Allocation Failure) [PSYoungGen: 1260049K->58346K(1269760K)] 1786562K->605128K(2000896K), 0.0383538 secs] [Times: user=0.23 sys=0.01, real=0.04 secs] 
+935.178: [GC (Allocation Failure) [PSYoungGen: 1269738K->74746K(1286144K)] 1816520K->628896K(2017280K), 0.0545040 secs] [Times: user=0.23 sys=0.00, real=0.06 secs] 
+938.592: [GC (Allocation Failure) [PSYoungGen: 1286138K->74730K(1234944K)] 1840288K->634580K(1966080K), 0.0466145 secs] [Times: user=0.23 sys=0.00, real=0.05 secs] 
+(Allocation Failure)  是 触发原因，内存分配失败  Yong 区！
+[Full GC (System.gc()) [PSYoungGen: 64606K->0K(1250304K)] [ParOldGen: 560282K->70636K(731136K)]
+624888K->70636K(1981440K), [Metaspace: 80870K->80870K(1122304K)], 0.3997928 secs] [Times: user=1.22 sys=0.02, real=0.40 secs] 
+```
+
+这是fullGC 触发原因系统调用  jvm 退出
+```
+704.975: [Full GC (Ergonomics) [PSYoungGen: 113660K->0K(1078272K)]
+[ParOldGen: 608998K->319617K(731136K)] 722659K->319617K(1809408K), [Metaspace: 78468K->78468K(1120256K)], 0.7647321 secs] [Times: user=3.06 sys=0.06, real=0.77 secs] 
+```
+这是fullGC 触发原因系统调用，表示JVM内部环境认为此时可以进行一次垃圾收集。
+
+ 
+```
+97.172: [Full GC (Metadata GC Threshold) [PSYoungGen: 19117K->0K(1314304K)][ParOldGen: 92121K->102831K(393728K)] 111239K->102831K(1708032K),
+[Metaspace: 57037K->57037K(1101824K)], 0.7376882 secs] [Times: user=2.40 sys=0.03, real=0.74 secs] 
+```
+这是fullGC 触发原因元空间不足，方法区
+
+ 
+```
+14.622: [Full GC (Metadata GC Threshold) [PSYoungGen: 22862K->0K(1009152K)]
+ [ParOldGen: 74731K->84004K(307712K)] 97593K->84004K(1316864K),
+ [Metaspace: 34473K->34473K(1081344K)], 0.2161652 secs] [Times: user=0.87 sys=0.01, real=0.21 secs] 
+```
+这是fullGC 触发原因元空间不足，方法区
+
+ 
+```
+392.288: [Full GC [PSYoungGen: 33356K->0K(943104K)] [ParOldGen: 63939K->65555K(659968K)] 
+97295K->65555K(1603072K) [PSPermGen: 37621K->33623K(74240K)], 0.2658880 secs] [Times: user=0.88 sys=0.00, real=0.27 secs] 
+```
+这是fullGC 触发原因老年区
+
+
+#### 1.5.15.2. 调整堆的大小
+<a href="#menu" style="float:right">目录</a>
+
+如果分配的堆过于小，那么应用就会频繁地进行GC，没有足够的时间运行应用程序的逻辑。
+如果分配的堆过于大，能改降低停顿的频率，但是GC时停顿的时间也会加大，因为有更多的垃圾需要回收。
+
+使用超大堆还有一个风险。操作系统使用虚拟内存机制管理机器的物理内存。一台机器可能有8G的物理内存，不过操作系统可能让你觉得有更多的可用内存，虚拟内存的数量取决于操作系统的设置。操作系统通过交换swapping来实现。你可以载入需要16G内存的应用程序，操作系统在需要时会将应用程序运行时不活跃的数据由内存复制到磁盘。再次需要时这部分内存的内容时，操作系统再将他们由磁盘重新载入内存，为了腾出空间，它会将另一部分内存的内容复制到磁盘。
+
+系统中运行大量的不同应用的程序时，这个流程工作很顺畅。因为大多数的应用程序不会同时处于活跃状态。
+
+但是对于Java应用程序，如果设置了超过物理内存的堆大小，运行时Java并不知道这个虚拟内存的存在，如果全部分配完全，将会降低性能，因为会有部分数据需要不断地写入磁盘读出磁盘。尤其是在进行Full GC时，必须扫描全部的堆空间，如果此时发生内存交换，将会导致停顿的时间更长。
+
+因此，调整堆的大小不应超过机器物理内存。如果存在多个JVM，这个数据就是所有JVM堆的总和。除此之外，还需要为其他的应用预留一定的内存空间。
+
+堆大小由两个参数值控制：分别是初始值(-Xms N)和最大值(-Xmx N)。默认的值受操作系统类型。系统内存大小，使用的JVM影响。其他的命令行标志也会对该值有影响。堆大小的调节是JVM自适应调优的核心。
+
+JVM的目标是依据系统可用的资源找到一个合理的默认初始值，当切仅当应用程序需要更多的内存时将堆大小增大到一个合理的最大值。
+
+堆的大小具有初始值和最大值的这种设计让JVM能改根据实际负荷情况更灵活地调整JVM的行为。如果JVM发现使用初始的堆大小，频繁地发生GC，它就会尝试增加堆的空间，直到JVM的GC的频率回归到正常的范围，或者直到堆大小增大到它的上限值。
+
+对很多应用来说，这意味着堆的大小不再需要调整，实际上 ，只需要为选择的GC算法设定性能目标，譬如停顿时间，垃圾回收在整个时间中所占用的百分比等。
+
+一个经验法则是每次Full GC后，应该释放出70%的空间。
+
+即使显示设置了堆的最大值，还是会发生堆的自动调节，初始值以默认的大小开始运行，为了达到设定的垃圾收集算法设置的性能目标，JVM会逐步增大堆的大小。将堆的大小设置比实际需要更大不一定会带来性能目标，堆并不会无限增大，JVM会自动调节堆的大小直到其满足GC的性能目标。
 
 
 
+#### 1.5.15.3. 代空间调整
+<a href="#menu" style="float:right">目录</a>
+
+**常用参数**
+* -XX:NewRation=N
+    * 新生代和老年代的占用比率
+* -XX:NewSize=N
+    * 新生代空间的初始大小
+* -XX:MaxNewSize=N
+    * 新生代空间的最大大小
+* -XmnN
+    * 将NewSize和MaxNewSize设置为同一个值的快捷方法
+
+
+
+#### 1.5.15.4. 永久代和元空空间
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.15.5. 控制并发
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.15.6. 自适应调整
+<a href="#menu" style="float:right">目录</a>
+
+
+#### 1.5.15.7. 将新对象预留在新生代
+<a href="#menu" style="float:right">目录</a>
+
+Full GC的成本远高于Minor GC，因此应当尽可能将对象分配在新生代。
+大部分情况下，JVM会尝试在eden区分配对象，如果对象过大，会直接在老年代进行分配。因此可以设置一个合理的新生代大小，尽可能让对象在新生代分配空间。
+一般来说，当survicor空间不够或者占用量达到50%时，就会在老年代进行空间分配。
+
+将这个比例提高到90%
+```
+-XX:TargeT-SurvivorRatio=90
+```
+这个参数只对串行收集器和新生代并行收集器有效。
+
+
+#### 1.5.15.8. 大对象进入老年代
+<a href="#menu" style="float:right">目录</a>
+
+大部分情况下，将对象分配在新生代是合理的，但是对于大对象，大对象很可能扰乱新生代GC，并破坏新生代原有的对象结构，因为尝试在新生代分配大对象，很可能导致空间不足，为了有足够的空间容纳大对象，JVM不得不将新生代中的小对象移动到老年代，这并不是一个好结果。老年代应该存放年龄较大的对象或者大对象。
+
+通过该参数进行设置阈值
+```
+-XX:PretenureSizeThreshold=1000
+```
+
+#### 1.5.15.9. 设置对象进入老年代的年龄
+<a href="#menu" style="float:right">目录</a>
+
+
+这个值默认是15，如果对象在EDEN区，经过一次GC后还存活，对象年龄加1，当对象年龄达到阈值时，就移入老年代。
+
+这里设置的是最大值，虚拟机会根据实际情况进行动态调整，可能还不到15就被移动带老年代了。
+```
+-XX:MaxTenuringThreshold=10
+```
+#### 1.5.15.10. 稳定与震荡的堆大小
+<a href="#menu" style="float:right">目录</a>当 -Xms与 -Xmx设置大小一样，是一个稳定的堆，这样做的好处是，减少GC的次数。
+当 -Xms与 -Xmx设置大小不一样，是一个不稳定的堆，它会增加GC的次数，但是它在系统不需要使用大内存时，压缩堆空间，使得GC应对一个较小的堆，可以加快单次GC的次数。
+
+可以通过两个参数设置用语压缩和扩展堆空间：
+* -XX:MinHeapFreeRatio: 设置堆的最小空闲比例，默认是40，当堆空间的空闲空间小于这个数值时，jvm会自动扩展空间。
+* -XX：MaxHeapFreeRatio: 设置堆的最大空闲比例，默认是70，当堆空间的空闲空间大于这个数值时，jvm会自动压缩空间。
+
+#### 1.5.15.11. 吞吐量优先案例
+<a href="#menu" style="float:right">目录</a>
+
+吞吐量优先的方案将会尽可能减少系统执行垃圾回收的总时间，故可以考虑关注系统吞吐量的并行回收收集器。在拥有4GB内存和32核CPU的计算机上，进行吞吐量的优化，可以使用参数：
+
+java –Xmx3800m –Xms3800m –Xmn2G –Xss128k –XX:+UseParallelGC 
+   –XX:ParallelGCThreads=20 –XX:+UseParallelOldGC
+–Xmx380m –Xms3800m：设置 Java 堆的最大值和初始值。一般情况下，为了避免堆内存的频繁震荡，导致系统性能下降，我们的做法是设置最大堆等于最小堆。假设这里把最小堆减少为最大堆的一半，即 1900m，那么 JVM 会尽可能在 1900MB 堆空间中运行，如果这样，发生 GC 的可能性就会比较高；
+
+-Xss128k：减少线程栈的大小，这样可以使剩余的系统内存支持更多的线程；
+
+-Xmn2g：设置年轻代区域大小为 2GB；
+
+–XX:+UseParallelGC：年轻代使用并行垃圾回收收集器。这是一个关注吞吐量的收集器，可以尽可能地减少 GC 时间。
+
+–XX:ParallelGCThreads：设置用于垃圾回收的线程数，通常情况下，可以设置和 CPU 数量相等。但在 CPU 数量比较多的情况下，设置相对较小的数值也是合理的；
+
+–XX:+UseParallelOldGC：设置年老代使用并行回收收集器。
+
+
+
+#### 1.5.15.12. 使用大页案例
+<a href="#menu" style="float:right">目录</a>
+
+在 Solaris 系统中，JVM 可以支持 Large Page Size 的使用。使用大的内存分页可以增强 CPU 的内存寻址能力，从而提升系统的性能。
+
+
+对同样大小的内存空间， 使用大页后， 内存分页的表项就会减少， 从而可以提升CPU从虚拟内存地址映射到物理内存地址的能力。 在支持大页的操作系统中，使用JVM参数让虚拟机使用大页，从而提升系统性能。
+* -XX:+UserlargePages: 启用大页。
+* -XX:LargePageSizeInBytes: 指定大页的大小。
+
+```
+java –Xmx2506m –Xms2506m –Xmn1536m –Xss128k -XX:++UseParallelGC
+ –XX:ParallelGCThreads=20 –XX:+UseParallelOldGC –XX:+LargePageSizeInBytes=256m
+–XX:+LargePageSizeInBytes：设置大页的大小。
+```
+
+#### 1.5.15.13. 降低停顿案例
+<a href="#menu" style="float:right">目录</a>
+
+为降低应用软件的垃圾回收时的停顿，首先考虑的是使用关注系统停顿的 CMS 回收器，其次，为了减少 Full GC 次数，应尽可能将对象预留在年轻代，因为年轻代 Minor GC 的成本远远小于年老代的 Full GC。
+```
+java –Xmx3550m –Xms3550m –Xmn2g –Xss128k –XX:ParallelGCThreads=20
+ –XX:+UseConcMarkSweepGC –XX:+UseParNewGC –XX:+SurvivorRatio=8 –XX:TargetSurvivorRatio=90
+ –XX:MaxTenuringThreshold=31
+–XX:ParallelGCThreads=20：设置 20 个线程进行垃圾回收；
+–XX:+UseParNewGC：新生代使用并行回收器；
+–XX:+UseConcMarkSweepGC：老年代使用 CMS 收集器降低停顿；
+```
+
+–XX:+SurvivorRatio：设置 Eden 区和 Survivor 区的比例为 8:1。稍大的 Survivor 空间可以提高在新生代回收生命周期较短的对象的可能性（如果 Survivor 不够大，一些短命的对象可能直接进入老年代，这对系统来说是不利的）。
+
+–XX:TargetSurvivorRatio：设置 Survivor 区的可使用率。这里设置为 90%，则允许 90%的 Survivor 空间被使用。默认值是 50%。故该设置提高了 Survivor 区的使用率。当存放的对象超过这个百分比，则对象会向老年代压缩。因此，这个选项更有助于将对象留在新生代。
+
+–XX:MaxTenuringThreshold：设置年轻对象晋升到老年代的年龄。默认值是 15 次，即对象经过 15 次 Minor GC 依然存活，则进入老年代。这里设置为 31，即尽可能地让对象保存在新生代。
+
+#### 1.5.15.14. 堆快照（堆Dump）
+
+获得程序的堆快照文件有很多方法， 比较常用的取得堆快照文件的方法是使用-XX:+HeapDumpOnOutOfMemoryError 参数在程序发生OOM时，导出应用程序的当前堆快照。
+
+通过参数 -XX:heapDumpPath 可以指定堆快照的保存位置。
+
+```
+-Xmx10m -XX:+HeapDumpOnOutOfMemoryError -XX:heapDumpPath=C:\m.hprof
+```
+
+#### 1.5.15.15. 控制GC
+
+-XX:+DisableExplicitGC 选项用于禁止显式的GC操作， 即禁止在程序中使用System.gc() 触发Full GC。
+-Xnoclassgc 参数用于禁止系统进行类的回收， 即系统不会卸载任何类，进而提升GC的性能。
+-Xincgc 参数，一旦启用这个参数，系统便会进行增量式的 GC，增量式的GC使用特定算法让GC线程和应用程序线程交叉执行，从而减小应用程序因GC而产生的停顿时间。
+
+
+
+### 1.5.16. 类文件结构
+
+
+Class文件是一组以8位字节为基础单位的二进制流，各个数据项目严格按照顺序紧凑地排列在Class文件之中，中间没有添加任何分隔符，这使得整个Class文件中存储的内容几乎全部是程序运行的必要数据，没有空隙存在。当遇到需要多于8位字节以上空间的数据项时，则会按照高位在前的方式分割成若干个8位字节进行存储。
+
+
+一个 Java 类文件大致可以归为 10 个项：
+* Magic：该项存放了一个 Java 类文件的魔数（magic number）和版本信息。一个 Java 类文件的前 4 个字节被称为它的魔数。每个正确的 Java 类文件都是以 0xCAFEBABE 开头的，这样保证了 Java 虚拟机能很轻松的分辨出 Java 文件和非 Java 文件。
+* Version：该项存放了 Java 类文件的版本信息，它对于一个 Java 文件具有重要的意义。因为 Java 技术一直在发展，所以类文件的格式也处在不断变化之中。类文件的版本信息让虚拟机知道如何去读取并处理该类文件。
+* Constant Pool：该项存放了类中各种文字字符串、类名、方法名和接口名称、final 变量以及对外部类的引用信息等常量。虚拟机必须为每一个被装载的类维护一个常量池，常量池中存储了相应类型所用到的所有类型、字段和方法的符号引用，因此它在 Java 的动态链接中起到了核心的作用。常量池的大小平均占到了整个类大小的 60% 左右。
+* Access_flag：该项指明了该文件中定义的是类还是接口（一个 class 文件中只能有一个类或接口），同时还指名了类或接口的访问标志，如 public，private, abstract 等信息。
+* This Class：指向表示该类全限定名称的字符串常量的指针。
+* Super Class：指向表示父类全限定名称的字符串常量的指针。
+* Interfaces：一个指针数组，存放了该类或父类实现的所有接口名称的字符串常量的指针。以上三项所指向的常量，特别是前两项，在我们用 ASM 从已有类派生新类时一般需要修改：将类名称改为子类名称；将父类改为派生前的类名称；如果有必要，增加新的实现接口。
+* Fields：该项对类或接口中声明的字段进行了细致的描述。需要注意的是，fields 列表中仅列出了本类或接口中的字段，并不包括从超类和父接口继承而来的字段。
+* Methods：该项对类或接口中声明的方法进行了细致的描述。例如方法的名称、参数和返回值类型等。需要注意的是，methods 列表里仅存放了本类或本接口中的方法，并不包括从超类和父接口继承而来的方法。使用 ASM 进行 AOP 编程，通常是通过调整 Method 中的指令来实现的。
+* Class attributes：该项存放了在该文件中类或接口所定义的属性的基本信息。
+
+**使用hexdump工具查看Class十六进制值**
+```
+lgj@lgj-Lenovo-G470:~/aProject/JavaCode/Java-base/target/classes/com/code/base/collector$ hexdump ArraysDemo.class 
+0000000 feca beba 0000 3400 1a00 000a 0002 0712
+0000010 1300 000a 0014 0715 1600 0001 3c06 6e69
+0000020 7469 013e 0300 2928 0156 0400 6f43 6564
+0000030 0001 4c0f 6e69 4e65 6d75 6562 5472 6261
+0000040 656c 0001 4c12 636f 6c61 6156 6972 6261
+0000050 656c 6154 6c62 0165 0400 6874 7369 0001
+0000060 4c24 6f63 2f6d 6f63 6564 622f 7361 2f65
+0000070 6f63 6c6c 6365 6f74 2f72 7241 6172 7379
+0000080 6544 6f6d 013b 0400 616d 6e69 0001 2816
+0000090 4c5b 616a 6176 6c2f 6e61 2f67 7453 6972
+00000a0 676e 293b 0156 0400 7261 7367 0001 5b13
+00000b0 6a4c 7661 2f61 616c 676e 532f 7274 6e69
+00000c0 3b67 0001 530a 756f 6372 4665 6c69 0165
+00000d0 0f00 7241 6172 7379 6544 6f6d 6a2e 7661
+00000e0 0c61 0500 0600 0001 6a10 7661 2f61 616c
+00000f0 676e 4f2f 6a62 6365 0774 1700 000c 0018
+0000100 0119 2200 6f63 2f6d 6f63 6564 622f 7361
+0000110 2f65 6f63 6c6c 6365 6f74 2f72 7241 6172
+0000120 7379 6544 6f6d 0001 6a10 7661 2f61 7475
+0000130 6c69 412f 7272 7961 0173 0600 7361 694c
+0000140 7473 0001 2825 4c5b 616a 6176 6c2f 6e61
+0000150 2f67 624f 656a 7463 293b 6a4c 7661 2f61
+0000160 7475 6c69 4c2f 7369 3b74 2100 0400 0200
+0000170 0000 0000 0200 0100 0500 0600 0100 0700
+0000180 0000 2f00 0100 0100 0000 0500 b72a 0100
+0000190 00b1 0000 0002 0008 0000 0006 0001 0000
+00001a0 0005 0009 0000 000c 0001 0000 0005 000a
+00001b0 000b 0000 0009 000c 000d 0001 0007 0000
+00001c0 0037 0001 0001 0000 0309 00bd b802 0300
+00001d0 b157 0000 0200 0800 0000 0a00 0200 0000
+00001e0 0a00 0800 0d00 0900 0000 0c00 0100 0000
+00001f0 0900 0e00 0f00 0000 0100 1000 0000 0200
+0000200 1100                                   
+0000202
+
+```
+
+**使用javap工具查看反编译后的字节码javap**
+```
+lgj@lgj-Lenovo-G470:~/aProject/JavaCode/Java-base/target/classes/com/code/base/collector$ javap -v ArraysDemo.class 
+Classfile /home/lgj/aProject/JavaCode/Java-base/target/classes/com/code/base/collector/ArraysDemo.class
+  Last modified Sep 12, 2019; size 514 bytes
+  MD5 checksum 53801876d383dc25492a98f309774012
+  Compiled from "ArraysDemo.java"
+public class com.code.base.collector.ArraysDemo
+  minor version: 0
+  major version: 52
+  flags: ACC_PUBLIC, ACC_SUPER
+Constant pool:
+   #1 = Methodref          #2.#18         // java/lang/Object."<init>":()V
+   #2 = Class              #19            // java/lang/Object
+   #3 = Methodref          #20.#21        // java/util/Arrays.asList:([Ljava/lang/Object;)Ljava/util/List;
+   #4 = Class              #22            // com/code/base/collector/ArraysDemo
+   #5 = Utf8               <init>
+   #6 = Utf8               ()V
+   #7 = Utf8               Code
+   #8 = Utf8               LineNumberTable
+   #9 = Utf8               LocalVariableTable
+  #10 = Utf8               this
+  #11 = Utf8               Lcom/code/base/collector/ArraysDemo;
+  #12 = Utf8               main
+  #13 = Utf8               ([Ljava/lang/String;)V
+  #14 = Utf8               args
+  #15 = Utf8               [Ljava/lang/String;
+  #16 = Utf8               SourceFile
+  #17 = Utf8               ArraysDemo.java
+  #18 = NameAndType        #5:#6          // "<init>":()V
+  #19 = Utf8               java/lang/Object
+  #20 = Class              #23            // java/util/Arrays
+  #21 = NameAndType        #24:#25        // asList:([Ljava/lang/Object;)Ljava/util/List;
+  #22 = Utf8               com/code/base/collector/ArraysDemo
+  #23 = Utf8               java/util/Arrays
+  #24 = Utf8               asList
+  #25 = Utf8               ([Ljava/lang/Object;)Ljava/util/List;
+{
+  public com.code.base.collector.ArraysDemo();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: return
+      LineNumberTable:
+        line 5: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       5     0  this   Lcom/code/base/collector/ArraysDemo;
+
+  public static void main(java.lang.String[]);
+    descriptor: ([Ljava/lang/String;)V
+    flags: ACC_PUBLIC, ACC_STATIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: iconst_0
+         1: anewarray     #2                  // class java/lang/Object
+         4: invokestatic  #3                  // Method java/util/Arrays.asList:([Ljava/lang/Object;)Ljava/util/List;
+         7: pop
+         8: return
+      LineNumberTable:
+        line 10: 0
+        line 13: 8
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       9     0  args   [Ljava/lang/String;
+}
+SourceFile: "ArraysDemo.java"
+
+```
+
+#### 1.5.16.1. 模数和Class文件的版本
+<a href="#menu" style="float:right">目录</a>
+
+魔数一共4个字节，作用是确定这个文件是否为一个能够被虚拟机接受的Class文件。
+值为 0xCAFEBABE(咖啡宝贝)。
+
+版本号又分别为主版本号(major version)和次版本号(minor version),都是两个字节表示 如上的版本就是52.0。虚拟机兼容旧版本的Class文件，不兼容超过其版本的Class文件。
+
+#### 1.5.16.2. 常量池
+<a href="#menu" style="float:right">目录</a>
+
+版本号之后就是常量池入口，常量池可以理解为Class文件之中的资源仓库，它是Class文件结构中与其他项目关联最多的数据类型，也是占用Class文件空间内最大啊的数据项目之一，同时还是在CLass文件中第一个出现的表类型数据项目。
+
+该项存放了类中各种文字字符串、类名、方法名和接口名称、final 变量以及对外部类的引用信息等常量。虚拟机必须为每一个被装载的类维护一个常量池，常量池中存储了相应类型所用到的所有类型、字段和方法的符号引用，因此它在 Java 的动态链接中起到了核心的作用。常量池的大小平均占到了整个类大小的 60% 左右。
+
+常量池主要存放两大类常量:字面量(Literal)和符号引用(Symbolic References).字面量比较接近于Java语言层面的常量概念，如文本字符串，声明为final的常量值等，而符号引用则属于编译原理方面的概念，包括以下三类常量 :
+* 类和接口的全限定名
+* 字段的名称和描述符
+* 方法的名称和描述符
+
+#### 1.5.16.3. 访问标志
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.16.4. 类索引，父类索引与接口集合
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.16.5. 字段表集合
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.16.6. 方法表集合
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.16.7. 属性表集合
+<a href="#menu" style="float:right">目录</a>
+
+
+
+
+### 1.5.17. 类加载过程
+
+#### 1.5.17.1. 类装载流程
+<a href="#menu" style="float:right">目录</a>
+
+虚拟机加载class文件经过的流程:加载，连接(验证，准备，解析)，初始化
+
+
+
+##### 1.5.17.1.1. 类加载条件
+<a href="#menu" style="float:right">目录</a>
+
+Class只有必须要使用才会被装载，虚拟机不会无条件地装载Class文件，Java虚拟机规定，一个类或者接口在初次使用前，必须进行初始化。
+* 当创建一个类的实例时，比如new，反射，克隆，反序列化等方式
+* 当调用类的静态方法时，即当使用了invokestatic指令
+* 当使用反射包中的方法反射类的方法
+* 初始化子类时，要求先初始化父类
+* 作为启动虚拟机，含有main()方法的那个类
+
+
+##### 1.5.17.1.2. 加载类
+<a href="#menu" style="float:right">目录</a>
+
+在加载类时，Java虚拟机必须完成以下工作
+* 通过类的全名，获取类的二进制数据流
+* 解析类的二进制数据流为方法区内的数据结构
+* 创建java.lang.Class类的实例，标识该类型
+
+---
+* 获取类的二进制数据流
+    * 通过文件系统读入一个class后缀的文件
+    * 读入JAR，ZIP等归档数据包，提取类文件
+    * 事先将类的二进制数据存放在数据库中
+    * 通过网络进行加载
+    * 运行时生成
+
+##### 1.5.17.1.3. 连接 
+
+加载之后就进行连接操作,连接包括验证，准备，解析。
+
+###### 1.5.17.1.3.1. 验证类
+<a href="#menu" style="float:right">目录</a>
+
+验证是保证加载的字节码是合法，合理并符合规范的。
+
+
+**验证步骤**
+
+* 格式检查
+    * 魔术检查
+    * 版本检查
+    * 长度检查
+* 语义检查
+    * 是否继承final
+    * 是否有父类
+    * 抽象方法是否有实现
+* 字节码验证
+    * 跳转指令是否指向正确位置
+    * 操作数类型是否合理
+* 符号引用验证
+    * 符号引用的直接引用是否存在
+
+1. 必须判断类的二进制数据是否符合格式要求和规范的，比如，是否以魔数0xCAFEBABE开头，主板本和小版本号是否在当前Java虚拟机的支持范围内，数据中每一项是否都拥有正确的长度等等
+2. Java虚拟机会进行字节码的语义检查，比如是否所有的类都有父类的存在(除了Object,其他类都有父类)。是否一些被定义为final的方法或者类被重载或者继承了。非抽象类是否实现了所有抽象方法或者接口方法，是否存在不兼容的方法
+3. Java虚拟机还会进行字节码验证，它视图通过字节码流的分析，判断字节码是否可以被正确的执行。比如，在字节码的执行过程中，是否会跳到一条不存在的指令，函数的调用是否传递了正确类型的参数，变量的赋值是否给了正确的数据类型等
+4. 校验器还将进行符号引用的验证。Class文件在其常量池会通过字符串记录自己将要使用的其他类或者方法。因此，在验证阶段，虚拟机就会检查这些类或者方法确实存在的，并且当前类有权限访问，如果一个类找不到则抛出NoClassDefFoundError,如果一个方法无法被找到，则会抛出NoSuchMethodError.
+
+
+###### 1.5.17.1.3.2. 准备
+<a href="#menu" style="float:right">目录</a>
+
+验证通过以后，就会进入准备阶段。
+
+准备阶段是正式为类变量分配内存并设置类变量初始值的阶段，这些内存都将在方法区中分配。对于该阶段有以下几点需要注意：
+1. 这时候进行内存分配的仅包括类变量（static），而不包括实例变量，实例变量会在对象实例化时随着对象一块分配在Java堆中。
+2. 这里所设置的初始值通常情况下是数据类型默认的零值（如0、0L、null、false等），而不是被在Java代码中被显式地赋予的值。
+
+假设一个类变量的定义为：public static int value = 3；
+那么变量value在准备阶段过后的初始值为0，而不是3，因为这时候尚未开始执行任何Java方法，而把value赋值为3的putstatic指令是在程序编译后，存放于类构造器<clinit>（）方法之中的，所以把value赋值为3的动作将在初始化阶段才会执行。
+
+这里还需要注意如下几点：
+* 对基本数据类型来说，对于类变量（static）和全局变量，如果不显式地对其赋值而直接使用，则系统会为其赋予默认的零值，而对于局部变量来说，在使用前必须显式地为其赋值，否则编译时不通过。
+* 对于同时被static和final修饰的常量，必须在声明的时候就为其显式地赋值，否则编译时不通过；而只被final修饰的常量则既可以在声明时显式地为其赋值，也可以在类初始化时显式地为其赋值，总之，在使用前必须为其显式地赋值，系统不会为其赋予默认零值。
+* 对于引用数据类型reference来说，如数组引用、对象引用等，如果没有对其进行显式地赋值而直接使用，系统都会为其赋予默认的零值，即null。
+* 如果在数组初始化时没有对数组中的各元素赋值，那么其中的元素将根据对应的数据类型而被赋予默认的零值。
+
+3. 如果类字段的字段属性表中存在ConstantValue属性，即同时被final和static修饰，那么在准备阶段变量value就会被初始化为ConstValue属性所指定的值。
+
+假设上面的类变量value被定义为： public static final int value = 3；
+
+编译时Javac将会为value生成ConstantValue属性，在准备阶段虚拟机就会根据ConstantValue的设置将value赋值为3。回忆上一篇博文中对象被动引用的第2个例子，便是这种情况。我们可以理解为static final常量在编译期就将其结果放入了调用它的类的常量池中
+
+这个阶段，虚拟机会为其分配相应的内存空间，并设置初始值。
+
+|类型|初始值|
+|---|---|
+|int|0|
+|long|0L|
+|short|(short)0|
+|char|\u0000|
+|boolean| false|
+|reference|null|
+|float|0f|
+|double|0f|
+Java不支持boolean,对于boolean,内部实现是int,int的初始值是0,因此是false.
+
+
+###### 1.5.17.1.3.3. 解析
+<a href="#menu" style="float:right">目录</a>
+
+解析阶段是虚拟机将常量池内的符号引用替换为直接引用的过程，解析动作主要针对类或接口、字段、类方法、接口方法、方法类型、方法句柄和调用点限定符7类符号引用进行。符号引用就是一组符号来描述目标，可以是任何字面量。
+
+直接引用就是直接指向目标的指针、相对偏移量或一个间接定位到目标的句柄。
+
+##### 1.5.17.1.4. 初始化
+<a href="#menu" style="float:right">目录</a>
+
+初始化，为类的静态变量赋予正确的初始值，JVM负责对类进行初始化，主要对类变量进行初始化。在Java中对类变量进行初始值设定有两种方式：
+* 声明类变量是指定初始值
+* 使用静态代码块为类变量指定初始值
+
+* JVM初始化步骤
+    * 假如这个类还没有被加载和连接，则程序先加载并连接该类
+    * 假如该类的直接父类还没有被初始化，则先初始化其直接父类
+    * 假如类中有初始化语句，则系统依次执行这些初始化语句
+
+类初始化时机：只有当对类的主动使用的时候才会导致类的初始化，类的主动使用包括以下六种：
+* 创建类的实例，也就是new的方式
+* 访问某个类或接口的静态变量，或者对该静态变量赋值
+* 调用类的静态方法
+* 反射（如Class.forName(“com.shengsiyuan.Test”)）
+* 初始化某个类的子类，则其父类也会被初始化
+* Java虚拟机启动时被标明为启动类的类（Java Test），直接使用java.exe命令来运行某个主类
+
+### 1.5.18. 类加载器
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.18.1. 基本概念
+<a href="#menu" style="float:right">目录</a>
+
+类加载器是负责将可能是网络上、也可能是磁盘上的class文件加载到内存中。并为其生成对应的java.lang.class对象。一旦一个类被载入JVM了，同一个类就不会被再次加载。那么怎样才算是同一个类？在JAVA中一个类用其全限定类名（包名和类名）作为其唯一标识，但是在JVM中，一个类用其全限定类名和其类加载器作为其唯一标识。也就是说，在JAVA中的同一个类，如果用不同的类加载器加载，则生成的class对象认为是不同的。
+
+**ClassLoader重要方法**
+* **Class loadClass(String name)** ：name参数指定类装载器需要装载类的名字，必须使用全限定类名，如：com.smart.bean.Car。该方法有一个重载方法 loadClass(String name,boolean resolve)，resolve参数告诉类装载器时候需要解析该类，在初始化之前，因考虑进行类解析的工作，但并不是所有的类都需要解析。如果JVM只需要知道该类是否存在或找出该类的超类，那么就不需要进行解析。
+* **Class defineClass(String name,byte[] b,int len)**：将类文件的字节数组转换成JVM内部的java.lang.Class对象。字节数组可以从本地文件系统、远程网络获取。参数name为字节数组对应的全限定类名。
+* **Class findClass(String name)**： 查找一个类，是重载ClassLoader时，重要的系统扩展点。这个方法会在loaderClass（）时被调用，用于自定义查找类的逻辑。如果
+* **Class findSystemClass(String name)**：从本地文件系统在来Class文件。如果本地系统不存在该Class文件。则抛出ClassNotFoundException异常。该方法是JVM默认使用的装载机制
+* **Class findLoadedClass(String name)**：调用该方法来查看ClassLoader是否已载入某个类。如果已载入，那么返回java.lang.Class对象；否则返回null。如果强行装载某个已存在的类，那么则抛出链接错误。
+* **ClassLoader getParent()**：获取类装载器的父装载器。除根装载器外，所有的类装载器都有且仅有一个父装载器。ExtClassLoader的父装载器是根装载器，因为根装载器非java语言编写，所以无法获取，将返回null。
+
+
+
+**JAVA类装载方式**
+* 隐式加载
+    * 不通过在代码里调用ClassLoader来加载需要的类。而是通过JVM来自动加载需要的类到内存的方式
+    * 例如，当我们在类中继承或者引用某个类时，JVM在解析当前这个类时发现引用的类不存在，那么就会自动将这些类加载到内存中。
+* 显示加载
+    * 显示调用ClassLoader的相关方法加载类
+
+**类加载的动态性体现:**
+一个应用程序总是由n多个类组成，Java程序启动时，并不是一次把所有的类全部加载后再运行，它总是先把保证程序运行的基础类一次性加载到jvm中，其它类等到jvm用到的时候再加载，这样的好处是节省了内存的开销，因为java最早就是为嵌入式系统而设计的，内存宝贵，这是一种可以理解的机制，而用到时再加载这也是java动态性的一种体现
+
+
+#### 1.5.18.2. 常见的类加载器
+<a href="#menu" style="float:right">目录</a>
+
+* JDK 默认提供了如下几种ClassLoader
+    * Bootstrp loader
+        * Bootstrp加载器是用C++语言写的，它是在Java虚拟机启动后初始化的，它主要负责加载%JAVA_HOME%/jre/lib,-Xbootclasspath参数指定的路径以及%JAVA_HOME%/jre/classes中的类。
+    * ExtClassLoader  
+        * Bootstrp loader加载ExtClassLoader,并且将ExtClassLoader的父加载器设置为Bootstrp loader.ExtClassLoader是用Java写的，具体来说就是 sun.misc.Launcher$ExtClassLoader，ExtClassLoader主要加载%JAVA_HOME%/jre/lib/ext，此路径下的所有classes目录以及java.ext.dirs系统变量指定的路径中类库。
+        * ExtClassLoader的父类不是Bootstrp loader
+    * AppClassLoader 
+        * Bootstrp loader加载完ExtClassLoader后，就会加载AppClassLoader,并且将AppClassLoader的父加载器指定为 ExtClassLoader。AppClassLoader也是用Java写成的，它的实现类是 sun.misc.Launcher$AppClassLoader，另外我们知道ClassLoader中有个getSystemClassLoader方法,此方法返回的正是AppclassLoader.AppClassLoader主要负责加载classpath所指定的位置的类或者是jar文档，它也是Java程序默认的类加载器。
+
+![java类装载器](http://static.oschina.net/uploads/img/201405/09113619_cx03.png)
+
+* 为什么要有三个类加载器
+    * 一方面是分工，各自负责各自的区块，另一方面为了实现委托模型。
+
+ 类加载器之间是如何协调工作的
+
+前面说了，java中有三个类加载器，问题就来了，碰到一个类需要加载时，它们之间是如何协调工作的，即java是如何区分一个类该由哪个类加载器来完成呢。 在这里java采用了委托模型机制，这个机制简单来讲，就是“类装载器有载入类的需求时，会先请示其Parent使用其搜索路径帮忙载入，如果Parent 找不到,那么才由自己依照自己的搜索路径搜索类”
+
+下面举一个例子来说明，为了更好的理解，先弄清楚几行代码：
+
+```Java
+Public class Test{
+ 
+    Public static void main(String[] arg){
+ 
+      ClassLoader c  = Test.class.getClassLoader();  //获取Test类的类加载器
+ 
+        System.out.println(c); 
+ 
+      ClassLoader c1 = c.getParent();  //获取c这个类加载器的父类加载器
+ 
+        System.out.println(c1);
+ 
+      ClassLoader c2 = c1.getParent();//获取c1这个类加载器的父类加载器
+ 
+        System.out.println(c2);
+ 
+  }
+ 
+}
+```
+运行结果：
+```
+……AppClassLoader……
+ 
+……ExtClassLoader……
+Null
+``` 
+可以看出Test是由AppClassLoader加载器加载的，AppClassLoader的Parent 加载器是 ExtClassLoader,但是ExtClassLoader的Parent为 null 是怎么回事呵，朋友们留意的话，前面有提到Bootstrap Loader是用C++语言写的，依java的观点来看，逻辑上并不存在Bootstrap Loader的类实体，所以在java程序代码里试图打印出其内容时，我们就会看到输出为null。
+
+
+#### 1.5.18.3. 类加载过程
+<a href="#menu" style="float:right">目录</a>
+
+类装载器就是寻找类或接口字节码文件进行解析并构造JVM内部对象表示的组件，在java中类装载器把一个类装入JVM，经过以下步骤：
+* 装载：查找和导入Class文件 
+* 链接：其中解析步骤是可以选择的 
+    * 检查：检查载入的class文件数据的正确性 
+    * 准备：给类的静态变量分配存储空间 
+    * 解析：将符号引用转成直接引用 
+* 初始化：对静态变量，静态代码块执行初始化工作
+
+类装载工作由ClassLoder和其子类负责。JVM在运行时会产生三个ClassLoader：根装载器，ExtClassLoader(扩展类装载器)和AppClassLoader，其中根装载器不是ClassLoader的子类，由C++编写，因此在java中看不到他，负责装载JRE的核心类库，如JRE目录下的rt.jar,charsets.jar等。ExtClassLoader是ClassLoder的子类，负责装载JRE扩展目录ext下的jar类包；AppClassLoader负责装载classpath路径下的类包，这三个类装载器存在父子层级关系****，即根装载器是ExtClassLoader的父装载器，ExtClassLoader是AppClassLoader的父装载器。默认情况下使用AppClassLoader装载应用程序的类
+
+
+#### 1.5.18.4. 全盘负责与双亲委托机制
+<a href="#menu" style="float:right">目录</a>
+
+Java装载类使用“全盘负责委托机制”。“全盘负责”是指当一个ClassLoder装载一个类时，除非显示的使用另外一个ClassLoder，该类所依赖及引用的类也由这个ClassLoder载入；“委托机制”是指先委托父类装载器寻找目标类，只有在找不到的情况下才从自己的类路径中查找并装载目标类。这一点是从安全方面考虑的，试想如果一个人写了一个恶意的基础类（如java.lang.String）并加载到JVM将会引起严重的后果，但有了全盘负责制，java.lang.String永远是由根装载器来装载，避免以上情况发生 除了JVM默认的三个ClassLoder以外，第三方可以编写自己的类装载器，以实现一些特殊的需求。类文件被装载解析后，在JVM中都有一个对应的java.lang.Class对象，提供了类结构信息的描述。数组，枚举及基本数据类型，甚至void都拥有对应的Class对象。Class类没有public的构造方法，Class对象是在装载类时由JVM通过调用类装载器中的defineClass()方法自动构造的。
+
+
+全盘负责”是指当一个ClassLoader装载一个类时，除非显示地使用另一个ClassLoader，则该类所依赖及引用的类也由这个CladdLoader载入。
+
+例如，系统类加载器AppClassLoader加载入口类（含有main方法的类）时，会把main方法所依赖的类及引用的类也载入，依此类推。“全盘负责”机制也可称为当前类加载器负责机制。显然，入口类所依赖的类及引用的类的当前类加载器就是入口类的类加载器。
+
+以上步骤只是调用了ClassLoader.loadClass(name)方法，并没有真正定义类。真正加载class字节码文件生成Class对象由“双亲委派”机制完成。
+
+“双亲委派”是指子类加载器如果没有加载过该目标类，就先委托父类加载器加载该目标类，只有在父类加载器找不到字节码文件的情况下才从自己的类路径中查找并装载目标类。
+
+* “双亲委派”机制加载Class的具体过程是：
+    * 源ClassLoader先判断该Class是否已加载，如果已加载，则返回Class对象；如果没有则委托给父类加载器。
+    * 父类加载器判断是否加载过该Class，如果已加载，则返回Class对象；如果没有则委托给祖父类加载器。
+    * 依此类推，直到始祖类加载器（引用类加载器）。
+    * 始祖类加载器判断是否加载过该Class，如果已加载，则返回Class对象；如果没有则尝试从其对应的类路径下寻找class字节码文件并载入。如果载入成功，则返回Class对象；如果载入失败，则委托给始祖类加载器的子类加载器。
+    * 始祖类加载器的子类加载器尝试从其对应的类路径下寻找class字节码文件并载入。如果载入成功，则返回Class对象；如果载入失败，则委托给始祖类加载器的孙类加载器。
+    * 依此类推，直到源ClassLoader。
+    * 源ClassLoader尝试从其对应的类路径下寻找class字节码文件并载入。如果载入成功，则返回Class对象；如果载入失败，源ClassLoader不会再委托其子类加载器，而是抛出异常。
+ 
+
+“双亲委派”机制只是Java推荐的机制，并不是强制的机制。
+
+我们可以继承java.lang.ClassLoader类，实现自己的类加载器。如果想保持双亲委派模型，就应该重写findClass(name)方法；如果想破坏双亲委派模型，可以重写loadClass(name)方法。
+
+**为什么要使用这种双亲委托模式呢？**
+因为这样可以避免重复加载，当父亲已经加载了该类的时候，就没有必要子ClassLoader再加载一次。
+考虑到安全因素，我们试想一下，如果不使用这种委托模式，那我们就可以随时使用自定义的String来动态替代java核心api中定义类型，这样会存在非常大的安全隐患，而双亲委托的方式，就可以避免这种情况，因为String已经在启动时被加载，所以用户自定义类是无法加载一个自定义的ClassLoader。
+
+**思考：假如我们自己写了一个java.lang.String的类，我们是否可以替换调JDK本身的类？**
+答案是否定的。我们不能实现。为什么呢？我看很多网上解释是说双亲委托机制解决这个问题，其实不是非常的准确。因为双亲委托机制是可以打破的，你完全可以自己写一个classLoader来加载自己写的java.lang.String类，但是你会发现也不会加载成功，具体就是因为针对java.*开头的类，jvm的实现中已经保证了必须由bootstrp来加载。
+
+#### 1.5.18.5. 双亲委托机制的弊端
+<a href="#menu" style="float:right">目录</a>
+
+检查类是否已经加载的委托过程是单向的。这种方式虽然从lassLoader结构上说比较清晰，使各个ClassLoader的职责非常明确，但是同时会带来一个问题，即顶层的ClassLoader无法访问底层的ClassLoader所加载的类。
+
+
+![](https://github.com/lgjlife/Java-Study/blob/master/pic/jvm/classloader.png?raw=true)
+
+通常情况下，启动类加载器中的类为系统核心类，包括一些重要的系统接口，而在应用类加载器中，为应用类。按照这种模式，应用类访问系统类自然是没有问题的。但是系统类访问应用类就会出现问题。比如系统类中，提供了一个接口，该接口需要在应用类中得以实现，该接口还绑定一个工厂方法，用于创建该接口的实例，而接口和工厂方法都在启动类加载器中。这时，就会出现该工厂方法无法创建由应用类加载器加载的应用实例问题，拥有这种问题的组件有很多，比如JDBC等
+
+#### 1.5.18.6. 双亲委托模式的补充
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.5.18.7. 突破双亲模式
+<a href="#menu" style="float:right">目录</a>
+
+
+
+
+
+#### 1.5.18.8. 定义自已的ClassLoader
+<a href="#menu" style="float:right">目录</a>
+
+* 有以下几个情景是值得我们花费时间实现自己的classLoader的:
+    * 我们需要的类不一定存放在已经设置好的classPath下(有系统类加载器AppClassLoader加载的路径)，对于自定义路径中的class类文件的加载，我们需要自己的ClassLoader
+    * 有时我们不一定是从类文件中读取类，可能是从网络的输入流中读取类，这就需要做一些加密和解密操作，这就需要自己实现加载类的逻辑，当然其他的特殊处理也同样适用。
+    * 可以定义类的实现机制，实现类的热部署,如OSGi中的bundle模块就是通过实现自己的ClassLoader实现的。
+ 
+* 定义自已的类加载器分为两步：
+    * 继承java.lang.ClassLoader
+    * 重写父类的findClass方法
+ 
+父类有那么多方法，为什么偏偏只重写findClass方法？
+```java
+protected synchronized Class<?> loadClass ( String name , boolean resolve ) throws ClassNotFoundException{
+    //检查指定类是否被当前类加载器加载过
+    Class c = findLoadedClass(name);
+    if( c == null ){//如果没被加载过，委派给父加载器加载
+        try{
+            if( parent != null )
+                c = parent.loadClass(name,resolve);
+            else 
+                c = findBootstrapClassOrNull(name);
+        }catch ( ClassNotFoundException e ){
+            //如果父加载器无法加载
+        }
+        if( c == null ){//父类不能加载，由当前的类加载器加载
+            c = findClass(name);
+        }
+    }
+    if( resolve ){//如果要求立即链接，那么加载完类直接链接
+        resolveClass();
+    }
+    //将加载过这个类对象直接返回
+    return c;
+}
+
+```
+从上面的代码中，我们可以看到在父加载器不能完成加载任务时，会调用findClass(name)函数，这个就是我们自己实现的ClassLoader的查找类文件的规则，所以在继承后，我们只需要覆盖findClass()这个函数，实现我们在本加载器中的查找逻辑，而且还不会破坏双亲委托模型
+
+```java
+public class MyClassLoader extends ClassLoader{
+
+    private String rootPath;
+    
+    public MyClassLoader(String rootPath){
+        this.rootPath = rootPath;
+    }
+    
+    @Override
+    protected Class<?> findClass(String name) throws ClassNotFoundException {
+        //check if the class have been loaded
+        Class<?> c = findLoadedClass(name);        
+        if(c!=null){
+            return c;
+        }
+        //load the class
+        byte[] classData = getClassData(name);
+        if(classData==null){
+            throw new ClassNotFoundException();
+        }
+        else{
+            c = defineClass(name,classData, 0, classData.length);
+            return c;
+        }    
+    }
+    
+    private byte[] getClassData(String className){
+        String path = rootPath+"/"+className.replace('.', '/')+".class";
+        
+        InputStream is = null;
+        ByteArrayOutputStream bos = null;
+        try {
+            is = new FileInputStream(path);
+            bos = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int temp = 0;
+            while((temp = is.read(buffer))!=-1){
+                bos.write(buffer,0,temp);
+            }
+            return bos.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally{
+            try {
+                is.close();
+                bos.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }            
+        }
+        
+        return null;        
+    }    
+
+}
+
+```
+
+测试自定义的类加载器
+
+创建一个测试类HelloWorld
+
+```java
+package testOthers;
+
+public class HelloWorld {
+
+}
+```
+在D盘根目录创建一个testOthers文件夹，编译HelloWorld.java，将得到的class文件放到testOthers文件夹下。
+
+利用如下代码进行测试
+
+```java
+public class testMyClassLoader {
+    @Test
+    public void test() throws Exception{
+        MyClassLoader loader = new MyClassLoader("D:");
+        Class<?> c = loader.loadClass("testOthers.HelloWorld");
+        System.out.println(c.getClassLoader());
+    }
+}
+```
+输出：
+
+ 
+
+说明HelloWorld类是被我们的自定义类加载器MyClassLoader加载的
+
+
+#### 1.5.18.9. 常见加载类错误
+
+* ClassNotFoudException
+    * 类不存在
+* NoClassDefFoundError
+* UnsatisfiedLinkError
+* ClassCastException
+    * 强制类型转换时出现得到错误，比如将A类型转换为没有继承或实现关系的B类型时出现
+* ExceptionOInInitializerError
+
+#### 1.5.18.10. 线程上下文类加载器
+<a href="#menu" style="float:right">目录</a>
+
+　　线程上下文类加载器（context class loader）是从 JDK 1.2 开始引入的。类 java.lang.Thread中的方法 getContextClassLoader()和 setContextClassLoader(ClassLoader cl)用来获取和设置线程的上下文类加载器。如果没有通过 setContextClassLoader(ClassLoader cl)方法进行设置的话，线程将继承其父线程的上下文类加载器。Java 应用运行的初始线程的上下文类加载器是系统类加载器。在线程中运行的代码可以通过此类加载器来加载类和资源。
+
+　　前面提到的类加载器的代理模式并不能解决 Java 应用开发中会遇到的类加载器的全部问题。Java 提供了很多服务提供者接口（Service Provider Interface，SPI），允许第三方为这些接口提供实现。常见的 SPI 有 JDBC、JCE、JNDI、JAXP 和 JBI 等。这些 SPI 的接口由 Java 核心库来提供，如 JAXP 的 SPI 接口定义包含在 javax.xml.parsers包中。这些 SPI 的实现代码很可能是作为 Java 应用所依赖的 jar 包被包含进来，可以通过类路径（CLASSPATH）来找到，如实现了 JAXP SPI 的 Apache Xerces所包含的 jar 包。SPI 接口中的代码经常需要加载具体的实现类。如 JAXP 中的 javax.xml.parsers.DocumentBuilderFactory类中的 newInstance()方法用来生成一个新的 DocumentBuilderFactory的实例。这里的实例的真正的类是继承自 javax.xml.parsers.DocumentBuilderFactory，由 SPI 的实现所提供的。如在 Apache Xerces 中，实现的类是 org.apache.xerces.jaxp.DocumentBuilderFactoryImpl。而问题在于，SPI 的接口是 Java 核心库的一部分，是由引导类加载器来加载的；SPI 实现的 Java 类一般是由系统类加载器来加载的。引导类加载器是无法找到 SPI 的实现类的，因为它只加载 Java 的核心库。它也不能代理给系统类加载器，因为它是系统类加载器的祖先类加载器。也就是说，类加载器的代理模式无法解决这个问题。
+　　线程上下文类加载器正好解决了这个问题。如果不做任何的设置，Java 应用的线程的上下文类加载器默认就是系统上下文类加载器。在 SPI 接口的代码中使用线程上下文类加载器，就可以成功的加载到 SPI 实现的类。线程上下文类加载器在很多 SPI 的实现中都会用到。
+
+
+
+#### 1.5.18.11. 类加载器与Web容器
+<a href="#menu" style="float:right">目录</a>
+　　对于运行在 Java EE容器中的 Web 应用来说，类加载器的实现方式与一般的 Java 应用有所不同。不同的 Web 容器的实现方式也会有所不同。以 Apache Tomcat 来说，每个 Web 应用都有一个对应的类加载器实例。该类加载器也使用代理模式，所不同的是它是首先尝试去加载某个类，如果找不到再代理给父类加载器。这与一般类加载器的顺序是相反的。这是 Java Servlet 规范中的推荐做法，其目的是使得 Web 应用自己的类的优先级高于 Web 容器提供的类。这种代理模式的一个例外是：Java 核心库的类是不在查找范围之内的。这也是为了保证 Java 核心库的类型安全。
+　　
+绝大多数情况下，Web 应用的开发人员不需要考虑与类加载器相关的细节。下面给出几条简单的原则：
+（1）每个 Web 应用自己的 Java 类文件和使用的库的 jar 包，分别放在 WEB-INF/classes和 WEB-INF/lib目录下面。
+（2）多个应用共享的 Java 类文件和 jar 包，分别放在 Web 容器指定的由所有 Web 应用共享的目录下面。
+（3）当出现找不到类的错误时，检查当前类的类加载器和当前线程的上下文类加载器是否正确。
+
+
+#### 1.5.18.12. 常见问题分析
+**由不同的类加载器加载的指定类还是相同的类型吗？**
+
+　　在Java中，一个类用其完全匹配类名(fully qualified class name)作为标识，这里指的完全匹配类名包括包名和类名。但在JVM中，一个类用其 全名 和 一个ClassLoader的实例 作为唯一标识，不同类加载器加载的类将被置于不同的命名空间。我们可以用两个自定义类加载器去加载某自定义类型（注意不要将自定义类型的字节码放置到系统路径或者扩展路径中，否则会被系统类加载器或扩展类加载器抢先加载），然后用获取到的两个Class实例进行java.lang.Object.equals（…）判断，将会得到不相等的结果，如下所示：
+
+```java
+public class TestBean {
+
+    public static void main(String[] args) throws Exception {
+        // 一个简单的类加载器，逆向双亲委派机制
+        // 可以加载与自己在同一路径下的Class文件
+        ClassLoader myClassLoader = new ClassLoader() {
+            @Override
+            public Class<?> loadClass(String name)
+                    throws ClassNotFoundException {
+                try {
+                    String filename = name.substring(name.lastIndexOf(".") + 1)
+                            + ".class";
+                    InputStream is = getClass().getResourceAsStream(filename);
+                    if (is == null) {
+                        return super.loadClass(name);   // 递归调用父类加载器
+                    }
+                    byte[] b = new byte[is.available()];
+                    is.read(b);
+                    return defineClass(name, b, 0, b.length);
+                } catch (Exception e) {
+                    throw new ClassNotFoundException(name);
+                }
+            }
+        };
+
+        Object obj = myClassLoader.loadClass("classloader.test.bean.TestBean")
+                .newInstance();
+        System.out.println(obj.getClass());
+        System.out.println(obj instanceof classloader.test.bean.TestBean);
+    }
+}/* Output: 
+        class classloader.test.bean.TestBean
+        false  
+ *///:~    
+```
+　　我们发现，obj 确实是类classloader.test.bean.TestBean实例化出来的对象，但当这个对象与类classloader.test.bean.TestBean做所属类型检查时却返回了false。这是因为虚拟机中存在了两个TestBean类，一个是由系统类加载器加载的，另一个则是由我们自定义的类加载器加载的，虽然它们来自同一个Class文件，但依然是两个独立的类，因此做所属类型检查时返回false。
+
+**在代码中直接调用Class.forName(String name)方法，到底会触发那个类加载器进行类加载行为？**
+
+Class.forName(String name)默认会使用调用类的类加载器来进行类加载。我们直接来分析一下对应的jdk的代码：
+
+```java
+//java.lang.Class.java  
+public static Class<?> forName(String className) throws ClassNotFoundException {  
+    return forName0(className, true, ClassLoader.getCallerClassLoader());  
+}  
+
+//java.lang.ClassLoader.java  
+//Returns the invoker's class loader, or null if none.  
+static ClassLoader getCallerClassLoader() {  
+    // 获取调用类（caller）的类型  
+    Class caller = Reflection.getCallerClass(3);  
+    // This can be null if the VM is requesting it  
+    if (caller == null) {  
+        return null;  
+    }  
+    // 调用java.lang.Class中本地方法获取加载该调用类（caller）的ClassLoader  
+    return caller.getClassLoader0();  
+}  
+
+//java.lang.Class.java  
+//虚拟机本地实现，获取当前类的类加载器，前面介绍的Class的getClassLoader()也使用此方法  
+native ClassLoader getClassLoader0(); 
+
+```
+
+**在编写自定义类加载器时，如果没有设定父加载器，那么父加载器是谁？**
+　　前面讲过，在不指定父类加载器的情况下，默认采用系统类加载器。可能有人觉得不明白，现在我们来看一下JDK对应的代码实现。众所周知，我们编写自定义的类加载器直接或者间接继承自java.lang.ClassLoader抽象类，对应的无参默认构造函数实现如下：
+
+```java
+//摘自java.lang.ClassLoader.java  
+protected ClassLoader() {  
+    SecurityManager security = System.getSecurityManager();  
+    if (security != null) {  
+        security.checkCreateClassLoader();  
+    }  
+    this.parent = getSystemClassLoader();  
+    initialized = true;  
+} 
+```
+
+我们再来看一下对应的getSystemClassLoader()方法的实现：
+```java
+private static synchronized void initSystemClassLoader() {  
+    //...  
+    sun.misc.Launcher l = sun.misc.Launcher.getLauncher();  
+    scl = l.getClassLoader();  
+    //...  
+}  
+```
+我们可以写简单的测试代码来测试一下：
+```java
+System.out.println(sun.misc.Launcher.getLauncher().getClassLoader());  
+```
+本机对应输出如下：
+```java
+sun.misc.Launcher$AppClassLoader@73d16e93 
+```
+　　所以，我们现在可以相信当自定义类加载器没有指定父类加载器的情况下，默认的父类加载器即为系统类加载器。同时，我们可以得出如下结论：即使用户自定义类加载器不指定父类加载器，那么，同样可以加载如下三个地方的类：
+
+```
+<Java_Runtime_Home>/lib下的类；
+<Java_Runtime_Home>/lib/ext下或者由系统变量java.ext.dir指定位置中的类；
+```
+当前工程类路径下或者由系统变量java.class.path指定位置中的类。
+
+**在编写自定义类加载器时，如果将父类加载器强制设置为null，那么会有什么影响？如果自定义的类加载器不能加载指定类，就肯定会加载失败吗？**
+
+　　JVM规范中规定如果用户自定义的类加载器将父类加载器强制设置为null，那么会自动将启动类加载器设置为当前用户自定义类加载器的父类加载器（这个问题前面已经分析过了）。同时，我们可以得出如下结论：即使用户自定义类加载器不指定父类加载器，那么，同样可以加载到<JAVA_HOME>/lib下的类，但此时就不能够加载<JAVA_HOME>/lib/ext目录下的类了。
+
+　　Ps：���题3和问题4的推断结论是基于用户自定义的类加载器本身延续了java.lang.ClassLoader.loadClass（…）默认委派逻辑，如果用户对这一默认委派逻辑进行了改变，以上推断结论就不一定成立了，详见问题5。
+
+**编写自定义类加载器时，一般有哪些注意点？**
+
+1)、一般尽量不要覆写已有的loadClass(…)方法中的委派逻辑（Old Generation）
+
+　　一般在JDK 1.2之前的版本才这样做，而且事实证明，这样做极有可能引起系统默认的类加载器不能正常工作。在JVM规范和JDK文档中（1.2或者以后版本中），都没有建议用户覆写loadClass(…)方法，相比而言，明确提示开发者在开发自定义的类加载器时覆写findClass(…)逻辑。举一个例子来验证该问题：
+
+```java
+//用户自定义类加载器WrongClassLoader.Java（覆写loadClass逻辑）  
+public class WrongClassLoader extends ClassLoader {  
+
+    public Class<?> loadClass(String name) throws ClassNotFoundException {  
+        return this.findClass(name);  
+    }  
+
+    protected Class<?> findClass(String name) throws ClassNotFoundException {  
+        // 假设此处只是到工程以外的特定目录D:\library下去加载类  
+        // 具体实现代码省略  
+    }  
+}  
+```
+　　通过前面的分析我们已经知道，这个自定义类加载器WrongClassLoader的默认类加载器是系统类加载器，但是现在问题4中的结论就不成立了。大家可以简单测试一下，现在JAVA_HOME/lib、JAVA_HOME/lib/ext 和 工程类路径上的类都加载不上了。
+
+```java
+//问题5测试代码一  
+public class WrongClassLoaderTest {  
+    publicstaticvoid main(String[] args) {  
+        try {  
+            WrongClassLoader loader = new WrongClassLoader();  
+            Class classLoaded = loader.loadClass("beans.Account");  
+            System.out.println(classLoaded.getName());  
+            System.out.println(classLoaded.getClassLoader());  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        }  
+    }  
+}/* Output: 
+        java.io.FileNotFoundException: D:"classes"java"lang"Object.class (系统找不到指定的路径。)  
+        at java.io.FileInputStream.open(Native Method)  
+        at java.io.FileInputStream.<init>(FileInputStream.java:106)  
+        at WrongClassLoader.findClass(WrongClassLoader.java:40)  
+        at WrongClassLoader.loadClass(WrongClassLoader.java:29)  
+        at java.lang.ClassLoader.loadClassInternal(ClassLoader.java:319)  
+        at java.lang.ClassLoader.defineClass1(Native Method)  
+        at java.lang.ClassLoader.defineClass(ClassLoader.java:620)  
+        at java.lang.ClassLoader.defineClass(ClassLoader.java:400)  
+        at WrongClassLoader.findClass(WrongClassLoader.java:43)  
+        at WrongClassLoader.loadClass(WrongClassLoader.java:29)  
+        at WrongClassLoaderTest.main(WrongClassLoaderTest.java:27)  
+Exception in thread "main" java.lang.NoClassDefFoundError: java/lang/Object  
+        at java.lang.ClassLoader.defineClass1(Native Method)  
+        at java.lang.ClassLoader.defineClass(ClassLoader.java:620)  
+        at java.lang.ClassLoader.defineClass(ClassLoader.java:400)  
+        at WrongClassLoader.findClass(WrongClassLoader.java:43)  
+        at WrongClassLoader.loadClass(WrongClassLoader.java:29)  
+        at WrongClassLoaderTest.main(WrongClassLoaderTest.java:27)  
+ *///:~    
+```
+　　注意，这里D:”classes”beans”Account.class是物理存在的。这说明，连要加载的类型的超类型java.lang.Object都加载不到了。这里列举的由于覆写loadClass()引起的逻辑错误明显是比较简单的，实际引起的逻辑错误可能复杂的多。
+
+```java
+//问题5测试二  
+//用户自定义类加载器WrongClassLoader.Java(不覆写loadClass逻辑)  
+public class WrongClassLoader extends ClassLoader {  
+    protected Class<?> findClass(String name) throws ClassNotFoundException {  
+        //假设此处只是到工程以外的特定目录D:\library下去加载类  
+        //具体实现代码省略  
+    }  
+}/* Output: 
+        beans.Account  
+        WrongClassLoader@1c78e57  
+ *///:~  
+```
+　　将自定义类加载器代码WrongClassLoader.Java做以上修改后，再运行测试代码，输出正确。
+
+2). 正确设置父类加载器
+
+　　通过上面问题4和问题5的分析我们应该已经理解，个人觉得这是自定义用户类加载器时最重要的一点，但常常被忽略或者轻易带过。有了前面JDK代码的分析作为基础，我想现在大家都可以随便举出例子了。
+
+3). 保证findClass(String name)方法的逻辑正确性
+
+　　事先尽量准确理解待定义的类加载器要完成的加载任务，确保最大程度上能够获取到对应的字节码内容。
+
+**如何在运行时判断系统类加载器能加载哪些路径下的类？**
+
+　　一是可以直接调用ClassLoader.getSystemClassLoader()或者其他方式获取到系统类加载器（系统类加载器和扩展类加载器本身都派生自URLClassLoader），调用URLClassLoader中的getURLs()方法可以获取到。二是可以直接通过获取系统属性java.class.path来查看当前类路径上的条目信息 ：System.getProperty(“java.class.path”)。如下所示，
+```java
+public class Test {
+    public static void main(String[] args) {
+        System.out.println("Rico");
+        Gson gson = new Gson();
+        System.out.println(gson.getClass().getClassLoader());
+        System.out.println(System.getProperty("java.class.path"));
+    }
+}/* Output: 
+        Rico
+        sun.misc.Launcher$AppClassLoader@6c68bcef
+        I:\AlgorithmPractice\TestClassLoader\bin;I:\Java\jars\Gson\gson-2.3.1.jar
+ *///:~ 
+```
+　　如上述程序所示，Test类和Gson类由系统类加载器加载，并且其加载路径就是用户类路径，包括当前类路径和引用的第三方类库的路径。
+
+**如何在运行时判断标准扩展类加载器能加载哪些路径下的类？**
+
+利用如下方式即可判断：
+
+```java
+import java.net.URL;
+import java.net.URLClassLoader;  
+
+public class ClassLoaderTest {  
+
+    /** 
+     * @param args the command line arguments 
+     */  
+    public static void main(String[] args) {  
+        try {  
+            URL[] extURLs = ((URLClassLoader) ClassLoader.getSystemClassLoader().getParent()).getURLs();  
+            for (int i = 0; i < extURLs.length; i++) {  
+                System.out.println(extURLs[i]);  
+            }  
+        } catch (Exception e) {  
+            //…  
+        }  
+    }  
+} 
+/* Output: 
+        file:/C:/Program%20Files/Java/jdk1.7.0_79/jre/lib/ext/access-bridge-64.jar
+        file:/C:/Program%20Files/Java/jdk1.7.0_79/jre/lib/ext/dnsns.jar
+        file:/C:/Program%20Files/Java/jdk1.7.0_79/jre/lib/ext/jaccess.jar
+        file:/C:/Program%20Files/Java/jdk1.7.0_79/jre/lib/ext/localedata.jar
+        file:/C:/Program%20Files/Java/jdk1.7.0_79/jre/lib/ext/sunec.jar
+        file:/C:/Program%20Files/Java/jdk1.7.0_79/jre/lib/ext/sunjce_provider.jar
+        file:/C:/Program%20Files/Java/jdk1.7.0_79/jre/lib/ext/sunmscapi.jar
+        file:/C:/Program%20Files/Java/jdk1.7.0_79/jre/lib/ext/zipfs.jar
+ */
+
+```
+
+
+
+### 1.5.19. 字节码执行
+<a href="#menu" style="float:right">目录</a>
+
+* 机器码
+    * 机器码(machine code)是CPU可直接解读的指令。机器码与硬件等有关，不同的CPU架构支持的硬件码也不相同。
+* 字节码
+    * 字节码（bytecode）是一种包含执行程序、由一序列 op 代码/数据对 组成的二进制文件。字节码是一种中间码，它比机器码更抽象，需要直译器转译后才能成为机器码的中间代码。通常情况下它是已经经过编译，但与特定机器码无关。字节码主要为了实现特定软件运行和软件环境、与硬件环境无关。
+
+
+字节码的实现方式是通过编译器和虚拟机器。编译器将源码编译成字节码，特定平台上的虚拟机器将字节码转译为可以直接执行的指令。
+
+![](https://segmentfault.com/img/remote/1460000009956537?w=835&h=236)
+
+
+#### 1.5.19.1. 查看类文件的字节码工具javap
+<a href="#menu" style="float:right">目录</a>
+
+
+javap是jdk自带的反解析工具。它的作用就是根据class字节码文件，反解析出当前类对应的code区（汇编指令）、本地变量表、异常表和代码行偏移量映射表、常量池等等信息。
+当然这些信息中，有些信息（如本地变量表、指令和代码行偏移量映射表、常量池中方法的参数名称等等）需要在使用javac编译成class文件时，指定参数才能输出，比如，你直接javac xx.java，就不会在生成对应的局部变量表等信息，如果你使用javac -g xx.java就可以生成所有相关信息了。如果你使用的eclipse，则默认情况下，eclipse在编译时会帮你生成局部变量表、指令和代码行偏移量映射表等信息的。
+通过反编译生成的汇编代码，我们可以深入的了解java代码的工作机制。比如我们可以查看i++；这行代码实际运行时是先获取变量i的值，然后将这个值加1，最后再将加1后的值赋值给变量i。
+通过局部变量表，我们可以查看局部变量的作用域范围、所在槽位等信息，甚至可以看到槽位复用等信息。
+
+```
+lgj@lgj-Lenovo-G470:~$ javap --help
+Usage: javap <options> <classes>
+where possible options include:
+  -help  --help  -?        Print this usage message
+  -version                 Version information
+  -v  -verbose             Print additional information
+  -l                       Print line number and local variable tables
+  -public                  Show only public classes and members
+  -protected               Show protected/public classes and members
+  -package                 Show package/protected/public classes
+                           and members (default)
+  -p  -private             Show all classes and members
+  -c                       Disassemble the code
+  -s                       Print internal type signatures
+  -sysinfo                 Show system info (path, size, date, MD5 hash)
+                           of class being processed
+  -constants               Show final constants
+  -classpath <path>        Specify where to find user class files
+  -cp <path>               Specify where to find user class files
+  -bootclasspath <path>    Override location of bootstrap class files
+
+```
+* -hep  --hep  -?        输出此用法消息
+* -version                 版本信息，其实是当前javap所在jdk的版本信息，不是cass在哪个jdk下生成的。
+* -v  -verbose             输出附加信息（包括行号、本地变量表，反汇编等详细信息）
+* -l                        输出行号和本地变量表
+* -pubic                    仅显示公共类和成员
+* -protected               显示受保护的/公共类和成员
+* -package                 显示程序包/受保护的/公共类 和成员 (默认)
+* -p  -private             显示所有类和成员
+* -c                       对代码进行反汇编
+* -s                       输出内部类型签名
+* -sysinfo                 显示正在处理的类的系统信息 (路径, 大小, 日期, MD5 散列)
+* -constants               显示静态最终常量
+* -casspath < path>        指定查找用户类文件的位置
+* -bootcasspath < path>    覆盖引导类文件的位置
+
+一般常用的是-v -l -c三个选项。
+javap -v classxx，不仅会输出行号、本地变量表信息、反编译汇编代码，还会输出当前类用到的常量池等信息。
+javap -l 会输出行号和本地变量表信息。
+javap -c 会对当前class字节码进行反编译生成汇编代码。
+查看汇编代码时，需要知道里面的jvm指令，可以参考[官方文档:https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iconst_i](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iconst_i)：
+
+另外通过jclasslib工具也可以看到上面这些信息，而且是可视化的，效果更好一些。
+
+```java
+package com.code.base.collector;
+
+import java.util.Arrays;
+
+public class ArraysDemo {
+    public static void main(String args[]){
+        Arrays.asList();
+    }
+}
+
+```
+javap -c -v ArraysDemo.class
+
+```yml
+#源文件名称
+Classfile /home/lgj/aProject/JavaCode/Java-base/target/classes/com/code/base/collector/ArraysDemo.class
+  Last modified Aug 5, 2019; size 514 bytes
+  MD5 checksum 53801876d383dc25492a98f309774012
+  Compiled from "ArraysDemo.java"
+public class com.code.base.collector.ArraysDemo
+#小版本和大版本号
+  minor version: 0
+  major version: 52
+  flags: ACC_PUBLIC, ACC_SUPER
+  #类中所有的常量
+Constant pool:
+   #1 = Methodref          #2.#18         // java/lang/Object."<init>":()V
+   #2 = Class              #19            // java/lang/Object
+   #3 = Methodref          #20.#21        // java/util/Arrays.asList:([Ljava/lang/Object;)Ljava/util/List;
+   #4 = Class              #22            // com/code/base/collector/ArraysDemo
+   #5 = Utf8               <init>
+   #6 = Utf8               ()V
+   #7 = Utf8               Code
+   #8 = Utf8               LineNumberTable
+   #9 = Utf8               LocalVariableTable
+  #10 = Utf8               this
+  #11 = Utf8               Lcom/code/base/collector/ArraysDemo;
+  #12 = Utf8               main
+  #13 = Utf8               ([Ljava/lang/String;)V
+  #14 = Utf8               args
+  #15 = Utf8               [Ljava/lang/String;
+  #16 = Utf8               SourceFile
+  #17 = Utf8               ArraysDemo.java
+  #18 = NameAndType        #5:#6          // "<init>":()V
+  #19 = Utf8               java/lang/Object
+  #20 = Class              #23            // java/util/Arrays
+  #21 = NameAndType        #24:#25        // asList:([Ljava/lang/Object;)Ljava/util/List;
+  #22 = Utf8               com/code/base/collector/ArraysDemo
+  #23 = Utf8               java/util/Arrays
+  #24 = Utf8               asList
+  #25 = Utf8               ([Ljava/lang/Object;)Ljava/util/List;
+{
+    #方法
+    #第一个方法为类的构造函数，是编译器自动插入的
+  public com.code.base.collector.ArraysDemo();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+    #栈的大小，局部变量表大小，字节码指令，行号，局部变量表等信息
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: return
+      LineNumberTable:
+        line 5: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       5     0  this   Lcom/code/base/collector/ArraysDemo;
+    #第二个方法为main方法
+  public static void main(java.lang.String[]);
+    descriptor: ([Ljava/lang/String;)V
+    flags: ACC_PUBLIC, ACC_STATIC
+    Code:
+    #
+      stack=1, locals=1, args_size=1
+         0: iconst_0
+         1: anewarray     #2                  // class java/lang/Object
+         4: invokestatic  #3                  // Method java/util/Arrays.asList:([Ljava/lang/Object;)Ljava/util/List;
+         7: pop
+         8: return
+      LineNumberTable:
+        line 10: 0
+        line 13: 8
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       9     0  args   [Ljava/lang/String;
+}
+SourceFile: "ArraysDemo.java"
+
+
+```
+
+
+#### 1.5.19.2. 虚拟机常用指令
+<a href="#menu" style="float:right">目录</a>
+
+可以看到大多数指令都有前缀i,f，d等，代表操作的类型
+* i int整形
+* l long
+* f float
+* d double
+* a 对象索引
+* b byte
+* c char
+* s short
+
+|指令码|助记符|说明
+|---|---|---|
+|0x00|nop|什么都不做
+|0x01|aconst_null|将null推送至栈顶
+|0x02|iconst_m1|将int型-1推送至栈顶
+|0x03|iconst_0|将int型0推送至栈顶
+|0x04|iconst_1|将int型1推送至栈顶
+|0x05|iconst_2|将int型2推送至栈顶
+|0x06|iconst_3|将int型3推送至栈顶
+|0x07|iconst_4|将int型4推送至栈顶
+|0x08|iconst_5|将int型5推送至栈顶
+|0x09|lconst_0|将long型0推送至栈顶
+|0x0a|lconst_1|将long型1推送至栈顶
+|0x0b|fconst_0|将float型0推送至栈顶
+|0x0c|fconst_1|将float型1推送至栈顶
+|0x0d|fconst_2|将float型2推送至栈顶
+|0x0e|dconst_0|将double型0推送至栈顶
+|0x0f|dconst_1|将double型1推送至栈顶
+|0x10|bipush|将单字节的常量值(-128~127)推送至栈顶
+|0x11|sipush|将一个短整型常量值(-32768~32767)推送至栈顶
+|0x12|ldc|将int, float或String型常量值从常量池中推送至栈顶
+|0x13|ldc_w|将int, float或String型常量值从常量池中推送至栈顶（宽索引）
+|0x14|ldc2_w|将long或double型常量值从常量池中推送至栈顶（宽索引）
+|0x15|iload|将指定的int型本地变量推送至栈顶
+|0x16|lload|将指定的long型本地变量推送至栈顶
+|0x17|fload|将指定的float型本地变量推送至栈顶
+|0x18|dload|将指定的double型本地变量推送至栈顶
+|0x19|aload|将指定的引用类型本地变量推送至栈顶
+|0x1a|iload_0|将第一个int型本地变量推送至栈顶
+|0x1b|iload_1|将第二个int型本地变量推送至栈顶
+|0x1c|iload_2|将第三个int型本地变量推送至栈顶
+|0x1d|iload_3|将第四个int型本地变量推送至栈顶
+|0x1e|lload_0|将第一个long型本地变量推送至栈顶
+|0x1f|lload_1|将第二个long型本地变量推送至栈顶
+|0x20|lload_2|将第三个long型本地变量推送至栈顶
+|0x21|lload_3|将第四个long型本地变量推送至栈顶
+|0x22|fload_0|将第一个float型本地变量推送至栈顶
+|0x23|fload_1|将第二个float型本地变量推送至栈顶
+|0x24|fload_2|将第三个float型本地变量推送至栈顶
+|0x25|fload_3|将第四个float型本地变量推送至栈顶
+|0x26|dload_0|将第一个double型本地变量推送至栈顶
+|0x27|dload_1|将第二个double型本地变量推送至栈顶
+|0x28|dload_2|将第三个double型本地变量推送至栈顶
+|0x29|dload_3|将第四个double型本地变量推送至栈顶
+|0x2a|aload_0|将第一个引用类型本地变量推送至栈顶
+|0x2b|aload_1|将第二个引用类型本地变量推送至栈顶
+|0x2c|aload_2|将第三个引用类型本地变量推送至栈顶
+|0x2d|aload_3|将第四个引用类型本地变量推送至栈顶
+|0x2e|iaload|将int型数组指定索引的值推送至栈顶
+|0x2f|laload|将long型数组指定索引的值推送至栈顶
+|0x30|faload|将float型数组指定索引的值推送至栈顶
+|0x31|daload|将double型数组指定索引的值推送至栈顶
+|0x32|aaload|将引用型数组指定索引的值推送至栈顶
+|0x33|baload|将boolean或byte型数组指定索引的值推送至栈顶
+|0x34|caload|将char型数组指定索引的值推送至栈顶
+|0x35|saload|将short型数组指定索引的值推送至栈顶
+|0x36|istore|将栈顶int型数值存入指定本地变量
+|0x37|lstore|将栈顶long型数值存入指定本地变量
+|0x38|fstore|将栈顶float型数值存入指定本地变量
+|0x39|dstore|将栈顶double型数值存入指定本地变量
+|0x3a|astore|将栈顶引用型数值存入指定本地变量
+|0x3b|istore_0|将栈顶int型数值存入第一个本地变量
+|0x3c|istore_1|将栈顶int型数值存入第二个本地变量
+|0x3d|istore_2|将栈顶int型数值存入第三个本地变量
+|0x3e|istore_3|将栈顶int型数值存入第四个本地变量
+|0x3f|lstore_0|将栈顶long型数值存入第一个本地变量
+|0x40|lstore_1|将栈顶long型数值存入第二个本地变量
+|0x41|lstore_2|将栈顶long型数值存入第三个本地变量
+|0x42|lstore_3|将栈顶long型数值存入第四个本地变量
+|0x43|fstore_0|将栈顶float型数值存入第一个本地变量
+|0x44|fstore_1|将栈顶float型数值存入第二个本地变量
+|0x45|fstore_2|将栈顶float型数值存入第三个本地变量
+|0x46|fstore_3|将栈顶float型数值存入第四个本地变量
+|0x47|dstore_0|将栈顶double型数值存入第一个本地变量
+|0x48|dstore_1|将栈顶double型数值存入第二个本地变量
+|0x49|dstore_2|将栈顶double型数值存入第三个本地变量
+|0x4a|dstore_3|将栈顶double型数值存入第四个本地变量
+|0x4b|astore_0|将栈顶引用型数值存入第一个本地变量
+|0x4c|astore_1|将栈顶引用型数值存入第二个本地变量
+|0x4d|astore_2|将栈顶引用型数值存入第三个本地变量
+|0x4e|astore_3|将栈顶引用型数值存入第四个本地变量
+|0x4f|iastore|将栈顶int型数值存入指定数组的指定索引位置
+|0x50|lastore|将栈顶long型数值存入指定数组的指定索引位置
+|0x51|fastore|将栈顶float型数值存入指定数组的指定索引位置
+|0x52|dastore|将栈顶double型数值存入指定数组的指定索引位置
+|0x53|aastore|将栈顶引用型数值存入指定数组的指定索引位置
+|0x54|bastore|将栈顶boolean或byte型数值存入指定数组的指定索引位置
+|0x55|castore|将栈顶char型数值存入指定数组的指定索引位置
+|0x56|sastore|将栈顶short型数值存入指定数组的指定索引位置
+|0x57|pop|将栈顶数值弹出 (数值不能是long或double类型的)
+|0x58|pop2|将栈顶的一个（long或double类型的)或两个数值弹出（其它）
+|0x59|dup|复制栈顶数值并将复制值压入栈顶
+|0x5a|dup_x1|复制栈顶数值并将两个复制值压入栈顶
+|0x5b|dup_x2|复制栈顶数值并将三个（或两个）复制值压入栈顶
+|0x5c|dup2|复制栈顶一个（long或double类型的)或两个（其它）数值并将复制值压入栈顶
+|0x5d|dup2_x1|<待补充>
+|0x5e|dup2_x2|<待补充>
+|0x5f|swap|将栈最顶端的两个数值互换(数值不能是long或double类型的)
+|0x60|iadd|将栈顶两int型数值相加并将结果压入栈顶
+|0x61|ladd|将栈顶两long型数值相加并将结果压入栈顶
+|0x62|fadd|将栈顶两float型数值相加并将结果压入栈顶
+|0x63|dadd|将栈顶两double型数值相加并将结果压入栈顶
+|0x64|isub|将栈顶两int型数值相减并将结果压入栈顶
+|0x65|lsub|将栈顶两long型数值相减并将结果压入栈顶
+|0x66|fsub|将栈顶两float型数值相减并将结果压入栈顶
+|0x67|dsub|将栈顶两double型数值相减并将结果压入栈顶
+|0x68|imul|将栈顶两int型数值相乘并将结果压入栈顶
+|0x69|lmul|将栈顶两long型数值相乘并将结果压入栈顶
+|0x6a|fmul|将栈顶两float型数值相乘并将结果压入栈顶
+|0x6b|dmul|将栈顶两double型数值相乘并将结果压入栈顶
+|0x6c|idiv|将栈顶两int型数值相除并将结果压入栈顶
+|0x6d|ldiv|将栈顶两long型数值相除并将结果压入栈顶
+|0x6e|fdiv|将栈顶两float型数值相除并将结果压入栈顶
+|0x6f|ddiv|将栈顶两double型数值相除并将结果压入栈顶
+|0x70|irem|将栈顶两int型数值作取模运算并将结果压入栈顶
+|0x71|lrem|将栈顶两long型数值作取模运算并将结果压入栈顶
+|0x72|frem|将栈顶两float型数值作取模运算并将结果压入栈顶
+|0x73|drem|将栈顶两double型数值作取模运算并将结果压入栈顶
+|0x74|ineg|将栈顶int型数值取负并将结果压入栈顶
+|0x75|lneg|将栈顶long型数值取负并将结果压入栈顶
+|0x76|fneg|将栈顶float型数值取负并将结果压入栈顶
+|0x77|dneg|将栈顶double型数值取负并将结果压入栈顶
+|0x78|ishl|将int型数值左移位指定位数并将结果压入栈顶
+|0x79|lshl|将long型数值左移位指定位数并将结果压入栈顶
+|0x7a|ishr|将int型数值右（符号）移位指定位数并将结果压入栈顶
+|0x7b|lshr|将long型数值右（符号）移位指定位数并将结果压入栈顶
+|0x7c|iushr|将int型数值右（无符号）移位指定位数并将结果压入栈顶
+|0x7d|lushr|将long型数值右（无符号）移位指定位数并将结果压入栈顶
+|0x7e|iand|将栈顶两int型数值作“按位与”并将结果压入栈顶
+|0x7f|land|将栈顶两long型数值作“按位与”并将结果压入栈顶
+|0x80|ior|将栈顶两int型数值作“按位或”并将结果压入栈顶
+|0x81|lor|将栈顶两long型数值作“按位或”并将结果压入栈顶
+|0x82|ixor|将栈顶两int型数值作“按位异或”并将结果压入栈顶
+|0x83|lxor|将栈顶两long型数值作“按位异或”并将结果压入栈顶
+|0x84|iinc|将指定int型变量增加指定值（i++, i--, i+=2）
+|0x85|i2l|将栈顶int型数值强制转换成long型数值并将结果压入栈顶
+|0x86|i2f|将栈顶int型数值强制转换成float型数值并将结果压入栈顶
+|0x87|i2d|将栈顶int型数值强制转换成double型数值并将结果压入栈顶
+|0x88|l2i|将栈顶long型数值强制转换成int型数值并将结果压入栈顶
+|0x89|l2f|将栈顶long型数值强制转换成float型数值并将结果压入栈顶
+|0x8a|l2d|将栈顶long型数值强制转换成double型数值并将结果压入栈顶
+|0x8b|f2i|将栈顶float型数值强制转换成int型数值并将结果压入栈顶
+|0x8c|f2l|将栈顶float型数值强制转换成long型数值并将结果压入栈顶
+|0x8d|f2d|将栈顶float型数值强制转换成double型数值并将结果压入栈顶
+|0x8e|d2i|将栈顶double型数值强制转换成int型数值并将结果压入栈顶
+|0x8f|d2l|将栈顶double型数值强制转换成long型数值并将结果压入栈顶
+|0x90|d2f|将栈顶double型数值强制转换成float型数值并将结果压入栈顶
+|0x91|i2b|将栈顶int型数值强制转换成byte型数值并将结果压入栈顶
+|0x92|i2c|将栈顶int型数值强制转换成char型数值并将结果压入栈顶
+|0x93|i2s|将栈顶int型数值强制转换成short型数值并将结果压入栈顶
+|0x94|lcmp|比较栈顶两long型数值大小，并将结果（1，0，-1）压入栈顶
+|0x95|fcmpl|比较栈顶两float型数值大小，并将结果（1，0，-1）压入栈顶；当其中一个数值为NaN时，将-1压入栈顶
+|0x96|fcmpg|比较栈顶两float型数值大小，并将结果（1，0，-1）压入栈顶；当其中一个数值为NaN时，将1压入栈顶
+|0x97|dcmpl|比较栈顶两double型数值大小，并将结果（1，0，-1）压入栈顶；当其中一个数值为NaN时，将-1压入栈顶
+|0x98|dcmpg|比较栈顶两double型数值大小，并将结果（1，0，-1）压入栈顶；当其中一个数值为NaN时，将1压入栈顶
+|0x99|ifeq|当栈顶int型数值等于0时跳转
+|0x9a|ifne|当栈顶int型数值不等于0时跳转
+|0x9b|iflt|当栈顶int型数值小于0时跳转
+|0x9c|ifge|当栈顶int型数值大于等于0时跳转
+|0x9d|ifgt|当栈顶int型数值大于0时跳转
+|0x9e|ifle|当栈顶int型数值小于等于0时跳转
+|0x9f|if_icmpeq|比较栈顶两int型数值大小，当结果等于0时跳转
+|0xa0|if_icmpne|比较栈顶两int型数值大小，当结果不等于0时跳转
+|0xa1|if_icmplt|比较栈顶两int型数值大小，当结果小于0时跳转
+|0xa2|if_icmpge|比较栈顶两int型数值大小，当结果大于等于0时跳转
+|0xa3|if_icmpgt|比较栈顶两int型数值大小，当结果大于0时跳转
+|0xa4|if_icmple|比较栈顶两int型数值大小，当结果小于等于0时跳转
+|0xa5|if_acmpeq|比较栈顶两引用型数值，当结果相等时跳转
+|0xa6|if_acmpne|比较栈顶两引用型数值，当结果不相等时跳转
+|0xa7|goto|无条件跳转
+|0xa8|jsr|跳转至指定16位offset位置，并将jsr下一条指令地址压入栈顶
+|0xa9|ret|返回至本地变量指定的index的指令位置（一般与jsr, jsr_w联合使用）
+|0xaa|tableswitch|用于switch条件跳转，case值连续（可变长度指令）
+|0xab|lookupswitch|用于switch条件跳转，case值不连续（可变长度指令）
+|0xac|ireturn|从当前方法返回int
+|0xad|lreturn|从当前方法返回long
+|0xae|freturn|从当前方法返回float
+|0xaf|dreturn|从当前方法返回double
+|0xb0|areturn|从当前方法返回对象引用
+|0xb1|return|从当前方法返回void
+|0xb2|getstatic|获取指定类的静态域，并将其值压入栈顶
+|0xb3|putstatic|为指定的类的静态域赋值
+|0xb4|getfield|获取指定类的实例域，并将其值压入栈顶
+|0xb5|putfield|为指定的类的实例域赋值
+|0xb6|invokevirtual|调用实例方法
+|0xb7|invokespecial|调用超类构造方法，实例初始化方法，私有方法
+|0xb8|invokestatic|调用静态方法
+|0xb9|invokeinterface|调用接口方法
+|0xba|-- 
+|0xbb|new|创建一个对象，并将其引用值压入栈顶
+|0xbc|newarray|创建一个指定原始类型（如int, float, char…）的数组，并将其引用值压入栈顶
+|0xbd|anewarray|创建一个引用型（如类，接口，数组）的数组，并将其引用值压入栈顶
+|0xbe|arraylength|获得数组的长度值并压入栈顶
+|0xbf|athrow|将栈顶的异常抛出
+|0xc0|checkcast|检验类型转换，检验未通过将抛出ClassCastException
+|0xc1|instanceof|检验对象是否是指定的类的实例，如果是将1压入栈顶，否则将0压入栈顶
+|0xc2|monitorenter|获得对象的锁，用于同步方法或同步块
+|0xc3|monitorexit|释放对象的锁，用于同步方法或同步块
+|0xc4|wide|<待补充>
+|0xc5|multianewarray|创建指定类型和指定维度的多维数组（执行该指令时，操作栈中必须包含各维度的长度值），并将其引用值压入栈顶
+|0xc6|ifnull|为null时跳转
+|0xc7|ifnonnull|不为null时跳转
+|0xc8|goto_w|无条件跳转（宽索引）
+|0xc9|jsr_w|跳转至指定32位offset位置，并将jsr_w下一条指令地址压入栈顶
+
+
+#### 1.5.19.3. 常见的字节码操作工具
+
+字节码是作用于运行期，所以一般用来在运行期改变类的行为，基本上都会结合代理模式使用。
+
+* ASM
+* BCEL
+* CGLIB
+* Javassist
+* Byte Buddy
+
+
+
+#### 1.5.19.4. ASM字节码操作工具
+<a href="#menu" style="float:right">目录</a>
+
+##### 1.5.19.4.1. 什么是ASM
+<a href="#menu" style="float:right">目录</a>
+
+　　ASM是一个java字节码操纵框架，它能被用来动态生成类或者增强既有类的功能。ASM 可以直接产生二进制 class 文件，也可以在类被加载入 Java 虚拟机之前动态改变类行为。Java class 被存储在严格格式定义的 .class文件里，这些类文件拥有足够的元数据来解析类中的所有元素：类名称、方法、属性以及 Java 字节码（指令）。ASM从类文件中读入信息后，能够改变类行为，分析类信息，甚至能够根据用户要求生成新类。asm字节码增强技术主要是用来反射的时候提升性能的，如果单纯用jdk的反射调用，性能是非常低下的，而使用字节码增强技术后反射调用的时间已经基本可以与直接调用相当了
+
+依赖
+```xml
+<!-- https://mvnrepository.com/artifact/asm/asm -->
+<dependency>
+    <groupId>asm</groupId>
+    <artifactId>asm</artifactId>
+    <version>3.3.1</version>
+</dependency>
+
+```
+
+##### 1.5.19.4.2. ASM框架中的核心类
+<a href="#menu" style="float:right">目录</a>
+
+ASM框架中的核心类有以下几个：
+* ClassReader:该类用来解析编译过的class字节码文件。
+* ClassWriter:该类用来重新构建编译后的类，比如说修改类名、属性以及方法，甚至可以生成新的类的字节码文件。
+* ClassAdapter:该类也实现了ClassVisitor接口，它将对它的方法调用委托给另一个ClassVisitor对象。
+
+ASM字节码处理框架是用Java开发的而且使用基于访问者模式生成字节码及驱动类到字节码的转换，通俗的讲，它就是对class文件的CRUD，经过CRUD后的字节码可以转换为类。ASM的解析方式类似于SAX解析XML文件，它综合运用了访问者模式、职责链模式、桥接模式等多种设计模式，相对于其他类似工具如BCEL、SERP、Javassist、CGLIB，它的最大的优势就在于其性能更高，其jar包仅30K。Hibernate和Spring都使用了cglib代理，而cglib本身就是使用的ASM，可见ASM在各种开源框架都有广泛的应用。
+ASM是一个强大的框架，利用它我们可以做到：
+1、获得class文件的详细信息，包括类名、父类名、接口、成员名、方法名、方法参数名、局部变量名、元数据等
+2、对class文件进行动态修改，如增加、删除、修改类方法、在某个方法中添加指令等
+
+CGLIB（动态代理）是对ASM的封装，简化了ASM的操作，降低了ASM的使用门槛，
+
+其中，hibernate的懒加载使用到了asm，spring的AOP也使用到了。你建立一个hibernate映射对象并使用懒加载配置的时候，在内存中生成的对象使用的不再是你实现的那个类了，而是hibernate根据字节码技术已你的类为模板构造的一个新类，证明就是当你获得那个对象输出类名是，不是你自己生成的类名了。spring可能是proxy$xxx，hibernate可能是<你的类名>$xxx$xxx之类的名字。
+
+![](https://segmentfault.com/img/remote/1460000009956540?w=860&h=339)
+ClassReader用来读取原有的字节码，ClassWriter用于写入字节码，ClassVisitor、FieldVisitor、MethodVisitor、AnnotationVisitor访问修改对应组件。(一般不要通过ClassReader读取再通过Vistor修改类型为再ClassWriter回写，覆盖原有类行为，采用继承会更安全)
+
+##### 1.5.19.4.3. 为什么选择 ASM
+<a href="#menu" style="float:right">目录</a>
+
+最直接的改造 Java 类的方法莫过于直接改写 class 文件。Java 规范详细说明了 class 文件的格式，直接编辑字节码确实可以改变 Java 类的行为。直到今天，还有一些 Java 高手们使用最原始的工具，如 UltraEdit 这样的编辑器对 class 文件动手术。是的，这是最直接的方法，但是要求使用者对 Java class 文件的格式了熟于心：小心地推算出想改造的函数相对文件首部的偏移量，同时重新计算 class 文件的校验码以通过 Java 虚拟机的安全机制。
+
+Java 5 中提供的 Instrument 包也可以提供类似的功能：启动时往 Java 虚拟机中挂上一个用户定义的 hook 程序，可以在装入特定类的时候改变特定类的字节码，从而改变该类的行为。但是其缺点也是明显的：
+* Instrument 包是在整个虚拟机上挂了一个钩子程序，每次装入一个新类的时候，都必须执行一遍这段程序，即使这个类不需要改变。
+* 直接改变字节码事实上类似于直接改写 class 文件，无论是调用 ClassFileTransformer. transform(ClassLoader loader, String className, Class classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer)，还是Instrument.redefineClasses(ClassDefinition[] definitions)，都必须提供新 Java 类的字节码。也就是说，同直接改写 class 文件一样，使用 Instrument 也必须了解想改造的方法相对类首部的偏移量，才能在适当的位置上插入新的代码。
+尽管 Instrument 可以改造类，但事实上，Instrument 更适用于监控和控制虚拟机的行为。
+
+一种比较理想且流行的方法是使用 java.lang.ref.proxy。我们仍旧使用上面的例子，给 Account类加上 checkSecurity 功能 :
+
+首先，Proxy 编程是面向接口的。下面我们会看到，Proxy 并不负责实例化对象，和 Decorator 模式一样，要把 Account定义成一个接口，然后在AccountImpl里实现Account接口，接着实现一个 InvocationHandlerAccount方法被调用的时候，虚拟机都会实际调用这个InvocationHandler的invoke方法：
+```java
+ class SecurityProxyInvocationHandler implements InvocationHandler { 
+	 private Object proxyedObject; 
+	 public SecurityProxyInvocationHandler(Object o) { 
+		 proxyedObject = o; 
+	 } 
+		
+	 public Object invoke(Object object, Method method, Object[] arguments) 
+		 throws Throwable { 			
+		 if (object instanceof Account && method.getName().equals("opertaion")) { 
+			 SecurityChecker.checkSecurity(); 
+		 } 
+		 return method.invoke(proxyedObject, arguments); 
+	 } 
+ }
+```
+最后，在应用程序中指定 InvocationHandler生成代理对象：
+```java
+ public static void main(String[] args) { 
+	 Account account = (Account) Proxy.newProxyInstance( 
+		 Account.class.getClassLoader(), 
+		 new Class[] { Account.class }, 
+		 new SecurityProxyInvocationHandler(new AccountImpl()) 
+	 ); 
+	 account.function(); 
+ }
+```
+其不足之处在于：
+* Proxy 是面向接口的，所有使用 Proxy 的对象都必须定义一个接口，而且用这些对象的代码也必须是对接口编程的：Proxy 生成的对象是接口一致的而不是对象一致的：例子中Proxy.newProxyInstance生成的是实现Account接口的对象而不是 AccountImpl的子类。这对于软件架构设计，尤其对于既有软件系统是有一定掣肘的。
+* Proxy 毕竟是通过反射实现的，必须在效率上付出代价：有实验数据表明，调用反射比一般的函数开销至少要大 10 倍。而且，从程序实现上可以看出，对 proxy class 的所有方法调用都要通过使用反射的 invoke 方法。因此，对于性能关键的应用，使用 proxy class 是需要精心考虑的，以避免反射成为整个应用的瓶颈。
+ASM 能够通过改造既有类，直接生成需要的代码。增强的代码是硬编码在新生成的类文件内部的，没有反射带来性能上的付出。同时，ASM 与 Proxy 编程不同，不需要为增强代码而新定义一个接口，生成的代码可以覆盖原来的类，或者是原始类的子类。它是一个普通的 Java 类而不是 proxy 类，甚至可以在应用程序的类框架中拥有自己的位置，派生自己的子类。
+
+相比于其他流行的 Java 字节码操纵工具，ASM 更小更快。ASM 具有类似于 BCEL 或者 SERP 的功能，而只有 33k 大小，而后者分别有 350k 和 150k。同时，同样类转换的负载，如果 ASM 是 60% 的话，BCEL 需要 700%，而 SERP 需要 1100% 或者更多。
+
+ASM 已经被广泛应用于一系列 Java 项目：AspectWerkz、AspectJ、BEA WebLogic、IBM AUS、OracleBerkleyDB、Oracle TopLink、Terracotta、RIFE、EclipseME、Proactive、Speedo、Fractal、EasyBeans、BeanShell、Groovy、Jamaica、CGLIB、dynaop、Cobertura、JDBCPersistence、JiP、SonarJ、Substance L&F、Retrotranslator 等。Hibernate 和 Spring 也通过 cglib，另一个更高层一些的自动代码生成工具使用了 ASM。
+
+##### 1.5.19.4.4. ASM编程框架
+<a href="#menu" style="float:right">目录</a>
+
+ASM 通过树这种数据结构来表示复杂的字节码结构，并利用 Push 模型来对树进行遍历，在遍历过程中对字节码进行修改。所谓的 Push 模型类似于简单的 Visitor 设计模式，因为需要处理字节码结构是固定的，所以不需要专门抽象出一种 Vistable 接口，而只需要提供 Visitor 接口。所谓 Visitor 模式和 Iterator 模式有点类似，它们都被用来遍历一些复杂的数据结构。Visitor 相当于用户派出的代表，深入到算法内部，由算法安排访问行程。Visitor 代表可以更换，但对算法流程无法干涉，因此是被动的，这也是它和 Iterator 模式由用户主动调遣算法方式的最大的区别。
+
+在 ASM 中，提供了一个 ClassReader类，这个类可以直接由字节数组或由 class 文件间接的获得字节码数据，它能正确的分析字节码，构建出抽象的树在内存中表示字节码。它会调用accept方法，这个方法接受一个实现了ClassVisitor接口的对象实例作为参数，然后依次调用 ClassVisitor接口的各个方法。字节码空间上的偏移被转换成 visit 事件时间上调用的先后，所谓 visit 事件是指对各种不同 visit 函数的调用，ClassReader知道如何调用各种 visit 函数。在这个过程中用户无法对操作进行干涉，所以遍历的算法是确定的，用户可以做的是提供不同的 Visitor 来对字节码树进行不同的修改。ClassVisitor会产生一些子过程，比如visitMethod会返回一个实现MethordVisitor接口的实例，visitField会返回一个实现FieldVisitor接口的实例，完成子过程后控制返回到父过程，继续访问下一节点。因此对于ClassReader来说，其内部顺序访问是有一定要求的。实际上用户还可以不通过ClassReader类，自行手工控制这个流程，只要按照一定的顺序，各个 visit 事件被先后正确的调用，最后就能生成可以被正确加载的字节码。当然获得更大灵活性的同时也加大了调整字节码的复杂度。
+
+各个 ClassVisitor通过职责链 （Chain-of-responsibility） 模式，可以非常简单的封装对字节码的各种修改，而无须关注字节码的字节偏移，因为这些实现细节对于用户都被隐藏了，用户要做的只是覆写相应的 visit 函数。
+
+ClassAdaptor类实现了 ClassVisitor接口所定义的所有函数，当新建一个 ClassAdaptor对象的时候，需要传入一个实现了 ClassVisitor接口的对象，作为职责链中的下一个访问者 （Visitor），这些函数的默认实现就是简单的把调用委派给这个对象，然后依次传递下去形成职责链。当用户需要对字节码进行调整时，只需从ClassAdaptor类派生出一个子类，覆写需要修改的方法，完成相应功能后再把调用传递下去。这样，用户无需考虑字节偏移，就可以很方便的控制字节码。
+
+每个 ClassAdaptor类的派生类可以仅封装单一功能，比如删除某函数、修改字段可见性等等，然后再加入到职责链中，这样耦合更小，重用的概率也更大，但代价是产生很多小对象，而且职责链的层次太长的话也会加大系统调用的开销，用户需要在低耦合和高效率之间作出权衡
+
+##### 1.5.19.4.5. AOP 底层技术比较
+<a href="#menu" style="float:right">目录</a>
+
+|AOP| 底层技术|	功能|	性能|	面向接口编程	|编程难度|
+|---|---|---|---|---|---|
+|直接改写 class 文件|	完全控制类	|无明显性能代价	|不要求	|高，要求对 class 文件结构和 Java 字节码有深刻了解
+|JDK Instrument	完全控制类|	无论是否改写，每个类装入时都要执行 hook 程序|	不要求|	高，要求对 class 文件结构和 Java 字节码有深刻了解
+|JDK Proxy	|只能改写 method|	反射引入性能代价|	要求|	低
+|ASM|	几乎能完全控制类|	无明显性能代价	|不要求	|中，能操纵需要改写部分的 Java 字节码
+
+##### 1.5.19.4.6. 例子
+
+###### 1.5.19.4.6.1. 使用ASM实现方法耗时计算的AOP功能
+
+
+##### 1.5.19.4.7. 建议
+
+* 操作字节码作用于运行期，对于开发人员是完全透明的。
+* 字节码编程的可阅读可维护性比较差，不要滥用字节码编程。
+* 能通过设计模式实现的场景尽量通过设计模式实现；
+* 字节码编程中复杂的逻辑也尽量使用java实现，在字节码中调用；
+* 使用字节码解决一些框架性的问题，不要用于处理易变逻辑；
+* 字节码编程从逻辑块着手，优先明确程序跳转Label，再补充逻辑执行
+* 借助工具
+    * 推荐使用intellj idea插件ASM Bytecode Outline，目前生成的字节码对应到 ASM 5.x。
+
+### 高效并发
