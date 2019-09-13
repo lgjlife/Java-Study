@@ -40,6 +40,11 @@
         - [1.6.6. 锁与重排序](#166-锁与重排序)
         - [1.6.7. 提高锁性能方案](#167-提高锁性能方案)
         - [1.6.8. Java虚拟机的锁优化](#168-java虚拟机的锁优化)
+            - [1.6.8.1. 自旋锁和自适应自旋锁](#1681-自旋锁和自适应自旋锁)
+            - [1.6.8.2. 锁消除](#1682-锁消除)
+            - [1.6.8.3. 锁粗化](#1683-锁粗化)
+            - [1.6.8.4. 轻量级锁](#1684-轻量级锁)
+            - [1.6.8.5. 偏向锁](#1685-偏向锁)
     - [1.7. 并发编程的挑战](#17-并发编程的挑战)
         - [1.7.1. 上下文切换](#171-上下文切换)
         - [1.7.2. 死锁](#172-死锁)
@@ -50,19 +55,18 @@
         - [1.7.7. 资源的争用与调度](#177-资源的争用与调度)
     - [1.8. Java内存模型](#18-java内存模型)
         - [1.8.1. Java内存模型基础](#181-java内存模型基础)
-            - [Java内存模型带来的问题](#java内存模型带来的问题)
+            - [1.8.1.1. Java内存模型带来的问题](#1811-java内存模型带来的问题)
         - [1.8.2. 重排序](#182-重排序)
             - [1.8.2.1. 基本概念](#1821-基本概念)
             - [1.8.2.2. 指令重排序](#1822-指令重排序)
             - [1.8.2.3. 存储子系统重构排序](#1823-存储子系统重构排序)
-        - [1.8.3. 顺序一致性](#183-顺序一致性)
-        - [1.8.4. volatile的内存语义](#184-volatile的内存语义)
-            - [volatile的定义与实现原理](#volatile的定义与实现原理)
-        - [1.8.5. 锁的内存语义](#185-锁的内存语义)
-        - [1.8.6. final的内存语义](#186-final的内存语义)
-        - [1.8.7. happens-before](#187-happens-before)
-        - [1.8.8. 双重检查锁定与延迟初始化](#188-双重检查锁定与延迟初始化)
-        - [1.8.9. Java内存模型综述](#189-java内存模型综述)
+        - [1.8.3. volatile的内存语义](#183-volatile的内存语义)
+            - [1.8.3.1. volatile的定义与实现原理](#1831-volatile的定义与实现原理)
+        - [1.8.4. 锁的内存语义](#184-锁的内存语义)
+        - [1.8.5. final的内存语义](#185-final的内存语义)
+        - [1.8.6. happens-before](#186-happens-before)
+        - [1.8.7. 双重检查锁定与延迟初始化](#187-双重检查锁定与延迟初始化)
+        - [1.8.8. Java内存模型综述](#188-java内存模型综述)
     - [1.9. ThreadLocal](#19-threadlocal)
         - [1.9.1. 基本概念和使用](#191-基本概念和使用)
         - [1.9.2. 原理说明](#192-原理说明)
@@ -129,7 +133,7 @@
 
 # 1. 多线程
 ## 1.1. 基本概念
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 * 进程
     * 受操作系统管理和资源分配的基本单元，进程之间的内存空间是相互独立的。
@@ -199,7 +203,7 @@
 
 
 ## 1.2. Java多线程
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 ### 1.2.1. 实现方式
 **方式1:继承Thread类**
@@ -479,7 +483,7 @@ public class ChildThread implements Runnable {
 * Terminated
     * 结束状态
 ### 1.2.5. 线程监控工具
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 * jstack
 查看线程的状态，优先级，可以检测是否存在死锁
@@ -530,7 +534,7 @@ JNI global references: 200
 集成多个java命令，通过界面查看各个状态
 
 ### 1.2.6. 有关并行的两个重要定律
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 有关为什么要使用并行程序的问题前面已经进行了简单的探讨。总的来说，最重要的应该是处于两个目的。
 * 第一，为了获得更好的性能；
@@ -614,7 +618,7 @@ Gustafson定律关系的是：如果可被并行化的代码所占比例足够�
 总的来说，提升性能的方法：想办法提升系统并行的比例，同时增加CPU数量
 
 ## 1.3. Synchronized
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 ### 1.3.1. 基本概念
 * 为什么要同步
@@ -947,7 +951,7 @@ public final native void notifyAll();
 
 
 ## 1.5. 线程阻塞工具LockSuport
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 * LockSuport用于实现线程阻塞。可以在线程内任意位置让线程阻塞。
 * 与suspend()相比，弥补了resume()方法没有发生导致的死锁问题。
@@ -1069,16 +1073,16 @@ park()和unpark()不会有 Thread.suspend 和 Thread.resume 所可能引发的�
 
 
 ## 1.6. 线程同步机制
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 线程同步机制是一套用于协调线程间的数据访问及活动的机制，用于保障线程安全。
 
 ### 1.6.1. 线程同步机制概述
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 
 ### 1.6.2. 锁概述
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 * 锁可以理解为对共享数据访问的许可证，对于任何一个许可证锁保持的共享数据，任何线程访问这些共享数据前都要获取到锁。并且只有释放之后其他线程才能以同样的方式获取到锁并进行访问
 * 锁分类
@@ -1121,7 +1125,7 @@ park()和unpark()不会有 Thread.suspend 和 Thread.resume 所可能引发的�
 
 ### 1.6.3. 内部锁Synchronized
 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 #### 1.6.3.1. 基本概念
 
@@ -1350,7 +1354,7 @@ ObjectMonitor中有两个队列，_WaitSet 和 _EntryList，用来保存ObjectWa
 
 
 ### 1.6.4. 显示锁Lock
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 #### 1.6.4.1. 基本使用
 
@@ -1480,7 +1484,7 @@ public void write(){
 
 
 ### 1.6.5. 内存屏障
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 #### 1.6.5.1. 基本概念
 内存屏障（Memory Barrier）与内存栅栏（Memory Fence）是同一个概念，不同的叫法。
@@ -1560,7 +1564,7 @@ mfence指令综合了sfence指令与lfence指令的作用，强制所有在mfenc
 
 
 ### 1.6.6. 锁与重排序
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 * 临界区内的操作不允许被重排序到临界区外
     * 是锁保证原子性和可见性的基础，编译器和处理器必须遵守该规则
@@ -1575,7 +1579,7 @@ mfence指令综合了sfence指令与lfence指令的作用，强制所有在mfenc
 * 临界区外的代码可以被重排序到临界区内，只要没有违反happen-before
 
 ### 1.6.7. 提高锁性能方案
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 **减少锁持有的时间**
 **减少锁粒度**
@@ -1595,20 +1599,26 @@ mfence指令综合了sfence指令与lfence指令的作用，强制所有在mfenc
 
 
 ### 1.6.8. Java虚拟机的锁优化
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
-**锁偏向**
-锁偏向是一种针对加锁操作的优化手段。
 
-如果一个线程获得了锁，那么锁就进入偏向模式。当这个线程再次请求锁时，无须再做任何同步操作。这样就节省了大量有关锁申请的操作，从而提高了程序性能。因此，对于几乎没有锁竞争的场合，偏向锁有比较红啊的优化效果，因为连续多次极有可能是同一个线程请求相同的锁。而对于锁竞争比较激烈的场合，其效果不佳。因为在竞争激烈的场合，最有可能的情况是每次都是不同的线程来请求相同的锁。
+#### 1.6.8.1. 自旋锁和自适应自旋锁
+<a href="#menu" style="float:right" display="block">目录</a>
 
-**轻量级锁**
-如果偏向锁失败，即上一个请求的锁的线程和这个线程不是同一个。偏向锁失败意味者不能避免做同步操作。此时，虚拟机并不会立即挂起线程。他会使用一种成为轻量级锁的优化手段。 轻量级锁的操作也很方便，它只是简单地将对象头部作为指针，指向蚩尤锁的线程堆栈的内部，来判断一个线程是否持有对象锁。 如果线程获得轻量级锁成功，则可以顺利进入临界区。如果轻量级锁失败，则表示其他线程抢先争夺了锁，那么当前线程的锁请求就会膨胀为重量级锁。
+锁膨胀后，虚拟机为了避免线程真实地在操作系统层面挂起，虚拟机还会在做最后的努力–自旋锁。由于当前线程暂时无法获得锁，但是什么时候可以获得锁是一个未知数。也许在CPU几个时钟周期后，就可以得到锁。如果这样，简单粗暴的挂起线程可能是一种得不偿失的操作，因此系统会进行一次赌注：它会假设在不久的将来，线程可以得到这把锁。因此虚拟机让当前线程做个空循环，在经过若干次循环后，如果可以得到锁，那么就顺利进入临界区。如果还不能得到锁，才会真实地将线程在操作系统层面挂起。
 
-**自选锁**
-锁膨胀后，虚拟机为了避免线程真实地在操作系统层面挂起，虚拟机还会在做最后的努力–自选锁。由于当前线程暂时无法获得锁，但是什么时候可以获得锁是一个未知数。也许在CPU几个时钟周期后，就可以得到锁。如果这样，简单粗暴的挂起线程可能是一种得不偿失的操作，因此系统会进行一次赌注：它会假设在不久的将来，线程可以得到这把锁。因此虚拟机让当前线程做个空循环，在经过若干次循环后，如果可以得到锁，那么就顺利进入临界区。如果还不能得到锁，才会真实地将线程在操作系统层面挂起。
+自旋锁在1.6之后默认开启,虚拟机参数控制 -XX:+UseSpinning.
 
-**锁消除**
+自旋等待不能代替阻塞,自旋避免了线程的切换开销,但是要占用处理器的时间,因此,如果自旋的时间很短,那么等待的效果就非常好.反之,如果锁等待的时间比较长,自旋时间变长,浪费了很多的处理器时间,反而会带来性能上的浪费.
+
+自旋次数控制参数:-XX:+PreBlockSpin.超过则提交给操作系统进行处理.
+
+JDK1.6引入了自适应的自旋锁。自旋的时间是由前一次在同一个锁上的自旋时间及锁的拥有者的状态来决定。如果在同一个锁对象上，自旋等待刚刚成功获得过锁，并且持有锁的线程正在运行中，那么虚拟机就认为这次自旋也很可能成功，进而它将允许自旋等待持续相对更长的时间。如果对于某个锁，自旋很少成功获得，在以后获得这个锁时将可能省略自旋过程，以避免浪费处理器资源。有了自适应自旋，随着程序运行和性能监控信息的不断完善，虚拟机对程序锁的状况预测就会越来越准确，虚拟机就变得越来越“聪明”了。
+
+
+#### 1.6.8.2. 锁消除
+<a href="#menu" style="float:right" display="block">目录</a>
+
 锁消除是一种更彻底的锁优化。Java虚拟机在JIT编译时，通过对运行上下文的扫描，去除不可能存在共享资源竞争的锁。通过锁消除，可以节省毫无意义的请求锁时间。
 
 下面这种这种情况，我们使用vector， 而vector内部使用了synchronize请求锁。
@@ -1629,11 +1639,86 @@ public String []  createStrings(){
 逃逸分析必须在 -server 模式下进行，可以使用 -XX:DoEscapeAnalysis 参数打开逃逸分析，使用 -XX:+EliminateLocks 参数可以打开锁消除。
 
 
+
+#### 1.6.8.3. 锁粗化
+<a href="#menu" style="float:right" display="block">目录</a>
+
+大部分情况下，我们在编写代码时，总是推荐将同步块的作用范围限制得尽量小——只在共享数据的实际作用域才进行同步，如果存在锁竞争，那等待锁的线程也可能尽快拿到锁。
+
+但是如果一系列的连续操作都是对同一对象反复加锁和解锁，甚至加锁操作是出现在循环体中的，那即使没有线程竞争，频繁地进行互斥同步操作也会导致不必要的性能损耗。
+
+```java
+public String concatString(String s1, String s2, String s3){
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(s1);
+        sb.append(s2);
+        sb.append(s3);
+        return sb.toString();
+    }
+```
+上段代码连续的append()就属于这种情况。如果虚拟机探测到有这样一串零碎的操作都对同一个对象加锁，将会把加锁同步的范围扩展（粗化）到整个操作序列的外部，以上段代码为例，就是扩展到第一个append()之前直至最后一个append()之后，这样只需要加锁一次就可以了。
+
+
+
+#### 1.6.8.4. 轻量级锁
+<a href="#menu" style="float:right" display="block">目录</a>
+
+如果偏向锁失败，即上一个请求的锁的线程和这个线程不是同一个。偏向锁失败意味者不能避免做同步操作。此时，虚拟机并不会立即挂起线程。他会使用一种成为轻量级锁的优化手段。 轻量级锁的操作也很方便，它只是简单地将对象头部作为指针，指向蚩尤锁的线程堆栈的内部，来判断一个线程是否持有对象锁。 如果线程获得轻量级锁成功，则可以顺利进入临界区。如果轻量级锁失败，则表示其他线程抢先争夺了锁，那么当前线程的锁请求就会膨胀为重量级锁。
+
+轻量级锁是JJDK1.6中加入的新型锁机制。轻量级是相对于使用操作系统的互斥量来实现的传统锁而言.因此传统的锁被称为重量级锁.轻量级锁并不是用来代替重量级锁的，它的本意是在没有多线程竞争的前提下，减少传统重量级锁使用操作系统互斥量产生的性能消耗。
+
+轻量级锁提升程序性能的依据是“对于绝大多数的锁，在整个同步周期内都是不存在竞争的”，这是一个经验数据。如果没有竞争，轻量级锁使用CAS操作避免了使用互斥量的开销，但如果存在锁竞争，除了互斥量的开销外，还额外发生了CAS操作，因此在有竞争的情况下，轻量级锁比传统锁更慢。重量级锁，重量级锁依赖于操作系统的互斥量（mutex） 实现， 该操作会导致进程从用户态与内核态之间的切换， 是一个开销较大的操作。
+
+HotSpot对象头 Mark Word
+|存储内容|标志位|状态|
+|---|---|---|
+|对象哈希码，对象分代年龄|01|未锁定|
+|指向锁记录的指针|00|轻量级锁定|
+|指向重量级锁的指针|10|膨胀(重量级锁定)|
+|空，不需要记录信息|11|GC标志|
+|偏向线程ID，偏向时间戳，对象分代年龄 |01|可偏向|
+
+轻量级锁的加锁过程：
+step1）如果此同步对象没有被锁定（锁标志位为01状态）：虚拟机首先将在当前线程的栈帧中建立一个名为 锁记录的空间，用于存储对象目前的Mark Word 的拷贝；
+step2）然后，虚拟机将使用CAS 操作尝试将对象的 Mark Word 更新为指向 Lock Record的指针；
+step3）如果这个更新工作成功了，那么这个线程就拥有了该对象的锁，并且对象Mark Word的锁标志位将转变为 00，即表示 此对象处于轻量级锁定状态；
+step4）如果这个更新失败了，虚拟机首先会检查对象的Mark Word 是否指向当前线程的栈帧，如果只说明当前线程已经拥有了这个对象的锁，那就可以直接进入同步块继续执行，否则说明这个锁对象以及被其他线程抢占了。如果有两条以上的线程争用同一个锁，那轻量级锁就不再有效，要膨胀为重量级锁，锁标志的状态值变为 10，Mark Word中存储的就是指向重量级（互斥量）的指针，后面等待锁的线程也要进入阻塞状态；
+轻量级锁的解锁过程：
+step1）如果对象的Mark Word仍然指向着线程的锁记录，那就用CAS 操作把对象当前的Mark Word 和 线程中复制的 Dispatched Mard Word替换回来；
+step2）如果替换成功，整个同步过程就完成了；
+step3）如果替换失败，说明有其他线程尝试过获取该锁，那就要在释放锁的同时，唤醒被挂起的线程；
+
+
+
+#### 1.6.8.5. 偏向锁
+<a href="#menu" style="float:right" display="block">目录</a>
+
+锁偏向是一种针对加锁操作的优化手段。
+
+如果一个线程获得了锁，那么锁就进入偏向模式。当这个线程再次请求锁时，无须再做任何同步操作。这样就节省了大量有关锁申请的操作，从而提高了程序性能。因此，对于几乎没有锁竞争的场合，偏向锁有比较红啊的优化效果，因为连续多次极有可能是同一个线程请求相同的锁。而对于锁竞争比较激烈的场合，其效果不佳。因为在竞争激烈的场合，最有可能的情况是每次都是不同的线程来请求相同的锁。
+
+偏向锁是JDK1.6引入的锁优化，目的是消除数据在无竞争情况下的同步原语，进一步提高程序的运行性能。如果说轻量级锁是在无竞争的情况下使用CAS操作消除同步使用的互斥量，那偏向锁就是在无竞争的情况下把整个同步都消除掉，连CAS操作都不做了。
+
+这个锁会偏向于第一个获得它的线程，如果接下来的执行过程中，该锁没有被其他线程获取，则持有偏向锁的线程将永远不需要再进行同步。
+
+偏向锁可以提高带有同步但无竞争的程序性能。它同样是一个带有效益权衡（Trade Off）性质的优化，它对程序运行不一定有利，如果程序中大多数的锁都总是被多个不同的线程访问，那偏向锁局势多余的。在具体问题具体分析的前提下，有时使用参数 -XX:-UseBiasedLocking 来禁止偏向锁优化反而可以提升性能。
+
+
+
+当启用了偏向锁,当锁对象第一次被线程获取的时候,虚拟机将会把对象头中的标志位设为01,即偏向模式.同时使用CAS操作把获取到的这个锁的线程的ID记录在对象的Mark Word中,如果CAS操作成功,持有偏向锁的线程以后每次进入这个锁相关的同步块时,虚拟机都可以不再进行任何同步操作,例如Locking,Unlocking等
+当有另外一个线程区尝试获取这个锁时,偏向模式就宣告失败.根据锁对象是否处于被锁定的状态,撤销偏向后恢复到未锁定(标志位为01)或轻量级锁定(标志位为00)的状态,后续的同步操作就如上面介绍的轻量级锁那样执行
+
+![线程池实现基本原理](https://github.com/lgjlife/Java-Study/blob/master/pic/thread/BiasedLock.png?raw=true)
+
+
+
+
 ## 1.7. 并发编程的挑战
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 ### 1.7.1. 上下文切换
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 **基本概念**
 * 即使是单核处理器也支持多线程执行代码，CPU通过给每个线程分配CPU时间片来实现这个机制。时间片是CPU分配给各个线程的时间，因为时间片非常短，所以CPU通过不停地切换线程执行，让我们感觉多个线程是同时执行的，时间片一般是几十毫秒（ms）.
@@ -1690,7 +1775,7 @@ procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
     
 
 ### 1.7.2. 死锁
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 ```java
 public class DeadLockDemo {
@@ -1771,10 +1856,10 @@ public class DeadLockDemo {
     * 吞吐率较大
 
 ## 1.8. Java内存模型
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 ### 1.8.1. Java内存模型基础
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 **现代计算机的内存模型**
 物理计算机中的并发问题，物理机遇到的并发问题与虚拟机中的情况有不少相似之处，物理机对并发的处理方案对于虚拟机的实现也有相当大的参考意义。
@@ -1804,7 +1889,7 @@ Java线程之间的通信由Java内存模型（本文简称为JMM）控制，JMM
 2）线程B到主内存中去读取线程A之前已更新过的共享变量。
 
 
-#### Java内存模型带来的问题
+#### 1.8.1.1. Java内存模型带来的问题
 
 **可见性问题**
 CPU中运行的线程从主存中拷贝共享对象obj到它的CPU缓存，把对象obj的count变量改为2。但这个变更对运行在右边CPU中的线程不可见，因为这个更改还没有flush到主存中：要解决共享对象可见性这个问题，我们可以使用java volatile关键字或者是加锁
@@ -1815,7 +1900,7 @@ CPU中运行的线程从主存中拷贝共享对象obj到它的CPU缓存，把�
 ![](https://upload-images.jianshu.io/upload_images/4222138-58dbd966b4f80fab.png?imageMogr2/auto-orient/)
 
 ### 1.8.2. 重排序
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 #### 1.8.2.1. 基本概念
 
@@ -1909,8 +1994,8 @@ class ReorderExample {
 
 
 
-### 1.8.4. volatile的内存语义
-<a href="#menu" style="float:right">目录</a>
+### 1.8.3. volatile的内存语义
+<a href="#menu" style="float:right" display="block">目录</a>
 
 **特性**
 * 内存可见性
@@ -1927,7 +2012,7 @@ class ReorderExample {
 **volatile写的内存语义如下**
 当写一个volatile变量时，JMM会把该线程对应的本地内存中的共享变量值刷新到主内存
 
-#### volatile的定义与实现原理
+#### 1.8.3.1. volatile的定义与实现原理
 Java语言规范第3版中对volatile的定义如下：Java编程语言允许线程访问共享变量，为了
 确保共享变量能被准确和一致地更新，线程应该确保通过排他锁单独获得这个变量。Java语言
 提供了volatile，在某些情况下比锁要更加方便。如果一个字段被声明成volatile，Java线程内存模型确保所有线程看到这个变量的值是一致的
@@ -1947,11 +2032,11 @@ Java语言规范第3版中对volatile的定义如下：Java编程语言允许线
 
 
 
-### 1.8.5. 锁的内存语义
-<a href="#menu" style="float:right">目录</a>
+### 1.8.4. 锁的内存语义
+<a href="#menu" style="float:right" display="block">目录</a>
 
-### 1.8.6. final的内存语义
-<a href="#menu" style="float:right">目录</a>
+### 1.8.5. final的内存语义
+<a href="#menu" style="float:right" display="block">目录</a>
 编译器和处理器要遵守两个重排序规则：
 
 在构造函数内对一个final域的写入，与随后把这个被构造对象的引用赋值给一个引用变量，这两个操作之间不能重排序。
@@ -1967,8 +2052,8 @@ final语义在处理器中的实现：
 读final域的重排序规则要求编译器在读final域的操作前面插入一个LoadLoad屏障
 
 
-### 1.8.7. happens-before
-<a href="#menu" style="float:right">目录</a>
+### 1.8.6. happens-before
+<a href="#menu" style="float:right" display="block">目录</a>
 
 * Happen-before原则
     * 程序顺序规则：一个线程中的每个操作，happens-before于该线程中的任意后续操作。
@@ -1980,15 +2065,15 @@ final语义在处理器中的实现：
     * 程序中断规则：对线程interrupted()方法的调用先行于被中断线程的代码检测到中断时间的发生。
     * 对象finalize规则：一个对象的初始化完成（构造函数执行结束）先行于发生它的finalize()方法的开始
 
-### 1.8.8. 双重检查锁定与延迟初始化
-<a href="#menu" style="float:right">目录</a>
+### 1.8.7. 双重检查锁定与延迟初始化
+<a href="#menu" style="float:right" display="block">目录</a>
 
-### 1.8.9. Java内存模型综述
-<a href="#menu" style="float:right">目录</a>
+### 1.8.8. Java内存模型综述
+<a href="#menu" style="float:right" display="block">目录</a>
 
 
 ## 1.9. ThreadLocal
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 ### 1.9.1. 基本概念和使用
 
@@ -2162,10 +2247,10 @@ private static int nextIndex(int i, int len) {
 
 
 ## 1.10. 并发容器和框架
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 ### 1.10.1. 常见的并发容器
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 * ConcurrentHashMap
 * ConcurrentLinkedDeque
@@ -2177,7 +2262,7 @@ private static int nextIndex(int i, int len) {
 
 
 ### 1.10.2. Fork/Join框架
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 #### 1.10.2.1. 基本概念
 
@@ -2296,7 +2381,7 @@ public final ForkJoinTask<V> fork() {
 ```
 
 ## 1.11. 原子操作类
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 
 
@@ -2977,7 +3062,7 @@ park / unpark 模型真正解耦了线程之间的同步，线程之间不再需
 
 
 ### 1.11.3. 原子更新基本类型
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 使用原子的方式更新基本类型，Atomic包提供了以下3个类。
 * AtomicBoolean：原子更新布尔类型。
@@ -2985,7 +3070,7 @@ park / unpark 模型真正解耦了线程之间的同步，线程之间不再需
 * AtomicLong：原子更新长整型
 
 ### 1.11.4. 原子更新数组
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 通过原子的方式更新数组里的某个元素，Atomic包提供了以下4个类。
 * AtomicIntegerArray：原子更新整型数组里的元素。
@@ -2995,7 +3080,7 @@ park / unpark 模型真正解耦了线程之间的同步，线程之间不再需
 
 
 ### 1.11.5. 原子更新引用类型
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 原子更新基本类型的AtomicInteger，只能更新一个变量，如果要原子更新多个变量，就需要使用这个原子更新引用类型提供的类。Atomic包提供了以下3个类。
 * AtomicReference：原子更新引用类型。
@@ -3003,7 +3088,7 @@ park / unpark 模型真正解耦了线程之间的同步，线程之间不再需
 * AtomicMarkableReference：原子更新带有标记位的引用类型。可以原子更新一个布尔类型的标记位和引用类型
 
 ### 1.11.6. 原子更新字段类
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 如果需原子地更新某个类里的某个字段时，就需要使用原子更新字段类，Atomic包提供了以下3个类进行原子字段更新。
 * AtomicIntegerFieldUpdater：原子更新整型的字段的更新器。
@@ -3011,7 +3096,7 @@ park / unpark 模型真正解耦了线程之间的同步，线程之间不再需
 * AtomicStampedReference：原子更新带有版本号的引用类型。该类将整数值与引用关联起来，可用于原子的更新数据和数据的版本号，可以解决使用CAS进行原子更新时可能出现的ABA问题
 
 ## 1.12. Future模式
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 ### 1.12.1. Future
 
@@ -3621,10 +3706,10 @@ System.out.println("Maturity : " + maturityFuture.get());
 
 
 ## 1.13. 并发工具类
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 ### 1.13.1. 等待多线程完成的CountDownLatch
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 #### 1.13.1.1. 基本概念
 
@@ -3684,7 +3769,7 @@ public void countDown() {
 ```
 
 ### 1.13.2. 同步屏障CyclicBarrier
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 
 CyclicBarrier的字面意思是可循环使用（Cyclic）的屏障（Barrier）。它要做的事情是，让一组线程到达一个屏障（也可以叫同步点）时被阻塞，直到最后一个线程到达屏障时，屏障才会开门，所有被屏障拦截的线程才会继续运行。
@@ -3809,7 +3894,7 @@ private void breakBarrier() {
 } 
 ```
 ### 1.13.3. 控制并发线程数的Semaphore
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 
 #### 1.13.3.1. 基本概念
@@ -3840,7 +3925,7 @@ acquire()用于申请一个许可证，调用一次减少一个，如果超过�
 
 
 ### 1.13.4. 线程间交换数据的Exchanger
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 Exchanger 是 JDK 1.5 开始提供的一个用于两个工作线程之间交换数据的封装工具类，简单说就是一个线程在完成一定的事务后想与另一个线程交换数据，则第一个先拿出数据的线程会一直等待第二个线程，直到第二个线程拿着数据到来时才能彼此交换对应数据。其定义为 Exchanger<V> 泛型类型，其中 V 表示可交换的数据类型，对外提供的接口很简单，具体如下：
 
@@ -3911,7 +3996,7 @@ public class Test {
 ```
 
 ### 1.13.5. FutureTask
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 #### 1.13.5.1. Callable与Runnable
 
@@ -4102,7 +4187,7 @@ class Task implements Callable<Integer>{
 
 
 ## 1.14. 线程池
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 **线程池好处**
 * 第一：降低资源消耗。通过重复利用已创建的线程降低线程创建和销毁造成的消耗。
@@ -4263,7 +4348,7 @@ public interface ExecutorService extends Executor {
 
 
 ## 1.15. Executor框架
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 ### 1.15.1. Executor体系
 
@@ -4431,14 +4516,14 @@ scheduleWithFixedDelay: 固定延迟任务，本次任务执行结束再等待�
 
 
 ## 1.16. 并发编程实战
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 
 ## 1.17. 队列
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 ### 1.17.1. JDK队列概述
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 **Java  Queue基础**
 * Queue： 基本上，一个队列就是一个先入先出（FIFO）的数据结构。
@@ -4515,7 +4600,7 @@ DelayQueue中的元素只有当其指定的延迟时间到了，才能够从队�
   
 
 ### 1.17.2. DelayedWorkQueue
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" style="float:right" display="block">目录</a>
 
 我们知道线程池运行时，会不断从任务队列中获取任务，然后执行任务。如果我们想实现延时或者定时执行任务，重要一点就是任务队列会根据任务延时时间的不同进行排序，延时时间越短地就排在队列的前面，先被获取执行。
 
