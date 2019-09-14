@@ -44,6 +44,26 @@
     - [1.3. SpringBoot](#13-springboot)
         - [1.3.1. 基本概念](#131-基本概念)
         - [1.3.2. Spring Boot 环境下创建Bean](#132-spring-boot-环境下创建bean)
+        - [1.3.3. 使用不同的容器](#133-使用不同的容器)
+        - [1.3.4. 配置文件](#134-配置文件)
+            - [1.3.4.1. bootstrap.yml与application.yml区别](#1341-bootstrapyml与applicationyml区别)
+            - [1.3.4.2. 多环境配置](#1342-多环境配置)
+                - [1.3.4.2.1. 配置文件](#13421-配置文件)
+                - [1.3.4.2.2. 多环境配置](#13422-多环境配置)
+            - [1.3.4.3. 注解ConfigurationProperties注入yml配置文件中的数据](#1343-注解configurationproperties注入yml配置文件中的数据)
+            - [1.3.4.4. 使用随机数](#1344-使用随机数)
+            - [1.3.4.5. 从命令行指定参数](#1345-从命令行指定参数)
+            - [1.3.4.6. 配置日志](#1346-配置日志)
+        - [1.3.5. Spring Boot Starter](#135-spring-boot-starter)
+            - [1.3.5.1. 常用的Starter](#1351-常用的starter)
+            - [1.3.5.2. 创建自己的Starter](#1352-创建自己的starter)
+        - [1.3.6. Actuator 的端点](#136-actuator-的端点)
+        - [1.3.7. 揭秘 Actuator 的端点](#137-揭秘-actuator-的端点)
+        - [1.3.8. Spring Boot 项目发布](#138-spring-boot-项目发布)
+        - [1.3.9. Maven打包](#139-maven打包)
+        - [1.3.10. Spring Boot原理分析](#1310-spring-boot原理分析)
+            - [1.3.10.1. 自动配置原理](#13101-自动配置原理)
+            - [1.3.10.2. 启动流程分析](#13102-启动流程分析)
     - [1.4. SpringCloud](#14-springcloud)
         - [1.4.1. 基础知识](#141-基础知识)
         - [1.4.2. 服务治理Eureka](#142-服务治理eureka)
@@ -86,8 +106,12 @@
                 - [1.4.10.2.3. 一些基本概念](#141023-一些基本概念)
                 - [1.4.10.2.4. zipkin](#141024-zipkin)
                 - [1.4.10.2.5. 调用过程](#141025-调用过程)
-    - [1.5. 测试](#15-测试)
-        - [1.5.1. 基本测试](#151-基本测试)
+    - [1.5. 单元测试](#15-单元测试)
+        - [1.5.1. Junit](#151-junit)
+            - [1.5.1.1. 概述](#1511-概述)
+            - [1.5.1.2. JUnit 中的重要的 API](#1512-junit-中的重要的-api)
+            - [1.5.1.3. 常用注解](#1513-常用注解)
+            - [1.5.1.4. 套件测试](#1514-套件测试)
         - [1.5.2. 控制层测试](#152-控制层测试)
         - [1.5.3. 服务层测试](#153-服务层测试)
         - [1.5.4. DAO层测试](#154-dao层测试)
@@ -2998,6 +3022,7 @@ public class ProjectConfig {
 SpringBoot的核心
 * 自动配置，针对很多Spring应用常用框架进行自动默认配置，可以让你轻松启动项目。比如jedis。原先使用Jedis需要配置连接地址，配置连接池，使用SpringBoot之后，这些都会帮你配置好，只要引入相关依赖，调用其提供的接口，即可实现对Redis的访问。
 * 起步依赖:告诉Spring使用什么功能，他都能引入需要的库。
+* 命令行界面：这是Spring Boot的可选特性，借此你只需写代码就能完成完整的应用程序，无需传统项目构建
 * Actuator
 
 ### 1.3.2. Spring Boot 环境下创建Bean
@@ -3313,6 +3338,686 @@ DefaultListableBeanFactory 是ConfigurableListableBeanFactory的实现类。是�
 Location location =  context.getBean(Location.class);
 location.run();
 ```
+
+### 1.3.3. 使用不同的容器
+
+undertow,jetty和tomcat可以说是javaweb项目当下最火的三款服务器，tomcat是apache下的一款重量级的服务器，不用多说历史悠久，经得起实践的考验。然而：当下微服务兴起，spring boot ，spring cloud 越来越热的情况下，选择一款轻量级而性能优越的服务器是必要的选择。spring boot 完美集成了tomcat，jetty和undertow.
+
+**Spring Boot引入spring-boot-starter-web后,默认的容器是Tomcat.**
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+
+```
+Tomcat配置
+```yml
+server.tomcat.accept-count=0 # Maximum queue length for incoming connection requests when all possible request processing threads are in use.
+server.tomcat.accesslog.buffered=true # Whether to buffer output such that it is flushed only periodically.
+server.tomcat.accesslog.directory=logs # Directory in which log files are created. Can be absolute orrelative to the Tomcat base dir.
+server.tomcat.accesslog.enabled=false # Enable access log.
+server.tomcat.accesslog.file-date-format=.yyyy-MM-dd # Date format to place in the log file name.
+server.tomcat.accesslog.pattern=common # Format pattern for access logs.
+server.tomcat.accesslog.prefix=access_log # Log file name prefix.
+server.tomcat.accesslog.rename-on-rotate=false # Whether to defer inclusion of the date stamp in the  file name until rotate time.
+server.tomcat.accesslog.request-attributes-enabled=false # Set request attributes for the IP address,Hostname, protocol, and port used for the request.
+server.tomcat.accesslog.rotate=true # Whether to enable access log rotation.
+server.tomcat.accesslog.suffix=.log # Log file name suffix.
+server.tomcat.additional-tld-skip-patterns= # Comma-separated list of additional patterns that match jars to ignore for TLD scanning.
+server.tomcat.background-processor-delay=30s # Delay between the invocation of backgroundProcess methods. If a duration suffix is not specified, seconds will be used.
+server.tomcat.basedir= # Tomcat base directory. If not specified, a temporary directory is used.
+server.tomcat.internal-proxies=10\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}|\\
+192\\.168\\.\\d{1,3}\\.\\d{1,3}|\\
+169\\.254\\.\\d{1,3}\\.\\d{1,3}|\\
+127\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}|\\
+172\\.1[6-9]{1}\\.\\d{1,3}\\.\\d{1,3}|\\
+172\\.2[0-9]{1}\\.\\d{1,3}\\.\\d{1,3}|\\
+172\\.3[0-1]{1}\\.\\d{1,3}\\.\\d{1,3} # Regular expression matching trusted IP addresses.
+server.tomcat.max-connections=0 # Maximum number of connections that the server accepts and processes at any given time.
+server.tomcat.max-http-header-size=0 # Maximum size, in bytes, of the HTTP message header.
+server.tomcat.max-http-post-size=0 # Maximum size, in bytes, of the HTTP post content.
+server.tomcat.max-threads=0 # Maximum number of worker threads.
+server.tomcat.min-spare-threads=0 # Minimum number of worker threads.
+server.tomcat.port-header=X-Forwarded-Port # Name of the HTTP header used to override the original port value.
+server.tomcat.protocol-header= # Header that holds the incoming protocol, usually named "X-ForwardedProto".
+server.tomcat.protocol-header-https-value=https # Value of the protocol header indicating whether the incoming request uses SSL.
+server.tomcat.redirect-context-root= # Whether requests to the context root should be redirected by appending a / to the path.
+server.tomcat.remote-ip-header= # Name of the HTTP header from which the remote IP is extracted. For instance, `X-FORWARDED-FOR`.
+server.tomcat.resource.cache-ttl= # Time-to-live of the static resource cache.
+server.tomcat.uri-encoding=UTF-8 # Character encoding to use to decode the URI.
+server.tomcat.use-relative-redirects= # Whether HTTP 1.1 and later location headers generated by a call to sendRedirect will use relative or absolute redirects.
+```
+
+**更换为undertow**
+```xml
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+    <exclusions>
+    <!-- Exclude the Tomcat dependency -->
+        <exclusion>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<!-- Use Jetty instead -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-undertow</artifactId>
+</dependency
+
+```
+undertow配置
+```yml
+server.undertow.accesslog.dir= # Undertow access log directory.
+server.undertow.accesslog.enabled=false # Whether to enable the access log.
+server.undertow.accesslog.pattern=common # Format pattern for access logs.
+server.undertow.accesslog.prefix=access_log. # Log file name prefix.
+server.undertow.accesslog.rotate=true # Whether to enable access log rotation.
+server.undertow.accesslog.suffix=log # Log file name suffix.
+server.undertow.buffer-size= # Size of each buffer, in bytes.
+server.undertow.direct-buffers= # Whether to allocate buffers outside the Java heap.
+server.undertow.io-threads= # Number of I/O threads to create for the worker.
+server.undertow.eager-filter-init=true # Whether servlet filters should be initialized on startup.
+server.undertow.max-http-post-size=0 # Maximum size, in bytes, of the HTTP post content.
+server.undertow.worker-threads= # Number of worker threads
+```
+
+**更换为jetty**
+```xml
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+    <exclusions>
+    <!-- Exclude the Tomcat dependency -->
+        <exclusion>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<!-- Use Jetty instead -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-jetty</artifactId>
+</dependency
+
+```
+
+```yml
+server.jetty.acceptors= # Number of acceptor threads to use.
+server.jetty.accesslog.append=false # Append to log.
+server.jetty.accesslog.date-format=dd/MMM/yyyy:HH:mm:ss Z # Timestamp format of the request log.
+server.jetty.accesslog.enabled=false # Enable access log.
+server.jetty.accesslog.extended-format=false # Enable extended NCSA format.
+server.jetty.accesslog.file-date-format= # Date format to place in log file name.
+server.jetty.accesslog.filename= # Log filename. If not specified, logs redirect to "System.err".
+server.jetty.accesslog.locale= # Locale of the request log.
+server.jetty.accesslog.log-cookies=false # Enable logging of the request cookies.
+server.jetty.accesslog.log-latency=false # Enable logging of request processing time.
+server.jetty.accesslog.log-server=false # Enable logging of the request hostname.
+server.jetty.accesslog.retention-period=31 # Number of days before rotated log files are deleted.
+server.jetty.accesslog.time-zone=GMT # Timezone of the request log.
+server.jetty.max-http-post-size=0 # Maximum size, in bytes, of the HTTP post or put content.
+server.jetty.selectors= # Number of selector threads to use
+
+```
+
+### 1.3.4. 配置文件
+<a href="#menu" style="float:right">目录</a>
+
+Spring支持两种类型的配置文件,后缀名分别为properties和yml.
+
+```yml
+
+# properties
+server.port=8001
+
+# yml
+server:
+    port: 8001
+```
+可以看到yml类型的格式结构更加清晰
+
+#### 1.3.4.1. bootstrap.yml与application.yml区别
+<a href="#menu" style="float:right">目录</a>
+
+说明：其实yml和properties文件是一样的原理，主要是说明application和bootstrap的加载顺序。且一个项目上要么yml或者properties，二选一的存在
+
+**执行顺序**
+* bootstrap.yml（bootstrap.properties）用来程序引导时执行，应用于更加早期配置信息读取，如可以使用来配置application.yml中使用到参数等
+* application.yml（application.properties) 应用程序特有配置信息，可以用来配置后续各个模块中需使用的公共参数等。
+* bootstrap.yml 先于 application.yml 加载
+* 如果两个配置文件都有相同的配置,application.yml将会覆盖bootstrap.yml的值
+
+**典型的应用场景如下**
+* 当使用 Spring Cloud Config Server 的时候，你应该在 bootstrap.yml 里面指定 spring.application.name 和 spring.cloud.config.server.git.uri和一些加密/解密的信息
+技术上，bootstrap.yml 是被一个父级的 Spring ApplicationContext 加载的。这个父级的 Spring ApplicationContext是先加载的，在加载application.yml 的 ApplicationContext之前。
+
+为何需要把 config server 的信息放在 bootstrap.yml 里？
+当使用Spring Cloud的时候，配置信息一般是从config server加载的，为了取得配置信息（比如密码等），你需要一些提早的或引导配置。因此，把 config server 信息放在 bootstrap.yml，用来加载真正需要的配置信息。
+
+#### 1.3.4.2. 多环境配置
+<a href="#menu" style="float:right">目录</a>
+
+软件开发中经常有开发环境、测试环境、预发布环境、生产环境，而且一般这些环境配置会各不相同，手动改配置麻烦且容易出错，如何管理不同环境的配置参数呢？spring-boot + maven可以解决不同环境独立配置不同参数的问题。
+
+
+##### 1.3.4.2.1. 配置文件
+<a href="#menu" style="float:right">目录</a>
+
+**方式1:使用多个配置文件**
+
+命名为application-xxx.yml或者application-xxx.properties
+
+不同环境的配置yml文件名不一样：
+* application-dev.yml（开发环境）
+* application-test.yml（测试环境）
+* application-uat.yml（预发布）
+* application-pro.yml（生产环境）
+
+**方式2:只使用一个配置文件**
+
+中间使用"---"进行分隔,使用spring.profiles指定当前环境的配置
+
+```yml
+
+
+spring:
+    #激活哪一个环境的配置文件
+    profiles:
+        active: dev
+    #公共配置
+    jackson:
+        date-format: yyyy-MM-dd HH:mm:ss
+---
+spring:
+    profiles: dev
+server:
+    port: 8081
+---
+spring:
+    profiles: test
+server:
+    port: 8082
+---
+spring:
+    profiles: pro
+server:
+    port: 8083
+
+```
+
+##### 1.3.4.2.2. 多环境配置
+<a href="#menu" style="float:right">目录</a>
+
+**方式1:application.yml配置**
+application.yml
+```yml
+spring:
+  profiles:
+    active: dev
+```
+如果要切换不同环境，只需要修改spring.profiles.active即可。
+
+**方式2:启动jar包时设置spring.profiles.active**
+
+```
+java -jar muti-env-config.jar --spring.profiles.active=test
+```
+**方式3:maven打包时候设置环境**
+-P参数指定
+```
+mvn package -P test 
+```
+
+#### 1.3.4.3. 注解ConfigurationProperties注入yml配置文件中的数据
+<a href="#menu" style="float:right">目录</a>
+
+在使用SpringBoot开发中需要将一些配置参数放在yml文件中定义，再通过Java类来引入这些配置参数
+
+SpringBoot提供了一些注解来实现这个功能
+
+ConfigurationProperties
+Value
+EnableConfigurationProperties
+下面提供例子来说明如何引入常规变量，数组，List，Ｍap,引用对象。
+
+**引入pom**
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter</artifactId>
+</dependency>
+
+<dependency>
+     <groupId>org.springframework.boot</groupId>
+     <artifactId>spring-boot-configuration-processor</artifactId>
+      <optional>true</optional>
+</dependency>
+
+<!--lombok 插件，非必须 -->
+ <dependency> 
+　　　<groupId>org.projectlombok</groupId> 
+　　　<artifactId>lombok</artifactId> 
+　　　<optional>true</optional> 
+</dependency>
+```
+**注解类**
+这里定义了一个全局的注解类，
+
+```java
+@Data
+@ToString
+@ConfigurationProperties(prefix = "all")
+public class AllConfigurationProperties {
+
+    //普通变量
+    private  String name;
+　　 //引用对象
+    private  OtherProperties other = new OtherProperties();
+    //数组
+    private  String[] server;
+   //list
+    private List list;
+    //map
+    private Map map;
+   //复杂map
+    private Map<String, ModuleConfig> modules = new LinkedHashMap();
+   //复杂list
+    private List<ModuleConfig> modulesList;
+
+}
+```
+ConfigurationProperties:标明者是一个配置类，需要prefix配置yml中的配置前缀。
+
+需要注意几点
+1. 配置类中的名称应当符合JavaＢean的命名方式
+2. 配置类中的名称应当与yml中的相同，否则应使用@Value指定
+比如
+```yml
+yml文件：
+
+all:
+　　name: libai
+------------------------------------
+
+＠Ｖalue("${all.name}")
+private String myName;
+```
+3. 如果已经使用@Value方式，可不用写Setter方法。否则必须为该变量写Setter方法，这里使用lombok的注解@Data来配置，会自动生成Ｓetter,Getter,ToString方法
+
+4. 默认值设置：
+　　（１）当使用@Value时，可以通过如下方式实现
+        @Value("${nzrpc.netty.port:8321}")
+     　　private int nport;
+　　　　　当yml没有配置nzrpc.netty.port　时，默认值便是8321
+　　(2) 或者是直接对变量赋值
+　　　　private int nport　＝　8321　;
+　　　　private  OtherProperties other = new OtherProperties();
+
+上述配置类的引用对象
+```java
+@Data
+public class ModuleConfig {
+    private static final long serialVersionUID = 5508512956753757169L;
+    private String name;
+    private String version;
+    private String owner;
+}
+
+@Data
+public class OtherProperties {
+
+    private  Long id;
+    private String version;
+}
+```
+**使能配置类**
+```java
+@Slf4j
+@EnableConfigurationProperties(AllConfigurationProperties.class)
+@Configuration
+public class AutoConfiguration {
+
+    @Autowired
+    AllConfigurationProperties properties;
+
+    @PostConstruct
+    public void  init(){
+
+        System.out.println("properties = " + properties);
+
+    }
+
+}
+```
+这里使用@EnableConfigurationProperties使能配置类。它会为AllConfigurationProperties注入yml中的配置参数，并创建一个bean，后续可使用@Autowired注入使用@Configuration注明这是一个SpringＢoot的配置类使用方法init()输出配置.
+
+**yml中配置**
+
+```yml
+all:
+  name: libai
+  other:
+    id: 100
+    version: 1.0.1
+
+  server:
+    - 127.0.0.1
+    - 127.0.0.2
+    - 127.0.0.3
+
+  list:
+    - 111
+    - 222
+    - 333
+
+  map:
+    key1: value1
+    key2: value2
+    key3: value3
+
+  modules:
+    key1:
+      name: modules-name-1
+      version: modules-version-1
+      owner: modules-owner-1
+    key2:
+      name: modules-name-2
+      version: modules-version-2
+      owner: modules-owner-2
+
+  modulesList:
+    - name: modules-name-3
+      version: modules-version-3
+      owner: modules-owner-3
+    - name: modules-name-4
+      version: modules-version-4
+      owner: modules-owner-4
+```
+**输出**
+```yml
+properties =
+ AllConfigurationProperties(
+ name=libai, 
+ other=OtherProperties(id=100, version=1.0.1),
+ server=[127.0.0.1, 127.0.0.2, 127.0.0.3], 
+ list=[111, 222, 333],
+ map={
+　　　key1=value1,
+　　　 key2=value2, 
+　　　key3=value3
+　　　}, 
+ modules={
+　　　key1=ModuleConfig(name=modules-name-1, version=modules-version-1, owner=modules-owner-1),
+　　 key2=ModuleConfig(name=modules-name-2, version=modules-version-2, owner=modules-owner-2)
+　　　}, 
+ modulesList=[
+　　　ModuleConfig(name=modules-name-3, version=modules-version-3, owner=modules-owner-3), 
+　　　ModuleConfig(name=modules-name-4, version=modules-version-4, owner=modules-owner-4)
+　　　])
+```
+
+#### 1.3.4.4. 使用随机数
+
+<a href="#menu" style="float:right">目录</a>
+
+在yaml配置文件中使用${random.int}即可获得一个随机的int型数据。
+
+|名称|描述|
+|---|---|
+|${random.value}|取得随机字符串
+|${random.int}	|取得随机int型数据
+|${random.long}	|取得随机long型数据
+|${random.int(10)}	|取得10以内的随机数
+|${random.int[10,20]}	|取得10~20的随机数
+
+#### 1.3.4.5. 从命令行指定参数
+
+```
+java -jar xx.jar --server.port=8001
+```
+
+#### 1.3.4.6. 配置日志
+
+默认情况下， Spring Boot会用Logback（ http://logback.qos.ch）来记录日志，并用INFO级别输出到控制台
+
+如果需要切换LogBack日志,则需要引入对应该日志实现的起步依赖，同时排除掉Logback。
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter</artifactId>
+    <exclusions>
+        <exclusion>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-log4j</artifactId>
+</dependency>
+    
+```
+
+日志相关配置
+```yml
+# LOGGING
+logging.config= # Location of the logging configuration file. For instance, `classpath:logback.xml` for Logback.
+logging.exception-conversion-word=%wEx # Conversion word used when logging exceptions.
+logging.file= # Log file name (for instance, `myapp.log`). Names can be an exact location or relative to the current directory.
+logging.file.max-history=0 # Maximum of archive log files to keep. Only supported with the default logback setup.
+logging.file.max-size=10MB # Maximum log file size. Only supported with the default logback setup.
+logging.level.*= # Log levels severity mapping. For instance, `logging.level.org.springframework=DEBUG`.
+logging.path= # Location of the log file. For instance, `/var/log`.
+logging.pattern.console= # Appender pattern for output to the console. Supported only with the default Logback setup.
+logging.pattern.dateformat=yyyy-MM-dd HH:mm:ss.SSS # Appender pattern for log date format. Supported only with the default Logback setup.
+logging.pattern.file= # Appender pattern for output to a file. Supported only with the default Logback setup.
+logging.pattern.level=%5p # Appender pattern for log level. Supported only with the default Logbacksetup.
+logging.register-shutdown-hook=false # Register a shutdown hook for the logging system when it is initialized.
+```
+
+### 1.3.5. Spring Boot Starter
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.3.5.1. 常用的Starter
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.3.5.2. 创建自己的Starter
+<a href="#menu" style="float:right">目录</a>
+
+### 1.3.6. Actuator 的端点
+
+### 1.3.7. 揭秘 Actuator 的端点
+
+Spring Boot Actuator的关键特性是在应用程序里提供众多Web端点，通过它们了解应用程序运行时的内部状况。有了Actuator，你可以知道Bean在Spring应用程序上下文里是如何组装在一起的，掌握应用程序可以获取的环境属性信息，获取运行时度量信息的快照
+
+**Actuator提供了13个端点**
+
+|HTTP方法 |路 径 |描 述
+|---|---|---|
+|GET |/autoconfig |提供了一份自动配置报告，记录哪些自动配置条件通过了，哪些没通过
+|GET |/configprops |描述配置属性（包含默认值）如何注入Bean
+|GET |/beans |描述应用程序上下文里全部的Bean，以及它们的关系
+|GET |/dump |获取线程活动的快照
+|GET |/env |获取全部环境属性
+|GET |/env/{name} |根据名称获取特定的环境属性值
+|GET |/health |报告应用程序的健康指标，这些值由HealthIndicator的实现类提供
+|GET |/info |获取应用程序的定制信息，这些信息由info打头的属性提供
+|GET |/mappings |描述全部的URI路径，以及它们和控制器（包含Actuator端点）的映射关系
+|GET |/metrics |报告各种应用程序度量信息，比如内存用量和HTTP请求计数
+|GET |/metrics/{name} |报告指定名称的应用程序度量值
+|POST |/shutdown |关闭应用程序，要求endpoints.shutdown.enabled设置为true
+|GET |/trace |提供基本的HTTP请求跟踪信息（时间戳、 HTTP头等）
+
+要启用Actuator的端点，只需在项目中引入Actuator的起步依赖即可
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+```
+
+**ACTUATOR 配置**
+```yml
+# ----------------------------------------
+# ACTUATOR PROPERTIES
+# ----------------------------------------
+# MANAGEMENT HTTP SERVER (ManagementServerProperties)
+management.server.add-application-context-header=false # Add the "X-Application-Context" HTTP header in each response.
+management.server.address= # Network address to which the management endpoints should bind. Requires a custom management.server.port.
+management.server.port= # Management endpoint HTTP port (uses the same port as the application by default). Configure a different port to use management-specific SSL.
+management.server.servlet.context-path= # Management endpoint context-path (for instance, `/management`). Requires a custom management.server.port.
+management.server.ssl.ciphers= # Supported SSL ciphers. Requires a custom management.port.
+management.server.ssl.client-auth= # Whether client authentication is wanted ("want") or needed ("need"). Requires a trust store. Requires a custom management.server.port.
+management.server.ssl.enabled= # Whether to enable SSL support. Requires a custom management.server.port.
+management.server.ssl.enabled-protocols= # Enabled SSL protocols. Requires a custom management.server.port.
+management.server.ssl.key-alias= # Alias that identifies the key in the key store. Requires a custom management.server.port.
+management.server.ssl.key-password= # Password used to access the key in the key store. Requires a custom management.server.port.
+management.server.ssl.key-store= # Path to the key store that holds the SSL certificate (typically a jks file). Requires a custom management.server.port.
+management.server.ssl.key-store-password= # Password used to access the key store. Requires a custom management.server.port.
+management.server.ssl.key-store-provider= # Provider for the key store. Requires a custom management.server.port.
+management.server.ssl.key-store-type= # Type of the key store. Requires a custom management.server.port.
+management.server.ssl.protocol=TLS # SSL protocol to use. Requires a custom management.server.port.
+management.server.ssl.trust-store= # Trust store that holds SSL certificates. Requires a custom management.server.port.
+management.server.ssl.trust-store-password= # Password used to access the trust store. Requires a custom management.server.port.
+management.server.ssl.trust-store-provider= # Provider for the trust store. Requires a custom management.server.port.
+management.server.ssl.trust-store-type= # Type of the trust store. Requires a custom management.server.port.
+# CLOUDFOUNDRY
+management.cloudfoundry.enabled=true # Whether to enable extended Cloud Foundry actuator endpoints.
+management.cloudfoundry.skip-ssl-validation=false # Whether to skip SSL verification for Cloud Foundry actuator endpoint security calls.
+# ENDPOINTS GENERAL CONFIGURATION
+management.endpoints.enabled-by-default= # Whether to enable or disable all endpoints by default.
+# ENDPOINTS JMX CONFIGURATION (JmxEndpointProperties)
+management.endpoints.jmx.domain=org.springframework.boot # Endpoints JMX domain name. Fallback to 'spring.jmx.default-domain' if set.
+management.endpoints.jmx.exposure.include=* # Endpoint IDs that should be included or '*' for all.
+management.endpoints.jmx.exposure.exclude= # Endpoint IDs that should be excluded.
+management.endpoints.jmx.static-names= # Additional static properties to append to all ObjectNames of MBeans representing Endpoints.
+management.endpoints.jmx.unique-names=false # Whether to ensure that ObjectNames are modified in case of conflict.
+# ENDPOINTS WEB CONFIGURATION (WebEndpointProperties)
+# 配置开放的端点
+management.endpoints.web.exposure.include=health,info # Endpoint IDs that should be included or '*' for all.
+# 配置不包括的端点
+management.endpoints.web.exposure.exclude= # Endpoint IDs that should be excluded
+```
+
+运行之后访问 http://localhost:8080/actuator
+
+显示的开放的端点
+```yml
+{"_links":
+    {"self":{"href":"http://localhost:8080/actuator","templated":false},
+    "health-component":{"href":"http://localhost:8080/actuator/health/{component}","templated":true},
+    "health-component-instance":{"href":"http://localhost:8080/actuator/health/{component}/{instance}","templated":true},
+    "health":{"href":"http://localhost:8080/actuator/health","templated":false},
+    "info":{"href":"http://localhost:8080/actuator/info","templated":false}
+    }
+}
+```
+如果要看到所有支持的状态查询，需要配置
+```yml
+management.endpoints.web.exposure.include=*
+```
+
+### 1.3.8. Spring Boot 项目发布
+<a href="#menu" style="float:right">目录</a>
+
+
+* maven中的三种工程：
+    * pom工程：用在父级工程或聚合工程中。用来做jar包的版本控制。
+    * war工程：将会打包成war，发布在服务器上的工程。如网站或服务。
+    * jar工程：将会打包成jar用作jar包使用。
+
+* Spring boot项目通常情况下有如下几种启动方式：
+    * 通过主类启动。
+    * 通过spring-boot的maven插件spring-boot-maven-plugin方式启动。  
+    * 通过可执行jar/war包方式启动。
+    * 通过Servlet容器启动，如Tomcat、Jetty等(打包成war)。
+
+
+### 1.3.9. Maven打包
+
+**打包方式配置**
+
+POM 文件中添加打包方式,默认的打包方式是jar
+```xml
+<packaging>jar|pom|war</packaging> 
+```
+POM 文件中添加了“org.springframework.boot:spring-boot-maven-plugin”插件。在添加了该插件之后，当运行“mvn package”进行打包时，会打包成一个可以直接运行的 JAR 文件，使用“Java -jar”命令就可以直接运行。这在很大程度上简化了应用的部署，只需要安装了 JRE 就可以运行。
+
+**添加插件**
+在添加了该插件之后，当运行“mvn package”进行打包时，会打包成一个可以直接运行的 JAR 文件，使用“Java -jar”命令就可以直接运行。这在很大程度上简化了应用的部署，只需要安装了 JRE 就可以运行。
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <version>2.1.8.RELEASE</version>
+            <configuration>
+                <!-- 指定启动类-->
+                <mainClass>com.xx.webapps.api.main.WebappsApiBidMain</mainClass>
+                <layout>ZIP</layout>
+            </configuration>
+            <executions>
+                <execution>
+                <goals>
+                    <goal>repackage</goal>
+                </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+```
+* Spring Boot Maven plugin的5个Goals
+    * spring-boot:repackage，默认goal。在mvn package之后，再次打包可执行的jar/war，同时保留mvn package生成的jar/war为.origin
+    * spring-boot:run，运行Spring Boot应用
+    * spring-boot:start，在mvn integration-test阶段，进行Spring Boot应用生命周期的管理
+    * spring-boot:stop，在mvn integration-test阶段，进行Spring Boot应用生命周期的管理
+    * spring-boot:build-info，生成Actuator使用的构建信息文件build-info.properties
+
+
+**启动项目**
+
+* 使用maven打包成jar可执行文件
+```
+mvn package 
+```
+打包的文件位于target目录中
+```yml
+# war文件也可以使用该方式运行
+java -jar  xxx.jar 
+```
+* 直接使用插件运行
+
+同时配置运行环境spring-boot.run.profiles.
+```
+mvn  spring-boot:run -Dspring-boot.run.profiles=xxx
+```
+更多参数参考[官方文档:https://docs.spring.io/spring-boot/docs/current/maven-plugin/run-mojo.html](https://docs.spring.io/spring-boot/docs/current/maven-plugin/run-mojo.html)
+
+
+* 不推荐用war，因为springboot适合前后端分离，打成jar进行部署更合适。
+
+
+### 1.3.10. Spring Boot原理分析
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.3.10.1. 自动配置原理
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.3.10.2. 启动流程分析
+<a href="#menu" style="float:right">目录</a>
+
 
 ## 1.4. SpringCloud
 <a href="#menu" style="float:right">目录</a>
@@ -5809,11 +6514,208 @@ public void inject(TraceContext traceContext, C carrier) {
 
 
 
-## 1.5. 测试
+## 1.5. 单元测试
 <a href="#menu" style="float:right">目录</a>
 
-### 1.5.1. 基本测试
+### 1.5.1. Junit
 <a href="#menu" style="float:right">目录</a>
+
+#### 1.5.1.1. 概述
+<a href="#menu" style="float:right">目录</a>
+
+所谓单元测试是测试应用程序的功能是否能够按需要正常运行，并且确保是在开发人员的水平上，单元测试生成图片。单元测试是一个对单一实体（类或方法）的测试。单元测试是每个软件公司提高产品质量、满足客户需求的重要环节。
+
+**单元测试可以由两种方式完成**
+* 人工测试	
+    * 手动执行测试用例并不借助任何工具的测试被称为人工测试。
+    * 消耗时间并单调：由于测试用例是由人力资源执行，所以非常缓慢并乏味。
+    * 人力资源上投资巨大：由于测试用例需要人工执行，所以在人工测试上需要更多的试验员。
+    * 可信度较低：人工测试可信度较低是可能由于人工错误导致测试运行时不够精确。
+    * 非程式化：编写复杂并可以获取隐藏的信息的测试的话，这样的程序无法编写。
+* 自动测试
+    * 借助工具支持并且利用自动工具执行用例被称为自动测试。
+    * 快速自动化运行测试用例时明显比人力资源快。 
+    * 人力资源投资较少：测试用例由自动工具执行，所以在自动测试中需要较少的试验员。
+    * 可信度更高：自动化测试每次运行时精确地执行相同的操作。
+    * 程式化：试验员可以编写复杂的测试来显示隐藏信息。
+
+**什么是 JUnit？**
+JUnit 是一个 Java 编程语言的单元测试框架。JUnit 在测试驱动的开发方面有很重要的发展，是起源于 JUnit 的一个统称为 xUnit 的单元测试框架之一。
+
+JUnit 促进了“先测试后编码”的理念，强调建立测试数据的一段代码，可以先测试，然后再应用。这个方法就好比“测试一点，编码一点，测试一点，编码一点……”，增加了程序员的产量和程序的稳定性，可以减少程序员的压力和花费在排错上的时间。
+
+* 特点：
+    * JUnit 是一个开放的资源框架，用于编写和运行测试。
+    * 提供注释来识别测试方法。
+    * 提供断言来测试预期结果。
+    * 提供测试运行来运行测试。
+    * JUnit 测试允许你编写代码更快，并能提高质量。
+    * JUnit 优雅简洁。没那么复杂，花费时间较少。
+    * JUnit 测试可以自动运行并且检查自身结果并提供即时反馈。所以也没有必要人工梳理测试结果的报告。
+    * JUnit 测试可以被组织为测试套件，包含测试用例，甚至其他的测试套件。
+    * JUnit 在一个条中显示进度。如果运行良好则是绿色；如果运行失败，则变成红色。
+
+**什么是一个单元测试用例?**
+* 单元测试用例是一部分代码，可以确保另一端代码（方法）按预期工作。为了迅速达到预期的结果，就需要测试框架。JUnit 是 java 编程语言理想的单元测试框架。
+* 一个正式的编写好的单元测试用例的特点是：已知输入和预期输出，即在测试执行前就已知。已知输入需要测试的先决条件，预期输出需要测试后置条件。
+* 每一项需求至少需要两个单元测试用例：一个正检验，一个负检验。如果一个需求有子需求，每一个子需求必须至少有正检验和负检验两个测试用例。
+
+
+#### 1.5.1.2. JUnit 中的重要的 API
+<a href="#menu" style="float:right">目录</a>
+
+JUnit 中的最重要的程序包是 junit.framework 它包含了所有的核心类。一些重要的类列示如下：
+
+* **Assert**	
+    * assert 方法的集合
+    * void assertEquals(boolean expected, boolean actual) 
+        * 检查两个变量或者等式是否平衡
+    * void assertFalse(boolean condition) 
+        * 检查条件是假的
+    * void assertNotNull(Object object) 
+        * 检查对象不是空的
+    * void assertNull(Object object) 
+        * 检查对象是空的
+    * void assertTrue(boolean condition) 
+        * 检查条件为真
+    * void fail() 
+        * 在没有报告的情况下使测试不通过
+* **TestCase**	
+    * 一个定义了运行多重测试的固定装置
+    * int countTestCases()
+        * 为被run(TestResult result) 执行的测试案例计数
+    * TestResult createResult()
+        * 创建一个默认的 TestResult 对象
+    * String getName()
+        * 获取 TestCase 的名称
+    * TestResult run()
+        * 一个运行这个测试的方便的方法，收集由TestResult 对象产生的结果
+    * void run(TestResult result)
+        * 在 TestResult 中运行测试案例并收集结果
+    * void setName(String name)
+        * 设置 TestCase 的名称
+    * void setUp()
+        * 创建固定装置，例如，打开一个网络连接
+    * void tearDown()
+        * 拆除固定装置，例如，关闭一个网络连接
+    * String toString()
+        * 返回测试案例的一个字符串表示
+* **TestResult**
+	* TestResult 集合了执行测试样例的所有结果
+    * void addError(Test test, Throwable t)
+        * 在错误列表中加入一个错误
+    * void addFailure(Test test, AssertionFailedError t)
+        * 在失败列表中加入一个失败
+    * void endTest(Test test)
+        * 显示测试被编译的这个结果
+    * int errorCount()
+        * 获取被检测出错误的数量
+    * Enumeration errors()
+        * 返回错误的详细信息
+    * int failureCount()
+        * 获取被检测出的失败的数量
+    * void run(TestCase test)
+        * 运行 TestCase
+    * int int runCount()
+        * 获得运行测试的数量
+    * void startTest(Test test)
+        * 声明一个测试即将开始
+    * void stop()
+        * 标明测试必须停止
+
+* **TestSuite**	
+    * TestSuite TestSuite 类是测试的组成部分。它运行了很多的测试案例
+    * void addTest(Test test) 
+        * 在套中加入测试。
+    * void addTestSuite(Class<? extends TestCase> testClass)
+        * 将已经给定的类中的测试加到套中。
+    * int countTestCases()
+        * 对这个测试即将运行的测试案例进行计数。
+    * String getName()
+        * 返回套的名称。
+    * void run(TestResult result)
+        * 在 TestResult 中运行测试并收集结果。
+    * void setName(String name)
+        * 设置套的名称。
+    * Test testAt(int index)
+        * 在给定的目录中返回测试。
+    * int testCount()
+        * 返回套中测试的数量。
+    * static Test warning(String message)
+        * 返回会失败的测试并且记录警告信息。
+
+#### 1.5.1.3. 常用注解
+<a href="#menu" style="float:right">目录</a>
+
+**@Test**
+@Test注解的public void方法将会被当做测试用例
+JUnit每次都会创建一个新的测试实例，然后调用@Test注解方法
+任何异常的抛出都会认为测试失败
+@Test注解提供2个参数：
+* “expected”，定义测试方法应该抛出的异常，如果测试方法没有抛出异常或者抛出了一个不同的异常，测试失败
+* “timeout”，如果测试运行时间长于该定义时间，测试失败（单位为毫秒）
+
+**@Ignore**
+对包含测试类的类或@Test注解方法使用@Ignore注解将使被注解的类或方法不会被当做测试执行
+JUnit执行结果中会报告被忽略的测试数
+
+**@Before**
+使用@Before注解一个public void 方法会使该方法在@Test注解方法被执行前执行（那么就可以在该方法中创建相同的对象）
+父类的@Before注解方法会在子类的@Before注解方法执行前执行
+
+**@BeforeClass**
+使用注解一个public static void 方法，并且该方法不带任何参数，会使该方法在所有测试方法被执行前执行一次，并且只执行一次
+父类的@BeforeClass注解方法会在子类的@BeforeClass注解方法执行前执行
+
+**@After**
+使用@After注解一个public void方法会使该方法在@Test注解方法执行后被执行
+即使在@Before注解方法、@Test注解方法中抛出了异常，所有的@After注解方法依然会被执行
+父类中的@After注解方法会在子类@After注解方法执行后被执行
+
+在 before() 方法和 after() 方法之间，执行每一个测试用例。
+
+**@BeforeClass**
+如果在@BeforeClass注解方法中分配了代价高昂的额外的资源，那么在测试类中的所有测试方法执行完后，需要释放分配的资源。
+使用@AfterClass注解一个public static void方法会使该方法在测试类中的所有测试方法执行完后被执行
+即使在@BeforeClass注解方法中抛出了异常，所有的@AfterClass注解方法依然会被执行
+父类中的@AfterClass注解方法会在子类@AfterClass注解方法执行后被执行
+
+#### 1.5.1.4. 套件测试
+<a href="#menu" style="float:right">目录</a>
+
+```java
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+   TestJunit1.class,
+   TestJunit2.class
+})
+public class JunitTestSuite {   
+}  
+```
+
+只要运行JunitTestSuite类,那么TestJunit1和TestJunit2中的测试方法也会云运行.
+
+或者使用以下方式运行
+```java
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
+
+public class TestRunner {
+   public static void main(String[] args) {
+      Result result = JUnitCore.runClasses(JunitTestSuite.class);
+      for (Failure failure : result.getFailures()) {
+         System.out.println(failure.toString());
+      }
+      System.out.println(result.wasSuccessful());
+   }
+}  
+```
+
+
+
 
 ### 1.5.2. 控制层测试
 <a href="#menu" style="float:right">目录</a>
