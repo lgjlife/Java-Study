@@ -54,16 +54,40 @@
             - [1.3.4.4. 使用随机数](#1344-使用随机数)
             - [1.3.4.5. 从命令行指定参数](#1345-从命令行指定参数)
             - [1.3.4.6. 配置日志](#1346-配置日志)
-        - [1.3.5. Spring Boot Starter](#135-spring-boot-starter)
-            - [1.3.5.1. 常用的Starter](#1351-常用的starter)
-            - [1.3.5.2. 创建自己的Starter](#1352-创建自己的starter)
-        - [1.3.6. Actuator 的端点](#136-actuator-的端点)
-        - [1.3.7. 揭秘 Actuator 的端点](#137-揭秘-actuator-的端点)
+        - [1.3.5. 启动类 @SpringBootApplication 注解](#135-启动类-springbootapplication-注解)
+            - [1.3.5.1. @Inherited 注解](#1351-inherited-注解)
+            - [1.3.5.2. @SpringBootConfiguration](#1352-springbootconfiguration)
+            - [1.3.5.3. @EnableAutoConfiguration](#1353-enableautoconfiguration)
+            - [1.3.5.4. @ComponentScan](#1354-componentscan)
+        - [1.3.6. Spring Boot Starter](#136-spring-boot-starter)
+            - [1.3.6.1. 常用的Starter](#1361-常用的starter)
+            - [1.3.6.2. 创建自己的Starter](#1362-创建自己的starter)
+            - [1.3.6.3. Starter原理](#1363-starter原理)
+            - [1.3.6.4. 项目实践](#1364-项目实践)
+        - [1.3.7. Actuator 的端点](#137-actuator-的端点)
+            - [1.3.7.1. 揭秘 Actuator 的端点](#1371-揭秘-actuator-的端点)
+            - [1.3.7.2. 自定义监控](#1372-自定义监控)
         - [1.3.8. Spring Boot 项目发布](#138-spring-boot-项目发布)
         - [1.3.9. Maven打包](#139-maven打包)
         - [1.3.10. Spring Boot原理分析](#1310-spring-boot原理分析)
-            - [1.3.10.1. 自动配置原理](#13101-自动配置原理)
-            - [1.3.10.2. 启动流程分析](#13102-启动流程分析)
+            - [1.3.10.1. 启动流程分析](#13101-启动流程分析)
+                - [1.3.10.1.1. 创建SpringApplication对象](#131011-创建springapplication对象)
+                - [1.3.10.1.2. 执行Run方法](#131012-执行run方法)
+        - [1.3.11. 种保护 Spring Boot 应用的绝佳方法](#1311-种保护-spring-boot-应用的绝佳方法)
+            - [1.3.11.1. 在生产中使用HTTPS](#13111-在生产中使用https)
+            - [1.3.11.2. 使用Snyk检查你的依赖关系](#13112-使用snyk检查你的依赖关系)
+            - [1.3.11.3. 升级到最新版本](#13113-升级到最新版本)
+            - [1.3.11.4. 启用CSRF保护](#13114-启用csrf保护)
+            - [1.3.11.5. 使用内容安全策略防止XSS攻击](#13115-使用内容安全策略防止xss攻击)
+            - [1.3.11.6. 使用OpenID Connect进行身份验证](#13116-使用openid-connect进行身份验证)
+            - [1.3.11.7. 管理密码？使用密码哈希！](#13117-管理密码使用密码哈希)
+            - [1.3.11.8. 安全地存储秘密](#13118-安全地存储秘密)
+            - [1.3.11.9. 使用OWASP的ZAP测试您的应用程序](#13119-使用owasp的zap测试您的应用程序)
+            - [1.3.11.10. 让你的安全团队进行代码审查](#131110-让你的安全团队进行代码审查)
+        - [1.3.12. 其他一些问题](#1312-其他一些问题)
+            - [1.3.12.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？](#13121-如何在-spring-boot-启动的时候运行一些特定的代码)
+            - [1.3.12.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？](#13122-如何重新加载spring-boot上的更改而无需重新启动服务器)
+            - [1.3.12.3. Spring Boot 有哪几种读取配置的方式？](#13123-spring-boot-有哪几种读取配置的方式)
     - [1.4. SpringCloud](#14-springcloud)
         - [1.4.1. 基础知识](#141-基础知识)
         - [1.4.2. 服务治理Eureka](#142-服务治理eureka)
@@ -3019,11 +3043,23 @@ public class ProjectConfig {
 <a href="#menu" style="float:right">目录</a>
 
 ### 1.3.1. 基本概念
+
+Spring Boot 是 Spring 开源组织下的子项目，是 Spring 组件一站式解决方案，主要是简化了使用 Spring 的难度，简省了繁重的配置，提供了各种启动器，开发者能快速上手.
+
+
 SpringBoot的核心
 * 自动配置，针对很多Spring应用常用框架进行自动默认配置，可以让你轻松启动项目。比如jedis。原先使用Jedis需要配置连接地址，配置连接池，使用SpringBoot之后，这些都会帮你配置好，只要引入相关依赖，调用其提供的接口，即可实现对Redis的访问。
 * 起步依赖:告诉Spring使用什么功能，他都能引入需要的库。
 * 命令行界面：这是Spring Boot的可选特性，借此你只需写代码就能完成完整的应用程序，无需传统项目构建
 * Actuator
+
+Spring Boot 优点非常多，如：
+* 独立运行
+* 简化配置
+* 自动配置
+* 无代码生成和XML配置
+* 应用监控
+* 上手容易
 
 ### 1.3.2. Spring Boot 环境下创建Bean
 
@@ -3212,6 +3248,7 @@ public class MyImportSelector implements ImportSelector {
 ```
 
 
+
  
 
 实现ImportBeanDefinitionRegistrar接口
@@ -3245,6 +3282,41 @@ public class ImportAutoconfiguration {
 }
 ```
  
+**有两种方式实现类似Spring Cloud 中EnableXXX的注解功能**
+```java
+//方式1:直接通过@Import导入配置类
+
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Import({ConfigServerConfiguration.class})
+public @interface EnableConfigServer {
+}
+
+//方式1:通过ImportSelector中定义配置类
+
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Import({MyImportSelector.class})
+public @interface EnableConfigServer {
+}
+
+public class MyImportSelector implements ImportSelector {
+
+    @Override
+    public String[] selectImports(AnnotationMetadata annotationMetadata) {
+        log.info("MyImportSelector selectImports ...");
+        return new String[]{
+            ConfigServerConfiguration.class.getName()};
+    }
+}
+
+
+
+```
+
+
 
 创建EnableImportSelector注解
 EnableImportSelector注解上使用@Import，引入以上的三个类。
@@ -3487,6 +3559,14 @@ server:
 <a href="#menu" style="float:right">目录</a>
 
 说明：其实yml和properties文件是一样的原理，主要是说明application和bootstrap的加载顺序。且一个项目上要么yml或者properties，二选一的存在
+
+
+bootstrap 配置文件有以下几个应用场景。
+* 使用 Spring Cloud Config 配置中心时，这时需要在 bootstrap 配置文件中添加连接到配置中心的配置属性来加载外部配置中心的配置信息；
+* 一些固定的不能被覆盖的属性；
+* 一些加密/解密的场景
+
+
 
 **执行顺序**
 * bootstrap.yml（bootstrap.properties）用来程序引导时执行，应用于更加早期配置信息读取，如可以使用来配置application.yml中使用到参数等
@@ -3824,19 +3904,380 @@ logging.pattern.file= # Appender pattern for output to a file. Supported only wi
 logging.pattern.level=%5p # Appender pattern for log level. Supported only with the default Logbacksetup.
 logging.register-shutdown-hook=false # Register a shutdown hook for the logging system when it is initialized.
 ```
-
-### 1.3.5. Spring Boot Starter
+### 1.3.5. 启动类 @SpringBootApplication 注解 
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.3.5.1. 常用的Starter
+```java
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by Fernflower decompiler)
+//
+
+package org.springframework.boot.autoconfigure;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.context.TypeExcludeFilter;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.ComponentScan.Filter;
+import org.springframework.core.annotation.AliasFor;
+
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+@SpringBootConfiguration
+@EnableAutoConfiguration
+@ComponentScan(
+    excludeFilters = {@Filter(
+    type = FilterType.CUSTOM,
+    classes = {TypeExcludeFilter.class}
+), @Filter(
+    type = FilterType.CUSTOM,
+    classes = {AutoConfigurationExcludeFilter.class}
+)}
+)
+public @interface SpringBootApplication {
+    @AliasFor(
+        annotation = EnableAutoConfiguration.class
+    )
+    Class<?>[] exclude() default {};
+
+    @AliasFor(
+        annotation = EnableAutoConfiguration.class
+    )
+    String[] excludeName() default {};
+
+    @AliasFor(
+        annotation = ComponentScan.class,
+        attribute = "basePackages"
+    )
+    String[] scanBasePackages() default {};
+
+    @AliasFor(
+        annotation = ComponentScan.class,
+        attribute = "basePackageClasses"
+    )
+    Class<?>[] scanBasePackageClasses() default {};
+}
+
+```
+
+从上面可以看到@SpringBootApplication是一个组合注解，用于快捷配置启动类。由@SpringBootConfiguration和@EnableAutoConfiguration以及@ComponentScan组合而成.
+
+#### 1.3.5.1. @Inherited 注解
+关于java中元注解Inherited 的使用说明
+
+首先解释下元注解，就是用来中声明注解类型时需要使用到的注解。
+
+Inherited作用是，使用此注解声明出来的自定义注解，在使用此自定义注解时，如果注解在类上面时，子类会自动继承此注解，否则的话，子类不会继承此注解。这里一定要记住，使用Inherited声明出来的注解，只有在类上使用时才会有效，对方法，属性等其他无效。
+
+#### 1.3.5.2. @SpringBootConfiguration
+```java
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Configuration
+public @interface SpringBootConfiguration {
+}
+
+
+```
+
+
+@SpringBootConfiguration继承自@Configuration，二者功能也一致，标注当前类是配置类，并会将当前类内声明的一个或多个以@Bean注解标记的方法的实例纳入到spring容器中，并且实例名就是方法名。
+
+
+
+#### 1.3.5.3. @EnableAutoConfiguration
+```java
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+@AutoConfigurationPackage
+@Import({AutoConfigurationImportSelector.class})
+public @interface EnableAutoConfiguration {
+    String ENABLED_OVERRIDE_PROPERTY = "spring.boot.enableautoconfiguration";
+
+    Class<?>[] exclude() default {};
+
+    String[] excludeName() default {};
+}
+```
+@EnableAutoConfiguration 简单概括一下就是，借助@Import的支持，收集和注册特定场景相关的bean定义。
+* @EnableScheduling是通过@Import将Spring调度框架相关的bean定义都加载到IoC容器。
+* @EnableMBeanExport是通过@Import将JMX相关的bean定义加载到IoC容器。
+而@EnableAutoConfiguration也是借助@Import的帮助，将所有符合自动配置条件的bean定义加载到IoC容器，仅此而已！
+
+其中，最关键的要属@Import(AutoConfigurationImportSelector.class)，借助AutoConfigurationImportSelector，@EnableAutoConfiguration可以帮助SpringBoot应用将所有符合条件的@Configuration配置都加载到当前SpringBoot创建并使用的IoC容器。
+
+![](https://img-blog.csdn.net/20180731144007172?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI4Mjg5NDA1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
+自动配置幕后英雄：SpringFactoriesLoader详解
+SpringFactoriesLoader属于Spring框架私有的一种扩展方案，其主要功能就是从指定的配置文件META-INF/spring.factories加载配置。
+
+配合@EnableAutoConfiguration使用的话，它更多是提供一种配置查找的功能支持，即根据@EnableAutoConfiguration的完整类名org.springframework.boot.autoconfigure.EnableAutoConfiguration作为查找的Key,获取对应的一组@Configuration类
+
+所以，@EnableAutoConfiguration自动配置的魔法骑士就变成了：从classpath中搜寻所有的META-INF/spring.factories配置文件，并将其中org.springframework.boot.autoconfigure.EnableutoConfiguration对应的配置项通过反射（Java Refletion）实例化为对应的标注了@Configuration的JavaConfig形式的IoC容器配置类，然后汇总为一个并加载到IoC容器。
+
+#### 1.3.5.4. @ComponentScan
+```java
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE})
+@Documented
+@Repeatable(ComponentScans.class)
+public @interface ComponentScan {
+    @AliasFor("basePackages")
+    String[] value() default {};
+
+    @AliasFor("value")
+    String[] basePackages() default {};
+
+    Class<?>[] basePackageClasses() default {};
+
+    Class<? extends BeanNameGenerator> nameGenerator() default BeanNameGenerator.class;
+
+    Class<? extends ScopeMetadataResolver> scopeResolver() default AnnotationScopeMetadataResolver.class;
+
+    ScopedProxyMode scopedProxy() default ScopedProxyMode.DEFAULT;
+
+    String resourcePattern() default "**/*.class";
+
+    boolean useDefaultFilters() default true;
+
+    ComponentScan.Filter[] includeFilters() default {};
+
+    ComponentScan.Filter[] excludeFilters() default {};
+
+    boolean lazyInit() default false;
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({})
+    public @interface Filter {
+        FilterType type() default FilterType.ANNOTATION;
+
+        @AliasFor("classes")
+        Class<?>[] value() default {};
+
+        @AliasFor("value")
+        Class<?>[] classes() default {};
+
+        String[] pattern() default {};
+    }
+}
+
+```
+1. @ComponentScan这个注解在Spring中很重要，它对应XML配置中的元素，@ComponentScan的功能其实就是自动扫描并加载符合条件的组件（比如@Component和@Repository等）或者bean定义，最终将这些bean定义加载到IoC容器中。
+
+我们可以通过basePackages等属性来细粒度的定制@ComponentScan自动扫描的范围，如果不指定，则默认Spring框架实现会从声明@ComponentScan所在类的package进行扫描。
+
+注：所以SpringBoot的启动类最好是放在root package下，因为默认不指定basePackages。
+
+2. @ComponentScan告诉Spring 哪个packages 的用注解标识的类 会被spring自动扫描并且装入bean容器。
+
+例如，如果你有个类用@Controller注解标识了，那么，如果不加上@ComponentScan，自动扫描该controller，那么该Controller就不会被spring扫描到，更不会装入spring容器中，因此你配置的这个Controller也没有意义。
+3. 参数的作用
+* basePackageClasses：对basepackages()指定扫描注释组件包类型安全的替代。
+* excludeFilters：指定不适合组件扫描的类型。
+* includeFilters：指定哪些类型有资格用于组件扫描。
+* lazyInit：指定是否应注册扫描的beans为lazy初始化。
+* nameGenerator：用于在Spring容器中的检测到的组件命名。
+* resourcePattern：控制可用于组件检测的类文件。
+* scopedProxy：指出代理是否应该对检测元件产生，在使用过程中会在代理风格时尚的范围是必要的。
+* scopeResolver：用于解决检测到的组件的范围。
+* useDefaultFilters：指示是否自动检测类的注释 
+
+### 1.3.6. Spring Boot Starter
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.3.5.2. 创建自己的Starter
+Starter是Spring Boot中的一个非常重要的概念，Starter相当于模块，它能将模块所需的依赖整合起来并对模块内的Bean根据环境（ 条件）进行自动配置。使用者只需要依赖相应功能的Starter，无需做过多的配置和依赖，Spring Boot就能自动扫描并加载相应的模块
+
+* 总结：
+    * 1.它整合了这个模块需要的依赖库；
+    * 2.提供对模块的配置项给使用者；
+    * 3.提供自动配置类对模块内的Bean进行自动装配；
+
+例如，在Maven的依赖中加入spring-boot-starter-web就能使项目支持Spring MVC，并且Spring Boot还为我们做了很多默认配置，无需再依赖spring-web、spring-webmvc等相关包及做相关配置就能够立即使用起来
+
+
+#### 1.3.6.1. 常用的Starter
 <a href="#menu" style="float:right">目录</a>
 
-### 1.3.6. Actuator 的端点
+```
+spring-boot-starter-activemq
+spring-boot-starter-actuator
+spring-boot-starter-aop
+spring-boot-starter-cache
+spring-boot-starter-data-jpa
+spring-boot-starter-web
+spring-boot-starter-redis
+```
+#### 1.3.6.2. 创建自己的Starter
+<a href="#menu" style="float:right">目录</a>
 
-### 1.3.7. 揭秘 Actuator 的端点
+* 步骤
+    * 1.新建Maven项目，在项目的POM文件中定义使用的依赖；
+    * 2.新建配置类，写好配置项和默认的配置值，指明配置项前缀；
+    * 3.新建自动装配类，使用@Configuration和@Bean来进行自动装配；
+    * 4.新建spring.factories文件，指定Starter的自动装配类；
+
+**引入依赖**
+
+创建Maven项目,引入依赖
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-configuration-processor</artifactId>
+    <optional>true</optional>
+</dependency>
+```
+
+**创建配置类**
+```java
+
+@Configuration
+public class XxxConfiguration{
+
+    @Bean
+    xxxx
+}
+```
+
+如果需要使用配置类
+```java
+@Data
+@ConfigurationProperties(prefix = "test.test")
+public class Properties {
+
+    private String  data;
+}
+```
+同时在XxxConfiguration添加注解EnableConfigurationProperties指定属性配置类
+```java
+@EnableConfigurationProperties(Properties.class)
+@Configuration
+public class XxxConfiguration{
+
+    @Autowired
+    Properties properties;
+    
+    @Bean
+    xxxx
+}
+```
+**指定配置类**
+
+在resource中创建文件 META-INF/spring.factories
+文件内容为
+```yml
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=xx.xx.xx.XxxConfiguration
+```
+使用mave打包,其他项目使用时引入该包的依赖即可.
+
+因为其他的SpringBoot项目中如果不指定这个配置类的扫描路径.这个配置类是不会加载的.因此使用上面的方式,SpringBoot启动时会扫描META-INF/spring.factories文件,从而确定依赖包中需要加载的配置类.
+
+
+
+
+#### 1.3.6.3. Starter原理
+<a href="#menu" style="float:right">目录</a>
+
+在Spring Boot中有一种非常解耦的扩展机制：Spring Factories。这种扩展机制实际上是仿照Java中的SPI扩展机制来实现的。
+
+Java SPI机制SPI的全名为Service Provider Interface.大多数开发人员可能不熟悉，因为这个是针对厂商或者插件的。在java.util.ServiceLoader的文档里有比较详细的介绍。简单的总结下java spi机制的思想。我们系统里抽象的各个模块，往往有很多不同的实现方案，比如日志模块的方案，xml解析模块、jdbc模块的方案等。面向的对象的设计里，我们一般推荐模块之间基于接口编程，模块之间不对实现类进行硬编码。一旦代码里涉及具体的实现类，就违反了可拔插的原则，如果需要替换一种实现，就需要修改代码。为了实现在模块装配的时候能不在程序里动态指明，这就需要一种服务发现机制。 java spi就是提供这样的一个机制：为某个接口寻找服务实现的机制。有点类似IOC的思想，就是将装配的控制权移到程序之外，在模块化设计中这个机制尤其重要。
+
+**Java SPI约定**
+
+java spi的具体约定为:当服务的提供者，提供了服务接口的一种实现之后，在jar包的META-INF/services/目录里同时创建一个以服务接口命名的文件。该文件里就是实现该服务接口的具体实现类。而当外部程序装配这个模块的时候，就能通过该jar包META-INF/services/里的配置文件找到具体的实现类名，并装载实例化，完成模块的注入。 基于这样一个约定就能很好的找到服务接口的实现类，而不需要再代码里制定。jdk提供服务实现查找的一个工具类：java.util.ServiceLoader
+
+**Spring Boot中的SPI机制**
+
+在Spring中也有一种类似与Java SPI的加载机制。它在META-INF/spring.factories文件中配置接口的实现类名称，然后在程序中读取这些配置文件并实例化。这种自定义的SPI机制是Spring Boot Starter实现的基础。
+
+
+**Spring Factories实现原理**
+
+spring-core包里定义了SpringFactoriesLoader类，这个类实现了检索META-INF/spring.factories文件，并获取指定接口的配置的功能。在这个类中定义了两个对外的方法：
+
+loadFactories。根据接口类获取其实现类的实例，这个方法返回的是对象列表。
+
+loadFactoryNames。根据接口获取其接口类的名称，这个方法返回的是类名的列表。
+
+上面的两个方法的关键都是从指定的ClassLoader中获取spring.factories文件，并解析得到类名列表，具体代码如下图。
+
+org.springframework.core.io.support.SpringFactoriesLoader
+```java
+public static List<String> loadFactoryNames(Class<?> factoryClass, @Nullable ClassLoader classLoader) {
+    String factoryClassName = factoryClass.getName();
+    return (List)loadSpringFactories(classLoader).getOrDefault(factoryClassName, Collections.emptyList());
+}
+
+private static Map<String, List<String>> loadSpringFactories(@Nullable ClassLoader classLoader) {
+    MultiValueMap<String, String> result = (MultiValueMap)cache.get(classLoader);
+    if (result != null) {
+        return result;
+    } else {
+        try {
+            Enumeration<URL> urls = classLoader != null ? classLoader.getResources("META-INF/spring.factories") : ClassLoader.getSystemResources("META-INF/spring.factories");
+            LinkedMultiValueMap result = new LinkedMultiValueMap();
+
+            while(urls.hasMoreElements()) {
+                URL url = (URL)urls.nextElement();
+                UrlResource resource = new UrlResource(url);
+                Properties properties = PropertiesLoaderUtils.loadProperties(resource);
+                Iterator var6 = properties.entrySet().iterator();
+
+                while(var6.hasNext()) {
+                    Entry<?, ?> entry = (Entry)var6.next();
+                    String factoryClassName = ((String)entry.getKey()).trim();
+                    String[] var9 = StringUtils.commaDelimitedListToStringArray((String)entry.getValue());
+                    int var10 = var9.length;
+
+                    for(int var11 = 0; var11 < var10; ++var11) {
+                        String factoryName = var9[var11];
+                        result.add(factoryClassName, factoryName.trim());
+                    }
+                }
+            }
+
+            cache.put(classLoader, result);
+            return result;
+        } catch (IOException var13) {
+            throw new IllegalArgumentException("Unable to load factories from location [META-INF/spring.factories]", var13);
+        }
+    }
+}
+```
+
+**加载factories文件**
+
+从代码中我们可以知道，在这个方法中会遍历整个ClassLoader中所有jar包下的spring.factories文件。也就是说我们可以在自己的jar中配置spring.factories文件，不会影响到其它地方的配置，也不会被别人的配置覆盖。
+
+spring.factories的是通过Properties解析得到的，所以我们在写文件中的内容都是安装下面这种方式配置的：
+
+com.xxx.interface=com.xxx.classname
+
+如果一个接口希望配置多个实现类，可以使用','进行分割。
+
+对于loadFactories方法而言，在获取类列表的基础上，还有进行实例化的过程。
+
+
+
+#### 1.3.6.4. 项目实践
+<a href="#menu" style="float:right">目录</a>
+
+
+### 1.3.7. Actuator 的端点
+
+#### 1.3.7.1. 揭秘 Actuator 的端点
+<a href="#menu" style="float:right">目录</a>
 
 Spring Boot Actuator的关键特性是在应用程序里提供众多Web端点，通过它们了解应用程序运行时的内部状况。有了Actuator，你可以知道Bean在Spring应用程序上下文里是如何组装在一起的，掌握应用程序可以获取的环境属性信息，获取运行时度量信息的快照
 
@@ -3927,6 +4368,35 @@ management.endpoints.web.exposure.exclude= # Endpoint IDs that should be exclude
 management.endpoints.web.exposure.include=*
 ```
 
+#### 1.3.7.2. 自定义监控
+<a href="#menu" style="float:right">目录</a>
+
+* @Endpoint(id="test") 指定端点的名称,id开头必须是小写,此注解必须
+* @ReadOperation 访问端点时返回的数据
+```java
+@Component
+@Endpoint(id="test")
+public class MyActuator {
+
+
+    @ReadOperation
+    public Map display(){
+        Map<String,String> data = new HashMap<>();
+
+        data.put("key1","value1");
+        data.put("key2","value2");
+
+        return data;
+    }
+}
+```
+访问地址:http://localhost:8080/actuator/test
+将会显示
+```json
+{"key1":"value1","key2":"value2"}
+```
+
+
 ### 1.3.8. Spring Boot 项目发布
 <a href="#menu" style="float:right">目录</a>
 
@@ -3954,7 +4424,7 @@ POM 文件中添加打包方式,默认的打包方式是jar
 POM 文件中添加了“org.springframework.boot:spring-boot-maven-plugin”插件。在添加了该插件之后，当运行“mvn package”进行打包时，会打包成一个可以直接运行的 JAR 文件，使用“Java -jar”命令就可以直接运行。这在很大程度上简化了应用的部署，只需要安装了 JRE 就可以运行。
 
 **添加插件**
-在添加了该插件之后，当运行“mvn package”进行打包时，会打包成一个可以直接运行的 JAR 文件，使用“Java -jar”命令就可以直接运行。这在很大程度上简化了应用的部署，只需要安装了 JRE 就可以运行。
+在添���了该插件之后，当运行“mvn package”进行打包时，会打包成一个可以直接运行的 JAR 文件，使用“Java -jar”命令就可以直接运行。这在很大程度上简化了应用的部署，只需要安装了 JRE 就可以运行。
 ```xml
 <build>
     <plugins>
@@ -4012,11 +4482,543 @@ mvn  spring-boot:run -Dspring-boot.run.profiles=xxx
 ### 1.3.10. Spring Boot原理分析
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.3.10.1. 自动配置原理
+
+#### 1.3.10.1. 启动流程分析
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.3.10.2. 启动流程分析
+1.  如果我们使用的是SpringApplication的静态run方法，那么，这个方法里面首先要创建一个SpringApplication对象实例，然后调用这个创建好的SpringApplication的实例方法。在SpringApplication实例初始化的时候，它会提前做几件事情：
+
+* 根据classpath里面是否存在某个特征类（org.springframework.web.context.ConfigurableWebApplicationContext）来决定是否应该创建一个为Web应用使用的ApplicationContext类型。
+* 使用SpringFactoriesLoader在应用的classpath中查找并加载所有可用的ApplicationContextInitializer。
+* 使用SpringFactoriesLoader在应用的classpath中查找并加载所有可用的ApplicationListener。
+* 推断并设置main方法的定义类。
+
+
+##### 1.3.10.1.1. 创建SpringApplication对象
 <a href="#menu" style="float:right">目录</a>
+
+**main方法启动**
+```java
+@SpringBootApplication
+public class ActuatorApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ActuatorApplication.class, args);
+    }
+
+}
+public static ConfigurableApplicationContext run(Class<?> primarySource, String... args) {
+    return run(new Class[]{primarySource}, args);
+}
+
+```
+**创建SpringApplication对象**
+```java
+public static ConfigurableApplicationContext run(Class<?>[] primarySources, String[] args) {
+    return (new SpringApplication(primarySources)).run(args);
+}
+public SpringApplication(ResourceLoader resourceLoader, Class... primarySources) {
+        this.sources = new LinkedHashSet();
+        this.bannerMode = Mode.CONSOLE;
+        this.logStartupInfo = true;
+        this.addCommandLineProperties = true;
+        this.addConversionService = true;
+        this.headless = true;
+        this.registerShutdownHook = true;
+        this.additionalProfiles = new HashSet();
+        this.isCustomEnvironment = false;
+        this.resourceLoader = resourceLoader;
+        Assert.notNull(primarySources, "PrimarySources must not be null");
+        this.primarySources = new LinkedHashSet(Arrays.asList(primarySources));
+        
+        this.webApplicationType = WebApplicationType.deduceFromClasspath();
+        /**
+        
+        */
+        this.setInitializers(this.getSpringFactoriesInstances(ApplicationContextInitializer.class));
+        this.setListeners(this.getSpringFactoriesInstances(ApplicationListener.class));
+        this.mainApplicationClass = this.deduceMainApplicationClass();
+    }
+    
+```
+
+* **deduceFromClasspath**
+获取应用类型:NONE, SERVLET,REACTIVE;
+1.如果类路径中含有org.springframework.web.reactive.DispatcherHandler,则为REACTIVE应用
+2.如果含有类javax.servlet.Servlet和org.springframework.web.context.ConfigurableWebApplicationContext,则为SERVLET应用
+3.否则为NONE        
+```java
+private static final String[] SERVLET_INDICATOR_CLASSES = new String[]{"javax.servlet.Servlet", "org.springframework.web.context.ConfigurableWebApplicationContext"};
+    
+static WebApplicationType deduceFromClasspath() {
+        if (ClassUtils.isPresent("org.springframework.web.reactive.DispatcherHandler", (ClassLoader)null) && !ClassUtils.isPresent("org.springframework.web.servlet.DispatcherServlet", (ClassLoader)null) && !ClassUtils.isPresent("org.glassfish.jersey.servlet.ServletContainer", (ClassLoader)null)) {
+            return REACTIVE;
+        } else {
+            String[] var0 = SERVLET_INDICATOR_CLASSES;
+            int var1 = var0.length;
+
+            for(int var2 = 0; var2 < var1; ++var2) {
+                String className = var0[var2];
+                if (!ClassUtils.isPresent(className, (ClassLoader)null)) {
+                    return NONE;
+                }
+            }
+
+            return SERVLET;
+        }
+    }
+```
+
+* **setInitializers**
+初始化 classpath 下的所有的可用的 ApplicationContextInitializer。
+
+```java
+private <T> Collection<T> getSpringFactoriesInstances(Class<T> type) {
+    return this.getSpringFactoriesInstances(type, new Class[0]);
+}
+//获取所有的 Spring 工厂实例
+private <T> Collection<T> getSpringFactoriesInstances(Class<T> type, Class<?>[] parameterTypes, Object... args) {
+    ClassLoader classLoader = this.getClassLoader();
+    //获取所有 Spring Factories 的名字
+    Set<String> names = new LinkedHashSet(SpringFactoriesLoader.loadFactoryNames(type, classLoader));
+    List<T> instances = this.createSpringFactoriesInstances(type, parameterTypes, classLoader, args, names);
+    //Spring 工厂实例排序
+    AnnotationAwareOrderComparator.sort(instances);
+    return instances;
+}
+
+public static List<String> loadFactoryNames(Class<?> factoryClass, @Nullable ClassLoader classLoader) {
+    String factoryClassName = factoryClass.getName();
+    return (List)loadSpringFactories(classLoader).getOrDefault(factoryClassName, Collections.emptyList());
+}
+// SpringFactoriesLoader.loadFactoryNames() ，是从 META-INF/spring.factories 的资源文件中，读取相关的配置类名称
+private static Map<String, List<String>> loadSpringFactories(@Nullable ClassLoader classLoader) {
+    MultiValueMap<String, String> result = (MultiValueMap)cache.get(classLoader);
+    if (result != null) {
+        return result;
+    } else {
+        try {
+            Enumeration<URL> urls = classLoader != null ? classLoader.getResources("META-INF/spring.factories") : ClassLoader.getSystemResources("META-INF/spring.factories");
+            LinkedMultiValueMap result = new LinkedMultiValueMap();
+
+            while(urls.hasMoreElements()) {
+                URL url = (URL)urls.nextElement();
+                UrlResource resource = new UrlResource(url);
+                Properties properties = PropertiesLoaderUtils.loadProperties(resource);
+                Iterator var6 = properties.entrySet().iterator();
+
+                while(var6.hasNext()) {
+                    Entry<?, ?> entry = (Entry)var6.next();
+                    String factoryClassName = ((String)entry.getKey()).trim();
+                    String[] var9 = StringUtils.commaDelimitedListToStringArray((String)entry.getValue());
+                    int var10 = var9.length;
+
+                    for(int var11 = 0; var11 < var10; ++var11) {
+                        String factoryName = var9[var11];
+                        result.add(factoryClassName, factoryName.trim());
+                    }
+                }
+            }
+
+            cache.put(classLoader, result);
+            return result;
+        } catch (IOException var13) {
+            throw new IllegalArgumentException("Unable to load factories from location [META-INF/spring.factories]", var13);
+        }
+    }
+ }
+
+    
+//根据读取到的名字创建对象（Spring 工厂实例）
+private <T> List<T> createSpringFactoriesInstances(Class<T> type, Class<?>[] parameterTypes, ClassLoader classLoader, Object[] args, Set<String> names) {
+    List<T> instances = new ArrayList(names.size());
+    Iterator var7 = names.iterator();
+
+    while(var7.hasNext()) {
+        String name = (String)var7.next();
+
+        try {
+            Class<?> instanceClass = ClassUtils.forName(name, classLoader);
+            Assert.isAssignable(type, instanceClass);
+            Constructor<?> constructor = instanceClass.getDeclaredConstructor(parameterTypes);
+            T instance = BeanUtils.instantiateClass(constructor, args);
+            instances.add(instance);
+        } catch (Throwable var12) {
+            throw new IllegalArgumentException("Cannot instantiate " + type + " : " + name, var12);
+        }
+    }
+
+    return instances;
+}
+
+    
+```
+
+* setInitializers()：
+```java
+public void setInitializers(
+            Collection<? extends ApplicationContextInitializer<?>> initializers) {
+  this.initializers = new ArrayList<>();
+  this.initializers.addAll(initializers);
+}
+```
+
+**setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class))：初始化 classpath 下的所有的可用的 ApplicationListener**
+getSpringFactoriesInstances() 和上面的类似，但是它是从 META-INF/spring.factories 的资源文件中，获取到 key 为 org.springframework.context.ApplicationListener 的 value
+
+
+**deduceMainApplicationClass() ：根据调用栈，推断出 main 方法的类名**
+```java
+private Class<?> deduceMainApplicationClass() {
+    try {
+        StackTraceElement[] stackTrace = (new RuntimeException()).getStackTrace();
+        StackTraceElement[] var2 = stackTrace;
+        int var3 = stackTrace.length;
+
+        for(int var4 = 0; var4 < var3; ++var4) {
+            StackTraceElement stackTraceElement = var2[var4];
+            if ("main".equals(stackTraceElement.getMethodName())) {
+                return Class.forName(stackTraceElement.getClassName());
+            }
+        }
+    } catch (ClassNotFoundException var6) {
+    }
+
+    return null;
+}
+```
+上面看完了构造方法后，已经初始化了一个 SpringApplication 对象，接下来调用其 run 方法
+
+##### 1.3.10.1.2. 执行Run方法
+<a href="#menu" style="float:right">目录</a>
+
+```java
+public static ConfigurableApplicationContext run(Class<?>[] primarySources, String[] args) {
+    return (new SpringApplication(primarySources)).run(args);
+}
+//通过 SpringApplication 对象执行run方法   
+//可变个数参数 args 即是我们整个应用程序的入口 main 方法的参数
+public ConfigurableApplicationContext run(String... args) {
+    
+        //StopWatch 是来自 org.springframework.util 的工具类，可以用来方便的记录程序的运行时间。
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+
+        ConfigurableApplicationContext context = null;
+        Collection<SpringBootExceptionReporter> exceptionReporters = new ArrayList();
+        this.configureHeadlessProperty();
+        //加载 SpringApplicationRunListener 对象
+        SpringApplicationRunListeners listeners = this.getRunListeners(args);
+        listeners.starting();
+
+        Collection exceptionReporters;
+        try {
+            //获取启动时传入参数 args（main 方法传进来的参数） 并初始化为 ApplicationArguments 对象。
+            ApplicationArguments applicationArguments = new DefaultApplicationArguments(args);
+            //根据 listeners 和 applicationArguments 配置SpringBoot 应用的环境。
+            ConfigurableEnvironment environment = this.prepareEnvironment(listeners, applicationArguments);
+            //根据环境信息配置要忽略的 bean 信息
+            this.configureIgnoreBeanInfo(environment);
+            //打印Banner
+            Banner printedBanner = this.printBanner(environment);
+            //根据应用类型来确定该 Spring Boot 项目应该创建什么类型的 ApplicationContext ，默认情况下，如果没有明确设置的应用程序上下文或应用程序上下文类，该方法会在返回合适的默认值。
+            //servlet  - org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext
+            //REACTIVE - org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebServerApplicationContext
+            //默认 - org.springframework.context.annotation.AnnotationConfigApplicationContext
+            context = this.createApplicationContext();
+            //这里也是通过 SpringFactoriesLoader 加载 META-INF/spring.factories 中 key 为 SpringBootExceptionReporter 的。
+            exceptionReporters = this.getSpringFactoriesInstances(SpringBootExceptionReporter.class, new Class[]{ConfigurableApplicationContext.class}, context);
+            //完成整个容器的创建与启动以及 bean 的注入功能。
+            this.prepareContext(context, environment, listeners, applicationArguments, printedBanner);
+            //根据扫描到的类名,通过容器创建bean
+            this.refreshContext(context);
+            //在上下文刷新后调用该方法，其内部没有做任何操作。
+            this.afterRefresh(context, applicationArguments);
+            stopWatch.stop();
+            if (this.logStartupInfo) {
+                (new StartupInfoLogger(this.mainApplicationClass)).logStarted(this.getApplicationLog(), stopWatch);
+            }
+            //启动监听器
+            listeners.started(context);
+            this.callRunners(context, applicationArguments);
+        } catch (Throwable var10) {
+            this.handleRunFailure(context, var10, exceptionReporters, listeners);
+            throw new IllegalStateException(var10);
+        }
+
+        try {
+            listeners.running(context);
+            return context;
+        } catch (Throwable var9) {
+            this.handleRunFailure(context, var9, exceptionReporters, (SpringApplicationRunListeners)null);
+            throw new IllegalStateException(var9);
+        }
+    }
+```
+AbstractApplicationContext类
+```java
+public void refresh() throws BeansException, IllegalStateException {
+        synchronized(this.startupShutdownMonitor) {
+            /**
+            * 1.这个方法设置context的启动日期。
+            2.设置context当前的状态，是活动状态还是关闭状态。
+            3.初始化context environment（上下文环境）中的占位符属性来源。
+            4.验证所有必需的属性。
+            */
+            this.prepareRefresh();
+            //让这个类（AbstractApplicationContext）的子类刷新内部bean工厂。实际上就是重新创建一个bean工厂。
+            ConfigurableListableBeanFactory beanFactory = this.obtainFreshBeanFactory();
+            //上一步已经把工厂建好了，但是还不能投入使用，因为工厂里什么都没有，还需要配置一些东西
+            //配置这个工厂的标准环境，比如context的类加载器和后处理器
+            this.prepareBeanFactory(beanFactory);
+
+            try {
+                /**
+                上面对bean工厂进行了许多配置，现在需要对bean工厂进行一些处理。
+                ①、添加一个ServletContextAwareProcessor到bean工厂中。
+                ②、在bean工厂自动装配的时候忽略一些接口。如：ServletContextAware、ServletConfigAware
+                ③、注册WEB应用特定的域（scope）到bean工厂中，以便WebApplicationContext可以使用它们。比如"request", "session", "globalSession", "application"，
+                ④、注册WEB应用特定的Environment bean到bean工厂中，以便WebApplicationContext可以使用它们。如："contextParameters", "contextAttributes"
+                */
+                this.postProcessBeanFactory(beanFactory);
+                //这一步也是对bean工厂进行一些处理。这一步主要是调用所有的bean工厂处理器（BeanFactoryPostProcessor）对bean工厂进行一些处理。这个方法必须在所有的singleton初始化之前调用。
+                this.invokeBeanFactoryPostProcessors(beanFactory);
+                /**
+                注册用来拦截bean创建的BeanPostProcessor bean.这个方法需要在所有的application bean初始化之前调用。把这个注册的任务委托给了PostProcessorRegistrationDelegate来完成。
+                */
+                this.registerBeanPostProcessors(beanFactory);
+                /*
+                初始化MessageSource接口的一个实现类。这个接口提供了消息处理功能。主要用于国际化/i18n。
+                */
+                this.initMessageSource();
+                /*
+                为这个context初始化一个事件广播器（ApplicationEventMulticaster）。
+                */
+                this.initApplicationEventMulticaster();
+                /*
+                在AbstractApplicationContext的子类中初始化其他特殊的bean。其实就是初始化ThemeSource接口的实例。这个方法需要在所有单例bean初始化之前调用。
+                */
+                this.onRefresh();
+                /*
+                注册应用的监听器。就是注册实现了ApplicationListener接口的监听器bean，这些监听器是注册到ApplicationEventMulticaster中的。这不会影响到其它监听器bean。在注册完以后，还会将其前期的事件发布给相匹配的监听器
+                */
+                this.registerListeners();
+                /*
+                完成bean工厂的初始化工作。这一步非常复杂，也非常重要，涉及到了bean的创建。第二步中只是完成了BeanDefinition的定义、解析、处理、注册。但是还没有初始化bean实例。这一步将初始化所有非懒加载的单例bean。
+                */
+                this.finishBeanFactoryInitialization(beanFactory);
+                /*
+                完成context的刷新。主要是调用LifecycleProcessor的onRefresh()方法，并且发布事件（ContextRefreshedEvent）。
+                */
+                this.finishRefresh();
+            } catch (BeansException var9) {
+                if (this.logger.isWarnEnabled()) {
+                    this.logger.warn("Exception encountered during context initialization - cancelling refresh attempt: " + var9);
+                }
+
+                this.destroyBeans();
+                this.cancelRefresh(var9);
+                throw var9;
+            } finally {
+                this.resetCommonCaches();
+            }
+
+        }
+    }
+```
+### 1.3.11. 种保护 Spring Boot 应用的绝佳方法
+
+#### 1.3.11.1. 在生产中使用HTTPS
+
+传输层安全性（TLS）是HTTPS的官方名称，你可能听说过它称为SSL（安全套接字层），SSL是已弃用的名称，TLS是一种加密协议，可通过计算机网络提供安全通信。其主要目标是确保计算机应用程序之间的隐私和数据完整性。
+
+过去，TLS / SSL证书很昂贵，而且HTTPS被认为很慢，现在机器变得更快，已经解决了性能问题，Let's Encrypt提供免费的TLS证书,这两项发展改变了游戏，并使TLS成为主流。
+
+截至2018年7月24日，Google Chrome 将HTTP网站标记为“不安全”。虽然这在网络社区引起了相当多的争议。知名安全研究员特洛伊亨特创建了一个为什么不适用HTTPS？跟踪不使用HTTPS的大型网站的网站。
+
+Let’s Encrypt TLS证书可以自动化生成和更新，由于他们是免费的，所以没有理由不去做！Spring Boot Secured By Let’s Encrypt的加密是如何做到这一点的有用指南。
+
+要在Spring Boot应用程序中强制使用HTTPS，您可以扩展WebSecurityConfigurerAdapter并要求安全连接。
+```java
+@Configuration
+public  class  WebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter
+ {
+   
+    @Override
+    protected void configure(HttpSecurity  http) throws Exception{
+        http.requiresChannel().requiresSecure();
+    }
+}
+```
+另一个重要的事情是使用HTTP严格传输安全性（HSTS）。HSTS是一种Web安全策略机制，可以保护网站免受协议降级攻击和cookie劫持。服务器使用名为Strict-Transport-Security的响应头字段将HSTS策略传送到浏览器。Spring Security默认发送此标头，以避免在开始时出现不必要的HTTP跃点，点击这里一分钟开启Tomcat https支持。
+
+#### 1.3.11.2. 使用Snyk检查你的依赖关系
+你很可能不知道应用程序使用了多少直接依赖项，这通常是正确的，尽管依赖性构成了整个应用程序的大部分。攻击者越来越多地针对开源依赖项，因为它们的重用为恶意黑客提供了许多受害者，确保应用程序的整个依赖关系树中没有已知的漏洞非常重要。
+
+Snyk测试你的应用程序构建包，标记那些已知漏洞的依赖项。它在仪表板在应用程序中使用的软件包中存在的漏洞列表。
+
+此外，它还将建议升级的版本或提供补丁，并提供针对源代码存储库的拉取请求来修复您的安全问题。Snyk还确保在你的存储库上提交的任何拉取请求（通过webhooks）时都是通过自动测试的，以确保它们不会引入新的已知漏洞。
+
+每天都会在现有项目和库中发现新的漏洞，因此监控和保护生产部署也很重要。Snyk拍摄快照并监控你的部署，以便在发现新漏洞时，你可以通过JIRA，slack或电子邮件自动收到通知，并创建拉取请求以提供新漏洞的升级和补丁。
+
+Snyk可通过Web UI和CLI获得，因此您可以轻松地将其与CI环境集成，并将其配置为在存在严重性超出设定阈值的漏洞时中断构建。
+
+你可以免费使用Snyk进行开源项目或使用有限数量的私有项目。
+
+#### 1.3.11.3. 升级到最新版本
+定期升级应用程序中的依赖项有多种原因。安全性是让您有升级动力的最重要原因之一。该start.spring.io起始页面采用了最新的春季版本的软件包，以及依赖关系，在可能的情况。
+
+基础架构升级通常不如依赖项升级具有破坏性，因为库作者对向后兼容性和版本之间的行为更改的敏感性各不相同。话虽如此，当你在配置中发现安全漏洞时，您有三种选择：升级，修补程序或忽略。
+
+在对应用程序进行必要的更改以使用较新版本之后，就应用程序的整体运行状况而言，升级是最安全的。
+
+#### 1.3.11.4. 启用CSRF保护
+跨站点请求伪造(Cross-Site Request Forgery )是一种攻击，强制用户在他们当前登录的应用程序中执行不需要的操作。如果用户是普通用户，一个成功攻击可能涉及请求的状态更改，如转移资金或更改其电子邮件地址，如果用户具有提升管理员的权限，则CSRF攻击可能会危及整个应用程序。
+
+Spring Security具有出色的CSRF支持，如果您正在使用Spring MVC的< form:form>标签或Thymeleaf @EnableWebSecurity，默认情况下处于启用状态，CSRF令牌将自动添加为隐藏输入字段。
+
+如果你使用的是像Angular或React这样的JavaScript框架，则需要配置CookieCsrfTokenRepository以便JavaScript可以读取cookie。
+```java
+@EnableWebSecurity
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override   
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+    }
+}
+```
+如果你正在使用Angular，这就是你需要做的。如果您使用的是React，则需要读取XSRF-TOKENcookie并将其作为X-XSRF-TOKEN标题发回。
+
+当请求通过HTTPS发生时，Spring Security会自动加入一个secure标识到XSRF-TOKENcookie 。Spring Security对于CSRF cookie不使用SameSite=strict 的标志，但它在使用Spring Session或WebFlux会话处理时会使用，这对会话cookie有意义，因为它有助于识别用户，但是没有为CSRF cookie提供太多价值，因为CSRF令牌也需要在请求中。点击这里了解CSRF更多详情。
+#### 1.3.11.5. 使用内容安全策略防止XSS攻击
+内容安全策略（CSP）是一个增加的安全层，可帮助缓解XSS（跨站点脚本）和数据注入攻击。要启用它，你需要配置应用程序以返回Content-Security-Policy标题。你还可以在HTML页面中<meta http-equiv="Content-Security-Policy">使用标记。
+
+Spring安全性默认提供了许多安全标头：
+```
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+X-Frame-Options: DENY
+X-XSS-Protection: 1; mode=block
+```
+
+Spring Security * 默认情况下不添加 CSP。你可以使用以下配置在Spring Boot应用程序中启用CSP标头。
+```java
+@EnableWebSecurity
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void  configure( HttpSecurity  http) throws Exception {
+        http.headers()
+            .contentSecurityPolicy("script-src 'self' https://trustedscripts.example.com; object-src https://trustedplugins.example.com; report-uri /csp-report-endpoint/"
+        );
+
+    }
+}
+```
+
+CSP是防止XSS攻击的良好防御，请记住，打开CSP能让CDN访问许多非常古老且易受攻击的JavaScript库，这意味着使用CDN不会为安全性增加太多价值。点击这里了解XSS更多详情。
+
+你可以在securityheaders.com测试你的CSP标头是否有用。
+
+#### 1.3.11.6. 使用OpenID Connect进行身份验证
+OAuth 2.0是行业标准的授权协议。它使用scope来定义授权用户可以执行的操作的权限。但是，OAuth 2.0不是身份验证协议，并且不提供有关经过身份验证的用户的信息。
+
+OpenID Connect（OIDC）是一个OAuth 2.0扩展，提供用户信息，除了访问令牌之外，它还添加了ID令牌，以及/userinfo可以从中获取其他信息的端点，它还添加了发现功能和动态客户端注册的端点。
+
+如果使用OIDC进行身份验证，则无需担心如何存储用户、密码或对用户进行身份验证。相反，你可以使用身份提供商（IdP）为你执行此操作，你的IdP甚至可能提供多因素身份验证（MFA）等安全附加组件。
+
+要了解如何在Spring Boot应用程序中使用OIDC，请参阅Spring Security 5.0和OIDC入门。要总结如何使用它，你需要向项目添加一些依赖项，然后在application.yml文件中配置一些属性。
+
+```yml
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          okta:
+            client-id: {clientId}
+            client-secret: {clientSecret}
+            scope: openid email profile
+        provider:
+          okta:
+            issuer-uri: https:
+//{yourOktaDomain}/oauth2/default
+```
+注意：issuer-uri仅在Spring Security 5.1中支持使用，Spring Security 5.1正在积极开发中并计划于2018年9月发布。
+
+你可以使用像Keycloak这样的开源系统来设置自己的OIDC服务器。如果你不想在生产中维护自己的服务器，可以使用Okta的Developer API。
+
+#### 1.3.11.7. 管理密码？使用密码哈希！
+以纯文本格式存储密码是最糟糕的事情之一。幸运的是，Spring Security默认情况下不允许使用纯文本密码。它还附带了一个加密模块，可用于对称加密，生成密钥和密码散列（也就是密码编码）。
+
+PasswordEncoder 是Spring Security中密码哈希的主要接口，如下所示：
+```java
+public  interface  PasswordEncoder
+ {
+    String encode(String rawPassword);
+
+    boolean matches(String rawPassword, String encodedPassword);
+
+}
+```
+
+Spring Security提供了几种实现，最受欢迎的是BCryptPasswordEncoder和Pbkdf2PasswordEncoder。
+
+对于一般的密码管理，我们建议使用SCrypt或Argon2, SCrypt现在已经过时了（已经有一段时间了），并且有一个额外的复杂因素，BCrypt没有这个因素，这使得暴力破解变得加倍地困难。它由着名的密码学家/安全人员（Colin Percival）编写，并且在几乎所有编程语言中都有很好的库，SCrypt也得到Latacora的认可。
+
+Spring Security 5.1（即2018年9月下旬）将附带UserDetailsPasswordService API，允许您升级密码存储。
+
+#### 1.3.11.8. 安全地存储秘密
+应谨慎处理敏感信息，如密码，访问令牌等，你不能以纯文本形式传递，或者如果将它们保存在本地存储中。由于（GitHub）的历史已经一次又一次证明，开发人员并没有仔细考虑如何存储他们的秘密。
+
+一个好的做法是将保密信息存储在保管库中，该保管库可用于存储，提供对应用程序可能使用的服务的访问权限，甚至生成凭据。HashiCorp的Vault使得存储机密变得很轻松，并提供了许多额外的服务。
+
+如果您对此感兴趣，请务必花一些时间查看Spring Vault，它为HashiCorp Vault添加抽象，为客户提供基于Spring注释的访问，允许他们访问、存储和撤销机密而不会迷失在基础架构中。以下代码段显示了使用注释从Spring Vault中提取密码的方便程度。
+```java
+@Value("${password}")
+String password;
+```
+
+#### 1.3.11.9. 使用OWASP的ZAP测试您的应用程序
+OWASP ZAP安全工具是针对在运行活动的应用程序进行渗透测试的代理。它是一个受欢迎的（超过4k星）免费的开源项目，托管在GitHub上。
+
+OWASP ZAP用于查找漏洞的两种方法是Spider和Active Scan。
+
+Spider工具以URL种子开头，它将访问并解析每个响应，识别超链接并将它们添加到列表中。然后，它将访问这些新找到的URL并以递归方式继续，为您的Web应用程序创建URL映射。
+
+Active Scan工具将根据潜在漏洞列表自动测试你选择的目标。它提供了一个报告，显示Web应用程序可被利用的位置以及有关漏洞的详细信息。
+
+#### 1.3.11.10. 让你的安全团队进行代码审查
+代码评审对任何高性能软件开发团队都至关重要。在Okta，我们所有的生产代码和官方开源项目都需要通过我们的专家安全团队进行分析，你的公司可能没有安全专家，但如果你正在处理敏感数据，也许你应该这样做！
+
+
+
+### 1.3.12. 其他一些问题
+
+#### 1.3.12.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？
+可以实现接口 ApplicationRunner 或者 CommandLineRunner，这两个接口实现方式一样，它们都只提供了一个 run 方法
+
+#### 1.3.12.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？
+这可以使用DEV工具来实现。通过这种依赖关系，您可以节省任何更改，嵌入式tomcat将重新启动。
+
+Spring Boot有一个开发工具（DevTools）模块，它有助于提高开发人员的生产力。Java开发人员面临的一个主要挑战是将文件更改自动部署到服务器并自动重启服务器。
+
+开发人员可以重新加载Spring Boot上的更改，而无需重新启动服务器。这将消除每次手动部署更改的需要。Spring Boot在发布它的第一个版本时没有这个功能。
+
+这是开发人员最需要的功能。DevTools模块完全满足开发人员的需求。该模块将在生产环境中被禁用。它还提供H2数据库控制台以更好地测试应用程序。
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-devtools</artifactId>
+    <optional>true</optional>
+</dependency>
+
+```
+
+#### 1.3.12.3. Spring Boot 有哪几种读取配置的方式？
+Spring Boot 可以通过 @PropertySource,@Value,@Environment, @ConfigurationProperties 来绑定变量，具体请看这篇文章《Spring Boot读取配置的几种方式》。
 
 
 ## 1.4. SpringCloud
