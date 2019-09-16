@@ -23,124 +23,126 @@
             - [1.1.4.4. 使用XML配置声明式事务](#1144-使用xml配置声明式事务)
             - [1.1.4.5. 使用注解配置事务](#1145-使用注解配置事务)
             - [1.1.4.6. 事务实现原理](#1146-事务实现原理)
-        - [1.1.5. Spring Cache](#115-spring-cache)
-            - [1.1.5.1. 几个重要概念&缓存注解](#1151-几个重要概念缓存注解)
-            - [1.1.5.2. SpEL上下文数据](#1152-spel上下文数据)
-            - [1.1.5.3. 基本使用](#1153-基本使用)
-        - [1.1.6. 常用注解](#116-常用注解)
-        - [1.1.7. 常用工具类](#117-常用工具类)
-    - [1.2. Sppring MVC](#12-sppring-mvc)
-        - [1.2.1. MVC体系概述](#121-mvc体系概述)
-            - [1.2.1.1. MVC 架构](#1211-mvc-架构)
-        - [1.2.2. Restful](#122-restful)
-            - [1.2.2.1. URL 设计](#1221-url-设计)
-            - [1.2.2.2. 状态码](#1222-状态码)
-            - [1.2.2.3. 服务器回应](#1223-服务器回应)
-        - [1.2.3. 注解说明](#123-注解说明)
-        - [1.2.4. 拦截器](#124-拦截器)
-        - [1.2.5. 过滤器](#125-过滤器)
-            - [1.2.5.1. 过滤器和拦截器的区别：](#1251-过滤器和拦截器的区别)
-            - [1.2.5.2. 拦截器（Interceptor）和过滤器（Filter）的一些用途](#1252-拦截器interceptor和过滤器filter的一些用途)
-    - [1.3. SpringBoot](#13-springboot)
-        - [1.3.1. 基本概念](#131-基本概念)
-        - [1.3.2. Spring Boot 环境下创建Bean](#132-spring-boot-环境下创建bean)
-        - [1.3.3. 使用不同的容器](#133-使用不同的容器)
-        - [1.3.4. 配置文件](#134-配置文件)
-            - [1.3.4.1. bootstrap.yml与application.yml区别](#1341-bootstrapyml与applicationyml区别)
-            - [1.3.4.2. 多环境配置](#1342-多环境配置)
-                - [1.3.4.2.1. 配置文件](#13421-配置文件)
-                - [1.3.4.2.2. 多环境配置](#13422-多环境配置)
-            - [1.3.4.3. 注解ConfigurationProperties注入yml配置文件中的数据](#1343-注解configurationproperties注入yml配置文件中的数据)
-            - [1.3.4.4. 使用随机数](#1344-使用随机数)
-            - [1.3.4.5. 从命令行指定参数](#1345-从命令行指定参数)
-            - [1.3.4.6. 配置日志](#1346-配置日志)
-        - [1.3.5. 启动类 @SpringBootApplication 注解](#135-启动类-springbootapplication-注解)
-            - [1.3.5.1. @Inherited 注解](#1351-inherited-注解)
-            - [1.3.5.2. @SpringBootConfiguration](#1352-springbootconfiguration)
-            - [1.3.5.3. @EnableAutoConfiguration](#1353-enableautoconfiguration)
-            - [1.3.5.4. @ComponentScan](#1354-componentscan)
-        - [1.3.6. Spring Boot Starter](#136-spring-boot-starter)
-            - [1.3.6.1. 常用的Starter](#1361-常用的starter)
-            - [1.3.6.2. 创建自己的Starter](#1362-创建自己的starter)
-            - [1.3.6.3. Starter原理](#1363-starter原理)
-        - [1.3.7. Actuator 的端点](#137-actuator-的端点)
-            - [1.3.7.1. 揭秘 Actuator 的端点](#1371-揭秘-actuator-的端点)
-            - [1.3.7.2. 自定义监控](#1372-自定义监控)
-        - [1.3.8. Spring Boot 项目发布](#138-spring-boot-项目发布)
-        - [1.3.9. Maven打包](#139-maven打包)
-        - [1.3.10. Spring Boot原理分析](#1310-spring-boot原理分析)
-            - [1.3.10.1. 启动流程分析](#13101-启动流程分析)
-                - [1.3.10.1.1. 创建SpringApplication对象](#131011-创建springapplication对象)
-                - [1.3.10.1.2. 执行Run方法](#131012-执行run方法)
-        - [1.3.11. 种保护 Spring Boot 应用的绝佳方法](#1311-种保护-spring-boot-应用的绝佳方法)
-            - [1.3.11.1. 在生产中使用HTTPS](#13111-在生产中使用https)
-            - [1.3.11.2. 使用Snyk检查你的依赖关系](#13112-使用snyk检查你的依赖关系)
-            - [1.3.11.3. 升级到最新版本](#13113-升级到最新版本)
-            - [1.3.11.4. 启用CSRF保护](#13114-启用csrf保护)
-            - [1.3.11.5. 使用内容安全策略防止XSS攻击](#13115-使用内容安全策略防止xss攻击)
-            - [1.3.11.6. 使用OpenID Connect进行身份验证](#13116-使用openid-connect进行身份验证)
-            - [1.3.11.7. 管理密码？使用密码哈希！](#13117-管理密码使用密码哈希)
-            - [1.3.11.8. 安全地存储秘密](#13118-安全地存储秘密)
-            - [1.3.11.9. 使用OWASP的ZAP测试您的应用程序](#13119-使用owasp的zap测试您的应用程序)
-            - [1.3.11.10. 让你的安全团队进行代码审查](#131110-让你的安全团队进行代码审查)
-        - [1.3.12. 项目实践](#1312-项目实践)
-            - [1.3.12.1. 跨域配置](#13121-跨域配置)
-            - [1.3.12.2. 全局异常处理](#13122-全局异常处理)
-        - [1.3.13. 其他一些问题](#1313-其他一些问题)
-            - [1.3.13.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？](#13131-如何在-spring-boot-启动的时候运行一些特定的代码)
-            - [1.3.13.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？](#13132-如何重新加载spring-boot上的更改而无需重新启动服务器)
-            - [1.3.13.3. Spring Boot 有哪几种读取配置的方式？](#13133-spring-boot-有哪几种读取配置的方式)
-    - [1.4. SpringCloud](#14-springcloud)
-        - [1.4.1. 基础知识](#141-基础知识)
-        - [1.4.2. 服务治理Eureka](#142-服务治理eureka)
-            - [1.4.2.1. 基本使用](#1421-基本使用)
-            - [1.4.2.2. 高可用注册中心](#1422-高可用注册中心)
-            - [1.4.2.3. 原理说明](#1423-原理说明)
-                - [1.4.2.3.1. 基础模块说明](#14231-基础模块说明)
-                - [1.4.2.3.2. Region,Zone](#14232-regionzone)
-                - [1.4.2.3.3. 源码分析](#14233-源码分析)
-            - [1.4.2.4. 更多配置说明](#1424-更多配置说明)
-        - [1.4.3. 负载均衡Ribbon](#143-负载均衡ribbon)
-            - [1.4.3.1. 基本使用](#1431-基本使用)
-            - [1.4.3.2. 原理说明](#1432-原理说明)
-                - [1.4.3.2.1. 源码分析](#14321-源码分析)
-                - [1.4.3.2.2. 负载均衡器](#14322-负载均衡器)
-                - [1.4.3.2.3. 负载均衡策略](#14323-负载均衡策略)
-                - [1.4.3.2.4. 配置详解](#14324-配置详解)
-        - [1.4.4. 声明式服务调用feign](#144-声明式服务调用feign)
-            - [1.4.4.1. 使用案例](#1441-使用案例)
-        - [1.4.5. 服务容错保护 Hystrix](#145-服务容错保护-hystrix)
-        - [1.4.6. API网关服务](#146-api网关服务)
-            - [1.4.6.1. zuul](#1461-zuul)
-            - [1.4.6.2. GateWay](#1462-gateway)
-        - [1.4.7. 分布式配置中心Config](#147-分布式配置中心config)
-            - [1.4.7.1. 基本使用](#1471-基本使用)
-                - [1.4.7.1.1. 配置中心](#14711-配置中心)
-                - [1.4.7.1.2. bootstrap.yml与application.yml区别](#14712-bootstrapyml与applicationyml区别)
-                - [1.4.7.1.3. 客户端配置](#14713-客户端配置)
-                - [1.4.7.1.4. 刷新配置](#14714-刷新配置)
-            - [1.4.7.2. 原理说明](#1472-原理说明)
-            - [1.4.7.3. 更多使用方式](#1473-更多使用方式)
-        - [1.4.8. 消息总线bus](#148-消息总线bus)
-            - [1.4.8.1. 消息代理](#1481-消息代理)
-        - [1.4.9. 消息驱动的微服务Stream](#149-消息驱动的微服务stream)
-        - [1.4.10. 分布式服务跟踪Sleuth](#1410-分布式服务跟踪sleuth)
-            - [1.4.10.1. 基本使用](#14101-基本使用)
-            - [1.4.10.2. 跟踪原理](#14102-跟踪原理)
-                - [1.4.10.2.1. 基本实现原理](#141021-基本实现原理)
-                - [1.4.10.2.2. 支持的组件](#141022-支持的组件)
-                - [1.4.10.2.3. 一些基本概念](#141023-一些基本概念)
-                - [1.4.10.2.4. zipkin](#141024-zipkin)
-                - [1.4.10.2.5. 调用过程](#141025-调用过程)
-    - [1.5. 单元测试](#15-单元测试)
-        - [1.5.1. Junit](#151-junit)
-            - [1.5.1.1. 概述](#1511-概述)
-            - [1.5.1.2. JUnit 中的重要的 API](#1512-junit-中的重要的-api)
-            - [1.5.1.3. 常用注解](#1513-常用注解)
-            - [1.5.1.4. 套件测试](#1514-套件测试)
-        - [1.5.2. 控制层测试](#152-控制层测试)
-        - [1.5.3. 服务层测试](#153-服务层测试)
-        - [1.5.4. DAO层测试](#154-dao层测试)
+    - [1.2. Spring Cache](#12-spring-cache)
+        - [1.2.1. 几个重要概念&缓存注解](#121-几个重要概念缓存注解)
+        - [1.2.2. SpEL上下文数据](#122-spel上下文数据)
+        - [1.2.3. 基本使用](#123-基本使用)
+    - [1.3. Spring Admin](#13-spring-admin)
+    - [1.4. Sppring MVC](#14-sppring-mvc)
+        - [1.4.1. MVC体系概述](#141-mvc体系概述)
+            - [1.4.1.1. MVC 架构](#1411-mvc-架构)
+        - [1.4.2. Restful](#142-restful)
+            - [1.4.2.1. URL 设计](#1421-url-设计)
+            - [1.4.2.2. 状态码](#1422-状态码)
+            - [1.4.2.3. 服务器回应](#1423-服务器回应)
+        - [1.4.3. 注解说明](#143-注解说明)
+        - [1.4.4. 拦截器](#144-拦截器)
+        - [1.4.5. 过滤器](#145-过滤器)
+            - [1.4.5.1. 过滤器和拦截器的区别：](#1451-过滤器和拦截器的区别)
+            - [1.4.5.2. 拦截器（Interceptor）和过滤器（Filter）的一些用途](#1452-拦截器interceptor和过滤器filter的一些用途)
+    - [1.5. SpringBoot](#15-springboot)
+        - [1.5.1. 基本概念](#151-基本概念)
+        - [1.5.2. 基本使用](#152-基本使用)
+        - [1.5.3. Spring Boot 环境下创建Bean](#153-spring-boot-环境下创建bean)
+        - [1.5.4. 使用不同的容器](#154-使用不同的容器)
+        - [1.5.5. 配置文件](#155-配置文件)
+            - [1.5.5.1. bootstrap.yml与application.yml区别](#1551-bootstrapyml与applicationyml区别)
+            - [1.5.5.2. 多环境配置](#1552-多环境配置)
+                - [1.5.5.2.1. 配置文件](#15521-配置文件)
+                - [1.5.5.2.2. 多环境配置](#15522-多环境配置)
+            - [1.5.5.3. 注解ConfigurationProperties注入yml配置文件中的数据](#1553-注解configurationproperties注入yml配置文件中的数据)
+            - [1.5.5.4. 使用随机数](#1554-使用随机数)
+            - [1.5.5.5. 从命令行指定参数](#1555-从命令行指定参数)
+            - [1.5.5.6. 配置日志](#1556-配置日志)
+        - [1.5.6. 启动类 @SpringBootApplication 注解](#156-启动类-springbootapplication-注解)
+            - [1.5.6.1. @Inherited 注解](#1561-inherited-注解)
+            - [1.5.6.2. @SpringBootConfiguration](#1562-springbootconfiguration)
+            - [1.5.6.3. @EnableAutoConfiguration](#1563-enableautoconfiguration)
+            - [1.5.6.4. @ComponentScan](#1564-componentscan)
+        - [1.5.7. Spring Boot Starter](#157-spring-boot-starter)
+            - [1.5.7.1. 常用的Starter](#1571-常用的starter)
+            - [1.5.7.2. 创建自己的Starter](#1572-创建自己的starter)
+            - [1.5.7.3. Starter原理](#1573-starter原理)
+        - [1.5.8. Actuator 的端点](#158-actuator-的端点)
+            - [1.5.8.1. 揭秘 Actuator 的端点](#1581-揭秘-actuator-的端点)
+            - [1.5.8.2. 自定义监控](#1582-自定义监控)
+        - [1.5.9. Spring Boot 项目发布](#159-spring-boot-项目发布)
+        - [1.5.10. Maven打包](#1510-maven打包)
+        - [1.5.11. Spring Boot原理分析](#1511-spring-boot原理分析)
+            - [1.5.11.1. 启动流程分析](#15111-启动流程分析)
+                - [1.5.11.1.1. 创建SpringApplication对象](#151111-创建springapplication对象)
+                - [1.5.11.1.2. 执行Run方法](#151112-执行run方法)
+        - [1.5.12. 种保护 Spring Boot 应用的绝佳方法](#1512-种保护-spring-boot-应用的绝佳方法)
+            - [1.5.12.1. 在生产中使用HTTPS](#15121-在生产中使用https)
+            - [1.5.12.2. 使用Snyk检查你的依赖关系](#15122-使用snyk检查你的依赖关系)
+            - [1.5.12.3. 升级到最新版本](#15123-升级到最新版本)
+            - [1.5.12.4. 启用CSRF保护](#15124-启用csrf保护)
+            - [1.5.12.5. 使用内容安全策略防止XSS攻击](#15125-使用内容安全策略防止xss攻击)
+            - [1.5.12.6. 使用OpenID Connect进行身份验证](#15126-使用openid-connect进行身份验证)
+            - [1.5.12.7. 管理密码？使用密码哈希！](#15127-管理密码使用密码哈希)
+            - [1.5.12.8. 安全地存储秘密](#15128-安全地存储秘密)
+            - [1.5.12.9. 使用OWASP的ZAP测试您的应用程序](#15129-使用owasp的zap测试您的应用程序)
+            - [1.5.12.10. 让你的安全团队进行代码审查](#151210-让你的安全团队进行代码审查)
+        - [1.5.13. 项目实践](#1513-项目实践)
+            - [1.5.13.1. 跨域配置](#15131-跨域配置)
+            - [1.5.13.2. 全局异常处理](#15132-全局异常处理)
+        - [1.5.14. 其他一些问题](#1514-其他一些问题)
+            - [1.5.14.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？](#15141-如何在-spring-boot-启动的时候运行一些特定的代码)
+            - [1.5.14.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？](#15142-如何重新加载spring-boot上的更改而无需重新启动服务器)
+            - [1.5.14.3. Spring Boot 有哪几种读取配置的方式？](#15143-spring-boot-有哪几种读取配置的方式)
+    - [1.6. SpringCloud](#16-springcloud)
+        - [1.6.1. 基础知识](#161-基础知识)
+        - [1.6.2. 服务治理Eureka](#162-服务治理eureka)
+            - [1.6.2.1. 基本使用](#1621-基本使用)
+            - [1.6.2.2. 高可用注册中心](#1622-高可用注册中心)
+            - [1.6.2.3. 原理说明](#1623-原理说明)
+                - [1.6.2.3.1. 基础模块说明](#16231-基础模块说明)
+                - [1.6.2.3.2. Region,Zone](#16232-regionzone)
+                - [1.6.2.3.3. 源码分析](#16233-源码分析)
+            - [1.6.2.4. 更多配置说明](#1624-更多配置说明)
+                - [1.6.2.4.1. 服务注册类配置](#16241-服务注册类配置)
+                - [1.6.2.4.2. 服务实例类配置](#16242-服务实例类配置)
+        - [1.6.3. 负载均衡Ribbon](#163-负载均衡ribbon)
+            - [1.6.3.1. 基本使用](#1631-基本使用)
+            - [1.6.3.2. 原理说明](#1632-原理说明)
+                - [1.6.3.2.1. 源码分析](#16321-源码分析)
+                - [1.6.3.2.2. 负载均衡器](#16322-负载均衡器)
+                - [1.6.3.2.3. 负载均衡策略](#16323-负载均衡策略)
+                - [1.6.3.2.4. 配置详解](#16324-配置详解)
+        - [1.6.4. 声明式服务调用feign](#164-声明式服务调用feign)
+            - [1.6.4.1. 使用案例](#1641-使用案例)
+        - [1.6.5. 服务容错保护 Hystrix](#165-服务容错保护-hystrix)
+        - [1.6.6. API网关服务](#166-api网关服务)
+            - [1.6.6.1. zuul](#1661-zuul)
+            - [1.6.6.2. GateWay](#1662-gateway)
+        - [1.6.7. 分布式配置中心Config](#167-分布式配置中心config)
+            - [1.6.7.1. 基本使用](#1671-基本使用)
+                - [1.6.7.1.1. 配置中心](#16711-配置中心)
+                - [1.6.7.1.2. bootstrap.yml与application.yml区别](#16712-bootstrapyml与applicationyml区别)
+                - [1.6.7.1.3. 客户端配置](#16713-客户端配置)
+                - [1.6.7.1.4. 刷新配置](#16714-刷新配置)
+            - [1.6.7.2. 原理说明](#1672-原理说明)
+            - [1.6.7.3. 更多使用方式](#1673-更多使用方式)
+        - [1.6.8. 消息总线bus](#168-消息总线bus)
+            - [1.6.8.1. 消息代理](#1681-消息代理)
+        - [1.6.9. 消息驱动的微服务Stream](#169-消息驱动的微服务stream)
+        - [1.6.10. 分布式服务跟踪Sleuth](#1610-分布式服务跟踪sleuth)
+            - [1.6.10.1. 基本使用](#16101-基本使用)
+            - [1.6.10.2. 跟踪原理](#16102-跟踪原理)
+                - [1.6.10.2.1. 基本实现原理](#161021-基本实现原理)
+                - [1.6.10.2.2. 支持的组件](#161022-支持的组件)
+                - [1.6.10.2.3. 一些基本概念](#161023-一些基本概念)
+                - [1.6.10.2.4. zipkin](#161024-zipkin)
+                - [1.6.10.2.5. 调用过程](#161025-调用过程)
+    - [1.7. 单元测试](#17-单元测试)
+        - [1.7.1. Junit](#171-junit)
+            - [1.7.1.1. 概述](#1711-概述)
+            - [1.7.1.2. JUnit 中的重要的 API](#1712-junit-中的重要的-api)
+            - [1.7.1.3. 常用注解](#1713-常用注解)
+            - [1.7.1.4. 套件测试](#1714-套件测试)
+        - [1.7.2. 控制层测试](#172-控制层测试)
+        - [1.7.3. 服务层测试](#173-服务层测试)
+        - [1.7.4. DAO层测试](#174-dao层测试)
 
 <!-- /TOC -->
 # 1. Spring 体系
@@ -1262,10 +1264,10 @@ public void saveUserBack(){
 
 
 
-### 1.1.5. Spring Cache
+## 1.2. Spring Cache
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.1.5.1. 几个重要概念&缓存注解
+### 1.2.1. 几个重要概念&缓存注解
 
 |名称|	解释|
 |---|---|
@@ -1289,7 +1291,7 @@ public void saveUserBack(){
 |allEntries(@CacheEvict )|	是否清空所有缓存内容，缺省为 false，如果指定为 true,则方法调用后将立即清空所有缓存.例如：@CachEvict(value=”testcache”,allEntries=true)
 |beforeInvocation(@CacheEvict)	|是否在方法执行前就清空，缺省为 false，如果指定为 true，则在方法还没有执行的时候就清空缓存，缺省情况下，如果方法执行抛出异常，则不会清空缓存,例如：@CachEvict(value=”testcache”，beforeInvocation=true)
 
-#### 1.1.5.2. SpEL上下文数据
+### 1.2.2. SpEL上下文数据
 Spring Cache提供了一些供我们使用的SpEL上下文数据，下表直接摘自Spring官方文档：
 
 |名称|	位置|	描述	|示例|
@@ -1322,7 +1324,7 @@ SpEL提供了多种运算符
 |正则表达式	|matches
 |其他类型	|?.，?[…]，![…]，^[…]，$[…]
 
-#### 1.1.5.3. 基本使用
+### 1.2.3. 基本使用
 
 **引入依赖**
 ```xml
@@ -1475,22 +1477,21 @@ public User save(User user) {
 }
 ```
 
-### 1.1.6. 常用注解
+
+## 1.3. Spring Admin
 <a href="#menu" style="float:right">目录</a>
 
-### 1.1.7. 常用工具类
+
+
+## 1.4. Sppring MVC
 <a href="#menu" style="float:right">目录</a>
 
-
-## 1.2. Sppring MVC
-<a href="#menu" style="float:right">目录</a>
-
-### 1.2.1. MVC体系概述
+### 1.4.1. MVC体系概述
 <a href="#menu" style="float:right">目录</a>
 
 Spring MVC是一个基于Java的实现了MVC设计模式的请求驱动类型的轻量级Web框架，通过把Model，View，Controller分离，将web层进行职责解耦，把复杂的web应用分成逻辑清晰的几部分，简化开发，减少出错，方便组内开发人员之间的配合。
 
-#### 1.2.1.1. MVC 架构
+#### 1.4.1.1. MVC 架构
 * 模型：包含了应用中所需的各种展现数据
 * 视图：由数据的多种表述所组成，它将会展现给用户。
 * 控制器：将会处理用户的操作，它是连接模型和视图的桥梁
@@ -1742,10 +1743,10 @@ HttpMessageConveter： 将请求消息（如Json、xml等数据）转换成一�
 6.  根据返回的ModelAndView，选择一个适合的ViewResolver（必须是已经注册到Spring容器中的ViewResolver)返回给DispatcherServlet ；
 7. ViewResolver 结合Model和View，来渲染视图
 8. 将渲染结果返回给客户端。
-### 1.2.2. Restful
+### 1.4.2. Restful
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.2.2.1. URL 设计
+#### 1.4.2.1. URL 设计
 
 **动词 + 宾语**
 RESTful 的核心思想就是，客户端发出的数据操作指令都是"动词 + 宾语"的结构。比如，GET /articles这个命令，GET是动词，/articles是宾语。
@@ -1803,7 +1804,7 @@ GET /articles/published
 
 
 GET /articles?published=true
-#### 1.2.2.2. 状态码
+#### 1.4.2.2. 状态码
 **状态码必须精确**
 客户端的每一次请求，服务器都必须给出回应。回应包括 HTTP 状态码和数据两部分。
 
@@ -1869,7 +1870,7 @@ Location: /api/orders/12345
 * 500 Internal Server Error：客户端请求有效，服务器处理时发生了意外。
 * 503 Service Unavailable：服务器无法处理请求，一般用于网站维护状态。
 
-#### 1.2.2.3. 服务器回应
+#### 1.4.2.3. 服务器回应
 **不要返回纯本文**
 API 返回的数据格式，不应该是纯文本，而应该是一个 JSON 对象，因为这样才能返回标准的结构化数据。所以，服务器回应的 HTTP 头的Content-Type属性要设为application/json。
 
@@ -1943,7 +1944,7 @@ Content-Type: application/json
 }
 ```
 
-### 1.2.3. 注解说明
+### 1.4.3. 注解说明
 <a href="#menu" style="float:right">目录</a>
 
 **@ControllerAdvice**
@@ -2783,7 +2784,7 @@ component-scan 默认扫描的注解类型是 @Component，不过，在 @Compone
 </>
 ```
 
-### 1.2.4. 拦截器 
+### 1.4.4. 拦截器 
 <a href="#menu" style="float:right">目录</a>
 
 拦截器的本质是责任链
@@ -2939,7 +2940,7 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter{
 ```
 拦截器的执行是会根据 registry 注入的先后顺序执行，比如：/one/**   同时被  OneInterceptor、TwoInterceptor 拦截，但会先执行 OneInterceptor拦截的业务请求，因为它先注入进来的
 
-### 1.2.5. 过滤器
+### 1.4.5. 过滤器
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -2998,7 +2999,7 @@ public class ProjectConfig {
 }
 ```
 
-#### 1.2.5.1. 过滤器和拦截器的区别：
+#### 1.4.5.1. 过滤器和拦截器的区别：
 
 ![](https://images2017.cnblogs.com/blog/330611/201710/330611-20171023144517066-24770749.png)
 
@@ -3013,7 +3014,7 @@ public class ProjectConfig {
 |Filter 是被 Server(like Tomcat) 调用|	Interceptor 是被 Spring 调用|因此Filter总是优先于拦截器执行
 
 
-#### 1.2.5.2. 拦截器（Interceptor）和过滤器（Filter）的一些用途
+#### 1.4.5.2. 拦截器（Interceptor）和过滤器（Filter）的一些用途
 * Authentication Filters
 * Logging and Auditing Filters
 * Image conversion Filters
@@ -3041,10 +3042,10 @@ public class ProjectConfig {
     根据地方不同修改响应内容 Localization-Targeting the request and response to a particular locale.
 
 
-## 1.3. SpringBoot
+## 1.5. SpringBoot
 <a href="#menu" style="float:right">目录</a>
 
-### 1.3.1. 基本概念
+### 1.5.1. 基本概念
 
 Spring Boot 是 Spring 开源组织下的子项目，是 Spring 组件一站式解决方案，主要是简化了使用 Spring 的难度，简省了繁重的配置，提供了各种启动器，开发者能快速上手.
 
@@ -3063,7 +3064,39 @@ Spring Boot 优点非常多，如：
 * 应用监控
 * 上手容易
 
-### 1.3.2. Spring Boot 环境下创建Bean
+### 1.5.2. 基本使用
+<a href="#menu" style="float:right">目录</a>
+
+maven配置文件
+
+方式1
+```xml
+<parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.1.0.BUILD-SNAPSHOT</version>
+</parent>
+```
+方式2
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+        <!-- Import dependency management from Spring Boot -->
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>2.1.0.BUILD-SNAPSHOT</version>
+        <type>pom</type>
+        <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+
+```
+
+使用以上任何一种方式配置时,引入官方的starter包无需指定版本
+
+### 1.5.3. Spring Boot 环境下创建Bean
 
 **方式1**：
 
@@ -3413,7 +3446,7 @@ Location location =  context.getBean(Location.class);
 location.run();
 ```
 
-### 1.3.3. 使用不同的容器
+### 1.5.4. 使用不同的容器
 
 undertow,jetty和tomcat可以说是javaweb项目当下最火的三款服务器，tomcat是apache下的一款重量级的服务器，不用多说历史悠久，经得起实践的考验。然而：当下微服务兴起，spring boot ，spring cloud 越来越热的情况下，选择一款轻量级而性能优越的服务器是必要的选择。spring boot 完美集成了tomcat，jetty和undertow.
 
@@ -3541,7 +3574,7 @@ server.jetty.selectors= # Number of selector threads to use
 
 ```
 
-### 1.3.4. 配置文件
+### 1.5.5. 配置文件
 <a href="#menu" style="float:right">目录</a>
 
 Spring支持两种类型的配置文件,后缀名分别为properties和yml.
@@ -3557,7 +3590,7 @@ server:
 ```
 可以看到yml类型的格式结构更加清晰
 
-#### 1.3.4.1. bootstrap.yml与application.yml区别
+#### 1.5.5.1. bootstrap.yml与application.yml区别
 <a href="#menu" style="float:right">目录</a>
 
 说明：其实yml和properties文件是一样的原理，主要是说明application和bootstrap的加载顺序。且一个项目上要么yml或者properties，二选一的存在
@@ -3583,13 +3616,13 @@ bootstrap 配置文件有以下几个应用场景。
 为何需要把 config server 的信息放在 bootstrap.yml 里？
 当使用Spring Cloud的时候，配置信息一般是从config server加载的，为了取得配置信息（比如密码等），你需要一些提早的或引导配置。因此，把 config server 信息放在 bootstrap.yml，用来加载真正需要的配置信息。
 
-#### 1.3.4.2. 多环境配置
+#### 1.5.5.2. 多环境配置
 <a href="#menu" style="float:right">目录</a>
 
 软件开发中经常有开发环境、测试环境、预发布环境、生产环境，而且一般这些环境配置会各不相同，手动改配置麻烦且容易出错，如何管理不同环境的配置参数呢？spring-boot + maven可以解决不同环境独立配置不同参数的问题。
 
 
-##### 1.3.4.2.1. 配置文件
+##### 1.5.5.2.1. 配置文件
 <a href="#menu" style="float:right">目录</a>
 
 **方式1:使用多个配置文件**
@@ -3634,7 +3667,7 @@ server:
 
 ```
 
-##### 1.3.4.2.2. 多环境配置
+##### 1.5.5.2.2. 多环境配置
 <a href="#menu" style="float:right">目录</a>
 
 **方式1:application.yml配置**
@@ -3657,7 +3690,7 @@ java -jar muti-env-config.jar --spring.profiles.active=test
 mvn package -P test 
 ```
 
-#### 1.3.4.3. 注解ConfigurationProperties注入yml配置文件中的数据
+#### 1.5.5.3. 注解ConfigurationProperties注入yml配置文件中的数据
 <a href="#menu" style="float:right">目录</a>
 
 在使用SpringBoot开发中需要将一些配置参数放在yml文件中定义，再通过Java类来引入这些配置参数
@@ -3846,7 +3879,7 @@ properties =
 　　　])
 ```
 
-#### 1.3.4.4. 使用随机数
+#### 1.5.5.4. 使用随机数
 
 <a href="#menu" style="float:right">目录</a>
 
@@ -3860,13 +3893,13 @@ properties =
 |${random.int(10)}	|取得10以内的随机数
 |${random.int[10,20]}	|取得10~20的随机数
 
-#### 1.3.4.5. 从命令行指定参数
+#### 1.5.5.5. 从命令行指定参数
 
 ```
 java -jar xx.jar --server.port=8001
 ```
 
-#### 1.3.4.6. 配置日志
+#### 1.5.5.6. 配置日志
 
 默认情况下， Spring Boot会用Logback（ http://logback.qos.ch）来记录日志，并用INFO级别输出到控制台
 
@@ -3906,7 +3939,7 @@ logging.pattern.file= # Appender pattern for output to a file. Supported only wi
 logging.pattern.level=%5p # Appender pattern for log level. Supported only with the default Logbacksetup.
 logging.register-shutdown-hook=false # Register a shutdown hook for the logging system when it is initialized.
 ```
-### 1.3.5. 启动类 @SpringBootApplication 注解 
+### 1.5.6. 启动类 @SpringBootApplication 注解 
 <a href="#menu" style="float:right">目录</a>
 
 ```java
@@ -3973,14 +4006,14 @@ public @interface SpringBootApplication {
 
 从上面可以看到@SpringBootApplication是一个组合注解，用于快捷配置启动类。由@SpringBootConfiguration和@EnableAutoConfiguration以及@ComponentScan组合而成.
 
-#### 1.3.5.1. @Inherited 注解
+#### 1.5.6.1. @Inherited 注解
 关于java中元注解Inherited 的使用说明
 
 首先解释下元注解，就是用来中声明注解类型时需要使用到的注解。
 
 Inherited作用是，使用此注解声明出来的自定义注解，在使用此自定义注解时，如果注解在类上面时，子类会自动继承此注解，否则的话，子类不会继承此注解。这里一定要记住，使用Inherited声明出来的注解，只有在类上使用时才会有效，对方法，属性等其他无效。
 
-#### 1.3.5.2. @SpringBootConfiguration
+#### 1.5.6.2. @SpringBootConfiguration
 ```java
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -3997,7 +4030,7 @@ public @interface SpringBootConfiguration {
 
 
 
-#### 1.3.5.3. @EnableAutoConfiguration
+#### 1.5.6.3. @EnableAutoConfiguration
 ```java
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -4029,7 +4062,7 @@ SpringFactoriesLoader属于Spring框架私有的一种扩展方案，其主要�
 
 所以，@EnableAutoConfiguration自动配置的魔法骑士就变成了：从classpath中搜寻所有的META-INF/spring.factories配置文件，并将其中org.springframework.boot.autoconfigure.EnableutoConfiguration对应的配置项通过反射（Java Refletion）实例化为对应的标注了@Configuration的JavaConfig形式的IoC容器配置类，然后汇总为一个并加载到IoC容器。
 
-#### 1.3.5.4. @ComponentScan
+#### 1.5.6.4. @ComponentScan
 ```java
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
@@ -4096,7 +4129,7 @@ public @interface ComponentScan {
 * scopeResolver：用于解决检测到的组件的范围。
 * useDefaultFilters：指示是否自动检测类的注释 
 
-### 1.3.6. Spring Boot Starter
+### 1.5.7. Spring Boot Starter
 <a href="#menu" style="float:right">目录</a>
 
 Starter是Spring Boot中的一个非常重要的概念，Starter相当于模块，它能将模块所需的依赖整合起来并对模块内的Bean根据环境（ 条件）进行自动配置。使用者只需要依赖相应功能的Starter，无需做过多的配置和依赖，Spring Boot就能自动扫描并加载相应的模块
@@ -4109,7 +4142,7 @@ Starter是Spring Boot中的一个非常重要的概念，Starter相当于模块�
 例如，在Maven的依赖中加入spring-boot-starter-web就能使项目支持Spring MVC，并且Spring Boot还为我们做了很多默认配置，无需再依赖spring-web、spring-webmvc等相关包及做相关配置就能够立即使用起来
 
 
-#### 1.3.6.1. 常用的Starter
+#### 1.5.7.1. 常用的Starter
 <a href="#menu" style="float:right">目录</a>
 
 ```
@@ -4121,7 +4154,7 @@ spring-boot-starter-data-jpa
 spring-boot-starter-web
 spring-boot-starter-redis
 ```
-#### 1.3.6.2. 创建自己的Starter
+#### 1.5.7.2. 创建自己的Starter
 <a href="#menu" style="float:right">目录</a>
 
 * 步骤
@@ -4188,7 +4221,7 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=xx.xx.xx.XxxConfi
 
 
 
-#### 1.3.6.3. Starter原理
+#### 1.5.7.3. Starter原理
 <a href="#menu" style="float:right">目录</a>
 
 在Spring Boot中有一种非常解耦的扩展机制：Spring Factories。这种扩展机制实际上是仿照Java中的SPI扩展机制来实现的。
@@ -4274,9 +4307,9 @@ com.xxx.interface=com.xxx.classname
 
 
 
-### 1.3.7. Actuator 的端点
+### 1.5.8. Actuator 的端点
 
-#### 1.3.7.1. 揭秘 Actuator 的端点
+#### 1.5.8.1. 揭秘 Actuator 的端点
 <a href="#menu" style="float:right">目录</a>
 
 Spring Boot Actuator的关键特性是在应用程序里提供众多Web端点，通过它们了解应用程序运行时的内部状况。有了Actuator，你可以知道Bean在Spring应用程序上下文里是如何组装在一起的，掌握应用程序可以获取的环境属性信息，获取运行时度量信息的快照
@@ -4368,7 +4401,7 @@ management.endpoints.web.exposure.exclude= # Endpoint IDs that should be exclude
 management.endpoints.web.exposure.include=*
 ```
 
-#### 1.3.7.2. 自定义监控
+#### 1.5.8.2. 自定义监控
 <a href="#menu" style="float:right">目录</a>
 
 * @Endpoint(id="test") 指定端点的名称,id开头必须是小写,此注解必须
@@ -4397,7 +4430,7 @@ public class MyActuator {
 ```
 
 
-### 1.3.8. Spring Boot 项目发布
+### 1.5.9. Spring Boot 项目发布
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -4413,7 +4446,7 @@ public class MyActuator {
     * 通过Servlet容器启动，如Tomcat、Jetty等(打包成war)。
 
 
-### 1.3.9. Maven打包
+### 1.5.10. Maven打包
 
 **打包方式配置**
 
@@ -4479,11 +4512,11 @@ mvn  spring-boot:run -Dspring-boot.run.profiles=xxx
 * 不推荐用war，因为springboot适合前后端分离，打成jar进行部署更合适。
 
 
-### 1.3.10. Spring Boot原理分析
+### 1.5.11. Spring Boot原理分析
 <a href="#menu" style="float:right">目录</a>
 
 
-#### 1.3.10.1. 启动流程分析
+#### 1.5.11.1. 启动流程分析
 <a href="#menu" style="float:right">目录</a>
 
 1.  如果我们使用的是SpringApplication的静态run方法，那么，这个方法里面首先要创建一个SpringApplication对象实例，然后调用这个创建好的SpringApplication的实例方法。在SpringApplication实例初始化的时候，它会提前做几件事情：
@@ -4494,7 +4527,7 @@ mvn  spring-boot:run -Dspring-boot.run.profiles=xxx
 * 推断并设置main方法的定义类。
 
 
-##### 1.3.10.1.1. 创建SpringApplication对象
+##### 1.5.11.1.1. 创建SpringApplication对象
 <a href="#menu" style="float:right">目录</a>
 
 **main方法启动**
@@ -4689,7 +4722,7 @@ private Class<?> deduceMainApplicationClass() {
 ```
 上面看完了构造方法后，已经初始化了一个 SpringApplication 对象，接下来调用其 run 方法
 
-##### 1.3.10.1.2. 执行Run方法
+##### 1.5.11.1.2. 执行Run方法
 <a href="#menu" style="float:right">目录</a>
 
 ```java
@@ -4826,9 +4859,9 @@ public void refresh() throws BeansException, IllegalStateException {
         }
     }
 ```
-### 1.3.11. 种保护 Spring Boot 应用的绝佳方法
+### 1.5.12. 种保护 Spring Boot 应用的绝佳方法
 
-#### 1.3.11.1. 在生产中使用HTTPS
+#### 1.5.12.1. 在生产中使用HTTPS
 
 传输层安全性（TLS）是HTTPS的官方名称，你可能听说过它称为SSL（安全套接字层），SSL是已弃用的名称，TLS是一种加密协议，可通过计算机网络提供安全通信。其主要目标是确保计算机应用程序之间的隐私和数据完整性。
 
@@ -4852,7 +4885,7 @@ public  class  WebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter
 ```
 另一个重要的事情是使用HTTP严格传输安全性（HSTS）。HSTS是一种Web安全策略机制，可以保护网站免受协议降级攻击和cookie劫持。服务器使用名为Strict-Transport-Security的响应头字段将HSTS策略传送到浏览器。Spring Security默认发送此标头，以避免在开始时出现不必要的HTTP跃点，点击这里一分钟开启Tomcat https支持。
 
-#### 1.3.11.2. 使用Snyk检查你的依赖关系
+#### 1.5.12.2. 使用Snyk检查你的依赖关系
 你很可能不知道应用程序使用了多少直接依赖项，这通常是正确的，尽管依赖性构成了整个应用程序的大部分。攻击者越来越多地针对开源依赖项，因为它们的重用为恶意黑客提供了许多受害者，确保应用程序的整个依赖关系树中没有已知的漏洞非常重要。
 
 Snyk测试你的应用程序构建包，标记那些已知漏洞的依赖项。它在仪表板在应用程序中使用的软件包中存在的漏洞列表。
@@ -4865,14 +4898,14 @@ Snyk可通过Web UI和CLI获得，因此您可以轻松地将其与CI环境集�
 
 你可以免费使用Snyk进行开源项目或使用有限数量的私有项目。
 
-#### 1.3.11.3. 升级到最新版本
+#### 1.5.12.3. 升级到最新版本
 定期升级应用程序中的依赖项有多种原因。安全性是让您有升级动力的最重要原因之一。该start.spring.io起始页面采用了最新的春季版本的软件包，以及依赖关系，在可能的情况。
 
 基础架构升级通常不如依赖项升级具有破坏性，因为库作者对向后兼容性和版本之间的行为更改的敏感性各不相同。话虽如此，当你在配置中发现安全漏洞时，您有三种选择：升级，修补程序或忽略。
 
 在对应用程序进行必要的更改以使用较新版本之后，就应用程序的整体运行状况而言，升级是最安全的。
 
-#### 1.3.11.4. 启用CSRF保护
+#### 1.5.12.4. 启用CSRF保护
 跨站点请求伪造(Cross-Site Request Forgery )是一种攻击，强制用户在他们当前登录的应用程序中执行不需要的操作。如果用户是普通用户，一个成功攻击可能涉及请求的状态更改，如转移资金或更改其电子邮件地址，如果用户具有提升管理员的权限，则CSRF攻击可能会危及整个应用程序。
 
 Spring Security具有出色的CSRF支持，如果您正在使用Spring MVC的< form:form>标签或Thymeleaf @EnableWebSecurity，默认情况下处于启用状态，CSRF令牌将自动添加为隐藏输入字段。
@@ -4890,7 +4923,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 如果你正在使用Angular，这就是你需要做的。如果您使用的是React，则需要读取XSRF-TOKENcookie并将其作为X-XSRF-TOKEN标题发回。
 
 当请求通过HTTPS发生时，Spring Security会自动加入一个secure标识到XSRF-TOKENcookie 。Spring Security对于CSRF cookie不使用SameSite=strict 的标志，但它在使用Spring Session或WebFlux会话处理时会使用，这对会话cookie有意义，因为它有助于识别用户，但是没有为CSRF cookie提供太多价值，因为CSRF令牌也需要在请求中。点击这里了解CSRF更多详情。
-#### 1.3.11.5. 使用内容安全策略防止XSS攻击
+#### 1.5.12.5. 使用内容安全策略防止XSS攻击
 内容安全策略（CSP）是一个增加的安全层，可帮助缓解XSS（跨站点脚本）和数据注入攻击。要启用它，你需要配置应用程序以返回Content-Security-Policy标题。你还可以在HTML页面中<meta http-equiv="Content-Security-Policy">使用标记。
 
 Spring安全性默认提供了许多安全标头：
@@ -4922,7 +4955,7 @@ CSP是防止XSS攻击的良好防御，请记住，打开CSP能让CDN访问许�
 
 你可以在securityheaders.com测试你的CSP标头是否有用。
 
-#### 1.3.11.6. 使用OpenID Connect进行身份验证
+#### 1.5.12.6. 使用OpenID Connect进行身份验证
 OAuth 2.0是行业标准的授权协议。它使用scope来定义授权用户可以执行的操作的权限。但是，OAuth 2.0不是身份验证协议，并且不提供有关经过身份验证的用户的信息。
 
 OpenID Connect（OIDC）是一个OAuth 2.0扩展，提供用户信息，除了访问令牌之外，它还添加了ID令牌，以及/userinfo可以从中获取其他信息的端点，它还添加了发现功能和动态客户端注册的端点。
@@ -4950,7 +4983,7 @@ spring:
 
 你可以使用像Keycloak这样的开源系统来设置自己的OIDC服务器。如果你不想在生产中维护自己的服务器，可以使用Okta的Developer API。
 
-#### 1.3.11.7. 管理密码？使用密码哈希！
+#### 1.5.12.7. 管理密码？使用密码哈希！
 以纯文本格式存储密码是最糟糕的事情之一。幸运的是，Spring Security默认情况下不允许使用纯文本密码。它还附带了一个加密模块，可用于对称加密，生成密钥和密码散列（也就是密码编码）。
 
 PasswordEncoder 是Spring Security中密码哈希的主要接口，如下所示：
@@ -4970,7 +5003,7 @@ Spring Security提供了几种实现，最受欢迎的是BCryptPasswordEncoder�
 
 Spring Security 5.1（即2018年9月下旬）将附带UserDetailsPasswordService API，允许您升级密码存储。
 
-#### 1.3.11.8. 安全地存储秘密
+#### 1.5.12.8. 安全地存储秘密
 应谨慎处理敏感信息，如密码，访问令牌等，你不能以纯文本形式传递，或者如果将它们保存在本地存储中。由于（GitHub）的历史已经一次又一次证明，开发人员并没有仔细考虑如何存储他们的秘密。
 
 一个好的做法是将保密信息存储在保管库中，该保管库可用于存储，提供对应用程序可能使用的服务的访问权限，甚至生成凭据。HashiCorp的Vault使得存储机密变得很轻松，并提供了许多额外的服务。
@@ -4981,7 +5014,7 @@ Spring Security 5.1（即2018年9月下旬）将附带UserDetailsPasswordService
 String password;
 ```
 
-#### 1.3.11.9. 使用OWASP的ZAP测试您的应用程序
+#### 1.5.12.9. 使用OWASP的ZAP测试您的应用程序
 OWASP ZAP安全工具是针对在运行活动的应用程序进行渗透测试的代理。它是一个受欢迎的（超过4k星）免费的开源项目，托管在GitHub上。
 
 OWASP ZAP用于查找漏洞的两种方法是Spider和Active Scan。
@@ -4990,14 +5023,14 @@ Spider工具以URL种子开头，它将访问并解析每个响应，识别超�
 
 Active Scan工具将根据潜在漏洞列表自动测试你选择的目标。它提供了一个报告，显示Web应用程序可被利用的位置以及有关漏洞的详细信息。
 
-#### 1.3.11.10. 让你的安全团队进行代码审查
+#### 1.5.12.10. 让你的安全团队进行代码审查
 代码评审对任何高性能软件开发团队都至关重要。在Okta，我们所有的生产代码和官方开源项目都需要通过我们的专家安全团队进行分析，你的公司可能没有安全专家，但如果你正在处理敏感数据，也许你应该这样做！
 
-### 1.3.12. 项目实践
+### 1.5.13. 项目实践
 <a href="#menu" style="float:right">目录</a>
 
 
-#### 1.3.12.1. 跨域配置
+#### 1.5.13.1. 跨域配置
 <a href="#menu" style="float:right">目录</a>
 
 用于跨域配置
@@ -5059,7 +5092,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 }
 ```
 
-#### 1.3.12.2. 全局异常处理
+#### 1.5.13.2. 全局异常处理
 <a href="#menu" style="float:right">目录</a>
 
 第一种：使用@ControllerAdvice和@ExceptionHandler注解
@@ -5213,12 +5246,12 @@ public class TestController {
 
 
 
-### 1.3.13. 其他一些问题
+### 1.5.14. 其他一些问题
 
-#### 1.3.13.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？
+#### 1.5.14.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？
 可以实现接口 ApplicationRunner 或者 CommandLineRunner，这两个接口实现方式一样，它们都只提供了一个 run 方法
 
-#### 1.3.13.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？
+#### 1.5.14.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？
 这可以使用DEV工具来实现。通过这种依赖关系，您可以节省任何更改，嵌入式tomcat将重新启动。
 
 Spring Boot有一个开发工具（DevTools）模块，它有助于提高开发人员的生产力。Java开发人员面临的一个主要挑战是将文件更改自动部署到服务器并自动重启服务器。
@@ -5235,14 +5268,14 @@ Spring Boot有一个开发工具（DevTools）模块，它有助于提高开发�
 
 ```
 
-#### 1.3.13.3. Spring Boot 有哪几种读取配置的方式？
+#### 1.5.14.3. Spring Boot 有哪几种读取配置的方式？
 Spring Boot 可以通过 @PropertySource,@Value,@Environment, @ConfigurationProperties 来绑定变量，具体请看这篇文章《Spring Boot读取配置的几种方式》。
 
 
-## 1.4. SpringCloud
+## 1.6. SpringCloud
 <a href="#menu" style="float:right">目录</a>
 
-### 1.4.1. 基础知识
+### 1.6.1. 基础知识
 <a href="#menu" style="float:right">目录</a>
 
 **什么是微服务**
@@ -5284,7 +5317,7 @@ Spring Boot 可以通过 @PropertySource,@Value,@Environment, @ConfigurationProp
 * Eureka: 服务治理组件， 包含服务注册中心、 服务注册与发现机制的实现。
 * Hystrix: 容错管理组件，实现断路器模式， 帮助服务依赖中出现的延迟和为故障提供强大的容错能力。
 * ribbon: 客户端负载均衡的服务调用组件
-* Feign: 基于伈bbon 和 Hystrix 的声明式服务调用组件。
+* Feign: 基于ribbon 和 Hystrix 的声明式服务调用组件。
 * Zuul: 网关组件， 提供智能路由、 访问过滤等功能。
 * gateway: 网关组件，用于替换zuul
 * Archaius: 外部化配置组件。
@@ -5326,10 +5359,10 @@ pom文件中指定cloud的版本，便可以不用指定各个子项目依赖的
 ```
 
 
-### 1.4.2. 服务治理Eureka
+### 1.6.2. 服务治理Eureka
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.4.2.1. 基本使用
+#### 1.6.2.1. 基本使用
 
 **注册中心**
 
@@ -5438,7 +5471,7 @@ eureka:
       defaultZone: http://user:123456@localhost:8001/eureka/
 ```
 
-#### 1.4.2.2. 高可用注册中心
+#### 1.6.2.2. 高可用注册中心
 
 * 注册中心可以集群部署，提高高可用
 
@@ -5460,10 +5493,10 @@ eureka:
 ```
 EurekaServer的高可用实际上就是将自己作为服务向其他服务注册中心注册自己， 这样就可以形成一组互相注册的服务注册中心， 以实现服务清单的互相同步， 达到高可用的效果
 
-#### 1.4.2.3. 原理说明
+#### 1.6.2.3. 原理说明
 <a href="#menu" style="float:right">目录</a>
 
-##### 1.4.2.3.1. 基础模块说明
+##### 1.6.2.3.1. 基础模块说明
 <a href="#menu" style="float:right">目录</a>
 
 **基础架构**
@@ -5514,7 +5547,7 @@ EurekaServer的高可用实际上就是将自己作为服务向其他服务注�
         * eureka.server.enableself-preservation=true,默认使能
 
 
-##### 1.4.2.3.2. Region,Zone
+##### 1.6.2.3.2. Region,Zone
 **背景**
 用户量比较大或者用户地理位置分布范围很广的项目，一般都会有多个机房。这个时候如果上线springCloud服务的话，我们希望一个机房内的服务优先调用同一个机房内的服务，当同一个机房的服务不可用的时候，再去调用其它机房的服务，以达到减少延时的作用。
 
@@ -5755,13 +5788,255 @@ eureka.instance.lease-expiration-duration-in-seconds: 90
 
 也就是说，当一个服务异常down掉后，90s之后注册中心才会知道这个服务不可用了。在此期间，依旧会把这个服务当成正常服务。ribbon调用仍会把请求转发到这个服务上。为了避免这段期间出现无法提供服务的情况，要开启ribbon的重试功能，去进行其它服务提供者的重试。
 
-##### 1.4.2.3.3. 源码分析
+##### 1.6.2.3.3. 源码分析
+<a href="#menu" style="float:right">目录</a>
+
+我们在将一个普通的 Spring Boot 应用注册到 Eureka Server 或是从 Eureka Server 中获取服务列表时， 主要就做了两件事：
+* 在应用主类中配置了@EnableDiscoveryClient注解。
+* 在app让cation.yml 中用 eureka.client.serviceUrl.defaultZone参数指定了服务注册中心的位置。
+
+```java
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+@Import(EnableDiscoveryClientimportSelector.class)
+public @in七erface EnableDiscoveryClient {
+
+}
+```
+从注解上看.主要引入了EnableDiscoveryClientImportSelector类
+```java
+@Order(2147483547)
+public class EnableDiscoveryClientImportSelector extends SpringFactoryImportSelector<EnableDiscoveryClient> {
+    public EnableDiscoveryClientImportSelector() {
+    }
+
+    public String[] selectImports(AnnotationMetadata metadata) {
+        String[] imports = super.selectImports(metadata);
+        AnnotationAttributes attributes = AnnotationAttributes.fromMap(metadata.getAnnotationAttributes(this.getAnnotationClass().getName(), true));
+        boolean autoRegister = attributes.getBoolean("autoRegister");
+        if (autoRegister) {
+            List<String> importsList = new ArrayList(Arrays.asList(imports));
+            importsList.add("org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationConfiguration");
+            imports = (String[])importsList.toArray(new String[0]);
+        } else {
+            Environment env = this.getEnvironment();
+            if (ConfigurableEnvironment.class.isInstance(env)) {
+                ConfigurableEnvironment configEnv = (ConfigurableEnvironment)env;
+                LinkedHashMap<String, Object> map = new LinkedHashMap();
+                map.put("spring.cloud.service-registry.auto-registration.enabled", false);
+                MapPropertySource propertySource = new MapPropertySource("springCloudDiscoveryClient", map);
+                configEnv.getPropertySources().addLast(propertySource);
+            }
+        }
+
+        return imports;
+    }
+
+    protected boolean isEnabled() {
+        return (Boolean)this.getEnvironment().getProperty("spring.cloud.discovery.enabled", Boolean.class, Boolean.TRUE);
+    }
+
+    protected boolean hasDefaultFactory() {
+        return true;
+    }
+}
+
+```
+
+
+#### 1.6.2.4. 更多配置说明
 <a href="#menu" style="float:right">目录</a>
 
 
+##### 1.6.2.4.1. 服务注册类配置
 
-#### 1.4.2.4. 更多配置说明
-<a href="#menu" style="float:right">目录</a>
+关于服务注册类的配置信息， 我们可以通过查看 org.springframework.cloud.netflix.eureka.EurekaClien.ConfigBean 的源码来获得比官方文档中更 为详尽的内容
+
+```java
+@ConfigurationProperties("eureka.client")
+public class EurekaClientConfigBean implements EurekaClientConfig, Ordered {
+    public static final String PREFIX = "eureka.client";
+    public static final String DEFAULT_URL = "http://localhost:8761/eureka/";
+    public static final String DEFAULT_ZONE = "defaultZone";
+    private static final int MINUTES = 60;
+    @Autowired(
+        required = false
+    )
+    PropertyResolver propertyResolver;
+
+    //启用客户端
+    private boolean enabled = true;
+    @NestedConfigurationProperty
+    private EurekaTransportConfig transport = new CloudEurekaTransportConfig();
+    //client从server获取服务列表信息的间隔
+    private int registryFetchIntervalSeconds = 30;
+    //server复制实例更改的间隔 
+    private int instanceInfoReplicationIntervalSeconds = 30;
+    //server复制实例信息的间隔
+    private int initialInstanceInfoReplicationIntervalSeconds = 40;
+    //server可能被添加和移除，这个参数控制client最快多久知道这个情况 
+    private int eurekaServiceUrlPollIntervalSeconds = 300;
+    //eureka server的代理端口 
+    private String proxyPort;
+    //eureka server的代理host name
+    private String proxyHost;
+    //eureka server的代理user name 
+    private String proxyUserName;
+    //eureka server的代理 密码
+    private String proxyPassword;
+    //从server读取所需的超时时间
+    private int eurekaServerReadTimeoutSeconds = 8;
+    // 连接server的超时时间
+    private int eurekaServerConnectTimeoutSeconds = 5;
+    //Gets the name of the implementation which implements BackupRegistry to fetch the registry information as a fall back option for only the first time when the eureka client starts.
+    private String backupRegistryImpl;
+    // 被允许连接到所有server host的总连接数
+    private int eurekaServerTotalConnections = 200;
+    //被允许连接到每一个server host的总连接数
+    private int eurekaServerTotalConnectionsPerHost = 50;
+    private String eurekaServerURLContext;
+    //端口
+    private String eurekaServerPort;
+    /**
+    
+    */
+    private String eurekaServerDNSName;
+    /**
+    地区，可以为任意值，一个region中有多个zone.
+    */
+    private String region = "us-east-1";
+    /**
+    连接到server的http连接的空闲超时时间，超时时间到会被防火墙清理掉
+    */
+    private int eurekaConnectionIdleTimeoutSeconds = 30;
+    /**
+    指示这个client 是否仅对single VIP的注册信息感到兴趣
+    */
+    private String registryRefreshSingleVipAddress;
+    /**
+    heartbeatExecutor 的线程数
+    */
+    private int heartbeatExecutorThreadPoolSize = 2;
+    /**
+    Heartbeat executor exponential back off related property. It is a maximum multiplier value for retry delay, in case where a sequence of timeouts occurred.
+    */
+    private int heartbeatExecutorExponentialBackOffBound = 10;
+    /**
+    cacheRefreshExecutor 的线程数
+    */
+    private int cacheRefreshExecutorThreadPoolSize = 2;
+    /**
+    Cache refresh executor exponential back off related property. It is a maximum multiplier value for retry delay, in case where a sequence of timeouts occurred.
+    */
+    private int cacheRefreshExecutorExponentialBackOffBound = 10;
+    /**
+    注册中心的地址。 格式:zone-1: http://server1:8001/eureka/
+    */
+    private Map<String, String> serviceUrl = new HashMap();
+    /**
+    从server获取的信息是否需要压缩，压缩可以优化网络情况
+    */
+    private boolean gZipContent;
+    /**
+    
+    */
+    private boolean useDnsForFetchingServiceUrls;
+    /**
+    指示本身是否能够被其他server发现并注册
+    */
+    private boolean registerWithEureka;
+    /**
+    指示当出现延迟或者其他原因 ，此实例是否在会优先从同一个zone中寻找服务提供者
+    */
+    private boolean preferSameZoneEureka;
+    /**
+    指示是否记录server和client之间的差异
+    */
+    private boolean logDeltaDiff;
+    /**
+    true: client 每次从server获取相关信息都是获取全部的信息，false:只获取增加的新的信息
+    */
+    private boolean disableDelta;
+    /**
+    
+    */
+    private String fetchRemoteRegionsRegistry;
+    /**
+    zone，一个region中有多个zone.可以配置多个值，中间使用逗号分隔。 格式: us-east-1: zone-0,zone-1
+    */
+    private Map<String, String> availabilityZones;
+    /**
+    获取实例时是否过滤，仅保留UP状态的实例。
+    */
+    private boolean filterOnlyUpInstances;
+    /**
+    指示client是否从server获取注册信息 
+    */
+    private boolean fetchRegistry;
+    /**
+    在server序列化/反序列化信息时获取替换字符串美元符号"$"
+    */
+    private String dollarReplacement;
+    /**
+    在server序列化/反序列化信息时获取替换字符串下划线"_"
+    */
+    private String escapeCharReplacement;
+    /**
+    指示服务器是否可以将客户端请求重定向到备份服务器/集群。如果设置为false，服务器将直接处理请求，如果设置为true，则可以使用新的服务器位置向客户端发送HTTP重定向
+    */
+    private boolean allowRedirects;
+    /**
+    如果设置为true,通过ApplicationInfoManager 更新本地状态将会触发（有限的速率）注册/更新到远程的eureka server
+    */
+    private boolean onDemandUpdateStatusChange;
+    /**
+     一个瞬态配置，一旦最新的编解码器稳定，就可以删除
+    */
+    private String encoderName;
+    /**
+    一个瞬态配置，一旦最新的编解码器稳定，就可以删除
+    */
+    private String decoderName;
+    /**
+    EurekaAccept name for client data accept 
+    */
+    private String clientDataAccept;
+    /**
+    指示客户端是否应在客户端关闭时从远程服务器显式注销自身
+    */
+    private boolean shouldUnregisterOnShutdown;
+    /**
+    指示客户端是否应在初始化期间强制注册 
+    */
+    private boolean shouldEnforceRegistrationAtInit;
+    /**
+    Order of the discovery client used by CompositeDiscoveryClient for sorting available clients 
+    */
+    private int order;
+
+    public EurekaClientConfigBean() {
+        this.serviceUrl.put("defaultZone", "http://localhost:8761/eureka/");
+        this.gZipContent = true;
+        this.useDnsForFetchingServiceUrls = false;
+        this.registerWithEureka = true;
+        this.preferSameZoneEureka = true;
+        this.availabilityZones = new HashMap();
+        this.filterOnlyUpInstances = true;
+        this.fetchRegistry = true;
+        this.dollarReplacement = "_-";
+        this.escapeCharReplacement = "__";
+        this.allowRedirects = false;
+        this.onDemandUpdateStatusChange = true;
+        this.clientDataAccept = EurekaAccept.full.name();
+        this.shouldUnregisterOnShutdown = true;
+        this.shouldEnforceRegistrationAtInit = false;
+        this.order = 0;
+    }
+}
+```
+
 
 **前缀eureka.client**
 |参数名| 说明| 默认值|
@@ -5786,6 +6061,179 @@ eureka.instance.lease-expiration-duration-in-seconds: 90
 |filterOnlyUplnstances| 获取实例 时是否过滤， 仅保留UP状态的实例 |true
 |fetchRegistry| 是否从Eureka服务端获取注册信息|true
 
+
+##### 1.6.2.4.2. 服务实例类配置
+
+关千服务实例类的配置信息， 我们可以通过查看org.springframework.cloud.netflix.eureka.EurekainstanceConfigBean的源码来获取详细内容， 这些配置信息都以eureka.instance为前缀
+
+```java
+
+@ConfigurationProperties("eureka.instance")
+public class EurekaInstanceConfigBean implements CloudEurekaInstanceConfig, EnvironmentAware {
+    private static final String UNKNOWN = "unknown";
+    /*
+    
+    */
+    private HostInfo hostInfo;
+    /*
+    
+    */
+    private InetUtils inetUtils;
+    /*
+    
+    */
+    private String actuatorPrefix = "/actuator";
+    /*
+    服务名，默认取 spring.application.name 配置值，如果没有则为 unknown
+    */
+    private String appname = "unknown";
+    /*
+    
+    */
+    private String appGroupName;
+    /*
+    
+    */
+    private boolean instanceEnabledOnit;
+    /*
+    
+    */
+    private int nonSecurePort = 80;
+    /*
+    
+    */
+    private int securePort = 443;
+    /*
+    
+    */
+    private boolean nonSecurePortEnabled = true;
+    /*
+    
+    */
+    private boolean securePortEnabled;
+    /*
+    定义服务续约任务（心跳）的调用间隔，单位：秒
+    */
+    private int leaseRenewalIntervalInSeconds = 30;
+    /*
+    定义服务失效的时间，单位：秒
+    */
+    private int leaseExpirationDurationInSeconds = 90;
+    /*
+    
+    */
+    private String virtualHostName = "unknown";
+    /*
+    区分同一服务中不同实例的唯一标识
+    默认为${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance—id:${server.port}}
+    */
+    private String instanceId;
+    /*
+    
+    */
+    private String secureVirtualHostName = "unknown";
+    /*
+    
+    */
+    private String aSGName;
+    /*
+    自定义的元数据,消费者可以获取到
+    */
+    private Map<String, String> metadataMap = new HashMap();
+    /*
+    
+    */
+    private DataCenterInfo dataCenterInfo;
+    /*
+    IP地址
+    */
+    private String ipAddress;
+    /*
+    状态页面的URL，相对路径，默认使用 HTTP 访问，如果需要使用 HTTPS则需要使用绝对路径配置
+    */
+    private String statusPageUrlPath;
+    /*
+    状态页面的URL，绝对路径
+    */
+    private String statusPageUrl;
+    /*
+    
+    */
+    private String homePageUrlPath;
+    /*
+    
+    */
+    private String homePageUrl;
+    /*
+    健康检查页面的URL，相对路径，默认使用 HTTP 访问，如果需要使用 HTTPS则需要使用绝对路径配置
+    */
+    private String healthCheckUrlPath;
+    /*
+    健康检查页面的URL，绝对路径
+    */
+    private String healthCheckUrl;
+    /*
+    
+    */
+    private String secureHealthCheckUrl;
+    /*
+    
+    */
+    private String namespace;
+    /*
+    设置当前实例的主机名称
+    */
+    private String hostname;
+    /*
+    不使用主机名来定义注册中心的地址，而使用IP地址的形式，如果设置了eureka.instance.ip-address 属性，则使用该属性配置的IP，否则自动获取除环路IP外的第一个IP地址
+    */
+    private boolean preferIpAddress;
+    /*
+    
+    */
+    private InstanceStatus initialStatus;
+    /*
+    
+    */
+    private String[] defaultAddressResolutionOrder;
+    /*
+    
+    */
+    private Environment environment;
+
+    public String getHostname() {
+        return this.getHostName(false);
+    }
+
+    private EurekaInstanceConfigBean() {
+        this.dataCenterInfo = new MyDataCenterInfo(Name.MyOwn);
+        this.statusPageUrlPath = this.actuatorPrefix + "/info";
+        this.homePageUrlPath = "/";
+        this.healthCheckUrlPath = this.actuatorPrefix + "/health";
+        this.namespace = "eureka";
+        this.preferIpAddress = false;
+        this.initialStatus = InstanceStatus.UP;
+        this.defaultAddressResolutionOrder = new String[0];
+    }
+
+    public EurekaInstanceConfigBean(InetUtils inetUtils) {
+        this.dataCenterInfo = new MyDataCenterInfo(Name.MyOwn);
+        this.statusPageUrlPath = this.actuatorPrefix + "/info";
+        this.homePageUrlPath = "/";
+        this.healthCheckUrlPath = this.actuatorPrefix + "/health";
+        this.namespace = "eureka";
+        this.preferIpAddress = false;
+        this.initialStatus = InstanceStatus.UP;
+        this.defaultAddressResolutionOrder = new String[0];
+        this.inetUtils = inetUtils;
+        this.hostInfo = this.inetUtils.findFirstNonLoopbackHostInfo();
+        this.ipAddress = this.hostInfo.getIpAddress();
+        this.hostname = this.hostInfo.getHostname();
+    }
+}
+```
+
+
 **前缀eureka.instance**
 |参数名| 说明| 默认值|
 |---|---|---|
@@ -5799,7 +6247,12 @@ eureka.instance.lease-expiration-duration-in-seconds: 90
 |appname |服务名，默认取spring.application.name的配置值，如果没有则为unknown
 |hostname |主机名， 不配置的时候将根据操作系统的主机名来获取
 
-### 1.4.3. 负载均衡Ribbon
+
+**服务实例类配置**
+
+
+
+### 1.6.3. 负载均衡Ribbon
 <a href="#menu" style="float:right">目录</a>
 
 Spring Cloud Ribbon 是一个基于 HTTP 和 TCP 的客户端负载均衡工具，它基于 Netflixribbon 实现。 通过 Spring Cloud 的封装， 可以让我们轻松地将面向服务的 REST 模板请求自动转换成客户端负载均衡的服务调用。 Spring Cloud Ribbon 虽然只是一个工具类框架，它不像服务注册中心、 配置中心、 API 网关那样需要独立部署， 但是它几乎存在于每一个Spring Cloud 构建的微服务和基础设施中。 因为微服务间的调用，API 网关的请求转发等内容实际上都是通过伈bbon 来实现的，包括后续我们将要介绍的 Feign, 它也是基于 Ribbon实现的工具。 所以， 对 Spring Cloud Ribbon 的理解和使用， 对于我们使用 Spring Cloud 来构建微服务非常重要。
@@ -5807,7 +6260,7 @@ Spring Cloud Ribbon 是一个基于 HTTP 和 TCP 的客户端负载均衡工具�
 ribbon底层是基于RestTemplate实现Http请求
 org.springframework.web.client.RestTemplate
 
-#### 1.4.3.1. 基本使用
+#### 1.6.3.1. 基本使用
 <a href="#menu" style="float:right">目录</a>
 
 **引入依赖**
@@ -5857,21 +6310,17 @@ public class RibbonService {
 
 ```
 
-#### 1.4.3.2. 原理说明
+#### 1.6.3.2. 原理说明
 <a href="#menu" style="float:right">目录</a>
 
-##### 1.4.3.2.1. 源码分析
+##### 1.6.3.2.1. 源码分析
 
 **LoadBalancerAutoConfiguration配置类**
 
 在该自动化配置类中， 主要做了下面三件事：
-• 创建了一个LoadBalancer工吐erceptor的Bean, 用千实现对客户端发起请求
-时进行拦截， 以实现客户端负载均衡。
-• 创建了 一个RestTemplateCustomizer的Bean, 用于给Res七Template增加
-LoadBalancer工nterceptor拦截器。
-• 维护了 一个被@LoadBalanced 注解修饰的RestTempl琴e对象列表， 并在这里
-进行初始化， 通过调用Res七TemplateCustomizer的实例来给需要客户端负载
-均衡的Res七Template增加LoadBalancerin七erceptor拦截器。
+* 创建了一个LoadBalancer工吐erceptor的Bean, 用千实现对客户端发起请求时进行拦截， 以实现客户端负载均衡。
+* 创建了 一个RestTemplateCustomizer的Bean, 用于给Res七Template增加LoadBalancer工nterceptor拦截器。
+* 维护了 一个被@LoadBalanced 注解修饰的RestTempl琴e对象列表， 并在这里进行初始化， 通过调用Res七TemplateCustomizer的实例来给需要客户端负载均衡的Res七Template增加LoadBalancerin七erceptor拦截器。
 
 ```java
 //
@@ -6006,13 +6455,29 @@ public class LoadBalancerAutoConfiguration {
 
 
 ```
-当 一个被@LoadBalanced 注解修饰的 RestTemplate 对象向外发起 HTTP 请求时， 会被 LoadBalancerintercep七or 类的 intercept 函数所拦截。
+当一个被@LoadBalanced 注解修饰的 RestTemplate 对象向外发起 HTTP 请求时， 会被 LoadBalancerinterceptor 类的 intercept 函数所拦截。
 
 ![ribbon请求流程](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/ribbon-dorequest.png)
+
+restTemplate.getForObject()-->RestTemplate.execute()-->RestTemplate.doExecute()-->AbstractClientHttpRequest.execute()-->AbstractBufferingClientHttpRequest.executeInternal()-->InterceptingClientHttpRequest.execute()-->InterceptingClientHttpRequest.InterceptingRequestExecution.execute()
+
+也就是说应用程序调用restTemplate的相关操作方法时,会被拦截器拦截,拦截器中有负载均衡拦截器,通过负载均衡拦截器中的IRule对象获取到本次的请求目的服务,最终发出请求.
+用户可以自行定义IRule实现类
 
 InterceptingClientHttpRequest
 
 ```java
+
+public class RestTemplate extends InterceptingHttpAccessor implements RestOperations {
+    @Nullable
+    public <T> T getForObject(String url, Class<T> responseType, Object... uriVariables) throws RestClientException {
+        RequestCallback requestCallback = this.acceptHeaderRequestCallback(responseType);
+        HttpMessageConverterExtractor<T> responseExtractor = new HttpMessageConverterExtractor(responseType, this.getMessageConverters(), this.logger);
+        //RestTemplate的调用请求最终都会调用execute方法来执行.
+        return this.execute(url, HttpMethod.GET, requestCallback, responseExtractor, (Object[])uriVariables);
+    }
+}
+
 public ClientHttpResponse execute(HttpRequest request, byte[] body) throws IOException {
     if (this.iterator.hasNext()) {
         //执行拦截器
@@ -6040,6 +6505,35 @@ public ClientHttpResponse execute(HttpRequest request, byte[] body) throws IOExc
     }
 }
 ```
+
+上面的nextInterceptor.intercept(request, body, this);将会执行负载均衡拦截器,也就是LoadBalancerInterceptor的intercept()方法.
+
+该方法最终调用的是LoadBalancerClient的execute方法.
+
+```java
+public class LoadBalancerInterceptor implements ClientHttpRequestInterceptor {
+    private LoadBalancerClient loadBalancer;
+    private LoadBalancerRequestFactory requestFactory;
+
+    public LoadBalancerInterceptor(LoadBalancerClient loadBalancer, LoadBalancerRequestFactory requestFactory) {
+        this.loadBalancer = loadBalancer;
+        this.requestFactory = requestFactory;
+    }
+
+    public LoadBalancerInterceptor(LoadBalancerClient loadBalancer) {
+        this(loadBalancer, new LoadBalancerRequestFactory(loadBalancer));
+    }
+
+    public ClientHttpResponse intercept(final HttpRequest request, final byte[] body, final ClientHttpRequestExecution execution) throws IOException {
+        URI originalUri = request.getURI();
+        String serviceName = originalUri.getHost();
+        Assert.state(serviceName != null, "Request URI does not contain a valid hostname: " + originalUri);
+        return (ClientHttpResponse)this.loadBalancer.execute(serviceName, this.requestFactory.createRequest(request, body, execution));
+    }
+}
+```
+
+
 **通过负载均衡获取服务器并执行请求**
 
 * @LoadBalanced注解 源码的注释中可以知道， 该注解用来给RestTemplate做标记， 以使用负载均衡的客户端(LoadBalancerClient)来配置它
@@ -6074,7 +6568,7 @@ public <T> T execute(String serviceId, LoadBalancerRequest<T> request, Object hi
         throw new IllegalStateException("No instances available for " + serviceId);
     } else {
         RibbonLoadBalancerClient.RibbonServer ribbonServer = new RibbonLoadBalancerClient.RibbonServer(serviceId, server, this.isSecure(server, serviceId), this.serverIntrospector(serviceId).getMetadata(server));
-        //执行实际的Http请求
+        //最终执行实际的Http请求
         return this.execute(serviceId, (ServiceInstance)ribbonServer, (LoadBalancerRequest)request);
     }
 }
@@ -6174,7 +6668,7 @@ public <T> T execute(String serviceId, ServiceInstance serviceInstance, LoadBala
 
 ```
 
-##### 1.4.3.2.2. 负载均衡器
+##### 1.6.3.2.2. 负载均衡器
 
 ![负载均衡实现类](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/loadbalance-extends.png)
 
@@ -6204,9 +6698,32 @@ public abstract class AbstractLoadBalancer implements ILoadBalancer {
         }
     }
 }
+public class BaseLoadBalancer extends AbstractLoadBalancer implements PrimeConnectionListener, IClientConfigAware {
+     protected IRule rule;
+
+    public Server chooseServer(Object key) {
+        if (this.counter == null) {
+            this.counter = this.createCounter();
+        }
+
+        this.counter.increment();
+        if (this.rule == null) {
+            return null;
+        } else {
+            try {
+                //通过IRule对象实现服务选择
+                return this.rule.choose(key);
+            } catch (Exception var3) {
+                logger.warn("LoadBalancer [{}]:  Error choosing server for key {}", new Object[]{this.name, key, var3});
+                return null;
+            }
+        }
+    }
+}
+
 ```
 **BaseloadBalancer**
-BaseLoadBalancer 类是和bbon 负载均衡器的基础实现类，在该类中定义了很多关于负载均衡器相关的基础内容。
+BaseLoadBalancer 类是ribbon 负载均衡器的基础实现类，在该类中定义了很多关于负载均衡器相关的基础内容。
 * 定义并维护了两个存储服务实例 Server 对象的列表。 一个用千存储所有 服务实例的清单， 一个用于存储正常服务的实例清单。
 * 定义了之前我 们提到的用来存储负载均衡器各服务 实 例 属性和统计信息的LoadBalancerS七ats 对象
 * 定义了检查服务实例是否正常服务的工贮ng 对象， 在 BaseLoadBalancer 中默认为 null, 需要在构造时注入它的具体实现。
@@ -6214,7 +6731,7 @@ BaseLoadBalancer 类是和bbon 负载均衡器的基础实现类，在该类中�
 * 定 义 了负 载 均 衡的处理规 则 工Rule 对 象， 从 BaseLoadBalancer 中chooseServer(Object key) 的实现源码， 我们可以知道， 负载均衡器实际将服务实例选择任务委托给了IRule 实例中的 choose 函数来实现。 而在这里， 默认初始化了 RoundRob江Rule 为工Rule 的实现对象。 RoundRobinRule 实现了最基本且常用的线性负载均衡规则
 * 启动 ping 任务：在 BaseLoadBalancer 的默认构造函数中，会直接启动一个用于定时检查 Server 是否健康的任务。 该任务默认的执行间隔为 10 秒。
 * 实现了 ILoadBalancer 接口定义的负载均衡器应具备以下一系列基本操作。
-* addServers(List newServers): 向负载均衡器中增加新的服务实例列表，该实现将原本已经维护着的所有服务实例清单 al1Server巨st 和新传入的服务 实 例 清 单 newServers 都加入到 newList 中， 然后通 过调用setServersList 函数对 new口st 进行处理，在 BaseLoadBalancer 中实现的时候会使用新的列表覆盖旧的列表。而之后介绍的几个扩展实现类对千服务实例清单更新的优化都是通过对 setServersLi江函数的重写来实现的
+* addServers(List newServers): 向负载均衡器中增加新的服务实例列表，该实现将原本已经维护着的所有服务实例清单 al1Server巨st 和新传入的服务 实 例 清 单 newServers 都加入到 newList 中， 然后通 过调用setServersList 函数对 newList 进行处理，在 BaseLoadBalancer 中实现的时候会使用新的列表覆盖旧的列表。而之后介绍的几个扩展实现类对千服务实例清单更新的优化都是通过对 setServersLi江函数的重写来实现的
 
 **DynamicServerlistloadBalancer**
 DynamicServerListLoadBalancer 类继承于 BaseLoadBalancer 类， 它是对基础负载均衡器的扩展。 在该负载均衡器中， 实现了服务实例清单在运行期的动态更新能力；同时， 它还具备了对服务实例清单的过滤功能， 也就是说， 我们可以通过过滤器来选择性地获取一批服务实例清单
@@ -6222,7 +6739,7 @@ DynamicServerListLoadBalancer 类继承于 BaseLoadBalancer 类， 它是对基�
 **ZoneAwareloadBalancer**
 ZoneAwareLoadBalancer 负载均衡器是对 DynamicServerListLoadBalancer的扩展。在 DynamicServerLis七LoadBalancer 中， 我们可以看到它并没有重写选择具体服务实例的 chooseServer 函数， 所以它依然会采用在 BaseLoadBalancer 中实现的算法。 使用 RoundRobinRule 规则， 以线性轮询的方式来选择调用的服务实例， 该算法实现简单并没有区域 (Zone) 的概念， 所以它会把所有实例视为一个 Zone下的节点来看待， 这样就会周期性地产生跨区域 (Zone) 访问的情况， 由于跨区域会产生更高的延迟，这些实例主要以防止区域性故障实现高可用为目的而不能作为常规访问的实例， 所以在多区域部署的清况下会有一定的性能问题， 而该负载均衡器则 可以避免这样的问题.
 
-##### 1.4.3.2.3. 负载均衡策略
+##### 1.6.3.2.3. 负载均衡策略
 <a href="#menu" style="float:right">目录</a>
 
 * IRule
@@ -6357,7 +6874,7 @@ public class RandomRule extends AbstractLoadBalancerRule {
 }
 
 ```
-****
+**RoundRobinRule**
 ```java
 //
 // Source code recreated from a .class file by IntelliJ IDEA
@@ -6449,7 +6966,7 @@ public class RoundRobinRule extends AbstractLoadBalancerRule {
 }
 
 ```
-****
+**WeightedResponseTimeRule**
 ```java
 //
 // Source code recreated from a .class file by IntelliJ IDEA
@@ -6672,6 +7189,7 @@ public class WeightedResponseTimeRule extends RoundRobinRule {
 
 ```
 
+**RetryRule**
 
 ```java
 //
@@ -6758,7 +7276,7 @@ public class RetryRule extends AbstractLoadBalancerRule {
 
 ```
 
-##### 1.4.3.2.4. 配置详解 
+##### 1.6.3.2.4. 配置详解 
 
 **Ribbon相关的配置**
 
@@ -6987,10 +7505,10 @@ public class RibbonConfiguration
 }
 ```
 
-### 1.4.4. 声明式服务调用feign
+### 1.6.4. 声明式服务调用feign
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.4.4.1. 使用案例
+#### 1.6.4.1. 使用案例
 
 引入依赖，因为feign底层是依赖ribbon,因此也要引入该包
 ```xml
@@ -7071,27 +7589,27 @@ public interface DemoFeign {
 }
 ```
 
-### 1.4.5. 服务容错保护 Hystrix
+### 1.6.5. 服务容错保护 Hystrix
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.4.6. API网关服务
+### 1.6.6. API网关服务
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.4.6.1. zuul
+#### 1.6.6.1. zuul
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.4.6.2. GateWay
+#### 1.6.6.2. GateWay
 <a href="#menu" style="float:right">目录</a>
 
 
 
-### 1.4.7. 分布式配置中心Config
+### 1.6.7. 分布式配置中心Config
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.4.7.1. 基本使用
+#### 1.6.7.1. 基本使用
 
-##### 1.4.7.1.1. 配置中心
+##### 1.6.7.1.1. 配置中心
 
 **引入依赖**
 ```xml
@@ -7193,7 +7711,7 @@ server:
   port: 8004
 ```
 
-##### 1.4.7.1.2. bootstrap.yml与application.yml区别
+##### 1.6.7.1.2. bootstrap.yml与application.yml区别
 说明：其实yml和properties文件是一样的原理，主要是说明application和bootstrap的加载顺序。且一个项目上要么yml或者properties，二选一的存在
 
 **执行顺序**
@@ -7317,7 +7835,7 @@ org.springframework.cloud.bootstrap.BootstrapConfiguration=sample.custom.CustomP
 那么，”customProperty“的PropertySource将会被包含到应用。
 
 
-##### 1.4.7.1.3. 客户端配置
+##### 1.6.7.1.3. 客户端配置
 
 **引入依赖**
 
@@ -7388,7 +7906,7 @@ public class ConfigController {
 }
 ```
 
-##### 1.4.7.1.4. 刷新配置
+##### 1.6.7.1.4. 刷新配置
 有一种场景需要更改配置而不需要重启服务。
 
 * 客户端需要进行相关的配置
@@ -7416,13 +7934,13 @@ curl -X POST http://localhost:8004/actuator/refresh
 ```
 
 
-#### 1.4.7.2. 原理说明
+#### 1.6.7.2. 原理说明
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.4.7.3. 更多使用方式
+#### 1.6.7.3. 更多使用方式
 <a href="#menu" style="float:right">目录</a>
 
-### 1.4.8. 消息总线bus
+### 1.6.8. 消息总线bus
 <a href="#menu" style="float:right">目录</a>
 
 Spring Cloud Bus是用轻量的消息代理将分布式的节点连接起来,可以用于广播配置文件的更改或者服务的监控管理。一个关键的思想就是,消息总线可以为微服务做监控,也可以实现应用程序之间相互通信。 Spring Cloud Bus可选的消息代理线线泡括RabbitMQ、 AMQP和Kaka等。
@@ -7439,7 +7957,7 @@ Spring Cloud Bus是用轻量的消息代理将分布式的节点连接起来,可
 4. 其它客户端接收到通知，请求Server端获取最新配置
 5. 全部客户端均获取到最新的配置
 
-#### 1.4.8.1. 消息代理
+#### 1.6.8.1. 消息代理
 消息代理 (Message Broker) 是一种消息验证、 传输、 路由的架构模式。 它在应用程序之间起到通信调度并最小化应用之间的依赖的作用， 使得应用程序可以高效地解耦通信过程。 消息代理是一个中间件产品， 它的核心是一个消息的路由程序， 用来实现接收和分发消息， 并根据设定好的消息处理流来转发给正确的应用。 它包括独立的通信和消息传递协议， 能够实现组织内部和组织间的网络通信。 设计代理的目的就是为了能够从应用程序中传入消息， 并执行一些特别的操作， 下面这些是在企业应用中， 我们经常需要使用消息代理的场景：
 * 将消息路由到一个或多个目的地
 * 消息转化为其他的表现方式。
@@ -7450,13 +7968,13 @@ Spring Cloud Bus是用轻量的消息代理将分布式的节点连接起来,可
 
 当前版本的Spring Cloud Bus仅支待两款中间件产品： RabbitMQ和Kafka
 
-### 1.4.9. 消息驱动的微服务Stream
+### 1.6.9. 消息驱动的微服务Stream
 <a href="#menu" style="float:right">目录</a>
 
-### 1.4.10. 分布式服务跟踪Sleuth
+### 1.6.10. 分布式服务跟踪Sleuth
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.4.10.1. 基本使用 
+#### 1.6.10.1. 基本使用 
 
 pom配置
 ```xml
@@ -7509,11 +8027,11 @@ spring:
 上面四个值中的**TraceID**和**SpanID**是Spring Cloud Sleuth实现分布式服务跟踪的核心。 在一次服务请求链路的调用过程中， 会保待并传递同一个**Trace ID**, 从而将整个分布于不同微服务进程中的请求跟踪 信息串联起来。 以上面输出内容为例， trace-1 和trace-2同属于一个前端服务请求来源，所以它们的TraceID是相同的，处于同一条请求链路中
 
 
-#### 1.4.10.2. 跟踪原理
+#### 1.6.10.2. 跟踪原理
 
 这里只讲feign和Sleuth的实现原理，其他方式基本原理上差不多。
 
-##### 1.4.10.2.1. 基本实现原理
+##### 1.6.10.2.1. 基本实现原理
 
 在了解其实现原理之前需要思考的问题是，假如消费者使用的Feign声明式服务调用，sleuth是如何接入的，是如何生成各种ID插入请求的？
 
@@ -7576,7 +8094,7 @@ main(){
 ```
 ----
 
-##### 1.4.10.2.2. 支持的组件
+##### 1.6.10.2.2. 支持的组件
 Spring Cloud Sleuth可以追踪10种类型的组件，async、Hystrix，messaging，websocket，rxjava，scheduling，web（Spring MVC Controller，Servlet），webclient（Spring RestTemplate）、Feign、Zuul。下面是常用的八种类型。
 
 ![Sleuth支持的组件](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/sleuth-instructment.png?raw=true)
@@ -7607,7 +8125,7 @@ TraceFeignAspect AOP里面的逻辑是，有地方想获取Client实例，就拦
 原理是zuul的Filter机制，ZuulFilter 
 实现了三个TracePreZuulFilter、TracePostZuulFilter两个Filter。
 
-##### 1.4.10.2.3. 一些基本概念
+##### 1.6.10.2.3. 一些基本概念
 
 * 为了实现请求跟踪， 当请求发送到分布式系统的入口端点时， 只需要服务跟踪框架为该请求创建一个唯一的跟踪标识， 同时在分布式系统内部流转的时候， 框架始终保待传递 该唯一标识， 直到返回给请求方为止， 这个唯一 标识就是前文中提到的TraceID。 通过TraceID 的记录， 我们就能将所有请求过程的日志关联起来。
 * 为了统计各处理单元的时间延迟， 当请求到达各个服务组件时， 或是处理逻辑到达某个状态时， 也通过一个唯一标识来标记它的开始、 具体过程以及结束， 该标识就是前文中提到的SpanID。 对于每个Span来说， 它必须有开始和结束 两个节点， 通过记录开始 Span和结束Span的时间戳，就能统计出该Span的时间延迟，除了时间戳记录之外， 它还可以包含一些其他元数据， 比如事件名称、 请求信息等
@@ -7636,7 +8154,7 @@ public final class B3Propagation<K> implements Propagation<K> {
 }
 ```
 
-##### 1.4.10.2.4. zipkin
+##### 1.6.10.2.4. zipkin
 Zipkin是Twitter的一个开源项目，我们可以使用它来收集各个服务器上请求链路的跟踪数据，并通过它提供的API接口来辅助查询跟踪数据以分布式系统的监控程序，通过UI组件帮助我们及时发现系统中出现的延迟升高问题以及系统性能瓶颈根源。
 **基本概念**
 下面展示Zipkin的基础架构，它主要由4个核心组件构成
@@ -7680,7 +8198,7 @@ Instrumented Client 和Instrumented Server，是指分布式架构中使用了Tr
 这种方式通过spring cloud streaming将追踪信息发送到zipkin。spring cloud streaming目前只支持kafka和rabbitmq。Zipkin Collector从消息中间件中读取数据并存储：
 ![](https://img-blog.csdn.net/20181010191040623?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3pobGxhbnNlemhpbGlhbg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
-##### 1.4.10.2.5. 调用过程
+##### 1.6.10.2.5. 调用过程
 
 ![Sleuth支持的组件](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/sleuth-request.png?raw=true)
 
@@ -7734,13 +8252,13 @@ public void inject(TraceContext traceContext, C carrier) {
 
 
 
-## 1.5. 单元测试
+## 1.7. 单元测试
 <a href="#menu" style="float:right">目录</a>
 
-### 1.5.1. Junit
+### 1.7.1. Junit
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.5.1.1. 概述
+#### 1.7.1.1. 概述
 <a href="#menu" style="float:right">目录</a>
 
 所谓单元测试是测试应用程序的功能是否能够按需要正常运行，并且确保是在开发人员的水平上，单元测试生成图片。单元测试是一个对单一实体（类或方法）的测试。单元测试是每个软件公司提高产品质量、满足客户需求的重要环节。
@@ -7781,7 +8299,7 @@ JUnit 促进了“先测试后编码”的理念，强调建立测试数据的�
 * 每一项需求至少需要两个单元测试用例：一个正检验，一个负检验。如果一个需求有子需求，每一个子需求必须至少有正检验和负检验两个测试用例。
 
 
-#### 1.5.1.2. JUnit 中的重要的 API
+#### 1.7.1.2. JUnit 中的重要的 API
 <a href="#menu" style="float:right">目录</a>
 
 JUnit 中的最重要的程序包是 junit.framework 它包含了所有的核心类。一些重要的类列示如下：
@@ -7864,7 +8382,7 @@ JUnit 中的最重要的程序包是 junit.framework 它包含了所有的核心
     * static Test warning(String message)
         * 返回会失败的测试并且记录警告信息。
 
-#### 1.5.1.3. 常用注解
+#### 1.7.1.3. 常用注解
 <a href="#menu" style="float:right">目录</a>
 
 **@Test**
@@ -7900,7 +8418,7 @@ JUnit执行结果中会报告被忽略的测试数
 即使在@BeforeClass注解方法中抛出了异常，所有的@AfterClass注解方法依然会被执行
 父类中的@AfterClass注解方法会在子类@AfterClass注解方法执行后被执行
 
-#### 1.5.1.4. 套件测试
+#### 1.7.1.4. 套件测试
 <a href="#menu" style="float:right">目录</a>
 
 ```java
@@ -7937,13 +8455,13 @@ public class TestRunner {
 
 
 
-### 1.5.2. 控制层测试
+### 1.7.2. 控制层测试
 <a href="#menu" style="float:right">目录</a>
 
-### 1.5.3. 服务层测试
+### 1.7.3. 服务层测试
 <a href="#menu" style="float:right">目录</a>
 
-### 1.5.4. DAO层测试
+### 1.7.4. DAO层测试
 <a href="#menu" style="float:right">目录</a>
 
 

@@ -22,6 +22,9 @@
         - [1.3.1. 基本概念](#131-基本概念)
         - [1.3.2. 常用命令](#132-常用命令)
     - [1.4. Maven](#14-maven)
+        - [1.4.1. 基本概念](#141-基本概念)
+        - [1.4.2. 基本命令](#142-基本命令)
+        - [1.4.3. Maven中的dependency详解](#143-maven中的dependency详解)
     - [1.5. Gradle](#15-gradle)
         - [1.5.1. 基本介绍](#151-基本介绍)
         - [1.5.2. 安装](#152-安装)
@@ -302,6 +305,57 @@ dia
 
 ## 1.4. Maven
 <a href="#menu" style="float:right">目录</a>
+
+### 1.4.1. 基本概念
+
+Maven主要做了两件事：
+* 统一开发规范与工具
+* 统一管理jar包
+
+用户可以将创建的jar包上传到官方提供的maven仓库,当在配置文件中引入该依赖时,maven会自动从中央仓库中搜索并下载到本地仓库.
+本地仓库和远程仓库是这样的，Maven工程首先会从本地仓库中获取jar包，当无法获取指定jar包时，本地仓库会从远程仓库（中央仓库）中下载jar包，并放入本地仓库以备将来使用。
+
+groupId、artifactId、version共同组成一个jar包的唯一标识.
+
+```xml
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.xrq.withmaven</groupId>
+  <artifactId>withmaven</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <build/>
+</project>
+```
+
+* modelVersion
+    * 指定了当前Maven模型的版本号，对于Maven2和Maven3来说，它只能是4.0.0
+* groupId
+    * 顾名思义，这个应该是公司名或是组织名。一般来说groupId是由三个部分组成，每个部分之间以"."分隔，第一部分是项目用途，比如用于商业的就是"com"，用于非营利性组织的就　　是"org"；第二部分是公司名，比如"tengxun"、"baidu"、"alibaba"；第三部分是你的项目名
+* artifactId
+    * 可以认为是Maven构建的项目名，比如你的项目中有子项目，就可以使用"项目名-子项目名"的命名方式
+* version
+    * 版本号，SNAPSHOT意为快照，说明该项目还在开发中，是不稳定的版本。在Maven中很重要的一点是，groupId、artifactId、version三个元素生成了一个Maven项目的基本坐标，这非常重要，我在使用和研究Maven的时候多次感受到了这点。
+* packing
+    * 项目打包的类型，可以使jar、war、rar、ear、pom，默认是jar
+* dependencies和dependency
+    * 前者包含后者。前面说了，Maven的一个重要作用就是统一管理jar包，为了一个项目可以build或运行，项目中不可避免的，会依赖很多其他的jar包，在Maven中，这些依赖就被称为dependency。
+* properties
+    * properties是用来定义一些配置属性的，例如project.build.sourceEncoding（项目构建源码编码方式），可以设置为UTF-8，防止中文乱码，也可定义相关构建版本号，便于日后统一升级。
+* build
+    * build表示与构建相关的配置，比如build下有finalName，表示的就是最终构建之后的名称。
+
+Maven的目录结构：
+* main目录下是项目的主要代码，test目录下存放测试相关的代码
+* 编译输出后的代码会放在target目录下
+* src/main/java下存放Java代码，src/main/resources下存放配置文件
+* 这里没有webapp，Web项目会有webapp目录，webapp下存放Web应用相关代码
+* pom.xml是Maven项目的配置文件
+
+### 1.4.2. 基本命令
+
 * mvn compile 编译源代码
 * mvn test-compile 编译测试代码
 * mvn test 运行测试代码
@@ -327,6 +381,94 @@ dia
     </exclusions>
 </dependency>
 ```
+
+### 1.4.3. Maven中的dependency详解
+
+```xml
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-logging</artifactId>
+    <version>4.12</version>
+    <scope>test</scope>
+    <exclusions>
+        <exclusion>
+            <groupId>*</groupId>
+            <artifactId>*</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
+* **groupId** ：创建项目的组织或团体的唯一 Id.可视为公司名
+* **artifactId** ：项目的唯一 Id, 可视为项目名 .
+* **version**  ：产品的版本号 
+* **scope**为jar包作用范围
+    * test范围指的是测试范围有效，在编译和打包时都不会使用这个依赖.比较典型的如junit。
+    * compile范围指的是编译范围有效，在编译和打包时都会将依赖存储进去
+    * provided依赖：在编译和测试的过程有效，最后生成war包时不会加入，诸如：servlet-api，因为servlet-api，tomcat等web服务器已经存在了，如果再打包会冲突 
+    * runtime在运行的时候依赖，在编译的时候不依赖 
+    * 默认的依赖范围是compile 
+* **type**
+    * 有时候我们引入某一个依赖时，必须指定type，这是因为用于匹配dependency引用和dependencyManagement部分的最小信息集实际上是{groupId，artifactId，type，classifier}。在很多情况下，这些依赖关系将引用没有classifier的jar依赖。这允许我们将标识设置为{groupId，artifactId}，因为type的默认值是jar，并且默认classifier为null。
+    * type的值一般有jar、war、pom等，声明引入的依赖的类型
+* **classifier**
+    * Classifier可能是最容易被忽略的Maven特性，但它确实非常重要，我们也需要它来帮助规划坐标。设想这样一个情况，有一个jar项目，就说是 dog-cli-1.0.jar 吧，运行它用户就能在命令行上画一只小狗出来。现在用户的要求是希望你能提供一个zip包，里面不仅包含这个可运行的jar，还得包含源代码和文档，换句话说，这是比较正式的分发包。这个文件名应该是怎样的呢？dog-cli-1.0.zip？不够清楚，仅仅从扩展名很难分辨什么是Maven默认生成的构件，什么是额外配置生成分发包。如果能是dog-cli-1.0-dist.zip就最好了。这里的dist就是classifier，默认Maven只生成一个构件，我们称之为主构件，那当我们希望Maven生成其他附属构件的时候，就能用上classifier。常见的classifier还有如dog-cli-1.0-sources.jar表示源码包，dog-cli-1.0-javadoc.jar表示JavaDoc包等等。
+
+classifier它表示在相同版本下针对不同的环境或者jdk使用的jar,如果配置了这个元素，则会将这个元素名在加在最后来查找相应的jar，例如：
+
+```xml
+给相同的version，构建不同的环境使用依赖
+<classifier>jdk17</classifier>
+<classifier>jdk18</classifier>
+```
+
+* **optional**
+当project-A 依赖project-B, project-B 依赖project-D时
+```xml
+<dependency>
+  <groupid>sample.ProjectD</groupid>
+  <artifactid>ProjectD</artifactid>
+  <version>1.0-SNAPSHOT</version>
+  <optional>true</optional>
+</dependency>
+```
+
+所以当project-B的true时, project-A中如果没有显式的引入project-D, 则project-A不依赖project-D, 即project-A可以自己选择是否依赖project-D
+
+默认的值为false, 及子项目必须依赖。
+
+* **systemPath**
+当maven依赖本地而非repository中的jar包，sytemPath指明本地jar包路径,例如：
+```xml
+<dependency>
+    <groupid>org.hamcrest</groupid>
+    <artifactid>hamcrest-core</artifactid>
+    <version>1.5</version>
+    <scope>system</scope>
+    <systempath>${basedir}/WebContent/WEB-INF/lib/hamcrest-core-1.3.jar</systempath>
+</dependency>
+```
+* **exclusions**
+依赖排除，就是有时候引入某一个依赖的时候，该依赖下有jar包冲突，可以排除掉，不引用该jar，例如：
+
+```xml
+<dependency>
+    <groupid>test</groupid>
+    <artifactid>test</artifactid>
+    <version>1.0.2-SNAPSHOT</version>
+    <exclusions>
+        <exclusion>
+            <groupid>org.springframework</groupid>
+            <artifactid>spring</artifactid>
+        </exclusion>
+        <exclusion>
+            <artifactid>slf4j-log4j12</artifactid>
+            <groupid>org.slf4j</groupid>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
+
 ## 1.5. Gradle
 
 ### 1.5.1. 基本介绍
