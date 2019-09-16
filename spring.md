@@ -92,6 +92,9 @@
             - [1.5.14.3. Spring Boot 有哪几种读取配置的方式？](#15143-spring-boot-有哪几种读取配置的方式)
     - [1.6. SpringCloud](#16-springcloud)
         - [1.6.1. 基础知识](#161-基础知识)
+            - [1.6.1.1. 微服务概念](#1611-微服务概念)
+            - [1.6.1.2. SpringCloud子项目](#1612-springcloud子项目)
+            - [1.6.1.3. 版本说明](#1613-版本说明)
         - [1.6.2. 服务治理Eureka](#162-服务治理eureka)
             - [1.6.2.1. 基本使用](#1621-基本使用)
             - [1.6.2.2. 高可用注册中心](#1622-高可用注册中心)
@@ -109,8 +112,16 @@
                 - [1.6.3.2.2. 负载均衡器](#16322-负载均衡器)
                 - [1.6.3.2.3. 负载均衡策略](#16323-负载均衡策略)
                 - [1.6.3.2.4. 配置详解](#16324-配置详解)
+            - [1.6.3.3. ribbon配置](#1633-ribbon配置)
+                - [1.6.3.3.1. 配置参数说明](#16331-配置参数说明)
+                - [1.6.3.3.2. 重试机制](#16332-重试机制)
         - [1.6.4. 声明式服务调用feign](#164-声明式服务调用feign)
             - [1.6.4.1. 使用案例](#1641-使用案例)
+            - [1.6.4.2. 实现原理](#1642-实现原理)
+                - [1.6.4.2.1. 配置类](#16421-配置类)
+                - [1.6.4.2.2. 启动注解说明](#16422-启动注解说明)
+                - [总结](#总结)
+                - [1.6.4.2.3. 调用实现原理](#16423-调用实现原理)
         - [1.6.5. 服务容错保护 Hystrix](#165-服务容错保护-hystrix)
         - [1.6.6. API网关服务](#166-api网关服务)
             - [1.6.6.1. zuul](#1661-zuul)
@@ -5278,7 +5289,7 @@ Spring Boot 可以通过 @PropertySource,@Value,@Environment, @ConfigurationProp
 ### 1.6.1. 基础知识
 <a href="#menu" style="float:right">目录</a>
 
-**什么是微服务**
+#### 1.6.1.1. 微服务概念
 微服务是系统架构上的一种设计风格， 它的主旨是将一个原本独立的系统拆分成多个小型服务，这些小型服务都在各自独立的进程中运行，服务之间通过基于HTTP的RESTful API进行通信协作。 被拆分成的每一个小型服务都围绕着系统中的某一项或一些耦合度较高的业务功能进行构建， 并且每个服务都维护着自身的数据存储、 业务开发、自动化测试案例以及独立部署机制。 由千有了轻量级的通信协作基础， 所以这些微服务可以使用不同的语言来编写
 
 **微服务主要的优势如下：**
@@ -5311,7 +5322,7 @@ Spring Boot 可以通过 @PropertySource,@Value,@Environment, @ConfigurationProp
 * 轻量级通信原则
 * 微服务粒度，确定好服务边界
 
-**SpringCloud子项目**
+#### 1.6.1.2. SpringCloud子项目
 * SpringCloudConfig: 配置管理工具， 支持使用Git存储 配置内容， 可以使用它实现应用配置的外部化存储， 并支持客户端配置信息刷新、 加密／解密配置内容 等。
 * SpringCloudNetflix: 核心 组件， 对多个Netflix OSS开源套件进行整合。
 * Eureka: 服务治理组件， 包含服务注册中心、 服务注册与发现机制的实现。
@@ -5333,11 +5344,9 @@ Spring Boot 可以通过 @PropertySource,@Value,@Environment, @ConfigurationProp
 * Spring Cloud Starters: Spring Cloud 的基础组件， 它是基于 Spring Boot 风格项目的基础依赖模块。
 * Spring Cloud CLI: 用于在 Groovy 中快速创建 Spring Cloud 应用的 Spring Boot CLI插件。
 
-**版本说明**
-由于 Spring Cloud 不像 Spring 社区其他一些项目那样相对独立， 它是一个拥有诸多子项目的大型综合项目， 可以说是对微服务架构解决方案的综合套件组合， 其包含的各个子项目也都独立进行着内容更新与迭代，各自都维护着自己的发布版本号。因此每一 个Spring
-Cloud 的版本都会包含多个不同版本的子项目， 为了管理每个版本的子项目清单， 避免
-Spring Cloud的版本号与其子项目的版本号相混淆，没有采用版本号的方式，而是通过命名
-的方式。
+#### 1.6.1.3. 版本说明
+
+由于 Spring Cloud 不像 Spring 社区其他一些项目那样相对独立， 它是一个拥有诸多子项目的大型综合项目， 可以说是对微服务架构解决方案的综合套件组合， 其包含的各个子项目也都独立进行着内容更新与迭代，各自都维护着自己的发布版本号。因此每一 个Spring Cloud 的版本都会包含多个不同版本的子项目， 为了管理每个版本的子项目清单， 避免Spring Cloud的版本号与其子项目的版本号相混淆，没有采用版本号的方式，而是通过命名的方式。使用单词而不是字母主要是因为:设计的目的是为了更好的管理每个SpringCloud子项目的清单，避免自己的版本号与子项目的版本号混淆.
 
 这些版本的名字采用了伦敦地铁站的名字， 根据字母表的顺序来对应版本时间顺序，比如最早的Release版本为Angel, 第二个Release版本为Brixton
 
@@ -5357,6 +5366,31 @@ pom文件中指定cloud的版本，便可以不用指定各个子项目依赖的
     </dependencies>
 </dependencyManagement>
 ```
+
+**希腊字母版本号**
+* Base：设计阶段。只有相应的设计没有具体的功能实现。
+* Alpha：软件的初级版本。基本功能已经实现，但存在较多的bug。
+* Bate：相对于Alpha已经有了很大的进步，消除了严重的BUG，但还存在一些潜在的BUG，还需要不断测试。
+* RELEASE：最终版本，没有太大的问题
+
+**关于版本发布说明**
+* BUILD-XXX
+    * 开发版,开发团队内部使用，不是很稳定
+* GA
+    * 稳定版,相比于开发版，基本上可以使用了
+* PRE（M1、M2）　　　  
+    * 里程碑版,主要是修复了一些BUG的版本，一个GA后通常有多个里程碑版
+* RC　　　　　　　　　　
+    * 候选发布版,该阶段的软件类似于最终版的一个发行观察期，基本只修复比较严重的BUG
+* SR
+    * 正式发布版　　
+
+**Spring Cloud不同版本对应的Spring Boot版本**
+* Hoxton:2.2.x (2019:里程碑阶段)
+* Greenwich:2.1.x (2019,稳定发布版本)
+* Finchley:2.0.x
+* Edgware:1.5.x
+* Dalston:1.5.x
 
 
 ### 1.6.2. 服务治理Eureka
@@ -6462,7 +6496,7 @@ public class LoadBalancerAutoConfiguration {
 restTemplate.getForObject()-->RestTemplate.execute()-->RestTemplate.doExecute()-->AbstractClientHttpRequest.execute()-->AbstractBufferingClientHttpRequest.executeInternal()-->InterceptingClientHttpRequest.execute()-->InterceptingClientHttpRequest.InterceptingRequestExecution.execute()
 
 也就是说应用程序调用restTemplate的相关操作方法时,会被拦截器拦截,拦截器中有负载均衡拦截器,通过负载均衡拦截器中的IRule对象获取到本次的请求目的服务,最终发出请求.
-用户可以自行定义IRule实现类
+用户可以自行定义IRule实现类.
 
 InterceptingClientHttpRequest
 
@@ -7505,6 +7539,157 @@ public class RibbonConfiguration
 }
 ```
 
+#### 1.6.3.3. ribbon配置
+<a href="#menu" style="float:right">目录</a>
+
+
+对千Ribbon的参数 配置通常有两种方式： 全局配置以及指定客户端配置。
+* 全局配置的方式很简单， 只需使用 ribbon.< key>=< value>格式进行配置即可。其中， < key>代表了 Ribbon 客户端配置的参数 名， < value>则代表了 对应参数的值。 比如， 我们可以像下面这样全局配置Ribbon创建连接的超时时间：ribbon.ConnectTimeout=250.全局配置可以作为默认值进行设置， 当指定客户端配置 了相应key 的值时， 将覆盖全局配置的内容。
+* 指定客户端的配置方式 采用 < client> .ribbon.< key>=< value>的格式进行配置。 其中， < key>和< value>的含义同全局配置相同， 而 < client>代表了客户端的名称， 如上文中我们在＠RibbonClient中指定的名称， 也可以将它理解 为是一个服务名。 为了方便理解这种 配置方式， 我们举一个具体的例子： 假设， 有一个服务消费者通过RestTemplate来访问hello-service 服务的/hello 接口，这时 我 们 会这 样调用 restTemplate.getForEntity("http: //helloservice/hello", String.class) .getBody();。 如果没有服务治理框架的帮助，我们需要为该客户端指定 具体的实例清单，可以指定服务名来做详细的配置，具体如下：hello-service.ribbon.listOfServers=localhost:8001,localhost:8002, localhost:8003对于Ribbon .
+
+##### 1.6.3.3.1. 配置参数说明
+<a href="#menu" style="float:right">目录</a>
+
+
+参数的key以及value类型的定义，可以通过查看com.netfix.client.con丘g.CommonCentConfigKey类获得更为详细的配置内容.
+
+位于 ribbon-core包下
+```java
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by Fernflower decompiler)
+//
+
+package com.netflix.client.config;
+
+import com.google.common.base.Preconditions;
+import com.google.common.reflect.TypeToken;
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+public abstract class CommonClientConfigKey<T> implements IClientConfigKey<T> {
+    public static final IClientConfigKey<String> AppName = new CommonClientConfigKey<String>("AppName") { };
+    public static final IClientConfigKey<String> Version = new CommonClientConfigKey<String>("Version") {  };
+    public static final IClientConfigKey<Integer> Port = new CommonClientConfigKey<Integer>("Port") {   };
+    public static final IClientConfigKey<Integer> SecurePort = new CommonClientConfigKey<Integer>("SecurePort") {    };
+    public static final IClientConfigKey<String> VipAddress = new CommonClientConfigKey<String>("VipAddress") {    };
+    public static final IClientConfigKey<Boolean> ForceClientPortConfiguration = new CommonClientConfigKey<Boolean>("ForceClientPortConfiguration") {    };
+    public static final IClientConfigKey<String> DeploymentContextBasedVipAddresses = new CommonClientConfigKey<String>("DeploymentContextBasedVipAddresses") {    };
+    public static final IClientConfigKey<Integer> MaxAutoRetries = new CommonClientConfigKey<Integer>("MaxAutoRetries") {    };
+    public static final IClientConfigKey<Integer> MaxAutoRetriesNextServer = new CommonClientConfigKey<Integer>("MaxAutoRetriesNextServer") {    };
+    public static final IClientConfigKey<Boolean> OkToRetryOnAllOperations = new CommonClientConfigKey<Boolean>("OkToRetryOnAllOperations") {    };
+    public static final IClientConfigKey<Boolean> RequestSpecificRetryOn = new CommonClientConfigKey<Boolean>("RequestSpecificRetryOn") {    };
+    public static final IClientConfigKey<Integer> ReceiveBufferSize = new CommonClientConfigKey<Integer>("ReceiveBufferSize") {    };
+    public static final IClientConfigKey<Boolean> EnablePrimeConnections = new CommonClientConfigKey<Boolean>("EnablePrimeConnections") {    };
+    public static final IClientConfigKey<String> PrimeConnectionsClassName = new CommonClientConfigKey<String>("PrimeConnectionsClassName") {    };
+    public static final IClientConfigKey<Integer> MaxRetriesPerServerPrimeConnection = new CommonClientConfigKey<Integer>("MaxRetriesPerServerPrimeConnection") {    };
+    public static final IClientConfigKey<Integer> MaxTotalTimeToPrimeConnections = new CommonClientConfigKey<Integer>("MaxTotalTimeToPrimeConnections") {    };
+    public static final IClientConfigKey<Float> MinPrimeConnectionsRatio = new CommonClientConfigKey<Float>("MinPrimeConnectionsRatio") {    };
+    public static final IClientConfigKey<String> PrimeConnectionsURI = new CommonClientConfigKey<String>("PrimeConnectionsURI") {    };
+    public static final IClientConfigKey<Integer> PoolMaxThreads = new CommonClientConfigKey<Integer>("PoolMaxThreads") {    };
+    public static final IClientConfigKey<Integer> PoolMinThreads = new CommonClientConfigKey<Integer>("PoolMinThreads") {    };
+    public static final IClientConfigKey<Integer> PoolKeepAliveTime = new CommonClientConfigKey<Integer>("PoolKeepAliveTime") {    };
+    public static final IClientConfigKey<String> PoolKeepAliveTimeUnits = new CommonClientConfigKey<String>("PoolKeepAliveTimeUnits") {    };
+    public static final IClientConfigKey<Boolean> EnableConnectionPool = new CommonClientConfigKey<Boolean>("EnableConnectionPool") {    };
+    /** @deprecated */
+    @Deprecated
+    public static final IClientConfigKey<Integer> MaxHttpConnectionsPerHost = new CommonClientConfigKey<Integer>("MaxHttpConnectionsPerHost") {    };
+    /** @deprecated */
+    @Deprecated
+    public static final IClientConfigKey<Integer> MaxTotalHttpConnections = new CommonClientConfigKey<Integer>("MaxTotalHttpConnections") {    };
+    public static final IClientConfigKey<Integer> MaxConnectionsPerHost = new CommonClientConfigKey<Integer>("MaxConnectionsPerHost") {    };
+    public static final IClientConfigKey<Integer> MaxTotalConnections = new CommonClientConfigKey<Integer>("MaxTotalConnections") {    };
+    public static final IClientConfigKey<Boolean> IsSecure = new CommonClientConfigKey<Boolean>("IsSecure") {    };
+    public static final IClientConfigKey<Boolean> GZipPayload = new CommonClientConfigKey<Boolean>("GZipPayload") {    };
+    public static final IClientConfigKey<Integer> ConnectTimeout = new CommonClientConfigKey<Integer>("ConnectTimeout") {    };
+    public static final IClientConfigKey<Integer> BackoffInterval = new CommonClientConfigKey<Integer>("BackoffTimeout") {    };
+    public static final IClientConfigKey<Integer> ReadTimeout = new CommonClientConfigKey<Integer>("ReadTimeout") {    };
+    public static final IClientConfigKey<Integer> SendBufferSize = new CommonClientConfigKey<Integer>("SendBufferSize") {    };
+    public static final IClientConfigKey<Boolean> StaleCheckingEnabled = new CommonClientConfigKey<Boolean>("StaleCheckingEnabled") {    };
+    public static final IClientConfigKey<Integer> Linger = new CommonClientConfigKey<Integer>("Linger") {    };
+    public static final IClientConfigKey<Integer> ConnectionManagerTimeout = new CommonClientConfigKey<Integer>("ConnectionManagerTimeout") {    };
+    public static final IClientConfigKey<Boolean> FollowRedirects = new CommonClientConfigKey<Boolean>("FollowRedirects") {    };
+    public static final IClientConfigKey<Boolean> ConnectionPoolCleanerTaskEnabled = new CommonClientConfigKey<Boolean>("ConnectionPoolCleanerTaskEnabled") {    };
+    public static final IClientConfigKey<Integer> ConnIdleEvictTimeMilliSeconds = new CommonClientConfigKey<Integer>("ConnIdleEvictTimeMilliSeconds") {    };
+    public static final IClientConfigKey<Integer> ConnectionCleanerRepeatInterval = new CommonClientConfigKey<Integer>("ConnectionCleanerRepeatInterval") {    };
+    public static final IClientConfigKey<Boolean> EnableGZIPContentEncodingFilter = new CommonClientConfigKey<Boolean>("EnableGZIPContentEncodingFilter") {    };
+    public static final IClientConfigKey<String> ProxyHost = new CommonClientConfigKey<String>("ProxyHost") {    };
+    public static final IClientConfigKey<Integer> ProxyPort = new CommonClientConfigKey<Integer>("ProxyPort") {    };
+    public static final IClientConfigKey<String> KeyStore = new CommonClientConfigKey<String>("KeyStore") {    };
+    public static final IClientConfigKey<String> KeyStorePassword = new CommonClientConfigKey<String>("KeyStorePassword") {    };
+    public static final IClientConfigKey<String> TrustStore = new CommonClientConfigKey<String>("TrustStore") {    };
+    public static final IClientConfigKey<String> TrustStorePassword = new CommonClientConfigKey<String>("TrustStorePassword") {    };
+    public static final IClientConfigKey<Boolean> IsClientAuthRequired = new CommonClientConfigKey<Boolean>("IsClientAuthRequired") {    };
+    public static final IClientConfigKey<String> CustomSSLSocketFactoryClassName = new CommonClientConfigKey<String>("CustomSSLSocketFactoryClassName") {    };
+    public static final IClientConfigKey<Boolean> IsHostnameValidationRequired = new CommonClientConfigKey<Boolean>("IsHostnameValidationRequired") {    };
+    public static final IClientConfigKey<Boolean> IgnoreUserTokenInConnectionPoolForSecureClient = new CommonClientConfigKey<Boolean>("IgnoreUserTokenInConnectionPoolForSecureClient") {    };
+    public static final IClientConfigKey<String> ClientClassName = new CommonClientConfigKey<String>("ClientClassName") {    };
+    public static final IClientConfigKey<Boolean> InitializeNFLoadBalancer = new CommonClientConfigKey<Boolean>("InitializeNFLoadBalancer") {    };
+    public static final IClientConfigKey<String> NFLoadBalancerClassName = new CommonClientConfigKey<String>("NFLoadBalancerClassName") {    };
+    public static final IClientConfigKey<String> NFLoadBalancerRuleClassName = new CommonClientConfigKey<String>("NFLoadBalancerRuleClassName") {    };
+    public static final IClientConfigKey<String> NFLoadBalancerPingClassName = new CommonClientConfigKey<String>("NFLoadBalancerPingClassName") {    };
+    public static final IClientConfigKey<Integer> NFLoadBalancerPingInterval = new CommonClientConfigKey<Integer>("NFLoadBalancerPingInterval") {    };
+    public static final IClientConfigKey<Integer> NFLoadBalancerMaxTotalPingTime = new CommonClientConfigKey<Integer>("NFLoadBalancerMaxTotalPingTime") {    };
+    public static final IClientConfigKey<String> NFLoadBalancerStatsClassName = new CommonClientConfigKey<String>("NFLoadBalancerStatsClassName") {    };
+    public static final IClientConfigKey<String> NIWSServerListClassName = new CommonClientConfigKey<String>("NIWSServerListClassName") {    };
+    public static final IClientConfigKey<String> ServerListUpdaterClassName = new CommonClientConfigKey<String>("ServerListUpdaterClassName") {    };
+    public static final IClientConfigKey<String> NIWSServerListFilterClassName = new CommonClientConfigKey<String>("NIWSServerListFilterClassName") {    };
+    public static final IClientConfigKey<Integer> ServerListRefreshInterval = new CommonClientConfigKey<Integer>("ServerListRefreshInterval") {
+    };
+    public static final IClientConfigKey<Boolean> EnableMarkingServerDownOnReachingFailureLimit = new CommonClientConfigKey<Boolean>("EnableMarkingServerDownOnReachingFailureLimit") {    };
+    public static final IClientConfigKey<Integer> ServerDownFailureLimit = new CommonClientConfigKey<Integer>("ServerDownFailureLimit") {
+    };
+    public static final IClientConfigKey<Integer> ServerDownStatWindowInMillis = new CommonClientConfigKey<Integer>("ServerDownStatWindowInMillis") {    };
+    public static final IClientConfigKey<Boolean> EnableZoneAffinity = new CommonClientConfigKey<Boolean>("EnableZoneAffinity") {
+    };
+    public static final IClientConfigKey<Boolean> EnableZoneExclusivity = new CommonClientConfigKey<Boolean>("EnableZoneExclusivity") {    };
+    public static final IClientConfigKey<Boolean> PrioritizeVipAddressBasedServers = new CommonClientConfigKey<Boolean>("PrioritizeVipAddressBasedServers") {    };
+    public static final IClientConfigKey<String> VipAddressResolverClassName = new CommonClientConfigKey<String>("VipAddressResolverClassName") {    };
+    public static final IClientConfigKey<String> TargetRegion = new CommonClientConfigKey<String>("TargetRegion") {    };
+    public static final IClientConfigKey<String> RulePredicateClasses = new CommonClientConfigKey<String>("RulePredicateClasses") {    };
+    public static final IClientConfigKey<String> RequestIdHeaderName = new CommonClientConfigKey<String>("RequestIdHeaderName") {    };
+    public static final IClientConfigKey<Boolean> UseIPAddrForServer = new CommonClientConfigKey<Boolean>("UseIPAddrForServer") {    };
+    public static final IClientConfigKey<String> ListOfServers = new CommonClientConfigKey<String>("listOfServers") {    };
+    private static final Set<IClientConfigKey> keys = new HashSet();
+    private final String configKey;
+    private final Class<T> type;
+    }
+}
+
+```
+
+##### 1.6.3.3.2. 重试机制
+<a href="#menu" style="float:right">目录</a>
+
+由于Spring Cloud Eureka实现的服务治理机制强调了CAP原理中的AP, 即可用性与可靠性，它与Zoo Keeper这类强调CP( 一致性、可靠性）的服务治理框架最大的区别就是，Eureka为了实现更高的服务可用性， 牺牲了一定的一致性， 在极端情况下它宁愿接受故障实例也不要丢掉 “ 健康 ” 实例， 比如， 当服务注册中心的网络发生故障断开时， 由于所有的服务实例无法维持续约心跳， 在强调 AP的服务治理中将会把所有服务实例都剔除掉，而Eureka则会因为超过85%的实例丢失心跳而会触发保护机制，注册中心将会保留此时的所有节点， 以实现服务间依然可以进行互相调用的场景， 即使其中有部分故障节点， 但这样做可以继续保障大多数的服务正常消费。
+
+由于Spring Cloud Eureka在可用性与一致性上的取舍， 不论是由于触发了保护机制还是服务剔除的延迟， 引起服务调用到故障实例的时候， 我们还是希望能够增强对这类问题的容错。 所以， 我们在实现服务调用的时候通常会加入一些重试机制。 在目前我们使用的Brixton版本中， 对于重试机制的实现需要我们自己来扩展完成。 而从CamdenSR2版本开始，Spring Cloud整合了SpringRetry来增强RestTernplate的重试能力， 对于开发者来说只需通过简单的配置， 原来那些通过 RestTemplate 实现的服务访问就会自动根据配置来实现重试策略
+
+```yml
+#开启重试机制,默认打开
+spring.cloud.loadbalancer.retry.enabled=true
+#断路器的超时时间需要大于Ribbon的超时时间， 不然不会触发重试
+hystrix.command.default.execution.isolation.thread.timeoutinMilliseconds=lOOOO
+# 请求连接的超时时间。
+hello-service.ribbon.ConnectTimeout=250
+#请求处理的超时时间。
+hello-service.ribbon.ReadTimeout=lOOO
+#对所有操作请求都进行重试
+hello-service.ribbon.OkToRetryOnAllOperations=true
+#切换实例的重试次数
+hello-service.ribbon.MaxAutoRe七riesNex七Server=2
+#对当前实例的重试次数
+hello-service.ribbon.MaxAutoRetries=l
+```
+根据如上配置， 当访问到故障请求的时候， 它会再尝试访问 一次当前实例（次数由MaxAutoRetries配置）， 如果不行， 就换 一个实例进行访问， 如果还是不行， 再换 一次实例访问（更换次数由MaxAutoRe红iesNextServer配置）， 如果依然不行， 返回失败信息
+
+
 ### 1.6.4. 声明式服务调用feign
 <a href="#menu" style="float:right">目录</a>
 
@@ -7588,6 +7773,478 @@ public interface DemoFeign {
     public String demo(@RequestBody User user);
 }
 ```
+
+#### 1.6.4.2. 实现原理
+<a href="#menu" style="float:right">目录</a>
+
+##### 1.6.4.2.1. 配置类
+<a href="#menu" style="float:right">目录</a>
+
+```java
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by Fernflower decompiler)
+//
+
+package org.springframework.cloud.openfeign;
+
+import com.fasterxml.jackson.databind.Module;
+import com.netflix.hystrix.HystrixCommand;
+import feign.Contract;
+import feign.Feign;
+import feign.Logger;
+import feign.Retryer;
+import feign.Feign.Builder;
+import feign.codec.Decoder;
+import feign.codec.Encoder;
+import feign.hystrix.HystrixFeign;
+import feign.optionals.OptionalDecoder;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
+import org.springframework.cloud.openfeign.support.PageJacksonModule;
+import org.springframework.cloud.openfeign.support.PageableSpringEncoder;
+import org.springframework.cloud.openfeign.support.ResponseEntityDecoder;
+import org.springframework.cloud.openfeign.support.SpringDecoder;
+import org.springframework.cloud.openfeign.support.SpringEncoder;
+import org.springframework.cloud.openfeign.support.SpringMvcContract;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.format.support.DefaultFormattingConversionService;
+import org.springframework.format.support.FormattingConversionService;
+
+@Configuration
+public class FeignClientsConfiguration {
+    @Autowired
+    private ObjectFactory<HttpMessageConverters> messageConverters;
+    @Autowired(
+        required = false
+    )
+    private List<AnnotatedParameterProcessor> parameterProcessors = new ArrayList();
+    @Autowired(
+        required = false
+    )
+    private List<FeignFormatterRegistrar> feignFormatterRegistrars = new ArrayList();
+    @Autowired(
+        required = false
+    )
+    private Logger logger;
+
+    public FeignClientsConfiguration() {
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public Decoder feignDecoder() {
+        return new OptionalDecoder(new ResponseEntityDecoder(new SpringDecoder(this.messageConverters)));
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnMissingClass({"org.springframework.data.domain.Pageable"})
+    public Encoder feignEncoder() {
+        return new SpringEncoder(this.messageConverters);
+    }
+
+    @Bean
+    @ConditionalOnClass(
+        name = {"org.springframework.data.domain.Pageable"}
+    )
+    @ConditionalOnMissingBean
+    public Encoder feignEncoderPageable() {
+        return new PageableSpringEncoder(new SpringEncoder(this.messageConverters));
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public Contract feignContract(ConversionService feignConversionService) {
+        return new SpringMvcContract(this.parameterProcessors, feignConversionService);
+    }
+
+    @Bean
+    public FormattingConversionService feignConversionService() {
+        FormattingConversionService conversionService = new DefaultFormattingConversionService();
+        Iterator var2 = this.feignFormatterRegistrars.iterator();
+
+        while(var2.hasNext()) {
+            FeignFormatterRegistrar feignFormatterRegistrar = (FeignFormatterRegistrar)var2.next();
+            feignFormatterRegistrar.registerFormatters(conversionService);
+        }
+
+        return conversionService;
+    }
+
+    /*
+    重试策略
+    */
+    @Bean
+    @ConditionalOnMissingBean
+    public Retryer feignRetryer() {
+        return Retryer.NEVER_RETRY;
+    }
+
+    @Bean
+    @Scope("prototype")
+    @ConditionalOnMissingBean
+    public Builder feignBuilder(Retryer retryer) {
+        return Feign.builder().retryer(retryer);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean({FeignLoggerFactory.class})
+    public FeignLoggerFactory feignLoggerFactory() {
+        return new DefaultFeignLoggerFactory(this.logger);
+    }
+
+    @Bean
+    @ConditionalOnClass(
+        name = {"org.springframework.data.domain.Page"}
+    )
+    public Module pageJacksonModule() {
+        return new PageJacksonModule();
+    }
+
+    @Configuration
+    @ConditionalOnClass({HystrixCommand.class, HystrixFeign.class})
+    protected static class HystrixFeignConfiguration {
+        protected HystrixFeignConfiguration() {
+        }
+
+        @Bean
+        @Scope("prototype")
+        @ConditionalOnMissingBean
+        @ConditionalOnProperty(
+            name = {"feign.hystrix.enabled"}
+        )
+        public Builder feignHystrixBuilder() {
+            return HystrixFeign.builder();
+        }
+    }
+}
+
+```
+
+##### 1.6.4.2.2. 启动注解说明
+<a href="#menu" style="float:right">目录</a>
+
+feign是一个伪客户端，即它不做任何的请求处理。Feign通过处理注解生成request，从而实现简化HTTP API开发的目的，即开发人员可以使用注解的方式定制request api模板，在发送http request请求之前，feign通过处理注解的方式替换掉request模板中的参数，这种实现方式显得更为直接、可理解。
+
+```java
+@FeignClient(value = "provider")
+public interface DemoFeign {
+
+    @GetMapping("/provider/demo")
+    public String demo(@RequestParam("key1") String key1,@RequestParam("key1") String key2);
+}
+
+public @interface FeignClient {
+    @AliasFor("name")
+    String value() default "";
+    /** @deprecated */
+    @Deprecated
+    String serviceId() default "";
+    String contextId() default "";
+    @AliasFor("value")
+    String name() default "";
+    String qualifier() default "";
+    String url() default "";
+    boolean decode404() default false;
+    Class<?>[] configuration() default {};
+    Class<?> fallback() default void.class;
+    Class<?> fallbackFactory() default void.class;
+    String path() default "";
+    boolean primary() default true;
+}
+```
+
+
+
+
+通过包扫描注入FeignClient的bean，该源码在FeignClientsRegistrar类：
+首先在启动配置上检查是否有@EnableFeignClients注解，如果有该注解，则开启包扫描，扫描被@FeignClient注解接口。代码如下：
+
+在使用Feign时,需要在启动类上添加注解@EnableFeignClients
+可以看到引入了FeignClientsRegistrar类
+```java
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE})
+@Documented
+@Import({FeignClientsRegistrar.class})
+public @interface EnableFeignClients {
+    String[] value() default {};
+
+    String[] basePackages() default {};
+
+    Class<?>[] basePackageClasses() default {};
+
+    Class<?>[] defaultConfiguration() default {};
+
+    Class<?>[] clients() default {};
+}
+```
+FeignClientsRegistrar类
+```java
+
+class FeignClientsRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware, EnvironmentAware {
+    
+    /**
+    由于实现了ImportBeanDefinitionRegistrar,启动后会调用这个registerBeanDefinitions方法
+    */
+    public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
+        this.registerDefaultConfiguration(metadata, registry);
+        this.registerFeignClients(metadata, registry);
+    }
+
+    /**
+    通过包扫描注入FeignClient的bean，该源码在FeignClientsRegistrar类：首先在启动配置上检查是否有@EnableFeignClients注解，如果有该注解，则开启包扫描，扫描被@FeignClient注解接口
+    */
+    private void registerDefaultConfiguration(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
+        Map<String, Object> defaultAttrs = metadata.getAnnotationAttributes(EnableFeignClients.class.getName(), true);
+        if (defaultAttrs != null && defaultAttrs.containsKey("defaultConfiguration")) {
+            String name;
+            if (metadata.hasEnclosingClass()) {
+                name = "default." + metadata.getEnclosingClassName();
+            } else {
+                name = "default." + metadata.getClassName();
+            }
+            //获取FeignClientsRegistrar.defaultConfiguration的信息并创建bean
+            this.registerClientConfiguration(registry, name, defaultAttrs.get("defaultConfiguration"));
+        }
+
+    }
+    /*
+    程序启动后通过包扫描，当类有@ FeignClient 注解，将注解的信息取出，连同类名一起取出，赋给BeanDefinitionBuilder，然后根据BeanDefinitionBuilder得到beanDefinition，最后beanDefinition式注入到ioc容器中
+    */
+    public void registerFeignClients(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
+        ClassPathScanningCandidateComponentProvider scanner = this.getScanner();
+        scanner.setResourceLoader(this.resourceLoader);
+        Map<String, Object> attrs = metadata.getAnnotationAttributes(EnableFeignClients.class.getName());
+        AnnotationTypeFilter annotationTypeFilter = new AnnotationTypeFilter(FeignClient.class);
+        Class<?>[] clients = attrs == null ? null : (Class[])((Class[])attrs.get("clients"));
+        Object basePackages;
+        if (clients != null && clients.length != 0) {
+            final Set<String> clientClasses = new HashSet();
+            basePackages = new HashSet();
+            Class[] var9 = clients;
+            int var10 = clients.length;
+
+            for(int var11 = 0; var11 < var10; ++var11) {
+                Class<?> clazz = var9[var11];
+                ((Set)basePackages).add(ClassUtils.getPackageName(clazz));
+                clientClasses.add(clazz.getCanonicalName());
+            }
+
+            AbstractClassTestingTypeFilter filter = new AbstractClassTestingTypeFilter() {
+                protected boolean match(ClassMetadata metadata) {
+                    String cleaned = metadata.getClassName().replaceAll("\\$", ".");
+                    return clientClasses.contains(cleaned);
+                }
+            };
+            scanner.addIncludeFilter(new FeignClientsRegistrar.AllTypeFilter(Arrays.asList(filter, annotationTypeFilter)));
+        } else {
+            scanner.addIncludeFilter(annotationTypeFilter);
+            basePackages = this.getBasePackages(metadata);
+        }
+        //存放FeignClient注解的基础包类名
+        Iterator var17 = ((Set)basePackages).iterator();
+
+        while(var17.hasNext()) {
+            String basePackage = (String)var17.next();
+            Set<BeanDefinition> candidateComponents = scanner.findCandidateComponents(basePackage);
+            Iterator var21 = candidateComponents.iterator();
+
+            while(var21.hasNext()) {
+                //FeignClient注解的类的BeanDefinition
+                BeanDefinition candidateComponent = (BeanDefinition)var21.next();
+                if (candidateComponent instanceof AnnotatedBeanDefinition) {
+                    AnnotatedBeanDefinition beanDefinition = (AnnotatedBeanDefinition)candidateComponent;
+                    AnnotationMetadata annotationMetadata = beanDefinition.getMetadata();
+                    Assert.isTrue(annotationMetadata.isInterface(), "@FeignClient can only be specified on an interface");
+                    Map<String, Object> attributes = annotationMetadata.getAnnotationAttributes(FeignClient.class.getCanonicalName());
+                    String name = this.getClientName(attributes);
+                    //获取FeignClient注解的configuration属性并注册对应的BeanDefinition到容器中
+                    this.registerClientConfiguration(registry, name, attributes.get("configuration"));
+                    //注册FeignClient注解的类BeanDefinition到IOC容器中
+                    this.registerFeignClient(registry, annotationMetadata, attributes);
+                }
+            }
+        }
+
+    }
+    //
+    private void registerFeignClient(BeanDefinitionRegistry registry, AnnotationMetadata annotationMetadata, Map<String, Object> attributes) {
+        String className = annotationMetadata.getClassName();
+        BeanDefinitionBuilder definition = BeanDefinitionBuilder.genericBeanDefinition(FeignClientFactoryBean.class);
+        this.validate(attributes);
+        definition.addPropertyValue("url", this.getUrl(attributes));
+        definition.addPropertyValue("path", this.getPath(attributes));
+        String name = this.getName(attributes);
+        definition.addPropertyValue("name", name);
+        String contextId = this.getContextId(attributes);
+        definition.addPropertyValue("contextId", contextId);
+        definition.addPropertyValue("type", className);
+        definition.addPropertyValue("decode404", attributes.get("decode404"));
+        definition.addPropertyValue("fallback", attributes.get("fallback"));
+        definition.addPropertyValue("fallbackFactory", attributes.get("fallbackFactory"));
+        definition.setAutowireMode(2);
+        String alias = contextId + "FeignClient";
+        AbstractBeanDefinition beanDefinition = definition.getBeanDefinition();
+        boolean primary = (Boolean)attributes.get("primary");
+        beanDefinition.setPrimary(primary);
+        String qualifier = this.getQualifier(attributes);
+        if (StringUtils.hasText(qualifier)) {
+            alias = qualifier;
+        }
+
+        BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, className, new String[]{alias});
+        BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
+    }
+    
+}
+```
+BeanDefinition，顾名思义，是一个对象(Bean)在Spring中描述
+注意上面注册的是BeanDefinition,还没有创建bean,只有在SpringApplication调用public ConfigurableApplicationContext run(String... args) {this.refreshContext(context);}时才会创建bean.
+
+注入bean之后，通过jdk的代理,创建FeignClient注解的类bean
+```java
+public class ReflectiveFeign extends Feign {
+    private final ReflectiveFeign.ParseHandlersByName targetToHandlersByName;
+    private final InvocationHandlerFactory factory;
+    private final QueryMapEncoder queryMapEncoder;
+
+    ReflectiveFeign(ReflectiveFeign.ParseHandlersByName targetToHandlersByName, InvocationHandlerFactory factory, QueryMapEncoder queryMapEncoder) {
+        this.targetToHandlersByName = targetToHandlersByName;
+        this.factory = factory;
+        this.queryMapEncoder = queryMapEncoder;
+    }
+
+    public <T> T newInstance(Target<T> target) {
+        Map<String, MethodHandler> nameToHandler = this.targetToHandlersByName.apply(target);
+        Map<Method, MethodHandler> methodToHandler = new LinkedHashMap();
+        List<DefaultMethodHandler> defaultMethodHandlers = new LinkedList();
+        Method[] var5 = target.type().getMethods();
+        int var6 = var5.length;
+
+        for(int var7 = 0; var7 < var6; ++var7) {
+            Method method = var5[var7];
+            if (method.getDeclaringClass() != Object.class) {
+                if (Util.isDefault(method)) {
+                    DefaultMethodHandler handler = new DefaultMethodHandler(method);
+                    defaultMethodHandlers.add(handler);
+                    methodToHandler.put(method, handler);
+                } else {
+                    methodToHandler.put(method, (MethodHandler)nameToHandler.get(Feign.configKey(target.type(), method)));
+                }
+            }
+        }
+
+        //这里是FeignInvocationHandler
+        InvocationHandler handler = this.factory.create(target, methodToHandler);
+        //创建代理对象
+        T proxy = Proxy.newProxyInstance(target.type().getClassLoader(), new Class[]{target.type()}, handler);
+        Iterator var12 = defaultMethodHandlers.iterator();
+
+        while(var12.hasNext()) {
+            DefaultMethodHandler defaultMethodHandler = (DefaultMethodHandler)var12.next();
+            defaultMethodHandler.bindTo(proxy);
+        }
+
+        return proxy;
+    }
+
+    static class FeignInvocationHandler implements InvocationHandler {
+        private final Target target;
+        private final Map<Method, MethodHandler> dispatch;
+
+        FeignInvocationHandler(Target target, Map<Method, MethodHandler> dispatch) {
+            this.target = (Target)Util.checkNotNull(target, "target", new Object[0]);
+            this.dispatch = (Map)Util.checkNotNull(dispatch, "dispatch for %s", new Object[]{target});
+        }
+        //调用时,将会被拦截
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            if (!"equals".equals(method.getName())) {
+                if ("hashCode".equals(method.getName())) {
+                    return this.hashCode();
+                } else {
+                    //SynchronousMethodHandler的invoke执行
+                    return "toString".equals(method.getName()) ? this.toString() : ((MethodHandler)this.dispatch.get(method)).invoke(args);
+                }
+            } else {
+                try {
+                    Object otherHandler = args.length > 0 && args[0] != null ? Proxy.getInvocationHandler(args[0]) : null;
+                    return this.equals(otherHandler);
+                } catch (IllegalArgumentException var5) {
+                    return false;
+                }
+            }
+        }
+        
+}
+```
+
+在SynchronousMethodHandler类进行拦截处理，当被FeignClient的方法被拦截会根据参数生成RequestTemplate对象，该对象就是http请求的模板，代码如下：
+
+```java
+final class SynchronousMethodHandler implements MethodHandler {
+  
+    public Object invoke(Object[] argv) throws Throwable {
+        RequestTemplate template = this.buildTemplateFromArgs.create(argv);
+        Retryer retryer = this.retryer.clone();
+
+        while(true) {
+            try {
+                return this.executeAndDecode(template);
+            } catch (RetryableException var8) {
+                RetryableException e = var8;
+
+                try {
+                    retryer.continueOrPropagate(e);
+                } catch (RetryableException var7) {
+                    Throwable cause = var7.getCause();
+                    if (this.propagationPolicy == ExceptionPropagationPolicy.UNWRAP && cause != null) {
+                        throw cause;
+                    }
+
+                    throw var7;
+                }
+
+                if (this.logLevel != Level.NONE) {
+                    this.logger.logRetry(this.metadata.configKey(), this.logLevel);
+                }
+            }
+        }
+    }
+```
+其中有个executeAndDecode()方法，该方法是通RequestTemplate生成Request请求对象，然后根据用client获取response。
+
+也就是说Feign的调用,中间生成了RequestTemplate对象,调用RequestTemplate的相关方法后,将会通过ribbon相关类来最终实现负载均衡,发送请求处理响应等操作.所以Feign本质上还是使用ribbon来实现.
+
+##### 总结
+
+总到来说，Feign的源码实现的过程如下：
+* 首先通过@EnableFeignCleints注解开启FeignCleint
+* 根据Feign的规则实现接口，并加@FeignCleint注解
+* 程序启动后，会进行包扫描，扫描所有的@ FeignCleint的注解的类，并将这些信息注入到ioc容器中。
+* 当接口的方法被调用，通过jdk的代理，来生成具体的RequesTemplate
+* RequesTemplate在生成Request
+* Request交给Client去处理，其中Client可以是HttpUrlConnection、HttpClient也可以是Okhttp
+* 最后Client被封装到LoadBalanceClient类，这个类结合类Ribbon做到了负载均衡。
+
+
+
+##### 1.6.4.2.3. 调用实现原理
+<a href="#menu" style="float:right">目录</a>
+
+
 
 ### 1.6.5. 服务容错保护 Hystrix
 <a href="#menu" style="float:right">目录</a>
