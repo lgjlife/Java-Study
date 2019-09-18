@@ -1553,7 +1553,7 @@ docker-compose run web bash
 * version：指定 docker-compose.yml 文件的写法格式
 * services：多个容器集合
     * 一个service代表一个container，这个container可以从dockerhub的image来创建，或者从本地的Dockerfile build出来的image来创建。
-    * service的启动类似docker run，我们可以给其指定network和volme，所以可以给service指定network和volume的引用
+    * service的�����动类似docker run，我们可以给其指定network和volme，所以可以给service指定network和volume的引用
 * build：配置构建时，Compose 会利用它自动构建镜像，该值可以是一个路径，也可以是一个对象，用于指定 Dockerfile 参数
 
 ```yml
@@ -2790,7 +2790,7 @@ log4j、logback、log4j2都是一种日志具体实现框架，所以既可以�
         * 使用占位符的方式输出日志，输出语句为logger.info("increase {} from {} to {}", arg1, arg2, arg3)的形式，最终输出时{}占位符处的内容将用arg1,arg2,arg3的字符串填充。
         * log4j2用Object[]保存参数信息，在这一阶段会将Object[]转换为String[]，生成含有输出模式串"increase {} from {} to {}"和参数数组String[]的Message，为后续日志格式化输出做准备。
     * 4.生成LogEvent。
-        * LogEvent中含有loggerName（日志的输出者），level（日志级别），timeMillis（日志的输出时间），message（日志输出内容），threadName（线程名称）等信息。
+        * LogEvent中含有loggerName（日志的输出者），level（日志级别），timeMillis（日志的输出时间），message（��志��出内容），threadName（线程名称）等信息。
         * 在上述程序中，生成的LogEvent的属性值为loggerName=com.meituan.Main，Level=INFO，timeMillis=1505659461759，message为步骤3中创建的Message，threadNama=main。
     * 5.使用Logger配置的Filter对日志事件进行过滤。
         * Logger配置的Filter的Level为DEBUG，表示允许输出DEBUG及以上级别的日志。logger.info()请求输出INFO级别的日志，通过。

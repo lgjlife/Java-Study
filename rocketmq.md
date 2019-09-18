@@ -53,7 +53,7 @@
         - [1.12.2. 事务消息发送流程](#1122-事务消息发送流程)
         - [1.12.3. 提交或者回滚事务](#1123-提交或者回滚事务)
         - [1.12.4. 事务消息回查事务状态](#1124-事务消息回查事务状态)
-    - [1.13. 基于Netty的通信实现](#113-基于netty的通信实现)
+    - [1.13. Rocket通信实现](#113-rocket通信实现)
 
 <!-- /TOC -->
 
@@ -2051,7 +2051,7 @@ public static void main (String [] args) throws InterruptedException ,MQClientEx
     //使用 Java代码，在服务器做消息过滤
     String filterCode = MixAll.file2String("/home/admin/MessageFilterimpl.java" );
     consumer.subscribe("TopicFilter7","com.alibaba.rocketmq.example.filter.MessageFilterimpl",filterCode);
-    consumer.registerMessageL 工stener(new MessageListenerConcurrently() {
+    consumer.registerMessageListener(new MessageListenerConcurrently() {
     @Override
     public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs,ConsumeConcurrentlyContext context) {
         System.out.println(Thread.currentThread().getName() + "Receive New Messages:" + msgs);
@@ -2426,7 +2426,7 @@ RocketMQ 通过 TransactionalMessageCheckService 线程定 时去检测 RMQ_SYS_
 
 
 
-## 1.13. 基于Netty的通信实现
+## 1.13. Rocket通信实现
 <a href="#menu" style="float:right">目录</a>
 
 

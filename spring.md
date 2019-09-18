@@ -8,10 +8,12 @@
     - [1.1. Spring](#11-spring)
         - [1.1.1. IOC容器](#111-ioc容器)
             - [1.1.1.1. 控制反转和依赖注入](#1111-控制反转和依赖注入)
-            - [1.1.1.2. 注入方式](#1112-注入方式)
+            - [1.1.1.2. 依赖注入方式](#1112-依赖注入方式)
                 - [1.1.1.2.1. setter注入与构造方法注入](#11121-setter注入与构造方法注入)
                 - [1.1.1.2.2. 自动注入方式](#11122-自动注入方式)
         - [1.1.2. IOC容器](#112-ioc容器)
+            - [1.1.2.1. Bean的作用域](#1121-bean的作用域)
+            - [1.1.2.2. Bean的生命周期](#1122-bean的生命周期)
         - [1.1.3. AOP面向切面编程](#113-aop面向切面编程)
         - [1.1.4. Spring 事务管理](#114-spring-事务管理)
             - [1.1.4.1. 数据库事务基础知识](#1141-数据库事务基础知识)
@@ -23,137 +25,186 @@
             - [1.1.4.4. 使用XML配置声明式事务](#1144-使用xml配置声明式事务)
             - [1.1.4.5. 使用注解配置事务](#1145-使用注解配置事务)
             - [1.1.4.6. 事务实现原理](#1146-事务实现原理)
-    - [1.2. Spring Cache](#12-spring-cache)
-        - [1.2.1. 几个重要概念&缓存注解](#121-几个重要概念缓存注解)
-        - [1.2.2. SpEL上下文数据](#122-spel上下文数据)
-        - [1.2.3. 基本使用](#123-基本使用)
-    - [1.3. Spring Admin](#13-spring-admin)
-    - [1.4. Sppring MVC](#14-sppring-mvc)
-        - [1.4.1. MVC体系概述](#141-mvc体系概述)
-            - [1.4.1.1. MVC 架构](#1411-mvc-架构)
-        - [1.4.2. Restful](#142-restful)
-            - [1.4.2.1. URL 设计](#1421-url-设计)
-            - [1.4.2.2. 状态码](#1422-状态码)
-            - [1.4.2.3. 服务器回应](#1423-服务器回应)
-        - [1.4.3. 注解说明](#143-注解说明)
-        - [1.4.4. 拦截器](#144-拦截器)
-        - [1.4.5. 过滤器](#145-过滤器)
-            - [1.4.5.1. 过滤器和拦截器的区别：](#1451-过滤器和拦截器的区别)
-            - [1.4.5.2. 拦截器（Interceptor）和过滤器（Filter）的一些用途](#1452-拦截器interceptor和过滤器filter的一些用途)
-    - [1.5. SpringBoot](#15-springboot)
-        - [1.5.1. 基本概念](#151-基本概念)
-        - [1.5.2. 基本使用](#152-基本使用)
-        - [1.5.3. Spring Boot 环境下创建Bean](#153-spring-boot-环境下创建bean)
-        - [1.5.4. 使用不同的容器](#154-使用不同的容器)
-        - [1.5.5. 配置文件](#155-配置文件)
-            - [1.5.5.1. bootstrap.yml与application.yml区别](#1551-bootstrapyml与applicationyml区别)
-            - [1.5.5.2. 多环境配置](#1552-多环境配置)
-                - [1.5.5.2.1. 配置文件](#15521-配置文件)
-                - [1.5.5.2.2. 多环境配置](#15522-多环境配置)
-            - [1.5.5.3. 注解ConfigurationProperties注入yml配置文件中的数据](#1553-注解configurationproperties注入yml配置文件中的数据)
-            - [1.5.5.4. 使用随机数](#1554-使用随机数)
-            - [1.5.5.5. 从命令行指定参数](#1555-从命令行指定参数)
-            - [1.5.5.6. 配置日志](#1556-配置日志)
-        - [1.5.6. 启动类 @SpringBootApplication 注解](#156-启动类-springbootapplication-注解)
-            - [1.5.6.1. @Inherited 注解](#1561-inherited-注解)
-            - [1.5.6.2. @SpringBootConfiguration](#1562-springbootconfiguration)
-            - [1.5.6.3. @EnableAutoConfiguration](#1563-enableautoconfiguration)
-            - [1.5.6.4. @ComponentScan](#1564-componentscan)
-        - [1.5.7. Spring Boot Starter](#157-spring-boot-starter)
-            - [1.5.7.1. 常用的Starter](#1571-常用的starter)
-            - [1.5.7.2. 创建自己的Starter](#1572-创建自己的starter)
-            - [1.5.7.3. Starter原理](#1573-starter原理)
-        - [1.5.8. Actuator 的端点](#158-actuator-的端点)
-            - [1.5.8.1. 揭秘 Actuator 的端点](#1581-揭秘-actuator-的端点)
-            - [1.5.8.2. 自定义监控](#1582-自定义监控)
-        - [1.5.9. Spring Boot 项目发布](#159-spring-boot-项目发布)
-        - [1.5.10. Maven打包](#1510-maven打包)
-        - [1.5.11. Spring Boot原理分析](#1511-spring-boot原理分析)
-            - [1.5.11.1. 启动流程分析](#15111-启动流程分析)
-                - [1.5.11.1.1. 创建SpringApplication对象](#151111-创建springapplication对象)
-                - [1.5.11.1.2. 执行Run方法](#151112-执行run方法)
-        - [1.5.12. 种保护 Spring Boot 应用的绝佳方法](#1512-种保护-spring-boot-应用的绝佳方法)
-            - [1.5.12.1. 在生产中使用HTTPS](#15121-在生产中使用https)
-            - [1.5.12.2. 使用Snyk检查你的依赖关系](#15122-使用snyk检查你的依赖关系)
-            - [1.5.12.3. 升级到最新版本](#15123-升级到最新版本)
-            - [1.5.12.4. 启用CSRF保护](#15124-启用csrf保护)
-            - [1.5.12.5. 使用内容安全策略防止XSS攻击](#15125-使用内容安全策略防止xss攻击)
-            - [1.5.12.6. 使用OpenID Connect进行身份验证](#15126-使用openid-connect进行身份验证)
-            - [1.5.12.7. 管理密码？使用密码哈希！](#15127-管理密码使用密码哈希)
-            - [1.5.12.8. 安全地存储秘密](#15128-安全地存储秘密)
-            - [1.5.12.9. 使用OWASP的ZAP测试您的应用程序](#15129-使用owasp的zap测试您的应用程序)
-            - [1.5.12.10. 让你的安全团队进行代码审查](#151210-让你的安全团队进行代码审查)
-        - [1.5.13. 项目实践](#1513-项目实践)
-            - [1.5.13.1. 跨域配置](#15131-跨域配置)
-            - [1.5.13.2. 全局异常处理](#15132-全局异常处理)
-        - [1.5.14. 其他一些问题](#1514-其他一些问题)
-            - [1.5.14.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？](#15141-如何在-spring-boot-启动的时候运行一些特定的代码)
-            - [1.5.14.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？](#15142-如何重新加载spring-boot上的更改而无需重新启动服务器)
-            - [1.5.14.3. Spring Boot 有哪几种读取配置的方式？](#15143-spring-boot-有哪几种读取配置的方式)
-    - [1.6. SpringCloud](#16-springcloud)
-        - [1.6.1. 基础知识](#161-基础知识)
-            - [1.6.1.1. 微服务概念](#1611-微服务概念)
-            - [1.6.1.2. SpringCloud子项目](#1612-springcloud子项目)
-            - [1.6.1.3. 版本说明](#1613-版本说明)
-        - [1.6.2. 服务治理Eureka](#162-服务治理eureka)
-            - [1.6.2.1. 基本使用](#1621-基本使用)
-            - [1.6.2.2. 高可用注册中心](#1622-高可用注册中心)
-            - [1.6.2.3. 原理说明](#1623-原理说明)
-                - [1.6.2.3.1. 基础模块说明](#16231-基础模块说明)
-                - [1.6.2.3.2. Region,Zone](#16232-regionzone)
-                - [1.6.2.3.3. 源码分析](#16233-源码分析)
-            - [1.6.2.4. 更多配置说明](#1624-更多配置说明)
-                - [1.6.2.4.1. 服务注册类配置](#16241-服务注册类配置)
-                - [1.6.2.4.2. 服务实例类配置](#16242-服务实例类配置)
-        - [1.6.3. 负载均衡Ribbon](#163-负载均衡ribbon)
-            - [1.6.3.1. 基本使用](#1631-基本使用)
-            - [1.6.3.2. 原理说明](#1632-原理说明)
-                - [1.6.3.2.1. 源码分析](#16321-源码分析)
-                - [1.6.3.2.2. 负载均衡器](#16322-负载均衡器)
-                - [1.6.3.2.3. 负载均衡策略](#16323-负载均衡策略)
-                - [1.6.3.2.4. 配置详解](#16324-配置详解)
-            - [1.6.3.3. ribbon配置](#1633-ribbon配置)
-                - [1.6.3.3.1. 配置参数说明](#16331-配置参数说明)
-                - [1.6.3.3.2. 重试机制](#16332-重试机制)
-        - [1.6.4. 声明式服务调用feign](#164-声明式服务调用feign)
-            - [1.6.4.1. 使用案例](#1641-使用案例)
-            - [1.6.4.2. 实现原理](#1642-实现原理)
-                - [1.6.4.2.1. 配置类](#16421-配置类)
-                - [1.6.4.2.2. 启动注解说明](#16422-启动注解说明)
-                - [总结](#总结)
-                - [1.6.4.2.3. 调用实现原理](#16423-调用实现原理)
-        - [1.6.5. 服务容错保护 Hystrix](#165-服务容错保护-hystrix)
-        - [1.6.6. API网关服务](#166-api网关服务)
-            - [1.6.6.1. zuul](#1661-zuul)
-            - [1.6.6.2. GateWay](#1662-gateway)
-        - [1.6.7. 分布式配置中心Config](#167-分布式配置中心config)
-            - [1.6.7.1. 基本使用](#1671-基本使用)
-                - [1.6.7.1.1. 配置中心](#16711-配置中心)
-                - [1.6.7.1.2. bootstrap.yml与application.yml区别](#16712-bootstrapyml与applicationyml区别)
-                - [1.6.7.1.3. 客户端配置](#16713-客户端配置)
-                - [1.6.7.1.4. 刷新配置](#16714-刷新配置)
-            - [1.6.7.2. 原理说明](#1672-原理说明)
-            - [1.6.7.3. 更多使用方式](#1673-更多使用方式)
-        - [1.6.8. 消息总线bus](#168-消息总线bus)
-            - [1.6.8.1. 消息代理](#1681-消息代理)
-        - [1.6.9. 消息驱动的微服务Stream](#169-消息驱动的微服务stream)
-        - [1.6.10. 分布式服务跟踪Sleuth](#1610-分布式服务跟踪sleuth)
-            - [1.6.10.1. 基本使用](#16101-基本使用)
-            - [1.6.10.2. 跟踪原理](#16102-跟踪原理)
-                - [1.6.10.2.1. 基本实现原理](#161021-基本实现原理)
-                - [1.6.10.2.2. 支持的组件](#161022-支持的组件)
-                - [1.6.10.2.3. 一些基本概念](#161023-一些基本概念)
-                - [1.6.10.2.4. zipkin](#161024-zipkin)
-                - [1.6.10.2.5. 调用过程](#161025-调用过程)
-    - [1.7. 单元测试](#17-单元测试)
-        - [1.7.1. Junit](#171-junit)
-            - [1.7.1.1. 概述](#1711-概述)
-            - [1.7.1.2. JUnit 中的重要的 API](#1712-junit-中的重要的-api)
-            - [1.7.1.3. 常用注解](#1713-常用注解)
-            - [1.7.1.4. 套件测试](#1714-套件测试)
-        - [1.7.2. 控制层测试](#172-控制层测试)
-        - [1.7.3. 服务层测试](#173-服务层测试)
-        - [1.7.4. DAO层测试](#174-dao层测试)
+    - [1.2. Spring 表达式语言](#12-spring-表达式语言)
+    - [1.3. Spring Cache](#13-spring-cache)
+        - [1.3.1. 几个重要概念&缓存注解](#131-几个重要概念缓存注解)
+        - [1.3.2. SpEL上下文数据](#132-spel上下文数据)
+        - [1.3.3. 基本使用](#133-基本使用)
+    - [1.4. Spring Boot Admin](#14-spring-boot-admin)
+        - [1.4.1. 基础认识](#141-基础认识)
+        - [1.4.2. 使用实例](#142-使用实例)
+            - [1.4.2.1. Server应用](#1421-server应用)
+            - [1.4.2.2. Client应用](#1422-client应用)
+            - [1.4.2.3. Client配置说明](#1423-client配置说明)
+            - [集群](#集群)
+            - [1.4.2.4. 集成spring security](#1424-集成spring-security)
+            - [1.4.2.5. 集成邮箱报警功能](#1425-集成邮箱报警功能)
+    - [1.5. Spring Security](#15-spring-security)
+        - [1.5.1. 简介](#151-简介)
+        - [1.5.2. 提供的功能](#152-提供的功能)
+        - [1.5.3. 核心类](#153-核心类)
+    - [1.6. Sppring MVC](#16-sppring-mvc)
+        - [1.6.1. MVC体系概述](#161-mvc体系概述)
+            - [1.6.1.1. MVC 架构](#1611-mvc-架构)
+        - [1.6.2. Restful](#162-restful)
+            - [1.6.2.1. URL 设计](#1621-url-设计)
+            - [1.6.2.2. 状态码](#1622-状态码)
+            - [1.6.2.3. 服务器回应](#1623-服务器回应)
+        - [1.6.3. 注解说明](#163-注解说明)
+        - [1.6.4. 拦截器](#164-拦截器)
+        - [1.6.5. 过滤器](#165-过滤器)
+            - [1.6.5.1. 过滤器和拦截器的区别：](#1651-过滤器和拦截器的区别)
+            - [1.6.5.2. 拦截器（Interceptor）和过滤器（Filter）的一些用途](#1652-拦截器interceptor和过滤器filter的一些用途)
+    - [1.7. SpringBoot](#17-springboot)
+        - [1.7.1. 基本概念](#171-基本概念)
+        - [1.7.2. 基本使用](#172-基本使用)
+        - [1.7.3. Spring Boot 环境下创建Bean](#173-spring-boot-环境下创建bean)
+        - [1.7.4. 使用不同的容器](#174-使用不同的容器)
+        - [1.7.5. 配置文件](#175-配置文件)
+            - [1.7.5.1. bootstrap.yml与application.yml区别](#1751-bootstrapyml与applicationyml区别)
+            - [1.7.5.2. 多环境配置](#1752-多环境配置)
+                - [1.7.5.2.1. 配置文件](#17521-配置文件)
+                - [1.7.5.2.2. 多环境配置](#17522-多环境配置)
+            - [1.7.5.3. 注解ConfigurationProperties注入yml配置文件中的数据](#1753-注解configurationproperties注入yml配置文件中的数据)
+            - [1.7.5.4. 使用随机数](#1754-使用随机数)
+            - [1.7.5.5. 从命令行指定参数](#1755-从命令行指定参数)
+            - [1.7.5.6. 配置日志](#1756-配置日志)
+        - [1.7.6. 启动类 @SpringBootApplication 注解](#176-启动类-springbootapplication-注解)
+            - [1.7.6.1. @Inherited 注解](#1761-inherited-注解)
+            - [1.7.6.2. @SpringBootConfiguration](#1762-springbootconfiguration)
+            - [1.7.6.3. @EnableAutoConfiguration](#1763-enableautoconfiguration)
+            - [1.7.6.4. @ComponentScan](#1764-componentscan)
+        - [1.7.7. Spring Boot Starter](#177-spring-boot-starter)
+            - [1.7.7.1. 常用的Starter](#1771-常用的starter)
+            - [1.7.7.2. 创建自己的Starter](#1772-创建自己的starter)
+            - [1.7.7.3. Starter原理](#1773-starter原理)
+        - [1.7.8. Actuator 的端点](#178-actuator-的端点)
+            - [1.7.8.1. 揭秘 Actuator 的端点](#1781-揭秘-actuator-的端点)
+            - [1.7.8.2. 自定义监控](#1782-自定义监控)
+        - [1.7.9. Spring Boot 项目发布](#179-spring-boot-项目发布)
+        - [1.7.10. Maven打包](#1710-maven打包)
+        - [1.7.11. Spring Boot原理分析](#1711-spring-boot原理分析)
+            - [1.7.11.1. 启动流程分析](#17111-启动流程分析)
+                - [1.7.11.1.1. 创建SpringApplication对象](#171111-创建springapplication对象)
+                - [1.7.11.1.2. 执行Run方法](#171112-执行run方法)
+        - [1.7.12. 种保护 Spring Boot 应用的绝佳方法](#1712-种保护-spring-boot-应用的绝佳方法)
+            - [1.7.12.1. 在生产中使用HTTPS](#17121-在生产中使用https)
+            - [1.7.12.2. 使用Snyk检查你的依赖关系](#17122-使用snyk检查你的依赖关系)
+            - [1.7.12.3. 升级到最新版本](#17123-升级到最新版本)
+            - [1.7.12.4. 启用CSRF保护](#17124-启用csrf保护)
+            - [1.7.12.5. 使用内容安全策略防止XSS攻击](#17125-使用内容安全策略防止xss攻击)
+            - [1.7.12.6. 使用OpenID Connect进行身份验证](#17126-使用openid-connect进行身份验证)
+            - [1.7.12.7. 管理密码？使用密码哈希！](#17127-管理密码使用密码哈希)
+            - [1.7.12.8. 安全地存储秘密](#17128-安全地存储秘密)
+            - [1.7.12.9. 使用OWASP的ZAP测试您的应用程序](#17129-使用owasp的zap测试您的应用程序)
+            - [1.7.12.10. 让你的安全团队进行代码审查](#171210-让你的安全团队进行代码审查)
+        - [1.7.13. 项目实践](#1713-项目实践)
+            - [1.7.13.1. 跨域配置](#17131-跨域配置)
+            - [1.7.13.2. 全局异常处理](#17132-全局异常处理)
+        - [1.7.14. 其他一些问题](#1714-其他一些问题)
+            - [1.7.14.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？](#17141-如何在-spring-boot-启动的时候运行一些特定的代码)
+            - [1.7.14.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？](#17142-如何重新加载spring-boot上的更改而无需重新启动服务器)
+            - [1.7.14.3. Spring Boot 有哪几种读取配置的方式？](#17143-spring-boot-有哪几种读取配置的方式)
+    - [1.8. SpringCloud](#18-springcloud)
+        - [1.8.1. 基础知识](#181-基础知识)
+            - [1.8.1.1. 微服务概念](#1811-微服务概念)
+            - [1.8.1.2. SpringCloud子项目](#1812-springcloud子项目)
+            - [1.8.1.3. 版本说明](#1813-版本说明)
+        - [1.8.2. 服务治理Eureka](#182-服务治理eureka)
+            - [1.8.2.1. 基本使用](#1821-基本使用)
+            - [1.8.2.2. 高可用注册中心](#1822-高可用注册中心)
+            - [1.8.2.3. 原理说明](#1823-原理说明)
+                - [1.8.2.3.1. 基础模块说明](#18231-基础模块说明)
+                - [1.8.2.3.2. Region,Zone](#18232-regionzone)
+                - [1.8.2.3.3. 源码分析](#18233-源码分析)
+                    - [1.8.2.3.3.1. EnableDiscoveryClient注解说明](#182331-enablediscoveryclient注解说明)
+                    - [1.8.2.3.3.2. 服务注册](#182332-服务注册)
+                    - [1.8.2.3.3.3. 服务续约](#182333-服务续约)
+            - [1.8.2.4. 更多配置说明](#1824-更多配置说明)
+                - [1.8.2.4.1. 服务注册类配置](#18241-服务注册类配置)
+                - [1.8.2.4.2. 服务实例类配置](#18242-服务实例类配置)
+        - [1.8.3. 负载均衡Ribbon](#183-负载均衡ribbon)
+            - [1.8.3.1. 基本使用](#1831-基本使用)
+            - [1.8.3.2. 原理说明](#1832-原理说明)
+                - [1.8.3.2.1. 源码分析](#18321-源码分析)
+                - [1.8.3.2.2. 负载均衡器](#18322-负载均衡器)
+                - [1.8.3.2.3. 负载均衡策略](#18323-负载均衡策略)
+                - [1.8.3.2.4. 配置详解](#18324-配置详解)
+            - [1.8.3.3. ribbon配置](#1833-ribbon配置)
+                - [1.8.3.3.1. 配置参数说明](#18331-配置参数说明)
+                - [1.8.3.3.2. 重试机制](#18332-重试机制)
+        - [1.8.4. 声明式服务调用feign](#184-声明式服务调用feign)
+            - [1.8.4.1. 使用案例](#1841-使用案例)
+            - [1.8.4.2. 实现原理](#1842-实现原理)
+                - [1.8.4.2.1. 配置类](#18421-配置类)
+                - [1.8.4.2.2. 启动注解说明](#18422-启动注解说明)
+                - [1.8.4.2.3. 调用实现原理](#18423-调用实现原理)
+                - [1.8.4.2.4. 总结](#18424-总结)
+        - [1.8.5. 服务容错保护 Hystrix](#185-服务容错保护-hystrix)
+            - [1.8.5.1. Ribbon中使用Hystrix](#1851-ribbon中使用hystrix)
+            - [1.8.5.2. Feign中使用Hystrix](#1852-feign中使用hystrix)
+            - [1.8.5.3. Hystrix详解](#1853-hystrix详解)
+                - [1.8.5.3.1. 背景](#18531-背景)
+                - [1.8.5.3.2. 基本认识](#18532-基本认识)
+                - [1.8.5.3.3. hystrix适用场景](#18533-hystrix适用场景)
+                - [1.8.5.3.4. 注解说明](#18534-注解说明)
+                - [1.8.5.3.5. 如何使用](#18535-如何使用)
+                    - [1.8.5.3.5.1. 基本的实例](#185351-基本的实例)
+                    - [1.8.5.3.5.2. 同步执行](#185352-同步执行)
+                    - [1.8.5.3.5.3. 异步执行](#185353-异步执行)
+                    - [1.8.5.3.5.4. Reactive Execution](#185354-reactive-execution)
+                    - [1.8.5.3.5.5. Reactive Commands](#185355-reactive-commands)
+                    - [1.8.5.3.5.6. Fallback](#185356-fallback)
+                    - [1.8.5.3.5.7. Error Propagation](#185357-error-propagation)
+                    - [1.8.5.3.5.8. Command Name](#185358-command-name)
+                    - [1.8.5.3.5.9. Command Group](#185359-command-group)
+                    - [1.8.5.3.5.10. Command Thread-Pool](#1853510-command-thread-pool)
+                    - [1.8.5.3.5.11. Request Cache](#1853511-request-cache)
+                    - [1.8.5.3.5.12. Request Collapsing](#1853512-request-collapsing)
+                    - [1.8.5.3.5.13. Request Context Setup](#1853513-request-context-setup)
+                    - [1.8.5.3.5.14. Common Patterns](#1853514-common-patterns)
+                    - [1.8.5.3.5.15. Fail Silent](#1853515-fail-silent)
+                    - [1.8.5.3.5.16. Fallback: Static](#1853516-fallback-static)
+                    - [1.8.5.3.5.17. Fallback: Stubbed](#1853517-fallback-stubbed)
+                    - [1.8.5.3.5.18. Fallback: Cache via Network](#1853518-fallback-cache-via-network)
+                    - [1.8.5.3.5.19. Primary + Secondary with Fallback](#1853519-primary--secondary-with-fallback)
+                    - [1.8.5.3.5.20. Client Doesn't Perform Network Access](#1853520-client-doesnt-perform-network-access)
+                    - [1.8.5.3.5.21. Get-Set-Get with Request Cache Invalidation](#1853521-get-set-get-with-request-cache-invalidation)
+                    - [1.8.5.3.5.22. Get-Set-Get with Request Cache Invalidation](#1853522-get-set-get-with-request-cache-invalidation)
+                - [1.8.5.3.6. 工作原理](#18536-工作原理)
+            - [1.8.5.4. Spring Cloud 中使用Hystrix原理](#1854-spring-cloud-中使用hystrix原理)
+            - [1.8.5.5. Hystrix监控](#1855-hystrix监控)
+        - [1.8.6. API网关服务](#186-api网关服务)
+            - [1.8.6.1. zuul](#1861-zuul)
+            - [1.8.6.2. GateWay](#1862-gateway)
+        - [1.8.7. 分布式配置中心Config](#187-分布式配置中心config)
+            - [1.8.7.1. 基本使用](#1871-基本使用)
+                - [1.8.7.1.1. 配置中心](#18711-配置中心)
+                - [1.8.7.1.2. bootstrap.yml与application.yml区别](#18712-bootstrapyml与applicationyml区别)
+                - [1.8.7.1.3. 客户端配置](#18713-客户端配置)
+                - [1.8.7.1.4. 刷新配置](#18714-刷新配置)
+            - [1.8.7.2. 原理说明](#1872-原理说明)
+            - [1.8.7.3. 更多使用方式](#1873-更多使用方式)
+        - [1.8.8. 消息总线bus](#188-消息总线bus)
+            - [1.8.8.1. 消息代理](#1881-消息代理)
+        - [1.8.9. 消息驱动的微服务Stream](#189-消息驱动的微服务stream)
+        - [1.8.10. 分布式服务跟踪Sleuth](#1810-分布式服务跟踪sleuth)
+            - [1.8.10.1. 基本使用](#18101-基本使用)
+            - [1.8.10.2. 跟踪原理](#18102-跟踪原理)
+                - [1.8.10.2.1. 基本实现原理](#181021-基本实现原理)
+                - [1.8.10.2.2. 支持的组件](#181022-支持的组件)
+                - [1.8.10.2.3. 一些基本概念](#181023-一些基本概念)
+                - [1.8.10.2.4. zipkin](#181024-zipkin)
+                - [1.8.10.2.5. 调用过程](#181025-调用过程)
+    - [1.9. 单元测试](#19-单元测试)
+        - [1.9.1. Junit](#191-junit)
+            - [1.9.1.1. 概述](#1911-概述)
+            - [1.9.1.2. JUnit 中的重要的 API](#1912-junit-中的重要的-api)
+            - [1.9.1.3. 常用注解](#1913-常用注解)
+            - [1.9.1.4. 套件测试](#1914-套件测试)
+        - [1.9.2. 控制层测试](#192-控制层测试)
+        - [1.9.3. 服务层测试](#193-服务层测试)
+        - [1.9.4. DAO层测试](#194-dao层测试)
 
 <!-- /TOC -->
 # 1. Spring 体系
@@ -167,6 +218,11 @@
 #### 1.1.1.1. 控制反转和依赖注入
 <a href="#menu" style="float:right">目录</a>
 
+* 从概念上讲：Spring 容器是 Spring 框架的核心，是用来管理对象的。容器将创建对象，把它们连接在一起，配置它们，并管理他们的整个生命周期从创建到销毁。
+* 从具象化讲：通过概念的描述有些同学还是一脸懵逼，在我们的项目中哪个东西是Spring容器？在java项目中，我们使用实现了org.springframework.context.ApplicationContext接口的实现类。在web项目中，我们使用spring.xml——Spring的配置文件。
+* 从代码上讲：一个Spring容器就是某个实现了ApplicationContext接口的类的实例。也就是说，从代码层面，Spring容器其实就是一个ApplicationContext（一个实例化对象）
+
+
 **IoC是什么**
 　　Ioc—Inversion of Control，即“控制反转”，不是什么技术，而是一种设计思想。在Java开发中，Ioc意味着将你设计好的对象交给容器控制，而不是传统的在你的对象内部直接控制。如何理解好Ioc呢？理解好Ioc的关键是要明确“谁控制谁，控制什么，为何是反转（有反转就应该有正转了），哪些方面反转了”，那我们来深入分析一下：
 * 谁控制谁，控制什么：传统Java SE程序设计，我们直接在对象内部通过new进行创建对象，是程序主动去创建依赖对象；而IoC是有专门一个容器来创建这些对象，即由Ioc容器来控制对 象的创建；谁控制谁？当然是IoC 容器控制了对象；控制什么？那就是主要控制了外部资源获取（不只是对象包括比如文件等）。
@@ -177,6 +233,7 @@
 其实IoC对编程带来的最大改变不是从代码上，而是从思想上，发生了“主从换位”的变化。应用程序原本是老大，要获取什么资源都是主动出击，但是在IoC/DI思想中，应用程序就变成被动的了，被动的等待IoC容器来创建并注入它所需要的资源了。
 
 IoC很好的体现了面向对象设计法则之一—— 好莱坞法则：“别找我们，我们找你”；即由IoC容器帮对象找相应的依赖对象并注入，而不是由对象主动去找。
+
 
 **IoC和DI**
 　　DI—Dependency Injection，即“依赖注入”：组件之间依赖关系由容器在运行期决定，形象的说，即由容器动态的将某个依赖关系注入到组件之中。依赖注入的目的并非为软件系统带来更多功能，而是为了提升组件重用的频率，并为系统搭建一个灵活、可扩展的平台。通过依赖注入机制，我们只需要通过简单的配置，而无需任何代码就可指定目标需要的资源，完成自身的业务逻辑，而不需要关心具体的资源来自何处，由谁实现。
@@ -198,7 +255,14 @@ IoC和DI由什么关系呢？其实它们是同一个概念的不同角度描述
 **DI(依赖注入)**
 　　IoC的一个重点是在系统运行中，动态的向某个对象提供它所需要的其他对象。这一点是通过DI（Dependency Injection，依赖注入）来实现的。比如对象A需要操作数据库，以前我们总是要在A中自己编写代码来获得一个Connection对象，有了 spring我们就只需要告诉spring，A中需要一个Connection，至于这个Connection怎么构造，何时构造，A不需要知道。在系统运行时，spring会在适当的时候制造一个Connection，然后像打针一样，注射到A当中，这样就完成了对各个对象之间关系的控制。A需要依赖 Connection才能正常运行，而这个Connection是由spring注入到A中的，依赖注入的名字就这么来的。那么DI是如何实现的呢？ Java 1.3之后一个重要特征是反射（reflection），它允许程序在运行的时候动态的生成对象、执行对象的方法、改变对象的属性，spring就是通过反射来实现注入的。
 
-#### 1.1.1.2. 注入方式
+依赖注入的基本原则是应用程序对象不应该负责查找它们所依赖的资源,而是应该由IOC容器处理对象和依赖注入,从而导致资源查找的外部化,从应用程序转移到容器.
+* 好处:
+    * 可从应用程序代码中完全删除查找逻辑代码,依赖项可以以一种可插拔的方式注入目标组件.这样组件就不需要知道依赖项的位置或者类.
+    * 对容器的API没有任何依赖.可以将代码从一个容器转移到另一个容器中,不需要进行任何修改就能运行
+    * 完全不需要实现任何特殊的接口
+
+
+#### 1.1.1.2. 依赖注入方式
 
 ##### 1.1.1.2.1. setter注入与构造方法注入
 spring的两种依赖注入方式：setter注入与构造方法注入，这两种方法的不同主要就是在xml文件下对应使用property和constructor-arg属性。
@@ -474,6 +538,11 @@ public class InjectBeanConfig {
 
 ### 1.1.2. IOC容器
 <a href="#menu" style="float:right">目录</a>
+
+#### 1.1.2.1. Bean的作用域
+
+#### 1.1.2.2. Bean的生命周期
+
 
 
 ### 1.1.3. AOP面向切面编程
@@ -1274,11 +1343,15 @@ public void saveUserBack(){
 <a href="#menu" style="float:right">目录</a>
 
 
-
-## 1.2. Spring Cache
+## 1.2. Spring 表达式语言
 <a href="#menu" style="float:right">目录</a>
 
-### 1.2.1. 几个重要概念&缓存注解
+
+
+## 1.3. Spring Cache
+<a href="#menu" style="float:right">目录</a>
+
+### 1.3.1. 几个重要概念&缓存注解
 
 |名称|	解释|
 |---|---|
@@ -1302,7 +1375,7 @@ public void saveUserBack(){
 |allEntries(@CacheEvict )|	是否清空所有缓存内容，缺省为 false，如果指定为 true,则方法调用后将立即清空所有缓存.例如：@CachEvict(value=”testcache”,allEntries=true)
 |beforeInvocation(@CacheEvict)	|是否在方法执行前就清空，缺省为 false，如果指定为 true，则在方法还没有执行的时候就清空缓存，缺省情况下，如果方法执行抛出异常，则不会清空缓存,例如：@CachEvict(value=”testcache”，beforeInvocation=true)
 
-### 1.2.2. SpEL上下文数据
+### 1.3.2. SpEL上下文数据
 Spring Cache提供了一些供我们使用的SpEL上下文数据，下表直接摘自Spring官方文档：
 
 |名称|	位置|	描述	|示例|
@@ -1335,7 +1408,7 @@ SpEL提供了多种运算符
 |正则表达式	|matches
 |其他类型	|?.，?[…]，![…]，^[…]，$[…]
 
-### 1.2.3. 基本使用
+### 1.3.3. 基本使用
 
 **引入依赖**
 ```xml
@@ -1488,21 +1561,453 @@ public User save(User user) {
 }
 ```
 
+## 1.4. Spring Boot Admin
+<a href="#menu" style="float:right">目录</a>
 
-## 1.3. Spring Admin
+### 1.4.1. 基础认识
 <a href="#menu" style="float:right">目录</a>
 
 
+Spring Boot Admin是一个开源社区项目，用于管理和监控SpringBoot应用程序。 应用程序作为Spring Boot Admin Client向为Spring Boot Admin Server注册（通过HTTP）或使用SpringCloud注册中心（例如Eureka，Consul）发现。 UI是的AngularJs应用程序，展示Spring Boot Admin Client的Actuator端点上的一些监控。常见的功能或者监控如下：
 
-## 1.4. Sppring MVC
+* 显示健康状况
+* 显示详细信息，例如
+    * JVM和内存指标
+    * micrometer.io指标
+    * 数据源指标
+    * 缓存指标
+* 显示构建信息编号
+* 关注并下载日志文件
+* 查看jvm系统和环境属性
+* 查看Spring Boot配置属性
+* 支持Spring Cloud的postable / env-和/ refresh-endpoint
+* 轻松的日志级管理
+* 与JMX-beans交互
+* 查看线程转储
+* 查看http跟踪
+* 查看auditevents
+* 查看http-endpoints
+* 查看计划任务
+* 查看和删除活动会话（使用spring-session）
+* 查看Flyway / Liquibase数据库迁移
+* 下载heapdump
+* 状态变更通知（通过电子邮件，Slack，Hipchat，......）
+* 状态更改的事件日志（非持久性）
+
+### 1.4.2. 使用实例
+
+#### 1.4.2.1. Server应用
 <a href="#menu" style="float:right">目录</a>
 
-### 1.4.1. MVC体系概述
+引入依赖
+```xml
+<dependency>
+    <groupId>de.codecentric</groupId>
+    <artifactId>spring-boot-admin-starter-server</artifactId>
+    <version>2.0.2</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+```
+启动类添加注解@EnableAdminServer
+```java
+@Configuration
+@EnableAutoConfiguration
+@EnableAdminServer
+public class SpringBootAdminApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(SpringBootAdminApplication.class, args);
+    }
+}
+```
+application.yml配置
+```yml
+server:
+  port: 8122
+spring:
+  application:
+    name: admin-server
+
+
+```
+#### 1.4.2.2. Client应用
+<a href="#menu" style="float:right">目录</a>
+
+引入依赖
+```xml
+<dependency>
+    <groupId>de.codecentric</groupId>
+    <artifactId>spring-boot-admin-starter-client</artifactId>
+    <version>2.0.2</version>
+</dependency>
+```
+application.yml配置
+```yml
+server:
+  port: 8123
+spring:
+  application:
+    name: admin-client
+  boot:
+    admin:
+      client:
+      #admin-server的地址
+        url: http://localhost:8122
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" 
+```
+启动两个应用
+访问地址: http://localhost:8122
+
+首页可以查看应用列表和状态
+![admin首页](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springadmin/admin-mainpage.png)
+
+可以点击应用查看监控数据
+![admin应用监控页面](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springadmin/admin-app.png)
+
+#### 1.4.2.3. Client配置说明
+
+
+**ClientProperties**
+
+```java
+package de.codecentric.boot.admin.client.config;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import javax.annotation.Nullable;
+import org.springframework.boot.cloud.CloudPlatform;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.convert.DurationUnit;
+import org.springframework.core.env.Environment;
+import org.springframework.util.Assert;
+
+@ConfigurationProperties(
+    prefix = "spring.boot.admin.client"
+)
+public class ClientProperties {
+    /**
+    要注册的server端的url地址。如果要同时在多个server端口注册，则用逗号分隔各个server端的url地址；
+    */
+    private String[] url = new String[0];
+    /**
+    默认值是instances。server端获取client信息的路径，默认情况下server通过访问/instances请求来获取到client端的信息。（client端向server端注册，注册成功后server端会给该client创建一个唯一的clientID值。当server端需要获取client的信息，比如health信息时，server端会发送http://111.11.11.1:8080/instances/clientID/actuator/health即可，这里的http://111.11.11.1:8080是client所在服务器的IP地址，instances就是该属性的值）
+    */
+    private String apiPath = "instances";
+    /**
+    注册时间间隔，单位是毫秒；默认值是10秒钟注册一次。（client通过持续不断地向server端进行注册来保持client端与server端的连接）
+    */
+    @DurationUnit(ChronoUnit.MILLIS)
+    private Duration period = Duration.ofMillis(10000L);
+    /**
+    注册连接超时时间，单位是毫秒，默认值是5秒。当client向server进行注册时，如果5秒钟没有注册完成则认为本次注册失败；
+    */
+    @DurationUnit(ChronoUnit.MILLIS)
+    private Duration connectTimeout = Duration.ofMillis(5000L);
+    /**
+    注册读取超时，单位是毫秒，默认值是5秒；
+    */
+    @DurationUnit(ChronoUnit.MILLIS)
+    private Duration readTimeout = Duration.ofMillis(5000L);
+    /**
+    如果server端需要进行认证时，该属性用于配置用户名。
+    */
+    @Nullable
+    private String username;
+    /**
+    如果server端需要进行认证时，该属性用于配置密码。
+    */
+    @Nullable
+    private String password;
+   /**
+    是否开启自动注销，默认值是null。如果服务端运行在云平台，默认值是true；
+    */
+    @Nullable
+    private Boolean autoDeregistration = null;
+    /**
+    是否开启自动注册，默认值是true。
+    */
+    private boolean autoRegistration = true;
+    /**
+    默认值为true。如果值为true的话，client只会在一个server端进行注册（按照spring.boot.admin.client.url中设置的server的顺序）。如果该server端宕机，会自动在下一个server端进行注册。如果该属性值为false，则会在所有的server端进行注册；
+    */
+    private boolean registerOnce = true;
+    //使能admin client
+    private boolean enabled = true;
+    private final Environment environment;
+}
+```
+**InstanceProperties**
+
+```java
+package de.codecentric.boot.admin.client.config;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import javax.annotation.Nullable;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+@ConfigurationProperties(
+    prefix = "spring.boot.admin.client.instance"
+)
+public class InstanceProperties {
+    /**
+    注册的management-url，如果可用的url不同的话可以重写该值。如果不配置该属性的话，默认该属性值与management-base-url 和 management.context-path两个属性值有关。比如工程中该值为：managementUrl=http://192.168.200.165:8080/actuator，其中http://192.168.200.165:8080为management-base-url，/actuator是management.context-path（该属性值是spring actuator的属性值）；
+
+    */
+    @Nullable
+    private String managementUrl;
+    /**
+    用于计算management-url 的基本URL。该路径值在运行时进行获取并赋值给 base url。如果不配置该属性值的话，默认该属性值与management.port, service-url 以及server.servlet-path有关。比如工程中该值为http://192.168.200.165:8080，其中8080端口是配置的获取actuator信息的端口。192.168.200.165是设置的service-url值，如果没有设置service-url的话，则为配置的server.servlet-path值（项目的启动路径）。
+    */
+    @Nullable
+    private String managementBaseUrl;
+    /**
+    注册的service-url值。如果不配置该属性值的话，基于 service-base-url 和 server.context-path进行赋值。比如工程中为http://p-v-9:8080/,其中p-v-9是base-url，/是工程配置的 server.context-path值。（这里要注意的是，当server端与client端不在同一台服务器上的时候，要配置该属性的值。如果不配置的话，server端就会根据默认的命名规则来配置该值，比如http://p-v-9:8080/，如果server使用这个值来获取client的各种性能信息的话是获取不到的）；
+    */
+    @Nullable
+    private String serviceUrl;
+    /**
+    用于计算service-url 的基本URL。该路径值在运行时进行获取并赋值给 base url。如果不配置该属性值的话，默认该属性值与hostname, server.port有关。比如工程中该值为http://p-v-9:8080，其中8080端口是配置的server.port。p-v-9是client所在服务器的hostname。
+    */
+    @Nullable
+    private String serviceBaseUrl;
+    /**
+    注册的health-url地址，如果可用的url不同可以重写该值。如果不配置该属性的话，默认该属性值与management-url 以及endpoints.health.id有关。比如工程中该值为：healthUrl=http://192.168.200.165:8080/actuator/health，其中http://192.168.200.165:8080/actuator是management-url，health是endpoints.health.id。
+    */
+    @Nullable
+    private String healthUrl;
+    /**
+    客户端工程的名字。默认值是配置的spring.application.name的值，如果没有配置该属性的话，默认值是spring-boot-application；
+    */
+    @Value("${spring.application.name:spring-boot-application}")
+    private String name = "spring-boot-application";
+    /**
+    是否使用注册的ip地址来取代上述各个url中hostname的值，默认值是false（也就是说默认情况下上述各个url中会使用hostname的值，比如我的电脑的hostname为p-v-9）。如果设置了server.address或者management.address的话ip地址就是该值，如果没有设置这两个属性的话ip地址值是InetAddress.getLocalHost()的值。
+
+    */
+    private boolean preferIp = false;
+    /**
+    与该应用有关的元数据，以键值对的形式赋值。
+    */
+    private Map<String, String> metadata = new LinkedHashMap();
+}
+```
+
+**AdminServerProperties**
+
+```java
+package de.codecentric.boot.admin.server.config;
+
+import de.codecentric.boot.admin.server.web.PathUtils;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.convert.DurationUnit;
+
+@ConfigurationProperties("spring.boot.admin")
+public class AdminServerProperties {
+
+    server端的访问路径，默认是/。默认情况下server的访问地址是http://**.**.**.**:**/,这里**.**.**.**:**是server所在服务器的ip地址。我们的工程设置该值是springbootAdmin，那么工程的server端访问地址是http://111.11.11.1:8000/springbootAdmin;
+    private String contextPath = "";
+
+    /**
+    spring.boot.admin.monitor.period:更新client端状态的时间间隔，单位是毫秒，默认值是10秒钟；
+    spring.boot.admin.monitor.status-lifetime：client端状态的生命周期，该生命周期内不会更新client状态。单位是毫秒，默认值是10秒钟；spring.boot.admin.monitor.connect-timeout：查询client状态信息时的连接超时时间，单位是毫秒，默认是2秒（如果2秒内没有获取到client的状态信息，则认为连接已经断开）
+    spring.boot.admin.monitor.read-timeout：查询client状态信息时的读取超时时间，单位是毫秒，默认是2秒（如果2秒内没有获取到client的状态信息，则认为读取失败）。
+    */
+    private AdminServerProperties.MonitorProperties monitor = new AdminServerProperties.MonitorProperties();
+    /*
+    向client发起请求时不会被转发的headers信息，默认值是"Cookie", "Set-Cookie", "Authorization"；
+    */
+    private AdminServerProperties.InstanceProxyProperties instanceProxy = new AdminServerProperties.InstanceProxyProperties();
+    /*
+    要被过滤掉的元数据（当与正则表达式相匹配时，这些数据会在输出的json数据中过滤掉），默认值是".password$", ".*secret$", ".*key$", ".$token$", ".credentials.", ".*vcap_services$"；
+    */
+    private String[] metadataKeysToSanitize = new String[]{".*password$", ".*secret$", ".*key$", ".*$token$", ".*credentials.*", ".*vcap_services$"};
+    /*
+    要获取的client的端点信息
+    */
+    private String[] probedEndpoints = new String[]{"health", "env", "metrics", "httptrace:trace", "httptrace", "threaddump:dump", "threaddump", "jolokia", "info", "logfile", "refresh", "flyway", "liquibase", "heapdump", "loggers", "auditevents", "mappings", "scheduledtasks", "configprops", "caches", "beans"};
+
+}
+```
+
+#### 集群
+<a href="#menu" style="float:right">目录</a>
+
+Spring Boot Admin支持集群
+```xml
+<dependency>
+    <groupId>com.hazelcast</groupId>
+    <artifactId>hazelcast</artifactId>
+</dependency>
+
+```
+创建配置类
+```java
+@Bean
+public Config hazelcastConfig() {
+    MapConfig mapConfig = new MapConfig("spring-boot-admin-event-store").setInMemoryFormat(InMemoryFormat.OBJECT)
+                                                                        .setBackupCount(1)
+                                                                        .setEvictionPolicy(EvictionPolicy.NONE);
+    return new Config().setProperty("hazelcast.jmx", "true").addMapConfig(mapConfig);
+}
+```
+
+#### 1.4.2.4. 集成spring security
+<a href="#menu" style="float:right">目录</a>
+
+
+admin-server 引入依赖
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+```
+配置类
+```java
+@Configuration
+public static class SecuritySecureConfig extends WebSecurityConfigurerAdapter {
+    private final String adminContextPath;
+
+    public SecuritySecureConfig(AdminServerProperties adminServerProperties) {
+        this.adminContextPath = adminServerProperties.getContextPath();
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        // @formatter:off
+        SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
+        successHandler.setTargetUrlParameter("redirectTo");
+        successHandler.setDefaultTargetUrl(adminContextPath + "/");
+
+        http.authorizeRequests()
+        //Grants public access to all static assets and the login page.
+            .antMatchers(adminContextPath + "/assets/**").permitAll() 
+            .antMatchers(adminContextPath + "/login").permitAll()
+            //Every other request must be authenticated.
+            .anyRequest().authenticated() 
+            .and()
+        .formLogin().loginPage(adminContextPath + "/login").successHandler(successHandler).and() 
+        //Configures login and logout.
+        .logout().logoutUrl(adminContextPath + "/logout").and()
+        //Enables HTTP-Basic support. This is needed for the Spring Boot Admin Client to register.
+        .httpBasic().and() 
+        .csrf()
+        //Enables CSRF-Protection using Cookies
+            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())  
+            .ignoringAntMatchers(
+                //Disables CRSF-Protection the endpoint the Spring Boot Admin Client uses to register.
+                "/instances", 
+                //Disables CRSF-Protection for the actuator endpoints.  
+                "/actuator/**"  
+            );
+        // @formatter:on
+    }
+}
+```
+#### 1.4.2.5. 集成邮箱报警功能
+<a href="#menu" style="float:right">目录</a>
+
+
+在spring boot admin中，也可以集成邮箱报警功能，比如服务不健康了、下线了，都可以给指定邮箱发送邮件。集成非常简单，只需要改造下admin-server即可：
+
+在admin-server工程Pom文件，加上mail的起步依赖，代码如下：
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-mail</artifactId>
+</dependency>
+```
+
+在配置文件application.yml文件中，需要配置邮件相关的配置，如下：
+```yml
+spring.mail.host: smtp.163.com
+spring.mail.username: xxx
+spring.mail.password:
+spring.boot.admin.notify.mail.to: xxx@qq.com
+```
+做完以上配置后，当我们已注册的客户端的状态从 UP 变为 OFFLINE 或其他状态，服务端就会自动将电子邮件发送到上面配置的地址。
+
+
+
+
+
+## 1.5. Spring Security
+<a href="#menu" style="float:right">目录</a>
+
+### 1.5.1. 简介
+<a href="#menu" style="float:right">目录</a>
+
+一个能够为基于Spring的企业应用系统提供声明式的安全訪问控制解决方式的安全框架（简单说是对访问权限进行控制嘛），应用的安全性包括用户认证（Authentication）和用户授权（Authorization）两个部分。用户认证指的是验证某个用户是否为系统中的合法主体，也就是说用户能否访问该系统。用户认证一般要求用户提供用户名和密码。系统通过校验用户名和密码来完成认证过程。用户授权指的是验证某个用户是否有权限执行某个操作。在一个系统中，不同用户所具有的权限是不同的。比如对一个文件来说，有的用户只能进行读取，而有的用户可以进行修改。一般来说，系统会为不同的用户分配不同的角色，而每个角色则对应一系列的权限。   spring security的主要核心功能为 认证和授权，所有的架构也是基于这两个核心功能去实现的。
+
+### 1.5.2. 提供的功能
+<a href="#menu" style="float:right">目录</a>
+
+* 支持不同的身份验证方法,比如经典的基于登录表单的身份认证,使用X509用户证书的身份验证,LDAP身份验证.可以在同一个应用中应用多种不同的身份验证方法.
+* 身份验证方法以及对用户信息库的访问彼此之间完全独立.
+* 与多种不同的SSO单点登录解决方案完美集成,比如CAS,OpenID,Siteminder和Oauth.可以将身份认证完全委托给这些SSO系统来完成,而SpringSecurity只处理授权部分
+* 提供了匿名身份认证或来宾身份登录.也就是说,一个有效的身份验证令牌可以在安全性上下文中使用,并且安全方法的配置看起来也更加一致
+* 提供类内置记住我功能
+* 支持用户信息库中保存经过加密的密码
+* 通过更改登录过程中锁使用的HTTP会话,提供了对会话固定攻击的内置保护,此外,还跟踪登录用户的会话,并提供了并发用户会话管理 ,以便限制来自不同位置的用户的最大并发访问数量
+* 可以分别对URL资源,服务方法调用和于对象进行控制访问,还可以在运行时临时向已登录用户添加角色,以便用户可以访问那些需要额外角色才可以访问的受限制区域.
+
+
+### 1.5.3. 核心类
+<a href="#menu" style="float:right">目录</a>
+
+想要对对Web资源进行保护，最好的办法莫过于Filter，要想对方法调用进行保护，最好的办法莫过于AOP。所以springSecurity在我们进行用户认证以及授予权限的时候，通过各种各样的拦截器来控制权限的访问，从而实现安全。
+
+* 如下为其主要过滤器  
+    * WebAsyncManagerIntegrationFilter 
+    * SecurityContextPersistenceFilter 
+    * HeaderWriterFilter 
+    * CorsFilter 
+    * LogoutFilter
+    * RequestCacheAwareFilter
+    * SecurityContextHolderAwareRequestFilter
+    * AnonymousAuthenticationFilter
+    * SessionManagementFilter
+    * ExceptionTranslationFilter
+    * FilterSecurityInterceptor
+    * UsernamePasswordAuthenticationFilter
+    * BasicAuthenticationFilter
+* 框架的核心组件
+    * SecurityContextHolder：提供对SecurityContext的访问
+    * SecurityContext,：持有Authentication对象和其他可能需要的信息
+    * AuthenticationManager 其中可以包含多个AuthenticationProvider
+    * ProviderManager对象为AuthenticationManager接口的实现类
+    * AuthenticationProvider 主要用来进行认证操作的类 调用其中的authenticate()方法去进行认证操作
+    * Authentication：Spring Security方式的认证主体
+    * GrantedAuthority：对认证主题的应用层面的授权，含当前用户的权限信息，通常使用角色表示
+    * UserDetails：构建Authentication对象必须的信息，可以自定义，可能需要访问DB得到
+    * UserDetailsService：通过username构建UserDetails对象，通过loadUserByUsername根据userName获取UserDetail对象 （可以在这里基于自身业务进行自定义的实现  如通过数据库，xml,缓存获取等）           
+
+
+## 1.6. Sppring MVC
+<a href="#menu" style="float:right">目录</a>
+
+### 1.6.1. MVC体系概述
 <a href="#menu" style="float:right">目录</a>
 
 Spring MVC是一个基于Java的实现了MVC设计模式的请求驱动类型的轻量级Web框架，通过把Model，View，Controller分离，将web层进行职责解耦，把复杂的web应用分成逻辑清晰的几部分，简化开发，减少出错，方便组内开发人员之间的配合。
 
-#### 1.4.1.1. MVC 架构
+#### 1.6.1.1. MVC 架构
 * 模型：包含了应用中所需的各种展现数据
 * 视图：由数据的多种表述所组成，它将会展现给用户。
 * 控制器：将会处理用户的操作，它是连接模型和视图的桥梁
@@ -1754,10 +2259,10 @@ HttpMessageConveter： 将请求消息（如Json、xml等数据）转换成一�
 6.  根据返回的ModelAndView，选择一个适合的ViewResolver（必须是已经注册到Spring容器中的ViewResolver)返回给DispatcherServlet ；
 7. ViewResolver 结合Model和View，来渲染视图
 8. 将渲染结果返回给客户端。
-### 1.4.2. Restful
+### 1.6.2. Restful
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.4.2.1. URL 设计
+#### 1.6.2.1. URL 设计
 
 **动词 + 宾语**
 RESTful 的核心思想就是，客户端发出的数据操作指令都是"动词 + 宾语"的结构。比如，GET /articles这个命令，GET是动词，/articles是宾语。
@@ -1815,7 +2320,7 @@ GET /articles/published
 
 
 GET /articles?published=true
-#### 1.4.2.2. 状态码
+#### 1.6.2.2. 状态码
 **状态码必须精确**
 客户端的每一次请求，服务器都必须给出回应。回应包括 HTTP 状态码和数据两部分。
 
@@ -1881,7 +2386,7 @@ Location: /api/orders/12345
 * 500 Internal Server Error：客户端请求有效，服务器处理时发生了意外。
 * 503 Service Unavailable：服务器无法处理请求，一般用于网站维护状态。
 
-#### 1.4.2.3. 服务器回应
+#### 1.6.2.3. 服务器回应
 **不要返回纯本文**
 API 返回的数据格式，不应该是纯文本，而应该是一个 JSON 对象，因为这样才能返回标准的结构化数据。所以，服务器回应的 HTTP 头的Content-Type属性要设为application/json。
 
@@ -1955,7 +2460,7 @@ Content-Type: application/json
 }
 ```
 
-### 1.4.3. 注解说明
+### 1.6.3. 注解说明
 <a href="#menu" style="float:right">目录</a>
 
 **@ControllerAdvice**
@@ -2795,7 +3300,7 @@ component-scan 默认扫描的注解类型是 @Component，不过，在 @Compone
 </>
 ```
 
-### 1.4.4. 拦截器 
+### 1.6.4. 拦截器 
 <a href="#menu" style="float:right">目录</a>
 
 拦截器的本质是责任链
@@ -2951,7 +3456,7 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter{
 ```
 拦截器的执行是会根据 registry 注入的先后顺序执行，比如：/one/**   同时被  OneInterceptor、TwoInterceptor 拦截，但会先执行 OneInterceptor拦截的业务请求，因为它先注入进来的
 
-### 1.4.5. 过滤器
+### 1.6.5. 过滤器
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -3010,7 +3515,7 @@ public class ProjectConfig {
 }
 ```
 
-#### 1.4.5.1. 过滤器和拦截器的区别：
+#### 1.6.5.1. 过滤器和拦截器的区别：
 
 ![](https://images2017.cnblogs.com/blog/330611/201710/330611-20171023144517066-24770749.png)
 
@@ -3025,7 +3530,7 @@ public class ProjectConfig {
 |Filter 是被 Server(like Tomcat) 调用|	Interceptor 是被 Spring 调用|因此Filter总是优先于拦截器执行
 
 
-#### 1.4.5.2. 拦截器（Interceptor）和过滤器（Filter）的一些用途
+#### 1.6.5.2. 拦截器（Interceptor）和过滤器（Filter）的一些用途
 * Authentication Filters
 * Logging and Auditing Filters
 * Image conversion Filters
@@ -3053,10 +3558,10 @@ public class ProjectConfig {
     根据地方不同修改响应内容 Localization-Targeting the request and response to a particular locale.
 
 
-## 1.5. SpringBoot
+## 1.7. SpringBoot
 <a href="#menu" style="float:right">目录</a>
 
-### 1.5.1. 基本概念
+### 1.7.1. 基本概念
 
 Spring Boot 是 Spring 开源组织下的子项目，是 Spring 组件一站式解决方案，主要是简化了使用 Spring 的难度，简省了繁重的配置，提供了各种启动器，开发者能快速上手.
 
@@ -3075,7 +3580,7 @@ Spring Boot 优点非常多，如：
 * 应用监控
 * 上手容易
 
-### 1.5.2. 基本使用
+### 1.7.2. 基本使用
 <a href="#menu" style="float:right">目录</a>
 
 maven配置文件
@@ -3107,7 +3612,7 @@ maven配置文件
 
 使用以上任何一种方式配置时,引入官方的starter包无需指定版本
 
-### 1.5.3. Spring Boot 环境下创建Bean
+### 1.7.3. Spring Boot 环境下创建Bean
 
 **方式1**：
 
@@ -3457,7 +3962,7 @@ Location location =  context.getBean(Location.class);
 location.run();
 ```
 
-### 1.5.4. 使用不同的容器
+### 1.7.4. 使用不同的容器
 
 undertow,jetty和tomcat可以说是javaweb项目当下最火的三款服务器，tomcat是apache下的一款重量级的服务器，不用多说历史悠久，经得起实践的考验。然而：当下微服务兴起，spring boot ，spring cloud 越来越热的情况下，选择一款轻量级而性能优越的服务器是必要的选择。spring boot 完美集成了tomcat，jetty和undertow.
 
@@ -3585,7 +4090,7 @@ server.jetty.selectors= # Number of selector threads to use
 
 ```
 
-### 1.5.5. 配置文件
+### 1.7.5. 配置文件
 <a href="#menu" style="float:right">目录</a>
 
 Spring支持两种类型的配置文件,后缀名分别为properties和yml.
@@ -3601,7 +4106,7 @@ server:
 ```
 可以看到yml类型的格式结构更加清晰
 
-#### 1.5.5.1. bootstrap.yml与application.yml区别
+#### 1.7.5.1. bootstrap.yml与application.yml区别
 <a href="#menu" style="float:right">目录</a>
 
 说明：其实yml和properties文件是一样的原理，主要是说明application和bootstrap的加载顺序。且一个项目上要么yml或者properties，二选一的存在
@@ -3627,13 +4132,13 @@ bootstrap 配置文件有以下几个应用场景。
 为何需要把 config server 的信息放在 bootstrap.yml 里？
 当使用Spring Cloud的时候，配置信息一般是从config server加载的，为了取得配置信息（比如密码等），你需要一些提早的或引导配置。因此，把 config server 信息放在 bootstrap.yml，用来加载真正需要的配置信息。
 
-#### 1.5.5.2. 多环境配置
+#### 1.7.5.2. 多环境配置
 <a href="#menu" style="float:right">目录</a>
 
 软件开发中经常有开发环境、测试环境、预发布环境、生产环境，而且一般这些环境配置会各不相同，手动改配置麻烦且容易出错，如何管理不同环境的配置参数呢？spring-boot + maven可以解决不同环境独立配置不同参数的问题。
 
 
-##### 1.5.5.2.1. 配置文件
+##### 1.7.5.2.1. 配置文件
 <a href="#menu" style="float:right">目录</a>
 
 **方式1:使用多个配置文件**
@@ -3678,7 +4183,7 @@ server:
 
 ```
 
-##### 1.5.5.2.2. 多环境配置
+##### 1.7.5.2.2. 多环境配置
 <a href="#menu" style="float:right">目录</a>
 
 **方式1:application.yml配置**
@@ -3701,7 +4206,7 @@ java -jar muti-env-config.jar --spring.profiles.active=test
 mvn package -P test 
 ```
 
-#### 1.5.5.3. 注解ConfigurationProperties注入yml配置文件中的数据
+#### 1.7.5.3. 注解ConfigurationProperties注入yml配置文件中的数据
 <a href="#menu" style="float:right">目录</a>
 
 在使用SpringBoot开发中需要将一些配置参数放在yml文件中定义，再通过Java类来引入这些配置参数
@@ -3890,7 +4395,7 @@ properties =
 　　　])
 ```
 
-#### 1.5.5.4. 使用随机数
+#### 1.7.5.4. 使用随机数
 
 <a href="#menu" style="float:right">目录</a>
 
@@ -3904,13 +4409,13 @@ properties =
 |${random.int(10)}	|取得10以内的随机数
 |${random.int[10,20]}	|取得10~20的随机数
 
-#### 1.5.5.5. 从命令行指定参数
+#### 1.7.5.5. 从命令行指定参数
 
 ```
 java -jar xx.jar --server.port=8001
 ```
 
-#### 1.5.5.6. 配置日志
+#### 1.7.5.6. 配置日志
 
 默认情况下， Spring Boot会用Logback（ http://logback.qos.ch）来记录日志，并用INFO级别输出到控制台
 
@@ -3950,7 +4455,7 @@ logging.pattern.file= # Appender pattern for output to a file. Supported only wi
 logging.pattern.level=%5p # Appender pattern for log level. Supported only with the default Logbacksetup.
 logging.register-shutdown-hook=false # Register a shutdown hook for the logging system when it is initialized.
 ```
-### 1.5.6. 启动类 @SpringBootApplication 注解 
+### 1.7.6. 启动类 @SpringBootApplication 注解 
 <a href="#menu" style="float:right">目录</a>
 
 ```java
@@ -4017,14 +4522,14 @@ public @interface SpringBootApplication {
 
 从上面可以看到@SpringBootApplication是一个组合注解，用于快捷配置启动类。由@SpringBootConfiguration和@EnableAutoConfiguration以及@ComponentScan组合而成.
 
-#### 1.5.6.1. @Inherited 注解
+#### 1.7.6.1. @Inherited 注解
 关于java中元注解Inherited 的使用说明
 
 首先解释下元注解，就是用来中声明注解类型时需要使用到的注解。
 
 Inherited作用是，使用此注解声明出来的自定义注解，在使用此自定义注解时，如果注解在类上面时，子类会自动继承此注解，否则的话，子类不会继承此注解。这里一定要记住，使用Inherited声明出来的注解，只有在类上使用时才会有效，对方法，属性等其他无效。
 
-#### 1.5.6.2. @SpringBootConfiguration
+#### 1.7.6.2. @SpringBootConfiguration
 ```java
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -4041,7 +4546,7 @@ public @interface SpringBootConfiguration {
 
 
 
-#### 1.5.6.3. @EnableAutoConfiguration
+#### 1.7.6.3. @EnableAutoConfiguration
 ```java
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -4073,7 +4578,7 @@ SpringFactoriesLoader属于Spring框架私有的一种扩展方案，其主要�
 
 所以，@EnableAutoConfiguration自动配置的魔法骑士就变成了：从classpath中搜寻所有的META-INF/spring.factories配置文件，并将其中org.springframework.boot.autoconfigure.EnableutoConfiguration对应的配置项通过反射（Java Refletion）实例化为对应的标注了@Configuration的JavaConfig形式的IoC容器配置类，然后汇总为一个并加载到IoC容器。
 
-#### 1.5.6.4. @ComponentScan
+#### 1.7.6.4. @ComponentScan
 ```java
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
@@ -4140,7 +4645,7 @@ public @interface ComponentScan {
 * scopeResolver：用于解决检测到的组件的范围。
 * useDefaultFilters：指示是否自动检测类的注释 
 
-### 1.5.7. Spring Boot Starter
+### 1.7.7. Spring Boot Starter
 <a href="#menu" style="float:right">目录</a>
 
 Starter是Spring Boot中的一个非常重要的概念，Starter相当于模块，它能将模块所需的依赖整合起来并对模块内的Bean根据环境（ 条件）进行自动配置。使用者只需要依赖相应功能的Starter，无需做过多的配置和依赖，Spring Boot就能自动扫描并加载相应的模块
@@ -4153,7 +4658,7 @@ Starter是Spring Boot中的一个非常重要的概念，Starter相当于模块�
 例如，在Maven的依赖中加入spring-boot-starter-web就能使项目支持Spring MVC，并且Spring Boot还为我们做了很多默认配置，无需再依赖spring-web、spring-webmvc等相关包及做相关配置就能够立即使用起来
 
 
-#### 1.5.7.1. 常用的Starter
+#### 1.7.7.1. 常用的Starter
 <a href="#menu" style="float:right">目录</a>
 
 ```
@@ -4165,7 +4670,7 @@ spring-boot-starter-data-jpa
 spring-boot-starter-web
 spring-boot-starter-redis
 ```
-#### 1.5.7.2. 创建自己的Starter
+#### 1.7.7.2. 创建自己的Starter
 <a href="#menu" style="float:right">目录</a>
 
 * 步骤
@@ -4232,7 +4737,7 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=xx.xx.xx.XxxConfi
 
 
 
-#### 1.5.7.3. Starter原理
+#### 1.7.7.3. Starter原理
 <a href="#menu" style="float:right">目录</a>
 
 在Spring Boot中有一种非常解耦的扩展机制：Spring Factories。这种扩展机制实际上是仿照Java中的SPI扩展机制来实现的。
@@ -4318,9 +4823,9 @@ com.xxx.interface=com.xxx.classname
 
 
 
-### 1.5.8. Actuator 的端点
+### 1.7.8. Actuator 的端点
 
-#### 1.5.8.1. 揭秘 Actuator 的端点
+#### 1.7.8.1. 揭秘 Actuator 的端点
 <a href="#menu" style="float:right">目录</a>
 
 Spring Boot Actuator的关键特性是在应用程序里提供众多Web端点，通过它们了解应用程序运行时的内部状况。有了Actuator，你可以知道Bean在Spring应用程序上下文里是如何组装在一起的，掌握应用程序可以获取的环境属性信息，获取运行时度量信息的快照
@@ -4412,7 +4917,7 @@ management.endpoints.web.exposure.exclude= # Endpoint IDs that should be exclude
 management.endpoints.web.exposure.include=*
 ```
 
-#### 1.5.8.2. 自定义监控
+#### 1.7.8.2. 自定义监控
 <a href="#menu" style="float:right">目录</a>
 
 * @Endpoint(id="test") 指定端点的名称,id开头必须是小写,此注解必须
@@ -4441,7 +4946,7 @@ public class MyActuator {
 ```
 
 
-### 1.5.9. Spring Boot 项目发布
+### 1.7.9. Spring Boot 项目发布
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -4457,7 +4962,7 @@ public class MyActuator {
     * 通过Servlet容器启动，如Tomcat、Jetty等(打包成war)。
 
 
-### 1.5.10. Maven打包
+### 1.7.10. Maven打包
 
 **打包方式配置**
 
@@ -4523,11 +5028,11 @@ mvn  spring-boot:run -Dspring-boot.run.profiles=xxx
 * 不推荐用war，因为springboot适合前后端分离，打成jar进行部署更合适。
 
 
-### 1.5.11. Spring Boot原理分析
+### 1.7.11. Spring Boot原理分析
 <a href="#menu" style="float:right">目录</a>
 
 
-#### 1.5.11.1. 启动流程分析
+#### 1.7.11.1. 启动流程分析
 <a href="#menu" style="float:right">目录</a>
 
 1.  如果我们使用的是SpringApplication的静态run方法，那么，这个方法里面首先要创建一个SpringApplication对象实例，然后调用这个创建好的SpringApplication的实例方法。在SpringApplication实例初始化的时候，它会提前做几件事情：
@@ -4538,7 +5043,7 @@ mvn  spring-boot:run -Dspring-boot.run.profiles=xxx
 * 推断并设置main方法的定义类。
 
 
-##### 1.5.11.1.1. 创建SpringApplication对象
+##### 1.7.11.1.1. 创建SpringApplication对象
 <a href="#menu" style="float:right">目录</a>
 
 **main方法启动**
@@ -4733,7 +5238,7 @@ private Class<?> deduceMainApplicationClass() {
 ```
 上面看完了构造方法后，已经初始化了一个 SpringApplication 对象，接下来调用其 run 方法
 
-##### 1.5.11.1.2. 执行Run方法
+##### 1.7.11.1.2. 执行Run方法
 <a href="#menu" style="float:right">目录</a>
 
 ```java
@@ -4870,9 +5375,9 @@ public void refresh() throws BeansException, IllegalStateException {
         }
     }
 ```
-### 1.5.12. 种保护 Spring Boot 应用的绝佳方法
+### 1.7.12. 种保护 Spring Boot 应用的绝佳方法
 
-#### 1.5.12.1. 在生产中使用HTTPS
+#### 1.7.12.1. 在生产中使用HTTPS
 
 传输层安全性（TLS）是HTTPS的官方名称，你可能听说过它称为SSL（安全套接字层），SSL是已弃用的名称，TLS是一种加密协议，可通过计算机网络提供安全通信。其主要目标是确保计算机应用程序之间的隐私和数据完整性。
 
@@ -4896,7 +5401,7 @@ public  class  WebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter
 ```
 另一个重要的事情是使用HTTP严格传输安全性（HSTS）。HSTS是一种Web安全策略机制，可以保护网站免受协议降级攻击和cookie劫持。服务器使用名为Strict-Transport-Security的响应头字段将HSTS策略传送到浏览器。Spring Security默认发送此标头，以避免在开始时出现不必要的HTTP跃点，点击这里一分钟开启Tomcat https支持。
 
-#### 1.5.12.2. 使用Snyk检查你的依赖关系
+#### 1.7.12.2. 使用Snyk检查你的依赖关系
 你很可能不知道应用程序使用了多少直接依赖项，这通常是正确的，尽管依赖性构成了整个应用程序的大部分。攻击者越来越多地针对开源依赖项，因为它们的重用为恶意黑客提供了许多受害者，确保应用程序的整个依赖关系树中没有已知的漏洞非常重要。
 
 Snyk测试你的应用程序构建包，标记那些已知漏洞的依赖项。它在仪表板在应用程序中使用的软件包中存在的漏洞列表。
@@ -4909,14 +5414,14 @@ Snyk可通过Web UI和CLI获得，因此您可以轻松地将其与CI环境集�
 
 你可以免费使用Snyk进行开源项目或使用有限数量的私有项目。
 
-#### 1.5.12.3. 升级到最新版本
+#### 1.7.12.3. 升级到最新版本
 定期升级应用程序中的依赖项有多种原因。安全性是让您有升级动力的最重要原因之一。该start.spring.io起始页面采用了最新的春季版本的软件包，以及依赖关系，在可能的情况。
 
 基础架构升级通常不如依赖项升级具有破坏性，因为库作者对向后兼容性和版本之间的行为更改的敏感性各不相同。话虽如此，当你在配置中发现安全漏洞时，您有三种选择：升级，修补程序或忽略。
 
 在对应用程序进行必要的更改以使用较新版本之后，就应用程序的整体运行状况而言，升级是最安全的。
 
-#### 1.5.12.4. 启用CSRF保护
+#### 1.7.12.4. 启用CSRF保护
 跨站点请求伪造(Cross-Site Request Forgery )是一种攻击，强制用户在他们当前登录的应用程序中执行不需要的操作。如果用户是普通用户，一个成功攻击可能涉及请求的状态更改，如转移资金或更改其电子邮件地址，如果用户具有提升管理员的权限，则CSRF攻击可能会危及整个应用程序。
 
 Spring Security具有出色的CSRF支持，如果您正在使用Spring MVC的< form:form>标签或Thymeleaf @EnableWebSecurity，默认情况下处于启用状态，CSRF令牌将自动添加为隐藏输入字段。
@@ -4934,7 +5439,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 如果你正在使用Angular，这就是你需要做的。如果您使用的是React，则需要读取XSRF-TOKENcookie并将其作为X-XSRF-TOKEN标题发回。
 
 当请求通过HTTPS发生时，Spring Security会自动加入一个secure标识到XSRF-TOKENcookie 。Spring Security对于CSRF cookie不使用SameSite=strict 的标志，但它在使用Spring Session或WebFlux会话处理时会使用，这对会话cookie有意义，因为它有助于识别用户，但是没有为CSRF cookie提供太多价值，因为CSRF令牌也需要在请求中。点击这里了解CSRF更多详情。
-#### 1.5.12.5. 使用内容安全策略防止XSS攻击
+#### 1.7.12.5. 使用内容安全策略防止XSS攻击
 内容安全策略（CSP）是一个增加的安全层，可帮助缓解XSS（跨站点脚本）和数据注入攻击。要启用它，你需要配置应用程序以返回Content-Security-Policy标题。你还可以在HTML页面中<meta http-equiv="Content-Security-Policy">使用标记。
 
 Spring安全性默认提供了许多安全标头：
@@ -4966,7 +5471,7 @@ CSP是防止XSS攻击的良好防御，请记住，打开CSP能让CDN访问许�
 
 你可以在securityheaders.com测试你的CSP标头是否有用。
 
-#### 1.5.12.6. 使用OpenID Connect进行身份验证
+#### 1.7.12.6. 使用OpenID Connect进行身份验证
 OAuth 2.0是行业标准的授权协议。它使用scope来定义授权用户可以执行的操作的权限。但是，OAuth 2.0不是身份验证协议，并且不提供有关经过身份验证的用户的信息。
 
 OpenID Connect（OIDC）是一个OAuth 2.0扩展，提供用户信息，除了访问令牌之外，它还添加了ID令牌，以及/userinfo可以从中获取其他信息的端点，它还添加了发现功能和动态客户端注册的端点。
@@ -4994,7 +5499,7 @@ spring:
 
 你可以使用像Keycloak这样的开源系统来设置自己的OIDC服务器。如果你不想在生产中维护自己的服务器，可以使用Okta的Developer API。
 
-#### 1.5.12.7. 管理密码？使用密码哈希！
+#### 1.7.12.7. 管理密码？使用密码哈希！
 以纯文本格式存储密码是最糟糕的事情之一。幸运的是，Spring Security默认情况下不允许使用纯文本密码。它还附带了一个加密模块，可用于对称加密，生成密钥和密码散列（也就是密码编码）。
 
 PasswordEncoder 是Spring Security中密码哈希的主要接口，如下所示：
@@ -5014,7 +5519,7 @@ Spring Security提供了几种实现，最受欢迎的是BCryptPasswordEncoder�
 
 Spring Security 5.1（即2018年9月下旬）将附带UserDetailsPasswordService API，允许您升级密码存储。
 
-#### 1.5.12.8. 安全地存储秘密
+#### 1.7.12.8. 安全地存储秘密
 应谨慎处理敏感信息，如密码，访问令牌等，你不能以纯文本形式传递，或者如果将它们保存在本地存储中。由于（GitHub）的历史已经一次又一次证明，开发人员并没有仔细考虑如何存储他们的秘密。
 
 一个好的做法是将保密信息存储在保管库中，该保管库可用于存储，提供对应用程序可能使用的服务的访问权限，甚至生成凭据。HashiCorp的Vault使得存储机密变得很轻松，并提供了许多额外的服务。
@@ -5025,7 +5530,7 @@ Spring Security 5.1（即2018年9月下旬）将附带UserDetailsPasswordService
 String password;
 ```
 
-#### 1.5.12.9. 使用OWASP的ZAP测试您的应用程序
+#### 1.7.12.9. 使用OWASP的ZAP测试您的应用程序
 OWASP ZAP安全工具是针对在运行活动的应用程序进行渗透测试的代理。它是一个受欢迎的（超过4k星）免费的开源项目，托管在GitHub上。
 
 OWASP ZAP用于查找漏洞的两种方法是Spider和Active Scan。
@@ -5034,14 +5539,14 @@ Spider工具以URL种子开头，它将访问并解析每个响应，识别超�
 
 Active Scan工具将根据潜在漏洞列表自动测试你选择的目标。它提供了一个报告，显示Web应用程序可被利用的位置以及有关漏洞的详细信息。
 
-#### 1.5.12.10. 让你的安全团队进行代码审查
+#### 1.7.12.10. 让你的安全团队进行代码审查
 代码评审对任何高性能软件开发团队都至关重要。在Okta，我们所有的生产代码和官方开源项目都需要通过我们的专家安全团队进行分析，你的公司可能没有安全专家，但如果你正在处理敏感数据，也许你应该这样做！
 
-### 1.5.13. 项目实践
+### 1.7.13. 项目实践
 <a href="#menu" style="float:right">目录</a>
 
 
-#### 1.5.13.1. 跨域配置
+#### 1.7.13.1. 跨域配置
 <a href="#menu" style="float:right">目录</a>
 
 用于跨域配置
@@ -5103,7 +5608,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 }
 ```
 
-#### 1.5.13.2. 全局异常处理
+#### 1.7.13.2. 全局异常处理
 <a href="#menu" style="float:right">目录</a>
 
 第一种：使用@ControllerAdvice和@ExceptionHandler注解
@@ -5257,12 +5762,12 @@ public class TestController {
 
 
 
-### 1.5.14. 其他一些问题
+### 1.7.14. 其他一些问题
 
-#### 1.5.14.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？
+#### 1.7.14.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？
 可以实现接口 ApplicationRunner 或者 CommandLineRunner，这两个接口实现方式一样，它们都只提供了一个 run 方法
 
-#### 1.5.14.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？
+#### 1.7.14.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？
 这可以使用DEV工具来实现。通过这种依赖关系，您可以节省任何更改，嵌入式tomcat将重新启动。
 
 Spring Boot有一个开发工具（DevTools）模块，它有助于提高开发人员的生产力。Java开发人员面临的一个主要挑战是将文件更改自动部署到服务器并自动重启服务器。
@@ -5279,17 +5784,17 @@ Spring Boot有一个开发工具（DevTools）模块，它有助于提高开发�
 
 ```
 
-#### 1.5.14.3. Spring Boot 有哪几种读取配置的方式？
+#### 1.7.14.3. Spring Boot 有哪几种读取配置的方式？
 Spring Boot 可以通过 @PropertySource,@Value,@Environment, @ConfigurationProperties 来绑定变量，具体请看这篇文章《Spring Boot读取配置的几种方式》。
 
 
-## 1.6. SpringCloud
+## 1.8. SpringCloud
 <a href="#menu" style="float:right">目录</a>
 
-### 1.6.1. 基础知识
+### 1.8.1. 基础知识
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.6.1.1. 微服务概念
+#### 1.8.1.1. 微服务概念
 微服务是系统架构上的一种设计风格， 它的主旨是将一个原本独立的系统拆分成多个小型服务，这些小型服务都在各自独立的进程中运行，服务之间通过基于HTTP的RESTful API进行通信协作。 被拆分成的每一个小型服务都围绕着系统中的某一项或一些耦合度较高的业务功能进行构建， 并且每个服务都维护着自身的数据存储、 业务开发、自动化测试案例以及独立部署机制。 由千有了轻量级的通信协作基础， 所以这些微服务可以使用不同的语言来编写
 
 **微服务主要的优势如下：**
@@ -5322,7 +5827,7 @@ Spring Boot 可以通过 @PropertySource,@Value,@Environment, @ConfigurationProp
 * 轻量级通信原则
 * 微服务粒度，确定好服务边界
 
-#### 1.6.1.2. SpringCloud子项目
+#### 1.8.1.2. SpringCloud子项目
 * SpringCloudConfig: 配置管理工具， 支持使用Git存储 配置内容， 可以使用它实现应用配置的外部化存储， 并支持客户端配置信息刷新、 加密／解密配置内容 等。
 * SpringCloudNetflix: 核心 组件， 对多个Netflix OSS开源套件进行整合。
 * Eureka: 服务治理组件， 包含服务注册中心、 服务注册与发现机制的实现。
@@ -5344,7 +5849,7 @@ Spring Boot 可以通过 @PropertySource,@Value,@Environment, @ConfigurationProp
 * Spring Cloud Starters: Spring Cloud 的基础组件， 它是基于 Spring Boot 风格项目的基础依赖模块。
 * Spring Cloud CLI: 用于在 Groovy 中快速创建 Spring Cloud 应用的 Spring Boot CLI插件。
 
-#### 1.6.1.3. 版本说明
+#### 1.8.1.3. 版本说明
 
 由于 Spring Cloud 不像 Spring 社区其他一些项目那样相对独立， 它是一个拥有诸多子项目的大型综合项目， 可以说是对微服务架构解决方案的综合套件组合， 其包含的各个子项目也都独立进行着内容更新与迭代，各自都维护着自己的发布版本号。因此每一 个Spring Cloud 的版本都会包含多个不同版本的子项目， 为了管理每个版本的子项目清单， 避免Spring Cloud的版本号与其子项目的版本号相混淆，没有采用版本号的方式，而是通过命名的方式。使用单词而不是字母主要是因为:设计的目的是为了更好的管理每个SpringCloud子项目的清单，避免自己的版本号与子项目的版本号混淆.
 
@@ -5393,10 +5898,10 @@ pom文件中指定cloud的版本，便可以不用指定各个子项目依赖的
 * Dalston:1.5.x
 
 
-### 1.6.2. 服务治理Eureka
+### 1.8.2. 服务治理Eureka
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.6.2.1. 基本使用
+#### 1.8.2.1. 基本使用
 
 **注册中心**
 
@@ -5505,7 +6010,7 @@ eureka:
       defaultZone: http://user:123456@localhost:8001/eureka/
 ```
 
-#### 1.6.2.2. 高可用注册中心
+#### 1.8.2.2. 高可用注册中心
 
 * 注册中心可以集群部署，提高高可用
 
@@ -5527,10 +6032,10 @@ eureka:
 ```
 EurekaServer的高可用实际上就是将自己作为服务向其他服务注册中心注册自己， 这样就可以形成一组互相注册的服务注册中心， 以实现服务清单的互相同步， 达到高可用的效果
 
-#### 1.6.2.3. 原理说明
+#### 1.8.2.3. 原理说明
 <a href="#menu" style="float:right">目录</a>
 
-##### 1.6.2.3.1. 基础模块说明
+##### 1.8.2.3.1. 基础模块说明
 <a href="#menu" style="float:right">目录</a>
 
 **基础架构**
@@ -5581,7 +6086,7 @@ EurekaServer的高可用实际上就是将自己作为服务向其他服务注�
         * eureka.server.enableself-preservation=true,默认使能
 
 
-##### 1.6.2.3.2. Region,Zone
+##### 1.8.2.3.2. Region,Zone
 **背景**
 用户量比较大或者用户地理位置分布范围很广的项目，一般都会有多个机房。这个时候如果上线springCloud服务的话，我们希望一个机房内的服务优先调用同一个机房内的服务，当同一个机房的服务不可用的时候，再去调用其它机房的服务，以达到减少延时的作用。
 
@@ -5822,12 +6327,17 @@ eureka.instance.lease-expiration-duration-in-seconds: 90
 
 也就是说，当一个服务异常down掉后，90s之后注册中心才会知道这个服务不可用了。在此期间，依旧会把这个服务当成正常服务。ribbon调用仍会把请求转发到这个服务上。为了避免这段期间出现无法提供服务的情况，要开启ribbon的重试功能，去进行其它服务提供者的重试。
 
-##### 1.6.2.3.3. 源码分析
+##### 1.8.2.3.3. 源码分析
 <a href="#menu" style="float:right">目录</a>
+
+
 
 我们在将一个普通的 Spring Boot 应用注册到 Eureka Server 或是从 Eureka Server 中获取服务列表时， 主要就做了两件事：
 * 在应用主类中配置了@EnableDiscoveryClient注解。
 * 在app让cation.yml 中用 eureka.client.serviceUrl.defaultZone参数指定了服务注册中心的位置。
+
+###### 1.8.2.3.3.1. EnableDiscoveryClient注解说明
+<a href="#menu" style="float:right">目录</a>
 
 ```java
 @Target(ElementType.TYPE)
@@ -5879,12 +6389,21 @@ public class EnableDiscoveryClientImportSelector extends SpringFactoryImportSele
 
 ```
 
-
-#### 1.6.2.4. 更多配置说明
+###### 1.8.2.3.3.2. 服务注册
 <a href="#menu" style="float:right">目录</a>
 
 
-##### 1.6.2.4.1. 服务注册类配置
+###### 1.8.2.3.3.3. 服务续约
+<a href="#menu" style="float:right">目录</a>
+
+
+
+
+#### 1.8.2.4. 更多配置说明
+<a href="#menu" style="float:right">目录</a>
+
+
+##### 1.8.2.4.1. 服务注册类配置
 
 关于服务注册类的配置信息， 我们可以通过查看 org.springframework.cloud.netflix.eureka.EurekaClien.ConfigBean 的源码来获得比官方文档中更 为详尽的内容
 
@@ -6096,7 +6615,7 @@ public class EurekaClientConfigBean implements EurekaClientConfig, Ordered {
 |fetchRegistry| 是否从Eureka服务端获取注册信息|true
 
 
-##### 1.6.2.4.2. 服务实例类配置
+##### 1.8.2.4.2. 服务实例类配置
 
 关千服务实例类的配置信息， 我们可以通过查看org.springframework.cloud.netflix.eureka.EurekainstanceConfigBean的源码来获取详细内容， 这些配置信息都以eureka.instance为前缀
 
@@ -6286,7 +6805,7 @@ public class EurekaInstanceConfigBean implements CloudEurekaInstanceConfig, Envi
 
 
 
-### 1.6.3. 负载均衡Ribbon
+### 1.8.3. 负载均衡Ribbon
 <a href="#menu" style="float:right">目录</a>
 
 Spring Cloud Ribbon 是一个基于 HTTP 和 TCP 的客户端负载均衡工具，它基于 Netflixribbon 实现。 通过 Spring Cloud 的封装， 可以让我们轻松地将面向服务的 REST 模板请求自动转换成客户端负载均衡的服务调用。 Spring Cloud Ribbon 虽然只是一个工具类框架，它不像服务注册中心、 配置中心、 API 网关那样需要独立部署， 但是它几乎存在于每一个Spring Cloud 构建的微服务和基础设施中。 因为微服务间的调用，API 网关的请求转发等内容实际上都是通过伈bbon 来实现的，包括后续我们将要介绍的 Feign, 它也是基于 Ribbon实现的工具。 所以， 对 Spring Cloud Ribbon 的理解和使用， 对于我们使用 Spring Cloud 来构建微服务非常重要。
@@ -6294,7 +6813,7 @@ Spring Cloud Ribbon 是一个基于 HTTP 和 TCP 的客户端负载均衡工具�
 ribbon底层是基于RestTemplate实现Http请求
 org.springframework.web.client.RestTemplate
 
-#### 1.6.3.1. 基本使用
+#### 1.8.3.1. 基本使用
 <a href="#menu" style="float:right">目录</a>
 
 **引入依赖**
@@ -6344,10 +6863,10 @@ public class RibbonService {
 
 ```
 
-#### 1.6.3.2. 原理说明
+#### 1.8.3.2. 原理说明
 <a href="#menu" style="float:right">目录</a>
 
-##### 1.6.3.2.1. 源码分析
+##### 1.8.3.2.1. 源码分析
 
 **LoadBalancerAutoConfiguration配置类**
 
@@ -6702,7 +7221,7 @@ public <T> T execute(String serviceId, ServiceInstance serviceInstance, LoadBala
 
 ```
 
-##### 1.6.3.2.2. 负载均衡器
+##### 1.8.3.2.2. 负载均衡器
 
 ![负载均衡实现类](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/loadbalance-extends.png)
 
@@ -6773,7 +7292,7 @@ DynamicServerListLoadBalancer 类继承于 BaseLoadBalancer 类， 它是对基�
 **ZoneAwareloadBalancer**
 ZoneAwareLoadBalancer 负载均衡器是对 DynamicServerListLoadBalancer的扩展。在 DynamicServerLis七LoadBalancer 中， 我们可以看到它并没有重写选择具体服务实例的 chooseServer 函数， 所以它依然会采用在 BaseLoadBalancer 中实现的算法。 使用 RoundRobinRule 规则， 以线性轮询的方式来选择调用的服务实例， 该算法实现简单并没有区域 (Zone) 的概念， 所以它会把所有实例视为一个 Zone下的节点来看待， 这样就会周期性地产生跨区域 (Zone) 访问的情况， 由于跨区域会产生更高的延迟，这些实例主要以防止区域性故障实现高可用为目的而不能作为常规访问的实例， 所以在多区域部署的清况下会有一定的性能问题， 而该负载均衡器则 可以避免这样的问题.
 
-##### 1.6.3.2.3. 负载均衡策略
+##### 1.8.3.2.3. 负载均衡策略
 <a href="#menu" style="float:right">目录</a>
 
 * IRule
@@ -7310,7 +7829,7 @@ public class RetryRule extends AbstractLoadBalancerRule {
 
 ```
 
-##### 1.6.3.2.4. 配置详解 
+##### 1.8.3.2.4. 配置详解 
 
 **Ribbon相关的配置**
 
@@ -7539,7 +8058,7 @@ public class RibbonConfiguration
 }
 ```
 
-#### 1.6.3.3. ribbon配置
+#### 1.8.3.3. ribbon配置
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -7547,7 +8066,7 @@ public class RibbonConfiguration
 * 全局配置的方式很简单， 只需使用 ribbon.< key>=< value>格式进行配置即可。其中， < key>代表了 Ribbon 客户端配置的参数 名， < value>则代表了 对应参数的值。 比如， 我们可以像下面这样全局配置Ribbon创建连接的超时时间：ribbon.ConnectTimeout=250.全局配置可以作为默认值进行设置， 当指定客户端配置 了相应key 的值时， 将覆盖全局配置的内容。
 * 指定客户端的配置方式 采用 < client> .ribbon.< key>=< value>的格式进行配置。 其中， < key>和< value>的含义同全局配置相同， 而 < client>代表了客户端的名称， 如上文中我们在＠RibbonClient中指定的名称， 也可以将它理解 为是一个服务名。 为了方便理解这种 配置方式， 我们举一个具体的例子： 假设， 有一个服务消费者通过RestTemplate来访问hello-service 服务的/hello 接口，这时 我 们 会这 样调用 restTemplate.getForEntity("http: //helloservice/hello", String.class) .getBody();。 如果没有服务治理框架的帮助，我们需要为该客户端指定 具体的实例清单，可以指定服务名来做详细的配置，具体如下：hello-service.ribbon.listOfServers=localhost:8001,localhost:8002, localhost:8003对于Ribbon .
 
-##### 1.6.3.3.1. 配置参数说明
+##### 1.8.3.3.1. 配置参数说明
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -7664,7 +8183,7 @@ public abstract class CommonClientConfigKey<T> implements IClientConfigKey<T> {
 
 ```
 
-##### 1.6.3.3.2. 重试机制
+##### 1.8.3.3.2. 重试机制
 <a href="#menu" style="float:right">目录</a>
 
 由于Spring Cloud Eureka实现的服务治理机制强调了CAP原理中的AP, 即可用性与可靠性，它与Zoo Keeper这类强调CP( 一致性、可靠性）的服务治理框架最大的区别就是，Eureka为了实现更高的服务可用性， 牺牲了一定的一致性， 在极端情况下它宁愿接受故障实例也不要丢掉 “ 健康 ” 实例， 比如， 当服务注册中心的网络发生故障断开时， 由于所有的服务实例无法维持续约心跳， 在强调 AP的服务治理中将会把所有服务实例都剔除掉，而Eureka则会因为超过85%的实例丢失心跳而会触发保护机制，注册中心将会保留此时的所有节点， 以实现服务间依然可以进行互相调用的场景， 即使其中有部分故障节点， 但这样做可以继续保障大多数的服务正常消费。
@@ -7690,10 +8209,10 @@ hello-service.ribbon.MaxAutoRetries=l
 根据如上配置， 当访问到故障请求的时候， 它会再尝试访问 一次当前实例（次数由MaxAutoRetries配置）， 如果不行， 就换 一个实例进行访问， 如果还是不行， 再换 一次实例访问（更换次数由MaxAutoRe红iesNextServer配置）， 如果依然不行， 返回失败信息
 
 
-### 1.6.4. 声明式服务调用feign
+### 1.8.4. 声明式服务调用feign
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.6.4.1. 使用案例
+#### 1.8.4.1. 使用案例
 
 引入依赖，因为feign底层是依赖ribbon,因此也要引入该包
 ```xml
@@ -7774,10 +8293,10 @@ public interface DemoFeign {
 }
 ```
 
-#### 1.6.4.2. 实现原理
+#### 1.8.4.2. 实现原理
 <a href="#menu" style="float:right">目录</a>
 
-##### 1.6.4.2.1. 配置类
+##### 1.8.4.2.1. 配置类
 <a href="#menu" style="float:right">目录</a>
 
 ```java
@@ -7933,7 +8452,7 @@ public class FeignClientsConfiguration {
 
 ```
 
-##### 1.6.4.2.2. 启动注解说明
+##### 1.8.4.2.2. 启动注解说明
 <a href="#menu" style="float:right">目录</a>
 
 feign是一个伪客户端，即它不做任何的请求处理。Feign通过处理注解生成request，从而实现简化HTTP API开发的目的，即开发人员可以使用注解的方式定制request api模板，在发送http request请求之前，feign通过处理注解的方式替换掉request模板中的参数，这种实现方式显得更为直接、可理解。
@@ -7967,6 +8486,8 @@ public @interface FeignClient {
 ```
 
 
+##### 1.8.4.2.3. 调用实现原理
+<a href="#menu" style="float:right">目录</a>
 
 
 通过包扫描注入FeignClient的bean，该源码在FeignClientsRegistrar类：
@@ -8228,7 +8749,7 @@ final class SynchronousMethodHandler implements MethodHandler {
 
 也就是说Feign的调用,中间生成了RequestTemplate对象,调用RequestTemplate的相关方法后,将会通过ribbon相关类来最终实现负载均衡,发送请求处理响应等操作.所以Feign本质上还是使用ribbon来实现.
 
-##### 总结
+##### 1.8.4.2.4. 总结
 
 总到来说，Feign的源码实现的过程如下：
 * 首先通过@EnableFeignCleints注解开启FeignCleint
@@ -8240,33 +8761,1908 @@ final class SynchronousMethodHandler implements MethodHandler {
 * 最后Client被封装到LoadBalanceClient类，这个类结合类Ribbon做到了负载均衡。
 
 
-
-##### 1.6.4.2.3. 调用实现原理
+### 1.8.5. 服务容错保护 Hystrix
 <a href="#menu" style="float:right">目录</a>
 
 
 
-### 1.6.5. 服务容错保护 Hystrix
+
+#### 1.8.5.1. Ribbon中使用Hystrix
+<a href="#menu" style="float:right">目录</a>
+
+引入依赖
+
+```xml
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+</dependency>
+```
+
+
+启动类添加@EnableHystrix注解
+```java
+@EnableHystrix
+@EnableDiscoveryClient
+@SpringBootApplication
+public class EurekaConsumerRibbonApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(EurekaConsumerRibbonApplication.class, args);
+    }
+
+}
+```
+在请求方法上添加@HystrixCommand,当请求方法出现异常的时候,将会调用定义的出错回调方法fallbackMethod.
+```java
+@Slf4j
+@Component
+public class RibbonService {
+
+    @Autowired
+    RestTemplate restTemplate;
+
+
+    @HystrixCommand(fallbackMethod = "demoError")
+    public String demo(){
+        log.info("客户端访问");
+        return  restTemplate.getForObject("Http://provider/provider/demo1",String.class);
+    }
+
+    public String demoError(){
+        log.info("客户端访问出错");
+
+        return "客户端访问出错";
+    }
+
+}
+```
+
+#### 1.8.5.2. Feign中使用Hystrix
+<a href="#menu" style="float:right">目录</a>
+
+由 于 Feign 的起步依赖中已经引入了 Hystrix 的依赖，所以在 Feign 中使用 Hystrix 不需要引入任何的依赖 。 只需要在 eureka-feign”client 工程的配置文件 application.yml 中配置开启Hystrix 的功能，配置文件 application.yml 中加以下配置 ：
+
+```yml
+#默认是false
+feign.hystrix.enable=true
+```
+
+```java
+@Component
+//fallback的类是出错逻辑实现类
+@FeignClient(value = "provider",fallback= DemoFeignHystrix.class)
+public interface DemoFeign {
+
+    @GetMapping("/provider/demo1")
+    public String demo();
+
+
+}
+
+//出错逻辑定义
+@Slf4j
+@Component
+class DemoFeignHystrix implements DemoFeign{
+
+    @Override
+    public String demo() {
+        log.info("客户端访问出错");
+
+        return "客户端访问出错";
+    }
+}
+```
+不需要在启动类上添加@EnableHystrix注解
+
+
+
+#### 1.8.5.3. Hystrix详解
+<a href="#menu" style="float:right">目录</a>
+
+##### 1.8.5.3.1. 背景
+<a href="#menu" style="float:right">目录</a>
+
+分布式系统环境下，服务间类似依赖非常常见，一个业务调用通常依赖多个基础服务。如下图，对于同步调用，当库存服务不可用时，商品服务请求线程被阻塞，当有大批量请求调用库存服务时，最终可能导致整个商品服务资源耗尽，无法继续对外提供服务。并且这种不可用可能沿请求调用链向上传递，这种现象被称为雪崩效应。
+
+![](https://static.oschina.net/uploads/space/2018/0122/170502_7fqS_2663573.png)
+
+**雪崩效应常见场景**
+* 硬件故障：如服务器宕机，机房断电，光纤被挖断等。
+* 流量激增：如异常流量，重试加大流量等。
+* 缓存穿透：一般发生在应用重启，所有缓存失效时，以及短时间内大量缓存失效时。大量的缓存不命中，使请求直击后端服务，造成服务提供者超负荷运行，引起服务不可用。
+* 程序BUG：如程序逻辑导致内存泄漏，JVM长时间FullGC等。
+* 同步等待：服务间采用同步调用模式，同步等待造成的资源耗尽。
+
+**雪崩效应应对策略**
+针对造成雪崩效应的不同场景，可以使用不同的应对策略，没有一种通用所有场景的策略，参考如下：
+* 硬件故障：多机房容灾、异地多活等。
+* 流量激增：服务自动扩容、流量控制（限流、关闭重试）等。
+* 缓存穿透：缓存预加载、缓存异步加载等。
+* 程序BUG：修改程序bug、及时释放资源等。
+* 同步等待：资源隔离、MQ解耦、不可用服务调用快速失败等。资源隔离通常指不同服务调用采用不同的线程池；不可用服务调用快速失败一般通过熔断器模式结合超时机制实现。
+综上所述，如果一个应用不能对来自依赖的故障进行隔离，那该应用本身就处在被拖垮的风险中。 因此，为了构建稳定、可靠的分布式系统，我们的服务应当具有自我保护能力，当依赖服务不可用时，当前服务启动自我保护功能，从而避免发生雪崩效应。
+
+
+
+##### 1.8.5.3.2. 基本认识
+<a href="#menu" style="float:right">目录</a>
+
+**Hystrix是什么**
+在分布式环境中，许多服务依赖项中的一些必然会失败。Hystrix是一个库，通过添加延迟容忍和容错逻辑，帮助你控制这些分布式服务之间的交互。Hystrix通过隔离服务之间的访问点、停止级联失败和提供回退选项来实现这一点，所有这些都可以提高系统的整体弹性。
+
+**Hystrix为了什么**
+
+Hystrix被设计的目标是：
+* 对通过第三方客户端库访问的依赖项（通常是通过网络）的延迟和故障进行保护和控制。
+* 在复杂的分布式系统中阻止级联故障。
+* 快速失败，快速恢复。
+* 回退，尽可能优雅地降级。
+* 启用近实时监控、警报和操作控制。
+
+**Hystrix解决了什么问题**
+复杂分布式体系结构中的应用程序有许多依赖项，每个依赖项在某些时候都不可避免地会失败。如果主机应用程序没有与这些外部故障隔离，那么它有可能被他们拖垮。
+
+例如，对于一个依赖于30个服务的应用程序，每个服务都有99.99%的正常运行时间，你可以期望如下：
+99.9930  =  99.7% 可用
+也就是说一亿个请求的0.03% = 3000000 会失败
+如果一切正常，那么每个月有2个小时服务是不可用的
+
+现实通常是更糟糕 
+
+当一切正常时，请求看起来是这样的：
+
+![](https://images2018.cnblogs.com/blog/874963/201807/874963-20180730172725624-245631738.png)
+
+当其中有一个系统有延迟时，它可能阻塞整个用户请求：
+
+![](https://images2018.cnblogs.com/blog/874963/201807/874963-20180730172821821-960520983.png)
+
+在高流量的情况下，一个后端依赖项的延迟可能导致所有服务器上的所有资源在数秒内饱和（PS：意味着后续再有请求将无法立即提供服务）
+![](https://images2018.cnblogs.com/blog/874963/201807/874963-20180730172949326-29467411.png)
+
+**Hystrix设计原则是什么**
+* 防止任何单个依赖项耗尽所有容器（如Tomcat）用户线程。
+* 甩掉包袱，快速失败而不是排队。
+* 在任何可行的地方提供回退，以保护用户不受失败的影响。
+* 使用隔离技术（如隔离板、泳道和断路器模式）来限制任何一个依赖项的影响。
+* 通过近实时的度量、监视和警报来优化发现时间。
+* 通过配置的低延迟传播来优化恢复时间。
+* 支持对Hystrix的大多数方面的动态属性更改，允许使用低延迟反馈循环进行实时操作修改。
+* 避免在整个依赖客户端执行中出现故障，而不仅仅是在网络流量中。
+
+**Hystrix是如何实现它的目标的**
+* 用一个HystrixCommand 或者 HystrixObservableCommand （这是命令模式的一个例子）包装所有的对外部系统（或者依赖）的调用，典型地它们在一个单独的线程中执行
+* 调用超时时间比你自己定义的阈值要长。有一个默认值，对于大多数的依赖项你是可以自定义超时时间的。
+* 为每个依赖项维护一个小的线程池(或信号量)；如果线程池满了，那么该依赖性将会立即拒绝请求，而不是排队。
+* 调用的结果有这么几种：成功、失败（客户端抛出异常）、超时、拒绝。
+* 在一段时间内，如果服务的错误百分比超过了一个阈值，就会触发一个断路器来停止对特定服务的所有请求，无论是手动的还是自动的。
+* 当请求失败、被拒绝、超时或短路时，执行回退逻辑。
+* 近实时监控指标和配置变化。
+
+当你使用Hystrix来包装每个依赖项时，上图中所示的架构会发生变化，如下图所示：
+
+每个依赖项相互隔离，当延迟发生时，它会被限制在资源中，并包含回退逻辑，该逻辑决定在依赖项中发生任何类型的故障时应作出何种响应：
+
+![](https://images2018.cnblogs.com/blog/874963/201807/874963-20180730173442729-1485668320.png)
+
+[官方wiki](https://github.com/Netflix/Hystrix/wiki)
+
+##### 1.8.5.3.3. hystrix适用场景
+<a href="#menu" style="float:right">目录</a>
+
+**核心无降级业务**
+计费业务，id生成器业务作为核心业务，是整个短信业务的核心，如果引入熔断机制会导致业务流程失败，相当于整个短信业务不可用，所以这类核心无降级的服务是不应该启动hystrix的。
+
+**边缘业务或者可降级的业务**
+相对的，短信发送微服务，因为对接了多个渠道，当某个渠道不可用的情况下，hystrix熔断掉，然后采取另外的渠道进行下发。在发送量级比较大的情况，可以减少短信发送进行重试的时间。
+如果需要保护后端的es集群，需要协调调用方限制自己的请求，当后端请求返回比较慢的情况下，通过hystrix超时进行熔断，避免后端es挂掉。前提是调用方对查询的数据容忍度比较高，就算查询不到数据也可以接受（短暂性）
+
+**hystrix vs dubbo**
+dubbo对于调用方，可以设置超时时间来打断未响应的调用，但是并不能减轻提供方的压力。 
+hystrix可以有丰富的配置，其原理是：在一个窗口时间内针对错误进行计数，当达到阈值则熔断提供方，不在请求该熔断的提供方，然后快速返回。
+
+**总结**
+是否启动hystrix和hystrix作用阈值应该根据不同业务进行不同精细化的配置，才能发挥出最大的作用。
+并不是每一个业务都需要开启hystrix的支持
+在启用hystrix的情况下，对于整个分布式服务集群来讲，并不能完全避免服务雪崩，仅能保证调用方服务在发生网络雪崩发时候自己不被拖死，减少雪崩的影响范围。
+
+##### 1.8.5.3.4. 注解说明
+<a href="#menu" style="float:right">目录</a>
+
+通过在方法上添加 @HystrixCommand 注解并配置注解的参数来实现配置，但有的时候一个类里面会有多个 Hystrix 方法，每个方法都是类似配置的话会冗余很多代码，这时候我们可以在类上使用 @DefaultProperties 注解来给整个类的 Hystrix 方法设置一个默认值
+
+```java
+@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Inherited
+@Documented
+public @interface HystrixCommand {
+    String groupKey() default "";
+
+    String commandKey() default "";
+
+    String threadPoolKey() default "";
+
+    String fallbackMethod() default "";
+
+    HystrixProperty[] commandProperties() default {};
+
+    HystrixProperty[] threadPoolProperties() default {};
+
+    Class<? extends Throwable>[] ignoreExceptions() default {};
+
+    ObservableExecutionMode observableExecutionMode() default ObservableExecutionMode.EAGER;
+
+    HystrixException[] raiseHystrixExceptions() default {};
+
+    String defaultFallback() default "";
+}
+
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Inherited
+@Documented
+public @interface DefaultProperties {
+    String groupKey() default "";
+
+    String threadPoolKey() default "";
+
+    HystrixProperty[] commandProperties() default {};
+
+    HystrixProperty[] threadPoolProperties() default {};
+
+    Class<? extends Throwable>[] ignoreExceptions() default {};
+
+    HystrixException[] raiseHystrixExceptions() default {};
+
+    String defaultFallback() default "";
+}
+
+```
+* groupKey：一组 Hystrix 命令的集合， 用来统计、报告，默认取类名，可不配置。
+* commandKey：用来标识一个 Hystrix 命令，默认会取被注解的方法名。需要注意：Hystrix 里同一个键的唯一标识并不包括 groupKey，建议取一个独一二无的名字，防止多个方法之间因为键重复而互相影响。
+* threadPoolKey：用来标识一个线程池，如果没设置的话会取 groupKey，很多情况下都是同一个类内的方法在共用同一个线程池，如果两个共用同一线程池的方法上配置了同样的属性，在第一个方法被执行后线程池的属性就固定了，所以属性会以第一个被执行的方法上的配置为准。
+* fallbackMethod：方法执行时熔断、错误、超时时会执行的回退方法，需要保持此方法与 Hystrix 方法的签名和返回值一致。
+* commandProperties：与此命令相关的属性。
+* threadPoolProperties：与线程池相关的属性，
+* ignoreExceptions：默认 Hystrix 在执行方法时捕获到异常时执行回退，并统计失败率以修改熔断器的状态，而被忽略的异常则会直接抛到外层，不会执行回退方法，也不会影响熔断器的状态。
+* observableExecutionMode：当 Hystrix 命令被包装成 RxJava 的 Observer 异步执行时，此配置指定了 Observable 被执行的模式，默认是 ObservableExecutionMode.EAGER，Observable 会在被创建后立刻执行，而 ObservableExecutionMode.EAGER模式下，则会产生一个 Observable 被 subscribe 后执行。我们常见的命令都是同步执行的，此配置项可以不配置。
+* raiseHystrixExceptions：当配置项包括 HystrixRuntimeException 时，所有的未被忽略的异常都会被包装成 HystrixRuntimeException，配置其他种类的异常好像并没有什么影响。
+* defaultFallback：默认回退方法，当配置 fallbackMethod 项时此项没有意义，另外，默认回退方法不能有参数，返回值要与 Hystrix方法的返回值相同。
+
+**commandProperties**
+配置方式
+Hystrix 的命令属性是由 @HystrixProperty 注解数组构成的，HystrixProperty 由 name 和 value 两个属性，数据类型都是字符串。
+
+以下将所有的命令属性分组来介绍。
+* 线程隔离(Isolation)
+    * execution.isolation.strategy： 配置请求隔离的方式，有 threadPool（线程池，默认）和 semaphore（信号量）两种，信号量方式高效但配置不灵活，我们一般采用 Java 里常用的线程池方式。
+    * execution.timeout.enabled：是否给方法执行设置超时，默认为 true。
+    * execution.isolation.thread.timeoutInMilliseconds：方法执行超时时间，默认值是 1000，即 1秒，此值根据业务场景配置。
+    * execution.isolation.thread.interruptOnTimeout： execution.isolation.thread.interruptOnCancel：是否在方法执行超时/被取消时中断方法。需要注意在 JVM 中我们无法强制中断一个线程，如果 Hystrix 方法里没有处理中断信号的逻辑，那么中断会被忽略。
+    * execution.isolation.semaphore.maxConcurrentRequests：默认值是 10，此配置项要在 execution.isolation.strategy 配置为 semaphore 时才会生效，它指定了一个 Hystrix 方法使用信号量隔离时的最大并发数，超过此并发数的请求会被拒绝。信号量隔离的配置就这么一个，也是前文说信号量隔离配置不灵活的原因。
+* 统计器(Metrics)
+    * 滑动窗口： Hystrix 的统计器是由滑动窗口来实现的，我们可以这么来理解滑动窗口：一位乘客坐在正在行驶的列车的靠窗座位上，列车行驶的公路两侧种着一排挺拔的白杨树，随着列车的前进，路边的白杨树迅速从窗口滑过，我们用每棵树来代表一个请求，用列车的行驶代表时间的流逝，那么，列车上的这个窗口就是一个典型的滑动窗口，这个乘客能通过窗口看到的白杨树就是 Hystrix 要统计的数据。
+    * 桶： bucket 是 Hystrix 统计滑动窗口数据时的最小单位。同样类比列车窗口，在列车速度非常快时，如果每掠过一棵树就统计一次窗口内树的数据，显然开销非常大，如果乘客将窗口分成十分，列车前进行时每掠过窗口的十分之一就统计一次数据，开销就完全可以接受了。 Hystrix 的 bucket （桶）也就是窗口 N分之一 的概念。
+    * metrics.rollingStats.timeInMilliseconds：此配置项指定了窗口的大小，单位是 ms，默认值是 1000，即一个滑动窗口默认统计的是 1s 内的请求数据。
+    * metrics.healthSnapshot.intervalInMilliseconds：它指定了健康数据统计器（影响 Hystrix 熔断）中每个桶的大小，默认是 500ms，在进行统计时，Hystrix 通过 metrics.rollingStats.timeInMilliseconds / metrics.healthSnapshot.intervalInMilliseconds 计算出桶数，在窗口滑动时，每滑过一个桶的时间间隔时就统计一次当前窗口内请求的失败率。
+    * metrics.rollingStats.numBuckets：Hystrix 会将命令执行的结果类型都统计汇总到一块，给上层应用使用或生成统计图表，此配置项即指定了，生成统计数据流时滑动窗口应该拆分的桶数。此配置项最易跟上面的 metrics.healthSnapshot.intervalInMilliseconds 搞混，认为此项影响健康数据流的桶数。 此项默认是 10，并且需要保持此值能被 metrics.rollingStats.timeInMilliseconds 整除。
+    * metrics.rollingPercentile.enabled：是否统计方法响应时间百分比，默认为 true 时，Hystrix 会统计方法执行的 1%,10%,50%,90%,99% 等比例请求的平均耗时用以生成统计图表。
+    * metrics.rollingPercentile.timeInMilliseconds：统计响应时间百分比时的窗口大小，默认为 60000，即一分钟。
+    * metrics.rollingPercentile.numBuckets：统计响应时间百分比时滑动窗口要划分的桶用，默认为6，需要保持能被metrics.rollingPercentile.timeInMilliseconds 整除。
+    * metrics.rollingPercentile.bucketSize：统计响应时间百分比时，每个滑动窗口的桶内要保留的请求数，桶内的请求超出这个值后，会覆盖最前面保存的数据。默认值为 100，在统计响应百分比配置全为默认的情况下，每个桶的时间长度为 10s = 60000ms / 6，但这 10s 内只保留最近的 100 条请求的数据。
+
+
+* 熔断器(Circuit Breaker)
+    * circuitBreaker.enabled：是否启用熔断器，默认为 true;
+    * circuitBreaker.forceOpen： circuitBreaker.forceClosed：是否强制启用/关闭熔断器，强制启用关闭都想不到什么应用的场景，保持默认值，不配置即可。
+    * circuitBreaker.requestVolumeThreshold：启用熔断器功能窗口时间内的最小请求数。试想如果没有这么一个限制，我们配置了 50% 的请求失败会打开熔断器，窗口时间内只有 3 条请求，恰巧两条都失败了，那么熔断器就被打开了，5s 内的请求都被快速失败。此配置项的值需要根据接口的 QPS 进行计算，值太小会有误打开熔断器的可能，值太大超出了时间窗口内的总请求数，则熔断永远也不会被触发。建议设置为 QPS * 窗口秒数 * 60%。
+    * circuitBreaker.errorThresholdPercentage：在通过滑动窗口获取到当前时间段内 Hystrix 方法执行的失败率后，就需要根据此配置来判断是否要将熔断器打开了。 此配置项默认值是 50，即窗口时间内超过 50% 的请求失败后会打开熔断器将后续请求快速失败。
+    * circuitBreaker.sleepWindowInMilliseconds：熔断器打开后，所有的请求都会快速失败，但何时服务恢复正常就是下一个要面对的问题。熔断器打开时，Hystrix 会在经过一段时间后就放行一条请求，如果这条请求执行成功了，说明此时服务很可能已经恢复了正常，那么会将熔断器关闭，如果此请求执行失败，则认为服务依然不可用，熔断器继续保持打开状态。此配置项指定了熔断器打开后经过多长时间允许一次请求尝试执行，默认值是 5000。
+
+
+* 其他(Context/Fallback)
+    * requestCache.enabled：是否启用请求结果缓存。默认是 true，但它并不意味着我们的每个请求都会被缓存。缓存请求结果和从缓存中获取结果都需要我们配置 cacheKey，并且在方法上使用 @CacheResult 注解声明一个缓存上下文。
+    * requestLog.enabled：是否启用请求日志，默认为 true。
+    * fallback.enabled：是否启用方法回退，默认为 true 即可。
+    * fallback.isolation.semaphore.maxConcurrentRequests：回退方法执行时的最大并发数，默认是10，如果大量请求的回退方法被执行时，超出此并发数的请求会抛出 REJECTED_SEMAPHORE_FALLBACK 异常。
+
+**threadPoolProperties**
+配置方式
+线程池的配置也是由 HystrixProperty 数组构成，配置方式与命令属性一致。
+
+* 配置项
+    * coreSize：核心线程池的大小，默认值是 10，一般根据 QPS * 99% cost + redundancy count 计算得出。
+    * allowMaximumSizeToDivergeFromCoreSize：是否允许线程池扩展到最大线程池数量，默认为 false;
+    * maximumSize：线程池中线程的最大数量，默认值是 10，此配置项单独配置时并不会生效，需要启用 allowMaximumSizeToDivergeFromCoreSize 项。
+    * maxQueueSize：作业队列的最大值，默认值为 -1，设置为此值时，队列会使用 SynchronousQueue，此时其 size 为0，Hystrix 不会向队列内存放作业。如果此值设置为一个正的 int 型，队列会使用一个固定 size 的 LinkedBlockingQueue，此时在核心线程池内的线程都在忙碌时，会将作业暂时存放在此队列内，但超出此队列的请求依然会被拒绝。
+    * queueSizeRejectionThreshold：由于 maxQueueSize 值在线程池被创建后就固定了大小，如果需要动态修改队列长度的话可以设置此值，即使队列未满，队列内作业达到此值时同样会拒绝请求。此值默认是 5，所以有时候只设置了 maxQueueSize 也不会起作用。
+    * keepAliveTimeMinutes：由上面的 maximumSize，我们知道，线程池内核心线程数目都在忙碌，再有新的请求到达时，线程池容量可以被扩充为到最大数量，等到线程池空闲后，多于核心数量的线程还会被回收，此值指定了线程被回收前的存活时间，默认为 2，即两分钟。
+* 工作方式
+    * Hystrix 内线程池的使用是基于 Java 内置线程池的简单包装，通常有以下三种状态：
+    * 如果请求量少，达不到 coreSize，通常会使用核心线程来执行任务。
+    * 如果设置了 maxQueueSize，当请求数超过了 coreSize, 通常会把请求放到 queue 里，待核心线程有空闲时消费。
+    * 如果 queue 长度无法存储请求，则会创建新线程执行直到达到 maximumSize 最大线程数，多出核心线程数的线程会在空闲时回收。
+
+
+##### 1.8.5.3.5. 如何使用
+<a href="#menu" style="float:right">目录</a>
+
+###### 1.8.5.3.5.1. 基本的实例
+<a href="#menu" style="float:right">目录</a>
+
+**引入依赖**
+```xml
+<dependency>
+    <groupId>com.netflix.hystrix</groupId>
+    <artifactId>hystrix-core</artifactId>
+    <version>1.5.18</version>
+</dependency>
+<dependency>
+    <groupId>com.netflix.hystrix</groupId>
+    <artifactId>hystrix-serialization</artifactId>
+    <version>1.5.18</version>
+</dependency>
+<dependency>
+    <groupId>com.netflix.hystrix</groupId>
+    <artifactId>hystrix-metrics-event-stream</artifactId>
+    <version>1.5.18</version>
+</dependency>
+<dependency>
+    <groupId>com.netflix.hystrix</groupId>
+    <artifactId>hystrix-javanica</artifactId>
+    <version>1.5.18</version>
+</dependency>
+```
+
+Hystrix有两个请求命令 HystrixCommand、HystrixObservableCommand。
+* HystrixCommand用在依赖服务返回单个操作结果的时候。又两种执行方式
+    * -execute():同步执行。从依赖的服务返回一个单一的结果对象，或是在发生错误的时候抛出异常。
+    * -queue();异步执行。直接返回一个Future对象，其中包含了服务执行结束时要返回的单一结果对象。
+* HystrixObservableCommand 用在依赖服务返回多个操作结果的时候。它也实现了两种执行方式
+    * -observe():返回Obervable对象，他代表了操作的多个结果，他是一个HotObservable
+    * -toObservable():同样返回Observable对象，也代表了操作多个结果，但它返回的是一个Cold Observable。
+
+**与HystrixCommand进行比较：**
+* HystrixCommand提供了同步和异步两种执行方式，而HystrixObservableCommand只有**异步方式**
+* HystrixCommand的run方法是用内部线程池的线程来执行的，而HystrixObservableCommand则是由调用方(例如Tomcat容器)的线程来执行的，因为是异步，所以两种方式都能很好的起到资源隔离的效果。这点也可以从前面的测试结果中看出，当调用HystrixCommand的run方法时，控制台输出执行线程为：hystrix-usercommand-1is running......，而HystrixObservableCommand的控制台输出线程为：http-nio-8080-exec-1is running......
+* HystrixCommand一次只能发送单条数据返回，而HystrixObservableCommand一次可以发送多条数据返回，从上面的示例可以看出
+
+**HystrixCommand：**
+ 
+* 使用方式一：继承的方式
+```java
+package org.hope.hystrix.example;
+
+import com.netflix.hystrix.HystrixCommand;
+import com.netflix.hystrix.HystrixCommandGroupKey;
+import com.netflix.hystrix.HystrixCommandKey;
+import com.netflix.hystrix.HystrixRequestCache;
+import com.netflix.hystrix.strategy.concurrency.HystrixConcurrencyStrategyDefault;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.RestTemplate;
+
+/**
+ * Created by lisen on 2017/12/15.
+ * HystrixCommand用在命令服务返回单个操作结果的时候
+ */
+public class CommandHelloWorld extends HystrixCommand<String> {
+    private final String name;
+
+    public CommandHelloWorld(String name) {
+        super(HystrixCommandGroupKey.Factory.asKey("ExampleGroup"));
+        this.name = name;
+    }
+
+    @Override
+    protected String run() throws Exception {
+        int i = 1/0;
+        return "Hello " + name + "!";
+    }
+
+    /**
+     * 降级。Hystrix会在run()执行过程中出现错误、超时、线程池拒绝、断路器熔断等情况时，
+     * 执行getFallBack()方法内的逻辑
+     */
+    @Override
+    protected String getFallback() {
+        return "faild";
+    }
+}
+```
+* 单元测试：
+
+```java
+package org.hope.hystrix.example;
+
+import org.junit.Test;
+import rx.Observable;
+import rx.Observer;
+import rx.Subscription;
+import rx.functions.Action1;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+import static org.junit.Assert.assertEquals;
+
+public class CommandHelloWorldTest {
+
+    /**
+     * 测试同步执行
+     */
+    @Test
+    public void testSynchronous() {
+        System.out.println(new CommandHelloWorld("World").execute());
+    }
+
+    /**
+     * 测试异步执行
+     */
+    @Test
+    public void testAsynchronous() throws ExecutionException, InterruptedException {
+        Future<String> fWorld = new CommandHelloWorld("World").queue();
+        System.out.println(fWorld.get());  //一步执行用get()来获取结果
+    }
+
+    /**
+     * 虽然HystrixCommand具备了observe()和toObservable()的功能，但是它的实现有一定的局限性，
+     * 它返回的Observable只能发射一次数据，所以Hystrix还提供了HystrixObservableCommand,
+     * 通过它实现的命令可以获取能发多次的Observable
+     */
+    @Test
+    public void testObserve() {
+        /**
+         * 返回的是Hot Observable,HotObservable，不论 “事件源” 是否有“订阅者”
+         * 都会在创建后对事件进行发布。所以对于Hot Observable的每一个“订阅者”都有
+         * 可能从“事件源”的中途开始的，并可能只是看到了整个操作的局部过程
+         */
+        //blocking
+        Observable<String> ho = new CommandHelloWorld("World").observe();
+//        System.out.println(ho.toBlocking().single());
+
+        //non-blockking
+        //- this is a verbose anonymous inner-class approach and doesn't do assertions
+        ho.subscribe(new Observer<String>() {
+            @Override
+            public void onCompleted() {
+                System.out.println("==============onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(String s) {
+                System.out.println("=========onNext: " + s);
+            }
+        });
+
+        ho.subscribe(new Action1<String>() {
+            @Override
+            public void call(String s) {
+                System.out.println("==================call:" + s);
+            }
+        });
+    }
+
+    @Test
+    public void testToObservable() {
+        /**
+         * Cold Observable在没有 “订阅者” 的时候并不会发布时间，
+         * 而是进行等待，知道有 “订阅者” 之后才发布事件，所以对于
+         * Cold Observable的订阅者，它可以保证从一开始看到整个操作的全部过程。
+         */
+        Observable<String> co = new CommandHelloWorld("World").toObservable();
+        System.out.println(co.toBlocking().single());
+    }
+
+}
+```
+
+* 使用方式二：注解的方式；
+
+```java
+package org.hope.hystrix.example.service;
+
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.ObservableExecutionMode;
+import com.netflix.hystrix.contrib.javanica.command.AsyncResult;
+import org.springframework.stereotype.Service;
+import rx.Observable;
+import rx.Subscriber;
+
+import java.util.concurrent.Future;
+
+/**
+ * 用@HystrixCommand的方式来实现
+ */
+@Service
+public class UserService {
+    /**
+     * 同步的方式。
+     * fallbackMethod定义降级
+     */
+    @HystrixCommand(fallbackMethod = "helloFallback")
+    public String getUserId(String name) {
+        int i = 1/0; //此处抛异常，测试服务降级
+        return "你好:" + name;
+    }
+
+    public String helloFallback(String name) {
+        return "error";
+    }
+
+    //异步的执行
+    @HystrixCommand(fallbackMethod = "getUserNameError")
+    public Future<String> getUserName(final Long id) {
+        return new AsyncResult<String>() {
+            @Override
+            public String invoke() {
+                int i = 1/0;//此处抛异常,测试服务降级
+                return "小明:" + id;
+            }
+        };
+    }
+
+    public String getUserNameError(Long id) {
+        return "faile";
+    }
+}
+```
+* 单元测试：
+
+```java
+package org.hope.hystrix.example.service;
+
+import javafx.application.Application;
+import org.hope.hystrix.example.HystrixApplication;
+import org.hope.hystrix.example.model.User;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.concurrent.ExecutionException;
+
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = HystrixApplication.class)
+public class UserServiceTest {
+
+    @Autowired
+    private UserService userService;
+
+    /**
+     * 测试同步
+     */
+    @Test
+    public void testGetUserId() {
+        System.out.println("=================" + userService.getUserId("lisi"));
+    }
+
+    /**
+     * 测试异步
+     */
+    @Test
+    public void testGetUserName() throws ExecutionException, InterruptedException {
+        System.out.println("=================" + userService.getUserName(30L).get());
+    }
+}
+```
+
+**HystrixObservableCommand：**
+* 使用方式一：继承的方式
+HystrixObservable通过实现 protected Observable<String> construct() 方法来执行逻辑。通过 重写 resumeWithFallback方法来实现服务降级
+
+```java
+package org.hope.hystrix.example;
+
+import com.netflix.hystrix.HystrixCommandGroupKey;
+import com.netflix.hystrix.HystrixObservableCommand;
+import rx.Observable;
+import rx.Subscriber;
+import rx.schedulers.Schedulers;
+
+public class ObservableCommandHelloWorld extends HystrixObservableCommand<String> {
+
+    private final String name;
+
+    public ObservableCommandHelloWorld(String name) {
+        super(HystrixCommandGroupKey.Factory.asKey("ExampleGroup"));
+        this.name = name;
+    }
+
+    @Override
+    protected Observable<String> construct() {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                try {
+                    if(!subscriber.isUnsubscribed()) {
+                        subscriber.onNext("Hello");
+                        int i = 1 / 0; //模拟异常
+                        subscriber.onNext(name + "!");
+                        subscriber.onCompleted();
+                    }
+                } catch (Exception e) {
+                    subscriber.onError(e);
+                }
+            }
+        }).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 服务降级
+     */
+    @Override
+    protected Observable<String> resumeWithFallback() {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                try {
+                    if (!subscriber.isUnsubscribed()) {
+                        subscriber.onNext("失败了！");
+                        subscriber.onNext("找大神来排查一下吧！");
+                        subscriber.onCompleted();
+                    }
+                } catch (Exception e) {
+                    subscriber.onError(e);
+                }
+            }
+        }).subscribeOn(Schedulers.io());
+    }
+}
+```
+ 
+* 单元测试：
+
+```java
+package org.hope.hystrix.example;
+
+import org.junit.Test;
+import rx.Observable;
+
+import java.util.Iterator;
+
+public class ObservableCommandHelloWorldTest {
+
+    @Test
+    public void testObservable() {
+        Observable<String> observable= new ObservableCommandHelloWorld("World").observe();
+
+        Iterator<String> iterator = observable.toBlocking().getIterator();
+        while(iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+    }
+
+    @Test
+    public void testToObservable() {
+        Observable<String> observable= new ObservableCommandHelloWorld("World").observe();
+        Iterator<String> iterator = observable.toBlocking().getIterator();
+        while(iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+    }
+
+}
+```
+
+* 使用方式二：注解的方式；
+```java
+package org.hope.hystrix.example.service;
+
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.ObservableExecutionMode;
+import org.springframework.stereotype.Service;
+import rx.Observable;
+import rx.Subscriber;
+
+@Service
+public class ObservableUserService {
+    /**
+     *  EAGER参数表示使用observe()方式执行
+     */
+    @HystrixCommand(observableExecutionMode = ObservableExecutionMode.EAGER, fallbackMethod = "observFailed") //使用observe()执行方式
+    public Observable<String> getUserById(final Long id) {
+       return Observable.create(new Observable.OnSubscribe<String>() {
+           @Override
+           public void call(Subscriber<? super String> subscriber) {
+               try {
+                   if(!subscriber.isUnsubscribed()) {
+                       subscriber.onNext("张三的ID:");
+                       int i = 1 / 0; //抛异常，模拟服务降级
+                       subscriber.onNext(String.valueOf(id));
+                       subscriber.onCompleted();
+                   }
+               } catch (Exception e) {
+                   subscriber.onError(e);
+               }
+           }
+       });
+    }
+
+    private String observFailed(Long id) {
+        return "observFailed---->" + id;
+    }
+
+    /**
+     * LAZY参数表示使用toObservable()方式执行
+     */
+    @HystrixCommand(observableExecutionMode = ObservableExecutionMode.LAZY, fallbackMethod = "toObserbableError") //表示使用toObservable()执行方式
+    public Observable<String> getUserByName(final String name) {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                try {
+                    if(!subscriber.isUnsubscribed()) {
+                        subscriber.onNext("找到");
+                        subscriber.onNext(name);
+                        int i = 1/0; ////抛异常，模拟服务降级
+                        subscriber.onNext("了");
+                        subscriber.onCompleted();
+                    }
+                } catch (Exception e) {
+                    subscriber.onError(e);
+                }
+            }
+        });
+    }
+
+    private String toObserbableError(String name) {
+        return "toObserbableError--->" + name;
+    }
+
+}
+```
+
+* 单元测试：
+```java
+package org.hope.hystrix.example.service;
+
+import org.hope.hystrix.example.HystrixApplication;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.Iterator;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = HystrixApplication.class)
+public class ObservableUserServiceTest {
+
+    @Autowired
+    private ObservableUserService observableUserService;
+
+    @Test
+    public void testObserve() {
+        Iterator<String> iterator = observableUserService.getUserById(30L).toBlocking().getIterator();
+        while(iterator.hasNext()) {
+            System.out.println("===============" + iterator.next());
+        }
+    }
+
+    @Test
+    public void testToObservable() {
+        Iterator<String> iterator = observableUserService.getUserByName("王五").toBlocking().getIterator();
+        while(iterator.hasNext()) {
+            System.out.println("===============" + iterator.next());
+        }
+    }
+}
+```
+总结：在实际使用时，我们需要为大多数执行过程中可能会失败的Hystrix命令实现服务降级逻辑，但是也有一些情况可以不去实现降级逻辑，比如：执行写操作的命令;执行批处理或离线计算的命令.
+
+
+
+###### 1.8.5.3.5.2. 同步执行
+<a href="#menu" style="float:right">目录</a>
+
+HystrixCommand
+```java
+//执行以下方法将会调用CommandHelloWorld的run方法
+new CommandHelloWorld("xxx").execute();
+
+```
+HystrixObservableCommand 没有同步执行
+
+```java
+Observable<String> observable = new CommandHelloWorld("lgj").observe();
+observable.toBlocking().toFuture().get();
+```
+
+###### 1.8.5.3.5.3. 异步执行
+<a href="#menu" style="float:right">目录</a>
+
+HystrixCommand
+```java
+//调用queue方法是异步执行
+Future<String> fs = new CommandHelloWorld("World").queue();
+//调用Future的get获取执行结果
+String s = fs.get();
+```
+HystrixObservableCommand 
+
+```java
+Observable<String> observable = new CommandHelloWorld("lgj").observe();
+observable.toBlocking().toFuture().get();
+```
+
+###### 1.8.5.3.5.4. Reactive Execution
+<a href="#menu" style="float:right">目录</a>
+
+You can also observe the results of a HystrixCommand as an Observable by using one of the following methods:
+
+observe() — returns a “hot” Observable that executes the command immediately, though because the Observable is filtered through a ReplaySubject you are not in danger of losing any items that it emits before you have a chance to subscribe
+toObservable() — returns a “cold” Observable that won’t execute the command and begin emitting its results until you subscribe to the Observable
+Observable<String> ho = new CommandHelloWorld("World").observe();
+// or Observable<String> co = new CommandHelloWorld("World").toObservable();
+You then retrieve the value of the command by subscribing to the Observable:
+```java
+ho.subscribe(new Action1<String>() {
+
+    @Override
+    public void call(String s) {
+         // value emitted here
+    }
+
+});
+```
+The following unit tests demonstrate the behavior:
+```java
+@Test
+public void testObservable() throws Exception {
+
+    Observable<String> fWorld = new CommandHelloWorld("World").observe();
+    Observable<String> fBob = new CommandHelloWorld("Bob").observe();
+
+    // blocking
+    assertEquals("Hello World!", fWorld.toBlockingObservable().single());
+    assertEquals("Hello Bob!", fBob.toBlockingObservable().single());
+
+    // non-blocking 
+    // - this is a verbose anonymous inner-class approach and doesn't do assertions
+    fWorld.subscribe(new Observer<String>() {
+
+        @Override
+        public void onCompleted() {
+            // nothing needed here
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            e.printStackTrace();
+        }
+
+        @Override
+        public void onNext(String v) {
+            System.out.println("onNext: " + v);
+        }
+
+    });
+
+    // non-blocking
+    // - also verbose anonymous inner-class
+    // - ignore errors and onCompleted signal
+    fBob.subscribe(new Action1<String>() {
+
+        @Override
+        public void call(String v) {
+            System.out.println("onNext: " + v);
+        }
+
+    });
+}
+```
+Using Java 8 lambdas/closures is more compact; it would look like this:
+```java
+    fWorld.subscribe((v) -> {
+        System.out.println("onNext: " + v);
+    })
+    
+    // - or while also including error handling
+    
+    fWorld.subscribe((v) -> {
+        System.out.println("onNext: " + v);
+    }, (exception) -> {
+        exception.printStackTrace();
+    })
+```
+More information about Observable can be found at http://reactivex.io/documentation/observable.html
+
+###### 1.8.5.3.5.5. Reactive Commands
+<a href="#menu" style="float:right">目录</a>
+
+Rather than converting a HystrixCommand into an Observable using the methods described above, you can also create a HystrixObservableCommand that is a specialized version of HystrixCommand meant to wrap Observables. A HystrixObservableCommand is capable of wrapping Observables that emit multiple items, whereas ordinary HystrixCommands, even when converted into Observables, will never emit more than one item.
+
+In such a case, instead of overriding the run method with your command logic (as you would with an ordinary HystrixCommand), you would override the construct method so that it returns the Observable you intend to wrap.
+
+To obtain an Observable representation of the HystrixObservableCommand, use one of the following two methods:
+
+observe() — returns a “hot” Observable that subscribes to the underlying Observable immediately, though because it is filtered through a ReplaySubject you are not in danger of losing any items that it emits before you have a chance to subscribe to the resulting Observable
+toObservable() — returns a “cold” Observable that won’t subscribe to the underlying Observable until you subscribe to the resulting Observable
+###### 1.8.5.3.5.6. Fallback
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.6.6. API网关服务
+You can support graceful degradation in a Hystrix command by adding a fallback method that Hystrix will call to obtain a default value or values in case the main command fails. You will want to implement a fallback for most Hystrix commands that might conceivably fail, with a couple of exceptions:
+
+a command that performs a write operation
+If your Hystrix command is designed to do a write operation rather than to return a value (such a command might normally return a void in the case of a HystrixCommand or an empty Observable in the case of a HystrixObservableCommand), there isn’t much point in implementing a fallback. If the write fails, you probably want the failure to propagate back to the caller.
+batch systems/offline compute
+If your Hystrix command is filling up a cache, or generating a report, or doing any sort of offline computation, it’s usually more appropriate to propagate the error back to the caller who can then retry the command later, rather than to send the caller a silently-degraded response.
+Whether or not your command has a fallback, all of the usual Hystrix state and circuit-breaker state/metrics are updated to indicate the command failure.
+
+In an ordinary HystrixCommand you implement a fallback by means of a getFallback() implementation. Hystrix will execute this fallback for all types of failure such as run() failure, timeout, thread pool or semaphore rejection, and circuit-breaker short-circuiting. The following example includes such a fallback:
+```java
+public class CommandHelloFailure extends HystrixCommand<String> {
+
+    private final String name;
+
+    public CommandHelloFailure(String name) {
+        super(HystrixCommandGroupKey.Factory.asKey("ExampleGroup"));
+        this.name = name;
+    }
+
+    @Override
+    protected String run() {
+        throw new RuntimeException("this command always fails");
+    }
+
+    @Override
+    protected String getFallback() {
+        return "Hello Failure " + name + "!";
+    }
+}
+```
+This command’s run() method will fail on every execution. However, the caller will always receive the value returned by the command’s getFallback() method instead of receiving an exception:
+```java
+    @Test
+    public void testSynchronous() {
+        assertEquals("Hello Failure World!", new CommandHelloFailure("World").execute());
+        assertEquals("Hello Failure Bob!", new CommandHelloFailure("Bob").execute());
+    }
+```
+HystrixObservableCommand Equivalent
+For a HystrixObservableCommand you instead may override the resumeWithFallback method so that it returns a second Observable that will take over from the primary Observable if it fails. Note that because an Observable may fail after having already emitted one or more items, your fallback should not assume that it will be emitting the only values that the observer will see.
+
+Internally, Hystrix uses the RxJava onErrorResumeNext operator to seamlessly transition between the primary and fallback Observable in case of an error.
+
+Sequence Diagram
+@adrianb11 has kindly provided a sequence diagram demonstrating how a timeout then fallback works.
+
+###### 1.8.5.3.5.7. Error Propagation
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.6.6.1. zuul
+All exceptions thrown from the run() method except for HystrixBadRequestException count as failures and trigger getFallback() and circuit-breaker logic.
+
+You can wrap the exception that you would like to throw in HystrixBadRequestException and retrieve it via getCause(). The HystrixBadRequestException is intended for use cases such as reporting illegal arguments or non-system failures that should not count against the failure metrics and should not trigger fallback logic.
+
+HystrixObservableCommand Equivalent
+In the case of a HystrixObservableCommand, non-recoverable errors are returned via onError notifications from the resulting Observable, and fallbacks are accomplished by falling back to a second Observable that Hystrix obtains through the resumeWithFallback method that you implement.
+
+Execution Exception types
+Failure Type	Exception class	Exception.cause	subject to fallback
+FAILURE	HystrixRuntimeException	underlying exception (user-controlled)	YES
+TIMEOUT	HystrixRuntimeException	j.u.c.TimeoutException	YES
+SHORT_CIRCUITED	HystrixRuntimeException	j.l.RuntimeException	YES
+THREAD_POOL_REJECTED	HystrixRuntimeException	j.u.c.RejectedExecutionException	YES
+SEMAPHORE_REJECTED	HystrixRuntimeException	j.l.RuntimeException	YES
+BAD_REQUEST	HystrixBadRequestException	underlying exception (user-controlled)	NO
+###### 1.8.5.3.5.8. Command Name
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.6.6.2. GateWay
+A command name is, by default, derived from the class name:
+
+getClass().getSimpleName();
+To explicitly define the name pass it in via the HystrixCommand or HystrixObservableCommand constructor:
+```java
+    public CommandHelloWorld(String name) {
+        super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey("ExampleGroup"))
+                .andCommandKey(HystrixCommandKey.Factory.asKey("HelloWorld")));
+        this.name = name;
+    }
+```
+To save a Setter allocation per command allocation, you may also cache the Setter like so:
+```java
+    private static final Setter cachedSetter = 
+        Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey("ExampleGroup"))
+            .andCommandKey(HystrixCommandKey.Factory.asKey("HelloWorld"));    
+
+    public CommandHelloWorld(String name) {
+        super(cachedSetter);
+        this.name = name;
+    }
+```
+HystrixCommandKey is an interface and can be implemented as an enum or regular class, but it also has the helper Factory class to construct and intern instances such as:
+
+HystrixCommandKey.Factory.asKey("HelloWorld")
+###### 1.8.5.3.5.9. Command Group
+<a href="#menu" style="float:right">目录</a>
+
+Hystrix uses the command group key to group together commands such as for reporting, alerting, dashboards, or team/library ownership.
+
+By default Hystrix uses this to define the command thread-pool unless a separate one is defined.
+
+HystrixCommandGroupKey is an interface and can be implemented as an enum or regular class, but it also has the helper Factory class to construct and intern instances such as:
+
+HystrixCommandGroupKey.Factory.asKey("ExampleGroup")
+###### 1.8.5.3.5.10. Command Thread-Pool
+<a href="#menu" style="float:right">目录</a>
+
+The thread-pool key represents a HystrixThreadPool for monitoring, metrics publishing, caching, and other such uses. A HystrixCommand is associated with a single HystrixThreadPool as retrieved by the HystrixThreadPoolKey injected into it, or it defaults to one created using the HystrixCommandGroupKey it is created with.
+
+To explicitly define the name pass it in via the HystrixCommand or HystrixObservableCommand constructor:
+```java
+public CommandHelloWorld(String name) {
+    super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey("ExampleGroup"))
+            .andCommandKey(HystrixCommandKey.Factory.asKey("HelloWorld"))
+            .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey("HelloWorldPool")));
+    this.name = name;
+}
+```
+HystrixThreadPoolKey is an interface and can be implemented as an enum or regular class, but it also has the helper Factory class to construct and intern instances such as:
+
+HystrixThreadPoolKey.Factory.asKey("HelloWorldPool")
+The reason why you might use HystrixThreadPoolKey instead of just a different HystrixCommandGroupKey is that multiple commands may belong to the same “group” of ownership or logical functionality, but certain commands may need to be isolated from each other.
+
+Here is a simple example:
+
+two commands used to access Video metadata
+group name is “VideoMetadata”
+command A goes against resource #1
+command B goes against resource #2
+If command A becomes latent and saturates its thread-pool it should not prevent command B from executing requests since they each hit different back-end resources.
+
+Thus, we logically want these commands grouped together but want them isolated differently and would use HystrixThreadPoolKey to give each of them a different thread-pool.
+
+###### 1.8.5.3.5.11. Request Cache
+<a href="#menu" style="float:right">目录</a>
+
+You enable request caching by implementing the getCacheKey() method on a HystrixCommand or HystrixObservableCommand object as follows:
+```java
+public class CommandUsingRequestCache extends HystrixCommand<Boolean> {
+
+    private final int value;
+
+    protected CommandUsingRequestCache(int value) {
+        super(HystrixCommandGroupKey.Factory.asKey("ExampleGroup"));
+        this.value = value;
+    }
+
+    @Override
+    protected Boolean run() {
+        return value == 0 || value % 2 == 0;
+    }
+
+    @Override
+    protected String getCacheKey() {
+        return String.valueOf(value);
+    }
+}
+```
+
+Since this depends on request context we must initialize the HystrixRequestContext.
+
+In a simple unit test you could do this as follows:
+```java
+@Test
+public void testWithoutCacheHits() {
+    HystrixRequestContext context = HystrixRequestContext.initializeContext();
+    try {
+        assertTrue(new CommandUsingRequestCache(2).execute());
+        assertFalse(new CommandUsingRequestCache(1).execute());
+        assertTrue(new CommandUsingRequestCache(0).execute());
+        assertTrue(new CommandUsingRequestCache(58672).execute());
+    } finally {
+        context.shutdown();
+    }
+}
+```
+Typically this context will be initialized and shut down via a ServletFilter that wraps a user request or some other lifecycle hook.
+
+The following is an example that shows how commands retrieve their values from the cache (and how you can query an object to know whether its value came from the cache) within a request context:
+```java
+@Test
+public void testWithCacheHits() {
+    HystrixRequestContext context = HystrixRequestContext.initializeContext();
+    try {
+        CommandUsingRequestCache command2a = new CommandUsingRequestCache(2);
+        CommandUsingRequestCache command2b = new CommandUsingRequestCache(2);
+
+        assertTrue(command2a.execute());
+        // this is the first time we've executed this command with
+        // the value of "2" so it should not be from cache
+        assertFalse(command2a.isResponseFromCache());
+
+        assertTrue(command2b.execute());
+        // this is the second time we've executed this command with
+        // the same value so it should return from cache
+        assertTrue(command2b.isResponseFromCache());
+    } finally {
+        context.shutdown();
+    }
+
+    // start a new request context
+    context = HystrixRequestContext.initializeContext();
+    try {
+        CommandUsingRequestCache command3b = new CommandUsingRequestCache(2);
+        assertTrue(command3b.execute());
+        // this is a new request context so this 
+        // should not come from cache
+        assertFalse(command3b.isResponseFromCache());
+    } finally {
+        context.shutdown();
+    }
+}
+```
+###### 1.8.5.3.5.12. Request Collapsing
+<a href="#menu" style="float:right">目录</a>
+
+Request collapsing enables multiple requests to be batched into a single HystrixCommand instance execution.
+
+A collapser can use the batch size and the elapsed time since the creation of the batch as triggers for executing a batch.
+
+There are 2 styles of request-collapsing supported by Hystrix: request-scoped and globally-scoped. This is configured at collapser construction, and defaulted to request-scoped.
+
+A request-scoped collapser collects a batch per HystrixRequestContext, while a globally-scoped collapser collects a batch across multiple HystrixRequestContexts. As a result, if your downstream dependencies cannot handle multiple HystrixRequestContexts in a single command invocation, request-scoped collapsing is the proper choice.
+
+At Netflix, we exclusively use request-scoped collapsers because all current systems have been built on the assumption that a single HystrixRequestContext will be used in each command. Since the batches are per-request only, collapsing is effective when commands occur in parallel with different arguments in the same request.
+
+Following is a simple example of how to implement a request-scoped HystrixCollapser:
+```java
+public class CommandCollapserGetValueForKey extends HystrixCollapser<List<String>, String, Integer> {
+
+    private final Integer key;
+
+    public CommandCollapserGetValueForKey(Integer key) {
+        this.key = key;
+    }
+
+    @Override
+    public Integer getRequestArgument() {
+        return key;
+    }
+
+    @Override
+    protected HystrixCommand<List<String>> createCommand(final Collection<CollapsedRequest<String, Integer>> requests) {
+        return new BatchCommand(requests);
+    }
+
+    @Override
+    protected void mapResponseToRequests(List<String> batchResponse, Collection<CollapsedRequest<String, Integer>> requests) {
+        int count = 0;
+        for (CollapsedRequest<String, Integer> request : requests) {
+            request.setResponse(batchResponse.get(count++));
+        }
+    }
+
+    private static final class BatchCommand extends HystrixCommand<List<String>> {
+        private final Collection<CollapsedRequest<String, Integer>> requests;
+
+        private BatchCommand(Collection<CollapsedRequest<String, Integer>> requests) {
+                super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey("ExampleGroup"))
+                    .andCommandKey(HystrixCommandKey.Factory.asKey("GetValueForKey")));
+            this.requests = requests;
+        }
+
+        @Override
+        protected List<String> run() {
+            ArrayList<String> response = new ArrayList<String>();
+            for (CollapsedRequest<String, Integer> request : requests) {
+                // artificial response for each argument received in the batch
+                response.add("ValueForKey: " + request.getArgument());
+            }
+            return response;
+        }
+    }
+}
+```
+The following unit test shows how to use a collapser to automatically batch four executions of CommandCollapserGetValueForKey into a single HystrixCommand execution:
+```java
+@Test
+public void testCollapser() throws Exception {
+    HystrixRequestContext context = HystrixRequestContext.initializeContext();
+    try {
+        Future<String> f1 = new CommandCollapserGetValueForKey(1).queue();
+        Future<String> f2 = new CommandCollapserGetValueForKey(2).queue();
+        Future<String> f3 = new CommandCollapserGetValueForKey(3).queue();
+        Future<String> f4 = new CommandCollapserGetValueForKey(4).queue();
+
+        assertEquals("ValueForKey: 1", f1.get());
+        assertEquals("ValueForKey: 2", f2.get());
+        assertEquals("ValueForKey: 3", f3.get());
+        assertEquals("ValueForKey: 4", f4.get());
+
+        // assert that the batch command 'GetValueForKey' was in fact
+        // executed and that it executed only once
+        assertEquals(1, HystrixRequestLog.getCurrentRequest().getExecutedCommands().size());
+        HystrixCommand<?> command = HystrixRequestLog.getCurrentRequest().getExecutedCommands().toArray(new HystrixCommand<?>[1])[0];
+        // assert the command is the one we're expecting
+        assertEquals("GetValueForKey", command.getCommandKey().name());
+        // confirm that it was a COLLAPSED command execution
+        assertTrue(command.getExecutionEvents().contains(HystrixEventType.COLLAPSED));
+        // and that it was successful
+        assertTrue(command.getExecutionEvents().contains(HystrixEventType.SUCCESS));
+    } finally {
+        context.shutdown();
+    }
+}
+```
+###### 1.8.5.3.5.13. Request Context Setup
+<a href="#menu" style="float:right">目录</a>
+
+To use request-scoped features (request caching, request collapsing, request log) you must manage the HystrixRequestContext lifecycle (or implement an alternative HystrixConcurrencyStrategy).
+
+This means that you must execute the following before a request:
+
+HystrixRequestContext context = HystrixRequestContext.initializeContext();
+and then this at the end of the request:
+
+context.shutdown();
+In a standard Java web application, you can use a Servlet Filter to initialize this lifecycle by implementing a filter similar to this:
+```java
+public class HystrixRequestContextServletFilter implements Filter {
+
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) 
+     throws IOException, ServletException {
+        HystrixRequestContext context = HystrixRequestContext.initializeContext();
+        try {
+            chain.doFilter(request, response);
+        } finally {
+            context.shutdown();
+        }
+    }
+}
+```
+You could enable the filter for all incoming traffic by adding a section to the web.xml as follows:
+```xml
+    <filter>
+      <display-name>HystrixRequestContextServletFilter</display-name>
+      <filter-name>HystrixRequestContextServletFilter</filter-name>
+      <filter-class>com.netflix.hystrix.contrib.requestservlet.HystrixRequestContextServletFilter</filter-class>
+    </filter>
+    <filter-mapping>
+      <filter-name>HystrixRequestContextServletFilter</filter-name>
+      <url-pattern>/*</url-pattern>
+   </filter-mapping>
+```
+###### 1.8.5.3.5.14. Common Patterns
+<a href="#menu" style="float:right">目录</a>
+
+In the following sections are common uses and patterns of use for HystrixCommand and HystrixObservableCommand.
+
+Fail Fast
+The most basic execution is one that does a single thing and has no fallback behavior. It will throw an exception if any type of failure occurs.
+```java
+public class CommandThatFailsFast extends HystrixCommand<String> {
+
+    private final boolean throwException;
+
+    public CommandThatFailsFast(boolean throwException) {
+        super(HystrixCommandGroupKey.Factory.asKey("ExampleGroup"));
+        this.throwException = throwException;
+    }
+
+    @Override
+    protected String run() {
+        if (throwException) {
+            throw new RuntimeException("failure from CommandThatFailsFast");
+        } else {
+            return "success";
+        }
+    }
+```
+These unit tests show how it behaves:
+```java
+@Test
+public void testSuccess() {
+    assertEquals("success", new CommandThatFailsFast(false).execute());
+}
+
+@Test
+public void testFailure() {
+    try {
+        new CommandThatFailsFast(true).execute();
+        fail("we should have thrown an exception");
+    } catch (HystrixRuntimeException e) {
+        assertEquals("failure from CommandThatFailsFast", e.getCause().getMessage());
+        e.printStackTrace();
+    }
+}
+```
+HystrixObservableCommand Equivalent
+The equivalent Fail-Fast solution for a HystrixObservableCommand would involve overriding the resumeWithFallback method as follows:
+```java
+    @Override
+    protected Observable<String> resumeWithFallback() {
+        if (throwException) {
+            return Observable.error(new Throwable("failure from CommandThatFailsFast"));
+        } else {
+            return Observable.just("success");
+        }
+    }
+```
+###### 1.8.5.3.5.15. Fail Silent
+]<a href="#menu" style="float:right">目录</a>
+
+Failing silently is the equivalent of returning an empty response or removing functionality. It can be done by returning null, an empty Map, empty List, or other such responses.
+
+You do this by implementing a getFallback() method on the HystrixCommand instance:
+
+
+```java
+public class CommandThatFailsSilently extends HystrixCommand<String> {
+
+    private final boolean throwException;
+
+    public CommandThatFailsSilently(boolean throwException) {
+        super(HystrixCommandGroupKey.Factory.asKey("ExampleGroup"));
+        this.throwException = throwException;
+    }
+
+    @Override
+    protected String run() {
+        if (throwException) {
+            throw new RuntimeException("failure from CommandThatFailsFast");
+        } else {
+            return "success";
+        }
+    }
+
+    @Override
+    protected String getFallback() {
+        return null;
+    }
+}
+```
+```java
+@Test
+public void testSuccess() {
+    assertEquals("success", new CommandThatFailsSilently(false).execute());
+}
+
+@Test
+public void testFailure() {
+    try {
+        assertEquals(null, new CommandThatFailsSilently(true).execute());
+    } catch (HystrixRuntimeException e) {
+        fail("we should not get an exception as we fail silently with a fallback");
+    }
+}
+```
+Another implementation that returns an empty list would look like:
+```java
+    @Override
+    protected List<String> getFallback() {
+        return Collections.emptyList();
+    }
+```
+HystrixObservableCommand Equivalent
+The equivalent Fail-Silently solution for a HystrixObservableCommand would involve overriding the resumeWithFallback() method as follows:
+```java
+    @Override
+    protected Observable<String> resumeWithFallback() {
+        return Observable.empty();
+    }
+```
+###### 1.8.5.3.5.16. Fallback: Static
+<a href="#menu" style="float:right">目录</a>
+
+Fallbacks can return default values statically embedded in code. This doesn’t cause the feature or service to be removed in the way that “fail silent” often does, but instead causes default behavior to occur.
+
+For example, if a command returns a true/false based on user credentials but the command execution fails, it can default to true:
+```java
+    @Override
+    protected Boolean getFallback() {
+        return true;
+    }
+```
+HystrixObservableCommand Equivalent
+The equivalent Static solution for a HystrixObservableCommand would involve overriding the resumeWithFallback method as follows:
+```java
+    @Override
+    protected Observable<Boolean> resumeWithFallback() {
+        return Observable.just( true );
+    }
+```
+###### 1.8.5.3.5.17. Fallback: Stubbed
+<a href="#menu" style="float:right">目录</a>
+
+You typically use a stubbed fallback when your command returns a compound object containing multiple fields, some of which can be determined from other request state while other fields are set to default values.
+
+Examples of places where you might find state appropriate to use in these stubbed values are:
+
+cookies
+request arguments and headers
+responses from previous service requests prior to the current one failing
+Your fallback can retrieve stubbed values statically from the request scope, but typically it is recommended that they be injected at command instantiation time for use if they are needed such as this following example demonstrates in the way it treats the countryCodeFromGeoLookup field:
+```java
+public class CommandWithStubbedFallback extends HystrixCommand<UserAccount> {
+
+    private final int customerId;
+    private final String countryCodeFromGeoLookup;
+
+    /**
+     * @param customerId
+     *            The customerID to retrieve UserAccount for
+     * @param countryCodeFromGeoLookup
+     *            The default country code from the HTTP request geo code lookup used for fallback.
+     */
+    protected CommandWithStubbedFallback(int customerId, String countryCodeFromGeoLookup) {
+        super(HystrixCommandGroupKey.Factory.asKey("ExampleGroup"));
+        this.customerId = customerId;
+        this.countryCodeFromGeoLookup = countryCodeFromGeoLookup;
+    }
+
+    @Override
+    protected UserAccount run() {
+        // fetch UserAccount from remote service
+        //        return UserAccountClient.getAccount(customerId);
+        throw new RuntimeException("forcing failure for example");
+    }
+
+    @Override
+    protected UserAccount getFallback() {
+        /**
+         * Return stubbed fallback with some static defaults, placeholders,
+         * and an injected value 'countryCodeFromGeoLookup' that we'll use
+         * instead of what we would have retrieved from the remote service.
+         */
+        return new UserAccount(customerId, "Unknown Name",
+                countryCodeFromGeoLookup, true, true, false);
+    }
+
+    public static class UserAccount {
+        private final int customerId;
+        private final String name;
+        private final String countryCode;
+        private final boolean isFeatureXPermitted;
+        private final boolean isFeatureYPermitted;
+        private final boolean isFeatureZPermitted;
+
+        UserAccount(int customerId, String name, String countryCode,
+                boolean isFeatureXPermitted,
+                boolean isFeatureYPermitted,
+                boolean isFeatureZPermitted) {
+            this.customerId = customerId;
+            this.name = name;
+            this.countryCode = countryCode;
+            this.isFeatureXPermitted = isFeatureXPermitted;
+            this.isFeatureYPermitted = isFeatureYPermitted;
+            this.isFeatureZPermitted = isFeatureZPermitted;
+        }
+    }
+}
+```
+```java
+The following unit test demonstrates its behavior:
+
+    @Test
+    public void test() {
+        CommandWithStubbedFallback command = new CommandWithStubbedFallback(1234, "ca");
+        UserAccount account = command.execute();
+        assertTrue(command.isFailedExecution());
+        assertTrue(command.isResponseFromFallback());
+        assertEquals(1234, account.customerId);
+        assertEquals("ca", account.countryCode);
+        assertEquals(true, account.isFeatureXPermitted);
+        assertEquals(true, account.isFeatureYPermitted);
+        assertEquals(false, account.isFeatureZPermitted);
+    }
+```
+HystrixObservableCommand Equivalent
+The equivalent Stubbed solution for a HystrixObservableCommand would involve overriding the resumeWithFallback method to return an Observable that emits the stub responses. A version equivalent to the previous example would look like this:
+```java
+@Override
+protected Observable<Boolean> resumeWithFallback() {
+    return Observable.just( new UserAccount(customerId, "Unknown Name",
+                                            countryCodeFromGeoLookup, true, true, false) );
+}
+```
+But if you are expecting to emit multiple items from your Observable, you may be more interested in generating stubs for only those items that the original Observable had not yet emitted before it failed. Here is a simple example to show how you might accomplish this — it keeps track of the last item emitted from the main Observable so that the fallback knows where to pick up to continue the sequence:
+```java
+@Override
+protected Observable<Integer> construct() {
+    return Observable.just(1, 2, 3)
+            .concatWith(Observable.<Integer> error(new RuntimeException("forced error")))
+            .doOnNext(new Action1<Integer>() {
+                @Override
+                public void call(Integer t1) {
+                    lastSeen = t1;
+                }
+                
+            })
+            .subscribeOn(Schedulers.computation());
+}
+
+@Override
+protected Observable<Integer> resumeWithFallback() {
+    if (lastSeen < 4) {
+        return Observable.range(lastSeen + 1, 4 - lastSeen);
+    } else {
+        return Observable.empty();
+    }
+}
+```
+###### 1.8.5.3.5.18. Fallback: Cache via Network
+<a href="#menu" style="float:right">目录</a>
+
+
+Sometimes if a back-end service fails, a stale version of data can be retrieved from a cache service such as memcached.
+
+Since the fallback will go over the network it is another possible point of failure and so it also needs to be wrapped by a HystrixCommand or HystrixObservableCommand.
+
+
+
+It is important to execute the fallback command on a separate thread-pool, otherwise if the main command were to become latent and fill the thread-pool, this would prevent the fallback from running if the two commands share the same pool.
+
+The following code shows how CommandWithFallbackViaNetwork executes FallbackViaNetwork in its getFallback() method.
+
+Note how if the fallback fails, it also has a fallback which does the “fail silent” approach of returning null.
+
+To configure the FallbackViaNetwork command to run on a different threadpool than the default RemoteServiceX derived from the HystrixCommandGroupKey, it injects HystrixThreadPoolKey.Factory.asKey("RemoteServiceXFallback") into the constructor.
+
+This means CommandWithFallbackViaNetwork will run on a thread-pool named RemoteServiceX and FallbackViaNetwork will run on a thread-pool named RemoteServiceXFallback.
+```java
+public class CommandWithFallbackViaNetwork extends HystrixCommand<String> {
+    private final int id;
+
+    protected CommandWithFallbackViaNetwork(int id) {
+        super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey("RemoteServiceX"))
+                .andCommandKey(HystrixCommandKey.Factory.asKey("GetValueCommand")));
+        this.id = id;
+    }
+
+    @Override
+    protected String run() {
+        //        RemoteServiceXClient.getValue(id);
+        throw new RuntimeException("force failure for example");
+    }
+
+    @Override
+    protected String getFallback() {
+        return new FallbackViaNetwork(id).execute();
+    }
+
+    private static class FallbackViaNetwork extends HystrixCommand<String> {
+        private final int id;
+
+        public FallbackViaNetwork(int id) {
+            super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey("RemoteServiceX"))
+                    .andCommandKey(HystrixCommandKey.Factory.asKey("GetValueFallbackCommand"))
+                    // use a different threadpool for the fallback command
+                    // so saturating the RemoteServiceX pool won't prevent
+                    // fallbacks from executing
+                    .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey("RemoteServiceXFallback")));
+            this.id = id;
+        }
+
+        @Override
+        protected String run() {
+            MemCacheClient.getValue(id);
+        }
+
+        @Override
+        protected String getFallback() {
+            // the fallback also failed
+            // so this fallback-of-a-fallback will 
+            // fail silently and return null
+            return null;
+        }
+    }
+}
+```
+
+###### 1.8.5.3.5.19. Primary + Secondary with Fallback
+<a href="#menu" style="float:right">目录</a>
+
+Some systems have dual-mode behavior — primary and secondary, or primary and failover.
+
+Sometimes the secondary or failover is considered a failure state and it is intended only for fallback; in those scenarios it would fit in the same pattern as “Cache via Network” described above.
+
+However, if flipping to the secondary system is common, such as a normal part of rolling out new code (sometimes this is part of how stateful systems handle code pushes) then every time the secondary system is used the primary will be in a failure state, tripping circuit breakers and firing alerts.
+
+This is not the desired behavior, if for no other reason than to avoid the “cry wolf” fatigue that will cause alerts to be ignored when a real issue is occurring.
+
+So in such a case the strategy is instead to treat the switching between primary and secondary as normal, healthy patterns and put a façade in front of them.
+
+
+
+The primary and secondary HystrixCommand implementations are thread-isolated since they are doing network traffic and business logic. They may each have very different performance characteristics (often the secondary system is a static cache) so another benefit of separate commands for each is that they can be individually tuned.
+
+You do not expose these two commands publicly but you instead hide them behind another HystrixCommand that is semaphore-isolated and that implements the conditional logic as to whether to invoke the primary or secondary command. If both primary and secondary fail then control switches to the fallback of the façade command itself.
+
+The façade HystrixCommand can use semaphore-isolation since all of the work it is doing is going through two other HystrixCommands that are already thread-isolated. It is unnecessary to have yet another layer of threading as long as the run() method of the façade is not doing any other network calls, retry logic, or other “error prone” things.
+```java
+public class CommandFacadeWithPrimarySecondary extends HystrixCommand<String> {
+
+    private final static DynamicBooleanProperty usePrimary = DynamicPropertyFactory.getInstance().getBooleanProperty("primarySecondary.usePrimary", true);
+
+    private final int id;
+
+    public CommandFacadeWithPrimarySecondary(int id) {
+        super(Setter
+                .withGroupKey(HystrixCommandGroupKey.Factory.asKey("SystemX"))
+                .andCommandKey(HystrixCommandKey.Factory.asKey("PrimarySecondaryCommand"))
+                .andCommandPropertiesDefaults(
+                        // we want to default to semaphore-isolation since this wraps
+                        // 2 others commands that are already thread isolated
+                        HystrixCommandProperties.Setter()
+                                .withExecutionIsolationStrategy(ExecutionIsolationStrategy.SEMAPHORE)));
+        this.id = id;
+    }
+
+    @Override
+    protected String run() {
+        if (usePrimary.get()) {
+            return new PrimaryCommand(id).execute();
+        } else {
+            return new SecondaryCommand(id).execute();
+        }
+    }
+
+    @Override
+    protected String getFallback() {
+        return "static-fallback-" + id;
+    }
+
+    @Override
+    protected String getCacheKey() {
+        return String.valueOf(id);
+    }
+
+    private static class PrimaryCommand extends HystrixCommand<String> {
+
+        private final int id;
+
+        private PrimaryCommand(int id) {
+            super(Setter
+                    .withGroupKey(HystrixCommandGroupKey.Factory.asKey("SystemX"))
+                    .andCommandKey(HystrixCommandKey.Factory.asKey("PrimaryCommand"))
+                    .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey("PrimaryCommand"))
+                    .andCommandPropertiesDefaults(
+                            // we default to a 600ms timeout for primary
+                            HystrixCommandProperties.Setter().withExecutionTimeoutInMilliseconds(600)));
+            this.id = id;
+        }
+
+        @Override
+        protected String run() {
+            // perform expensive 'primary' service call
+            return "responseFromPrimary-" + id;
+        }
+
+    }
+
+    private static class SecondaryCommand extends HystrixCommand<String> {
+
+        private final int id;
+
+        private SecondaryCommand(int id) {
+            super(Setter
+                    .withGroupKey(HystrixCommandGroupKey.Factory.asKey("SystemX"))
+                    .andCommandKey(HystrixCommandKey.Factory.asKey("SecondaryCommand"))
+                    .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey("SecondaryCommand"))
+                    .andCommandPropertiesDefaults(
+                            // we default to a 100ms timeout for secondary
+                            HystrixCommandProperties.Setter().withExecutionTimeoutInMilliseconds(100)));
+            this.id = id;
+        }
+
+        @Override
+        protected String run() {
+            // perform fast 'secondary' service call
+            return "responseFromSecondary-" + id;
+        }
+
+    }
+
+    public static class UnitTest {
+
+        @Test
+        public void testPrimary() {
+            HystrixRequestContext context = HystrixRequestContext.initializeContext();
+            try {
+                ConfigurationManager.getConfigInstance().setProperty("primarySecondary.usePrimary", true);
+                assertEquals("responseFromPrimary-20", new CommandFacadeWithPrimarySecondary(20).execute());
+            } finally {
+                context.shutdown();
+                ConfigurationManager.getConfigInstance().clear();
+            }
+        }
+
+        @Test
+        public void testSecondary() {
+            HystrixRequestContext context = HystrixRequestContext.initializeContext();
+            try {
+                ConfigurationManager.getConfigInstance().setProperty("primarySecondary.usePrimary", false);
+                assertEquals("responseFromSecondary-20", new CommandFacadeWithPrimarySecondary(20).execute());
+            } finally {
+                context.shutdown();
+                ConfigurationManager.getConfigInstance().clear();
+            }
+        }
+    }
+}
+```
+
+###### 1.8.5.3.5.20. Client Doesn't Perform Network Access
+<a href="#menu" style="float:right">目录</a>
+
+When you wrap behavior that does not perform network access, but where latency is a concern or the threading overhead is unacceptable, you can set the executionIsolationStrategy property to ExecutionIsolationStrategy.SEMAPHORE and Hystrix will use semaphore isolation instead.
+
+The following shows how to set this property as the default for a command via code (you can also override it via dynamic properties at runtime).
+```java
+public class CommandUsingSemaphoreIsolation extends HystrixCommand<String> {
+
+    private final int id;
+
+    public CommandUsingSemaphoreIsolation(int id) {
+        super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey("ExampleGroup"))
+                // since we're doing an in-memory cache lookup we choose SEMAPHORE isolation
+                .andCommandPropertiesDefaults(HystrixCommandProperties.Setter()
+                        .withExecutionIsolationStrategy(ExecutionIsolationStrategy.SEMAPHORE)));
+        this.id = id;
+    }
+
+    @Override
+    protected String run() {
+        // a real implementation would retrieve data from in memory data structure
+        return "ValueFromHashMap_" + id;
+    }
+
+}
+```
+
+###### 1.8.5.3.5.21. Get-Set-Get with Request Cache Invalidation
+<a href="#menu" style="float:right">目录</a>
+
+If you are implementing a Get-Set-Get use case where the Get receives enough traffic that request caching is desired but sometimes a Set occurs on another command that should invalidate the cache within the same request, you can invalidate the cache by calling HystrixRequestCache.clear().
+
+Here is an example implementation:
+```java
+public class CommandUsingRequestCacheInvalidation {
+
+    /* represents a remote data store */
+    private static volatile String prefixStoredOnRemoteDataStore = "ValueBeforeSet_";
+
+    public static class GetterCommand extends HystrixCommand<String> {
+
+        private static final HystrixCommandKey GETTER_KEY = HystrixCommandKey.Factory.asKey("GetterCommand");
+        private final int id;
+
+        public GetterCommand(int id) {
+            super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey("GetSetGet"))
+                    .andCommandKey(GETTER_KEY));
+            this.id = id;
+        }
+
+        @Override
+        protected String run() {
+            return prefixStoredOnRemoteDataStore + id;
+        }
+
+        @Override
+        protected String getCacheKey() {
+            return String.valueOf(id);
+        }
+
+        /**
+         * Allow the cache to be flushed for this object.
+         * 
+         * @param id
+         *            argument that would normally be passed to the command
+         */
+        public static void flushCache(int id) {
+            HystrixRequestCache.getInstance(GETTER_KEY,
+                    HystrixConcurrencyStrategyDefault.getInstance()).clear(String.valueOf(id));
+        }
+
+    }
+
+    public static class SetterCommand extends HystrixCommand<Void> {
+
+        private final int id;
+        private final String prefix;
+
+        public SetterCommand(int id, String prefix) {
+            super(HystrixCommandGroupKey.Factory.asKey("GetSetGet"));
+            this.id = id;
+            this.prefix = prefix;
+        }
+
+        @Override
+        protected Void run() {
+            // persist the value against the datastore
+            prefixStoredOnRemoteDataStore = prefix;
+            // flush the cache
+            GetterCommand.flushCache(id);
+            // no return value
+            return null;
+        }
+    }
+}
+```
+
+The unit test that confirms the behavior is:
+```java
+@Test
+public void getGetSetGet() {
+    HystrixRequestContext context = HystrixRequestContext.initializeContext();
+    try {
+        assertEquals("ValueBeforeSet_1", new GetterCommand(1).execute());
+        GetterCommand commandAgainstCache = new GetterCommand(1);
+        assertEquals("ValueBeforeSet_1", commandAgainstCache.execute());
+        // confirm it executed against cache the second time
+        assertTrue(commandAgainstCache.isResponseFromCache());
+        // set the new value
+        new SetterCommand(1, "ValueAfterSet_").execute();
+        // fetch it again
+        GetterCommand commandAfterSet = new GetterCommand(1);
+        // the getter should return with the new prefix, not the value from cache
+        assertFalse(commandAfterSet.isResponseFromCache());
+        assertEquals("ValueAfterSet_1", commandAfterSet.execute());
+    } finally {
+        context.shutdown();
+    }
+}
+}
+```
+###### 1.8.5.3.5.22. Get-Set-Get with Request Cache Invalidation
+<a href="#menu" style="float:right">目录</a>
+
+Migrating a Library to Hystrix
+When you are migrating an existing client library to use Hystrix, you should replace each of the “service methods” with a HystrixCommand.
+
+The service methods should then forward calls to the HystrixCommand and not have any additional business logic in them.
+
+Thus, before migration a service library may look like this:
+
+
+
+After migrating, users of a library will be able to access the HystrixCommands directly or indirectly via the service facade that delegates to the HystrixCommands.
+
+
+
+
+
+##### 1.8.5.3.6. 工作原理
 <a href="#menu" style="float:right">目录</a>
 
 
 
-### 1.6.7. 分布式配置中心Config
+
+#### 1.8.5.4. Spring Cloud 中使用Hystrix原理
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.6.7.1. 基本使用
+#### 1.8.5.5. Hystrix监控
 
-##### 1.6.7.1.1. 配置中心
+
+### 1.8.6. API网关服务
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.8.6.1. zuul
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.8.6.2. GateWay
+<a href="#menu" style="float:right">目录</a>
+
+
+
+### 1.8.7. 分布式配置中心Config
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.8.7.1. 基本使用
+
+##### 1.8.7.1.1. 配置中心
 
 **引入依赖**
 ```xml
@@ -8368,7 +10764,7 @@ server:
   port: 8004
 ```
 
-##### 1.6.7.1.2. bootstrap.yml与application.yml区别
+##### 1.8.7.1.2. bootstrap.yml与application.yml区别
 说明：其实yml和properties文件是一样的原理，主要是说明application和bootstrap的加载顺序。且一个项目上要么yml或者properties，二选一的存在
 
 **执行顺序**
@@ -8492,7 +10888,7 @@ org.springframework.cloud.bootstrap.BootstrapConfiguration=sample.custom.CustomP
 那么，”customProperty“的PropertySource将会被包含到应用。
 
 
-##### 1.6.7.1.3. 客户端配置
+##### 1.8.7.1.3. 客户端配置
 
 **引入依赖**
 
@@ -8563,7 +10959,7 @@ public class ConfigController {
 }
 ```
 
-##### 1.6.7.1.4. 刷新配置
+##### 1.8.7.1.4. 刷新配置
 有一种场景需要更改配置而不需要重启服务。
 
 * 客户端需要进行相关的配置
@@ -8591,13 +10987,13 @@ curl -X POST http://localhost:8004/actuator/refresh
 ```
 
 
-#### 1.6.7.2. 原理说明
+#### 1.8.7.2. 原理说明
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.6.7.3. 更多使用方式
+#### 1.8.7.3. 更多使用方式
 <a href="#menu" style="float:right">目录</a>
 
-### 1.6.8. 消息总线bus
+### 1.8.8. 消息总线bus
 <a href="#menu" style="float:right">目录</a>
 
 Spring Cloud Bus是用轻量的消息代理将分布式的节点连接起来,可以用于广播配置文件的更改或者服务的监控管理。一个关键的思想就是,消息总线可以为微服务做监控,也可以实现应用程序之间相互通信。 Spring Cloud Bus可选的消息代理线线泡括RabbitMQ、 AMQP和Kaka等。
@@ -8614,7 +11010,7 @@ Spring Cloud Bus是用轻量的消息代理将分布式的节点连接起来,可
 4. 其它客户端接收到通知，请求Server端获取最新配置
 5. 全部客户端均获取到最新的配置
 
-#### 1.6.8.1. 消息代理
+#### 1.8.8.1. 消息代理
 消息代理 (Message Broker) 是一种消息验证、 传输、 路由的架构模式。 它在应用程序之间起到通信调度并最小化应用之间的依赖的作用， 使得应用程序可以高效地解耦通信过程。 消息代理是一个中间件产品， 它的核心是一个消息的路由程序， 用来实现接收和分发消息， 并根据设定好的消息处理流来转发给正确的应用。 它包括独立的通信和消息传递协议， 能够实现组织内部和组织间的网络通信。 设计代理的目的就是为了能够从应用程序中传入消息， 并执行一些特别的操作， 下面这些是在企业应用中， 我们经常需要使用消息代理的场景：
 * 将消息路由到一个或多个目的地
 * 消息转化为其他的表现方式。
@@ -8625,13 +11021,13 @@ Spring Cloud Bus是用轻量的消息代理将分布式的节点连接起来,可
 
 当前版本的Spring Cloud Bus仅支待两款中间件产品： RabbitMQ和Kafka
 
-### 1.6.9. 消息驱动的微服务Stream
+### 1.8.9. 消息驱动的微服务Stream
 <a href="#menu" style="float:right">目录</a>
 
-### 1.6.10. 分布式服务跟踪Sleuth
+### 1.8.10. 分布式服务跟踪Sleuth
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.6.10.1. 基本使用 
+#### 1.8.10.1. 基本使用 
 
 pom配置
 ```xml
@@ -8684,11 +11080,11 @@ spring:
 上面四个值中的**TraceID**和**SpanID**是Spring Cloud Sleuth实现分布式服务跟踪的核心。 在一次服务请求链路的调用过程中， 会保待并传递同一个**Trace ID**, 从而将整个分布于不同微服务进程中的请求跟踪 信息串联起来。 以上面输出内容为例， trace-1 和trace-2同属于一个前端服务请求来源，所以它们的TraceID是相同的，处于同一条请求链路中
 
 
-#### 1.6.10.2. 跟踪原理
+#### 1.8.10.2. 跟踪原理
 
 这里只讲feign和Sleuth的实现原理，其他方式基本原理上差不多。
 
-##### 1.6.10.2.1. 基本实现原理
+##### 1.8.10.2.1. 基本实现原理
 
 在了解其实现原理之前需要思考的问题是，假如消费者使用的Feign声明式服务调用，sleuth是如何接入的，是如何生成各种ID插入请求的？
 
@@ -8751,7 +11147,7 @@ main(){
 ```
 ----
 
-##### 1.6.10.2.2. 支持的组件
+##### 1.8.10.2.2. 支持的组件
 Spring Cloud Sleuth可以追踪10种类型的组件，async、Hystrix，messaging，websocket，rxjava，scheduling，web（Spring MVC Controller，Servlet），webclient（Spring RestTemplate）、Feign、Zuul。下面是常用的八种类型。
 
 ![Sleuth支持的组件](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/sleuth-instructment.png?raw=true)
@@ -8782,7 +11178,7 @@ TraceFeignAspect AOP里面的逻辑是，有地方想获取Client实例，就拦
 原理是zuul的Filter机制，ZuulFilter 
 实现了三个TracePreZuulFilter、TracePostZuulFilter两个Filter。
 
-##### 1.6.10.2.3. 一些基本概念
+##### 1.8.10.2.3. 一些基本概念
 
 * 为了实现请求跟踪， 当请求发送到分布式系统的入口端点时， 只需要服务跟踪框架为该请求创建一个唯一的跟踪标识， 同时在分布式系统内部流转的时候， 框架始终保待传递 该唯一标识， 直到返回给请求方为止， 这个唯一 标识就是前文中提到的TraceID。 通过TraceID 的记录， 我们就能将所有请求过程的日志关联起来。
 * 为了统计各处理单元的时间延迟， 当请求到达各个服务组件时， 或是处理逻辑到达某个状态时， 也通过一个唯一标识来标记它的开始、 具体过程以及结束， 该标识就是前文中提到的SpanID。 对于每个Span来说， 它必须有开始和结束 两个节点， 通过记录开始 Span和结束Span的时间戳，就能统计出该Span的时间延迟，除了时间戳记录之外， 它还可以包含一些其他元数据， 比如事件名称、 请求信息等
@@ -8811,7 +11207,7 @@ public final class B3Propagation<K> implements Propagation<K> {
 }
 ```
 
-##### 1.6.10.2.4. zipkin
+##### 1.8.10.2.4. zipkin
 Zipkin是Twitter的一个开源项目，我们可以使用它来收集各个服务器上请求链路的跟踪数据，并通过它提供的API接口来辅助查询跟踪数据以分布式系统的监控程序，通过UI组件帮助我们及时发现系统中出现的延迟升高问题以及系统性能瓶颈根源。
 **基本概念**
 下面展示Zipkin的基础架构，它主要由4个核心组件构成
@@ -8855,7 +11251,7 @@ Instrumented Client 和Instrumented Server，是指分布式架构中使用了Tr
 这种方式通过spring cloud streaming将追踪信息发送到zipkin。spring cloud streaming目前只支持kafka和rabbitmq。Zipkin Collector从消息中间件中读取数据并存储：
 ![](https://img-blog.csdn.net/20181010191040623?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3pobGxhbnNlemhpbGlhbg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
-##### 1.6.10.2.5. 调用过程
+##### 1.8.10.2.5. 调用过程
 
 ![Sleuth支持的组件](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/sleuth-request.png?raw=true)
 
@@ -8909,13 +11305,13 @@ public void inject(TraceContext traceContext, C carrier) {
 
 
 
-## 1.7. 单元测试
+## 1.9. 单元测试
 <a href="#menu" style="float:right">目录</a>
 
-### 1.7.1. Junit
+### 1.9.1. Junit
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.7.1.1. 概述
+#### 1.9.1.1. 概述
 <a href="#menu" style="float:right">目录</a>
 
 所谓单元测试是测试应用程序的功能是否能够按需要正常运行，并且确保是在开发人员的水平上，单元测试生成图片。单元测试是一个对单一实体（类或方法）的测试。单元测试是每个软件公司提高产品质量、满足客户需求的重要环节。
@@ -8956,7 +11352,7 @@ JUnit 促进了“先测试后编码”的理念，强调建立测试数据的�
 * 每一项需求至少需要两个单元测试用例：一个正检验，一个负检验。如果一个需求有子需求，每一个子需求必须至少有正检验和负检验两个测试用例。
 
 
-#### 1.7.1.2. JUnit 中的重要的 API
+#### 1.9.1.2. JUnit 中的重要的 API
 <a href="#menu" style="float:right">目录</a>
 
 JUnit 中的最重要的程序包是 junit.framework 它包含了所有的核心类。一些重要的类列示如下：
@@ -9039,7 +11435,7 @@ JUnit 中的最重要的程序包是 junit.framework 它包含了所有的核心
     * static Test warning(String message)
         * 返回会失败的测试并且记录警告信息。
 
-#### 1.7.1.3. 常用注解
+#### 1.9.1.3. 常用注解
 <a href="#menu" style="float:right">目录</a>
 
 **@Test**
@@ -9075,7 +11471,7 @@ JUnit执行结果中会报告被忽略的测试数
 即使在@BeforeClass注解方法中抛出了异常，所有的@AfterClass注解方法依然会被执行
 父类中的@AfterClass注解方法会在子类@AfterClass注解方法执行后被执行
 
-#### 1.7.1.4. 套件测试
+#### 1.9.1.4. 套件测试
 <a href="#menu" style="float:right">目录</a>
 
 ```java
@@ -9112,13 +11508,13 @@ public class TestRunner {
 
 
 
-### 1.7.2. 控制层测试
+### 1.9.2. 控制层测试
 <a href="#menu" style="float:right">目录</a>
 
-### 1.7.3. 服务层测试
+### 1.9.3. 服务层测试
 <a href="#menu" style="float:right">目录</a>
 
-### 1.7.4. DAO层测试
+### 1.9.4. DAO层测试
 <a href="#menu" style="float:right">目录</a>
 
 
