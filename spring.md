@@ -39,197 +39,211 @@
                 - [1.1.8.2.1. Spring事务传播行为和隔离级别](#11821-spring事务传播行为和隔离级别)
                 - [1.1.8.2.2. 事务管理关键抽象](#11822-事务管理关键抽象)
         - [1.1.9. 切面编程AOP](#119-切面编程aop)
+            - [1.1.9.1. AOP概述](#1191-aop概述)
+            - [1.1.9.2. 切点函数](#1192-切点函数)
+                - [1.1.9.2.1. 常用切点函数](#11921-常用切点函数)
+                - [1.1.9.2.2. 通配符](#11922-通配符)
+                - [1.1.9.2.3. 逻辑运算符](#11923-逻辑运算符)
+            - [1.1.9.3. Spring AOP案例](#1193-spring-aop案例)
+            - [1.1.9.4. 实现原理](#1194-实现原理)
+                - [1.1.9.4.1. 五种通知的执行顺序](#11941-五种通知的执行顺序)
+                - [1.1.9.4.2. 代理实现](#11942-代理实现)
         - [1.1.10. 事务管理器实现类](#1110-事务管理器实现类)
             - [1.1.10.1. 编程式事务管理](#11101-编程式事务管理)
             - [1.1.10.2. 使用XML配置声明式事务](#11102-使用xml配置声明式事务)
             - [1.1.10.3. 使用注解配置事务](#11103-使用注解配置事务)
             - [1.1.10.4. 事务实现原理](#11104-事务实现原理)
         - [1.1.11. Spring常用工具类](#1111-spring常用工具类)
-    - [1.2. Spring 表达式语言](#12-spring-表达式语言)
-    - [1.3. Spring Cache](#13-spring-cache)
-        - [1.3.1. 几个重要概念&缓存注解](#131-几个重要概念缓存注解)
-        - [1.3.2. SpEL上下文数据](#132-spel上下文数据)
-        - [1.3.3. 基本使用](#133-基本使用)
-    - [1.4. Spring Boot Admin](#14-spring-boot-admin)
-        - [1.4.1. 基础认识](#141-基础认识)
-        - [1.4.2. 使用实例](#142-使用实例)
-            - [1.4.2.1. Server应用](#1421-server应用)
-            - [1.4.2.2. Client应用](#1422-client应用)
-            - [1.4.2.3. Client配置说明](#1423-client配置说明)
-            - [1.4.2.4. 集群](#1424-集群)
-            - [1.4.2.5. 集成spring security](#1425-集成spring-security)
-            - [1.4.2.6. 集成邮箱报警功能](#1426-集成邮箱报警功能)
-    - [1.5. Spring Security](#15-spring-security)
-        - [1.5.1. 简介](#151-简介)
-        - [1.5.2. 提供的功能](#152-提供的功能)
-        - [1.5.3. 核心类](#153-核心类)
-    - [1.6. Sppring MVC](#16-sppring-mvc)
-        - [1.6.1. MVC体系概述](#161-mvc体系概述)
-            - [1.6.1.1. MVC 架构](#1611-mvc-架构)
-        - [1.6.2. Restful](#162-restful)
-            - [1.6.2.1. URL 设计](#1621-url-设计)
-            - [1.6.2.2. 状态码](#1622-状态码)
-            - [1.6.2.3. 服务器回应](#1623-服务器回应)
-        - [1.6.3. 注解说明](#163-注解说明)
-        - [1.6.4. 拦截器](#164-拦截器)
-        - [1.6.5. 过滤器](#165-过滤器)
-            - [1.6.5.1. 过滤器和拦截器的区别：](#1651-过滤器和拦截器的区别)
-            - [1.6.5.2. 拦截器（Interceptor）和过滤器（Filter）的一些用途](#1652-拦截器interceptor和过滤器filter的一些用途)
-    - [1.7. SpringBoot](#17-springboot)
-        - [1.7.1. 基本概念](#171-基本概念)
-        - [1.7.2. 基本使用](#172-基本使用)
-        - [1.7.3. Spring Boot 环境下创建Bean](#173-spring-boot-环境下创建bean)
-            - [1.7.3.1. 方式1:使用@Component等注解：](#1731-方式1使用component等注解)
-            - [1.7.3.2. 方式2:使用@Bean注解](#1732-方式2使用bean注解)
-            - [1.7.3.3. 方式3:使用@Import注解](#1733-方式3使用import注解)
-            - [1.7.3.4. 方式4:使用ImportSelector接口](#1734-方式4使用importselector接口)
-            - [1.7.3.5. 方式5:手动注册到容器](#1735-方式5手动注册到容器)
-        - [1.7.4. 使用不同的WEB容器](#174-使用不同的web容器)
-        - [1.7.5. 配置文件](#175-配置文件)
-            - [1.7.5.1. bootstrap.yml与application.yml区别](#1751-bootstrapyml与applicationyml区别)
-            - [1.7.5.2. 多环境配置](#1752-多环境配置)
-                - [1.7.5.2.1. 配置文件](#17521-配置文件)
-                - [1.7.5.2.2. 多环境配置](#17522-多环境配置)
-            - [1.7.5.3. 注解ConfigurationProperties注入yml配置文件中的数据](#1753-注解configurationproperties注入yml配置文件中的数据)
-            - [1.7.5.4. 使用随机数](#1754-使用随机数)
-            - [1.7.5.5. 从命令行指定参数](#1755-从命令行指定参数)
-            - [1.7.5.6. 配置日志](#1756-配置日志)
-        - [1.7.6. 启动类 @SpringBootApplication 注解](#176-启动类-springbootapplication-注解)
-            - [1.7.6.1. @Inherited 注解](#1761-inherited-注解)
-            - [1.7.6.2. @SpringBootConfiguration](#1762-springbootconfiguration)
-            - [1.7.6.3. @EnableAutoConfiguration](#1763-enableautoconfiguration)
-            - [1.7.6.4. @ComponentScan](#1764-componentscan)
-        - [1.7.7. Spring Boot Starter](#177-spring-boot-starter)
-            - [1.7.7.1. 常用的Starter](#1771-常用的starter)
-            - [1.7.7.2. 创建自己的Starter](#1772-创建自己的starter)
-            - [1.7.7.3. Starter原理](#1773-starter原理)
-        - [1.7.8. Actuator 的端点](#178-actuator-的端点)
-            - [1.7.8.1. 揭秘 Actuator 的端点](#1781-揭秘-actuator-的端点)
-            - [1.7.8.2. 自定义监控](#1782-自定义监控)
-        - [1.7.9. Spring Boot 项目发布](#179-spring-boot-项目发布)
-        - [1.7.10. Maven打包](#1710-maven打包)
-        - [1.7.11. Spring Boot原理分析](#1711-spring-boot原理分析)
-            - [1.7.11.1. 启动流程分析](#17111-启动流程分析)
-                - [1.7.11.1.1. 创建SpringApplication对象](#171111-创建springapplication对象)
-                - [1.7.11.1.2. 执行Run方法](#171112-执行run方法)
-        - [1.7.12. 种保护 Spring Boot 应用的绝佳方法](#1712-种保护-spring-boot-应用的绝佳方法)
-            - [1.7.12.1. 在生产中使用HTTPS](#17121-在生产中使用https)
-            - [1.7.12.2. 使用Snyk检查你的依赖关系](#17122-使用snyk检查你的依赖关系)
-            - [1.7.12.3. 升级到最新版本](#17123-升级到最新版本)
-            - [1.7.12.4. 启用CSRF保护](#17124-启用csrf保护)
-            - [1.7.12.5. 使用内容安全策略防止XSS攻击](#17125-使用内容安全策略防止xss攻击)
-            - [1.7.12.6. 使用OpenID Connect进行身份验证](#17126-使用openid-connect进行身份验证)
-            - [1.7.12.7. 管理密码？使用密码哈希！](#17127-管理密码使用密码哈希)
-            - [1.7.12.8. 安全地存储秘密](#17128-安全地存储秘密)
-            - [1.7.12.9. 使用OWASP的ZAP测试您的应用程序](#17129-使用owasp的zap测试您的应用程序)
-            - [1.7.12.10. 让你的安全团队进行代码审查](#171210-让你的安全团队进行代码审查)
-        - [1.7.13. 项目实践](#1713-项目实践)
-            - [1.7.13.1. 跨域配置](#17131-跨域配置)
-            - [1.7.13.2. 全局异常处理](#17132-全局异常处理)
-        - [1.7.14. 其他一些问题](#1714-其他一些问题)
-            - [1.7.14.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？](#17141-如何在-spring-boot-启动的时候运行一些特定的代码)
-            - [1.7.14.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？](#17142-如何重新加载spring-boot上的更改而无需重新启动服务器)
-            - [1.7.14.3. Spring Boot 有哪几种读取配置的方式？](#17143-spring-boot-有哪几种读取配置的方式)
-    - [1.8. SpringCloud](#18-springcloud)
-        - [1.8.1. 基础知识](#181-基础知识)
-            - [1.8.1.1. 微服务概念](#1811-微服务概念)
-            - [1.8.1.2. SpringCloud子项目](#1812-springcloud子项目)
-            - [1.8.1.3. 版本说明](#1813-版本说明)
-        - [1.8.2. 服务治理Eureka](#182-服务治理eureka)
-            - [1.8.2.1. 基本使用](#1821-基本使用)
-            - [1.8.2.2. 高可用注册中心](#1822-高可用注册中心)
-            - [1.8.2.3. 原理说明](#1823-原理说明)
-                - [1.8.2.3.1. 基础模块说明](#18231-基础模块说明)
-                - [1.8.2.3.2. Region,Zone](#18232-regionzone)
-                - [1.8.2.3.3. 源码分析](#18233-源码分析)
-                    - [1.8.2.3.3.1. EnableDiscoveryClient注解说明](#182331-enablediscoveryclient注解说明)
-                    - [1.8.2.3.3.2. 服务注册](#182332-服务注册)
-                    - [1.8.2.3.3.3. 服务续约](#182333-服务续约)
-            - [1.8.2.4. 更多配置说明](#1824-更多配置说明)
-                - [1.8.2.4.1. 服务注册类配置](#18241-服务注册类配置)
-                - [1.8.2.4.2. 服务实例类配置](#18242-服务实例类配置)
-        - [1.8.3. 负载均衡Ribbon](#183-负载均衡ribbon)
-            - [1.8.3.1. 基本使用](#1831-基本使用)
-            - [1.8.3.2. 原理说明](#1832-原理说明)
-                - [1.8.3.2.1. 源码分析](#18321-源码分析)
-                - [1.8.3.2.2. 负载均衡器](#18322-负载均衡器)
-                - [1.8.3.2.3. 负载均衡策略](#18323-负载均衡策略)
-                - [1.8.3.2.4. 配置详解](#18324-配置详解)
-            - [1.8.3.3. ribbon配置](#1833-ribbon配置)
-                - [1.8.3.3.1. 配置参数说明](#18331-配置参数说明)
-                - [1.8.3.3.2. 重试机制](#18332-重试机制)
-        - [1.8.4. 声明式服务调用feign](#184-声明式服务调用feign)
-            - [1.8.4.1. 使用案例](#1841-使用案例)
-            - [1.8.4.2. 实现原理](#1842-实现原理)
-                - [1.8.4.2.1. 配置类](#18421-配置类)
-                - [1.8.4.2.2. 启动注解说明](#18422-启动注解说明)
-                - [1.8.4.2.3. 调用实现原理](#18423-调用实现原理)
-                - [1.8.4.2.4. 总结](#18424-总结)
-        - [1.8.5. 服务容错保护 Hystrix](#185-服务容错保护-hystrix)
-            - [1.8.5.1. Ribbon中使用Hystrix](#1851-ribbon中使用hystrix)
-            - [1.8.5.2. Feign中使用Hystrix](#1852-feign中使用hystrix)
-            - [1.8.5.3. Hystrix详解](#1853-hystrix详解)
-                - [1.8.5.3.1. 背景](#18531-背景)
-                - [1.8.5.3.2. 基本认识](#18532-基本认识)
-                - [1.8.5.3.3. hystrix适用场景](#18533-hystrix适用场景)
-                - [1.8.5.3.4. 注解说明](#18534-注解说明)
-                - [1.8.5.3.5. 如何使用](#18535-如何使用)
-                    - [1.8.5.3.5.1. 基本的实例](#185351-基本的实例)
-                    - [1.8.5.3.5.2. 同步执行](#185352-同步执行)
-                    - [1.8.5.3.5.3. 异步执行](#185353-异步执行)
-                    - [1.8.5.3.5.4. Reactive Execution](#185354-reactive-execution)
-                    - [1.8.5.3.5.5. Reactive Commands](#185355-reactive-commands)
-                    - [1.8.5.3.5.6. Fallback](#185356-fallback)
-                    - [1.8.5.3.5.7. Error Propagation](#185357-error-propagation)
-                    - [1.8.5.3.5.8. Command Name](#185358-command-name)
-                    - [1.8.5.3.5.9. Command Group](#185359-command-group)
-                    - [1.8.5.3.5.10. Command Thread-Pool](#1853510-command-thread-pool)
-                    - [1.8.5.3.5.11. Request Cache](#1853511-request-cache)
-                    - [1.8.5.3.5.12. Request Collapsing](#1853512-request-collapsing)
-                    - [1.8.5.3.5.13. Request Context Setup](#1853513-request-context-setup)
-                    - [1.8.5.3.5.14. Common Patterns](#1853514-common-patterns)
-                    - [1.8.5.3.5.15. Fail Silent](#1853515-fail-silent)
-                    - [1.8.5.3.5.16. Fallback: Static](#1853516-fallback-static)
-                    - [1.8.5.3.5.17. Fallback: Stubbed](#1853517-fallback-stubbed)
-                    - [1.8.5.3.5.18. Fallback: Cache via Network](#1853518-fallback-cache-via-network)
-                    - [1.8.5.3.5.19. Primary + Secondary with Fallback](#1853519-primary--secondary-with-fallback)
-                    - [1.8.5.3.5.20. Client Doesn't Perform Network Access](#1853520-client-doesnt-perform-network-access)
-                    - [1.8.5.3.5.21. Get-Set-Get with Request Cache Invalidation](#1853521-get-set-get-with-request-cache-invalidation)
-                    - [1.8.5.3.5.22. Get-Set-Get with Request Cache Invalidation](#1853522-get-set-get-with-request-cache-invalidation)
-                - [1.8.5.3.6. 工作原理](#18536-工作原理)
-            - [1.8.5.4. Spring Cloud 中使用Hystrix原理](#1854-spring-cloud-中使用hystrix原理)
-            - [1.8.5.5. Hystrix监控](#1855-hystrix监控)
-        - [1.8.6. API网关服务](#186-api网关服务)
-            - [1.8.6.1. zuul](#1861-zuul)
-            - [1.8.6.2. GateWay](#1862-gateway)
-        - [1.8.7. 分布式配置中心Config](#187-分布式配置中心config)
-            - [1.8.7.1. 基本使用](#1871-基本使用)
-                - [1.8.7.1.1. 配置中心](#18711-配置中心)
-                - [1.8.7.1.2. bootstrap.yml与application.yml区别](#18712-bootstrapyml与applicationyml区别)
-                - [1.8.7.1.3. 客户端配置](#18713-客户端配置)
-                - [1.8.7.1.4. 刷新配置](#18714-刷新配置)
-            - [1.8.7.2. 原理说明](#1872-原理说明)
-            - [1.8.7.3. 更多使用方式](#1873-更多使用方式)
-        - [1.8.8. 消息总线bus](#188-消息总线bus)
-            - [1.8.8.1. 消息代理](#1881-消息代理)
-        - [1.8.9. 消息驱动的微服务Stream](#189-消息驱动的微服务stream)
-        - [1.8.10. 分布式服务跟踪Sleuth](#1810-分布式服务跟踪sleuth)
-            - [1.8.10.1. 基本使用](#18101-基本使用)
-            - [1.8.10.2. 跟踪原理](#18102-跟踪原理)
-                - [1.8.10.2.1. 基本实现原理](#181021-基本实现原理)
-                - [1.8.10.2.2. 支持的组件](#181022-支持的组件)
-                - [1.8.10.2.3. 一些基本概念](#181023-一些基本概念)
-                - [1.8.10.2.4. zipkin](#181024-zipkin)
-                - [1.8.10.2.5. 调用过程](#181025-调用过程)
-    - [1.9. 单元测试](#19-单元测试)
-        - [1.9.1. Junit](#191-junit)
-            - [1.9.1.1. 概述](#1911-概述)
-            - [1.9.1.2. JUnit 中的重要的 API](#1912-junit-中的重要的-api)
-            - [1.9.1.3. 常用注解](#1913-常用注解)
-            - [1.9.1.4. 套件测试](#1914-套件测试)
-        - [1.9.2. 控制层测试](#192-控制层测试)
-        - [1.9.3. 服务层测试](#193-服务层测试)
-        - [1.9.4. DAO层测试](#194-dao层测试)
+    - [1.2. web](#12-web)
+    - [1.3. 内置的resouce类型](#13-内置的resouce类型)
+    - [1.4. 工具类](#14-工具类)
+    - [1.5. xml工具](#15-xml工具)
+    - [1.6. 其它工具集](#16-其它工具集)
+    - [1.7. Spring 表达式语言](#17-spring-表达式语言)
+    - [1.8. Spring Cache](#18-spring-cache)
+        - [1.8.1. 几个重要概念&缓存注解](#181-几个重要概念缓存注解)
+        - [1.8.2. SpEL上下文数据](#182-spel上下文数据)
+        - [1.8.3. 基本使用](#183-基本使用)
+    - [1.9. Spring Boot Admin](#19-spring-boot-admin)
+        - [1.9.1. 基础认识](#191-基础认识)
+        - [1.9.2. 使用实例](#192-使用实例)
+            - [1.9.2.1. Server应用](#1921-server应用)
+            - [1.9.2.2. Client应用](#1922-client应用)
+            - [1.9.2.3. Client配置说明](#1923-client配置说明)
+            - [1.9.2.4. 集群](#1924-集群)
+            - [1.9.2.5. 集成spring security](#1925-集成spring-security)
+            - [1.9.2.6. 集成邮箱报警功能](#1926-集成邮箱报警功能)
+    - [1.10. Spring Security](#110-spring-security)
+        - [1.10.1. 简介](#1101-简介)
+        - [1.10.2. 提供的功能](#1102-提供的功能)
+        - [1.10.3. 核心类](#1103-核心类)
+    - [1.11. Sppring MVC](#111-sppring-mvc)
+        - [1.11.1. MVC体系概述](#1111-mvc体系概述)
+            - [1.11.1.1. MVC 架构](#11111-mvc-架构)
+        - [1.11.2. Restful](#1112-restful)
+            - [1.11.2.1. URL 设计](#11121-url-设计)
+            - [1.11.2.2. 状态码](#11122-状态码)
+            - [1.11.2.3. 服务器回应](#11123-服务器回应)
+        - [1.11.3. 注解说明](#1113-注解说明)
+        - [1.11.4. 拦截器](#1114-拦截器)
+        - [1.11.5. 过滤器](#1115-过滤器)
+            - [1.11.5.1. 过滤器和拦截器的区别：](#11151-过滤器和拦截器的区别)
+            - [1.11.5.2. 拦截器（Interceptor）和过滤器（Filter）的一些用途](#11152-拦截器interceptor和过滤器filter的一些用途)
+    - [1.12. SpringBoot](#112-springboot)
+        - [1.12.1. 基本概念](#1121-基本概念)
+        - [1.12.2. 基本使用](#1122-基本使用)
+        - [1.12.3. Spring Boot 环境下创建Bean](#1123-spring-boot-环境下创建bean)
+            - [1.12.3.1. 方式1:使用@Component等注解：](#11231-方式1使用component等注解)
+            - [1.12.3.2. 方式2:使用@Bean注解](#11232-方式2使用bean注解)
+            - [1.12.3.3. 方式3:使用@Import注解](#11233-方式3使用import注解)
+            - [1.12.3.4. 方式4:使用ImportSelector接口](#11234-方式4使用importselector接口)
+            - [1.12.3.5. 方式5:手动注册到容器](#11235-方式5手动注册到容器)
+        - [1.12.4. 使用不同的WEB容器](#1124-使用不同的web容器)
+        - [1.12.5. 配置文件](#1125-配置文件)
+            - [1.12.5.1. bootstrap.yml与application.yml区别](#11251-bootstrapyml与applicationyml区别)
+            - [1.12.5.2. 多环境配置](#11252-多环境配置)
+                - [1.12.5.2.1. 配置文件](#112521-配置文件)
+                - [1.12.5.2.2. 多环境配置](#112522-多环境配置)
+            - [1.12.5.3. 注解ConfigurationProperties注入yml配置文件中的数据](#11253-注解configurationproperties注入yml配置文件中的数据)
+            - [1.12.5.4. 使用随机数](#11254-使用随机数)
+            - [1.12.5.5. 从命令行指定参数](#11255-从命令行指定参数)
+            - [1.12.5.6. 配置日志](#11256-配置日志)
+        - [1.12.6. 启动类 @SpringBootApplication 注解](#1126-启动类-springbootapplication-注解)
+            - [1.12.6.1. @Inherited 注解](#11261-inherited-注解)
+            - [1.12.6.2. @SpringBootConfiguration](#11262-springbootconfiguration)
+            - [1.12.6.3. @EnableAutoConfiguration](#11263-enableautoconfiguration)
+            - [1.12.6.4. @ComponentScan](#11264-componentscan)
+        - [1.12.7. Spring Boot Starter](#1127-spring-boot-starter)
+            - [1.12.7.1. 常用的Starter](#11271-常用的starter)
+            - [1.12.7.2. 创建自己的Starter](#11272-创建自己的starter)
+            - [1.12.7.3. Starter原理](#11273-starter原理)
+        - [1.12.8. Actuator 的端点](#1128-actuator-的端点)
+            - [1.12.8.1. 揭秘 Actuator 的端点](#11281-揭秘-actuator-的端点)
+            - [1.12.8.2. 自定义监控](#11282-自定义监控)
+        - [1.12.9. Spring Boot 项目发布](#1129-spring-boot-项目发布)
+        - [1.12.10. Maven打包](#11210-maven打包)
+        - [1.12.11. Spring Boot原理分析](#11211-spring-boot原理分析)
+            - [1.12.11.1. 启动流程分析](#112111-启动流程分析)
+                - [1.12.11.1.1. 创建SpringApplication对象](#1121111-创建springapplication对象)
+                - [1.12.11.1.2. 执行Run方法](#1121112-执行run方法)
+        - [1.12.12. 种保护 Spring Boot 应用的绝佳方法](#11212-种保护-spring-boot-应用的绝佳方法)
+            - [1.12.12.1. 在生产中使用HTTPS](#112121-在生产中使用https)
+            - [1.12.12.2. 使用Snyk检查你的依赖关系](#112122-使用snyk检查你的依赖关系)
+            - [1.12.12.3. 升级到最新版本](#112123-升级到最新版本)
+            - [1.12.12.4. 启用CSRF保护](#112124-启用csrf保护)
+            - [1.12.12.5. 使用内容安全策略防止XSS攻击](#112125-使用内容安全策略防止xss攻击)
+            - [1.12.12.6. 使用OpenID Connect进行身份验证](#112126-使用openid-connect进行身份验证)
+            - [1.12.12.7. 管理密码？使用密码哈希！](#112127-管理密码使用密码哈希)
+            - [1.12.12.8. 安全地存储秘密](#112128-安全地存储秘密)
+            - [1.12.12.9. 使用OWASP的ZAP测试您的应用程序](#112129-使用owasp的zap测试您的应用程序)
+            - [1.12.12.10. 让你的安全团队进行代码审查](#1121210-让你的安全团队进行代码审查)
+        - [1.12.13. 项目实践](#11213-项目实践)
+            - [1.12.13.1. 跨域配置](#112131-跨域配置)
+            - [1.12.13.2. 全局异常处理](#112132-全局异常处理)
+        - [1.12.14. 其他一些问题](#11214-其他一些问题)
+            - [1.12.14.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？](#112141-如何在-spring-boot-启动的时候运行一些特定的代码)
+            - [1.12.14.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？](#112142-如何重新加载spring-boot上的更改而无需重新启动服务器)
+            - [1.12.14.3. Spring Boot 有哪几种读取配置的方式？](#112143-spring-boot-有哪几种读取配置的方式)
+    - [1.13. SpringCloud](#113-springcloud)
+        - [1.13.1. 基础知识](#1131-基础知识)
+            - [1.13.1.1. 微服务概念](#11311-微服务概念)
+            - [1.13.1.2. SpringCloud子项目](#11312-springcloud子项目)
+            - [1.13.1.3. 版本说明](#11313-版本说明)
+        - [1.13.2. 服务治理Eureka](#1132-服务治理eureka)
+            - [1.13.2.1. 基本使用](#11321-基本使用)
+            - [1.13.2.2. 高可用注册中心](#11322-高可用注册中心)
+            - [1.13.2.3. 原理说明](#11323-原理说明)
+                - [1.13.2.3.1. 基础模块说明](#113231-基础模块说明)
+                - [1.13.2.3.2. Region,Zone](#113232-regionzone)
+                - [1.13.2.3.3. 源码分析](#113233-源码分析)
+                    - [1.13.2.3.3.1. EnableDiscoveryClient注解说明](#1132331-enablediscoveryclient注解说明)
+                    - [1.13.2.3.3.2. 服务注册](#1132332-服务注册)
+                    - [1.13.2.3.3.3. 服务续约](#1132333-服务续约)
+            - [1.13.2.4. 更多配置说明](#11324-更多配置说明)
+                - [1.13.2.4.1. 服务注册类配置](#113241-服务注册类配置)
+                - [1.13.2.4.2. 服务实例类配置](#113242-服务实例类配置)
+        - [1.13.3. 负载均衡Ribbon](#1133-负载均衡ribbon)
+            - [1.13.3.1. 基本使用](#11331-基本使用)
+            - [1.13.3.2. 原理说明](#11332-原理说明)
+                - [1.13.3.2.1. 源码分析](#113321-源码分析)
+                - [1.13.3.2.2. 负载均衡器](#113322-负载均衡器)
+                - [1.13.3.2.3. 负载均衡策略](#113323-负载均衡策略)
+                - [1.13.3.2.4. 配置详解](#113324-配置详解)
+            - [1.13.3.3. ribbon配置](#11333-ribbon配置)
+                - [1.13.3.3.1. 配置参数说明](#113331-配置参数说明)
+                - [1.13.3.3.2. 重试机制](#113332-重试机制)
+        - [1.13.4. 声明式服务调用feign](#1134-声明式服务调用feign)
+            - [1.13.4.1. 使用案例](#11341-使用案例)
+            - [1.13.4.2. 实现原理](#11342-实现原理)
+                - [1.13.4.2.1. 配置类](#113421-配置类)
+                - [1.13.4.2.2. 启动注解说明](#113422-启动注解说明)
+                - [1.13.4.2.3. 调用实现原理](#113423-调用实现原理)
+                - [1.13.4.2.4. 总结](#113424-总结)
+        - [1.13.5. 服务容错保护 Hystrix](#1135-服务容错保护-hystrix)
+            - [1.13.5.1. Ribbon中使用Hystrix](#11351-ribbon中使用hystrix)
+            - [1.13.5.2. Feign中使用Hystrix](#11352-feign中使用hystrix)
+            - [1.13.5.3. Hystrix详解](#11353-hystrix详解)
+                - [1.13.5.3.1. 背景](#113531-背景)
+                - [1.13.5.3.2. 基本认识](#113532-基本认识)
+                - [1.13.5.3.3. hystrix适用场景](#113533-hystrix适用场景)
+                - [1.13.5.3.4. 注解说明](#113534-注解说明)
+                - [1.13.5.3.5. 如何使用](#113535-如何使用)
+                    - [1.13.5.3.5.1. 基本的实例](#1135351-基本的实例)
+                    - [1.13.5.3.5.2. 同步执行](#1135352-同步执行)
+                    - [1.13.5.3.5.3. 异步执行](#1135353-异步执行)
+                    - [1.13.5.3.5.4. Reactive Execution](#1135354-reactive-execution)
+                    - [1.13.5.3.5.5. Reactive Commands](#1135355-reactive-commands)
+                    - [1.13.5.3.5.6. Fallback](#1135356-fallback)
+                    - [1.13.5.3.5.7. Error Propagation](#1135357-error-propagation)
+                    - [1.13.5.3.5.8. Command Name](#1135358-command-name)
+                    - [1.13.5.3.5.9. Command Group](#1135359-command-group)
+                    - [1.13.5.3.5.10. Command Thread-Pool](#11353510-command-thread-pool)
+                    - [1.13.5.3.5.11. Request Cache](#11353511-request-cache)
+                    - [1.13.5.3.5.12. Request Collapsing](#11353512-request-collapsing)
+                    - [1.13.5.3.5.13. Request Context Setup](#11353513-request-context-setup)
+                    - [1.13.5.3.5.14. Common Patterns](#11353514-common-patterns)
+                    - [1.13.5.3.5.15. Fail Silent](#11353515-fail-silent)
+                    - [1.13.5.3.5.16. Fallback: Static](#11353516-fallback-static)
+                    - [1.13.5.3.5.17. Fallback: Stubbed](#11353517-fallback-stubbed)
+                    - [1.13.5.3.5.18. Fallback: Cache via Network](#11353518-fallback-cache-via-network)
+                    - [1.13.5.3.5.19. Primary + Secondary with Fallback](#11353519-primary--secondary-with-fallback)
+                    - [1.13.5.3.5.20. Client Doesn't Perform Network Access](#11353520-client-doesnt-perform-network-access)
+                    - [1.13.5.3.5.21. Get-Set-Get with Request Cache Invalidation](#11353521-get-set-get-with-request-cache-invalidation)
+                    - [1.13.5.3.5.22. Get-Set-Get with Request Cache Invalidation](#11353522-get-set-get-with-request-cache-invalidation)
+                - [1.13.5.3.6. 工作原理](#113536-工作原理)
+            - [1.13.5.4. Spring Cloud 中使用Hystrix原理](#11354-spring-cloud-中使用hystrix原理)
+            - [1.13.5.5. Hystrix监控](#11355-hystrix监控)
+        - [1.13.6. API网关服务](#1136-api网关服务)
+            - [1.13.6.1. zuul](#11361-zuul)
+            - [1.13.6.2. GateWay](#11362-gateway)
+        - [1.13.7. 分布式配置中心Config](#1137-分布式配置中心config)
+            - [1.13.7.1. 基本使用](#11371-基本使用)
+                - [1.13.7.1.1. 配置中心](#113711-配置中心)
+                - [1.13.7.1.2. bootstrap.yml与application.yml区别](#113712-bootstrapyml与applicationyml区别)
+                - [1.13.7.1.3. 客户端配置](#113713-客户端配置)
+                - [1.13.7.1.4. 刷新配置](#113714-刷新配置)
+            - [1.13.7.2. 原理说明](#11372-原理说明)
+            - [1.13.7.3. 更多使用方式](#11373-更多使用方式)
+        - [1.13.8. 消息总线bus](#1138-消息总线bus)
+            - [1.13.8.1. 消息代理](#11381-消息代理)
+        - [1.13.9. 消息驱动的微服务Stream](#1139-消息驱动的微服务stream)
+        - [1.13.10. 分布式服务跟踪Sleuth](#11310-分布式服务跟踪sleuth)
+            - [1.13.10.1. 基本使用](#113101-基本使用)
+            - [1.13.10.2. 跟踪原理](#113102-跟踪原理)
+                - [1.13.10.2.1. 基本实现原理](#1131021-基本实现原理)
+                - [1.13.10.2.2. 支持的组件](#1131022-支持的组件)
+                - [1.13.10.2.3. 一些基本概念](#1131023-一些基本概念)
+                - [1.13.10.2.4. zipkin](#1131024-zipkin)
+                - [1.13.10.2.5. 调用过程](#1131025-调用过程)
+    - [1.14. 单元测试](#114-单元测试)
+        - [1.14.1. Junit](#1141-junit)
+            - [1.14.1.1. 概述](#11411-概述)
+            - [1.14.1.2. JUnit 中的重要的 API](#11412-junit-中的重要的-api)
+            - [1.14.1.3. 常用注解](#11413-常用注解)
+            - [1.14.1.4. 套件测试](#11414-套件测试)
+        - [1.14.2. 控制层测试](#1142-控制层测试)
+        - [1.14.3. 服务层测试](#1143-服务层测试)
+        - [1.14.4. DAO层测试](#1144-dao层测试)
 
 <!-- /TOC -->
 # 1. Spring 体系
@@ -2018,11 +2032,558 @@ public interface PlatformTransactionManager extends TransactionManager {
 ### 1.1.9. 切面编程AOP
 <a href="#menu" style="float:right">目录</a>
 
+#### 1.1.9.1. AOP概述
+<a href="#menu" style="float:right">目录</a>
+
+在软件业，AOP为Aspect Oriented Programming的缩写，意为：面向切面编程，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。AOP是OOP的延续，是软件开发中的一个
+热点，也是Spring框架中的一个重要内容，是函数式编程的一种衍生范型。利用AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高
+了开发的效率。
+
+面向对象编程解决了业务模块的封装复用的问题，但是对于某些模块，其本身并不独属于摸个业务模块，而是根据不同的情况，贯穿于某几个或全部的模块之间的。例如登录验证，其只开放几个可以不用登录的接口给用户使用（一般登录使用拦截器实现，但是其切面思想是一致的）；再比如性能统计，其需要记录每个业务模块的调用，并且监控器调用时间。可以看到，这些横贯于每个业务模块的模块，如果使用面向对象的方式，那么就需要在已封装的每个模块中添加相应的重复代码，对于这种情况，面向切面编程就可以派上用场了。
+
+面向切面编程，也称为AOP（即Aspect Oriented Programming），指的是将一定的切面逻辑按照一定的方式编织到指定的业务模块中，从而将这些业务模块的调用包裹起来
 
 
+**AOP中的相关概念**
+* Aspect（切面）
+    * Aspect 声明类似于 Java 中的类声明，在 Aspect 中会包含着一些 Pointcut 以及相应的 Advice。
+    * 切面由切点和增强组成,包括横切逻辑的定义,也包括连接点的定义.
+* Joint point（连接点）
+    * 表示在程序中明确定义的点，典型的包括方法调用，对类成员的访问以及异常处理程序块的执行等等，它自身还可以嵌套其它 joint point。
+    * 程序执行的某个位置,如类开始初始化前,类初始化后,调用方法前/后.Spring仅支持方法的连接点,即仅在方法调用前/后,抛出异常这些程序执行点织入增强
+* Pointcut（切点）
+    * 连接点相当于数据库中的数据,切点相当于查询条件,也就是通过切点去定位哪些连接点需要织入增强
+    * 表示一组 joint point，这些 joint point 或是通过逻辑关系组合起来，或是通过通配、正则表达式等方式集中起来，它定义了相应的 Advice 将要发生的地方。
+* Advice（增强）
+    * Advice 定义了在 Pointcut 里面定义的程序点具体要做的操作，它通过 before、after 和 around 来区别是在每个 joint point 之前、之后还是代替执行的代码。
+* Target（目标对象）
+    * 织入 Advice 的目标对象.。
+* Weaving（织入）
+    * 将 Aspect 和其他对象连接起来, 并创建 Adviced object 的过程
+    * 织入方式
+        * 编译期织入,要求使用特殊的Java编译器
+        * 类装载织入,要求使用特殊的类装载器
+        * 动态代理织入,在运行期为目标类添加增强生成子类的方式
+    * Spring使用动态代理织入,而Aspecj采用编译期织入和类装载期织入
 
+AOP的工作
+* 如何通过切点和增强定位到连接点
+* 如何将增强织入到连接点
+
+
+**Advice 的类型**
+* before advice, 在 join point 前被执行的 advice. 虽然 before advice 是在 join point 前被执行, 但是它并不能够阻止 join point 的执行, 除非发生了异常(即我们在 before advice 代码中, 不能人为地决定是否继续执行 join point 中的代码)
+* after return advice, 在一个 join point 正常返回后执行的 advice
+* after throwing advice, 当一个 join point 抛出异常后执行的 advice
+* after(final) advice, 无论一个 join point 是正常退出还是发生了异常, 都会被执行的 advice.
+* around advice, 在 join point 前和 joint point 退出后都执行的 advice. 这个是最常用的 advice.
+* introduction，introduction可以为原有的对象增加新的属性和方法。
+
+Spring中，通过动态代理和动态字节码技术实现了AOP.
+
+**AOP的实现方案**
+
+* AspectJ
+    * 扩展了Java语言,定义了AOP语法,能够在编译期提供横切代码的织入
+    * 有一个专门的编译器来生成Class文件
+* AspectWerkz
+* Jboss AOP
+* Spring AOP
+    * 通过代理的方式向目标类织入增强代码
+
+#### 1.1.9.2. 切点函数
+<a href="#menu" style="float:right">目录</a>
+
+
+##### 1.1.9.2.1. 常用切点函数
+
+**方法切点函数**
+
+* execution()
+语法格式： execution(返回类型 包名.类名.方法名(参数表))
+exection(* com.xxx.AService.*(..))
+com.xxx.AService 类型中的任意方法，任意类型返回结果，参数表不限定，都增加切面
+"*"标识任意
+
+（<修饰符模式>?<返回类型模式><方法名模式>(<参数模式>)<异常模式>）
+1. 通过方法	签名定义切点： （public * *(..)）;匹配所有目标类的public 方法
+2. 通过类定义切点 ： （* com.lanmei.user+.*(..)）:匹配user接口的所有方法，有+表示也匹配其 实现类
+3. 通过类包定义切点： （* com.lanmei.user.*(..)）匹配com.lanmei.user包下的所有类的所有方法
+4. （* com.lanmei.user..*(..)）匹配com.lanmei.user包/子孙包下的所有类的所有方法
+5. 通过方法入参定义切点 * admin(String. *)）匹配方法admin的地一个参数为String ,第二个参数为任意类型的方法
+	 
+
+
+* @annotation()
+使用注解,需要实现AOP的方法上添加该注解即可
+语法格式: @Pointcut(value = "@annotation(com.springboot.aop.demo.MyAnno)")
+
+
+**方法入参切点函数**
+* args() &  @args()
+以参数标准作为目标，定义切点
+语法： args(类型，类型.....) 代表方法的参数表符合要求的时候，作为切点，参数表是有顺序的
+应用：主要应用在参数校验中。如：登录的时候必须传递两个字符串参数（登录名和密码）。可以使用args来限定。配合这execution实现。
+如：execution(.*.xxx.*.login(..)) args(String,String)。是使用频率最低的表达式
+
+**目标类切点函数**
+* within() & @within()
+以包作为目标，定义切点
+语法： within（包名.*） 代表在包中的任意接口或类型都作为切点
+应用：针对某一个包提供的切点，粒度比target粗糙。如：某包中的所有接口都需要执行某附属逻辑。如 电商平台中的下订单。下订单服务中可能需要特定的逻辑（时间戳校验，库存检查等），这些逻辑，是其他业务线中不需要提供切面的
+
+* target() & @target()
+以目标对象作为切点的表达式定义方式 (用于某一个接口or某一类接口)
+语法：target(包名.接口名）
+如：target(com.xx.IA)  所有实现了IA接口的实现类，作为代理的目标对象，会自动增加通知的织入，是实现切面
+应用：为某一个具体的接口实现提供的配置。如 登录的时候需要执行的附属逻辑是比较多的。在不同的业务流程中，附属逻辑也不同。如，电商中，可能在登录的时候需要去执行购物车合并
+
+**代理类切点函数**
+* this()
+实现某接口的任意代理对象都作为切点
+语法：this（包名.接口名）
+如：this(com.xxx.IA)  代理对象 Proxy如果实现了IA接口，则作为连接点
+应用：针对某个具体的代理提供的配置。比target切点粒度细致。因为目标对象可以多实现。代理对象可以针对目标对象实现的多个接口的某一个接口，提供特定的切点。如，银行中的登录，银行中的账户种类非常多，且有交叉。如借记卡，贷记卡，借记还贷卡。。。。可以针对还贷接口提供一个切点，做还贷信息 的记录等。
+
+##### 1.1.9.2.2. 通配符
+
+"*":匹配任意字符,但只能匹配上下文中的一个元素
+"..":匹配任意字符,可以匹配上下文中的多个元素,但在表示类时,必须和*联合使用,而在表示入参时则单独使用
+"+":匹配类以及其子类.必须跟在类名改后面,com.Car+
+
+* execution(),within()支持所有的通配符
+* args(),this(),target()仅支持"+"通配符
+* @xxx不支持通配符
+
+
+##### 1.1.9.2.3. 逻辑运算符
+
+包括&&,||,!或者and ,or ,not
+
+例子: 
+1. exection(* com.xxx.AService.*(..)) && exection(* com.xxx.AService.*(..))
+2. exection(* com.xxx.AService.*(..))|| exection(* com.xxx.AService.*(..))
+3. !exection(* com.xxx.AService.*(..))
+
+#### 1.1.9.3. Spring AOP案例
+<a href="#menu" style="float:right">目录</a>
+
+引入依赖
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-aop</artifactId>
+</dependency>
+```
+配置文件
+```yml
+# AOP
+# Add @EnableAspectJAutoProxy.
+# 使能aop,默认使能 或者在启动类上加 @EnableAspectJAutoProxy.
+spring.aop.auto=true 
+# true强制使用cglib false:默认使用Jdk基于接口的代理,没有接口则使用cglib
+spring.aop.proxy-target-class=true # Whether subclass-based (CGLIB) proxies are to be created (true), as opposed to standard Java interface-based proxies (false).
+```
+创建一个注解
+```java
+@Target({ElementType.PARAMETER, ElementType.METHOD})  
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface MyAnno {
+}
+```
+创建切面类
+```java
+package com.springboot.aop.demo;
+
+
+import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
+import org.springframework.stereotype.Component;
+
+@Aspect
+@Component
+@Slf4j
+public class MyAspect {
+
+    //定义切点,这里的切点通过注解实现
+    @Pointcut(value = "@annotation(com.springboot.aop.demo.MyAnno)")
+    public void myAspectPointcut() {
+
+    }
+
+    //以下就是各个增强代码
+    //通过joinPoint获得代理对象和方法参数
+    @Before(value="myAspectPointcut()")
+    public void doBefore(JoinPoint joinPoint){
+        log.info("doBefore");
+    }
+
+    @After(value="myAspectPointcut()")
+    public void doAfter(JoinPoint joinPoint){
+        log.info("doAfter");
+    }
+
+    //returning定义返回值名称,通过returnValue获取到返回值
+    @AfterReturning(value="myAspectPointcut()",returning="returnValue")
+    public void doAfterReturning(JoinPoint joinPoint,Object returnValue){
+        log.info("doAfterReturning");
+    }
+
+    //throwing定义异常名称,可以从ex中获取到发生的异常
+    @AfterThrowing(value="myAspectPointcut()",throwing="ex")
+    public void doAfterThrowing(JoinPoint joinPoint ,Throwable ex){
+
+        log.info("doAfterThrowing");
+    }
+    @Around(value="myAspectPointcut()")
+    public Object doAround(ProceedingJoinPoint invocation)  throws Throwable{
+
+        log.info("doAround start ");
+        //通过proceed执行代理对象的方法
+        Object result = invocation.proceed();
+        log.info("doAround end ");
+
+        return  result;
+    }
+}
+
+```
+应用代码添加注解@MyAnno
+注意必须是Spring Bean上使用,这样扫描时才会创建代理.
+```java
+@Slf4j
+@RestController
+@RequestMapping("/aop")
+public class AopController {
+
+    @Autowired
+    DemoService demoService;
+
+    @RequestMapping
+    @MyAnno
+    public String aop(){
+        log.info("/aop/aop");
+       // demoService.func();
+        return "aop";
+    }
+}
+```
+测试
+```
+2019-09-20 00:46:30.079  INFO 1285 --- [nio-8080-exec-1] com.springboot.aop.demo.MyAspect         : doAround start 
+2019-09-20 00:46:30.080  INFO 1285 --- [nio-8080-exec-1] com.springboot.aop.demo.MyAspect         : doBefore
+2019-09-20 00:46:30.085  INFO 1285 --- [nio-8080-exec-1] c.s.aop.controller.AopController         : /aop/aop
+2019-09-20 00:46:30.085  INFO 1285 --- [nio-8080-exec-1] c.s.a.usetime.aspect.PrintUseTimeAspect  : 方法：aop 消耗时间 =4 ms
+2019-09-20 00:46:30.103  INFO 1285 --- [nio-8080-exec-1] com.springboot.aop.demo.MyAspect         : doAround end 
+2019-09-20 00:46:30.104  INFO 1285 --- [nio-8080-exec-1] com.springboot.aop.demo.MyAspect         : doAfter
+2019-09-20 00:46:30.104  INFO 1285 --- [nio-8080-exec-1] com.springboot.aop.demo.MyAspect         : doAfterReturning
+```
+
+**JoinPoint**
+可以看到通过JoinPoint可以获取到代理的类和方法执行的参数
+```java
+
+public interface JoinPoint {
+    String METHOD_EXECUTION = "method-execution";
+    String METHOD_CALL = "method-call";
+    String CONSTRUCTOR_EXECUTION = "constructor-execution";
+    String CONSTRUCTOR_CALL = "constructor-call";
+    String FIELD_GET = "field-get";
+    String FIELD_SET = "field-set";
+    String STATICINITIALIZATION = "staticinitialization";
+    String PREINITIALIZATION = "preinitialization";
+    String INITIALIZATION = "initialization";
+    String EXCEPTION_HANDLER = "exception-handler";
+    String SYNCHRONIZATION_LOCK = "lock";
+    String SYNCHRONIZATION_UNLOCK = "unlock";
+    String ADVICE_EXECUTION = "adviceexecution";
+
+    String toString();
+    String toShortString();
+    String toLongString();
+    Object getThis();
+    Object getTarget();
+    Object[] getArgs();
+    Signature getSignature();
+    SourceLocation getSourceLocation();
+    String getKind();
+    JoinPoint.StaticPart getStaticPart();
+    public interface EnclosingStaticPart extends JoinPoint.StaticPart {
+    }
+
+    public interface StaticPart {
+        Signature getSignature();
+        SourceLocation getSourceLocation();
+        String getKind();
+        int getId();
+        String toString();
+        String toShortString();
+        String toLongString();
+    }
+}
+
+```
+**ProceedingJoinPoint**
+环绕增强使用的是ProceedingJoinPoint,其是JoinPoint的实现类.可以看到多了proceed的方法,这个方法是用来执行代理对象的方法.
+
+```java
+public interface ProceedingJoinPoint extends JoinPoint {
+    void set$AroundClosure(AroundClosure var1);
+
+    default void stack$AroundClosure(AroundClosure arc) {
+        throw new UnsupportedOperationException();
+    }
+
+    Object proceed() throws Throwable;
+
+    Object proceed(Object[] var1) throws Throwable;
+}
+
+```
+
+#### 1.1.9.4. 实现原理
+<a href="#menu" style="float:right">目录</a>
+
+
+##### 1.1.9.4.1. 五种通知的执行顺序
+
+**正常情况**
+
+![](https://upload-images.jianshu.io/upload_images/12170632-2931198a9b094f45.jpeg?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
+![](https://upload-images.jianshu.io/upload_images/12170632-67b89b71dc0cb8ac.jpeg?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
+
+**多个切面的情况下**
+多个切面的情况下，可以通过@Order或者 int getOrder()方法指定先后顺序，数字越小，优先级越高。
+![](https://upload-images.jianshu.io/upload_images/12170632-46a72d800cf64036.jpeg?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
+
+
+##### 1.1.9.4.2. 代理实现
+Spring AOP通过动态代理和责任链模式来实现.
+在启动创建Bean时如果判断该方法有使用AOP功能,将会为该类创建代理对象并注入容器,当调用该类的方法时,将会被拦截,进而通过责任链模式一步步执行相关的切面代码.
+
+![aop-create-proxy](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/aop-create-proxy.png)
+
+代理实现分别由CglibAopProxy和JdkDynamicAopProxy类来实现
+
+```java
+
+package org.springframework.aop.framework;
+
+class CglibAopProxy implements AopProxy, Serializable {
+   
+    //创建代理对象
+    public Object getProxy(@Nullable ClassLoader classLoader) {
+        if (logger.isTraceEnabled()) {
+            logger.trace("Creating CGLIB proxy: " + this.advised.getTargetSource());
+        }
+
+        try {
+            Class<?> rootClass = this.advised.getTargetClass();
+            Assert.state(rootClass != null, "Target class must be available for creating a CGLIB proxy");
+            Class<?> proxySuperClass = rootClass;
+            int x;
+            if (ClassUtils.isCglibProxyClass(rootClass)) {
+                proxySuperClass = rootClass.getSuperclass();
+                Class<?>[] additionalInterfaces = rootClass.getInterfaces();
+                Class[] var5 = additionalInterfaces;
+                int var6 = additionalInterfaces.length;
+
+                for(x = 0; x < var6; ++x) {
+                    Class<?> additionalInterface = var5[x];
+                    this.advised.addInterface(additionalInterface);
+                }
+            }
+
+            this.validateClassIfNecessary(proxySuperClass, classLoader);
+            Enhancer enhancer = this.createEnhancer();
+            if (classLoader != null) {
+                enhancer.setClassLoader(classLoader);
+                if (classLoader instanceof SmartClassLoader && ((SmartClassLoader)classLoader).isClassReloadable(proxySuperClass)) {
+                    enhancer.setUseCache(false);
+                }
+            }
+
+            enhancer.setSuperclass(proxySuperClass);
+            enhancer.setInterfaces(AopProxyUtils.completeProxiedInterfaces(this.advised));
+            enhancer.setNamingPolicy(SpringNamingPolicy.INSTANCE);
+            enhancer.setStrategy(new CglibAopProxy.ClassLoaderAwareUndeclaredThrowableStrategy(classLoader));
+            Callback[] callbacks = this.getCallbacks(rootClass);
+            Class<?>[] types = new Class[callbacks.length];
+
+            for(x = 0; x < types.length; ++x) {
+                types[x] = callbacks[x].getClass();
+            }
+
+            enhancer.setCallbackFilter(new CglibAopProxy.ProxyCallbackFilter(this.advised.getConfigurationOnlyCopy(), this.fixedInterceptorMap, this.fixedInterceptorOffset));
+            enhancer.setCallbackTypes(types);
+            return this.createProxyClassAndInstance(enhancer, callbacks);
+        } catch (IllegalArgumentException | CodeGenerationException var9) {
+            throw new AopConfigException("Could not generate CGLIB subclass of " + this.advised.getTargetClass() + ": Common causes of this problem include using a final class or a non-visible class", var9);
+        } catch (Throwable var10) {
+            throw new AopConfigException("Unexpected AOP exception", var10);
+        }
+    }
+
+     private static class DynamicAdvisedInterceptor implements MethodInterceptor, Serializable {
+        private final AdvisedSupport advised;
+
+        public DynamicAdvisedInterceptor(AdvisedSupport advised) {
+            this.advised = advised;
+        }
+        //代理拦截方法
+        @Nullable
+        public Object intercept(Object proxy, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+            Object oldProxy = null;
+            boolean setProxyContext = false;
+            Object target = null;
+            TargetSource targetSource = this.advised.getTargetSource();
+
+            Object var16;
+            try {
+                if (this.advised.exposeProxy) {
+                    oldProxy = AopContext.setCurrentProxy(proxy);
+                    setProxyContext = true;
+                }
+
+                target = targetSource.getTarget();
+                Class<?> targetClass = target != null ? target.getClass() : null;
+                //获取增强的list对象
+                List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
+                Object retVal;
+                if (chain.isEmpty() && Modifier.isPublic(method.getModifiers())) {
+                    Object[] argsToUse = AopProxyUtils.adaptArgumentsIfNecessary(method, args);
+                    retVal = methodProxy.invoke(target, argsToUse);
+                } else {
+                    //责任链模式执行各个增强
+                    retVal = (new CglibAopProxy.CglibMethodInvocation(proxy, target, method, args, targetClass, chain, methodProxy)).proceed();
+                }
+
+                retVal = CglibAopProxy.processReturnType(proxy, target, method, retVal);
+                var16 = retVal;
+            } finally {
+                if (target != null && !targetSource.isStatic()) {
+                    targetSource.releaseTarget(target);
+                }
+
+                if (setProxyContext) {
+                    AopContext.setCurrentProxy(oldProxy);
+                }
+
+            }
+
+            return var16;
+        }
+
+        public boolean equals(Object other) {
+            return this == other || other instanceof CglibAopProxy.DynamicAdvisedInterceptor && this.advised.equals(((CglibAopProxy.DynamicAdvisedInterceptor)other).advised);
+        }
+
+        public int hashCode() {
+            return this.advised.hashCode();
+        }
+    }
+
+    
+```
+Jdk方式实现
+```java
+
+
+package org.springframework.aop.framework;
+
+final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializable {
+
+    //获取代理对象
+    public Object getProxy(@Nullable ClassLoader classLoader) {
+        if (logger.isTraceEnabled()) {
+            logger.trace("Creating JDK dynamic proxy: " + this.advised.getTargetSource());
+        }
+
+        Class<?>[] proxiedInterfaces = AopProxyUtils.completeProxiedInterfaces(this.advised, true);
+        this.findDefinedEqualsAndHashCodeMethods(proxiedInterfaces);
+        return Proxy.newProxyInstance(classLoader, proxiedInterfaces, this);
+    }
+    @Nullable
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        Object oldProxy = null;
+        boolean setProxyContext = false;
+        TargetSource targetSource = this.advised.targetSource;
+        Object target = null;
+
+        Class var8;
+        try {
+            if (!this.equalsDefined && AopUtils.isEqualsMethod(method)) {
+                Boolean var18 = this.equals(args[0]);
+                return var18;
+            }
+
+            if (!this.hashCodeDefined && AopUtils.isHashCodeMethod(method)) {
+                Integer var17 = this.hashCode();
+                return var17;
+            }
+
+            if (method.getDeclaringClass() != DecoratingProxy.class) {
+                Object retVal;
+                if (!this.advised.opaque && method.getDeclaringClass().isInterface() && method.getDeclaringClass().isAssignableFrom(Advised.class)) {
+                    retVal = AopUtils.invokeJoinpointUsingReflection(this.advised, method, args);
+                    return retVal;
+                }
+
+                if (this.advised.exposeProxy) {
+                    oldProxy = AopContext.setCurrentProxy(proxy);
+                    setProxyContext = true;
+                }
+
+                target = targetSource.getTarget();
+                Class<?> targetClass = target != null ? target.getClass() : null;
+                //获取增强的list对象
+                List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
+                if (chain.isEmpty()) {
+                    Object[] argsToUse = AopProxyUtils.adaptArgumentsIfNecessary(method, args);
+                    retVal = AopUtils.invokeJoinpointUsingReflection(target, method, argsToUse);
+                } else {
+                    //以责任链模式执行各个增请代码
+                    MethodInvocation invocation = new ReflectiveMethodInvocation(proxy, target, method, args, targetClass, chain);
+                    retVal = invocation.proceed();
+                }
+
+                Class<?> returnType = method.getReturnType();
+                if (retVal != null && retVal == target && returnType != Object.class && returnType.isInstance(proxy) && !RawTargetAccess.class.isAssignableFrom(method.getDeclaringClass())) {
+                    retVal = proxy;
+                } else if (retVal == null && returnType != Void.TYPE && returnType.isPrimitive()) {
+                    throw new AopInvocationException("Null return value from advice does not match primitive return type for: " + method);
+                }
+
+                Object var12 = retVal;
+                return var12;
+            }
+
+            var8 = AopProxyUtils.ultimateTargetClass(this.advised);
+        } finally {
+            if (target != null && !targetSource.isStatic()) {
+                targetSource.releaseTarget(target);
+            }
+
+            if (setProxyContext) {
+                AopContext.setCurrentProxy(oldProxy);
+            }
+
+        }
+
+        return var8;
+    }
+
+}
+
+```
 
 ### 1.1.10. 事务管理器实现类
+
+<a href="#menu" style="float:right">目录</a>
+
 Spring 将事务管理委托给底层具体的持久化实现框架来完成。因此，Spring为不同的持久化框架提供了PlatformTransactionManager 接口的实现类。
 
 |事务|	说明|
@@ -2267,7 +2828,109 @@ public void saveUserBack(){
 <a href="#menu" style="float:right">目录</a>
 
 
-## 1.2. Spring 表达式语言
+## 1.2. web
+* [org.springframework.web.util.CookieGenerator](https://github.com/lgjlife/spring-utils/blob/master/src%2Fmain%2Fjava%2Fcom%2Fspring%2Futils%2Fweb%2FCookieGeneratorUtil.java)
+    * 给HttpServletResponse添加cookies
+* org.springframework.web.util.HtmlCharacterEntityDecoder
+* org.springframework.web.util.HtmlCharacterEntityReferences
+* org.springframework.web.util.HtmlUtils
+* org.springframework.web.util.HttpUrlTemplate
+    * 这个类用于用字符串模板构建url, 它会自动处理url里的汉字及其它相关的编码. 在读取别人提供的url资源时, 应该经常用String url = "http://localhost/myapp/{name}/{id}";
+* org.springframework.web.util.JavaScriptUtils
+* org.springframework.web.util.Log4jConfigListener
+    * 用listener的方式来配制log4j在web环境下的初始化
+* org.springframework.web.util.UriTemplate
+* org.springframework.web.util.UriUtils
+    * 处理uri里特殊字符的编码
+* org.springframework.web.util.WebUtils
+
+## 1.3. 内置的resouce类型
+* UrlResource
+* ClassPathResource
+* FileSystemResource
+* ServletContextResource
+* InputStreamResource
+* ByteArrayResource
+* EncodedResource 也就是Resource加上encoding, 可以认为是有编码的资源
+    * VfsResource(在jboss里经常用到, 相应还有 工具类 VfsUtils)
+* org.springframework.util.xml.ResourceUtils 用于处理表达资源字符串前缀描述资源的工具. 如: "classpath:".
+    * 有 getURL, getFile, isFileURL, isJarURL, extractJarFileURL
+
+## 1.4. 工具类
+* org.springframework.core.annotation.AnnotationUtils
+    * 处理注解
+* org.springframework.core.io.support.PathMatchingResourcePatternResolver
+    * 用 于处理 ant 匹配风格(com/*.jsp, com/*/.jsp),找出所有的资源, 结合上面的resource的概念一起使用
+* org.springframework.core.io.support.PropertiesLoaderUtils
+    * 加载Properties资源工具类,和Resource结合
+* org.springframework.core.BridgeMethodResolver
+    * 桥接方法分析器.
+* org.springframework.core.GenericTypeResolver
+    * 范型分析器, 在用于对范型方法, 参数分析.
+* org.springframework.core.NestedExceptionUtils
+
+## 1.5. xml工具
+* org.springframework.util.xml.AbstractStaxContentHandler
+* org.springframework.util.xml.AbstractStaxXMLReader
+* org.springframework.util.xml.AbstractXMLReader
+* org.springframework.util.xml.AbstractXMLStreamReader
+* org.springframework.util.xml.DomUtils
+* org.springframework.util.xml.SimpleNamespaceContext
+* org.springframework.util.xml.SimpleSaxErrorHandler
+* org.springframework.util.xml.SimpleTransformErrorListener
+* org.springframework.util.xml.StaxUtils
+* org.springframework.util.xml.TransformerUtils
+
+## 1.6. 其它工具集
+* [org.springframework.util.xml.AntPathMatcher](https://github.com/lgjlife/spring-utils/blob/master/src/main/java/com/spring/utils/util/AntPathMatcherUtil.java)
+    * ant风格的处理,路径匹配校验
+* [org.springframework.util.xml.Assert](https://github.com/lgjlife/spring-utils/blob/master/src/main/java/com/spring/utils/util/AssertUtil.java)
+    * 断言,在我们的参数判断时应该经常用
+* org.springframework.util.xml.CachingMapDecorator
+* org.springframework.util.xml.ClassUtils
+    * 用于Class的处理
+* org.springframework.util.xml.CollectionUtils
+    * 用于处理集合的工具
+* org.springframework.util.xml.CommonsLogWriter
+* org.springframework.util.xml.CompositeIterator
+* org.springframework.util.xml.ConcurrencyThrottleSupport
+* org.springframework.util.xml.CustomizableThreadCreator
+* org.springframework.util.xml.DefaultPropertiesPersister
+* [org.springframework.util.xml.DigestUtils](https://github.com/lgjlife/spring-utils/blob/master/src/main/java/com/spring/utils/util/DigestUtilsDemo.java)
+    * 摘要处理, 这里有用于md5处理信息的
+* [org.springframework.util.xml.FileCopyUtils](https://github.com/lgjlife/spring-utils/blob/master/src/main/java/com/spring/utils/util/FileCopyUtilsDemo.java)
+    * 文件的拷贝处理, 结合Resource的概念一起来处理, 真的是很方便
+* org.springframework.util.xml.FileSystemUtils
+* org.springframework.util.xml.LinkedCaseInsensitiveMap
+    * key值不区分大小写的LinkedMap
+* org.springframework.util.xml.LinkedMultiValueMap
+    * 一个key可以存放多个值的LinkedMap
+* org.springframework.util.xml.Log4jConfigurer
+    * 一个log4j的启动加载指定配制文件的工具类
+* org.springframework.util.xml.NumberUtils
+    * 处理数字的工具类, 有parseNumber 可以把字符串处理成我们指定的数字格式, 还支持format格式, 　　　　convertNumberToTargetClass 可以实现Number类型的转化.
+* org.springframework.util.xml.ObjectUtils
+    * 有很多处理null object的方法. 如nullSafeHashCode, nullSafeEquals, isArray, containsElement, addObjectToArray, 等有用的方法
+* org.springframework.util.xml.PatternMatchUtils
+    * spring里用于处理简单的匹配. 如 Spring's typical "xxx", "xxx" and "xxx" pattern styles
+* org.springframework.util.xml.PropertyPlaceholderHelper
+    * 用于处理占位符的替换
+* org.springframework.util.xml.ReflectionUtils
+    * 反映常用工具方法. 有 findField, setField, getField, findMethod, invokeMethod等有用的方法
+* [org.springframework.util.xml.SerializationUtils](https://github.com/lgjlife/spring-utils/blob/master/src/main/java/com/spring/utils/util/SerializationUtilsUtil.java)
+    * 用于java的序列化与反序列化. serialize与deserialize方法 
+* [org.springframework.util.xml.StopWatch](https://github.com/lgjlife/spring-utils/blob/master/src/main/java/com/spring/utils/util/StopWatchUtil.java)
+    * 一个很好的用于记录执行时间的工具类, 且可以用于任务分阶段的测试时间. 最后支持一个很好看的打印格式. 这个类应该经常用
+* [org.springframework.util.xml.StringUtils](https://github.com/lgjlife/spring-utils/blob/master/src/main/java/com/spring/utils/util/StringUtilsUtil.java)
+    * String 工具类，判断空，去除空格等操作
+* org.springframework.util.xml.SystemPropertyUtils
+* org.springframework.util.xml.TypeUtils
+    * 用于类型相容的判断. isAssignable
+* org.springframework.util.xml.WeakReferenceMonitor
+    * 弱引用的监控
+
+
+## 1.7. Spring 表达式语言
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -2281,10 +2944,10 @@ SpEL拥有很多特性，包括：
 * 集合操作。
 
 
-## 1.3. Spring Cache
+## 1.8. Spring Cache
 <a href="#menu" style="float:right">目录</a>
 
-### 1.3.1. 几个重要概念&缓存注解
+### 1.8.1. 几个重要概念&缓存注解
 
 |名称|	解释|
 |---|---|
@@ -2308,7 +2971,7 @@ SpEL拥有很多特性，包括：
 |allEntries(@CacheEvict )|	是否清空所有缓存内容，缺省为 false，如果指定为 true,则方法调用后将立即清空所有缓存.例如：@CachEvict(value=”testcache”,allEntries=true)
 |beforeInvocation(@CacheEvict)	|是否在方法执行前就清空，缺省为 false，如果指定为 true，则在方法还没有执行的时候就清空缓存，缺省情况下，如果方法执行抛出异常，则不会清空缓存,例如：@CachEvict(value=”testcache”，beforeInvocation=true)
 
-### 1.3.2. SpEL上下文数据
+### 1.8.2. SpEL上下文数据
 Spring Cache提供了一些供我们使用的SpEL上下文数据，下表直接摘自Spring官方文档：
 
 |名称|	位置|	描述	|示例|
@@ -2341,7 +3004,7 @@ SpEL提供了多种运算符
 |正则表达式	|matches
 |其他类型	|?.，?[…]，![…]，^[…]，$[…]
 
-### 1.3.3. 基本使用
+### 1.8.3. 基本使用
 
 **引入依赖**
 ```xml
@@ -2494,10 +3157,10 @@ public User save(User user) {
 }
 ```
 
-## 1.4. Spring Boot Admin
+## 1.9. Spring Boot Admin
 <a href="#menu" style="float:right">目录</a>
 
-### 1.4.1. 基础认识
+### 1.9.1. 基础认识
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -2527,9 +3190,9 @@ Spring Boot Admin是一个开源社区项目，用于管理和监控SpringBoot�
 * 状态变更通知（通过电子邮件，Slack，Hipchat，......）
 * 状态更改的事件日志（非持久性）
 
-### 1.4.2. 使用实例
+### 1.9.2. 使用实例
 
-#### 1.4.2.1. Server应用
+#### 1.9.2.1. Server应用
 <a href="#menu" style="float:right">目录</a>
 
 引入依赖
@@ -2565,7 +3228,7 @@ spring:
 
 
 ```
-#### 1.4.2.2. Client应用
+#### 1.9.2.2. Client应用
 <a href="#menu" style="float:right">目录</a>
 
 引入依赖
@@ -2603,7 +3266,7 @@ management:
 可以点击应用查看监控数据
 ![admin应用监控页面](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springadmin/admin-app.png)
 
-#### 1.4.2.3. Client配置说明
+#### 1.9.2.3. Client配置说明
 
 
 **ClientProperties**
@@ -2778,7 +3441,7 @@ public class AdminServerProperties {
 }
 ```
 
-#### 1.4.2.4. 集群
+#### 1.9.2.4. 集群
 <a href="#menu" style="float:right">目录</a>
 
 Spring Boot Admin支持集群
@@ -2800,7 +3463,7 @@ public Config hazelcastConfig() {
 }
 ```
 
-#### 1.4.2.5. 集成spring security
+#### 1.9.2.5. 集成spring security
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -2853,7 +3516,7 @@ public static class SecuritySecureConfig extends WebSecurityConfigurerAdapter {
     }
 }
 ```
-#### 1.4.2.6. 集成邮箱报警功能
+#### 1.9.2.6. 集成邮箱报警功能
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -2880,15 +3543,15 @@ spring.boot.admin.notify.mail.to: xxx@qq.com
 
 
 
-## 1.5. Spring Security
+## 1.10. Spring Security
 <a href="#menu" style="float:right">目录</a>
 
-### 1.5.1. 简介
+### 1.10.1. 简介
 <a href="#menu" style="float:right">目录</a>
 
 一个能够为基于Spring的企业应用系统提供声明式的安全訪问控制解决方式的安全框架（简单说是对访问权限进行控制嘛），应用的安全性包括用户认证（Authentication）和用户授权（Authorization）两个部分。用户认证指的是验证某个用户是否为系统中的合法主体，也就是说用户能否访问该系统。用户认证一般要求用户提供用户名和密码。系统通过校验用户名和密码来完成认证过程。用户授权指的是验证某个用户是否有权限执行某个操作。在一个系统中，不同用户所具有的权限是不同的。比如对一个文件来说，有的用户只能进行读取，而有的用户可以进行修改。一般来说，系统会为不同的用户分配不同的角色，而每个角色则对应一系列的权限。   spring security的主要核心功能为 认证和授权，所有的架构也是基于这两个核心功能去实现的。
 
-### 1.5.2. 提供的功能
+### 1.10.2. 提供的功能
 <a href="#menu" style="float:right">目录</a>
 
 * 支持不同的身份验证方法,比如经典的基于登录表单的身份认证,使用X509用户证书的身份验证,LDAP身份验证.可以在同一个应用中应用多种不同的身份验证方法.
@@ -2901,7 +3564,7 @@ spring.boot.admin.notify.mail.to: xxx@qq.com
 * 可以分别对URL资源,服务方法调用和于对象进行控制访问,还可以在运行时临时向已登录用户添加角色,以便用户可以访问那些需要额外角色才可以访问的受限制区域.
 
 
-### 1.5.3. 核心类
+### 1.10.3. 核心类
 <a href="#menu" style="float:right">目录</a>
 
 想要对对Web资源进行保护，最好的办法莫过于Filter，要想对方法调用进行保护，最好的办法莫过于AOP。所以springSecurity在我们进行用户认证以及授予权限的时候，通过各种各样的拦截器来控制权限的访问，从而实现安全。
@@ -2932,15 +3595,15 @@ spring.boot.admin.notify.mail.to: xxx@qq.com
     * UserDetailsService：通过username构建UserDetails对象，通过loadUserByUsername根据userName获取UserDetail对象 （可以在这里基于自身业务进行自定义的实现  如通过数据库，xml,缓存获取等）           
 
 
-## 1.6. Sppring MVC
+## 1.11. Sppring MVC
 <a href="#menu" style="float:right">目录</a>
 
-### 1.6.1. MVC体系概述
+### 1.11.1. MVC体系概述
 <a href="#menu" style="float:right">目录</a>
 
 Spring MVC是一个基于Java的实现了MVC设计模式的请求驱动类型的轻量级Web框架，通过把Model，View，Controller分离，将web层进行职责解耦，把复杂的web应用分成逻辑清晰的几部分，简化开发，减少出错，方便组内开发人员之间的配合。
 
-#### 1.6.1.1. MVC 架构
+#### 1.11.1.1. MVC 架构
 * 模型：包含了应用中所需的各种展现数据
 * 视图：由数据的多种表述所组成，它将会展现给用户。
 * 控制器：将会处理用户的操作，它是连接模型和视图的桥梁
@@ -3192,10 +3855,10 @@ HttpMessageConveter： 将请求消息（如Json、xml等数据）转换成一�
 6.  根据返回的ModelAndView，选择一个适合的ViewResolver（必须是已经注册到Spring容器中的ViewResolver)返回给DispatcherServlet ；
 7. ViewResolver 结合Model和View，来渲染视图
 8. 将渲染结果返回给客户端。
-### 1.6.2. Restful
+### 1.11.2. Restful
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.6.2.1. URL 设计
+#### 1.11.2.1. URL 设计
 
 **动词 + 宾语**
 RESTful 的核心思想就是，客户端发出的数据操作指令都是"动词 + 宾语"的结构。比如，GET /articles这个命令，GET是动词，/articles是宾语。
@@ -3253,7 +3916,7 @@ GET /articles/published
 
 
 GET /articles?published=true
-#### 1.6.2.2. 状态码
+#### 1.11.2.2. 状态码
 **状态码必须精确**
 客户端的每一次请求，服务器都必须给出回应。回应包括 HTTP 状态码和数据两部分。
 
@@ -3319,7 +3982,7 @@ Location: /api/orders/12345
 * 500 Internal Server Error：客户端请求有效，服务器处理时发生了意外。
 * 503 Service Unavailable：服务器无法处理请求，一般用于网站维护状态。
 
-#### 1.6.2.3. 服务器回应
+#### 1.11.2.3. 服务器回应
 **不要返回纯本文**
 API 返回的数据格式，不应该是纯文本，而应该是一个 JSON 对象，因为这样才能返回标准的结构化数据。所以，服务器回应的 HTTP 头的Content-Type属性要设为application/json。
 
@@ -3393,7 +4056,7 @@ Content-Type: application/json
 }
 ```
 
-### 1.6.3. 注解说明
+### 1.11.3. 注解说明
 <a href="#menu" style="float:right">目录</a>
 
 **@ControllerAdvice**
@@ -4233,7 +4896,7 @@ component-scan 默认扫描的注解类型是 @Component，不过，在 @Compone
 </>
 ```
 
-### 1.6.4. 拦截器 
+### 1.11.4. 拦截器 
 <a href="#menu" style="float:right">目录</a>
 
 拦截器的本质是责任链
@@ -4389,7 +5052,7 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter{
 ```
 拦截器的执行是会根据 registry 注入的先后顺序执行，比如：/one/**   同时被  OneInterceptor、TwoInterceptor 拦截，但会先执行 OneInterceptor拦截的业务请求，因为它先注入进来的
 
-### 1.6.5. 过滤器
+### 1.11.5. 过滤器
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -4448,7 +5111,7 @@ public class ProjectConfig {
 }
 ```
 
-#### 1.6.5.1. 过滤器和拦截器的区别：
+#### 1.11.5.1. 过滤器和拦截器的区别：
 
 ![](https://images2017.cnblogs.com/blog/330611/201710/330611-20171023144517066-24770749.png)
 
@@ -4463,7 +5126,7 @@ public class ProjectConfig {
 |Filter 是被 Server(like Tomcat) 调用|	Interceptor 是被 Spring 调用|因此Filter总是优先于拦截器执行
 
 
-#### 1.6.5.2. 拦截器（Interceptor）和过滤器（Filter）的一些用途
+#### 1.11.5.2. 拦截器（Interceptor）和过滤器（Filter）的一些用途
 * Authentication Filters
 * Logging and Auditing Filters
 * Image conversion Filters
@@ -4491,10 +5154,10 @@ public class ProjectConfig {
     根据地方不同修改响应内容 Localization-Targeting the request and response to a particular locale.
 
 
-## 1.7. SpringBoot
+## 1.12. SpringBoot
 <a href="#menu" style="float:right">目录</a>
 
-### 1.7.1. 基本概念
+### 1.12.1. 基本概念
 
 Spring Boot 是 Spring 开源组织下的子项目，是 Spring 组件一站式解决方案，主要是简化了使用 Spring 的难度，简省了繁重的配置，提供了各种启动器，开发者能快速上手.
 
@@ -4513,7 +5176,7 @@ Spring Boot 优点非常多，如：
 * 应用监控
 * 上手容易
 
-### 1.7.2. 基本使用
+### 1.12.2. 基本使用
 <a href="#menu" style="float:right">目录</a>
 
 maven配置文件
@@ -4545,10 +5208,10 @@ maven配置文件
 
 使用以上任何一种方式配置时,引入官方的starter包无需指定版本
 
-### 1.7.3. Spring Boot 环境下创建Bean
+### 1.12.3. Spring Boot 环境下创建Bean
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.7.3.1. 方式1:使用@Component等注解：
+#### 1.12.3.1. 方式1:使用@Component等注解：
 
 使用@Component,@Service,@Controler,@Repository注解
 
@@ -4583,7 +5246,7 @@ public class MicroblogBlogApplication {
 ```
  
 
-#### 1.7.3.2. 方式2:使用@Bean注解
+#### 1.12.3.2. 方式2:使用@Bean注解
 使用@Bean注解,这种方式用在Spring Boot 应用中。
 
 @Configuration 标识这是一个Spring Boot 配置类，其将会扫描该类中是否存在@Bean 注解的方法，比如如下代码，将会创建User对象并放入容器中。
@@ -4662,7 +5325,7 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.log.config.Us
 
  
 
-#### 1.7.3.3. 方式3:使用@Import注解
+#### 1.12.3.3. 方式3:使用@Import注解
 使用注解@Import,也会创建对象并注入容器中
 
 ```java
@@ -4673,7 +5336,7 @@ public class MicroblogUserWebApplication {
     }
 }
 ```
-#### 1.7.3.4. 方式4:使用ImportSelector接口
+#### 1.12.3.4. 方式4:使用ImportSelector接口
 
 使用ImportSelector或者ImportBeanDefinitionRegistrar接口，配合@Import实现。
 
@@ -4851,7 +5514,7 @@ public class ImportDemoApplication {
 
  
 
-#### 1.7.3.5. 方式5:手动注册到容器
+#### 1.12.3.5. 方式5:手动注册到容器
 
 手动注入Bean容器，有些场景下需要代码动态注入，以上方式都不适用。这时就需要创建 对象手动注入。
 
@@ -4898,7 +5561,7 @@ Location location =  context.getBean(Location.class);
 location.run();
 ```
 
-### 1.7.4. 使用不同的WEB容器
+### 1.12.4. 使用不同的WEB容器
 
 undertow,jetty和tomcat可以说是javaweb项目当下最火的三款服务器，tomcat是apache下的一款重量级的服务器，不用多说历史悠久，经得起实践的考验。然而：当下微服务兴起，spring boot ，spring cloud 越来越热的情况下，选择一款轻量级而性能优越的服务器是必要的选择。spring boot 完美集成了tomcat，jetty和undertow.
 
@@ -5026,7 +5689,7 @@ server.jetty.selectors= # Number of selector threads to use
 
 ```
 
-### 1.7.5. 配置文件
+### 1.12.5. 配置文件
 <a href="#menu" style="float:right">目录</a>
 
 Spring支持两种类型的配置文件,后缀名分别为properties和yml.
@@ -5042,7 +5705,7 @@ server:
 ```
 可以看到yml类型的格式结构更加清晰
 
-#### 1.7.5.1. bootstrap.yml与application.yml区别
+#### 1.12.5.1. bootstrap.yml与application.yml区别
 <a href="#menu" style="float:right">目录</a>
 
 说明：其实yml和properties文件是一样的原理，主要是说明application和bootstrap的加载顺序。且一个项目上要么yml或者properties，二选一的存在
@@ -5068,13 +5731,13 @@ bootstrap 配置文件有以下几个应用场景。
 为何需要把 config server 的信息放在 bootstrap.yml 里？
 当使用Spring Cloud的时候，配置信息一般是从config server加载的，为了取得配置信息（比如密码等），你需要一些提早的或引导配置。因此，把 config server 信息放在 bootstrap.yml，用来加载真正需要的配置信息。
 
-#### 1.7.5.2. 多环境配置
+#### 1.12.5.2. 多环境配置
 <a href="#menu" style="float:right">目录</a>
 
 软件开发中经常有开发环境、测试环境、预发布环境、生产环境，而且一般这些环境配置会各不相同，手动改配置麻烦且容易出错，如何管理不同环境的配置参数呢？spring-boot + maven可以解决不同环境独立配置不同参数的问题。
 
 
-##### 1.7.5.2.1. 配置文件
+##### 1.12.5.2.1. 配置文件
 <a href="#menu" style="float:right">目录</a>
 
 **方式1:使用多个配置文件**
@@ -5119,7 +5782,7 @@ server:
 
 ```
 
-##### 1.7.5.2.2. 多环境配置
+##### 1.12.5.2.2. 多环境配置
 <a href="#menu" style="float:right">目录</a>
 
 **方式1:application.yml配置**
@@ -5154,7 +5817,7 @@ public @interface Profile {
 }
 ```
 
-#### 1.7.5.3. 注解ConfigurationProperties注入yml配置文件中的数据
+#### 1.12.5.3. 注解ConfigurationProperties注入yml配置文件中的数据
 <a href="#menu" style="float:right">目录</a>
 
 在使用SpringBoot开发中需要将一些配置参数放在yml文件中定义，再通过Java类来引入这些配置参数
@@ -5343,7 +6006,7 @@ properties =
 　　　])
 ```
 
-#### 1.7.5.4. 使用随机数
+#### 1.12.5.4. 使用随机数
 
 <a href="#menu" style="float:right">目录</a>
 
@@ -5357,13 +6020,13 @@ properties =
 |${random.int(10)}	|取得10以内的随机数
 |${random.int[10,20]}	|取得10~20的随机数
 
-#### 1.7.5.5. 从命令行指定参数
+#### 1.12.5.5. 从命令行指定参数
 
 ```
 java -jar xx.jar --server.port=8001
 ```
 
-#### 1.7.5.6. 配置日志
+#### 1.12.5.6. 配置日志
 
 默认情况下， Spring Boot会用Logback（ http://logback.qos.ch）来记录日志，并用INFO级别输出到控制台
 
@@ -5403,7 +6066,7 @@ logging.pattern.file= # Appender pattern for output to a file. Supported only wi
 logging.pattern.level=%5p # Appender pattern for log level. Supported only with the default Logbacksetup.
 logging.register-shutdown-hook=false # Register a shutdown hook for the logging system when it is initialized.
 ```
-### 1.7.6. 启动类 @SpringBootApplication 注解 
+### 1.12.6. 启动类 @SpringBootApplication 注解 
 <a href="#menu" style="float:right">目录</a>
 
 ```java
@@ -5470,14 +6133,14 @@ public @interface SpringBootApplication {
 
 从上面可以看到@SpringBootApplication是一个组合注解，用于快捷配置启动类。由@SpringBootConfiguration和@EnableAutoConfiguration以及@ComponentScan组合而成.
 
-#### 1.7.6.1. @Inherited 注解
+#### 1.12.6.1. @Inherited 注解
 关于java中元注解Inherited 的使用说明
 
 首先解释下元注解，就是用来中声明注解类型时需要使用到的注解。
 
 Inherited作用是，使用此注解声明出来的自定义注解，在使用此自定义注解时，如果注解在类上面时，子类会自动继承此注解，否则的话，子类不会继承此注解。这里一定要记住，使用Inherited声明出来的注解，只有在类上使用时才会有效，对方法，属性等其他无效。
 
-#### 1.7.6.2. @SpringBootConfiguration
+#### 1.12.6.2. @SpringBootConfiguration
 ```java
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -5494,7 +6157,7 @@ public @interface SpringBootConfiguration {
 
 
 
-#### 1.7.6.3. @EnableAutoConfiguration
+#### 1.12.6.3. @EnableAutoConfiguration
 ```java
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -5526,7 +6189,7 @@ SpringFactoriesLoader属于Spring框架私有的一种扩展方案，其主要�
 
 所以，@EnableAutoConfiguration自动配置的魔法骑士就变成了：从classpath中搜寻所有的META-INF/spring.factories配置文件，并将其中org.springframework.boot.autoconfigure.EnableutoConfiguration对应的配置项通过反射（Java Refletion）实例化为对应的标注了@Configuration的JavaConfig形式的IoC容器配置类，然后汇总为一个并加载到IoC容器。
 
-#### 1.7.6.4. @ComponentScan
+#### 1.12.6.4. @ComponentScan
 ```java
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
@@ -5593,7 +6256,7 @@ public @interface ComponentScan {
 * scopeResolver：用于解决检测到的组件的范围。
 * useDefaultFilters：指示是否自动检测类的注释 
 
-### 1.7.7. Spring Boot Starter
+### 1.12.7. Spring Boot Starter
 <a href="#menu" style="float:right">目录</a>
 
 Starter是Spring Boot中的一个非常重要的概念，Starter相当于模块，它能将模块所需的依赖整合起来并对模块内的Bean根据环境（ 条件）进行自动配��。使用者只需要依赖相应功能的Starter，无需做过多的配置和依赖，Spring Boot就能自动扫描并加载相应的模块
@@ -5606,7 +6269,7 @@ Starter是Spring Boot中的一个非常重要的概念，Starter相当于模块�
 例如，在Maven的依赖中加入spring-boot-starter-web就能使项目支持Spring MVC，并且Spring Boot还为我们做了很多默认配置，无需再依赖spring-web、spring-webmvc等相关包及做相关配置就能够立即使用起来
 
 
-#### 1.7.7.1. 常用的Starter
+#### 1.12.7.1. 常用的Starter
 <a href="#menu" style="float:right">目录</a>
 
 ```
@@ -5618,7 +6281,7 @@ spring-boot-starter-data-jpa
 spring-boot-starter-web
 spring-boot-starter-redis
 ```
-#### 1.7.7.2. 创建自己的Starter
+#### 1.12.7.2. 创建自己的Starter
 <a href="#menu" style="float:right">目录</a>
 
 * 步骤
@@ -5685,7 +6348,7 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=xx.xx.xx.XxxConfi
 
 
 
-#### 1.7.7.3. Starter原理
+#### 1.12.7.3. Starter原理
 <a href="#menu" style="float:right">目录</a>
 
 在Spring Boot中有一种非常解耦的扩展机制：Spring Factories。这种扩展机制实际上是仿照Java中的SPI扩展机制来实现的。
@@ -5771,9 +6434,9 @@ com.xxx.interface=com.xxx.classname
 
 
 
-### 1.7.8. Actuator 的端点
+### 1.12.8. Actuator 的端点
 
-#### 1.7.8.1. 揭秘 Actuator 的端点
+#### 1.12.8.1. 揭秘 Actuator 的端点
 <a href="#menu" style="float:right">目录</a>
 
 Spring Boot Actuator的关键特性是在应用程序里提供众多Web端点，通过它们了解应用程序运行时的内部状况。有了Actuator，你可以知道Bean在Spring应用程序上下文里是如何组装在一起的，掌握应用程序可以获取的环境属性信息，获取运行时度量信息的快照
@@ -5865,7 +6528,7 @@ management.endpoints.web.exposure.exclude= # Endpoint IDs that should be exclude
 management.endpoints.web.exposure.include=*
 ```
 
-#### 1.7.8.2. 自定义监控
+#### 1.12.8.2. 自定义监控
 <a href="#menu" style="float:right">目录</a>
 
 * @Endpoint(id="test") 指定端点的名称,id开头必须是小写,此注解必须
@@ -5894,7 +6557,7 @@ public class MyActuator {
 ```
 
 
-### 1.7.9. Spring Boot 项目发布
+### 1.12.9. Spring Boot 项目发布
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -5910,7 +6573,7 @@ public class MyActuator {
     * 通过Servlet容器启动，如Tomcat、Jetty等(打包成war)。
 
 
-### 1.7.10. Maven打包
+### 1.12.10. Maven打包
 
 **打包方式配置**
 
@@ -5976,11 +6639,11 @@ mvn  spring-boot:run -Dspring-boot.run.profiles=xxx
 * 不推荐用war，因为springboot适合前后端分离，打成jar进行部署更合适。
 
 
-### 1.7.11. Spring Boot原理分析
+### 1.12.11. Spring Boot原理分析
 <a href="#menu" style="float:right">目录</a>
 
 
-#### 1.7.11.1. 启动流程分析
+#### 1.12.11.1. 启动流程分析
 <a href="#menu" style="float:right">目录</a>
 
 1.  如果我们使用的是SpringApplication的静态run方法，那么，这个方法里面首先要创建一个SpringApplication对象实例，然后调用这个创建好的SpringApplication的实例方法。在SpringApplication实例初始化的时候，它会提前做几件事情：
@@ -5991,7 +6654,7 @@ mvn  spring-boot:run -Dspring-boot.run.profiles=xxx
 * 推断并设置main方法的定义类。
 
 
-##### 1.7.11.1.1. 创建SpringApplication对象
+##### 1.12.11.1.1. 创建SpringApplication对象
 <a href="#menu" style="float:right">目录</a>
 
 **main方法启动**
@@ -6186,7 +6849,7 @@ private Class<?> deduceMainApplicationClass() {
 ```
 上面看完了构造方法后，已经初始化了一个 SpringApplication 对象，接下来调用其 run 方法
 
-##### 1.7.11.1.2. 执行Run方法
+##### 1.12.11.1.2. 执行Run方法
 <a href="#menu" style="float:right">目录</a>
 
 ```java
@@ -6323,9 +6986,9 @@ public void refresh() throws BeansException, IllegalStateException {
         }
     }
 ```
-### 1.7.12. 种保护 Spring Boot 应用的绝佳方法
+### 1.12.12. 种保护 Spring Boot 应用的绝佳方法
 
-#### 1.7.12.1. 在生产中使用HTTPS
+#### 1.12.12.1. 在生产中使用HTTPS
 
 传输层安全性（TLS）是HTTPS的官方名称，你可能听说过它称为SSL（安全套接字层），SSL是已弃用的名称，TLS是一种加密协议，可通过计算机网络提供安全通信。其主要目标是确保计算机应用程序之间的隐私和数据完整性。
 
@@ -6349,7 +7012,7 @@ public  class  WebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter
 ```
 另一个重要的事情是使用HTTP严格传输安全性（HSTS）。HSTS是一种Web安全策略机制，可以保护网站免受协议降级攻击和cookie劫持。服务器使用名为Strict-Transport-Security的响应头字段将HSTS策略传送到浏览器。Spring Security默认发送此标头，以避免在开始时出现不必要的HTTP跃点，点击这里一分钟开启Tomcat https支持。
 
-#### 1.7.12.2. 使用Snyk检查你的依赖关系
+#### 1.12.12.2. 使用Snyk检查你的依赖关系
 你很可能不知道应用程序使用了多少直接依赖项，这通常是正确的，尽管依赖性构成了整个应用程序的大部分。攻击者越来越多地针对开源依赖项，因为它们的重用为恶意黑客提供了许多受害者，确保应用程序的整个依赖关系树中没有已知的漏洞非常重要。
 
 Snyk测试你的应用程序构建包，标记那些已知漏洞的依赖项。它在仪表板在应用程序中使用的软件包中存在的漏洞列表。
@@ -6362,14 +7025,14 @@ Snyk可通过Web UI和CLI获得，因此您可以轻松地将其与CI环境集�
 
 你可以免费使用Snyk进行开源项目或使用有限数量的私有项目。
 
-#### 1.7.12.3. 升级到最新版本
+#### 1.12.12.3. 升级到最新版本
 定期升级应用程序中的依赖项有多种原因。安全性是让您有升级动力的最重要原因之一。该start.spring.io起始页面采用了最新的春季版本的软件包，以及依赖关系，在可能的情况。
 
 基础架构升级通常不如依赖项升级具有破坏性，因为库作者对向后兼容性和版本之间的行为更改的敏感性各不相同。话虽如此，当你在配置中发现安全漏洞时，您有三种选择：升级，修补程序或忽略。
 
 在对应用程序进行必要的更改以使用较新版本之后，就应用程序的整体运行状况而言，升级是最安全的。
 
-#### 1.7.12.4. 启用CSRF保护
+#### 1.12.12.4. 启用CSRF保护
 跨站点请求伪造(Cross-Site Request Forgery )是一种攻击，强制用户在他们当前登录的应用程序中执行不需要的操作。如果用户是普通用户，一个成功攻击可能涉及请求的状态更改，如转移资金或更改其电子邮件地址，如果用户具有提升管理员的权限，则CSRF攻击可能会危及整个应用程序。
 
 Spring Security具有出色的CSRF支持，如果您正在使用Spring MVC的< form:form>标签或Thymeleaf @EnableWebSecurity，默认情况下处于启用状态，CSRF令牌将自动添加为隐藏输入字段。
@@ -6387,7 +7050,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 如果你正在使用Angular，这就是你需要做的。如果您使用的是React，则需要读取XSRF-TOKENcookie并将其作为X-XSRF-TOKEN标题发回。
 
 当请求通过HTTPS发生时，Spring Security会自动加入一个secure标识到XSRF-TOKENcookie 。Spring Security对于CSRF cookie不使用SameSite=strict 的标志，但它在使用Spring Session或WebFlux会话处理时会使用，这对会话cookie有意义，因为它有助于识别用户，但是没有为CSRF cookie提供太多价值，因为CSRF令牌也需要在请求中。点击这里了解CSRF更多详情。
-#### 1.7.12.5. 使用内容安全策略防止XSS攻击
+#### 1.12.12.5. 使用内容安全策略防止XSS攻击
 内容安全策略（CSP）是一个增加的安全层，可帮助缓解XSS（跨站点脚本）和数据注入攻击。要启用它，你需要配置应用程序以返回Content-Security-Policy标题。你还可以在HTML页面中<meta http-equiv="Content-Security-Policy">使用标记。
 
 Spring安全性默认提供了许多安全标头：
@@ -6419,7 +7082,7 @@ CSP是防止XSS攻击的良好防御，请记住，打开CSP能让CDN访问许�
 
 你可以在securityheaders.com测试你的CSP标头是否有用。
 
-#### 1.7.12.6. 使用OpenID Connect进行身份验证
+#### 1.12.12.6. 使用OpenID Connect进行身份验证
 OAuth 2.0是行业标准的授权协议。它使用scope来定义授权用户可以执行的操作的权限。但是，OAuth 2.0不是身份验证协议，并且不提供有关经过身份验证的用户的信息。
 
 OpenID Connect（OIDC）是一个OAuth 2.0扩展，提供用户信息，除了访问令牌之外，它还添加了ID令牌，以及/userinfo可以从中获取其他信息的端点，它还添加了发现功能和动态客户端注册的端点。
@@ -6447,7 +7110,7 @@ spring:
 
 你可以使用像Keycloak这样的开源系统来设置自己的OIDC服务器。如果你不想在生产中维护自己的服务器，可以使用Okta的Developer API。
 
-#### 1.7.12.7. 管理密码？使用密码哈希！
+#### 1.12.12.7. 管理密码？使用密码哈希！
 以纯文本格式存储密码是最糟糕的事情之一。幸运的是，Spring Security默认情况下不允许使用纯文本密码。它还附带了一个加密模块，可用于对称加密，生成密钥和密码散列（也就是密码编码）。
 
 PasswordEncoder 是Spring Security中密码哈希的主要接口，如下所示：
@@ -6467,7 +7130,7 @@ Spring Security提供了几种实现，最受欢迎的是BCryptPasswordEncoder�
 
 Spring Security 5.1（即2018年9月下旬）将附带UserDetailsPasswordService API，允许您升级密码存储。
 
-#### 1.7.12.8. 安全地存储秘密
+#### 1.12.12.8. 安全地存储秘密
 应谨慎处理敏感信息，如密码，访问令牌等，你不能以纯文本形式传递，或者如果将它们保存在本地存储中。由于（GitHub）的历史已经一次又一次证明，开发人员并没有仔细考虑如何存储他们的秘密。
 
 一个好的做法是将保密信息存储在保管库中，该保管库可用于存储，提供对应用程序可能使用的服务的访问权限，甚至生成凭据。HashiCorp的Vault使得存储机密变得很轻松，并提供了许多额外的服务。
@@ -6478,7 +7141,7 @@ Spring Security 5.1（即2018年9月下旬）将附带UserDetailsPasswordService
 String password;
 ```
 
-#### 1.7.12.9. 使用OWASP的ZAP测试您的应用程序
+#### 1.12.12.9. 使用OWASP的ZAP测试您的应用程序
 OWASP ZAP安全工具是针对在运行活动的应用程序进行渗透测试的代理。它是一个受欢迎的（超过4k星）免费的开源项目，托管在GitHub上。
 
 OWASP ZAP用于查找漏洞的两种方法是Spider和Active Scan。
@@ -6487,14 +7150,14 @@ Spider工具以URL种子开头，它将访问并解析每个响应，识别超�
 
 Active Scan工具将根据潜在漏洞列表自动测试你选择的目标。它提供了一个报告，显示Web应用程序可被利用的位置以及有关漏洞的详细信息。
 
-#### 1.7.12.10. 让你的安全团队进行代码审查
+#### 1.12.12.10. 让你的安全团队进行代码审查
 代码评审对任何高性能软件开发团队都至关重要。在Okta，我们所有的生产代码和官方开源项目都需要通过我们的专家安全团队进行分析，你的公司可能没有安全专家，但如果你正在处理敏感数据，也许你应该这样做！
 
-### 1.7.13. 项目实践
+### 1.12.13. 项目实践
 <a href="#menu" style="float:right">目录</a>
 
 
-#### 1.7.13.1. 跨域配置
+#### 1.12.13.1. 跨域配置
 <a href="#menu" style="float:right">目录</a>
 
 用于跨域配置
@@ -6556,7 +7219,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 }
 ```
 
-#### 1.7.13.2. 全局异常处理
+#### 1.12.13.2. 全局异常处理
 <a href="#menu" style="float:right">目录</a>
 
 第一种：使用@ControllerAdvice和@ExceptionHandler注解
@@ -6710,12 +7373,12 @@ public class TestController {
 
 
 
-### 1.7.14. 其他一些问题
+### 1.12.14. 其他一些问题
 
-#### 1.7.14.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？
+#### 1.12.14.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？
 可以实现接口 ApplicationRunner 或者 CommandLineRunner，这两个接口实现方式一样，它们都只提供了一个 run 方法
 
-#### 1.7.14.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？
+#### 1.12.14.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？
 这可以使用DEV工具来实现。通过这种依赖关系，您可以节省任何更改，嵌入式tomcat将重新启动。
 
 Spring Boot有一个开发工具（DevTools）模块，它有助于提高开发人员的生产力。Java开发人员面临的一个主要挑战是将文件更改自动部署到服务器并自动重启服务器。
@@ -6732,17 +7395,17 @@ Spring Boot有一个开发工具（DevTools）模块，它有助于提高开发�
 
 ```
 
-#### 1.7.14.3. Spring Boot 有哪几种读取配置的方式？
+#### 1.12.14.3. Spring Boot 有哪几种读取配置的方式？
 Spring Boot 可以通过 @PropertySource,@Value,@Environment, @ConfigurationProperties 来绑定变量，具体请看这篇文章《Spring Boot读取配置的几种方式》。
 
 
-## 1.8. SpringCloud
+## 1.13. SpringCloud
 <a href="#menu" style="float:right">目录</a>
 
-### 1.8.1. 基础知识
+### 1.13.1. 基础知识
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.8.1.1. 微服务概念
+#### 1.13.1.1. 微服务概念
 微服务是系统架构上的一种设计风格， 它的主旨是将一个原本独立的系统拆分成多个小型服务，这些小型服务都在各自独立的进程中运行，服务之间通过基于HTTP的RESTful API进行通信协作。 被拆分成的每一个小型服务都围绕着系统中的某一项或一些耦合度较高的业务功能进行构建， 并且每个服务都维护着自身的数据存储、 业务开发、自动化测试案例以及独立部署机制。 由千有了轻量级的通信协作基础， 所以这些微服务可以使用不同的语言来编写
 
 **微服务主要的优势如下：**
@@ -6775,7 +7438,7 @@ Spring Boot 可以通过 @PropertySource,@Value,@Environment, @ConfigurationProp
 * 轻量级通信原则
 * 微服务粒度，确定好服务边界
 
-#### 1.8.1.2. SpringCloud子项目
+#### 1.13.1.2. SpringCloud子项目
 * SpringCloudConfig: 配置管理工具， 支持使用Git存储 配置内容， 可以使用它实现应用配置的外部化存储， 并支持客户端配置信息刷新、 加密／解密配置内容 等。
 * SpringCloudNetflix: 核心 组件， 对多个Netflix OSS开源套件进行整合。
 * Eureka: 服务治理组件， 包含服务注册中心、 服务注册与发现机制的实现。
@@ -6797,7 +7460,7 @@ Spring Boot 可以通过 @PropertySource,@Value,@Environment, @ConfigurationProp
 * Spring Cloud Starters: Spring Cloud 的基础组件， 它是基于 Spring Boot 风格项目的基础依赖模块。
 * Spring Cloud CLI: 用于在 Groovy 中快速创建 Spring Cloud 应用的 Spring Boot CLI插件。
 
-#### 1.8.1.3. 版本说明
+#### 1.13.1.3. 版本说明
 
 由于 Spring Cloud 不像 Spring 社区其他一些项目那样相对独立， 它是一个拥有诸多子项目的大型综合项目， 可以说是对微服务架构解决方案的综合套件组合， 其包含的各个子项目也都独立进行着内容更新与迭代，各自都维护着自己的发布版本号。因此每一 个Spring Cloud 的版本都会包含多个不同版本的子项目， 为了管理每个版本的子项目清单， 避免Spring Cloud的版本号与其子项目的版本号相混淆，没有采用版本号的方式，而是通过命名的方式。使用单词而不是字母主要是因为:设计的目的是为了更好的管理每个SpringCloud子项目的清单，避免自己的版本号与子项目的版本号混淆.
 
@@ -6846,10 +7509,10 @@ pom文件中指定cloud的版本，便可以不用指定各个子项目依赖的
 * Dalston:1.5.x
 
 
-### 1.8.2. 服务治理Eureka
+### 1.13.2. 服务治理Eureka
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.8.2.1. 基本使用
+#### 1.13.2.1. 基本使用
 
 **注册中心**
 
@@ -6958,7 +7621,7 @@ eureka:
       defaultZone: http://user:123456@localhost:8001/eureka/
 ```
 
-#### 1.8.2.2. 高可用注册中心
+#### 1.13.2.2. 高可用注册中心
 
 * 注册中心可以集群部署，提高高可用
 
@@ -6980,10 +7643,10 @@ eureka:
 ```
 EurekaServer的高可用实际上就是将自己作为服务向其他服务注册中心注册自己， 这样就可以形成一组互相注册的服务注册中心， 以实现服务清单的互相同步， 达到高可用的效果
 
-#### 1.8.2.3. 原理说明
+#### 1.13.2.3. 原理说明
 <a href="#menu" style="float:right">目录</a>
 
-##### 1.8.2.3.1. 基础模块说明
+##### 1.13.2.3.1. 基础模块说明
 <a href="#menu" style="float:right">目录</a>
 
 **基础架构**
@@ -7034,7 +7697,7 @@ EurekaServer的高可用实际上就是将自己作为服务向其他服务注�
         * eureka.server.enableself-preservation=true,默认使能
 
 
-##### 1.8.2.3.2. Region,Zone
+##### 1.13.2.3.2. Region,Zone
 **背景**
 用户量比较大或者用户地理位置分布范围很广的项目，一般都会有多个机房。这个时候如果上线springCloud服务的话，我们希望一个机房内的服务优先调用同一个机房内的服务，当同一个机房的服务不可用的时候，再去调用其它机房的服务，以达到减少延时的作用。
 
@@ -7275,7 +7938,7 @@ eureka.instance.lease-expiration-duration-in-seconds: 90
 
 也就是说，当一个服务异常down掉后，90s之后注册中心才会知道这个服务不可用了。在此期间，依旧会把这个服务当成正常服务。ribbon调用仍会把请求转发到这个服务上。为了避免这段期间出现无法提供服务的情况，要开启ribbon的重试功能，去进行其它服务提供者的重试。
 
-##### 1.8.2.3.3. 源码分析
+##### 1.13.2.3.3. 源码分析
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -7284,7 +7947,7 @@ eureka.instance.lease-expiration-duration-in-seconds: 90
 * 在应用主类中配置了@EnableDiscoveryClient注解。
 * 在app让cation.yml 中用 eureka.client.serviceUrl.defaultZone参数指定了服务注册中心的位置。
 
-###### 1.8.2.3.3.1. EnableDiscoveryClient注解说明
+###### 1.13.2.3.3.1. EnableDiscoveryClient注解说明
 <a href="#menu" style="float:right">目录</a>
 
 ```java
@@ -7337,21 +8000,21 @@ public class EnableDiscoveryClientImportSelector extends SpringFactoryImportSele
 
 ```
 
-###### 1.8.2.3.3.2. 服务注册
+###### 1.13.2.3.3.2. 服务注册
 <a href="#menu" style="float:right">目录</a>
 
 
-###### 1.8.2.3.3.3. 服务续约
+###### 1.13.2.3.3.3. 服务续约
 <a href="#menu" style="float:right">目录</a>
 
 
 
 
-#### 1.8.2.4. 更多配置说明
+#### 1.13.2.4. 更多配置说明
 <a href="#menu" style="float:right">目录</a>
 
 
-##### 1.8.2.4.1. 服务注册类配置
+##### 1.13.2.4.1. 服务注册类配置
 
 关于服务注册类的配置信息， 我们可以通过查看 org.springframework.cloud.netflix.eureka.EurekaClien.ConfigBean 的源码来获得比官方文档中更 为详尽的内容
 
@@ -7563,7 +8226,7 @@ public class EurekaClientConfigBean implements EurekaClientConfig, Ordered {
 |fetchRegistry| 是否从Eureka服务端获取注册信息|true
 
 
-##### 1.8.2.4.2. 服务实例类配置
+##### 1.13.2.4.2. 服务实例类配置
 
 关千服务实例类的配置信息， 我们可以通过查看org.springframework.cloud.netflix.eureka.EurekainstanceConfigBean的源码来获取详细内容， 这些配置信息都以eureka.instance为前缀
 
@@ -7753,7 +8416,7 @@ public class EurekaInstanceConfigBean implements CloudEurekaInstanceConfig, Envi
 
 
 
-### 1.8.3. 负载均衡Ribbon
+### 1.13.3. 负载均衡Ribbon
 <a href="#menu" style="float:right">目录</a>
 
 Spring Cloud Ribbon 是一个基于 HTTP 和 TCP 的客户端负载均衡工具，它基于 Netflixribbon 实现。 通过 Spring Cloud 的封装， 可以让我们轻松地将面向服务的 REST 模板请求自动转换成客户端负载均衡的服务调用。 Spring Cloud Ribbon 虽然只是一个工具类框架，它不像服务注册中心、 配置中心、 API 网关那样需要独立部署， 但是它几乎存在于每一个Spring Cloud 构建的微服务和基础设施中。 因为微服务间的调用，API 网关的请求转发等内容实际上都是通过伈bbon 来实现的，包括后续我们将要介绍的 Feign, 它也是基于 Ribbon实现的工具。 所以， 对 Spring Cloud Ribbon 的理解和使用， 对于我们使用 Spring Cloud 来构建微服务非常重要。
@@ -7761,7 +8424,7 @@ Spring Cloud Ribbon 是一个基于 HTTP 和 TCP 的客户端负载均衡工具�
 ribbon底层是基于RestTemplate实现Http请求
 org.springframework.web.client.RestTemplate
 
-#### 1.8.3.1. 基本使用
+#### 1.13.3.1. 基本使用
 <a href="#menu" style="float:right">目录</a>
 
 **引入依赖**
@@ -7811,10 +8474,10 @@ public class RibbonService {
 
 ```
 
-#### 1.8.3.2. 原理说明
+#### 1.13.3.2. 原理说明
 <a href="#menu" style="float:right">目录</a>
 
-##### 1.8.3.2.1. 源码分析
+##### 1.13.3.2.1. 源码分析
 
 **LoadBalancerAutoConfiguration配置类**
 
@@ -8169,7 +8832,7 @@ public <T> T execute(String serviceId, ServiceInstance serviceInstance, LoadBala
 
 ```
 
-##### 1.8.3.2.2. 负载均衡器
+##### 1.13.3.2.2. 负载均衡器
 
 ![负载均衡实现类](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/loadbalance-extends.png)
 
@@ -8240,7 +8903,7 @@ DynamicServerListLoadBalancer 类继承于 BaseLoadBalancer 类， 它是对基�
 **ZoneAwareloadBalancer**
 ZoneAwareLoadBalancer 负载均衡器是对 DynamicServerListLoadBalancer的扩展。在 DynamicServerLis七LoadBalancer 中， 我们可以看到它并没有重写选择具体服务实例的 chooseServer 函数， 所以它依然会采用在 BaseLoadBalancer 中实现的算法。 使用 RoundRobinRule 规则， 以线性轮询的方式来选择调用的服务实例， 该算法实现简单并没有区域 (Zone) 的概念， 所以它会把所有实例视为一个 Zone下的节点来看待， 这样就会周期性地产生跨区域 (Zone) 访问的情况， 由于跨区域会产生更高的延迟，这些实例主要以防止区域性故障实现高可用为目的而不能作为常规访问的实例， 所以在多区域部署的清况下会有一定的性能问题， 而该负载均衡器则 可以避免这样的问题.
 
-##### 1.8.3.2.3. 负载均衡策略
+##### 1.13.3.2.3. 负载均衡策略
 <a href="#menu" style="float:right">目录</a>
 
 * IRule
@@ -8777,7 +9440,7 @@ public class RetryRule extends AbstractLoadBalancerRule {
 
 ```
 
-##### 1.8.3.2.4. 配置详解 
+##### 1.13.3.2.4. 配置详解 
 
 **Ribbon相关的配置**
 
@@ -9006,7 +9669,7 @@ public class RibbonConfiguration
 }
 ```
 
-#### 1.8.3.3. ribbon配置
+#### 1.13.3.3. ribbon配置
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -9014,7 +9677,7 @@ public class RibbonConfiguration
 * 全局配置的方式很简单， 只需使用 ribbon.< key>=< value>格式进行配置即可。其中， < key>代表了 Ribbon 客户端配置的参数 名， < value>则代表了 对应参数的值。 比如， 我们可以像下面这样全局配置Ribbon创建连接的超时时间：ribbon.ConnectTimeout=250.全局配置可以作为默认值进行设置， 当指定客户端配置 了相应key 的值时， 将覆盖全局配置的内容。
 * 指定客户端的配置方式 采用 < client> .ribbon.< key>=< value>的格式进行配置。 其中， < key>和< value>的含义同全局配置相同， 而 < client>代表了客户端的名称， 如上文中我们在＠RibbonClient中指定的名称， 也可以将它理解 为是一个服务名。 为了方便理解这种 配置方式， 我们举一个具体的例子： 假设， 有一个服务消费者通过RestTemplate来访问hello-service 服务的/hello 接口，这时 我 们 会这 样调用 restTemplate.getForEntity("http: //helloservice/hello", String.class) .getBody();。 如果没有服务治理框架的帮助，我们需要为该客户端指定 具体的实例清单，可以指定服务名来做详细的配置，具体如下：hello-service.ribbon.listOfServers=localhost:8001,localhost:8002, localhost:8003对于Ribbon .
 
-##### 1.8.3.3.1. 配置参数说明
+##### 1.13.3.3.1. 配置参数说明
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -9131,7 +9794,7 @@ public abstract class CommonClientConfigKey<T> implements IClientConfigKey<T> {
 
 ```
 
-##### 1.8.3.3.2. 重试机制
+##### 1.13.3.3.2. 重试机制
 <a href="#menu" style="float:right">目录</a>
 
 由于Spring Cloud Eureka实现的服务治理机制强调了CAP原理中的AP, 即可用性与可靠性，它与Zoo Keeper这类强调CP( 一致性、可靠性）的服务治理框架最大的区别就是，Eureka为了实现更高的服务可用性， 牺牲了一定的一致性， 在极端情况下它宁愿接受故障实例也不要丢掉 “ 健康 ” 实例， 比如， 当服务注册中心的网络发生故障断开时， 由于所有的服务实例无法维持续约心跳， 在强调 AP的服务治理中将会把所有服务实例都剔除掉，而Eureka则会因为超过85%的实例丢失心跳而会触发保护机制，注册中心将会保留此时的所有节点， 以实现服务间依然可以进行互相调用的场景， 即使其中有部分故障节点， 但这样做可以继续保障大多数的服务正常消费。
@@ -9157,10 +9820,10 @@ hello-service.ribbon.MaxAutoRetries=l
 根据如上配置， 当访问到故障请求的时候， 它会再尝试访问 一次当前实例（次数由MaxAutoRetries配置）， 如果不行， 就换 一个实例进行访问， 如果还是不行， 再换 一次实例访问（更换次数由MaxAutoRe红iesNextServer配置）， 如果依然不行， 返回失败信息
 
 
-### 1.8.4. 声明式服务调用feign
+### 1.13.4. 声明式服务调用feign
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.8.4.1. 使用案例
+#### 1.13.4.1. 使用案例
 
 引入依赖，因为feign底层是依赖ribbon,因此也要引入该包
 ```xml
@@ -9241,10 +9904,10 @@ public interface DemoFeign {
 }
 ```
 
-#### 1.8.4.2. 实现原理
+#### 1.13.4.2. 实现原理
 <a href="#menu" style="float:right">目录</a>
 
-##### 1.8.4.2.1. 配置类
+##### 1.13.4.2.1. 配置类
 <a href="#menu" style="float:right">目录</a>
 
 ```java
@@ -9400,7 +10063,7 @@ public class FeignClientsConfiguration {
 
 ```
 
-##### 1.8.4.2.2. 启动注解说明
+##### 1.13.4.2.2. 启动注解说明
 <a href="#menu" style="float:right">目录</a>
 
 feign是一个伪客户端，即它不做任何的请求处理。Feign通过处理注解生成request，从而实现简化HTTP API开发的目的，即开发人员可以使用注解的方式定制request api模板，在发送http request请求之前，feign通过处理注解的方式替换掉request模板中的参数，这种实现方式显得更为直接、可理解。
@@ -9434,7 +10097,7 @@ public @interface FeignClient {
 ```
 
 
-##### 1.8.4.2.3. 调用实现原理
+##### 1.13.4.2.3. 调用实现原理
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -9697,7 +10360,7 @@ final class SynchronousMethodHandler implements MethodHandler {
 
 也就是说Feign的调用,中间生成了RequestTemplate对象,调用RequestTemplate的相关方法后,将会通过ribbon相关类来最终实现负载均衡,发送请求处理响应等操作.所以Feign本质上还是使用ribbon来实现.
 
-##### 1.8.4.2.4. 总结
+##### 1.13.4.2.4. 总结
 
 总到来说，Feign的源码实现的过程如下：
 * 首先通过@EnableFeignCleints注解开启FeignCleint
@@ -9709,13 +10372,13 @@ final class SynchronousMethodHandler implements MethodHandler {
 * 最后Client被封装到LoadBalanceClient类，这个类结合类Ribbon做到了负载均衡。
 
 
-### 1.8.5. 服务容错保护 Hystrix
+### 1.13.5. 服务容错保护 Hystrix
 <a href="#menu" style="float:right">目录</a>
 
 
 
 
-#### 1.8.5.1. Ribbon中使用Hystrix
+#### 1.13.5.1. Ribbon中使用Hystrix
 <a href="#menu" style="float:right">目录</a>
 
 引入依赖
@@ -9766,7 +10429,7 @@ public class RibbonService {
 }
 ```
 
-#### 1.8.5.2. Feign中使用Hystrix
+#### 1.13.5.2. Feign中使用Hystrix
 <a href="#menu" style="float:right">目录</a>
 
 由 于 Feign 的起步依赖中已经引入了 Hystrix 的依赖，所以在 Feign 中使用 Hystrix 不需要引入任何的依赖 。 只需要在 eureka-feign”client 工程的配置文件 application.yml 中配置开启Hystrix 的功能，配置文件 application.yml 中加以下配置 ：
@@ -9805,10 +10468,10 @@ class DemoFeignHystrix implements DemoFeign{
 
 
 
-#### 1.8.5.3. Hystrix详解
+#### 1.13.5.3. Hystrix详解
 <a href="#menu" style="float:right">目录</a>
 
-##### 1.8.5.3.1. 背景
+##### 1.13.5.3.1. 背景
 <a href="#menu" style="float:right">目录</a>
 
 分布式系统环境下，服务间类似依赖非常常见，一个业务调用通常依赖多个基础服务。如下图，对于同步调用，当库存服务不可用时，商品服务请求线程被阻塞，当有大批量请求调用库存服务时，最终可能导致整个商品服务资源耗尽，无法继续对外提供服务。并且这种不可用可能沿请求调用链向上传递，这种现象被称为雪崩效应。
@@ -9833,7 +10496,7 @@ class DemoFeignHystrix implements DemoFeign{
 
 
 
-##### 1.8.5.3.2. 基本认识
+##### 1.13.5.3.2. 基本认识
 <a href="#menu" style="float:right">目录</a>
 
 **Hystrix是什么**
@@ -9896,7 +10559,7 @@ Hystrix被设计的目标是：
 
 [官方wiki](https://github.com/Netflix/Hystrix/wiki)
 
-##### 1.8.5.3.3. hystrix适用场景
+##### 1.13.5.3.3. hystrix适用场景
 <a href="#menu" style="float:right">目录</a>
 
 **核心无降级业务**
@@ -9915,7 +10578,7 @@ hystrix可以有丰富的配置，其原理是：在一个窗口时间内针对�
 并不是每一个业务都需要开启hystrix的支持
 在启用hystrix的情况下，对于整个分布式服务集群来讲，并不能完全避免服务雪崩，仅能保证调用方服务在发生网络雪崩发时候自己不被拖死，减少雪崩的影响范围。
 
-##### 1.8.5.3.4. 注解说明
+##### 1.13.5.3.4. 注解说明
 <a href="#menu" style="float:right">目录</a>
 
 通过在方法上添加 @HystrixCommand 注解并配置注解的参数来实现配置，但有的时候一个类里面会有多个 Hystrix 方法，每个方法都是类似配置的话会冗余很多代码，这时候我们可以在类上使用 @DefaultProperties 注解来给整个类的 Hystrix 方法设置一个默认值
@@ -10034,10 +10697,10 @@ Hystrix 的命令属性是由 @HystrixProperty 注解数组构成的，HystrixPr
     * 如果 queue 长度无法存储请求，则会创建新线程执行直到达到 maximumSize 最大线程数，多出核心线程数的线程会在空闲时回收。
 
 
-##### 1.8.5.3.5. 如何使用
+##### 1.13.5.3.5. 如何使用
 <a href="#menu" style="float:right">目录</a>
 
-###### 1.8.5.3.5.1. 基本的实例
+###### 1.13.5.3.5.1. 基本的实例
 <a href="#menu" style="float:right">目录</a>
 
 **引入依赖**
@@ -10510,7 +11173,7 @@ public class ObservableUserServiceTest {
 
 
 
-###### 1.8.5.3.5.2. 同步执行
+###### 1.13.5.3.5.2. 同步执行
 <a href="#menu" style="float:right">目录</a>
 
 HystrixCommand
@@ -10526,7 +11189,7 @@ Observable<String> observable = new CommandHelloWorld("lgj").observe();
 observable.toBlocking().toFuture().get();
 ```
 
-###### 1.8.5.3.5.3. 异步执行
+###### 1.13.5.3.5.3. 异步执行
 <a href="#menu" style="float:right">目录</a>
 
 HystrixCommand
@@ -10543,7 +11206,7 @@ Observable<String> observable = new CommandHelloWorld("lgj").observe();
 observable.toBlocking().toFuture().get();
 ```
 
-###### 1.8.5.3.5.4. Reactive Execution
+###### 1.13.5.3.5.4. Reactive Execution
 <a href="#menu" style="float:right">目录</a>
 
 You can also observe the results of a HystrixCommand as an Observable by using one of the following methods:
@@ -10625,7 +11288,7 @@ Using Java 8 lambdas/closures is more compact; it would look like this:
 ```
 More information about Observable can be found at http://reactivex.io/documentation/observable.html
 
-###### 1.8.5.3.5.5. Reactive Commands
+###### 1.13.5.3.5.5. Reactive Commands
 <a href="#menu" style="float:right">目录</a>
 
 Rather than converting a HystrixCommand into an Observable using the methods described above, you can also create a HystrixObservableCommand that is a specialized version of HystrixCommand meant to wrap Observables. A HystrixObservableCommand is capable of wrapping Observables that emit multiple items, whereas ordinary HystrixCommands, even when converted into Observables, will never emit more than one item.
@@ -10636,7 +11299,7 @@ To obtain an Observable representation of the HystrixObservableCommand, use one 
 
 observe() — returns a “hot” Observable that subscribes to the underlying Observable immediately, though because it is filtered through a ReplaySubject you are not in danger of losing any items that it emits before you have a chance to subscribe to the resulting Observable
 toObservable() — returns a “cold” Observable that won’t subscribe to the underlying Observable until you subscribe to the resulting Observable
-###### 1.8.5.3.5.6. Fallback
+###### 1.13.5.3.5.6. Fallback
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -10686,7 +11349,7 @@ Internally, Hystrix uses the RxJava onErrorResumeNext operator to seamlessly tra
 Sequence Diagram
 @adrianb11 has kindly provided a sequence diagram demonstrating how a timeout then fallback works.
 
-###### 1.8.5.3.5.7. Error Propagation
+###### 1.13.5.3.5.7. Error Propagation
 <a href="#menu" style="float:right">目录</a>
 
 All exceptions thrown from the run() method except for HystrixBadRequestException count as failures and trigger getFallback() and circuit-breaker logic.
@@ -10704,7 +11367,7 @@ SHORT_CIRCUITED	HystrixRuntimeException	j.l.RuntimeException	YES
 THREAD_POOL_REJECTED	HystrixRuntimeException	j.u.c.RejectedExecutionException	YES
 SEMAPHORE_REJECTED	HystrixRuntimeException	j.l.RuntimeException	YES
 BAD_REQUEST	HystrixBadRequestException	underlying exception (user-controlled)	NO
-###### 1.8.5.3.5.8. Command Name
+###### 1.13.5.3.5.8. Command Name
 <a href="#menu" style="float:right">目录</a>
 
 A command name is, by default, derived from the class name:
@@ -10732,7 +11395,7 @@ To save a Setter allocation per command allocation, you may also cache the Sette
 HystrixCommandKey is an interface and can be implemented as an enum or regular class, but it also has the helper Factory class to construct and intern instances such as:
 
 HystrixCommandKey.Factory.asKey("HelloWorld")
-###### 1.8.5.3.5.9. Command Group
+###### 1.13.5.3.5.9. Command Group
 <a href="#menu" style="float:right">目录</a>
 
 Hystrix uses the command group key to group together commands such as for reporting, alerting, dashboards, or team/library ownership.
@@ -10742,7 +11405,7 @@ By default Hystrix uses this to define the command thread-pool unless a separate
 HystrixCommandGroupKey is an interface and can be implemented as an enum or regular class, but it also has the helper Factory class to construct and intern instances such as:
 
 HystrixCommandGroupKey.Factory.asKey("ExampleGroup")
-###### 1.8.5.3.5.10. Command Thread-Pool
+###### 1.13.5.3.5.10. Command Thread-Pool
 <a href="#menu" style="float:right">目录</a>
 
 The thread-pool key represents a HystrixThreadPool for monitoring, metrics publishing, caching, and other such uses. A HystrixCommand is associated with a single HystrixThreadPool as retrieved by the HystrixThreadPoolKey injected into it, or it defaults to one created using the HystrixCommandGroupKey it is created with.
@@ -10771,7 +11434,7 @@ If command A becomes latent and saturates its thread-pool it should not prevent 
 
 Thus, we logically want these commands grouped together but want them isolated differently and would use HystrixThreadPoolKey to give each of them a different thread-pool.
 
-###### 1.8.5.3.5.11. Request Cache
+###### 1.13.5.3.5.11. Request Cache
 <a href="#menu" style="float:right">目录</a>
 
 You enable request caching by implementing the getCacheKey() method on a HystrixCommand or HystrixObservableCommand object as follows:
@@ -10851,7 +11514,7 @@ public void testWithCacheHits() {
     }
 }
 ```
-###### 1.8.5.3.5.12. Request Collapsing
+###### 1.13.5.3.5.12. Request Collapsing
 <a href="#menu" style="float:right">目录</a>
 
 Request collapsing enables multiple requests to be batched into a single HystrixCommand instance execution.
@@ -10944,7 +11607,7 @@ public void testCollapser() throws Exception {
     }
 }
 ```
-###### 1.8.5.3.5.13. Request Context Setup
+###### 1.13.5.3.5.13. Request Context Setup
 <a href="#menu" style="float:right">目录</a>
 
 To use request-scoped features (request caching, request collapsing, request log) you must manage the HystrixRequestContext lifecycle (or implement an alternative HystrixConcurrencyStrategy).
@@ -10982,7 +11645,7 @@ You could enable the filter for all incoming traffic by adding a section to the 
       <url-pattern>/*</url-pattern>
    </filter-mapping>
 ```
-###### 1.8.5.3.5.14. Common Patterns
+###### 1.13.5.3.5.14. Common Patterns
 <a href="#menu" style="float:right">目录</a>
 
 In the following sections are common uses and patterns of use for HystrixCommand and HystrixObservableCommand.
@@ -11038,7 +11701,7 @@ The equivalent Fail-Fast solution for a HystrixObservableCommand would involve o
         }
     }
 ```
-###### 1.8.5.3.5.15. Fail Silent
+###### 1.13.5.3.5.15. Fail Silent
 ]<a href="#menu" style="float:right">目录</a>
 
 Failing silently is the equivalent of returning an empty response or removing functionality. It can be done by returning null, an empty Map, empty List, or other such responses.
@@ -11101,7 +11764,7 @@ The equivalent Fail-Silently solution for a HystrixObservableCommand would invol
         return Observable.empty();
     }
 ```
-###### 1.8.5.3.5.16. Fallback: Static
+###### 1.13.5.3.5.16. Fallback: Static
 <a href="#menu" style="float:right">目录</a>
 
 Fallbacks can return default values statically embedded in code. This doesn’t cause the feature or service to be removed in the way that “fail silent” often does, but instead causes default behavior to occur.
@@ -11121,7 +11784,7 @@ The equivalent Static solution for a HystrixObservableCommand would involve over
         return Observable.just( true );
     }
 ```
-###### 1.8.5.3.5.17. Fallback: Stubbed
+###### 1.13.5.3.5.17. Fallback: Stubbed
 <a href="#menu" style="float:right">目录</a>
 
 You typically use a stubbed fallback when your command returns a compound object containing multiple fields, some of which can be determined from other request state while other fields are set to default values.
@@ -11240,7 +11903,7 @@ protected Observable<Integer> resumeWithFallback() {
     }
 }
 ```
-###### 1.8.5.3.5.18. Fallback: Cache via Network
+###### 1.13.5.3.5.18. Fallback: Cache via Network
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -11309,7 +11972,7 @@ public class CommandWithFallbackViaNetwork extends HystrixCommand<String> {
 }
 ```
 
-###### 1.8.5.3.5.19. Primary + Secondary with Fallback
+###### 1.13.5.3.5.19. Primary + Secondary with Fallback
 <a href="#menu" style="float:right">目录</a>
 
 Some systems have dual-mode behavior — primary and secondary, or primary and failover.
@@ -11442,7 +12105,7 @@ public class CommandFacadeWithPrimarySecondary extends HystrixCommand<String> {
 }
 ```
 
-###### 1.8.5.3.5.20. Client Doesn't Perform Network Access
+###### 1.13.5.3.5.20. Client Doesn't Perform Network Access
 <a href="#menu" style="float:right">目录</a>
 
 When you wrap behavior that does not perform network access, but where latency is a concern or the threading overhead is unacceptable, you can set the executionIsolationStrategy property to ExecutionIsolationStrategy.SEMAPHORE and Hystrix will use semaphore isolation instead.
@@ -11470,7 +12133,7 @@ public class CommandUsingSemaphoreIsolation extends HystrixCommand<String> {
 }
 ```
 
-###### 1.8.5.3.5.21. Get-Set-Get with Request Cache Invalidation
+###### 1.13.5.3.5.21. Get-Set-Get with Request Cache Invalidation
 <a href="#menu" style="float:right">目录</a>
 
 If you are implementing a Get-Set-Get use case where the Get receives enough traffic that request caching is desired but sometimes a Set occurs on another command that should invalidate the cache within the same request, you can invalidate the cache by calling HystrixRequestCache.clear().
@@ -11564,7 +12227,7 @@ public void getGetSetGet() {
 }
 }
 ```
-###### 1.8.5.3.5.22. Get-Set-Get with Request Cache Invalidation
+###### 1.13.5.3.5.22. Get-Set-Get with Request Cache Invalidation
 <a href="#menu" style="float:right">目录</a>
 
 Migrating a Library to Hystrix
@@ -11582,35 +12245,35 @@ After migrating, users of a library will be able to access the HystrixCommands d
 
 
 
-##### 1.8.5.3.6. 工作原理
+##### 1.13.5.3.6. 工作原理
 <a href="#menu" style="float:right">目录</a>
 
 
 
 
-#### 1.8.5.4. Spring Cloud 中使用Hystrix原理
+#### 1.13.5.4. Spring Cloud 中使用Hystrix原理
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.8.5.5. Hystrix监控
+#### 1.13.5.5. Hystrix监控
 
 
-### 1.8.6. API网关服务
+### 1.13.6. API网关服务
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.8.6.1. zuul
+#### 1.13.6.1. zuul
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.8.6.2. GateWay
+#### 1.13.6.2. GateWay
 <a href="#menu" style="float:right">目录</a>
 
 
 
-### 1.8.7. 分布式配置中心Config
+### 1.13.7. 分布式配置中心Config
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.8.7.1. 基本使用
+#### 1.13.7.1. 基本使用
 
-##### 1.8.7.1.1. 配置中心
+##### 1.13.7.1.1. 配置中心
 
 **引入依赖**
 ```xml
@@ -11712,7 +12375,7 @@ server:
   port: 8004
 ```
 
-##### 1.8.7.1.2. bootstrap.yml与application.yml区别
+##### 1.13.7.1.2. bootstrap.yml与application.yml区别
 说明：其实yml和properties文件是一样的原理，主要是说明application和bootstrap的加载顺序。且一个项目上要么yml或者properties，二选一的存在
 
 **执行顺序**
@@ -11836,7 +12499,7 @@ org.springframework.cloud.bootstrap.BootstrapConfiguration=sample.custom.CustomP
 那么，”customProperty“的PropertySource将会被包含到应用。
 
 
-##### 1.8.7.1.3. 客户端配置
+##### 1.13.7.1.3. 客户端配置
 
 **引入依赖**
 
@@ -11907,7 +12570,7 @@ public class ConfigController {
 }
 ```
 
-##### 1.8.7.1.4. 刷新配置
+##### 1.13.7.1.4. 刷新配置
 有一种场景需要更改配置而不需要重启服务。
 
 * 客户端需要进行相关的配置
@@ -11935,13 +12598,13 @@ curl -X POST http://localhost:8004/actuator/refresh
 ```
 
 
-#### 1.8.7.2. 原理说明
+#### 1.13.7.2. 原理说明
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.8.7.3. 更多使用方式
+#### 1.13.7.3. 更多使用方式
 <a href="#menu" style="float:right">目录</a>
 
-### 1.8.8. 消息总线bus
+### 1.13.8. 消息总线bus
 <a href="#menu" style="float:right">目录</a>
 
 Spring Cloud Bus是用轻量的消息代理将分布式的节点连接起来,可以用于广播配置文件的更改或者服务的监控管理。一个关键的思想就是,消息总线可以为微服务做监控,也可以实现应用程序之间相互通信。 Spring Cloud Bus可选的消息代理线线泡括RabbitMQ、 AMQP和Kaka等。
@@ -11958,7 +12621,7 @@ Spring Cloud Bus是用轻量的消息代理将分布式的节点连接起来,可
 4. 其它客户端接收到通知，请求Server端获取最新配置
 5. 全部客户端均获取到最新的配置
 
-#### 1.8.8.1. 消息代理
+#### 1.13.8.1. 消息代理
 消息代理 (Message Broker) 是一种消息验证、 传输、 路由的架构模式。 它在应用程序之间起到通信调度并最小化应用之间的依赖的作用， 使得应用程序可以高效地解耦通信过程。 消息代理是一个中间件产品， 它的核心是一个消息的路由程序， 用来实现接收和分发消息， 并根据设定好的消息处理流来转发给正确的应用。 它包括独立的通信和消息传递协议， 能够实现组织内部和组织间的网络通信。 设计代理的目的就是为了能够从应用程序中传入消息， 并执行一些特别的操作， 下面这些是在企业应用中， 我们经常需要使用消息代理的场景：
 * 将消息路由到一个或多个目的地
 * 消息转化为其他的表现方式。
@@ -11969,13 +12632,13 @@ Spring Cloud Bus是用轻量的消息代理将分布式的节点连接起来,可
 
 当前版本的Spring Cloud Bus仅支待两款中间件产品： RabbitMQ和Kafka
 
-### 1.8.9. 消息驱动的微服务Stream
+### 1.13.9. 消息驱动的微服务Stream
 <a href="#menu" style="float:right">目录</a>
 
-### 1.8.10. 分布式服务跟踪Sleuth
+### 1.13.10. 分布式服务跟踪Sleuth
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.8.10.1. 基本使用 
+#### 1.13.10.1. 基本使用 
 
 pom配置
 ```xml
@@ -12028,11 +12691,11 @@ spring:
 上面四个值中的**TraceID**和**SpanID**是Spring Cloud Sleuth实现分布式服务跟踪的核心。 在一次服务请求链路的调用过程中， 会保待并传递同一个**Trace ID**, 从而将整个分布于不同微服务进程中的请求跟踪 信息串联起来。 以上面输出内容为例， trace-1 和trace-2同属于一个前端服务请求来源，所以它们的TraceID是相同的，处于同一条请求链路中
 
 
-#### 1.8.10.2. 跟踪原理
+#### 1.13.10.2. 跟踪原理
 
 这里只讲feign和Sleuth的实现原理，其他方式基本原理上差不多。
 
-##### 1.8.10.2.1. 基本实现原理
+##### 1.13.10.2.1. 基本实现原理
 
 在了解其实现原理之前需要思考的问题是，假如消费者使用的Feign声明式服务调用，sleuth是如何接入的，是如何生成各种ID插入请求的？
 
@@ -12095,7 +12758,7 @@ main(){
 ```
 ----
 
-##### 1.8.10.2.2. 支持的组件
+##### 1.13.10.2.2. 支持的组件
 Spring Cloud Sleuth可以追踪10种类型的组件，async、Hystrix，messaging，websocket，rxjava，scheduling，web（Spring MVC Controller，Servlet），webclient（Spring RestTemplate）、Feign、Zuul。下面是常用的八种类型。
 
 ![Sleuth支持的组件](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/sleuth-instructment.png?raw=true)
@@ -12126,7 +12789,7 @@ TraceFeignAspect AOP里面的逻辑是，有地方想获取Client实例，就拦
 原理是zuul的Filter机制，ZuulFilter 
 实现了三个TracePreZuulFilter、TracePostZuulFilter两个Filter。
 
-##### 1.8.10.2.3. 一些基本概念
+##### 1.13.10.2.3. 一些基本概念
 
 * 为了实现请求跟踪， 当请求发送到分布式系统的入口端点时， 只需要服务跟踪框架为该请求创建一个唯一的跟踪标识， 同时在分布式系统内部流转的时候， 框架始终保待传递 该唯一标识， 直到返回给请求方为止， 这个唯一 标识就是前文中提到的TraceID。 通过TraceID 的记录， 我们就能将所有请求过程的日志关联起来。
 * 为了统计各处理单元的时间延迟， 当请求到达各个服务组件时， 或是处理逻辑到达某个状态时， 也通过一个唯一标识来标记它的开始、 具体过程以及结束， 该标识就是前文中提到的SpanID。 对于每个Span来说， 它必须有开始和结束 两个节点， 通过记录开始 Span和结束Span的时间戳，就能统计出该Span的时间延迟，除了时间戳记录之外， 它还可以包含一些其他元数据， 比如事件名称、 请求信息等
@@ -12155,7 +12818,7 @@ public final class B3Propagation<K> implements Propagation<K> {
 }
 ```
 
-##### 1.8.10.2.4. zipkin
+##### 1.13.10.2.4. zipkin
 Zipkin是Twitter的一个开源项目，我们可以使用它来收集各个服务器上请求链路的跟踪数据，并通过它提供的API接口来辅助查询跟踪数据以分布式系统的监控程序，通过UI组件帮助我们及时发现系统中出现的延迟升高问题以及系统性能瓶颈根源。
 **基本概念**
 下面展示Zipkin的基础架构，它主要由4个核心组件构成
@@ -12199,7 +12862,7 @@ Instrumented Client 和Instrumented Server，是指分布式架构中使用了Tr
 这种方式通过spring cloud streaming将追踪信息发送到zipkin。spring cloud streaming目前只支持kafka和rabbitmq。Zipkin Collector从消息中间件中读取数据并存储：
 ![](https://img-blog.csdn.net/20181010191040623?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3pobGxhbnNlemhpbGlhbg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
-##### 1.8.10.2.5. 调用过程
+##### 1.13.10.2.5. 调用过程
 
 ![Sleuth支持的组件](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/sleuth-request.png?raw=true)
 
@@ -12253,13 +12916,13 @@ public void inject(TraceContext traceContext, C carrier) {
 
 
 
-## 1.9. 单元测试
+## 1.14. 单元测试
 <a href="#menu" style="float:right">目录</a>
 
-### 1.9.1. Junit
+### 1.14.1. Junit
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.9.1.1. 概述
+#### 1.14.1.1. 概述
 <a href="#menu" style="float:right">目录</a>
 
 所谓单元测试是测试应用程序的功能是否能够按需要正常运行，并且确保是在开发人员的水平上，单元测试生成图片。单元测试是一个对单一实体（类或方法）的测试。单元测试是每个软件公司提高产品质量、满足客户需求的重要环节。
@@ -12300,7 +12963,7 @@ JUnit 促进了“先测试后编码”的理念，强调建立测试数据的�
 * 每一项需求至少需要两个单元测试用例：一个正检验，一个负检验。如果一个需求有子需求，每一个子需求必须至少有正检验和负检验两个测试用例。
 
 
-#### 1.9.1.2. JUnit 中的重要的 API
+#### 1.14.1.2. JUnit 中的重要的 API
 <a href="#menu" style="float:right">目录</a>
 
 JUnit 中的最重要的程序包是 junit.framework 它包含了所有的核心类。一些重要的类列示如下：
@@ -12383,7 +13046,7 @@ JUnit 中的最重要的程序包是 junit.framework 它包含了所有的核心
     * static Test warning(String message)
         * 返回会失败的测试并且记录警告信息。
 
-#### 1.9.1.3. 常用注解
+#### 1.14.1.3. 常用注解
 <a href="#menu" style="float:right">目录</a>
 
 **@Test**
@@ -12419,7 +13082,7 @@ JUnit执行结果中会报告被忽略的测试数
 即使在@BeforeClass注解方法中抛出了异常，所有的@AfterClass注解方法依然会被执行
 父类中的@AfterClass注解方法会在子类@AfterClass注解方法执行后被执行
 
-#### 1.9.1.4. 套件测试
+#### 1.14.1.4. 套件测试
 <a href="#menu" style="float:right">目录</a>
 
 ```java
@@ -12456,13 +13119,13 @@ public class TestRunner {
 
 
 
-### 1.9.2. 控制层测试
+### 1.14.2. 控制层测试
 <a href="#menu" style="float:right">目录</a>
 
-### 1.9.3. 服务层测试
+### 1.14.3. 服务层测试
 <a href="#menu" style="float:right">目录</a>
 
-### 1.9.4. DAO层测试
+### 1.14.4. DAO层测试
 <a href="#menu" style="float:right">目录</a>
 
 
