@@ -1,0 +1,3774 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>computer-base.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
+	font-size: 14px;
+	padding: 0 12px;
+	line-height: 22px;
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	color: #4080D0;
+	text-decoration: none;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code {
+	font-size: inherit;
+	line-height: auto;
+}
+
+a:hover {
+	color: #4080D0;
+	text-decoration: underline;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left: 5px solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 14px;
+	line-height: 19px;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+.mac code {
+	font-size: 12px;
+	line-height: 18px;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+/** Theming */
+
+.vscode-light,
+.vscode-light pre code {
+	color: rgb(30, 30, 30);
+}
+
+.vscode-dark,
+.vscode-dark pre code {
+	color: #DDD;
+}
+
+.vscode-high-contrast,
+.vscode-high-contrast pre code {
+	color: white;
+}
+
+.vscode-light code {
+	color: #A31515;
+}
+
+.vscode-dark code {
+	color: #D7BA7D;
+}
+
+.vscode-light pre:not(.hljs),
+.vscode-light code > div {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre:not(.hljs),
+.vscode-dark code > div {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre:not(.hljs),
+.vscode-high-contrast code > div {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+.vscode-light blockquote,
+.vscode-dark blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.vscode-high-contrast blockquote {
+	background: transparent;
+	border-color: #fff;
+}
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family:  "Meiryo", "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+</head>
+<body>
+<span id="menu">
+</span><!-- TOC -->
+<ul>
+<li><a href="#1-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F">1. 计算机&amp;网络&amp;操作系统</a>
+<ul>
+<li><a href="#11-%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80">1.1. 计算机基础</a>
+<ul>
+<li><a href="#111-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B">1.1.1. 数据类型</a>
+<ul>
+<li><a href="#1111-ascii">1.1.1.1. ASCII</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#12-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F">1.2. 操作系统</a>
+<ul>
+<li><a href="#121-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5">1.2.1. 操作系统基本概念</a>
+- <a href="#12101-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%8F%91%E5%B1%95%E8%BF%87%E7%A8%8B">1.2.1.0.1. 操作系统发展过程</a>
+- <a href="#12102-%E5%9F%BA%E6%9C%AC%E7%89%B9%E6%80%A7">1.2.1.0.2. 基本特性</a>
+<ul>
+<li><a href="#1211-linux%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB">1.2.1.1. Linux进程和线程的区别</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#13-%E7%BD%91%E7%BB%9Ctcp">1.3. 网络TCP</a>
+<ul>
+<li><a href="#131-osi%E7%BD%91%E8%B7%AF%E5%88%86%E5%B1%82">1.3.1. OSI网路分层</a></li>
+<li><a href="#132-ipinternet-protocol%E7%BD%91%E9%99%85%E5%8D%8F%E8%AE%AE">1.3.2. IP(Internet Protocol,网际协议)</a>
+<ul>
+<li><a href="#1321-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5">1.3.2.1. 基本概念</a></li>
+<li><a href="#1322-ip%E5%9C%B0%E5%9D%80%E5%AE%9A%E4%B9%89">1.3.2.2. IP地址定义</a></li>
+<li><a href="#1323-ip%E5%8D%8F%E8%AE%AE%E7%9B%B8%E5%85%B3%E6%8A%80%E6%9C%AF">1.3.2.3. IP协议相关技术</a>
+<ul>
+<li><a href="#13231-dns">1.3.2.3.1. DNS</a></li>
+<li><a href="#13232-arp">1.3.2.3.2. ARP</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#133-%E4%BC%A0%E8%BE%93%E5%B1%82">1.3.3. 传输层</a>
+<ul>
+<li><a href="#1331-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5">1.3.3.1. 基本概念</a>
+<ul>
+<li><a href="#13311-tcp%E5%92%8Cudp%E5%B7%AE%E5%88%AB">1.3.3.1.1. TCP和UDP差别</a></li>
+<li><a href="#13312-%E7%AB%AF%E5%8F%A3">1.3.3.1.2. 端口</a></li>
+</ul>
+</li>
+<li><a href="#1332-udp">1.3.3.2. UDP</a></li>
+<li><a href="#1333-tcp">1.3.3.3. TCP</a>
+<ul>
+<li><a href="#13331-%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86">1.3.3.3.1. 连接管理</a></li>
+<li><a href="#13332-%E8%B6%85%E6%97%B6%E9%87%8D%E4%BC%A0%E6%9C%BA%E5%88%B6">1.3.3.3.2. 超时重传机制</a></li>
+<li><a href="#13333-%E6%95%B0%E6%8D%AE%E6%B5%81%E5%92%8C%E7%AA%97%E5%8F%A3%E6%9C%BA%E5%88%B6">1.3.3.3.3. 数据流和窗口机制</a></li>
+<li><a href="#13334-%E9%98%BB%E5%A1%9E%E6%8E%A7%E5%88%B6">1.3.3.3.4. 阻塞控制</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#14-%E7%BD%91%E7%BB%9Chttp">1.4. 网络HTTP</a>
+<ul>
+<li><a href="#141-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5">1.4.1. 基本概念</a>
+<ul>
+<li><a href="#1411-%E8%AE%BF%E9%97%AE%E4%B8%80%E4%B8%AA%E7%BD%91%E7%AB%99%E7%9A%84%E6%B5%81%E7%A8%8B">1.4.1.1. 访问一个网站的流程</a></li>
+<li><a href="#1412-%E5%AA%92%E4%BD%93%E7%B1%BB%E5%9E%8Bmime">1.4.1.2. 媒体类型(MIME)</a></li>
+</ul>
+</li>
+<li><a href="#142-url%E5%92%8C%E8%B5%84%E6%BA%90">1.4.2. URL和资源</a></li>
+<li><a href="#143-http%E6%8A%A5%E6%96%87">1.4.3. HTTP报文</a>
+<ul>
+<li><a href="#1431-%E8%AF%B7%E6%B1%82%E6%8A%A5%E6%96%87%E5%92%8C%E5%93%8D%E5%BA%94%E6%8A%A5%E6%96%87">1.4.3.1. 请求报文和响应报文</a></li>
+<li><a href="#1432-%E9%A6%96%E9%83%A8">1.4.3.2. 首部</a></li>
+<li><a href="#1433-%E6%96%B9%E6%B3%95">1.4.3.3. 方法</a></li>
+<li><a href="#1434-%E7%8A%B6%E6%80%81%E7%A0%81">1.4.3.4. 状态码</a></li>
+</ul>
+</li>
+<li><a href="#144-%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86">1.4.4. 连接管理</a>
+<ul>
+<li><a href="#1441-%E5%AF%B9tcp%E6%80%A7%E8%83%BD%E7%9A%84%E8%80%83%E8%99%91">1.4.4.1. 对TCP性能的考虑</a></li>
+<li><a href="#1442-%E6%8C%81%E4%B9%85%E8%BF%9E%E6%8E%A5">1.4.4.2. 持久连接</a></li>
+</ul>
+</li>
+<li><a href="#145-web%E6%9C%8D%E5%8A%A1%E5%99%A8">1.4.5. WEB服务器</a></li>
+<li><a href="#146-%E4%BB%A3%E7%90%86">1.4.6. 代理</a></li>
+<li><a href="#147-%E7%BC%93%E5%AD%98">1.4.7. 缓存</a></li>
+<li><a href="#148-%E7%BD%91%E5%85%B3">1.4.8. 网关</a></li>
+<li><a href="#149-%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AF%86%E5%88%AB%E4%B8%8Ecookie%E6%9C%BA%E5%88%B6">1.4.9. 客户端识别与Cookie机制</a></li>
+<li><a href="#1410-%E5%9F%BA%E6%9C%AC%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6">1.4.10. 基本认证机制</a></li>
+<li><a href="#1411-%E6%91%98%E8%A6%81%E8%AE%A4%E8%AF%81">1.4.11. 摘要认证</a></li>
+<li><a href="#1412-%E5%AE%89%E5%85%A8http">1.4.12. 安全HTTP</a></li>
+<li><a href="#1413-%E5%AE%9E%E4%BD%93%E5%92%8C%E7%BC%96%E7%A0%81">1.4.13. 实体和编码</a></li>
+<li><a href="#1414-%E5%9B%BD%E9%99%85%E5%8C%96">1.4.14. 国际化</a></li>
+<li><a href="#1415-web%E4%B8%BB%E6%9C%BA%E6%89%98%E7%AE%A1">1.4.15. WEB主机托管</a></li>
+<li><a href="#1416-%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1">1.4.16. 重定向和负载均衡</a></li>
+</ul>
+</li>
+<li><a href="#15-web-socket">1.5. WEB Socket</a>
+<ul>
+<li><a href="#151-websocket%E4%B8%8Ehttp">1.5.1. websocket与http</a></li>
+<li><a href="#152-%E6%95%B0%E6%8D%AE%E5%B8%A7%E6%A0%BC%E5%BC%8F">1.5.2. 数据帧格式</a></li>
+<li><a href="#153-%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%92">1.5.3. 数据传递</a></li>
+<li><a href="#154-%E8%BF%9E%E6%8E%A5%E4%BF%9D%E6%8C%81%E5%BF%83%E8%B7%B3">1.5.4. 连接保持+心跳</a></li>
+<li><a href="#155-sec-websocket-keyaccept%E7%9A%84%E4%BD%9C%E7%94%A8">1.5.5. Sec-WebSocket-Key/Accept的作用</a></li>
+<li><a href="#156-%E6%95%B0%E6%8D%AE%E6%8E%A9%E7%A0%81%E7%9A%84%E4%BD%9C%E7%94%A8">1.5.6. 数据掩码的作用</a></li>
+<li><a href="#springboot--websocket%E5%AE%9E%E7%8E%B0%E6%A1%88%E4%BE%8B">SpringBoot + WebSocket实现案例</a>
+<ul>
+<li><a href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95">第一种实现方法</a></li>
+<li><a href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95">第二种实现方法</a></li>
+<li><a href="#%E8%A1%A5%E5%85%85%E8%AF%B4%E6%98%8E">补充说明</a></li>
+<li><a href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E5%AE%9E%E7%8E%B0js%E6%96%B9%E5%BC%8F%E5%92%8Cjava-websocketclient%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F">客户端的实现，js方式和java WebSocketClient两种方式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#16-unix%E7%8E%AF%E5%A2%83%E7%BC%96%E7%A8%8B">1.6. Unix环境编程</a>
+<ul>
+<li><a href="#161-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5">1.6.1. 基本概念</a></li>
+<li><a href="#162-io%E6%A8%A1%E5%9E%8B">1.6.2. IO模型</a></li>
+<li><a href="#163-selectpollepoll%E6%AF%94%E8%BE%83">1.6.3. select&amp;poll&amp;epoll比较</a>
+<ul>
+<li><a href="#1631-%E6%95%B4%E4%BD%93%E6%A6%82%E8%A7%88">1.6.3.1. 整体概览</a></li>
+<li><a href="#1632-%E5%AF%B9%E6%AF%94%E6%80%BB%E7%BB%93">1.6.3.2. 对比总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#17-shell">1.7. Shell</a>
+<ul>
+<li><a href="#171-%E6%96%87%E4%BB%B6%E5%AE%89%E8%A3%85">1.7.1. 文件安装</a>
+<ul>
+<li><a href="#1711-deb%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C">1.7.1.1. deb文件操作</a></li>
+</ul>
+</li>
+<li><a href="#172-%E6%96%87%E4%BB%B6%E7%9B%B8%E5%85%B3">1.7.2. 文件相关</a></li>
+<li><a href="#173-%E7%B3%BB%E7%BB%9F%E7%9B%91%E6%8E%A7">1.7.3. 系统监控</a></li>
+<li><a href="#174-%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE%E6%96%87%E4%BB%B6">1.7.4. 处理数据文件</a></li>
+<li><a href="#175-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F">1.7.5. 环境变量</a></li>
+<li><a href="#176-%E5%9F%BA%E6%9C%AC%E8%84%9A%E6%9C%AC%E5%91%BD%E4%BB%A4">1.7.6. 基本脚本命令</a></li>
+<li><a href="#177-%E7%BB%93%E6%9E%84%E5%8C%96%E5%91%BD%E4%BB%A4">1.7.7. 结构化命令</a></li>
+<li><a href="#178-%E5%A4%84%E7%90%86%E7%94%A8%E6%88%B7%E8%BE%93%E5%85%A5">1.7.8. 处理用户输入</a></li>
+<li><a href="#179-%E6%8E%A7%E5%88%B6%E8%84%9A%E6%9C%AC">1.7.9. 控制脚本</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<!-- /TOC -->
+<h1 id="1-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F">1. 计算机&amp;网络&amp;操作系统</h1>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h2 id="11-%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80">1.1. 计算机基础</h2>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="111-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B">1.1.1. 数据类型</h3>
+<h4 id="1111-ascii">1.1.1.1. ASCII</h4>
+<ul>
+<li>ASCII控制字符</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>二进制</th>
+<th>十进制</th>
+<th>十六进制</th>
+<th>缩写</th>
+<th>名称/意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0000 0000</td>
+<td>0</td>
+<td>00</td>
+<td>NUL</td>
+<td>空字符（Null）</td>
+</tr>
+<tr>
+<td>0000 0001</td>
+<td>1</td>
+<td>01</td>
+<td>SOH</td>
+<td>标题开始</td>
+</tr>
+<tr>
+<td>0000 0010</td>
+<td>2</td>
+<td>02</td>
+<td>STX</td>
+<td>本文开始</td>
+</tr>
+<tr>
+<td>0000 0011</td>
+<td>3</td>
+<td>03</td>
+<td>ETX</td>
+<td>本文结束</td>
+</tr>
+<tr>
+<td>0000 0100</td>
+<td>4</td>
+<td>04</td>
+<td>EOT</td>
+<td>传输结束</td>
+</tr>
+<tr>
+<td>0000 0101</td>
+<td>5</td>
+<td>05</td>
+<td>ENQ</td>
+<td>请求</td>
+</tr>
+<tr>
+<td>0000 0110</td>
+<td>6</td>
+<td>06</td>
+<td>ACK</td>
+<td>确认回应</td>
+</tr>
+<tr>
+<td>0000 0111</td>
+<td>7</td>
+<td>07</td>
+<td>BEL</td>
+<td>响铃</td>
+</tr>
+<tr>
+<td>0000 1000</td>
+<td>8</td>
+<td>08</td>
+<td>BS</td>
+<td>退格</td>
+</tr>
+<tr>
+<td>0000 1001</td>
+<td>9</td>
+<td>09</td>
+<td>HT</td>
+<td>水平定位符号</td>
+</tr>
+<tr>
+<td>0000 1010</td>
+<td>10</td>
+<td>0A</td>
+<td>LF</td>
+<td>换行键</td>
+</tr>
+<tr>
+<td>0000 1011</td>
+<td>11</td>
+<td></td>
+<td>0B</td>
+<td>VT</td>
+</tr>
+<tr>
+<td>0000 1100</td>
+<td>12</td>
+<td>0C</td>
+<td>FF</td>
+<td>换页键</td>
+</tr>
+<tr>
+<td>0000 1101</td>
+<td>13</td>
+<td>0D</td>
+<td>CR</td>
+<td>归位键</td>
+</tr>
+<tr>
+<td>0000 1110</td>
+<td>14</td>
+<td>0E</td>
+<td>SO</td>
+<td>取消变换（Shift out）</td>
+</tr>
+<tr>
+<td>0000 1111</td>
+<td>15</td>
+<td>0F</td>
+<td>SI</td>
+<td>启用变换（Shift in）</td>
+</tr>
+<tr>
+<td>0001 0000</td>
+<td>16</td>
+<td>10</td>
+<td>DLE</td>
+<td>跳出数据通讯</td>
+</tr>
+<tr>
+<td>0001 0001</td>
+<td>17</td>
+<td>11</td>
+<td>DC1</td>
+<td>设备控制一（XON 启用软件速度控制）</td>
+</tr>
+<tr>
+<td>0001 0010</td>
+<td>18</td>
+<td>12</td>
+<td>DC2</td>
+<td>设备控制二</td>
+</tr>
+<tr>
+<td>0001 0011</td>
+<td>19</td>
+<td>13</td>
+<td>DC3</td>
+<td>设备控制三（XOFF 停用软件速度控制）</td>
+</tr>
+<tr>
+<td>0001 0100</td>
+<td>20</td>
+<td>14</td>
+<td>DC4</td>
+<td>设备控制四</td>
+</tr>
+<tr>
+<td>0001 0101</td>
+<td>21</td>
+<td>15</td>
+<td>NAK</td>
+<td>确认失败回应</td>
+</tr>
+<tr>
+<td>0001 0110</td>
+<td>22</td>
+<td>16</td>
+<td>SYN</td>
+<td>同步用暂停</td>
+</tr>
+<tr>
+<td>0001 0111</td>
+<td>23</td>
+<td>17</td>
+<td>ETB</td>
+<td>区块传输结束</td>
+</tr>
+<tr>
+<td>0001 1000</td>
+<td>24</td>
+<td>18</td>
+<td>CAN</td>
+<td>取消</td>
+</tr>
+<tr>
+<td>0001 1001</td>
+<td>25</td>
+<td>19</td>
+<td>EM</td>
+<td>连接介质中断</td>
+</tr>
+<tr>
+<td>0001 1010</td>
+<td>26</td>
+<td>1A</td>
+<td>SUB</td>
+<td>替换</td>
+</tr>
+<tr>
+<td>0001 1011</td>
+<td>27</td>
+<td>1B</td>
+<td>ESC</td>
+<td>跳出</td>
+</tr>
+<tr>
+<td>0001 1100</td>
+<td>28</td>
+<td>1C</td>
+<td>FS</td>
+<td>文件分割符</td>
+</tr>
+<tr>
+<td>0001 1101</td>
+<td>29</td>
+<td>1D</td>
+<td>GS</td>
+<td>组群分隔符</td>
+</tr>
+<tr>
+<td>0001 1110</td>
+<td>30</td>
+<td>1E</td>
+<td>RS</td>
+<td>记录分隔符</td>
+</tr>
+<tr>
+<td>0001 1111</td>
+<td>31</td>
+<td>1F</td>
+<td>US</td>
+<td>单元分隔符</td>
+</tr>
+<tr>
+<td>0111 1111</td>
+<td>127</td>
+<td>7F</td>
+<td>DEL</td>
+<td>删除</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>ASCII可显示字符</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>二进制</th>
+<th>十进制</th>
+<th>十六进制</th>
+<th>图形</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0010 0000</td>
+<td>32</td>
+<td>20</td>
+<td>（空格）(␠)</td>
+</tr>
+<tr>
+<td>0010 0001</td>
+<td>33</td>
+<td>21</td>
+<td>!</td>
+</tr>
+<tr>
+<td>0010 0010</td>
+<td>34</td>
+<td>22</td>
+<td>&quot;</td>
+</tr>
+<tr>
+<td>0010 0011</td>
+<td>35</td>
+<td>23</td>
+<td>#</td>
+</tr>
+<tr>
+<td>0010 0100</td>
+<td>36</td>
+<td>24</td>
+<td>$</td>
+</tr>
+<tr>
+<td>0010 0101</td>
+<td>37</td>
+<td>25</td>
+<td>%</td>
+</tr>
+<tr>
+<td>0010 0110</td>
+<td>38</td>
+<td>26</td>
+<td>&amp;</td>
+</tr>
+<tr>
+<td>0010 0111</td>
+<td>39</td>
+<td>27</td>
+<td>'</td>
+</tr>
+<tr>
+<td>0010 1000</td>
+<td>40</td>
+<td>28</td>
+<td>(</td>
+</tr>
+<tr>
+<td>0010 1001</td>
+<td>41</td>
+<td>29</td>
+<td>)</td>
+</tr>
+<tr>
+<td>0010 1010</td>
+<td>42</td>
+<td>2A</td>
+<td>*</td>
+</tr>
+<tr>
+<td>0010 1011</td>
+<td>43</td>
+<td>2B</td>
+<td>+</td>
+</tr>
+<tr>
+<td>0010 1100</td>
+<td>44</td>
+<td>2C</td>
+<td>,</td>
+</tr>
+<tr>
+<td>0010 1101</td>
+<td>45</td>
+<td>2D</td>
+<td>-</td>
+</tr>
+<tr>
+<td>0010 1110</td>
+<td>46</td>
+<td>2E</td>
+<td>.</td>
+</tr>
+<tr>
+<td>0010 1111</td>
+<td>47</td>
+<td>2F</td>
+<td>/</td>
+</tr>
+<tr>
+<td>0011 0000</td>
+<td>48</td>
+<td>30</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0011 0001</td>
+<td>49</td>
+<td>31</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0011 0010</td>
+<td>50</td>
+<td>32</td>
+<td>2</td>
+</tr>
+<tr>
+<td>0011 0011</td>
+<td>51</td>
+<td>33</td>
+<td>3</td>
+</tr>
+<tr>
+<td>0011 0100</td>
+<td>52</td>
+<td>34</td>
+<td>4</td>
+</tr>
+<tr>
+<td>0011 0101</td>
+<td>53</td>
+<td>35</td>
+<td>5</td>
+</tr>
+<tr>
+<td>0011 0110</td>
+<td>54</td>
+<td>36</td>
+<td>6</td>
+</tr>
+<tr>
+<td>0011 0111</td>
+<td>55</td>
+<td>37</td>
+<td>7</td>
+</tr>
+<tr>
+<td>0011 1000</td>
+<td>56</td>
+<td>38</td>
+<td>8</td>
+</tr>
+<tr>
+<td>0011 1001</td>
+<td>57</td>
+<td>39</td>
+<td>9</td>
+</tr>
+<tr>
+<td>0011 1010</td>
+<td>58</td>
+<td>3A</td>
+<td>:</td>
+</tr>
+<tr>
+<td>0011 1011</td>
+<td>59</td>
+<td>3B</td>
+<td>;</td>
+</tr>
+<tr>
+<td>0011 1100</td>
+<td>60</td>
+<td>3C</td>
+<td>&lt;</td>
+</tr>
+<tr>
+<td>0011 1101</td>
+<td>61</td>
+<td>3D</td>
+<td>=</td>
+</tr>
+<tr>
+<td>0011 1110</td>
+<td>62</td>
+<td>3E</td>
+<td>&gt;</td>
+</tr>
+<tr>
+<td>0011 1111</td>
+<td>63</td>
+<td>3F</td>
+<td>?</td>
+</tr>
+<tr>
+<td>0100 0000</td>
+<td>64</td>
+<td>40</td>
+<td>@</td>
+</tr>
+<tr>
+<td>0100 0001</td>
+<td>65</td>
+<td>41</td>
+<td>A</td>
+</tr>
+<tr>
+<td>0100 0010</td>
+<td>66</td>
+<td>42</td>
+<td>B</td>
+</tr>
+<tr>
+<td>0100 0011</td>
+<td>67</td>
+<td>43</td>
+<td>C</td>
+</tr>
+<tr>
+<td>0100 0100</td>
+<td>68</td>
+<td>44</td>
+<td>D</td>
+</tr>
+<tr>
+<td>0100 0101</td>
+<td>69</td>
+<td>45</td>
+<td>E</td>
+</tr>
+<tr>
+<td>0100 0110</td>
+<td>70</td>
+<td>46</td>
+<td>F</td>
+</tr>
+<tr>
+<td>0100 0111</td>
+<td>71</td>
+<td>47</td>
+<td>G</td>
+</tr>
+<tr>
+<td>0100 1000</td>
+<td>72</td>
+<td>48</td>
+<td>H</td>
+</tr>
+<tr>
+<td>0100 1001</td>
+<td>73</td>
+<td>49</td>
+<td>I</td>
+</tr>
+<tr>
+<td>0100 1010</td>
+<td>74</td>
+<td>4A</td>
+<td>J</td>
+</tr>
+<tr>
+<td>0100 1011</td>
+<td>75</td>
+<td>4B</td>
+<td>K</td>
+</tr>
+<tr>
+<td>0100 1100</td>
+<td>76</td>
+<td>4C</td>
+<td>L</td>
+</tr>
+<tr>
+<td>0100 1101</td>
+<td>77</td>
+<td>4D</td>
+<td>M</td>
+</tr>
+<tr>
+<td>0100 1110</td>
+<td>78</td>
+<td>4E</td>
+<td>N</td>
+</tr>
+<tr>
+<td>0100 1111</td>
+<td>79</td>
+<td>4F</td>
+<td>O</td>
+</tr>
+<tr>
+<td>0101 0000</td>
+<td>80</td>
+<td>50</td>
+<td>P</td>
+</tr>
+<tr>
+<td>0101 0001</td>
+<td>81</td>
+<td>51</td>
+<td>Q</td>
+</tr>
+<tr>
+<td>0101 0010</td>
+<td>82</td>
+<td>52</td>
+<td>R</td>
+</tr>
+<tr>
+<td>0101 0011</td>
+<td>83</td>
+<td>53</td>
+<td>S</td>
+</tr>
+<tr>
+<td>0101 0100</td>
+<td>84</td>
+<td>54</td>
+<td>T</td>
+</tr>
+<tr>
+<td>0101 0101</td>
+<td>85</td>
+<td>55</td>
+<td>U</td>
+</tr>
+<tr>
+<td>0101 0110</td>
+<td>86</td>
+<td>56</td>
+<td>V</td>
+</tr>
+<tr>
+<td>0101 0111</td>
+<td>87</td>
+<td>57</td>
+<td>W</td>
+</tr>
+<tr>
+<td>0101 1000</td>
+<td>88</td>
+<td>58</td>
+<td>X</td>
+</tr>
+<tr>
+<td>0101 1001</td>
+<td>89</td>
+<td>59</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>0101 1010</td>
+<td>90</td>
+<td>5A</td>
+<td>Z</td>
+</tr>
+<tr>
+<td>0101 1011</td>
+<td>91</td>
+<td>5B</td>
+<td>[</td>
+</tr>
+<tr>
+<td>0101 1100</td>
+<td>92</td>
+<td>5C</td>
+<td>\</td>
+</tr>
+<tr>
+<td>0101 1101</td>
+<td>93</td>
+<td>5D</td>
+<td>]</td>
+</tr>
+<tr>
+<td>0101 1110</td>
+<td>94</td>
+<td>5E</td>
+<td>^</td>
+</tr>
+<tr>
+<td>0101 1111</td>
+<td>95</td>
+<td>5F</td>
+<td>_</td>
+</tr>
+<tr>
+<td>0110 0000</td>
+<td>96</td>
+<td>60</td>
+<td>`</td>
+</tr>
+<tr>
+<td>0110 0001</td>
+<td>97</td>
+<td>61</td>
+<td>a</td>
+</tr>
+<tr>
+<td>0110 0010</td>
+<td>98</td>
+<td>62</td>
+<td>b</td>
+</tr>
+<tr>
+<td>0110 0011</td>
+<td>99</td>
+<td>63</td>
+<td>c</td>
+</tr>
+<tr>
+<td>0110 0100</td>
+<td>100</td>
+<td>64</td>
+<td>d</td>
+</tr>
+<tr>
+<td>0110 0101</td>
+<td>101</td>
+<td>65</td>
+<td>e</td>
+</tr>
+<tr>
+<td>0110 0110</td>
+<td>102</td>
+<td>66</td>
+<td>f</td>
+</tr>
+<tr>
+<td>0110 0111</td>
+<td>103</td>
+<td>67</td>
+<td>g</td>
+</tr>
+<tr>
+<td>0110 1000</td>
+<td>104</td>
+<td>68</td>
+<td>h</td>
+</tr>
+<tr>
+<td>0110 1001</td>
+<td>105</td>
+<td>69</td>
+<td>i</td>
+</tr>
+<tr>
+<td>0110 1010</td>
+<td>106</td>
+<td>6A</td>
+<td>j</td>
+</tr>
+<tr>
+<td>0110 1011</td>
+<td>107</td>
+<td>6B</td>
+<td>k</td>
+</tr>
+<tr>
+<td>0110 1100</td>
+<td>108</td>
+<td>6C</td>
+<td>l</td>
+</tr>
+<tr>
+<td>0110 1101</td>
+<td>109</td>
+<td>6D</td>
+<td>m</td>
+</tr>
+<tr>
+<td>0110 1110</td>
+<td>110</td>
+<td>6E</td>
+<td>n</td>
+</tr>
+<tr>
+<td>0110 1111</td>
+<td>111</td>
+<td>6F</td>
+<td>o</td>
+</tr>
+<tr>
+<td>0111 0000</td>
+<td>112</td>
+<td>70</td>
+<td>p</td>
+</tr>
+<tr>
+<td>0111 0001</td>
+<td>113</td>
+<td>71</td>
+<td>q</td>
+</tr>
+<tr>
+<td>0111 0010</td>
+<td>114</td>
+<td>72</td>
+<td>r</td>
+</tr>
+<tr>
+<td>0111 0011</td>
+<td>115</td>
+<td>73</td>
+<td>s</td>
+</tr>
+<tr>
+<td>0111 0100</td>
+<td>116</td>
+<td>74</td>
+<td>t</td>
+</tr>
+<tr>
+<td>0111 0101</td>
+<td>117</td>
+<td>75</td>
+<td>u</td>
+</tr>
+<tr>
+<td>0111 0110</td>
+<td>118</td>
+<td>76</td>
+<td>v</td>
+</tr>
+<tr>
+<td>0111 0111</td>
+<td>119</td>
+<td>77</td>
+<td>w</td>
+</tr>
+<tr>
+<td>0111 1000</td>
+<td>120</td>
+<td>78</td>
+<td>x</td>
+</tr>
+<tr>
+<td>0111 1001</td>
+<td>121</td>
+<td>79</td>
+<td>y</td>
+</tr>
+<tr>
+<td>0111 1010</td>
+<td>122</td>
+<td>7A</td>
+<td>z</td>
+</tr>
+<tr>
+<td>0111 1011</td>
+<td>123</td>
+<td>7B</td>
+<td>{</td>
+</tr>
+<tr>
+<td>0111 1100</td>
+<td>124</td>
+<td>7C</td>
+<td>\</td>
+</tr>
+<tr>
+<td>0111 1101</td>
+<td>125</td>
+<td>7D</td>
+<td>}</td>
+</tr>
+<tr>
+<td>0111 1110</td>
+<td>126</td>
+<td>7E</td>
+<td>~</td>
+</tr>
+</tbody>
+</table>
+<h2 id="12-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F">1.2. 操作系统</h2>
+<h3 id="121-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5">1.2.1. 操作系统基本概念</h3>
+<h5 id="12101-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%8F%91%E5%B1%95%E8%BF%87%E7%A8%8B">1.2.1.0.1. 操作系统发展过程</h5>
+<ul>
+<li>无操作系统的计算机</li>
+<li>单道批处理系统</li>
+<li>分时系统</li>
+<li>实时系统</li>
+</ul>
+<h5 id="12102-%E5%9F%BA%E6%9C%AC%E7%89%B9%E6%80%A7">1.2.1.0.2. 基本特性</h5>
+<h4 id="1211-linux%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB">1.2.1.1. Linux进程和线程的区别</h4>
+<p>进程与线程的区别，早已经成为了经典问题。自线程概念诞生起，关于这个问题的讨论就没有停止过。无论是初级程序员，还是资深专家，都应该考虑过这个问题，只是层次角度不同罢了。一般程序员而言，搞清楚二者的概念，在工作实际中去运用成为了焦点。而资深工程师则在考虑系统层面如何实现两种技术及其各自的性能和实现代价。以至于到今天，Linux内核还在持续更新完善(关于进程和线程的实现模块也是内核完善的任务之一)。</p>
+<p>本文将以一个从事Linux平台系统开发的程序员角度描述这个经典问题。本文素材全部来源于工作实践经验与知识规整，若有疏漏或不正之处，敬请读者慷慨指出。</p>
+<p>0.首先，简要了解一下进程和线程。对于操作系统而言，进程是核心之核心，整个现代操作系统的根本，就是以进程为单位在执行任务。系统的管理架构也是基于进程层面的。在按下电源键之后，计算机就开始了复杂的启动过程，此处有一个经典问题：当按下电源键之后，计算机如何把自己由静止启动起来的？本文不讨论系统启动过程，请读者自行科普。操作系统启动的过程简直可以描述为上帝创造万物的过程，期初没有世界，但是有上帝，是上帝创造了世界，之后创造了万物，然后再创造了人，然后塑造了人的七情六欲，再然后人类社会开始遵循自然规律繁衍生息。。。操作系统启动进程的阶段就相当于上帝造人的阶段。本文讨论的全部内容都是“上帝造人”之后的事情。第一个被创造出来的进程是0号进程，这个进程在操作系统层面是不可见的，但它存在着。0号进程完成了操作系统的功能加载与初期设定，然后它创造了1号进程(init)，这个1号进程就是操作系统的“耶稣”。1号进程是上帝派来管理整个操作系统的，所以在用pstree查看进程树可知，1号进程位于树根。再之后，系统的很多管理程序都以进程身份被1号进程创造出来，还创造了与人类沟通的桥梁——shell。从那之后，人类可以跟操作系统进行交流，可以编写程序，可以执行任务。。。</p>
+<p>而这一切，都是基于进程的。每一个任务(进程)被创建时，系统会为他分配存储空间等必要资源，然后在内核管理区为该进程创建管理节点，以便后来控制和调度该任务的执行。</p>
+<p>进程真正进入执行阶段，还需要获得CPU的使用权，这一切都是操作系统掌管着，也就是所谓的调度，在各种条件满足(资源与CPU使用权均获得)的情况下，启动进程的执行过程。</p>
+<p>除CPU而外，一个很重要的资源就是存储器了，系统会为每个进程分配独有的存储空间，当然包括它特别需要的别的资源，比如写入时外部设备是可使用状态等等。有了上面的引入，我们可以对进程做一个简要的总结：</p>
+<p>进程，是计算机中的程序关于某数据集合上的一次运行活动，是系统进行资源分配和调度的基本单位，是操作系统结构的基础。它的执行需要系统分配资源创建实体之后，才能进行。</p>
+<p>随着技术发展，在执行一些细小任务时，本身无需分配单独资源时(多个任务共享同一组资源即可，比如所有子进程共享父进程的资源)，进程的实现机制依然会繁琐的将资源分割，这样造成浪费，而且还消耗时间。后来就有了专门的多任务技术被创造出来——线程。</p>
+<p>线程的特点就是在不需要独立资源的情况下就可以运行。如此一来会极大节省资源开销，以及处理时间。</p>
+<p>1.好了，前面的一段文字是简要引入两个名词，即进程和线程。本文讨论目标是解释清楚进程和线程的区别，关于二者的技术实现，请读者查阅相关资料。</p>
+<p>下面我们开始重点讨论本文核心了。从下面几个方面阐述进程和线程的区别。</p>
+<p>1).二者的相同点</p>
+<p>2).实现方式的差异</p>
+<p>3).多任务程序设计模式的区别</p>
+<p>4).实体间(进程间，线程间，进线程间)通信方式的不同</p>
+<p>5).控制方式的异同</p>
+<p>6).资源管理方式的异同</p>
+<p>7).个体间辈分关系的迥异</p>
+<p>8).进程池与线程池的技术实现差别</p>
+<p>接下来我们就逐个进行解释。</p>
+<p>1).二者的相同点</p>
+<p>无论是进程还是线程，对于程序员而言，都是用来实现多任务并发的技术手段。二者都可以独立调度，因此在多任务环境下，功能上并无差异。并且二者都具有各自的实体，是系统独立管理的对象个体。所以在系统层面，都可以通过技术手段实现二者的控制。而且二者所具有的状态都非常相似。而且，在多任务程序中，子进程(子线程)的调度一般与父进程(父线程)平等竞争。</p>
+<p>其实在Linux内核2.4版以前，线程的实现和管理方式就是完全按照进程方式实现的。在2.6版内核以后才有了单独的线程实现。</p>
+<p>2).实现方式的差异</p>
+<p>进程是资源分配的基本单位，线程是调度的基本单位。</p>
+<p>这句经典名言已流传数十年，各种操作系统教材都可见此描述。确实如此，这就是二者的显著区别。读者请注意“基本”二字。相信有读者看到前半句的时候就在心里思考，“进程岂不是不能调度？”，非也！进程和线程都可以被调度，否则多进程程序该如何运行呢！</p>
+<p>只是，线程是更小的可以调度的单位，也就是说，只要达到线程的水平就可以被调度了，进程自然可以被调度。它强调的是分配资源时的对象必须是进程，不会给一个线程单独分配系统管理的资源。若要运行一个任务，想要获得资源，最起码得有进程，其他子任务可以以线程身份运行，资源共享就行了。</p>
+<pre><code>简而言之，进程的个体间是完全独立的，而线程间是彼此依存的。多进程环境中，任何一个进程的终止，不会影响到其他进程。而多线程环境中，父线程终止，全部子线程被迫终止(没有了资源)。而任何一个子线程终止一般不会影响其他线程，除非子线程执行了exit()系统调用。任何一个子线程执行exit()，全部线程同时灭亡。
+</code></pre>
+<p>其实，也没有人写出只有线程而没有进程的程序。多线程程序中至少有一个主线程，而这个主线程其实就是有main函数的进程。它是整个程序的进程，所有线程都是它的子线程。我们通常把具有多线程的主进程称之为主线程。</p>
+<p>从系统实现角度讲，进程的实现是调用fork系统调用：</p>
+<p>pid_t fork(void);</p>
+<p>线程的实现是调用clone系统调用：</p>
+<p>int clone(int (*fn)(void *), void *child_stack, int flags, void *arg, ...</p>
+<p>/* pid_t *ptid, struct user_desc *tls, pid_t *ctid */</p>
+<p>);</p>
+<p>其中，fork()是将父进程的全部资源复制给了子进程。而线程的clone只是复制了一小部分必要的资源。在调用clone时可以通过参数控制要复制的对象。可以说，fork实现的是clone的加强完整版。当然，后来操作系统还进一步优化fork实现——写时复制技术。在子进程需要复制资源(比如子进程执行写入动作更改父进程内存空间)时才复制，否则创建子进程时先不复制。</p>
+<p>实际中，编写多进程程序时采用fork创建子进程实体。而创建线程时并不采用clone系统调用，而是采用线程库函数。常用线程库有Linux-Native线程库和POSIX线程库。其中应用最为广泛的是POSIX线程库。因此读者在多线程程序中看到的是pthread_create而非clone。</p>
+<p>我们知道，库是建立在操作系统层面上的功能集合，因而它的功能都是操作系统提供的。由此可知，线程库的内部很可能实现了clone的调用。不管是进程还是线程的实体，都是操作系统上运行的实体。</p>
+<pre><code>最后，我们说一下vfork() 。这也是一个系统调用，用来创建一个新的进程。它创建的进程并不复制父进程的资源空间，而是共享，也就说实际上vfork实现的是一个接近线程的实体，只是以进程方式来管理它。并且，vfork()的子进程与父进程的运行时间是确定的：子进程“结束”后父进程才运行。请读者注意“结束”二字。并非子进程完成退出之意，而是子进程返回时。一般采用vfork()的子进程，都会紧接着执行execv启动一个全新的进程，该进程的进程空间与父进程完全独立不相干，所以不需要复制父进程资源空间。此时，execv返回时父进程就认为子进程“结束”了，自己开始运行。实际上子进程继续在一个完全独立的空间运行着。举个例子，比如在一个聊天程序中，弹出了一个视频播放器。你说视频播放器要继承你的聊天程序的进程空间的资源干嘛？莫非视频播放器想要窥探你的聊天隐私不成？懂了吧！
+</code></pre>
+<p>3).多任务程序设计模式的区别</p>
+<p>由于进程间是独立的，所以在设计多进程程序时，需要做到资源独立管理时就有了天然优势，而线程就显得麻烦多了。比如多任务的TCP程序的服务端，父进程执行accept()一个客户端连接请求之后会返回一个新建立的连接的描述符DES，此时如果fork()一个子进程，将DES带入到子进程空间去处理该连接的请求，父进程继续accept等待别的客户端连接请求，这样设计非常简练，而且父进程可以用同一变量(val)保存accept()的返回值，因为子进程会复制val到自己空间，父进程再覆盖此前的值不影响子进程工作。但是如果换成多线程，父线程就不能复用一个变量val多次执行accept()了。因为子线程没有复制val的存储空间，而是使用父线程的，如果子线程在读取val时父线程接受了另一个客户端请求覆盖了该值，则子线程无法继续处理上一次的连接任务了。改进的办法是子线程立马复制val的值在自己的栈区，但父线程必须保证子线程复制动作完成之后再执行新的accept()。但这执行起来并不简单，因为子线程与父线程的调度是独立的，父线程无法知道子线程何时复制完毕。这又得发生线程间通信，子线程复制完成后主动通知父线程。这样一来父线程的处理动作必然不能连贯，比起多进程环境，父线程显得效率有所下降。</p>
+<p>PS：这里引述一个知名的面试问题：多进程的TCP服务端，能否互换fork()与accept()的位置？请读者自行思考。</p>
+<p>关于资源不独立，看似是个缺点，但在有的情况下就成了优点。多进程环境间完全独立，要实现通信的话就得采用进程间的通信方式，它们通常都是耗时间的。而线程则不用任何手段数据就是共享的。当然多个子线程在同时执行写入操作时需要实现互斥，否则数据就写“脏”了。</p>
+<p>4).实体间(进程间，线程间，进线程间)通信方式的不同</p>
+<p>进程间的通信方式有这样几种：</p>
+<p>A.共享内存    B.消息队列    C.信号量    D.有名管道    E.无名管道    F.信号</p>
+<p>G.文件        H.socket</p>
+<p>线程间的通信方式上述进程间的方式都可沿用，且还有自己独特的几种：</p>
+<p>A.互斥量      B.自旋锁      C.条件变量  D.读写锁      E.线程信号</p>
+<p>G.全局变量</p>
+<p>值得注意的是，线程间通信用的信号不能采用进程间的信号，因为信号是基于进程为单位的，而线程是共属于同一进程空间的。故而要采用线程信号。</p>
+<p>综上，进程间通信手段有8种。线程间通信手段有13种。</p>
+<p>而且，进程间采用的通信方式要么需要切换内核上下文，要么要与外设访问(有名管道，文件)。所以速度会比较慢。而线程采用自己特有的通信方式的话，基本都在自己的进程空间内完成，不存在切换，所以通信速度会较快。也就是说，进程间与线程间分别采用的通信方式，除了种类的区别外，还有速度上的区别。</p>
+<p>另外，进程与线程之间穿插通信的方式，除信号以外其他进程间通信方式都可采用。
+线程有内核态线程与用户级线程，相关知识请参看我的另一篇博文《Linux线程的实质》。</p>
+<p>5).控制方式的异同</p>
+<p>进程与线程的身份标示ID管理方式不一样，进程的ID为pid_t类型，实际为一个int型的变量(也就是说是有限的)：</p>
+<p>/usr/include/unistd.h:260:typedef __pid_t   pid_t;</p>
+<p>/usr/include/bits/types.h:126:# define __STD_TYPE    typedef</p>
+<p>/usr/include/bits/types.h:142:__STD_TYPE  __PID_T_TYPE   __pid_t;</p>
+<p>/usr/include/bits/typesizes.h:53:#define __PID_T_TYPE   __S32_TYPE</p>
+<p>/usr/include/bits/types.h<img class="emoji" alt="100" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAMeklEQVQYGe3BabCdZWEA4Of9znfuvUluErKvQCQKIQgSRVC0SqBIFKUWQStau0w7dmwVZ9rxh3XaHzrTapfp1E470191Wqk6dnRwoYoLuIDKZggGCAnJzb7cm9z1rN/3vj1zT8aEJJibG6w4k+fhnHPO+XW2hyW7WWKagl+xXZzfYl3O5lkMLKTtNAaZOch1dV7f4oJEvYevvZIvb2fGDFKguYTkNHK/AomwncvGWL+fywLrSp4s+Hs84RfYzmV72NDm1oJXF1R1LXiY+xPrDtCL+1FzGrlfggFWtVhaMJTYtZaGo7aydDNvbPHWgnc26YkmXR14dAsN9DQ4cgX7HDVAKLh4lA82ub3F/IhAK3Cgzd6chXXe26K34FHUnEbuBfQU/S2uGeXmyCtLnor8E57SsZlldf6wxYfqLI4mFYGxwOGMSsHbE5eU3Isv6NhJ1mBRkw/VuKPNbJSBrYGNFR7J+d+MrM4NbcYbzDIFuRfAHrIJ5jV4U5t/bXJegQrXRL6Kp56lf4x3NflYgz6kwGhgY8bjFR6qck+Dj0ZuiWxxVJ2+grdMcEfBbB0ZA5FPPcpdz9D8F9JPeDmWRoYLZtxIuJfkF8idpd1Uaqxo8e4WH64zN+mKNArSGGEfNxW8r0GfjsBYxt3jfCxj/xzKRSzfxwUFsxMzdAyQjbKs4MNt+hMCbXy+wjfvpKFjF2Ev1YhENdL7BsK9JL9A7ixspdLiogbvr/H+FjMTQVfK2NXDoQbzxrm+xeW62tg4wica7LmVUscAVyYuLAkZfToi8yrcNspLEzlS4CcZ92CvoyKzZ7BunBBo55Q5yWnkzs4bRvlQnfUF/clzBX6GwWF+q+TGNrmOwPaMT0d23ErpqDYXBRYHhisc1DHGopLfifTpCIyV/Ns4D28gOqrOksSGkkpiRiJEp5eZpi3cMcrHJ7ixYG7yXIFGi6/2cniU1xas0hEYy3igzrfeSstxRrmiZGmiGpmRCJHVTdYkMsSMeyo8tIG645TMTFyQCMgSab/Ty5yhnazdxF+O8JE615TMSk5SZjyER+aztuTSgqquLYn//k2OOEGL8yJVtBL17VxY4T1t+pACYyVfLNjlBJE8MUdXNps1v8dMp5Gbom3kiVcd4oMFN7RZGhEoM0ZQKZmrq1nyH4EdE/xuZG1CoBX4WZMHnGA75+9nbkSgmhHGWdLmxmRSGdhUsvE66k6Q04oM6soqrM7ow4RfIDdFTXoS72tyW0Gvrs2Jeyv0Bt5VmhQzDk7wwBoWHOI1JfN17azwwxsYd7ISSdeMjJdExpos1NXE13oYdAqBMtDSlUqageQ0clNUkBJHsDMwJ/F44q5Z3Jdxc4s/1tXE9/oYa7KhYFU0KQYeq/Idp5BxuMJYRInAWiwpTYoZBwu+FRlzCgXnFVyoK7XY2qDuNHJTlGgk/qGHAwUL69y9nke2cc0Ib21T0TVa8LnE4QY3RJZGVBgPbLqKrU7tkow5uppYUvCSZFIRGEjsvJ7CCQ4ycz8XtzkfAa0aA1+i4TRyU/QKEo7g047aQ3WQV5Vcm0wqA7vr/HQVfWO8LDIzILCnhx2eR4vXRS6KyBhJKLhQVxHY0UvbKYxxYeT6Fr0oAwdyav9OchqZs1BwQZurmszREahV2LiIepX1BYuirshTJU84hW3kE1xXsDwiox6ol1R0jUX+J1FzChNcVHBTMqld4Yl+hk1B7iw0eQ1eG01KOFDylZyy4LWJOToCrcgjNTY5wTYyrG7y0khvQGA4MVLqCkxM8ESNthPsJDvI3IJFulqBhwMNU5A7C3VWl6xOyBiu8I2Sb2eUbS7GDB2Bg1V2v5HCCSIZXh9ZEBEoKlQDc3SVgcHIyG8TneyynDfXCbpabR5B0xRkpmknK1q8rKAaTBoo+cJvMFYQ2ixKVHUE9lU45BTGyeq8LbJY11jGRCDoCLQq7O2n6RSGWdvmDcmkFDhSZ9s+2qYgM00tXp+4okQwaWicjToKQsFCVHQE9lUYcoLtVPu5qsblkT4dgd0ZexB0ZejNnVqThSXLddUyHs4ZfBfRFOSmaZyrI6sTAo2MA7to6ogm9SaCrmZG0wna5Im3lyxMCIjcn7E1crGuSqQfwXEGyNtcM8wNBbmuwZL/6qVminLTsJM1+7m8YFYw6dnEPVVKHclJmom24+yhWufScTYkZuoIHIj8oMp4QUVHIkR6mxSOU2XREW5vsz4i0Ao8vZ8fjFKYotw01Lkt8vJoUkxsrvP1P6Dt1HoCFccZZlbBH9W4OJHruq/CxpzzUerKMG8Br9jB4SrNxIxx1jdZ3+Y8XQcDX1/N+DqSKcqdgWcJWDzM9ZFlOgJjga1v4rDnCo65NPGap2lklIE0xqtbvLegV0fG3sTdO9m2mP7EXl0BK1r8xQhDibGM8wpeF7lYR6CJx8b58jjJGcidgZIQuLnJqsLPbcn4keNkpMQRrECl4PKMDzS4HhOBsuRtbfp1tQJfynnwPbQP8+Qw92Wsj8xJzGxye4ESAcnPldic8cXvsOuTJGcgdwZK8sjViXk6Au3EfQ/xDceZSZH43Bh/WrICocUVLS53TKarkfFIi88MsEPHfCY2860ar6hza6IfWakrmRTRzNgW+MwTfP6TRGcoN0XbyEqWjnN1ZK6OwOM5D95Jw3Eup/k4/9zH8ga3lyxAjkxXQol6hR83+OthHv99kqMCT/bwcexs8L7IAgQEpIzBjB8m7jrCd99P0zQEU7SFvsSdQ/x5waJATPztMH93C8NO4THmJ25q886CqyILE9XAWMZTgW+2+ew4O26m5QSbqTTon2Bug3kleZWlJcOBoT6OVBi5loZpyk1RnSo2RObq+ga+/llGPI91HN7MV0oeTMwt6I/0ZbQqDPVwaJChdxCdwlpKjGDkr9g1k3AlPUMU76Hw/+UAYRPn/4SB7xO/z9j3+LMfMMsZeifBi0huCurkFS4omImQMYRtr2PCGfoCyQn2cd4cWrOoPc21FV6CRsHcKturbJ/HwRFWJVor2R4ovQByU9OTc2kkTwgcqDBqGvayrMHqBmtKKgVz97NsgPQgoyNck7Ey0Uz0Y29k936GAisS7UNsepLvLmDTYmrOQm4K2vSUXIqqjshPccBpjNA3zMomS2osK1i+lwsDa3FlpBKZn6gUugokJF2BS3RUEHWVNAp+Y4R/xLedhdwUtKmULEtkgUORbzfZ4wSHCDXmtVk+wZJtrMp4VeLSgrUFi0tEJATPK2UUCLpSpMQ4jpT0FrwssupThI+QTFNuCiKVxAKECg9ENt9A3XF2kQ+xss0tuLHg2hbzCyQnSRkttJBhDGWigYnAkcAYgq4UqGOghycy5hTsrfMQApJpyk1BQU9kDSoZG3sYdLK5Je8Y52/a5AiOKdBCK1APDAb2V9iHHjxUYbTJjjG21hgMNBcTHZN0JBIC0nUkZyk3BRklBrFgnB8eYNAJAilSFJS6SsRALWMgsCnj6cjPBnl0AcOICCiREBOxRXo3yfNLXiC5KahQD3ynQhYYuovSyYYj35zBW1rUKjxRMtBkc2BXLxOBdqC9neYtJC8CuSnoYbzNZ6tUMw59jeQEK4mPsbXCnwRihVqi2aD+ZtpOYwf9GdW5jA7Tj54LGNrDzJWMO2oXs1cyEYheAMEUPUPPGCsDe9bRNE2Jym5WtFnaZn1gJNHX5pIaKxM96CnJMprIE7VedmNWwZISOQf6eKaXB+fy4yWMmobgl2gXyxLL61zZ4Io2/ZFKZD7mBFYnGsgxv2SOjoSE4JiMGnoSeUIgZQxiIPDd2fznZWxyhnIvkERlD5cULKpxyQTL93NhYiEuTrw0kiVEJCRdSVfwXMkxkZnBpFrGYQyX9GF2xswm0TTkpmmE6hjLG5xfZ+lPOT+xDksjlxcsjSiRdAUniYEiUAbGcRjjkYMoA/0luwOFjkAjMJRzIGMw0ptoRTbdzxbTEJyBXeSJRXUWN1mTuDqxrmBNybI2IhKCYwIt1ANjiSbKyLOBI4FWRq3CIeyqMNTkmYL2TBY8xqYmTR0Jd9LyAgqmaAs5rmyxoeTaFle1WFQ6SRFoopEYCQwFdufsDwwkDgea27h7iHrEnTT9iuSmKNKb+MAotxXMdkxEGw2MZgxk7M3YHvlRjcdG2LeCtuPcQfIikJuigoThRAM9aKGdMRJ4JvDjyP0TPNxPKxBRJuI7iF6kclNXj3yiFwVzGtzT4KmcRs5YL3U0b6Ll10hwhh5lSZusxsiDND5KdM4555xzzjnnnHPOOef8uvk/7dd1AcNWLGwAAAAASUVORK5CYII=" />#define   __S32_TYPE      int</p>
+<p>在全系统中，进程ID是唯一标识，对于进程的管理都是通过PID来实现的。每创建一个进程，内核去中就会创建一个结构体来存储该进程的全部信息：</p>
+<p>注：下述代码来自 Linux内核3.18.1</p>
+<p>include/linux/sched.h:1235:struct task_struct {</p>
+<pre><code>    volatile long state;    /* -1 unrunnable, 0 runnable, &gt;0 stopped */
+
+    void *stack;
+</code></pre>
+<p>...</p>
+<pre><code>    pid_t pid;
+
+    pid_t tgid;
+</code></pre>
+<p>...</p>
+<p>};</p>
+<p>每一个存储进程信息的节点也都保存着自己的PID。需要管理该进程时就通过这个ID来实现(比如发送信号)。当子进程结束要回收时(子进程调用exit()退出或代码执行完)，需要通过wait()系统调用来进行，未回收的消亡进程会成为僵尸进程，其进程实体已经不复存在，但会虚占PID资源，因此回收是有必要的。</p>
+<p>线程的ID是一个long型变量：</p>
+<p>/usr/include/bits/pthreadtypes.h:60:typedef unsigned long int pthread_t;</p>
+<p>它的范围大得多，管理方式也不一样。线程ID一般在本进程空间内作用就可以了，当然系统在管理线程时也需要记录其信息。其方式是，在内核创建一个内核态线程与之对应，也就是说每一个用户创建的线程都有一个内核态线程对应。但这种对应关系不是一对一，而是多对一的关系，也就是一个内核态线程可以对应着多个用户级线程。还是请读者参看《Linux线程的实质》普及相关概念。此处贴出blog地址：</p>
+<p>http://my.oschina.net/cnyinlinux/blog/367910</p>
+<p>对于线程而言，若要主动终止需要调用pthread_exit() ，主线程需要调用pthread_join()来回收(前提是该线程没有被detached，相关概念请查阅线程的“分离属性”)。像线发送线程信号也是通过线程ID实现的。</p>
+<p>6).资源管理方式的异同</p>
+<p>进程本身是资源分配的基本单位，因而它的资源都是独立的，如果有多进程间的共享资源，就要用到进程间的通信方式了，比如共享内存。共享数据就放在共享内存去，大家都可以访问，为保证数据写入的安全，加上信号量一同使用。一般而言，共享内存都是和信号量一起使用。消息队列则不同，由于消息的收发是原子操作，因而自动实现了互斥，单独使用就是安全的。</p>
+<p>线程间要使用共享资源不需要用共享内存，直接使用全局变量即可，或者malloc()动态申请内存。显得方便直接。而且互斥使用的是同一进程空间内的互斥量，所以效率上也有优势。</p>
+<p>实际中，为了使程序内资源充分规整，也都采用共享内存来存储核心数据。不管进程还是线程，都采用这种方式。原因之一就是，共享内存是脱离进程的资源，如果进程发生意外终止的话，共享内存可以独立存在不会被回收(是否回收由用户编程实现)。进程的空间在进程崩溃的那一刻也被系统回收了。虽然有coredump机制，但也只能是有限的弥补。共享内存在进程down之后还完整保存，这样可以拿来分析程序的故障原因。同时，运行的宝贵数据没有丢失，程序重启之后还能继续处理之前未完成的任务，这也是采用共享内存的又一大好处。</p>
+<p>总结之，进程间的通信方式都是脱离于进程本身存在的，是全系统都可见的。这样一来，进程的单点故障并不会损毁数据，当然这不一定全是优点。比如，进程崩溃前对信号量加锁，崩溃后重启，然后再次进入运行状态，此时直接进行加锁，可能造成死锁，程序再也无法继续运转。再比如，共享内存是全系统可见的，如果你的进程资源被他人误读误写，后果肯定也是你不想要的。所以，各有利弊，关键在于程序设计时如何考量，技术上如何规避。这说起来又是编程技巧和经验的事情了。</p>
+<p>7).个体间辈分关系的迥异</p>
+<p>进程的备份关系森严，在父进程没有结束前，所有的子进程都尊从父子关系，也就是说A创建了B，则A与B是父子关系，B又创建了C，则B与C也是父子关系，A与C构成爷孙关系，也就是说C是A的孙子进程。在系统上使用pstree命令打印进程树，可以清晰看到备份关系。</p>
+<p>多线程间的关系没有那么严格，不管是父线程还是子线程创建了新的线程，都是共享父线程的资源，所以，都可以说是父线程的子线程，也就是只存在一个父线程，其余线程都是父线程的子线程。</p>
+<p>8).进程池与线程池的技术实现差别</p>
+<p>我们都知道，进程和线程的创建时需要时间的，并且系统所能承受的进程和线程数也是有上限的，这样一来，如果业务在运行中需要动态创建子进程或线程时，系统无法承受不能立即创建的话，必然影响业务。综上，聪明的程序员发明了一种新方法——池。</p>
+<p>在程序启动时，就预先创建一些子进程或线程，这样在需要用时直接使唤。这就是老人口中的“多生孩子多种树”。程序才开始运行，没有那么多的服务请求，必然大量的进程或线程空闲，这时候一般让他们“冬眠”，这样不耗资源，要不然一大堆孩子的口食也是个负担啊。对于进程和线程而言，方式是不一样的。另外，当你有了任务，要分配给那些孩子的时候，手段也不一样。下面就分别来解说。
+<strong>进程池</strong>
+首先创建了一批进程，就得管理，也就是你得分开保存进程ID，可以用数组，也可用链表。建议用数组，这样可以实现常数内找到某个线程，而且既然做了进程池，就预先估计好了生产多少进程合适，一般也不会再动态延展。就算要动态延展，也能预估范围，提前做一个足够大的数组。不为别的，就是为了快速响应。本来错进程池的目的也是为了效率。</p>
+<p>接下来就要让闲置进程冬眠了，可以让他们pause()挂起，也可用信号量挂起，还可以用IPC阻塞，方法很多，分析各自优缺点根据实际情况采用就是了。</p>
+<p>然后是分配任务了，当你有任务的时候就要让他干活了。唤醒了进程，让它从哪儿开始干呢？肯定得用到进程间通信了，比如信号唤醒它，然后让它在预先指定的地方去读取任务，可以用函数指针来实现，要让它干什么，就在约定的地方设置代码段指针。这也只是告诉了它怎么干，还没说干什么(数据条件)，再通过共享内存把要处理的数据设置好，这也子进程就知道怎么做了。干完之后再来一次进程间通信然后自己继续冬眠，父进程就知道孩子干完了，收割成果。</p>
+<p>最后结束时回收子进程，向各进程发送信号唤醒，改变激活状态让其主动结束，然后逐个wait()就可以了。</p>
+<p><strong>线程池</strong>
+线程池的思想与上述类似，只是它更为轻量级，所以调度起来不用等待额外的资源。
+要让线程阻塞，用条件变量就是了，需要干活的时候父线程改变条件，子线程就被激活。
+线程间通信方式就不用赘述了，不用繁琐的通信就能达成，比起进程间效率要高一些。
+线程干完之后自己再改变条件，这样父线程也就知道该收割成果了。
+整个程序结束时，逐个改变条件并改变激活状态让子线程结束，最后逐个回收即可。</p>
+<h2 id="13-%E7%BD%91%E7%BB%9Ctcp">1.3. 网络TCP</h2>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="131-osi%E7%BD%91%E8%B7%AF%E5%88%86%E5%B1%82">1.3.1. OSI网路分层</h3>
+<p><img src="https://github.com/lgjlife/Java-Study/pic/tcp/osi.png" alt=""></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>层</th>
+<th>说明</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7</td>
+<td>应用层</td>
+<td>针对特定应用的协议</td>
+<td>电子邮件，远程登录，文件传输等。HTTP，DNS，DHCP，SSH，FTP</td>
+</tr>
+<tr>
+<td>6</td>
+<td>表示层</td>
+<td>设备固有数据格式和网络标准数据格式的转换</td>
+<td>接收不同表现形式的信息，比如文字，图片，声音等</td>
+</tr>
+<tr>
+<td>5</td>
+<td>会话层</td>
+<td>通信管理，负责建立连接和断开通信连接，管理传输层以下的分层</td>
+<td>何时建立连接，何时断开连接，保持多久的连接</td>
+</tr>
+<tr>
+<td>4</td>
+<td>传输层</td>
+<td>管理两个节点之间的可靠传输</td>
+<td>TCP，UDP，SCYP，DCCP</td>
+</tr>
+<tr>
+<td>3</td>
+<td>网络层</td>
+<td>地址管理和路由选择</td>
+<td>如何通过IP地址寻找目标主机，IPV4,IPV6,ARP地址解析协议</td>
+</tr>
+<tr>
+<td>2</td>
+<td>数据链路层</td>
+<td>互联设备之间传送和识别数据帧</td>
+<td>数据帧和比特位之间的转换</td>
+</tr>
+<tr>
+<td>1</td>
+<td>物理层</td>
+<td>数据比特流在实际物理设备上的传输，比如光纤。负责比特流和物理电压之间的转换</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><img src="https://github.com/lgjlife/Java-Study/blob/master/pic/tcp/send.png?raw=true" alt="">
+在数据发送时，下层不会改变上层的PDU（消息），只会在上层上添加头部或者尾部信息。</p>
+<ul>
+<li>分层优点
+<ul>
+<li>解耦，每层内部协议改变，不影响其他层。</li>
+<li>开发方便，每层负责自己的协议即可。</li>
+</ul>
+</li>
+<li>传输方式分类
+<ul>
+<li>有连接型
+<ul>
+<li>发送数据前，两个通信端必须建立连接的通信链路(TCP)</li>
+</ul>
+</li>
+<li>无连接型
+<ul>
+<li>不要求建立和断开连接，发送端任何时候都可以发送数据(UDP)</li>
+</ul>
+</li>
+<li>根据接收端数据分类
+<ul>
+<li>单播：一对一通信</li>
+<li>多播:一对多通信，组播通信</li>
+<li>任播:特定的多台主机中选出一台进行通信</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="132-ipinternet-protocol%E7%BD%91%E9%99%85%E5%8D%8F%E8%AE%AE">1.3.2. IP(Internet Protocol,网际协议)</h3>
+<h4 id="1321-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5">1.3.2.1. 基本概念</h4>
+<p>IP协议负责将数据包发送给最终的目标主机。
+通信链路层是负责两个直连两个设备之间的通信，而IP是负责两个没有直连设备之间的通信。每个计算机都有自己的IP地址，发送端在发送数据之前要先确定接收者是属于哪台计算机。也就是ARP地址解析协议，通过广播发送请求，有回应的是便是目标主机，然后获取目标主机的网卡地址，缓在发送端，下次发送的时候，就可以从缓存中获取到目标主机的网卡地址。</p>
+<ul>
+<li>IP协议是面向无连接的，通信可靠性由上层解决
+<ul>
+<li>一是为了简化</li>
+<li>二是为了快速</li>
+</ul>
+</li>
+</ul>
+<h4 id="1322-ip%E5%9C%B0%E5%9D%80%E5%AE%9A%E4%B9%89">1.3.2.2. IP地址定义</h4>
+<ul>
+<li>
+<p>IPV4</p>
+<ul>
+<li>使用32位来表示，每8位一组，中间使用&quot;.&quot;分隔</li>
+<li>最大值2的32次方，也就是42.94亿，无法满足全球用户</li>
+<li>组成
+<ul>
+<li>由网络标识(网络地址)和主机标识(主机地址)组成</li>
+<li>192.168.1.10/24</li>
+<li>&quot;/24&quot;表示从第一位到24位是网络标识，后面的为主机标识</li>
+<li>路由器通过比较网络标识决定如何转发</li>
+<li>同一个网络标识作为一个网段</li>
+</ul>
+</li>
+<li>IPV4地址的分类
+<ul>
+<li>A类
+<ul>
+<li>0开头的地址</li>
+<li>第一位到第八都是它的网络标识：0.0.0.0～127.0.0.0</li>
+<li>A类地址后24位为主机标识，也就是A类网段可以容纳16777214个主机</li>
+</ul>
+</li>
+<li>B类
+<ul>
+<li>&quot;10&quot;开头的地址</li>
+<li>1～16位是它的网络标识，128.0.0.1～191.255.0.0是B类的网络地址</li>
+<li>后16位是主机标识，所以B类一个网段可以容纳的主机最大为65534</li>
+</ul>
+</li>
+<li>C类
+<ul>
+<li>&quot;110&quot;开头的地址</li>
+<li>1~24位是网络标识，192.168.0.0～239.255.255.0</li>
+<li>主机标识为后8位，一个网段最大主机数为254个</li>
+</ul>
+</li>
+<li>D类
+<ul>
+<li>&quot;1110&quot;开头的地址</li>
+<li>1~32位是它的网络标识，224.0.0.0～239.255.255.255</li>
+<li>没有主机标识，常被用于多播</li>
+</ul>
+</li>
+<li>IP主机地址不能全部为0或者全闭为1
+<ul>
+<li>全部为0表示IP地址或者网络地址不可获知的情况下才使用，因此上面每个都少了两个IP地址。</li>
+<li>全部为1通常用作广播地址</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>广播
+<ul>
+<li>广播主机地址全部设置为1</li>
+<li>本地广播:本网络内的广播</li>
+<li>直接广播:不同网络之间的广播</li>
+</ul>
+</li>
+<li>IP多播
+<ul>
+<li>广播是将数据发送给网络上的所有计算机，由于不是目标的主机也会收到消息，因此造成通讯效率差。</li>
+<li>多播是放送给特定组的主机</li>
+<li>应用场景:电视会议中的1对多</li>
+<li>多播采用D类地址</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>IPV4首部</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>长度(bit)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>版本 Version</td>
+<td>4</td>
+</tr>
+<tr>
+<td>首部长度 IHL</td>
+<td>4</td>
+</tr>
+<tr>
+<td>区分服务 Type of Service</td>
+<td>8</td>
+</tr>
+<tr>
+<td>总长度 Total Length</td>
+<td>32</td>
+</tr>
+<tr>
+<td>标识 Identification</td>
+<td>16</td>
+</tr>
+<tr>
+<td>标志 Flags</td>
+<td>3</td>
+</tr>
+<tr>
+<td>片偏移 Fragment Offset</td>
+<td>29</td>
+</tr>
+<tr>
+<td>生存时间 Time To Live</td>
+<td>8</td>
+</tr>
+<tr>
+<td>协议 Protocal</td>
+<td>8</td>
+</tr>
+<tr>
+<td>首部校验和 Header CheckSum</td>
+<td>32</td>
+</tr>
+<tr>
+<td>源地址 Source Address</td>
+<td>32</td>
+</tr>
+<tr>
+<td>目标地址 Destination Adress</td>
+<td>32</td>
+</tr>
+<tr>
+<td>可选字段 Options</td>
+<td>24</td>
+</tr>
+<tr>
+<td>填充 Padding</td>
+<td>8</td>
+</tr>
+<tr>
+<td>实际的数据部分Data</td>
+<td>~</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>IPV6
+<ul>
+<li>IPV6地址
+<ul>
+<li>长度为128位，16位为1组，中间使用::分隔</li>
+<li>二进制表示
+<ul>
+<li>10101010:10101010:10101010:10101010:10101010:10101010:10101010:10101010</li>
+</ul>
+</li>
+<li>16进制表示
+<ul>
+<li>AABB:AABB:AABB:AABB:AABB:AABB:AABB:AABB</li>
+</ul>
+</li>
+<li>省略表示，中间连续多个0的,使用::替换
+<ul>
+<li>AABB:0:0:0:0:0:0:AABB</li>
+<li>AABB::AABB</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>未定义</td>
+<td>0000...0000（128比特位）</td>
+<td>::/128</td>
+</tr>
+<tr>
+<td>环回地址</td>
+<td>0000...0001</td>
+<td>::1/128</td>
+</tr>
+<tr>
+<td>唯一本地地址</td>
+<td>1111 110</td>
+<td>FC00::/7</td>
+</tr>
+<tr>
+<td>链路本地单播地址</td>
+<td>1111 1110 10</td>
+<td>FE8O::/10</td>
+</tr>
+<tr>
+<td>多播地址</td>
+<td>11111111</td>
+<td>FF00::/8</td>
+</tr>
+<tr>
+<td>全局单播地址</td>
+<td>其他</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="1323-ip%E5%8D%8F%E8%AE%AE%E7%9B%B8%E5%85%B3%E6%8A%80%E6%9C%AF">1.3.2.3. IP协议相关技术</h4>
+<h5 id="13231-dns">1.3.2.3.1. DNS</h5>
+<p>TCP/IP网络中，每一个互联的设备都有其唯一的IP地址，都可以通过IP地址访问到对方。但是IP地址不便于记忆，因此产生了一种方式，就是给每台计算机赋予唯一的主机名，可以通过主机名访问该主机名对应的IP地址的计算机。在这个背景下，便产生了一个可以有效管理主机名和IP地址之间对应关系的系统，那就是DNS系统。</p>
+<p><strong>域名</strong>:域名是为了识别主机名称和组织机构名称的一种具有分层的名称。比如:www.baidu.com
+<img src="https://github.com/lgjlife/Java-Study/blob/master/pic/tcp/yuming.png?raw=true" alt="">
+<strong>域名服务器</strong>:域名服务器是指管理域名的主机和相应的软件，它可以管理所在分层的域的相关信息。根部所设置的DNS叫做根域名服务器。他对DNS的检索起着至关重要的作用。根域名服务器注册着根以下第一层域名服务器的IP地址。也就是说上一层注册着下一层的域名服务器的IP地址。根据每个域名服务器所管理的域名，如果下面再没有其他分层，就可以自由的指定主机名称或者子网名称。如果想修改分层的域名名称或者想重新修改域名服务器的IP地址，还必须向其上层的域名服务器进行追加或修改。
+由于是分层设计，如果某一台域名服务器宕机，那么针对该域名的查询将会失效，一般设置两台以上域名服务器，以提高容灾能力，第一个查询失败，则转到另一个。</p>
+<p><strong>域名查询</strong></p>
+<ul>
+<li>进行DNS查询的主机和软件叫做DNS解析器</li>
+<li>查询过程</li>
+</ul>
+<p><img src="https://github.com/lgjlife/Java-Study/blob/master/pic/tcp/dns-search.png?raw=true" alt="">
+解析器为了查询IP地址，向域名服务器查询，接收这个请求的域名服务器先在自己的数据库中查找，没有查找到则向上一级查找，直至遍历完查找到，查找到则将数据缓存起来，下次使用可以从缓存里面获取。</p>
+<h5 id="13232-arp">1.3.2.3.2. ARP</h5>
+<p>DNS是通过访问名称获取到IP地址，但是有进行访问还需要获取到这个IP地址对应的MAC地址。</p>
+<ul>
+<li>查找流程:
+<ul>
+<li>主机A访问主机B</li>
+<li>主机A广播发送一个ARP请求包，这个包包括主机B的IP地址</li>
+<li>这个广播包将会被链路上所有的计算机接收并解析</li>
+<li>如果请求包中的IP地址和自己的IP地址一致，那么这个节点将会把自己的MAC地址塞入ARP响应包并返回给主机A</li>
+<li>主机A获取到主机B的MAC地址，就可以和主机B进行通信了。</li>
+<li>主机A会将主机B的MAC地址进行缓存到本地，以供下次使用</li>
+<li>这个缓存会按照一定机制被清除，也就是有过期时间。同时若请求失败，也会重新发起获取MAC地址请求。</li>
+</ul>
+</li>
+</ul>
+<h3 id="133-%E4%BC%A0%E8%BE%93%E5%B1%82">1.3.3. 传输层</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h4 id="1331-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5">1.3.3.1. 基本概念</h4>
+<h5 id="13311-tcp%E5%92%8Cudp%E5%B7%AE%E5%88%AB">1.3.3.1.1. TCP和UDP差别</h5>
+<p>TCP和UDP是传输层的两个具有代表性的传输层协议。TCP提供可靠的通信传输。UDP常被用于广播和细节控制交给应用的通信传输，比如可靠性保证，失败重传等策略由应用实现。
+IP首部字段有一个字段标明传输层使用的是UDP还是TCP或者其他协议。</p>
+<ul>
+<li>
+<p>TCP</p>
+<ul>
+<li>面向连接的，可靠的流协议。流指不间断的数据结构。</li>
+<li>在发送数据之前，必须建立连接</li>
+<li>提供复杂的功能，比如顺序控制，重发机制，流量控制</li>
+<li>应用场景是需要可靠性传输的场景</li>
+</ul>
+</li>
+<li>
+<p>UDP</p>
+<ul>
+<li>不具有可靠性的数据报协议</li>
+<li>不需要建立连接就能发送数据</li>
+<li>没有TCP复杂的辅助功能，需要应用自己实现</li>
+<li>应用场景是告诉传输和实行性有较高要求的场景，比如广播，IP电话等</li>
+</ul>
+</li>
+<li>
+<p>套接字(Socket)</p>
+<ul>
+<li>操作系统提供的网络编程接口</li>
+</ul>
+</li>
+<li>
+<p>HTTP或者TCP中常出现的长连接，都是基于TCP来实现，也就是创建TCP连接以后不关闭，一直保持连接状态，下次发送数据的时候就可以不用重新建立连接，毕竟建立TCP连接是很费时的事情，不再通信时再关闭连接。</p>
+</li>
+</ul>
+<h5 id="13312-%E7%AB%AF%E5%8F%A3">1.3.3.1.2. 端口</h5>
+<p>数据链路中的MAC地址: 识别同一链路中的不同计算机
+IP中的IP地址:识别TCP/IP网络中互联的主机和路由器
+端口号:用于识别同一台计算机中不同的应用程序</p>
+<p>端口号的范围万为0-65535之间
+（1）公认端口（WellKnownPorts）：从0到1023，它们紧密绑定（binding）于一些服务。通常这些端口的通讯明确表明了某种服务的协议。例如：80端口实际上总是HTTP通讯。
+（2）注册端口（RegisteredPorts）：从1024到49151。它们松散地绑定于一些服务。也就是说有许多服务绑定于这些端口，这些端口同样用于许多其它目的。例如：许多系统处理动态端口从1024左右开始。
+（3）动态和/或私有端口（Dynamicand/orPrivatePorts）：从49152到65535。理论上，不应为服务分配这些端口。实际上，机器通常从1024起分配动态端口。但也有例外：SUN的RPC端口从32768开始</p>
+<h4 id="1332-udp">1.3.3.2. UDP</h4>
+<h4 id="1333-tcp">1.3.3.3. TCP</h4>
+<p>TCP通信中的四元组:源IP，源端口，目标IP，目标端口</p>
+<h5 id="13331-%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86">1.3.3.3.1. 连接管理</h5>
+<p><img src="https://github.com/lgjlife/Java-Study/blob/master/pic/tcp/tcp-connect.png?raw=true" alt=""></p>
+<ul>
+<li>
+<p>三次连接</p>
+<ul>
+<li>客户端发送一个SYN报文，并指明自己想要连接的端口号和它的客户端初始序列号(ISN(C))</li>
+<li>服务端返回响应报文，并带上它的初始序列号(SYN(S)),ACK为客户端的序列号+1</li>
+<li>确认服务器的响应报文，回复Seq和ACK如图</li>
+</ul>
+</li>
+<li>
+<p>四次断开</p>
+<ul>
+<li>客户端发送给FIN报文请求关闭</li>
+<li>服务端响应客户端关闭请求</li>
+<li>服务端发送FIN报文请求关闭</li>
+<li>客户端响应服务端关闭请求</li>
+</ul>
+</li>
+<li>
+<p>SYN攻击
+在三次握手过程中，服务器发送SYN-ACK之后，收到客户端的ACK之前的TCP连接称为半连接(half-open connect).此时服务器处于Syn_RECV状态.当收到ACK后，服务器转入ESTABLISHED状态.Syn攻击就是 攻击客户端 在短时间内伪造大量不存在的IP地址，向服务器不断地发送syn包，服务器回复确认包，并等待客户的确认，由于源地址是不存在的，服务器需要不断的重发直 至超时，这些伪造的SYN包将长时间占用未连接队列，正常的SYN请求被丢弃，目标系统运行缓慢，严重者引起网络堵塞甚至系统瘫痪。Syn攻击是一个典型的DDOS攻击。检测SYN攻击非常的方便，当你在服务器上看到大量的半连接状态时，特别是源IP地址是随机的，基本上可以断定这是一次SYN攻击.在Linux下可以如下命令检测是否被Syn攻击netstat -n -p TCP | grep SYN_RECV一般较新的TCP/IP协议栈都对这一过程进行修正来防范Syn攻击，修改tcp协议实现。主要方法有SynAttackProtect保护机制、SYN cookies技术、增加最大半连接和缩短超时时间等.
+但是不能完全防范syn攻击</p>
+</li>
+<li>
+<p>为什么要进行三次握手</p>
+<ul>
+<li>假如连接时没有第三次ACK回复。当客户端第一次SYN请求时，由于网络拥堵，客户端检测超时重新发送SYN请求，第二次服务端收到并回复ACK，此时连接建立。后来又收到客户端的第一次请求，服务端以为是新的请求，返回ACK，但是客户端并没有发新的连接请求，所以会忽略服务端的ACK，但是服务端认为这个连接是存在的，其实是一个无效连接，因此会占用服务端的连接资源。
+假如有三次握手，服务端收到客户端的第一次请求并返回ACK之后，即使客户端忽略了该ACK响应，但是服务端超时未收到客户端的ACK将会断开本次连接。</li>
+</ul>
+</li>
+<li>
+<p>为什么需要四次挥手</p>
+<ul>
+<li>这是因为服务端在LISTEN状态下，收到建立连接请求的SYN报文后，把ACK和SYN放在一个报文里发送给客户端。而关闭连接时，当收到对方的FIN报文时，仅仅表示对方不再发送数据了但是还能接收数据，己方也未必全部数据都发送给对方了，所以己方可以立即close，也可以发送一些数据给对方后，再发送FIN报文给对方来表示同意现在关闭连接，因此，己方ACK和FIN一般都会分开发送.</li>
+</ul>
+</li>
+</ul>
+<p><strong>连接时的11种状态</strong></p>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CLOSED</td>
+<td>初始状态，表示TCP连接是“关闭着的”或“未打开的”。</td>
+</tr>
+<tr>
+<td>LISTEN</td>
+<td>表示服务器端的某个SOCKET处于监听状态，可以接受客户端的连接。</td>
+</tr>
+<tr>
+<td>SYN_RCVD</td>
+<td>表示服务器接收到了来自客户端请求连接的SYN报文。在正常情况下，这个状态是服务器端的SOCKET在建立TCP连接时的三次握手会话过程中的一个中间状态，很短暂，基本上用netstat很难看到这种状态，除非故意写一个监测程序，将三次TCP握手过程中最后一个ACK报文不予发送。当TCP连接处于此状态时，再收到客户端的ACK报文，它就会进入到ESTABLISHED 状态。</td>
+</tr>
+<tr>
+<td>SYN_SENT</td>
+<td>这个状态与SYN_RCVD 状态相呼应，当客户端SOCKET执行connect()进行连接时，它首先发送SYN报文，然后随即进入到SYN_SENT 状态，并等待服务端的发送三次握手中的第2个报文。SYN_SENT 状态表示客户端已发送SYN报文。</td>
+</tr>
+<tr>
+<td>ESTABLISHED</td>
+<td>表示TCP连接已经成功建立。</td>
+</tr>
+<tr>
+<td>FIN_WAIT_1</td>
+<td>这个状态得好好解释一下，其实FIN_WAIT_1 和FIN_WAIT_2 两种状态的真正含义都是表示等待对方的FIN报文。而这两种状态的区别是：FIN_WAIT_1状态实际上是当SOCKET在ESTABLISHED状态时，它想主动关闭连接，向对方发送了FIN报文，此时该SOCKET进入到FIN_WAIT_1 状态。而当对方回应ACK报文后，则进入到FIN_WAIT_2 状态。当然在实际的正常情况下，无论对方处于任何种情况下，都应该马上回应ACK报文，所以FIN_WAIT_1 状态一般是比较难见到的，而FIN_WAIT_2 状态有时仍可以用netstat看到。</td>
+</tr>
+<tr>
+<td>FIN_WAIT_2</td>
+<td>上面已经解释了这种状态的由来，实际上FIN_WAIT_2状态下的SOCKET表示半连接，即有一方调用close()主动要求关闭连接。注意：FIN_WAIT_2 是没有超时的（不像TIME_WAIT 状态），这种状态下如果对方不关闭（不配合完成4次挥手过程），那这个 FIN_WAIT_2 状态将一直保持到系统重启，越来越多的FIN_WAIT_2 状态会导致内核crash。</td>
+</tr>
+<tr>
+<td>TIME_WAIT</td>
+<td>表示收到了对方的FIN报文，并发送出了ACK报文。 TIME_WAIT状态下的TCP连接会等待2*MSL（Max Segment Lifetime，最大分段生存期，指一个TCP报文在Internet上的最长生存时间。每个具体的TCP协议实现都必须选择一个确定的MSL值，RFC 1122建议是2分钟，但BSD传统实现采用了30秒，Linux可以cat /proc/sys/net/ipv4/tcp_fin_timeout看到本机的这个值），然后即可回到CLOSED 可用状态了。如果FIN_WAIT_1状态下，收到了对方同时带FIN标志和ACK标志的报文时，可以直接进入到TIME_WAIT状态，而无须经过FIN_WAIT_2状态。（这种情况应该就是四次挥手变成三次挥手的那种情况）</td>
+</tr>
+<tr>
+<td>CLOSING</td>
+<td>这种状态在实际情况中应该很少见，属于一种比较罕见的例外状态。正常情况下，当一方发送FIN报文后，按理来说是应该先收到（或同时收到）对方的ACK报文，再收到对方的FIN报文。但是CLOSING 状态表示一方发送FIN报文后，并没有收到对方的ACK报文，反而却也收到了对方的FIN报文。什么情况下会出现此种情况呢？那就是当双方几乎在同时close()一个SOCKET的话，就出现了双方同时发送FIN报文的情况，这是就会出现CLOSING 状态，表示双方都正在关闭SOCKET连接。</td>
+</tr>
+<tr>
+<td>CLOSE_WAIT</td>
+<td>表示正在等待关闭。怎么理解呢？当对方close()一个SOCKET后发送FIN报文给自己，你的系统毫无疑问地将会回应一个ACK报文给对方，此时TCP连接则进入到CLOSE_WAIT状态。接下来呢，你需要检查自己是否还有数据要发送给对方，如果没有的话，那你也就可以close()这个SOCKET并发送FIN报文给对方，即关闭自己到对方这个方向的连接。有数据的话则看程序的策略，继续发送或丢弃。简单地说，当你处于CLOSE_WAIT 状态下，需要完成的事情是等待你去关闭连接。</td>
+</tr>
+<tr>
+<td>LAST_ACK</td>
+<td>当被动关闭的一方在发送FIN报文后，等待对方的ACK报文的时候，就处于LAST_ACK 状态。当收到对方的ACK报文后，也就可以进入到CLOSED 可用状态了。</td>
+</tr>
+</tbody>
+</table>
+<h5 id="13332-%E8%B6%85%E6%97%B6%E9%87%8D%E4%BC%A0%E6%9C%BA%E5%88%B6">1.3.3.3.2. 超时重传机制</h5>
+<h5 id="13333-%E6%95%B0%E6%8D%AE%E6%B5%81%E5%92%8C%E7%AA%97%E5%8F%A3%E6%9C%BA%E5%88%B6">1.3.3.3.3. 数据流和窗口机制</h5>
+<h5 id="13334-%E9%98%BB%E5%A1%9E%E6%8E%A7%E5%88%B6">1.3.3.3.4. 阻塞控制</h5>
+<h2 id="14-%E7%BD%91%E7%BB%9Chttp">1.4. 网络HTTP</h2>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="141-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5">1.4.1. 基本概念</h3>
+<h4 id="1411-%E8%AE%BF%E9%97%AE%E4%B8%80%E4%B8%AA%E7%BD%91%E7%AB%99%E7%9A%84%E6%B5%81%E7%A8%8B">1.4.1.1. 访问一个网站的流程</h4>
+<ul>
+<li>输入网址</li>
+<li>DNS域名解析服务解析域名，获取域名对应的服务器IP</li>
+<li>ARP地址解析协议根据IP查找服务端的MAC地址</li>
+<li>TCP 3次连接流程，客户端和服务端建立连接</li>
+<li>连接建立之后，客户端发送请求</li>
+<li>服务端收到请求之后，进行业务处理，根据请求返回客户端的数据。</li>
+<li>客户端收到服务端响应，渲染页面</li>
+<li>如果是短连接，客户端将发送关闭连接请求。也就是四次挥手。</li>
+</ul>
+<h4 id="1412-%E5%AA%92%E4%BD%93%E7%B1%BB%E5%9E%8Bmime">1.4.1.2. 媒体类型(MIME)</h4>
+<ul>
+<li>因特网上有数千种不同的数据类型，http会给每种要通过web传输的对象都打上一个名为MIME类型（MIME type）的数据格式标签</li>
+<li>web服务器会为所有http对象数据附加一个MIME类型。</li>
+<li>当web浏览器从服务器中取回一个对象时，会去查看相关的MIME类型，看看他们是否知道如何处理这个对象。</li>
+<li>大多数浏览器都可以处理数百种常见的对象类型：显示图片文件、解析并格式化html文件等等。</li>
+<li>MIME类型是一种文本标记，表示一种主要的对象类型和一个特定的子类型，中间由一个斜杠来分割。</li>
+</ul>
+<h3 id="142-url%E5%92%8C%E8%B5%84%E6%BA%90">1.4.2. URL和资源</h3>
+<p><a href="#menu" style="float:right">目录</a>
+URI是一类更通用的资源标识符，URL是它的一个子集。URI由两个子集URL和URN构成。URL通过描述资源的位置类标识资源。URN则通过名字来识别。</p>
+<p>URI = Universal Resource Identifier 统一资源标志符
+URL = Universal Resource Locator 统一资源定位符
+URN = Universal Resource Name 统一资源名称</p>
+<ul>
+<li>URL
+<ul>
+<li>第一部分就是访问资源所用的协议，比如Http,ftp</li>
+<li>第二部分就是资源所在的服务器网站，比如www.baidu.com</li>
+<li>第三部分，资源在服务器中的位置，比如 /xxx/xx.pic</li>
+</ul>
+</li>
+</ul>
+<p>目前，基本所有的URI都为URL，URN还在实验阶段。</p>
+<p>URL通用格式：</p>
+<pre class="hljs"><code><div>&lt;scheme&gt;://&lt;user&gt;:&lt;password&gt;@&lt;host&gt;:port/path;&lt;param&gt;?&lt;query&gt;#&lt;frag&gt;
+</div></code></pre>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>描述</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>方案</td>
+<td>访问资源时的协议</td>
+<td>无</td>
+</tr>
+<tr>
+<td>用户</td>
+<td>用户名</td>
+<td>匿名</td>
+</tr>
+<tr>
+<td>密码</td>
+<td>访问密码</td>
+<td></td>
+</tr>
+<tr>
+<td>主机</td>
+<td>访问资源所在的宿主主机的IP地址</td>
+<td>无</td>
+</tr>
+<tr>
+<td>端口</td>
+<td>资源所在应用的端口</td>
+<td>无</td>
+</tr>
+<tr>
+<td>路径</td>
+<td>资源在服务器上的访问路径</td>
+<td>无</td>
+</tr>
+<tr>
+<td>参数</td>
+<td>参数之间使用(;)分隔</td>
+<td></td>
+</tr>
+<tr>
+<td>查询</td>
+<td>查询字符串？a=1234;b=234</td>
+<td></td>
+</tr>
+<tr>
+<td>片段</td>
+<td>一小片或者一部分资源的名字，不会将其发送给服务器，仅在客户端内部使用</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="143-http%E6%8A%A5%E6%96%87">1.4.3. HTTP报文</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h4 id="1431-%E8%AF%B7%E6%B1%82%E6%8A%A5%E6%96%87%E5%92%8C%E5%93%8D%E5%BA%94%E6%8A%A5%E6%96%87">1.4.3.1. 请求报文和响应报文</h4>
+<ul>
+<li>格式：</li>
+</ul>
+<pre class="hljs"><code><div>报文首部(包括请求行和请求头)
+空行
+报文主体
+
+HTTP/2.0 200 OK
+Content-type: text/html
+Set-Cookie: yummy_cookie=choco
+Set-Cookie: tasty_cookie=strawberry
+
+[page content]
+
+</div></code></pre>
+<ul>
+<li>请求报文格式</li>
+</ul>
+<pre class="hljs"><code><div>&lt;method&gt; &lt;request-url&gt; &lt;version&gt;
+&lt;headers&gt;
+
+&lt;entity-body&gt;
+</div></code></pre>
+<ul>
+<li>响应报文格式</li>
+</ul>
+<pre class="hljs"><code><div>&lt;version&gt; &lt;status&gt; &lt;reason-phrase&gt;
+&lt;headers&gt;
+
+&lt;entity-body&gt;
+</div></code></pre>
+<p>method: 请求方法，GET，POST等
+request-url: 请求资源在服务器内的URL
+version: HTTP版本 ， 格式： http/1.1
+headers：请求头和响应头,格式： Connection: close
+status: 状态码，401/404
+reason-phrase: 原因短语,状态码的简要说明
+body: 实际数据部分，可以承载很多类型的数据，比如图片，音频，视频等</p>
+<h4 id="1432-%E9%A6%96%E9%83%A8">1.4.3.2. 首部</h4>
+<p>HTTP 首部字段根据实际用途被分为以下 4 种类型：</p>
+<ul>
+<li>通用首部字段（General Header Fields）
+请求报文和响应报文两方都会使用的首部。</li>
+<li>请求首部字段（Request Header Fields）
+从客户端向服务器端发送请求报文时使用的首部。补充了请求的附加内容、客户端信息、响应内容相关优先级等信息。</li>
+<li>响应首部字段（Response Header Fields）
+从服务器端向客户端返回响应报文时使用的首部。补充了响应的附加内容，也会要求客户端附加额外的内容信息。</li>
+<li>实体首部字段（Entity Header Fields）
+针对请求报文和响应报文的实体部分使用的首部。补充了资源内容更新时间等与实体有关的信息。</li>
+</ul>
+<p>如果首部内容过长，可以分行写，但是前面必须有空格或者制表符。</p>
+<p><a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html">首部官方说明：https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html</a></p>
+<ul>
+<li>
+<p>通用首部</p>
+<ul>
+<li>Date：报文创建时间</li>
+<li>Connection：客户端和服务器连接的有关选项</li>
+<li>Via：报文经过的中间节点（代理、网关）</li>
+<li>Cache-control：缓存</li>
+</ul>
+</li>
+<li>
+<p>请求首部</p>
+<ul>
+<li>From：客户端用户的E-mail地址</li>
+<li>Host：接受请求的服务器的主机名和端口</li>
+<li>Referer：当前请求的URL</li>
+<li>UA-Color：客户端显示器颜色信息</li>
+<li>UA-OS：客户端操作系统及版本</li>
+<li>Accept：告诉服务器能够发送的媒体类型</li>
+<li>Accept-Charset：告诉服务器能够发送的字符集</li>
+<li>Accept-Encoding：告诉服务器能够发送的编码方式</li>
+<li>Accept-Language：告诉服务器能够发送的语言</li>
+<li>Expect：要求服务器的行为</li>
+<li>If-Match：实体标记与文档当前的标记相匹配，则获取该文档</li>
+<li>If-Modified-Since：除非在某个指定日期后资源被修改过，否则限制该请求</li>
+<li>If-None-Match：实体标记与文档当前的标记不匹配，则获取该文档</li>
+<li>If-Unmodified-Since：除非在某个指定日期后资源没有被修改过，否则限制该请求</li>
+<li>Authorization：包含客户端提供给服务端，以便进行安全认证的数据</li>
+<li>Cookie：客户端需要发送的cookie</li>
+<li>Cookie2：客户端支持的cookie版本</li>
+</ul>
+</li>
+<li>
+<p>响应首部</p>
+<ul>
+<li>Server：服务器应用软件名称及版本</li>
+<li>Accept-Range：服务器可以接受的范围类型</li>
+<li>Set-Cookie：设置cookie</li>
+</ul>
+</li>
+<li>
+<p>实体首部</p>
+<ul>
+<li>Allow：对该实体可执行的请求方法</li>
+<li>Location：资源的新地址，重定向中常用到</li>
+<li>Content-Language：理解主体应该使用的语言</li>
+<li>Content-Length：主体的长度</li>
+<li>Content-Encoding：对主体实行的编码方式</li>
+<li>Content-Range：在整个资源中实体表示的字节范围</li>
+<li>Content-Type：主体的类型</li>
+<li>ETag：与实体相关的实体标记</li>
+<li>Expires：实体不再有效，需要再次获取该实体的时间</li>
+<li>Last-Modified：实体最后一次被修改的时间</li>
+</ul>
+</li>
+</ul>
+<h4 id="1433-%E6%96%B9%E6%B3%95">1.4.3.3. 方法</h4>
+<ul>
+<li>
+<p>GET</p>
+<ul>
+<li>通常用于向服务器请求资源</li>
+<li>GET请求的参数将会拼接在URL后面，因此如果是密码等参数，会存在安全性问题</li>
+<li>GET请求的URL有长度限制问题，不是协议本身限制，是浏览器限制，每个浏览器都不同</li>
+<li>GET 请求可被缓存</li>
+<li>GET 请求保留在浏览器历史记录中</li>
+<li>GET 请求可被收藏为书签</li>
+<li>GET 请求不应在处理敏感数据时使用</li>
+<li>GET 请求只应当用于取回数据</li>
+</ul>
+</li>
+<li>
+<p>POST</p>
+<ul>
+<li>向服务器写入数据请求。</li>
+<li>POST 请求不会被缓存</li>
+<li>POST 请求不会保留在浏览器历史记录中</li>
+<li>POST 不能被收藏为书签</li>
+<li>POST 请求对数据长度没有要求,一般也是web服务器的限制</li>
+</ul>
+</li>
+<li>
+<p>HEAD</p>
+<ul>
+<li>服务器响应只返回首部，不返回body数据</li>
+<li>在不获取资源的情况下了解资源的类型</li>
+<li>通过查看状态码，查看资源是否存在</li>
+<li>查看首部，测试资源是否被修改</li>
+</ul>
+</li>
+<li>
+<p>PUT</p>
+<ul>
+<li>向服务器写入数据请求。</li>
+</ul>
+</li>
+<li>
+<p>TRACE</p>
+<ul>
+<li>用于回环测试</li>
+<li>每个请求可能经过网关，代理，防火墙等，测试经过这些之后报文发生了啥变化</li>
+<li>最后接收到的服务器将会返回TRACE响应，响应主体为原始请求报文</li>
+</ul>
+</li>
+<li>
+<p>OPTIONS</p>
+<ul>
+<li>查看资源支持的方法，通过响应头中的Allow: GET,POST</li>
+</ul>
+</li>
+<li>
+<p>DELETE</p>
+<ul>
+<li>请求删除资源</li>
+</ul>
+</li>
+</ul>
+<h4 id="1434-%E7%8A%B6%E6%80%81%E7%A0%81">1.4.3.4. 状态码</h4>
+<ul>
+<li>
+<p>1xx 信息性状态码</p>
+<ul>
+<li>100/Continue: 说明收到了请求的初始部分，请客户端继续</li>
+<li>101 Switching Protocols ：说明服务器正在根据客户端的指定，将协议切换成Udate首部所列的协议</li>
+</ul>
+</li>
+<li>
+<p>2xx 正常</p>
+<ul>
+<li>200 OK,请求正常</li>
+<li>204 NO Content,请求处理成功，但是返回的请求主体中没有内容。</li>
+</ul>
+</li>
+<li>
+<p>3xx 重定向</p>
+<ul>
+<li>301 Moved Permanenty ,永久重定向，该状态标识请求的资源已经分配新的URL，以后使用新的URI进行访问。Location返回新的URI</li>
+<li>302 Found,临时性重定向,该状态标识请求的资源已经分配新的URL，希望用户本次使用新的URI进行访问。</li>
+<li>303 See Other,URI已经更新，应使用GET方法使用新的uri获取资源。</li>
+<li>304 Not Modified,客户端发送附带条件的请求时(首部：If-match,If-Modified-Sinch,If-None-Match,If-Range,If-Unmodified-Since),服务端允许请求访问资源，但未满足条件的情况，此时响应不包含任何主体。</li>
+</ul>
+</li>
+<li>
+<p>4xx 客户端错误</p>
+<ul>
+<li>400 Bad Request,错误的请求，请求报文存在语法错误。</li>
+<li>401 Unauthorzied,用户认证失败</li>
+<li>403 Forbidden,被拒绝访问</li>
+<li>404 Not Found ,无法找到资源，可能路径\方法\请求参数有问题</li>
+</ul>
+</li>
+<li>
+<p>5xx 服务器错误</p>
+<ul>
+<li>500 Internal Server Error,服务器内部错误，比如抛出异常。</li>
+<li>503 Service Unavailable,服务不可用，常见场景是网关正常，但是底下的服务不正常。</li>
+</ul>
+</li>
+</ul>
+<h3 id="144-%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86">1.4.4. 连接管理</h3>
+<p><a href="#menu" style="float:right">目录</a>
+HTTP要传送一条报文时，会以流的形式将报文数据的内容通过一条打开的TCP连接按序传输，TCP收到数据流之后，会将数据流砍成被称作段的小数据块。并将段封装在IP分组中，通过因特网进行传输。</p>
+<h4 id="1441-%E5%AF%B9tcp%E6%80%A7%E8%83%BD%E7%9A%84%E8%80%83%E8%99%91">1.4.4.1. 对TCP性能的考虑</h4>
+<p>HTTP是TCP的上层，主要通信实现由TCP/IP层实现，因此影响性能的主要也是这两层。
+影响性能主要以下几点</p>
+<ul>
+<li>首次访问时的DNS域名解析，可能花费数十秒，后续访问会进行缓存。</li>
+<li>TCP连接建立过程</li>
+</ul>
+<h4 id="1442-%E6%8C%81%E4%B9%85%E8%BF%9E%E6%8E%A5">1.4.4.2. 持久连接</h4>
+<ul>
+<li>HTTP1.0方式
+<ul>
+<li>keep-alive实现 ,keep-Alive 也是首部字段,由服务器响应决定
+<ul>
+<li>keep-Alive： max=5,timeout=120</li>
+<li>max:服务器能接受的最大长连接数</li>
+<li>timeout: 服务器希望连接在活跃状态的时间</li>
+</ul>
+</li>
+<li>客户端请求时包含头部: Connection: keep-Alive.请求将一条连接保持在打开状态</li>
+<li>服务端响应若返回头部: Connection: keep-Alive，则说明支持持久连接，否则将关闭本次连接。</li>
+</ul>
+</li>
+<li>HTTP1.1方式
+<ul>
+<li>默认情况下激活，也就是默认情况下保持长连接</li>
+<li>客户端若收到的响应中包含首部信息: Connection: close，将会关闭连接。</li>
+<li>客户端和服务端可以随时关闭连接</li>
+<li>客户端发送一个请求首部  Connection: close之后将不能在该连接上发送信息。</li>
+<li>HTTP1.1的代理必须能够分别管理客户端和服务端的持久连接。</li>
+</ul>
+</li>
+</ul>
+<h3 id="145-web%E6%9C%8D%E5%8A%A1%E5%99%A8">1.4.5. WEB服务器</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="146-%E4%BB%A3%E7%90%86">1.4.6. 代理</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="147-%E7%BC%93%E5%AD%98">1.4.7. 缓存</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="148-%E7%BD%91%E5%85%B3">1.4.8. 网关</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="149-%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AF%86%E5%88%AB%E4%B8%8Ecookie%E6%9C%BA%E5%88%B6">1.4.9. 客户端识别与Cookie机制</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="1410-%E5%9F%BA%E6%9C%AC%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6">1.4.10. 基本认证机制</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="1411-%E6%91%98%E8%A6%81%E8%AE%A4%E8%AF%81">1.4.11. 摘要认证</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="1412-%E5%AE%89%E5%85%A8http">1.4.12. 安全HTTP</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="1413-%E5%AE%9E%E4%BD%93%E5%92%8C%E7%BC%96%E7%A0%81">1.4.13. 实体和编码</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="1414-%E5%9B%BD%E9%99%85%E5%8C%96">1.4.14. 国际化</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="1415-web%E4%B8%BB%E6%9C%BA%E6%89%98%E7%AE%A1">1.4.15. WEB主机托管</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="1416-%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1">1.4.16. 重定向和负载均衡</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h2 id="15-web-socket">1.5. WEB Socket</h2>
+<p><a href="#menu" style="float:right">目录</a></p>
+<p>我们在上网过程中经常用到的是HTTP和HTTPS协议，HTTP协议和HTTPS协议通信过程通常是客户端通过浏览器发出一个请求，服务器接受请求后进行处理并返回结果给客户端，客户端处理结果。
+这种机制对于信息变化不是特别频繁的应用可以良好支撑，但对于实时要求高、海量并发的应用来说显得捉襟见肘，尤其在移动互联网蓬勃发展的趋势下，高并发与用户实时响应是Web应用经常面临的问题，比如金融证券的实时信息、社交网络的实时消息推送等。
+WebSocket出现前我们实现推送技术，用的都是轮询，在特定的时间间隔，浏览器自动发出请求，将服务器的消息主动的拉回来，这种情况下，我们需要不断的向服务器发送请求，并且HTTP 请求 的header非常长，里面包含的数据可能只是一个很小的值，这样会占用很多的带宽和服务器资源，并且服务器不能主动向客户端推送数据。在这种情况下需要一种高效节能的双向通信机制来保证数据的实时传输，于是基于HTML5规范的WebSocket应运而生。</p>
+<h3 id="151-websocket%E4%B8%8Ehttp">1.5.1. websocket与http</h3>
+<p>WebSocket与http协议一样都是基于TCP的，所以他们都是可靠的协议，调用的WebSocket的send函数在实现中最终都是通过TCP的系统接口进行传输的。WebSocket和Http协议一样都属于应用层的协议，WebSocket在建立握手连接时，数据是通过<strong>http协议</strong>传输的，但是在建立连接之后，真正的数据传输阶段是不需要http协议参与的。</p>
+<p>HTTP实现实时推送用到的轮询，轮询分两种：长轮询和短轮询（传统轮询）</p>
+<ul>
+<li>短轮询：浏览器定时向服务器发送请求，服务器收到请求不管是否有数据到达都直接响应 请求，隔特定时间，浏览器又会发送相同的请求到服务器， 获取数据响应
+<ul>
+<li>缺点：数据交互的实时性较低，服务端到浏览器端的数据反馈效率低</li>
+</ul>
+</li>
+<li>长轮询：浏览器发起请求到服务器，服务器一直保持连接打开，直到有数据可发送。发送完数据之后，浏览器关闭连接，随即又发起一个到服务器的新请求。这一过程在页面打开期间一直持续不断
+<ul>
+<li>缺点：服务器没有数据到达时，http连接会停留一段时间，造成服务器资源浪费，数据交互的实时性也很低
+无论是长轮询还是短轮询，浏览器都要先发起对服务器的连接，才能接收数据，并且实时交互性很低。</li>
+</ul>
+</li>
+</ul>
+<p>然而，WebSocket的出现解决了轮询实时交互性和全双工的问题。
+在JavaScript中创建了WebSocket后，会有一个HTTP请求发送到服务器以发起连接。取得服务器响应后，建立的连接使用HTTP升级，从HTTP协议交换为WebSocket协议。即，使用标准的HTTP服务器无法实现WebSocket，只有支持这种协议的专门服务器才能正常工作。
+WebSocket使用了自定义的协议，未加密的连接不再是http://，而是ws://，默认端口为80，加密的连接也不是https://，而是wss://，默认端口为443。</p>
+<h3 id="152-%E6%95%B0%E6%8D%AE%E5%B8%A7%E6%A0%BC%E5%BC%8F">1.5.2. 数据帧格式</h3>
+<p>客户端、服务端数据的交换，离不开数据帧格式的定义。因此，在实际讲解数据交换之前，我们先来看下WebSocket的数据帧格式。</p>
+<p>WebSocket客户端、服务端通信的最小单位是帧（frame），由1个或多个帧组成一条完整的消息（message）。</p>
+<ul>
+<li>发送端：将消息切割成多个帧，并发送给服务端；</li>
+<li>接收端：接收消息帧，并将关联的帧重新组装成完整的消息；</li>
+</ul>
+<p>本节的重点，就是讲解数据帧的格式。详细定义可参考 RFC6455-5.2节 。</p>
+<p><strong>数据帧格式概览</strong>
+下面给出了WebSocket数据帧的统一格式。熟悉TCP/IP协议的同学对这样的图应该不陌生。</p>
+<p>从左到右，单位是比特。比如FIN、RSV1各占据1比特，opcode占据4比特。
+内容包括了标识、操作代码、掩码、数据、数据长度等。</p>
+<pre class="hljs"><code><div> 0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-------+-+-------------+-------------------------------+
+ |F|R|R|R| opcode|M| Payload len |    Extended payload length    |
+ |I|S|S|S|  (4)  |A|     (7)     |             (16/64)           |
+ |N|V|V|V|       |S|             |   (if payload len==126/127)   |
+ | |1|2|3|       |K|             |                               |
+ +-+-+-+-+-------+-+-------------+ - - - - - - - - - - - - - - - +
+ |     Extended payload length continued, if payload len == 127  |
+ + - - - - - - - - - - - - - - - +-------------------------------+
+ |                               |Masking-key, if MASK set to 1  |
+ +-------------------------------+-------------------------------+
+ | Masking-key (continued)       |          Payload Data         |
+ +-------------------------------- - - - - - - - - - - - - - - - +
+ :                     Payload Data continued ...                :
+ + - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - +
+ |                     Payload Data continued ...                |
+ +---------------------------------------------------------------+
+</div></code></pre>
+<p><strong>数据帧格式详解</strong>
+针对前面的格式概览图，这里逐个字段进行讲解，如有不清楚之处，可参考协议规范，或留言交流。</p>
+<ul>
+<li>
+<p><strong>FIN</strong>：1个比特。
+如果是1，表示这是消息（message）的最后一个分片（fragment），如果是0，表示不是是消息（message）的最后一个分片（fragment）。</p>
+</li>
+<li>
+<p><strong>RSV1, RSV2, RSV3</strong>：各占1个比特。
+一般情况下全为0。当客户端、服务端协商采用WebSocket扩展时，这三个标志位可以非0，且值的含义由扩展进行定义。如果出现非零的值，且并没有采用WebSocket扩展，连接出错。</p>
+</li>
+<li>
+<p><strong>Opcode</strong>: 4个比特。
+操作代码，Opcode的值决定了应该如何解析后续的数据载荷（data payload）。如果操作代码是不认识的，那么接收端应该断开连接（fail the connection）。可选的操作代码如下：
+%x0：表示一个延续帧。当Opcode为0时，表示本次数据传输采用了数据分片，当前收到的数据帧为其中一个数据分片。
+%x1：表示这是一个文本帧（frame）
+%x2：表示这是一个二进制帧（frame）
+%x3-7：保留的操作代码，用于后续定义的非控制帧。
+%x8：表示连接断开。
+%x9：表示这是一个ping操作。
+%xA：表示这是一个pong操作。
+%xB-F：保留的操作代码，用于后续定义的控制帧。
+Mask: 1个比特。</p>
+</li>
+</ul>
+<p>表示是否要对数据载荷进行掩码操作。从客户端向服务端发送数据时，需要对数据进行掩码操作；从服务端向客户端发送数据时，不需要对数据进行掩码操作。</p>
+<p>如果服务端接收到的数据没有进行过掩码操作，服务端需要断开连接。</p>
+<p>如果Mask是1，那么在Masking-key中会定义一个掩码键（masking key），并用这个掩码键来对数据载荷进行反掩码。所有客户端发送到服务端的数据帧，Mask都是1。</p>
+<p>掩码的算法、用途在下一小节讲解。</p>
+<ul>
+<li><strong>Payload length</strong>：数据载荷的长度，单位是字节。为7位，或7+16位，或1+64位。</li>
+</ul>
+<p>假设数Payload length === x，如果</p>
+<p>x为0~126：数据的长度为x字节。
+x为126：后续2个字节代表一个16位的无符号整数，该无符号整数的值为数据的长度。
+x为127：后续8个字节代表一个64位的无符号整数（最高位为0），该无符号整数的值为数据的长度。
+此外，如果payload length占用了多个字节的话，payload length的二进制表达采用网络序（big endian，重要的位在前）。</p>
+<ul>
+<li><strong>Masking-key</strong>：0或4字节（32位）</li>
+</ul>
+<p>所有从客户端传送到服务端的数据帧，数据载荷都进行了掩码操作，Mask为1，且携带了4字节的Masking-key。如果Mask为0，则没有Masking-key。</p>
+<p>备注：载荷数据的长度，不包括mask key的长度。</p>
+<ul>
+<li><strong>Payload data</strong>：(x+y) 字节</li>
+</ul>
+<p>载荷数据：包括了扩展数据、应用数据。其中，扩展数据x字节，应用数据y字节。</p>
+<p>扩展数据：如果没有协商使用扩展的话，扩展数据数据为0字节。所有的扩展都必须声明扩展数据的长度，或者可以如何计算出扩展数据的长度。此外，扩展如何使用必须在握手阶段就协商好。如果扩展数据存在，那么载荷数据长度必须将扩展数据的长度包含在内。</p>
+<p>应用数据：任意的应用数据，在扩展数据之后（如果存在扩展数据），占据了数据帧剩余的位置。载荷数据长度 减去 扩展数据长度，就得到应用数据的长度。</p>
+<p><strong>掩码算法</strong>
+掩码键（Masking-key）是由客户端挑选出来的32位的随机数。掩码操作不会影响数据载荷的长度。掩码、反掩码操作都采用如下算法：</p>
+<p>首先，假设：
+original-octet-i：为原始数据的第i字节。
+transformed-octet-i：为转换后的数据的第i字节。
+j：为i mod 4的结果。
+masking-key-octet-j：为mask key第j字节。
+算法描述为： original-octet-i 与 masking-key-octet-j 异或后，得到 transformed-octet-i。</p>
+<pre class="hljs"><code><div>j = i MOD 4
+transformed-octet-i = original-octet-i XOR masking-key-octet-j
+</div></code></pre>
+<h3 id="153-%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%92">1.5.3. 数据传递</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<p>一旦WebSocket客户端、服务端建立连接后，后续的操作都是基于数据帧的传递。</p>
+<p>WebSocket根据opcode来区分操作的类型。比如0x8表示断开连接，0x0-0x2表示数据交互。</p>
+<p><strong>数据分片</strong>
+WebSocket的每条消息可能被切分成多个数据帧。当WebSocket的接收方收到一个数据帧时，会根据FIN的值来判断，是否已经收到消息的最后一个数据帧。
+FIN=1表示当前数据帧为消息的最后一个数据帧，此时接收方已经收到完整的消息，可以对消息进行处理。FIN=0，则接收方还需要继续监听接收其余的数据帧。
+此外，opcode在数据交换的场景下，表示的是数据的类型。0x01表示文本，0x02表示二进制。而0x00比较特殊，表示延续帧（continuation frame），顾名思义，就是完整消息对应的数据帧还没接收完。</p>
+<p><strong>数据分片例子</strong>
+直接看例子更形象些。下面例子来自MDN，可以很好地演示数据的分片。客户端向服务端两次发送消息，服务端收到消息后回应客户端，这里主要看客户端往服务端发送的消息。</p>
+<p>第一条消息
+FIN=1, 表示是当前消息的最后一个数据帧。服务端收到当前数据帧后，可以处理消息。opcode=0x1，表示客户端发送的是文本类型。
+第二条消息
+FIN=0，opcode=0x1，表示发送的是文本类型，且消息还没发送完成，还有后续的数据帧。
+FIN=0，opcode=0x0，表示消息还没发送完成，还有后续的数据帧，当前的数据帧需要接在上一条数据帧之后。
+FIN=1，opcode=0x0，表示消息已经发送完成，没有后续的数据帧，当前的数据帧需要接在上一条数据帧之后。服务端可以将关联的数据帧组装成完整的消息。
+Client: FIN=1, opcode=0x1, msg=&quot;hello&quot;
+Server: (process complete message immediately) Hi.
+Client: FIN=0, opcode=0x1, msg=&quot;and a&quot;
+Server: (listening, new message containing text started)
+Client: FIN=0, opcode=0x0, msg=&quot;happy new&quot;
+Server: (listening, payload concatenated to previous message)
+Client: FIN=1, opcode=0x0, msg=&quot;year!&quot;
+Server: (process complete message) Happy new year to you too!</p>
+<h3 id="154-%E8%BF%9E%E6%8E%A5%E4%BF%9D%E6%8C%81%E5%BF%83%E8%B7%B3">1.5.4. 连接保持+心跳</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<p>WebSocket为了保持客户端、服务端的实时双向通信，需要确保客户端、服务端之间的TCP通道保持连接没有断开。然而，对于长时间没有数据往来的连接，如果依旧长时间保持着，可能会浪费包括的连接资源。</p>
+<p>但不排除有些场景，客户端、服务端虽然长时间没有数据往来，但仍需要保持连接。这个时候，可以采用心跳来实现。</p>
+<p>发送方-&gt;接收方：ping
+接收方-&gt;发送方：pong
+ping、pong的操作，对应的是WebSocket的两个控制帧，opcode分别是0x9、0xA。</p>
+<p>举例，WebSocket服务端向客户端发送ping，只需要如下代码（采用ws模块）</p>
+<p>ws.ping('', false, true);</p>
+<h3 id="155-sec-websocket-keyaccept%E7%9A%84%E4%BD%9C%E7%94%A8">1.5.5. Sec-WebSocket-Key/Accept的作用</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<p>前面提到了，Sec-WebSocket-Key/Sec-WebSocket-Accept在主要作用在于提供基础的防护，减少恶意连接、意外连接。</p>
+<p>作用大致归纳如下：</p>
+<p>避免服务端收到非法的websocket连接（比如http客户端不小心请求连接websocket服务，此时服务端可以直接拒绝连接）
+确保服务端理解websocket连接。因为ws握手阶段采用的是http协议，因此可能ws连接是被一个http服务器处理并返回的，此时客户端可以通过Sec-WebSocket-Key来确保服务端认识ws协议。（并非百分百保险，比如总是存在那么些无聊的http服务器，光处理Sec-WebSocket-Key，但并没有实现ws协议。。。）
+用浏览器里发起ajax请求，设置header时，Sec-WebSocket-Key以及其他相关的header是被禁止的。这样可以避免客户端发送ajax请求时，意外请求协议升级（websocket upgrade）
+可以防止反向代理（不理解ws协议）返回错误的数据。比如反向代理前后收到两次ws连接的升级请求，反向代理把第一次请求的返回给cache住，然后第二次请求到来时直接把cache住的请求给返回（无意义的返回）。
+Sec-WebSocket-Key主要目的并不是确保数据的安全性，因为Sec-WebSocket-Key、Sec-WebSocket-Accept的转换计算公式是公开的，而且非常简单，最主要的作用是预防一些常见的意外情况（非故意的）。
+强调：Sec-WebSocket-Key/Sec-WebSocket-Accept 的换算，只能带来基本的保障，但连接是否安全、数据是否安全、客户端/服务端是否合法的 ws客户端、ws服务端，其实并没有实际性的保证。</p>
+<h3 id="156-%E6%95%B0%E6%8D%AE%E6%8E%A9%E7%A0%81%E7%9A%84%E4%BD%9C%E7%94%A8">1.5.6. 数据掩码的作用</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<p>WebSocket协议中，数据掩码的作用是增强协议的安全性。但数据掩码并不是为了保护数据本身，因为算法本身是公开的，运算也不复杂。除了加密通道本身，似乎没有太多有效的保护通信安全的办法。</p>
+<p>那么为什么还要引入掩码计算呢，除了增加计算机器的运算量外似乎并没有太多的收益（这也是不少同学疑惑的点）。</p>
+<p>答案还是两个字：安全。但并不是为了防止数据泄密，而是为了防止早期版本的协议中存在的代理缓存污染攻击（proxy cache poisoning attacks）等问题。</p>
+<p><strong>代理缓存污染攻击</strong>
+下面摘自2010年关于安全的一段讲话。其中提到了代理服务器在协议实现上的缺陷可能导致的安全问题。猛击出处。</p>
+<pre class="hljs"><code><div>“We show, empirically, that the current version of the WebSocket consent mechanism is vulnerable to proxy cache poisoning attacks. Even though the WebSocket handshake is based on HTTP, which should be understood by most network intermediaries, the handshake uses the esoteric “Upgrade” mechanism of HTTP [5]. In our experiment, we find that many proxies do not implement the Upgrade mechanism properly, which causes the handshake to succeed even though subsequent traffic over the socket will be misinterpreted by the proxy.”
+
+[TALKING] Huang, L-S., Chen, E., Barth, A., Rescorla, E., and C.
+Jackson, &quot;Talking to Yourself for Fun and Profit&quot;, 2010,
+</div></code></pre>
+<p>在正式描述攻击步骤之前，我们假设有如下参与者：</p>
+<ul>
+<li>攻击者、攻击者自己控制的服务器（简称“邪恶服务器”）、攻击者伪造的资源（简称“邪恶资源”）</li>
+<li>受害者、受害者想要访问的资源（简称“正义资源”）</li>
+<li>受害者实际想要访问的服务器（简称“正义服务器”）</li>
+<li>中间代理服务器</li>
+</ul>
+<p>攻击步骤一：</p>
+<ul>
+<li>攻击者浏览器 向 邪恶服务器 发起WebSocket连接。根据前文，首先是一个协议升级请求。</li>
+<li>协议升级请求 实际到达 代理服务器。</li>
+<li>代理服务器 将协议升级请求转发到 邪恶服务器。</li>
+<li>邪恶服务器 同意连接，代理服务器 将响应转发给 攻击者。</li>
+</ul>
+<p>由于 upgrade 的实现上有缺陷，代理服务器 以为之前转发的是普通的HTTP消息。因此，当协议服务器 同意连接，代理服务器 以为本次会话已经结束。</p>
+<p>攻击步骤二：</p>
+<ul>
+<li>攻击者 在之前建立的连接上，通过WebSocket的接口向 邪恶服务器 发送数据，且数据是精心构造的HTTP格式的文本。其中包含了 正义资源 的地址，以及一个伪造的host（指向正义服务器）。（见后面报文）</li>
+<li>请求到达 代理服务器 。虽然复用了之前的TCP连接，但 代理服务器 以为是新的HTTP请求。</li>
+<li>代理服务器 向 邪恶服务器 请求 邪恶资源。</li>
+<li>邪恶服务器 返回 邪恶资源。代理服务器 缓存住 邪恶资源（url是对的，但host是 正义服务器 的地址）。</li>
+</ul>
+<p>到这里，受害者可以登场了：</p>
+<ul>
+<li>受害者 通过 代理服务器 访问 正义服务器 的 正义资源。</li>
+<li>代理服务器 检查该资源的url、host，发现本地有一份缓存（伪造的）。</li>
+<li>代理服务器 将 邪恶资源 返回给 受害者。</li>
+<li>受害者 卒。</li>
+</ul>
+<p>附：前面提到的精心构造的“HTTP请求报文”。</p>
+<pre class="hljs"><code><div>Client → Server:
+POST /path/of/attackers/choice HTTP/1.1 Host: host-of-attackers-choice.com Sec-WebSocket-Key: &lt;connection-key&gt;
+Server → Client:
+HTTP/1.1 200 OK
+Sec-WebSocket-Accept: &lt;connection-key&gt;
+</div></code></pre>
+<p><strong>当前解决方案</strong>
+最初的提案是对数据进行加密处理。基于安全、效率的考虑，最终采用了折中的方案：对数据载荷进行掩码处理。</p>
+<p>需要注意的是，这里只是限制了浏览器对数据载荷进行掩码处理，但是坏人完全可以实现自己的WebSocket客户端、服务端，不按规则来，攻击可以照常进行。</p>
+<p>但是对浏览器加上这个限制后，可以大大增加攻击的难度，以及攻击的影响范围。如果没有这个限制，只需要在网上放个钓鱼网站骗人去访问，一下子就可以在短时间内展开大范围的攻击。</p>
+<h3 id="springboot-websocket%E5%AE%9E%E7%8E%B0%E6%A1%88%E4%BE%8B">SpringBoot + WebSocket实现案例</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<ul>
+<li>服务端实现方式</li>
+<li>第一种是用“@ServerEndPoint”注解来实现，实现简单；</li>
+<li>第二种稍显麻烦，但是可以添加拦截器在WebSocket连接建立和断开前进行一些额外操作。</li>
+</ul>
+<p>不管用哪种实现方式，都需要先导入jar包（如下），其中version根据实际springboot版本选择，避免冲突</p>
+<pre class="hljs"><code><div><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-websocket<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-comment">&lt;!-- &lt;version&gt;1.3.5.RELEASE&lt;/version&gt; --&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</div></code></pre>
+<h4 id="%E7%AC%AC%E4%B8%80%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95">第一种实现方法</h4>
+<p><a href="#menu" style="float:right">目录</a></p>
+<p>（1）WebSocket 业务逻辑实现。参数传递采用路径参数的方法，通过以下方式获取参数：</p>
+<ul>
+<li>@ServerEndpoint(&quot;/testWebSocket/{id}/{name}&quot;)</li>
+<li>public void onOpen(Session session, @PathParam(&quot;id&quot;) long id, @PathParam(&quot;name&quot;) String name)</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> java.util.concurrent.CopyOnWriteArraySet;
+
+<span class="hljs-keyword">import</span> javax.websocket.OnClose;
+<span class="hljs-keyword">import</span> javax.websocket.OnError;
+<span class="hljs-keyword">import</span> javax.websocket.OnMessage;
+<span class="hljs-keyword">import</span> javax.websocket.OnOpen;
+<span class="hljs-keyword">import</span> javax.websocket.Session;
+<span class="hljs-keyword">import</span> javax.websocket.server.ServerEndpoint;
+
+<span class="hljs-keyword">import</span> org.slf4j.Logger;
+<span class="hljs-keyword">import</span> org.slf4j.LoggerFactory;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RestController;
+
+<span class="hljs-meta">@ServerEndpoint</span>(<span class="hljs-string">"/testWebSocket/{id}/{name}"</span>)
+<span class="hljs-meta">@RestController</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestWebSocket</span> </span>{
+
+    <span class="hljs-comment">// 用来记录当前连接数的变量</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">volatile</span> <span class="hljs-keyword">int</span> onlineCount = <span class="hljs-number">0</span>;
+
+    <span class="hljs-comment">// concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> CopyOnWriteArraySet&lt;TestWebSocket&gt; webSocketSet = <span class="hljs-keyword">new</span> CopyOnWriteArraySet&lt;TestWebSocket&gt;();
+
+    <span class="hljs-comment">// 与某个客户端的连接会话，需要通过它来与客户端进行数据收发</span>
+    <span class="hljs-keyword">private</span> Session session;
+    
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Logger LOGGER = LoggerFactory.getLogger(TestWebSocket.class);
+    
+　　<span class="hljs-meta">@OnOpen</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onOpen</span><span class="hljs-params">(Session session, @PathParam(<span class="hljs-string">"id"</span>)</span> <span class="hljs-keyword">long</span> id, @<span class="hljs-title">PathParam</span><span class="hljs-params">(<span class="hljs-string">"name"</span>)</span> String name) <span class="hljs-keyword">throws</span> Exception </span>{
+        <span class="hljs-keyword">this</span>.session = session;
+        System.out.println(<span class="hljs-keyword">this</span>.session.getId());
+        webSocketSet.add(<span class="hljs-keyword">this</span>);
+        LOGGER.info(<span class="hljs-string">"Open a websocket. id={}, name={}"</span>, id, name);
+    }
+    
+    <span class="hljs-meta">@OnClose</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onClose</span><span class="hljs-params">()</span> </span>{
+        webSocketSet.remove(<span class="hljs-keyword">this</span>);
+        LOGGER.info(<span class="hljs-string">"Close a websocket. "</span>);
+    }
+    
+    <span class="hljs-meta">@OnMessage</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onMessage</span><span class="hljs-params">(String message, Session session)</span> </span>{
+        LOGGER.info(<span class="hljs-string">"Receive a message from client: "</span> + message);
+    }
+    
+    <span class="hljs-meta">@OnError</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onError</span><span class="hljs-params">(Session session, Throwable error)</span> </span>{
+        LOGGER.error(<span class="hljs-string">"Error while websocket. "</span>, error);
+    }
+    
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">sendMessage</span><span class="hljs-params">(String message)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.session.isOpen()) {
+            <span class="hljs-keyword">this</span>.session.getBasicRemote().sendText(<span class="hljs-string">"Send a message from server. "</span>);
+        }
+    }
+    
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">synchronized</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getOnlineCount</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> onlineCount;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">synchronized</span> <span class="hljs-keyword">void</span> <span class="hljs-title">addOnlineCount</span><span class="hljs-params">()</span> </span>{
+        TestWebSocket.onlineCount++;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">synchronized</span> <span class="hljs-keyword">void</span> <span class="hljs-title">subOnlineCount</span><span class="hljs-params">()</span> </span>{
+        TestWebSocket.onlineCount--;
+    }
+}
+</div></code></pre>
+<p>（2）配置ServerEndpointExporter，配置后会自动注册所有“@ServerEndpoint”注解声明的Websocket Endpoint</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;
+<span class="hljs-keyword">import</span> org.springframework.web.socket.server.standard.ServerEndpointExporter;
+
+<span class="hljs-meta">@Configuration</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">WebSocketConfig</span> </span>{
+
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> ServerEndpointExporter <span class="hljs-title">serverEndpointExporter</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ServerEndpointExporter();
+    }
+    
+}
+</div></code></pre>
+<h4 id="%E7%AC%AC%E4%BA%8C%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95">第二种实现方法</h4>
+<p><a href="#menu" style="float:right">目录</a></p>
+<p>（1）WebSocket 业务逻辑实现。参数传递采用类似GET请求的方式传递，服务端的参数在拦截器中获取之后通过attributes传递给WebSocketHandler。</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> java.util.ArrayList;
+<span class="hljs-keyword">import</span> java.util.concurrent.atomic.AtomicInteger;
+
+<span class="hljs-keyword">import</span> org.slf4j.Logger;
+<span class="hljs-keyword">import</span> org.slf4j.LoggerFactory;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RestController;
+<span class="hljs-keyword">import</span> org.springframework.web.socket.CloseStatus;
+<span class="hljs-keyword">import</span> org.springframework.web.socket.WebSocketHandler;
+<span class="hljs-keyword">import</span> org.springframework.web.socket.WebSocketMessage;
+<span class="hljs-keyword">import</span> org.springframework.web.socket.WebSocketSession;
+
+<span class="hljs-meta">@RestController</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestWebSocketController</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">WebSocketHandler</span> </span>{
+    
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> AtomicInteger onlineCount = <span class="hljs-keyword">new</span> AtomicInteger(<span class="hljs-number">0</span>);
+    
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> ArrayList&lt;WebSocketSession&gt; sessions = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+    
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Logger LOGGER = LoggerFactory.getLogger(TestWebSocketController.class);
+    
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">afterConnectionEstablished</span><span class="hljs-params">(WebSocketSession session)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+        sessions.add(session);
+        <span class="hljs-keyword">int</span> onlineNum = addOnlineCount();
+        LOGGER.info(<span class="hljs-string">"Oprn a WebSocket. Current connection number: "</span> + onlineNum);
+    }
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">afterConnectionClosed</span><span class="hljs-params">(WebSocketSession session, CloseStatus status)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+        sessions.remove(session);
+        <span class="hljs-keyword">int</span> onlineNum = subOnlineCount();
+        LOGGER.info(<span class="hljs-string">"Close a webSocket. Current connection number: "</span> + onlineNum);
+    }
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">handleMessage</span><span class="hljs-params">(WebSocketSession wsSession, WebSocketMessage&lt;?&gt; message)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+        LOGGER.info(<span class="hljs-string">"Receive a message from client: "</span> + message.toString());
+    }
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">handleTransportError</span><span class="hljs-params">(WebSocketSession session, Throwable exception)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+        LOGGER.error(<span class="hljs-string">"Exception occurs on webSocket connection. disconnecting...."</span>);
+        <span class="hljs-keyword">if</span> (session.isOpen()) {
+            session.close();
+        }
+        sessions.remove(session);
+        subOnlineCount();
+    }
+
+    <span class="hljs-comment">/*
+     * 是否支持消息拆分发送：如果接收的数据量比较大，最好打开(true), 否则可能会导致接收失败。
+     * 如果出现WebSocket连接接收一次数据后就自动断开，应检查是否是这里的问题。
+     */</span>
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">supportsPartialMessages</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+    }
+
+    
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getOnlineCount</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> onlineCount.get();
+    }
+    
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">addOnlineCount</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> onlineCount.incrementAndGet();
+    }
+    
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">subOnlineCount</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> onlineCount.decrementAndGet();
+    }
+
+}
+</div></code></pre>
+<p>（2）HandShake 拦截器实现</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> java.util.Map;
+
+<span class="hljs-keyword">import</span> org.slf4j.Logger;
+<span class="hljs-keyword">import</span> org.slf4j.LoggerFactory;
+<span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="hljs-keyword">import</span> org.springframework.context.ApplicationContext;
+<span class="hljs-keyword">import</span> org.springframework.http.server.ServerHttpRequest;
+<span class="hljs-keyword">import</span> org.springframework.http.server.ServerHttpResponse;
+<span class="hljs-keyword">import</span> org.springframework.http.server.ServletServerHttpRequest;
+<span class="hljs-keyword">import</span> org.springframework.web.socket.WebSocketHandler;
+<span class="hljs-keyword">import</span> org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestHandShakeInterceptor</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpSessionHandshakeInterceptor</span> </span>{
+    
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Logger LOGGER = LoggerFactory.getLogger(TestHandShakeInterceptor.class);
+    
+    <span class="hljs-comment">/*
+     * 在WebSocket连接建立之前的操作，以鉴权为例
+     */</span>
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">beforeHandshake</span><span class="hljs-params">(ServerHttpRequest request, ServerHttpResponse response, 
+            WebSocketHandler wsHandler, Map&lt;String, Object&gt; attributes)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+        
+        LOGGER.info(<span class="hljs-string">"Handle before webSocket connected. "</span>);
+        
+        <span class="hljs-comment">// 获取url传递的参数，通过attributes在Interceptor处理结束后传递给WebSocketHandler</span>
+        <span class="hljs-comment">// WebSocketHandler可以通过WebSocketSession的getAttributes()方法获取参数</span>
+        ServletServerHttpRequest serverRequest = (ServletServerHttpRequest) request;
+        String id = serverRequest.getServletRequest().getParameter(<span class="hljs-string">"id"</span>);
+        String name = serverRequest.getServletRequest().getParameter(<span class="hljs-string">"name"</span>);
+
+        <span class="hljs-keyword">if</span> (tokenValidation.validateSign()) {
+            LOGGER.info(<span class="hljs-string">"Validation passed. WebSocket connecting.... "</span>);
+            attributes.put(<span class="hljs-string">"id"</span>, id);
+            attributes.put(<span class="hljs-string">"name"</span>, name);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">super</span>.beforeHandshake(request, response, wsHandler, attributes);
+        } <span class="hljs-keyword">else</span> {
+            LOGGER.error(<span class="hljs-string">"Validation failed. WebSocket will not connect. "</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+        }
+    }
+    
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">afterHandshake</span><span class="hljs-params">(ServerHttpRequest request, ServerHttpResponse response,
+            WebSocketHandler wsHandler, Exception ex)</span> </span>{
+        <span class="hljs-comment">// 省略</span>
+    }
+
+}
+</div></code></pre>
+<p>（3）WebSocket 配置类实现（注册WebSocket实现类，绑定接口，同时将实现类和拦截器绑定）</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;
+<span class="hljs-keyword">import</span> org.springframework.web.servlet.config.annotation.EnableWebMvc;
+<span class="hljs-keyword">import</span> org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+<span class="hljs-keyword">import</span> org.springframework.web.socket.config.annotation.EnableWebSocket;
+<span class="hljs-keyword">import</span> org.springframework.web.socket.config.annotation.WebSocketConfigurer;
+<span class="hljs-keyword">import</span> org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+
+<span class="hljs-keyword">import</span> TestWebSocketController;
+<span class="hljs-keyword">import</span> TestHandShakeInterceptor;
+
+<span class="hljs-meta">@Configuration</span>
+<span class="hljs-meta">@EnableWebMvc</span>
+<span class="hljs-meta">@EnableWebSocket</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">WebSocketConfig</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">WebMvcConfigurerAdapter</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">WebSocketConfigurer</span> </span>{
+
+    <span class="hljs-meta">@Autowired</span>
+    <span class="hljs-keyword">private</span> TestWebSocketController testWebSocketController;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">registerWebSocketHandlers</span><span class="hljs-params">(WebSocketHandlerRegistry registry)</span> </span>{
+        registry.addHandler(TestWebSocketController, <span class="hljs-string">"/testWebSocket"</span>)
+                .addInterceptors(<span class="hljs-keyword">new</span> TestHandShakeInterceptor()).setAllowedOrigins(<span class="hljs-string">"*"</span>);
+    }
+
+}
+</div></code></pre>
+<h4 id="%E8%A1%A5%E5%85%85%E8%AF%B4%E6%98%8E">补充说明</h4>
+<p><a href="#menu" style="float:right">目录</a></p>
+<p>（1）在WebSocket实现过程中，尤其是通过“@ServerEndpoint”实现的时候，可能会出现注入失败的问题，即注入的Bean为null的问题。可以通过手动注入的方式来解决，需要改造实现类和SpringBoot启动类，如下：</p>
+<pre class="hljs"><code><div><span class="hljs-meta">@ServerEndpoint</span>(<span class="hljs-string">"testWebsocket"</span>)
+<span class="hljs-meta">@RestController</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">WebSocketController</span> </span>{
+
+    <span class="hljs-keyword">private</span> TestService testService;
+    
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> ApplicationContext applicationContext;
+    
+    <span class="hljs-meta">@OnOpen</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onOpen</span><span class="hljs-params">(Session session)</span> </span>{
+        testService = applicationContext.getBean(TestService.class);
+    }
+
+    <span class="hljs-meta">@OnClose</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onClose</span><span class="hljs-params">()</span> </span>{}
+
+    <span class="hljs-meta">@OnMessage</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onMessage</span><span class="hljs-params">(String message, Session session)</span> </span>{}
+
+    <span class="hljs-meta">@OnError</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onError</span><span class="hljs-params">(Session session, Throwable error)</span> </span>{}
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setApplicationContext</span><span class="hljs-params">(ApplicationContext applicationContext)</span> </span>{
+        WebSocketController.applicationContext = applicationContext;
+    }
+    
+}
+</div></code></pre>
+<p>启动类</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> org.springframework.boot.SpringApplication;
+<span class="hljs-keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;
+<span class="hljs-keyword">import</span> org.springframework.context.ConfigurableApplicationContext;
+
+<span class="hljs-keyword">import</span> WebSocketController;
+
+<span class="hljs-meta">@SpringBootApplication</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Application</span> </span>{
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>{
+<span class="hljs-comment">//        SpringApplication.run(Application.class, args);</span>
+        SpringApplication springApplication = <span class="hljs-keyword">new</span> SpringApplication(Application.class);
+        ConfigurableApplicationContext configurableApplicationContext = springApplication.run(args);
+        WebSocketController.setApplicationContext(configurableApplicationContext);  <span class="hljs-comment">// 解决WebSocket不能注入的问题</span>
+    }
+
+}
+</div></code></pre>
+<h4 id="%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E5%AE%9E%E7%8E%B0%EF%BC%8Cjs%E6%96%B9%E5%BC%8F%E5%92%8Cjava-websocketclient%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F">客户端的实现，js方式和java WebSocketClient两种方式</h4>
+<p><a href="#menu" style="float:right">目录</a></p>
+<p><strong>js方式实现</strong></p>
+<pre class="hljs"><code><div><span class="hljs-meta">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>WebSocket示例<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">content</span>=<span class="hljs-string">'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'</span> <span class="hljs-attr">name</span>=<span class="hljs-string">'viewport'</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">"Content-Type"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"text/html; charset=utf-8"</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onclick</span>=<span class="hljs-string">"send()"</span>&gt;</span>发送消息<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hr</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onclick</span>=<span class="hljs-string">"closeWebSocket()"</span>&gt;</span>关闭WebSocket连接<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hr</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"message"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/javascript"</span>&gt;</span><span class="javascript">
+    <span class="hljs-keyword">var</span> websocket = <span class="hljs-literal">null</span>;
+    <span class="hljs-comment">//判断当前浏览器是否支持WebSocket</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-string">'WebSocket'</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">window</span>) {
+        <span class="hljs-comment">// 不带参数的写法</span>
+        websocket = <span class="hljs-keyword">new</span> WebSocket(<span class="hljs-string">"ws://127.0.0.1:18080/testWebsocket"</span>);
+        <span class="hljs-comment">// 通过路径传递参数的方法（服务端采用第一种方法"@ServerEndpoint"实现）</span>
+        websocket = <span class="hljs-keyword">new</span> WebSocket(<span class="hljs-string">"ws://127.0.0.1:18080/testWebsocket/23/Lebron"</span>);
+        <span class="hljs-comment">// 通过类似GET请求方式传递参数的方法（服务端采用第二种方法"WebSocketHandler"实现）</span>
+        websocket = <span class="hljs-keyword">new</span> WebSocket(<span class="hljs-string">"ws://127.0.0.1:18080/testWebsocket?id=23&amp;name=Lebron"</span>);
+    }
+    <span class="hljs-keyword">else</span> {
+        alert(<span class="hljs-string">'当前浏览器 Not support websocket'</span>)
+    }
+
+    <span class="hljs-comment">//连接发生错误的回调方法</span>
+    websocket.onerror = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+        setMessageInnerHTML(<span class="hljs-string">"WebSocket连接发生错误"</span>);
+    };
+
+    <span class="hljs-comment">//连接成功建立的回调方法</span>
+    websocket.onopen = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+        setMessageInnerHTML(<span class="hljs-string">"WebSocket连接成功"</span>);
+    }
+
+    <span class="hljs-comment">//接收到消息的回调方法</span>
+    websocket.onmessage = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">event</span>) </span>{
+        setMessageInnerHTML(event.data);
+    }
+
+    <span class="hljs-comment">//连接关闭的回调方法</span>
+    websocket.onclose = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+        setMessageInnerHTML(<span class="hljs-string">"WebSocket连接关闭"</span>);
+    }
+
+    <span class="hljs-comment">//监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。</span>
+    <span class="hljs-built_in">window</span>.onbeforeunload = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+        closeWebSocket();
+    }
+
+    <span class="hljs-comment">//将消息显示在网页上</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setMessageInnerHTML</span>(<span class="hljs-params">innerHTML</span>) </span>{
+        <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'message'</span>).innerHTML += innerHTML + <span class="hljs-string">'&lt;br/&gt;'</span>;
+    }
+
+    <span class="hljs-comment">//关闭WebSocket连接</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">closeWebSocket</span>(<span class="hljs-params"></span>) </span>{
+        websocket.close();
+    }
+
+    <span class="hljs-comment">//发送消息</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">send</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-keyword">var</span> message = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'text'</span>).value;
+        websocket.send(message);
+    }
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
+</div></code></pre>
+<p><strong>Java WebSocketClient实现</strong></p>
+<p>（1）WebSocketClient 实现类</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> java.net.URI;
+
+<span class="hljs-keyword">import</span> org.java_websocket.client.WebSocketClient;
+<span class="hljs-keyword">import</span> org.java_websocket.drafts.Draft;
+<span class="hljs-keyword">import</span> org.java_websocket.handshake.ServerHandshake;
+<span class="hljs-keyword">import</span> org.slf4j.Logger;
+<span class="hljs-keyword">import</span> org.slf4j.LoggerFactory;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestWebSocketClient</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">WebSocketClient</span> </span>{
+    
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Logger LOGGER = LoggerFactory.getLogger(TestWebSocketClient.class);
+    
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">TestWebSocketClient</span><span class="hljs-params">(URI serverUri)</span> </span>{
+        <span class="hljs-keyword">super</span>(serverUri);
+    }
+    
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">TestWebSocketClient</span><span class="hljs-params">(URI serverUri, Draft protocolDraft)</span> </span>{
+        <span class="hljs-keyword">super</span>(serverUri, protocolDraft);
+    }
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onOpen</span><span class="hljs-params">(ServerHandshake serverHandshake)</span> </span>{
+        LOGGER.info(<span class="hljs-string">"Open a WebSocket connection on client. "</span>);
+    }
+    
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onClose</span><span class="hljs-params">(<span class="hljs-keyword">int</span> arg0, String arg1, <span class="hljs-keyword">boolean</span> arg2)</span> </span>{
+        LOGGER.info(<span class="hljs-string">"Close a WebSocket connection on client. "</span>);
+    }
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onMessage</span><span class="hljs-params">(String msg)</span> </span>{
+        LOGGER.info(<span class="hljs-string">"WebSocketClient receives a message: "</span> + msg);
+    }
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onError</span><span class="hljs-params">(Exception exception)</span> </span>{
+        LOGGER.error(<span class="hljs-string">"WebSocketClient exception. "</span>, exception);
+    }
+
+}
+</div></code></pre>
+<p>（2）WebSocketClient 发送数据</p>
+<pre class="hljs"><code><div>String serverUrl = <span class="hljs-string">"ws://127.0.0.1:18080/testWebsocket"</span>
+URI recognizeUri = <span class="hljs-keyword">new</span> URI(serverUrl);
+client = <span class="hljs-keyword">new</span> TestWebSocketClient(recognizeUri, <span class="hljs-keyword">new</span> Draft_6455());
+client.connect();
+client.send(<span class="hljs-string">"This is a message from client. "</span>);
+</div></code></pre>
+<h2 id="16-unix%E7%8E%AF%E5%A2%83%E7%BC%96%E7%A8%8B">1.6. Unix环境编程</h2>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="161-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5">1.6.1. 基本概念</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<ul>
+<li>
+<p><strong>内核</strong>
+管理和分配计算机资源(CPU,内存等)的核心层软件</p>
+</li>
+<li>
+<p><strong>内核任务</strong></p>
+<ul>
+<li>进程调度，Linux是抢占式多任务操作系统，内核需要协调好多个任务的执行。`</li>
+<li>内存管理</li>
+<li>提供文件系统</li>
+<li>创建和终止进程</li>
+<li>对设备的访问</li>
+<li>联网</li>
+<li>提供系统应用调用API接口</li>
+</ul>
+</li>
+<li>
+<p><strong>内核态和用户态</strong></p>
+<ul>
+<li>可将虚拟内存区域划分为用户空间和内核空间两部分</li>
+<li>在用户态下只能访问用户空间，试图访问内核空间将会报硬件错误</li>
+<li>在内核态下两者都可以访问到</li>
+</ul>
+</li>
+<li>
+<p><strong>文件描述符</strong></p>
+<ul>
+<li>Linux下一切皆是文件，每打开一个文件或者Socket,都会获得一个文件描述符(整型)来唯一标识。</li>
+</ul>
+</li>
+<li>
+<p><strong>进程</strong></p>
+<ul>
+<li>进程是正在执行的程序实例，执行程序时，内核会将程序代码载入虚拟内存，为程序变量分配空间，建立内核记账数据结构，以记录与进程有关的各种信息（比如，进程ID，用户ID，组ID以及终止状态）</li>
+<li>进程内存布局
+<ul>
+<li>文本: 程序的指令</li>
+<li>数据: 程序使用的静态变量</li>
+<li>堆:程序可从该区域动态分配额外的内存</li>
+<li>栈:随函数调用，返回而增减的一片内存，用于为局部变量和函数调用链接信息分配存储空间</li>
+</ul>
+</li>
+<li>创建进程和执行程序
+<ul>
+<li>fork进行创建</li>
+<li>内核通过对父进程的复制来创建子进程</li>
+<li>子进程从父进程处继承数据段、栈段、以及堆段的副本，即使修改也不会互相影响，两者之间的内存空间是独立的</li>
+</ul>
+</li>
+<li>进程IP
+<ul>
+<li>每一个进程都有一个唯一标识符PID，如果有父进程，还有一个父进程PPID</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="162-io%E6%A8%A1%E5%9E%8B">1.6.2. IO模型</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<p><strong>概念理解</strong>
+在进行网络编程时，我们常常见到同步(Sync)/异步(Async)，阻塞(Block)/非阻塞(Unblock)四种调用方式：</p>
+<ul>
+<li>
+<p>同步</p>
+<ul>
+<li>所谓同步，就是在发出一个功能调用时，在没有得到结果之前，该调用就不返回。也就是必须一件一件事做,等前一件做完了才能做下一件事。</li>
+<li>例如普通B/S模式（同步）：提交请求-&gt;等待服务器处理-&gt;处理完毕返回 这个期间客户端浏览器不能干任何事</li>
+</ul>
+</li>
+<li>
+<p>异步：</p>
+<ul>
+<li>异步的概念和同步相对。当一个异步过程调用发出后，调用者不能立刻得到结果。实际处理这个调用的部件在完成后，通过状态、通知和回调来通知调用者。</li>
+<li>例如 ajax请求（异步）: 请求通过事件触发-&gt;服务器处理（这是浏览器仍然可以作其他事情）-&gt;处理完毕</li>
+</ul>
+</li>
+<li>
+<p>阻塞</p>
+<ul>
+<li>阻塞调用是指调用结果返回之前，当前线程会被挂起（线程进入非可执行状态，在这个状态下，cpu不会给线程分配时间片，即线程暂停运行）。函数只有在得到结果之后才会返回。</li>
+<li>有人也许会把阻塞调用和同步调用等同起来，实际上他是不同的。对于同步调用来说，很多时候当前线程还是激活的，只是从逻辑上当前函数没有返回而已。 例如，我们在socket中调用recv函数，如果缓冲区中没有数据，这个函数就会一直等待，直到有数据才返回。而此时，当前线程还会继续处理各种各样的消息。</li>
+</ul>
+</li>
+<li>
+<p>非阻塞</p>
+<ul>
+<li>非阻塞和阻塞的概念相对应，指在不能立刻得到结果之前，该函数不会阻塞当前线程，而会立刻返回。</li>
+</ul>
+</li>
+</ul>
+<p><strong>对象的阻塞模式和阻塞函数调用</strong>
+对象是否处于阻塞模式和函数是不是阻塞调用有很强的相关性，但是并不是一一对应的。阻塞对象上可以有非阻塞的调用方式，我们可以通过一定的API去轮询状 态，在适当的时候调用阻塞函数，就可以避免阻塞。而对于非阻塞对象，调用特殊的函数也可以进入阻塞调用。函数select就是这样的一个例子。</p>
+<ul>
+<li>同步，就是我调用一个功能，该功能没有结束前，我死等结果。</li>
+<li>异步，就是我调用一个功能，不需要知道该功能结果，该功能有结果后通知我（回调通知）</li>
+<li>阻塞，就是调用我（函数），我（函数）没有接收完数据或者没有得到结果之前，我不会返回。</li>
+<li>非阻塞，就是调用我（函数），我（函数）立即返回，通过select通知调用者</li>
+</ul>
+<p>同步IO和异步IO的区别就在于：数据拷贝的时候进程是否阻塞！
+阻塞IO和非阻塞IO的区别就在于：应用程序的调用是否立即返回！</p>
+<p>对于举个简单c/s 模式：</p>
+<p>同步：提交请求-&gt;等待服务器处理-&gt;处理完毕返回这个期间客户端浏览器不能干任何事
+异步：请求通过事件触发-&gt;服务器处理（这是浏览器仍然可以作其他事情）-&gt;处理完毕
+同步和异步都只针对于本机SOCKET而言的。
+同步和异步,阻塞和非阻塞,有些混用,其实它们完全不是一回事,而且它们修饰的对象也不相同。
+阻塞和非阻塞是指当进程访问的数据如果尚未就绪,进程是否需要等待,简单说这相当于函数内部的实现区别,也就是未就绪时是直接返回还是等待就绪;</p>
+<p>而同步和异步是指访问数据的机制,同步一般指主动请求并等待I/O操作完毕的方式,当数据就绪后在读写的时候必须阻塞(区别就绪与读写二个阶段,同步的读写必须阻塞),异步则指主动请求数据后便可以继续处理其它任务,随后等待I/O,操作完毕的通知,这可以使进程在数据读写时也不阻塞。(等待&quot;通知&quot;)</p>
+<p><strong>Linux下的五种I/O模型</strong></p>
+<ul>
+<li>阻塞I/O（blocking I/O）</li>
+<li>非阻塞I/O （nonblocking I/O）</li>
+<li>I/O复用(select 和poll) （I/O multiplexing）</li>
+<li>信号驱动I/O （signal driven I/O (SIGIO)）</li>
+<li>异步I/O （asynchronous I/O (the POSIX aio_functions)）
+前四种都是同步，只有最后一种才是异步IO。</li>
+</ul>
+<p><strong>阻塞I/O模型：</strong>
+<img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3808372216,1260325684&amp;fm=26&amp;gp=0.jpg" alt=""></p>
+<ul>
+<li>简介：进程会一直阻塞，直到数据拷贝完成</li>
+</ul>
+<p>应用程序调用一个IO函数，导致应用程序阻塞，等待数据准备好。 如果数据没有准备好，一直等待….数据准备好了，从内核拷贝到用户空间,IO函数返回成功指示。</p>
+<p>阻塞I/O模型图：在调用recv()/recvfrom（）函数时，发生在内核中等待数据和复制数据的过�����。</p>
+<p>当调用recv()函数时，系统首先查是否有准备好的数据。如果数据没有准备好，那么系统就处于等待状态。当数据准备好后，将数据从系统缓冲区复制到用户空间，然后该函数返回。在套接应用程序中，当调用recv()函数时，未必用户空间就已经存在数据，那么此时recv()函数就会处于等待状态。</p>
+<p>当使用socket()函数和WSASocket()函数创建套接字时，默认的套接字都是阻塞的。这意味着当调用Windows Sockets API不能立即完成时，线程处于等待状态，直到操作完成。</p>
+<p>并不是所有Windows Sockets API以阻塞套接字为参数调用都会发生阻塞。例如，以阻塞模式的套接字为参数调用bind()、listen()函数时，函数会立即返回。将可能阻塞套接字的Windows Sockets API调用分为以下四种:</p>
+<p>1．输入操作： recv()、recvfrom()、WSARecv()和WSARecvfrom()函数。以阻塞套接字为参数调用该函数接收数据。如果此时套接字缓冲区内没有数据可读，则调用线程在数据到来前一直睡眠。</p>
+<p>2．输出操作： send()、sendto()、WSASend()和WSASendto()函数。以阻塞套接字为参数调用该函数发送数据。如果套接字缓冲区没有可用空间，线程会一直睡眠，直到有空间。</p>
+<p>3．接受连接：accept()和WSAAcept()函数。以阻塞套接字为参数调用该函数，等待接受对方的连接请求。如果此时没有连接请求，线程就会进入睡眠状态。</p>
+<p>4．外出连接：connect()和WSAConnect()函数。对于TCP连接，客户端以阻塞套接字为参数，调用该函数向服务器发起连接。该函数在收到服务器的应答前，不会返回。这意味着TCP连接总会等待至少到服务器的一次往返时间。</p>
+<p>使用阻塞模式的套接字，开发网络程序比较简单，容易实现。当希望能够立即发送和接收数据，且处理的套接字数量比较少的情况下，使用阻塞模式来开发网络程序比较合适。</p>
+<p>阻塞模式套接字的不足表现为，在大量建立好的套接字线程之间进行通信时比较困难。当使用“生产者-消费者”模型开发网络程序时，为每个套接字都分别分配一个读线程、一个处理数据线程和一个用于同步的事件，那么这样无疑加大系统的开销。其最大的缺点是当希望同时处理大量套接字时，将无从下手，其扩展性很差</p>
+<p><strong>非阻塞IO模型</strong>
+<img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1564857412314&amp;di=0d854bfa102034baf1b415032bb0cff8&amp;imgtype=0&amp;src=http%3A%2F%2Fpic.victorchu.info%2F%25E9%259D%259E%25E9%2598%25BB%25E5%25A1%259EIO.jpeg%3FimageView2%2F2%2Fw%2F800%2Fh%2F600%2Fq%2F75%257Cimageslim" alt=""></p>
+<p>简介：非阻塞IO通过进程反复调用IO函数（多次系统调用，并马上返回）；在数据拷贝的过程中，进程是阻塞的；</p>
+<p>我们把一个SOCKET接口设置为非阻塞就是告诉内核，当所请求的I/O操作无法完成时，不要将进程睡眠，而是返回一个错误。这样我们的I/O操作函数将不断的测试数据是否已经准备好，如果没有准备好，继续测试，直到数据准备好为止。在这个不断测试的过程中，会大量的占用CPU的时间。</p>
+<p>把SOCKET设置为非阻塞模式，即通知系统内核：在调用Windows Sockets API时，不要让线程睡眠，而应该让函数立即返回。在返回时，该函数返回一个错误代码。图所示，一个非阻塞模式套接字多次调用recv()函数的过程。前三次调用recv()函数时，内核数据还没有准备好。因此，该函数立即返回WSAEWOULDBLOCK错误代码。第四次调用recv()函数时，数据已经准备好，被复制到应用程序的缓冲区中，recv()函数返回成功指示，应用程序开始处理数据。</p>
+<p>当使用socket()函数和WSASocket()函数创建套接字时，默认都是阻���的。在创建套接字之后，通过调用ioctlsocket()函数，将该套接字设置为非阻塞模式。Linux下的函数是:fcntl().</p>
+<p>套接字设置为非阻塞模式后，在调用Windows Sockets API函数时，调用函数会立即返回。大多数情况下，这些函数调用都会调用“失败”，并返回WSAEWOULDBLOCK错误代码。说明请求的操作在调用期间内没有时间完成。通常，应用程序需要重复调用该函数，直到获得成功返回代码。</p>
+<p>需要说明的是并非所有的Windows Sockets API在非阻塞模式下调用，都会返回WSAEWOULDBLOCK错误。例如，以非阻塞模式的套接字为参数调用bind()函数时，就不会返回该错误代码。当然，在调用WSAStartup()函数时更不会返回该错误代码，因为该函数是应用程序第一调用的函数，当然不会返回这样的错误代码。</p>
+<p>要将套接字设置为非阻塞模式，除了使用ioctlsocket()函数之外，还可以使用WSAAsyncselect()和WSAEventselect()函数。当调用该函数时，套接字会自动地设置为非阻塞方式。</p>
+<p>由于使用非阻塞套接字在调用函数时，会经常返回WSAEWOULDBLOCK错误。所以在任何时候，都应仔细检查返回代码并作好对“失败”的准备。应用程序连续不断地调用这个函数，直到它返回成功指示为止。上面的程序清单中，在While循环体内不断地调用recv()函数，以读入1024个字节的数据。这种做法很浪费系统资源。</p>
+<p>要完成这样的操作，有人使用MSG_PEEK标志调用recv()函数查看缓冲区中是否有数据可读。同样，这种方法也不好。因为该做法对系统造成的开销是很大的，并且应用程序至少要调用recv()函数两次，才能实际地读入数据。较好的做法是，使用套接字的“I/O模型”来判断非阻塞套接字是否可读可写。</p>
+<p>非阻塞模式套接字与阻塞模式套接字相比，不容易使用。使用非阻塞模式套接字，需要编写更多的代码，以便在每个Windows Sockets API函数调用中，对收到的WSAEWOULDBLOCK错误进行处理。因此，非阻塞套接字便显得有些难于使用。</p>
+<p>但是，非阻塞套接字在控制建立的多个连接，在数据的收发量不均，时间不定时，明显具有优势。这种套接字在使用上存在一定难度，但只要排除了这些困难，它在功能上还是非常强大的。通常情况下，可考虑使用套接字的“I/O模型”，它有助于应用程序通过异步方式，同时对一个或多个套接字的通信加以管理。</p>
+<p><strong>IO复用模型：</strong>
+<img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1564857181158&amp;di=13d24a895a5417ce847d6768a8f6f0f3&amp;imgtype=jpg&amp;src=http%3A%2F%2Fimg0.imgtn.bdimg.com%2Fit%2Fu%3D770609745%2C3299491672%26fm%3D214%26gp%3D0.jpg" alt=""></p>
+<p>简介：主要是select和epoll；对一个IO端口，两次调用，两次返回，比阻塞IO并没有什么优越性；关键是能实现同时对多个IO端口进行监听；</p>
+<p>I/O复用模型会用到select、poll、epoll函数，这几个函数也会使进程阻塞，但是和阻塞I/O所不同的的，这两个函数可以同时阻塞多个I/O操作。而且可以同时对多个读操作，多个写操作的I/O函数进行检测，直到有数据可读或可写时，才真正调用I/O操作函数。</p>
+<p><strong>信号驱动IO</strong>
+<img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1564857276750&amp;di=a736eec5e67ae951a456a8882f3b968d&amp;imgtype=0&amp;src=http%3A%2F%2Fimage.mamicode.com%2Finfo%2F201904%2F20190420195009891716.png" alt=""></p>
+<p>简介：两次调用，两次返回；</p>
+<p>首先我们允许套接口进行信号驱动I/O,并安装一个信号处理函数，进程继续运行并不阻塞。当数据准备好时，进程会收到一个SIGIO信号，可以在信号处理函数中调用I/O操作函数处理数据。</p>
+<p><strong>异步IO模型</strong>
+<img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1564857069930&amp;di=25759da9819bd9b52f14476aea277376&amp;imgtype=0&amp;src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20190624%2Ff5b1176ce6e241f48403c7e999d91b69.jpeg" alt=""></p>
+<p>简介：数据拷贝的时候进程无需阻塞。</p>
+<p>当一个异步过程调用发出后，调用者不能立刻得到结果。实际处理这个调用的部件在完成后，通过状态、通知和回调来通知调用者的输入输出操作</p>
+<p>同步IO引起进程阻塞，直至IO操作完成。
+异步IO不会引起进程阻塞。
+IO复用是先通过select调用阻塞。</p>
+<p><img src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=176532706,1323700702&amp;fm=26&amp;gp=0.jpg" alt=""></p>
+<h3 id="163-selectpollepoll%E6%AF%94%E8%BE%83">1.6.3. select&amp;poll&amp;epoll比较</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h4 id="1631-%E6%95%B4%E4%BD%93%E6%A6%82%E8%A7%88">1.6.3.1. 整体概览</h4>
+<p><strong>水平触发和边缘触发</strong></p>
+<ul>
+<li>水平触发通知
+<ul>
+<li>如果文件描述符上可以非阻塞地执行I/O系统调用，此时认为它已经就绪</li>
+<li>也就是说主动去(轮询)检查文件描述符状态</li>
+<li>select,poll,epoll</li>
+<li>可以任意时刻去检查文件描述符状态，因此不需要每次尽可能多的读取数据。</li>
+</ul>
+</li>
+<li>边缘触发通知
+<ul>
+<li>如果文件描述符自上次状态检查以来有了新的I/O活动，此时需要触发通知。</li>
+<li>select,信号驱动IO模型</li>
+<li>I/O事件发生时才会收到通知型</li>
+<li>当收到通知时，应当尽可能多的读取字节，因为只有下一次I/O来时才能收到通知。</li>
+</ul>
+</li>
+</ul>
+<h4 id="1632-%E5%AF%B9%E6%AF%94%E6%80%BB%E7%BB%93">1.6.3.2. 对比总结</h4>
+<p>epoll跟select都能提供多路I/O复用的解决方案。在现在的Linux内核里有都能够支持，其中epoll是Linux所特有，而select则应该是POSIX所规定，一般操作系统均有实现</p>
+<p><strong>select：</strong>
+select本质上是通过设置或者检查存放fd标志位的数据结构来进行下一步处理。这样所带来的缺点是：</p>
+<ul>
+<li>
+<p>单个进程可监视的fd数量被限制，即能监听端口的大小有限。
+一般来说这个数目和系统内存关系很大，具体数目可以cat /proc/sys/fs/file-max察看。32位机默认是1024个。64位机默认是2048.</p>
+</li>
+<li>
+<p>对socket进行扫描时是线性扫描，即采用轮询的方法，效率较低：
+当套接字比较多的时候，每次select()都要通过遍历FD_SETSIZE个Socket来完成调度,不管哪个Socket是活跃的,都遍历一遍。这会浪费很多CPU时间。如果能给套接字注册某个回调函数，当他们活跃时，自动完成相关操作，那就避免了轮询，这正是epoll与kqueue做的。</p>
+</li>
+<li>
+<p>需要维护一个用来存放大量fd的数据结构，这样会使得用户空间和内核空间在传递该结构时复制开销大</p>
+</li>
+<li>
+<p>select函数</p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">select</span><span class="hljs-params">(<span class="hljs-keyword">int</span> nfds,fd_set *readfds,fd_set *writefds,fd_set *exceptfds, struct timeval *timeout)</span>
+</span></div></code></pre>
+<ul>
+<li>参数
+<ul>
+<li>readfds 用来检测输入是否就绪的文件描述符集合</li>
+<li>writefds 输出</li>
+<li>exceptfds 异常情况是否发生</li>
+<li>timeout  超时时间结构体</li>
+</ul>
+</li>
+<li>返回值
+<ul>
+<li>0 ：超时</li>
+<li>-1 ：发生错误</li>
+<li>大于1：就绪状态的描述符的总数，包括读写异常三个参数</li>
+</ul>
+</li>
+</ul>
+<p><strong>poll：</strong></p>
+<p>poll本质上和select没有区别，它将用户传入的数组拷贝到内核空间，然后查询每个fd对应的设备状态，如果设备就绪则在设备等待队列中加入一项并继续遍历，如果遍历完所有fd后没有发现就绪设备，则挂起当前进程，直到设备就绪或者主动超时，被唤醒后它又要再次遍历fd。这个过程经历了多次无谓的遍历。</p>
+<p>它没有最大连接数的限制，原因是它是基于链表来存储的，但是同样有一个缺点：</p>
+<ul>
+<li>
+<p>大量的fd的数组被整体复制于用户态和内核地址空间之间，而不管这样的复制是不是有意义。</p>
+</li>
+<li>
+<p>poll还有一个特点是“水平触发”，如果报告了fd后，没有被处理，那么下次poll时会再次报告该fd。</p>
+</li>
+<li>
+<p>poll 函数</p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">poll</span><span class="hljs-params">(struct pollfd fds[],<span class="hljs-keyword">nfds_t</span> nfds,<span class="hljs-keyword">int</span> timeout)</span>
+
+struct pollfd</span>{
+    <span class="hljs-comment">//文件描述符</span>
+    <span class="hljs-keyword">int</span> fd;
+    <span class="hljs-comment">//请求事件位掩码</span>
+    <span class="hljs-keyword">short</span> events; 
+    <span class="hljs-comment">//返回事件位源码</span>
+    <span class="hljs-keyword">short</span> revents;
+}
+</div></code></pre>
+<ul>
+<li>参数
+<ul>
+<li>nfds 指定fds的元素个数，nfds_t实际为无符号整形</li>
+<li>fds-fd 文件描述符</li>
+<li>fds-events 需要做检查的事件位掩码，调用者初始化</li>
+<li>fds-revents 发生了事件的位掩码，内核设置并返回</li>
+<li>timeout
+<ul>
+<li>-1 : 一直阻塞直到有一个文件描述符发生事件</li>
+<li>0: 不阻塞，全部检查完即使没有事件也返回</li>
+<li>大于0:最多阻塞时间</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>返回:同select</li>
+</ul>
+<p><strong>select poll区别</strong></p>
+<ul>
+<li>
+<p>select 检查的文件描述符有数量上限(FD_SETZIZE),LINUX默认为1024，修改需要重新编译内核。poll没有限制</p>
+</li>
+<li>
+<p>select的fd_set同时也是保存调用结果的地方，如果多次调用select需要每次都要进行初始化。poll是两个参数存放检查和就绪的文件描述符，从而避免每次都要进行初始化。</p>
+</li>
+<li>
+<p>select提供的超时精度比poll高</p>
+</li>
+</ul>
+<p><strong>select poll 问题</strong></p>
+<ul>
+<li>每次调用select和epoll都要向内核传入需要检查的文件描述符，检测是否处于就绪状态。当检查的文件描述符较多时，将会很耗时</li>
+<li>select 和 poll调用完成以后，程序必须检查返回的数据结构中的每一个元素，以此查明哪个文件描述符处于就绪态。</li>
+<li>每次调用select和epoll都要向内核传入需要检查的文件描述符，检查完成，又从内核返回应用，如果文件描述符过多，复制也很耗时。</li>
+</ul>
+<p><strong>epoll:</strong>
+epoll支持水平触发和边缘触发，最大的特点在于边缘触发，它只告诉进程哪些fd刚刚变为就需态，并且只会通知一次。还有一个特点是，epoll使用“事件”的就绪通知方式，通过epoll_ctl注册fd，一旦该fd就绪，内核就会采用类似callback的回调机制来激活该fd，epoll_wait便可以收到通知</p>
+<ul>
+<li>
+<p>适用场景:</p>
+<ul>
+<li>同时处理许多客户端的服务器;</li>
+<li>需要监视大量的文件描述符，但大部分属于空闲状态，只有少数文件描述符处于就绪状态。</li>
+</ul>
+</li>
+<li>
+<p>epoll水平触发和边缘触发的区别</p>
+<ul>
+<li>例子
+<ul>
+<li>套接字上有输入到来</li>
+<li>调用一次epoll_wait(),无论采用的是水平触发还是边缘触发，该调用都会告诉我们套接字已经给处于就绪态</li>
+<li>再次调用epoll_wait()</li>
+</ul>
+</li>
+<li>说明
+<ul>
+<li>如果是水平触发通知，第二个epoll_wait()会告诉我们套接字已经给处于就绪态</li>
+<li>如果是边缘触发通知，将会被阻塞，因为没有新的输入进来</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>epoll边缘触发通知机制的程序基本框架</p>
+<ul>
+<li>让所有监视的文件描述符都成为非阻塞</li>
+<li>通过epoll_wait()取得就绪状态的描述符列表</li>
+<li>针对每一个处于就绪状态文件描述符，不断进行IO处理直到相关的系统调用(例如read,write,recv,send,accept)返回EAGAIN或EWOULDBLOCK错误</li>
+</ul>
+</li>
+</ul>
+<p>epoll的接口非常简单，一共就三个函数：</p>
+<ol>
+<li>
+<p>int epoll_create(int size);
+创建一个epoll的句柄，size用来告诉内核这个监听的数目一共有多大。这个参数不同于select()中的第一个参数，给出最大监听的fd+1的值。需要注意的是，当创建好epoll句柄后，它就是会占用一个fd值，在linux下如果查看/proc/进程id/fd/，是能够看到这个fd的，所以在使用完epoll后，必须调用close()关闭，否则可能导致fd被耗尽。</p>
+</li>
+<li>
+<p>int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);
+epoll的事件注册函数，它不同与select()是在监听事件时告诉内核要监听什么类型的事件，而是在这里先注册要监听的事件类型。第一个参数是epoll_create()的返回值，第二个参数表示动作，用三个宏来表示：
+EPOLL_CTL_ADD：注册新的fd到epfd中；
+EPOLL_CTL_MOD：修改已经注册的fd的监听事件；
+EPOLL_CTL_DEL：从epfd中删除一个fd；
+第三个参数是需要监听的fd，第四个参数是告诉内核需要监听什么事，struct epoll_event结构如下：</p>
+</li>
+</ol>
+<pre class="hljs"><code><div><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">union</span> epoll_data {
+    <span class="hljs-keyword">void</span> *ptr;
+    <span class="hljs-keyword">int</span> fd;
+    <span class="hljs-keyword">__uint32_t</span> u32;
+    <span class="hljs-keyword">__uint64_t</span> u64;
+} <span class="hljs-keyword">epoll_data_t</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">epoll_event</span> {</span>
+    <span class="hljs-keyword">__uint32_t</span> events; <span class="hljs-comment">/* Epoll events */</span>
+    <span class="hljs-keyword">epoll_data_t</span> data; <span class="hljs-comment">/* User data variable */</span>
+};
+
+</div></code></pre>
+<p>events可以是以下几个宏的集合：
+EPOLLIN ：表示对应的文件描述符可以读（包括对端SOCKET正常关闭）；
+EPOLLOUT：表示对应的文件描述符可以写；
+EPOLLPRI：表示对应的文件描述符有紧急的数据可读（这里应该表示有带外数据到来）；
+EPOLLERR：表示对应的文件描述符发生错误；
+EPOLLHUP：表示对应的文件描述符被挂断；
+EPOLLET： 将EPOLL设为边缘触发(Edge Triggered)模式，这是相对于水平触发(Level Triggered)来说的。
+EPOLLONESHOT：只监听一次事件，当监听完这次事件之后，如果还需要继续监听这个socket的话，需要再次把这个socket加入到EPOLL队列里</p>
+<ol start="3">
+<li>int epoll_wait(int epfd, struct epoll_event * events, int maxevents, int timeout);
+等待事件的产生，类似于select()调用。参数events用来从内核得到事件的集合，maxevents告之内核这个events有多大，这个 maxevents的值不能大于创建epoll_create()时的size，参数timeout是超时时间（毫秒，0会立即返回，-1将不确定，也有说法说是永久阻塞）。该函数返回需要处理的事件数目，如返回0表示已超时。</li>
+</ol>
+<p>4、关于ET、LT两种工作模式：
+可以得出这样的结论:
+ET模式仅当状态发生变化的时候才获得通知,这里所谓的状态的变化并不包括缓冲区中还有未处理的数据,也就是说,如果要采用ET模式,需要一直read/write直到出错为止,很多人反映为什么采用ET模式只接收了一部分数据就再也得不到通知了,大多因为这样;而LT模式是只要有数据没有处理就会一直通知下去的.</p>
+<p>那么究竟如何来使用epoll呢？其实非常简单。
+通过在包含一个头文件#include &lt;sys/epoll.h&gt; 以及几个简单的API将可以大大的提高你的网络服务器的支持人数。</p>
+<p>首先通过create_epoll(int maxfds)来创建一个epoll的句柄，其中maxfds为你epoll所支持的最大句柄数。这个函数会返回一个新的epoll句柄，之后的所有操作将通过这个句柄来进行操作。在用完之后，记得用close()来关闭这个创建出来的epoll句柄。</p>
+<p>之后在你的网络主循环里面，每一帧的调用epoll_wait(int epfd, epoll_event events, int max events, int timeout)来查询所有的网络接口，看哪一个可以读，哪一个可以写了。基本的语法为：
+nfds = epoll_wait(kdpfd, events, maxevents, -1);
+其中kdpfd为用epoll_create创建之后的句柄，events是一个epoll_event*的指针，当epoll_wait这个函数操作成功之后，epoll_events里面将储存所有的读写事件。max_events是当前需要监听的所有socket句柄数。最后一个timeout是 epoll_wait的超时，为0的时候表示马上返回，为-1的时候表示一直等下去，直到有事件范围，为任意正整数的时候表示等这么长的时间，如果一直没有事件，则范围。一般如果网络主循环是单独的线程的话，可以用-1来等，这样可以保证一些效率，如果是和主逻辑在同一个线程的话，则可以用0来保证主循环的效率。</p>
+<p>epoll_wait范围之后应该是一个循环，遍利所有的事件。</p>
+<p>几乎所有的epoll程序都使用下面的框架：</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">for</span>( ; ; )
+    {
+        nfds = epoll_wait(epfd,events,<span class="hljs-number">20</span>,<span class="hljs-number">500</span>);
+        <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>;i&lt;nfds;++i)
+        {
+            <span class="hljs-keyword">if</span>(events[i].data.fd==listenfd) <span class="hljs-comment">//有新的连接</span>
+            {
+                connfd = accept(listenfd,(sockaddr *)&amp;clientaddr, &amp;clilen); <span class="hljs-comment">//accept这个连接</span>
+                ev.data.fd=connfd;
+                ev.events=EPOLLIN|EPOLLET;
+                epoll_ctl(epfd,EPOLL_CTL_ADD,connfd,&amp;ev); <span class="hljs-comment">//将新的fd添加到epoll的监听队列中</span>
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>( events[i].events&amp;EPOLLIN ) <span class="hljs-comment">//接收到数据，读socket</span>
+            {
+                n = read(sockfd, line, MAXLINE)) &lt; <span class="hljs-number">0</span>    <span class="hljs-comment">//读</span>
+                ev.data.ptr = md;     <span class="hljs-comment">//md为自定义类型，添加数据</span>
+                ev.events=EPOLLOUT|EPOLLET;
+                epoll_ctl(epfd,EPOLL_CTL_MOD,sockfd,&amp;ev);<span class="hljs-comment">//修改标识符，等待下一个循环时发送数据，异步处理的精髓</span>
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(events[i].events&amp;EPOLLOUT) <span class="hljs-comment">//有数据待发送，写socket</span>
+            {
+                struct myepoll_data* md = (myepoll_data*)events[i].data.ptr;    <span class="hljs-comment">//取数据</span>
+                sockfd = md-&gt;fd;
+                send( sockfd, md-&gt;ptr, <span class="hljs-built_in">strlen</span>((<span class="hljs-keyword">char</span>*)md-&gt;ptr), <span class="hljs-number">0</span> );        <span class="hljs-comment">//发送数据</span>
+                ev.data.fd=sockfd;
+                ev.events=EPOLLIN|EPOLLET;
+                epoll_ctl(epfd,EPOLL_CTL_MOD,sockfd,&amp;ev); <span class="hljs-comment">//修改标识符，等待下一个循环时接收数据</span>
+            }
+            <span class="hljs-keyword">else</span>
+            {
+                <span class="hljs-comment">//其他的处理</span>
+            }
+        }
+    }
+
+</div></code></pre>
+<p>完整的服务端例子</p>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;sys/socket.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;sys/epoll.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;netinet/in.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;arpa/inet.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;fcntl.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unistd.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;errno.h&gt;</span></span>
+
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> MAXLINE 5</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> OPEN_MAX 100</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> LISTENQ 20</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> SERV_PORT 5000</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> INFTIM 1000</span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">setnonblocking</span><span class="hljs-params">(<span class="hljs-keyword">int</span> sock)</span>
+</span>{
+    <span class="hljs-keyword">int</span> opts;
+    opts=fcntl(sock,F_GETFL);
+    <span class="hljs-keyword">if</span>(opts&lt;<span class="hljs-number">0</span>)
+    {
+        perror(<span class="hljs-string">"fcntl(sock,GETFL)"</span>);
+        <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);
+    }
+    opts = opts|O_NONBLOCK;
+    <span class="hljs-keyword">if</span>(fcntl(sock,F_SETFL,opts)&lt;<span class="hljs-number">0</span>)
+    {
+        perror(<span class="hljs-string">"fcntl(sock,SETFL,opts)"</span>);
+        <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span>* argv[])</span>
+</span>{
+    <span class="hljs-keyword">int</span> i, maxi, listenfd, connfd, sockfd,epfd,nfds, portnumber;
+    <span class="hljs-keyword">ssize_t</span> n;
+    <span class="hljs-keyword">char</span> line[MAXLINE];
+    <span class="hljs-keyword">socklen_t</span> clilen;
+
+
+    <span class="hljs-keyword">if</span> ( <span class="hljs-number">2</span> == argc )
+    {
+        <span class="hljs-keyword">if</span>( (portnumber = atoi(argv[<span class="hljs-number">1</span>])) &lt; <span class="hljs-number">0</span> )
+        {
+            <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>,<span class="hljs-string">"Usage:%s portnumber/a/n"</span>,argv[<span class="hljs-number">0</span>]);
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+        }
+    }
+    <span class="hljs-keyword">else</span>
+    {
+        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>,<span class="hljs-string">"Usage:%s portnumber/a/n"</span>,argv[<span class="hljs-number">0</span>]);
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    }
+
+
+
+    <span class="hljs-comment">//声明epoll_event结构体的变量,ev用于注册事件,数组用于回传要处理的事件</span>
+
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">epoll_event</span> <span class="hljs-title">ev</span>,<span class="hljs-title">events</span>[20];</span>
+    <span class="hljs-comment">//生成用于处理accept的epoll专用的文件描述符</span>
+
+    epfd=epoll_create(<span class="hljs-number">256</span>);
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">clientaddr</span>;</span>
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">serveraddr</span>;</span>
+    listenfd = socket(AF_INET, SOCK_STREAM, <span class="hljs-number">0</span>);
+    <span class="hljs-comment">//把socket设置为非阻塞方式</span>
+
+    <span class="hljs-comment">//setnonblocking(listenfd);</span>
+
+    <span class="hljs-comment">//设置与要处理的事件相关的文件描述符</span>
+
+    ev.data.fd=listenfd;
+    <span class="hljs-comment">//设置要处理的事件类型</span>
+
+    ev.events=EPOLLIN|EPOLLET;
+    <span class="hljs-comment">//ev.events=EPOLLIN;</span>
+
+    <span class="hljs-comment">//注册epoll事件</span>
+
+    epoll_ctl(epfd,EPOLL_CTL_ADD,listenfd,&amp;ev);
+    bzero(&amp;serveraddr, <span class="hljs-keyword">sizeof</span>(serveraddr));
+    serveraddr.sin_family = AF_INET;
+    <span class="hljs-keyword">char</span> *local_addr=<span class="hljs-string">"127.0.0.1"</span>;
+    inet_aton(local_addr,&amp;(serveraddr.sin_addr));<span class="hljs-comment">//htons(portnumber);</span>
+
+    serveraddr.sin_port=htons(portnumber);
+    bind(listenfd,(sockaddr *)&amp;serveraddr, <span class="hljs-keyword">sizeof</span>(serveraddr));
+    listen(listenfd, LISTENQ);
+    maxi = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> ( ; ; ) {
+        <span class="hljs-comment">//等待epoll事件的发生</span>
+
+        nfds=epoll_wait(epfd,events,<span class="hljs-number">20</span>,<span class="hljs-number">500</span>);
+        <span class="hljs-comment">//处理所发生的所有事件</span>
+
+        <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>;i&lt;nfds;++i)
+        {
+            <span class="hljs-keyword">if</span>(events[i].data.fd==listenfd)<span class="hljs-comment">//如果新监测到一个SOCKET用户连接到了绑定的SOCKET端口，建立新的连接。</span>
+
+            {
+                connfd = accept(listenfd,(sockaddr *)&amp;clientaddr, &amp;clilen);
+                <span class="hljs-keyword">if</span>(connfd&lt;<span class="hljs-number">0</span>){
+                    perror(<span class="hljs-string">"connfd&lt;0"</span>);
+                    <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);
+                }
+                <span class="hljs-comment">//setnonblocking(connfd);</span>
+
+                <span class="hljs-keyword">char</span> *str = inet_ntoa(clientaddr.sin_addr);
+                <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"accapt a connection from "</span> &lt;&lt; str &lt;&lt; <span class="hljs-built_in">endl</span>;
+                <span class="hljs-comment">//设置用于读操作的文件描述符</span>
+
+                ev.data.fd=connfd;
+                <span class="hljs-comment">//设置用于注测的读操作事件</span>
+
+                ev.events=EPOLLIN|EPOLLET;
+                <span class="hljs-comment">//ev.events=EPOLLIN;</span>
+
+                <span class="hljs-comment">//注册ev</span>
+
+                epoll_ctl(epfd,EPOLL_CTL_ADD,connfd,&amp;ev);
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(events[i].events&amp;EPOLLIN)<span class="hljs-comment">//如果是已经连接的用户，并且收到数据，那么进行读入。</span>
+
+            {
+                <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"EPOLLIN"</span> &lt;&lt; <span class="hljs-built_in">endl</span>;
+                <span class="hljs-keyword">if</span> ( (sockfd = events[i].data.fd) &lt; <span class="hljs-number">0</span>)
+                    <span class="hljs-keyword">continue</span>;
+                <span class="hljs-keyword">if</span> ( (n = read(sockfd, line, MAXLINE)) &lt; <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">if</span> (errno == ECONNRESET) {
+                        close(sockfd);
+                        events[i].data.fd = <span class="hljs-number">-1</span>;
+                    } <span class="hljs-keyword">else</span>
+                        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">"readline error"</span>&lt;&lt;<span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (n == <span class="hljs-number">0</span>) {
+                    close(sockfd);
+                    events[i].data.fd = <span class="hljs-number">-1</span>;
+                }
+                line[n] = <span class="hljs-string">'/0'</span>;
+                <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"read "</span> &lt;&lt; line &lt;&lt; <span class="hljs-built_in">endl</span>;
+                <span class="hljs-comment">//设置用于写操作的文件描述符</span>
+
+                ev.data.fd=sockfd;
+                <span class="hljs-comment">//设置用于注测的写操作事件</span>
+
+                ev.events=EPOLLOUT|EPOLLET;
+                <span class="hljs-comment">//修改sockfd上要处理的事件为EPOLLOUT</span>
+
+                <span class="hljs-comment">//epoll_ctl(epfd,EPOLL_CTL_MOD,sockfd,&amp;ev);</span>
+
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(events[i].events&amp;EPOLLOUT) <span class="hljs-comment">// 如果有数据发送</span>
+
+            {
+                sockfd = events[i].data.fd;
+                write(sockfd, line, n);
+                <span class="hljs-comment">//设置用于读操作的文件描述符</span>
+
+                ev.data.fd=sockfd;
+                <span class="hljs-comment">//设置用于注测的读操作事件</span>
+
+                ev.events=EPOLLIN|EPOLLET;
+                <span class="hljs-comment">//修改sockfd上要处理的事件为EPOLIN</span>
+
+                epoll_ctl(epfd,EPOLL_CTL_MOD,sockfd,&amp;ev);
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<p><strong>select、poll、epoll 区别总结：</strong></p>
+<ul>
+<li>支持一个进程所能打开的最大连接数</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>select</td>
+<td>单个进程所能打开的最大连接数有FD_SETSIZE宏定义，其大小是32个整数的大小（在32位的机器上，大小就是32<em>32，同理64位机器上FD_SETSIZE为32</em>64），当然我们可以对进行修改，然后重新编译内核，但是性能可能会受到影响，这需要进一步的测试。</td>
+</tr>
+<tr>
+<td>poll</td>
+<td>poll本质上和select没有区别，但是它没有最大连接数的限制，原因是它是基于链表来存储的</td>
+</tr>
+<tr>
+<td>epoll</td>
+<td>虽然连接数有上限，但是很大，1G内存的机器上可以打开10万左右的连接，2G内存的机器可以打开20万左右的连接</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>FD剧增后带来的IO效率问题</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>select</td>
+<td>因为每次调用时都会对连接进行线性遍历，所以随着FD的增加会造成遍历速度慢的“线性下降性能问题”。</td>
+</tr>
+<tr>
+<td>poll</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>epoll</td>
+<td>因为epoll内核中实现是根据每个fd上的callback函数来实现的，只有活跃的socket才会主动调用callback，所以在活跃socket较少的情况下，使用epoll没有前面两者的线性下降的性能问题，但是所有socket都很活跃的情况下，可能会有性能问题。</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>消息传递方式</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>select</td>
+<td>内核需要将消息传递到用户空间，都需要内核拷贝动作</td>
+</tr>
+<tr>
+<td>poll</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>epoll</td>
+<td>epoll通过内核和用户空间共享一块内存来实现的。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>总结：</strong>
+综上，在选择select，poll，epoll时要根据具体的使用场合以及这三种方式的自身特点。</p>
+<ul>
+<li>表面上看epoll的性能最好，但是在连接数少并且连接都十分活跃的情况下，select和poll的性能可能比epoll好，毕竟epoll的通知机制需要很多函数回调。</li>
+<li>select低效是因为每次它都需要轮询。但低效也是相对的，视情况而定，也可通过良好的设计改善</li>
+</ul>
+<h2 id="17-shell">1.7. Shell</h2>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="171-%E6%96%87%E4%BB%B6%E5%AE%89%E8%A3%85">1.7.1. 文件安装</h3>
+<h4 id="1711-deb%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C">1.7.1.1. deb文件操作</h4>
+<p>dpkg 是Debian Package的简写，是为Debian 专门开发的套件管理系统，方便软件的安装、更新及移除。所有源自Debian的Linux发行版都使用dpkg，例如Ubuntu、Knoppix 等。
+以下是一些 Dpkg 的普通用法：</p>
+<pre class="hljs"><code><div>1、dpkg -i &lt;package.deb&gt;
+安装一个 Debian 软件包，如你手动下载的文件。
+2、dpkg -c &lt;package.deb&gt;
+列出 &lt;package.deb&gt; 的内容。
+3、dpkg -I &lt;package.deb&gt;
+从 &lt;package.deb&gt; 中提取包裹信息。
+4、dpkg -r &lt;package&gt;
+移除一个已安装的包裹。
+5、dpkg -P &lt;package&gt;
+完全清除一个已安装的包裹。和 remove 不同的是，remove 只是删掉数据和可执行文件，purge 另外还删除所有的配制文件。
+6、dpkg -L &lt;package&gt;
+列出 &lt;package&gt; 安装的所有文件清单。同时请看 dpkg -c 来检查一个 .deb 文件的内容。
+7、dpkg -s &lt;package&gt;
+显示已安装包裹的信息。同时请看 apt-cache 显示 Debian 存档中的包裹信息，以及 dpkg -I 来显示从一个 .deb 文件中提取的包裹信息。
+8、dpkg-reconfigure &lt;package&gt;
+重新配制一个已经安装的包裹，如果它使用的是 debconf (debconf 为包裹安装提供了一个统一的配制界面)。
+</div></code></pre>
+<h3 id="172-%E6%96%87%E4%BB%B6%E7%9B%B8%E5%85%B3">1.7.2. 文件相关</h3>
+<ul>
+<li>
+<p>路径</p>
+<ul>
+<li>/   根路径</li>
+<li>.   当前目录</li>
+<li>.. 上一级目录</li>
+<li>~/  当前用户目录</li>
+<li>cd  path  进入路径</li>
+<li>cd -  返回上一级目录</li>
+</ul>
+</li>
+<li>
+<p>文件列表</p>
+<ul>
+<li>ls 只列出当前目录文件名称</li>
+<li>ls -l 包含文件权限等信息</li>
+<li>ls -a 包含&quot;.&quot;开头的隐藏文件</li>
+<li>ls -F 区分文件和目录</li>
+<li>ls -R 递归显示目录</li>
+<li>ls -l  aa 只显示带aa的列表，“?”单个字符，&quot;*&quot;多个字符</li>
+<li>pwd 显示当前绝对路径</li>
+</ul>
+</li>
+<li>
+<p>处理文件</p>
+<ul>
+<li>touch 创建文件</li>
+<li>mkdir 创建目录</li>
+<li>cp source  dest 复制文件，加  -r 用于复制目录</li>
+<li>rm 删除，-r 删除目录 -f 强制删除文件</li>
+<li>mv source dest 重命名/复制文件</li>
+</ul>
+</li>
+<li>
+<p>查看文件</p>
+<ul>
+<li>file xxx 查看文件类型</li>
+<li>cat 打印文件数据，-n 加上行号， -b 只给有文本的加上行号</li>
+</ul>
+</li>
+<li>
+<p>文件权限</p>
+<ul>
+<li>文件权限包括用户(U)-组(G)-其他用户(O),包括读(4-r)写(2-w)执行(1-x)权限。</li>
+<li>chmod u+x file 用户添加执行权限</li>
+<li>chmod u-x file 用户去除执行权限</li>
+<li>chmod 111 file 所有的都为执行权限</li>
+<li>chmod 721 file 用户有读写执行，组用户有写，其他用户有执行权限</li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div>-rw-rw-r-- 1 lgj lgj  1215779 Jun 28 18:08  1.mp4
+</div></code></pre>
+<ul>
+<li>文件链接：给文件创建虚拟副本
+<ul>
+<li>符号链接:仅保存引用，文件内容和原文件不一样，和源文件同步更新,仅可读，不可修改，即使修改文件权限。</li>
+<li>硬链接: 保存引用和文件信息，和源文件同步更新，可以修改。</li>
+<li>使用cp 复制链接文件时，复制的文件仍然保留和源文件之间的链接关系，一般不这么做。</li>
+<li>ln source dest ,加-s 时创建的是软连接。
+*查看文件</li>
+<li>more 只显示一页，按页翻页。空格键翻页。</li>
+<li>less 按行翻行，方向键，可向前和向后翻。</li>
+<li>tail -n 2 file 实时查看文件后2行数据，动态更新。</li>
+<li>head -5 file 查看看文件前5行数据</li>
+</ul>
+</li>
+</ul>
+<h3 id="173-%E7%B3%BB%E7%BB%9F%E7%9B%91%E6%8E%A7">1.7.3. 系统监控</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="174-%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE%E6%96%87%E4%BB%B6">1.7.4. 处理数据文件</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="175-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F">1.7.5. 环境变量</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="176-%E5%9F%BA%E6%9C%AC%E8%84%9A%E6%9C%AC%E5%91%BD%E4%BB%A4">1.7.6. 基本脚本命令</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="177-%E7%BB%93%E6%9E%84%E5%8C%96%E5%91%BD%E4%BB%A4">1.7.7. 结构化命令</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="178-%E5%A4%84%E7%90%86%E7%94%A8%E6%88%B7%E8%BE%93%E5%85%A5">1.7.8. 处理用户输入</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+<h3 id="179-%E6%8E%A7%E5%88%B6%E8%84%9A%E6%9C%AC">1.7.9. 控制脚本</h3>
+<p><a href="#menu" style="float:right">目录</a></p>
+
+</body>
+</html>

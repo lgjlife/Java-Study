@@ -6,25 +6,45 @@
 
 - [1. Spring 体系](#1-spring-体系)
     - [1.1. Spring](#11-spring)
-        - [1.1.1. IOC容器](#111-ioc容器)
-            - [1.1.1.1. 控制反转和依赖注入](#1111-控制反转和依赖注入)
-            - [1.1.1.2. 依赖注入方式](#1112-依赖注入方式)
-                - [1.1.1.2.1. setter注入与构造方法注入](#11121-setter注入与构造方法注入)
-                - [1.1.1.2.2. 自动注入方式](#11122-自动注入方式)
-        - [1.1.2. IOC容器](#112-ioc容器)
-            - [1.1.2.1. Bean的作用域](#1121-bean的作用域)
-            - [1.1.2.2. Bean的生命周期](#1122-bean的生命周期)
-        - [1.1.3. AOP面向切面编程](#113-aop面向切面编程)
-        - [1.1.4. Spring 事务管理](#114-spring-事务管理)
-            - [1.1.4.1. 数据库事务基础知识](#1141-数据库事务基础知识)
-            - [1.1.4.2. Spring 对事务管理的支持](#1142-spring-对事务管理的支持)
-                - [1.1.4.2.1. Spring事务传播行为和隔离级别](#11421-spring事务传播行为和隔离级别)
-                - [1.1.4.2.2. 事务管理关键抽象](#11422-事务管理关键抽象)
-                - [1.1.4.2.3. 事务管理器实现类](#11423-事务管理器实现类)
-            - [1.1.4.3. 编程式事务管理](#1143-编程式事务管理)
-            - [1.1.4.4. 使用XML配置声明式事务](#1144-使用xml配置声明式事务)
-            - [1.1.4.5. 使用注解配置事务](#1145-使用注解配置事务)
-            - [1.1.4.6. 事务实现原理](#1146-事务实现原理)
+        - [1.1.1. Spring模块](#111-spring模块)
+        - [1.1.2. Spring体系其他模块](#112-spring体系其他模块)
+        - [1.1.3. 版本特性变化](#113-版本特性变化)
+        - [1.1.4. 常用注解](#114-常用注解)
+            - [1.1.4.1. Spring部分](#1141-spring部分)
+            - [1.1.4.2. SpringMVC部分](#1142-springmvc部分)
+        - [1.1.5. IOC容器](#115-ioc容器)
+            - [1.1.5.1. 控制反转和依赖注入](#1151-控制反转和依赖注入)
+            - [1.1.5.2. 依赖注入方式](#1152-依赖注入方式)
+                - [1.1.5.2.1. setter注入与构造方法注入](#11521-setter注入与构造方法注入)
+                - [1.1.5.2.2. 自动注入方式](#11522-自动注入方式)
+        - [1.1.6. IOC容器](#116-ioc容器)
+            - [1.1.6.1. BeanFactory接口以及实现类说明](#1161-beanfactory接口以及实现类说明)
+                - [1.1.6.1.1. BeanDefinition](#11611-beandefinition)
+                - [1.1.6.1.2. BeanFactory](#11612-beanfactory)
+                - [1.1.6.1.3. HierarchicalBeanFactory](#11613-hierarchicalbeanfactory)
+                - [1.1.6.1.4. SimpleJndiBeanFactory](#11614-simplejndibeanfactory)
+                - [1.1.6.1.5. AutowireCapableBeanFactory](#11615-autowirecapablebeanfactory)
+                - [1.1.6.1.6. ListableBeanFactory](#11616-listablebeanfactory)
+                - [1.1.6.1.7. ConfigurableBeanFactory](#11617-configurablebeanfactory)
+                - [1.1.6.1.8. ConfigurableListableBeanFactory](#11618-configurablelistablebeanfactory)
+                - [1.1.6.1.9. BeanDefinitionRegistry](#11619-beandefinitionregistry)
+                - [1.1.6.1.10. DefaultListableBeanFactory](#116110-defaultlistablebeanfactory)
+            - [1.1.6.2. 单例实现](#1162-单例实现)
+            - [1.1.6.3. Bean的作用域](#1163-bean的作用域)
+            - [1.1.6.4. Bean的生命周期](#1164-bean的生命周期)
+        - [1.1.7. AOP面向切面编程](#117-aop面向切面编程)
+        - [1.1.8. Spring 事务管理](#118-spring-事务管理)
+            - [1.1.8.1. 数据库事务基础知识](#1181-数据库事务基础知识)
+            - [1.1.8.2. Spring 对事务管理的支持](#1182-spring-对事务管理的支持)
+                - [1.1.8.2.1. Spring事务传播行为和隔离级别](#11821-spring事务传播行为和隔离级别)
+                - [1.1.8.2.2. 事务管理关键抽象](#11822-事务管理关键抽象)
+        - [1.1.9. 切面编程AOP](#119-切面编程aop)
+        - [1.1.10. 事务管理器实现类](#1110-事务管理器实现类)
+            - [1.1.10.1. 编程式事务管理](#11101-编程式事务管理)
+            - [1.1.10.2. 使用XML配置声明式事务](#11102-使用xml配置声明式事务)
+            - [1.1.10.3. 使用注解配置事务](#11103-使用注解配置事务)
+            - [1.1.10.4. 事务实现原理](#11104-事务实现原理)
+        - [1.1.11. Spring常用工具类](#1111-spring常用工具类)
     - [1.2. Spring 表达式语言](#12-spring-表达式语言)
     - [1.3. Spring Cache](#13-spring-cache)
         - [1.3.1. 几个重要概念&缓存注解](#131-几个重要概念缓存注解)
@@ -36,9 +56,9 @@
             - [1.4.2.1. Server应用](#1421-server应用)
             - [1.4.2.2. Client应用](#1422-client应用)
             - [1.4.2.3. Client配置说明](#1423-client配置说明)
-            - [集群](#集群)
-            - [1.4.2.4. 集成spring security](#1424-集成spring-security)
-            - [1.4.2.5. 集成邮箱报警功能](#1425-集成邮箱报警功能)
+            - [1.4.2.4. 集群](#1424-集群)
+            - [1.4.2.5. 集成spring security](#1425-集成spring-security)
+            - [1.4.2.6. 集成邮箱报警功能](#1426-集成邮箱报警功能)
     - [1.5. Spring Security](#15-spring-security)
         - [1.5.1. 简介](#151-简介)
         - [1.5.2. 提供的功能](#152-提供的功能)
@@ -59,7 +79,12 @@
         - [1.7.1. 基本概念](#171-基本概念)
         - [1.7.2. 基本使用](#172-基本使用)
         - [1.7.3. Spring Boot 环境下创建Bean](#173-spring-boot-环境下创建bean)
-        - [1.7.4. 使用不同的容器](#174-使用不同的容器)
+            - [1.7.3.1. 方式1:使用@Component等注解：](#1731-方式1使用component等注解)
+            - [1.7.3.2. 方式2:使用@Bean注解](#1732-方式2使用bean注解)
+            - [1.7.3.3. 方式3:使用@Import注解](#1733-方式3使用import注解)
+            - [1.7.3.4. 方式4:使用ImportSelector接口](#1734-方式4使用importselector接口)
+            - [1.7.3.5. 方式5:手动注册到容器](#1735-方式5手动注册到容器)
+        - [1.7.4. 使用不同的WEB容器](#174-使用不同的web容器)
         - [1.7.5. 配置文件](#175-配置文件)
             - [1.7.5.1. bootstrap.yml与application.yml区别](#1751-bootstrapyml与applicationyml区别)
             - [1.7.5.2. 多环境配置](#1752-多环境配置)
@@ -212,10 +237,212 @@
 ## 1.1. Spring
 <a href="#menu" style="float:right">目录</a>
 
-### 1.1.1. IOC容器
+### 1.1.1. Spring模块
+
+* 数据访问与集成
+    * JDBC
+    * Transaction
+    * ORM
+    * OXM
+    * Messaging
+    * JMS
+* Web与远程调用
+    * Web
+    * Web servlet
+    * Web portlet
+    * Web Socket
+* 面向切面编程
+    * AOP
+    * Aspects
+* Instrumentation
+    * Instrument
+    * Instrument Tomcat
+* Spring核心容器
+    * Beans
+    * Core
+    * Context
+    * Expression
+    * Context support
+* 测试
+    * Test
+
+**Spring核心容器**
+容器是Spring框架最核心的部分，它管理着Spring应用中bean的创建、配置和管理。在该模块中，包括了Spring bean工厂，它为Spring提供了DI的功能。基于bean工厂，我们还会发现有多种
+Spring应用上下文的实现，每一种都提供了配置Spring的不同方式。除了bean工厂和应用上下文，该模块也提供了许多企业服务，例如E-mail、JNDI访问、EJB集成和调度。所有的Spring模块都构建于核心容器之上。当你配置应用时，其实你隐式地使用了这些类。
+
+**Spring的AOP模块**
+在AOP模块中，Spring对面向切面编程提供了丰富的支持。这个模块是Spring应用系统中开发切面的基础。与DI一样，AOP可以帮助应用对象解耦。借助于AOP，可以将遍布系统的关注点（例如事务和安全）从它们所应用的对象中解耦出来问题。该模块在多种数据库服务的错误信息之上构建了一个语义丰富的异常层，以后我们再
+也不需要解释那些隐晦专有的SQL错误信息了！
+
+对于那些更喜欢ORM（Object-Relational Mapping）工具而不愿意直接使用JDBC的开发者，Spring提供了ORM模块。Spring的ORM模块建立在对DAO的支持之上，并为多个ORM框架提供了一种构建DAO的简便方式。Spring没有尝试去创建自己的ORM解决方案，而是对许多流行的ORM框架进行了集成，包括Hibernate、Java Persisternce API、Java Data Object和iBATIS
+SQL Maps。Spring的事务管理支持所有的ORM框架以及JDBC。
+
+
+**数据访问与集成**
+使用JDBC编写代码通常会导致大量的样板式代码，例如获得数据库连接、创建语句、处理结果集到最后关闭数据库连接。Spring的JDBC和DAO（Data Access Object）模块抽象了这些样板式代码，使我们的数据库代码变得简单明了，还可以避免因为关闭数据库资源失败而引发的
+
+除此之外，本模块会使用Spring AOP模块为Spring应用中的对象提供事务管理服务
+
+**Web与远程调用**
+MVC（Model-View-Controller）模式是一种普遍被接受的构建Web应用的方法，它可以帮助用户将界面逻辑与应用逻辑分离。Java从来不缺少MVC框架，Apache的Struts、JSF、WebWork和
+Tapestry都是可选的最流行的MVC框架。虽然Spring能够与多种流行的MVC框架进行集成，但它的Web和远程调用模块自带了一个强大的MVC框架，有助于在Web层提升应用的松耦合水平。
+
+除了面向用户的Web应用，该模块还提供了多种构建与其他应用交互的远程调用方案。Spring远程调用功能集成了RMI（Remote Method Invocation）、Hessian、Burlap、JAX-WS，同时Spring还自带了一个远程调用框架：HTTP invoker。Spring还提供了暴露和使用REST API的良好支持。我们将会在第15章讨论Spring的远程调用功能。在第16章学习如何创建和使用REST API。
+
+**Instrumentation**
+Spring的Instrumentation模块提供了为JVM添加代理（agent）的功能。具体来讲，它为Tomcat提供了一个织入代理，能够为Tomcat传递类文件，就像这些文件是被类加载器加载的一样。
+如果这听起来有点难以理解，不必对此过于担心。这个模块所提供的Instrumentation使用场景非常有限，在本书中，我们不会介绍该模块。
+
+**测试**
+鉴于开发者自测的重要性，Spring提供了测试模块以致力于Spring应用的测试。
+通过该模块，你会发现Spring为使用JNDI、Servlet和Portlet编写单元测试提供了一系列的mock对象实现。对于集成测试，该模块为加载Spring应用上下文中的bean集合以及与Spring上下文
+中的bean进行交互提供了支持。
+
+### 1.1.2. Spring体系其他模块
+
+**Spring Web Flow**
+Spring Web Flow建立于Spring MVC框架之上，它为基于流程的会话式Web应用提供了支持
+
+**Spring Web Service**
+虽然核心的Spring框架提供了将Spring bean以声明的方式发布为Web Service的功能，但是这些服务是基于一个具有争议性的架构（拙劣的契约后置模型）之上而构建的。这些服务的契约由
+bean的接口来决定。 Spring Web Service提供了契约优先的Web Service模型，服务的实现都是为了满足服务的契约而编写的
+
+**Spring Security**
+利用Spring AOP，Spring Security为Spring应用提供了声明式的安全机制
+
+
+**Spring Integration**
+Spring Integration提供了多种通用应用集成模式的Spring声明式风格实现。
+
+**Spring Batch**
+当我们需要对数据进行大量操作时，没有任何技术可以比批处理更胜任这种场景。如果需要开发一个批处理应用，你可以通过Spring Batch，使用Spring强大的面向POJO的编程模型。
+
+**Spring Data**
+Spring Data使得在Spring中使用任何数据库都变得非常容易
+
+**Spring Social**
+
+**Spring Boot**
+
+### 1.1.3. 版本特性变化
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.1.1.1. 控制反转和依赖注入
+
+### 1.1.4. 常用注解
+
+#### 1.1.4.1. Spring部分
+<a href="#menu" style="float:right">目录</a>
+
+**声明bean的注解**
+
+@Component 组件，没有明确的角色
+@Service 在业务逻辑层使用（service层）
+@Repository 在数据访问层使用（dao层）
+@Controller 在展现层使用，控制器的声明（C）
+
+**注入bean的注解**
+
+@Autowired：由Spring提供
+@Inject：由JSR-330提供
+@Resource：由JSR-250提供
+都可以注解在set方法和属性上，推荐注解在属性上（一目了然，少写代码）。
+
+**java配置类相关注解**
+
+@Configuration 声明当前类为配置类，相当于xml形式的Spring配置（类上）
+@Bean 注解在方法上，声明当前方法的返回值为一个bean，替代xml中的方式（方法上）
+@Configuration 声明当前类为配置类，其中内部组合了@Component注解，表明这个类是一个bean（类上）
+@ComponentScan 用于对Component进行扫描，相当于xml中的（类上）
+@WishlyConfiguration 为@Configuration与@ComponentScan的组合注解，可以替代这两个注解
+
+**切面（AOP）相关注解**
+
+Spring支持AspectJ的注解式切面编程。
+@Aspect 声明一个切面（类上） 使用@After、@Before、@Around定义建言（advice），可直接将拦截规则（切点）作为参数。
+@After 在方法执行之后执行（方法上） @Before 在方法执行之前执行（方法上） @Around 在方法执行之前与之后执行（方法上）
+@PointCut 声明切点 在java配置类中使用@EnableAspectJAutoProxy注解开启Spring对AspectJ代理的支持（类上）
+
+
+**@Bean的属性支持**
+
+@Scope 设置Spring容器如何新建Bean实例（方法上，得有@Bean） 其设置类型包括：
+Singleton （单例,一个Spring容器中只有一个bean实例，默认模式）, Protetype （每次调用新建一个bean）, Request （web项目中，给每个http request新建一个bean）, Session （web项目中，给每个http session新建一个bean）, GlobalSession（给每一个 global http session新建一个Bean实例）
+
+@StepScope 在Spring Batch中还有涉及
+@PostConstruct 由JSR-250提供，在构造函数执行完之后执行，等价于xml配置文件中bean的initMethod,也可以通过@Bean指定
+@PreDestory 由JSR-250提供，在Bean销毁之前执行，等价于xml配置文件中bean的destroyMethod,也可以通过@Bean指定
+
+**@Value注解**
+
+@Value 为属性注入值（属性上） 支持如下方式的注入： 
+
+》注入普通字符  @Value("Michael Jackson")String name;
+》注入操作系统属性  @Value("#{systemProperties['os.name']}")String osName;
+》注入表达式结果   @Value("#{ T(java.lang.Math).random() * 100 }") String randomNumber;
+》注入其它bean属性 @Value("#{domeClass.name}")String name;
+》注入文件资源 @Value("classpath:com/hgs/hello/test.txt")String Resource file;
+》注入网站资源 @Value("http://www.cznovel.com")Resource url;
+》注入配置文件 Value("${book.name}")String bookName;
+注入配置使用方法：
+ ① 编写配置文件（test.properties）book.name=《三体》
+② @PropertySource 加载配置文件(类上)
+@PropertySource("classpath:com/hgs/hello/test/test.propertie")
+③ 还需配置一个PropertySourcesPlaceholderConfigurer的bean。
+
+**环境切换**
+
+@Profile 通过设定Environment的ActiveProfiles来设定当前context需要使用的配置环境。（类或方法上）
+@Conditional Spring4中可以使用此注解定义条件话的bean，通过实现Condition接口，并重写matches方法，从而决定该bean是否被实例化。（方法上）
+
+**异步相关**
+
+@EnableAsync 配置类中，通过此注解开启对异步任务的支持，叙事性AsyncConfigurer接口（类上）
+@Async 在实际执行的bean方法使用该注解来申明其是一个异步任务（方法上或类上所有的方法都将异步，需要@EnableAsync开启异步任务）
+
+**定时任务相关**
+
+@EnableScheduling 在配置类上使用，开启计划任务的支持（类上）
+@Scheduled 来申明这是一个任务，包括cron,fixDelay,fixRate等类型（方法上，需先开启计划任务的支持）
+
+**@Enable*注解说明**
+
+这些注解主要用来开启对xxx的支持。 @EnableAspectJAutoProxy 开启对AspectJ自动代理的支持
+
+@EnableAsync 开启异步方法的支持
+@EnableScheduling 开启计划任务的支持
+@EnableWebMvc 开启Web MVC的配置支持
+@EnableConfigurationProperties 开启对@ConfigurationProperties注解配置Bean的支持
+@EnableJpaRepositories 开启对SpringData JPA Repository的支持
+@EnableTransactionManagement 开启注解式事务的支持
+@EnableTransactionManagement 开启注解式事务的支持
+@EnableCaching 开启注解式的缓存支持
+
+**测试相关注解**
+
+@RunWith 运行器，Spring中通常用于对JUnit的支持
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration 用来加载配置ApplicationContext，其中classes属性用来加载配置类
+@ContextConfiguration(classes={TestConfig.class})
+
+#### 1.1.4.2. SpringMVC部分
+<a href="#menu" style="float:right">目录</a>
+
+@EnableWebMvc 在配置类中开启Web MVC的配置支持，如一些ViewResolver或者MessageConverter等，若无此句，重写WebMvcConfigurerAdapter方法（用于对SpringMVC的配置）。
+@Controller 声明该类为SpringMVC中的Controller
+@RequestMapping 用于映射Web请求，包括访问路径和参数（类或方法上）
+@ResponseBody 支持将返回值放在response内，而不是一个页面，通常用户返回json数据（返回值旁或方法上）
+@RequestBody 允许request的参数在request体中，而不是在直接连接在地址后面。（放在参数前）
+@PathVariable 用于接收路径参数，比如@RequestMapping(“/hello/{name}”)申明的路径，将注解放在参数中前，即可获取该值，通常作为Restful的接口实现方法。
+@RestController 该注解为一个组合注解，相当于@Controller和@ResponseBody的组合，注解在类上，意味着，该Controller的所有方法都默认加上了@ResponseBody。
+@ControllerAdvice 通过该注解，我们可以将对于控制器的全局配置放置在同一个位置，注解了@Controller的类的方法可使用@ExceptionHandler、@InitBinder、@ModelAttribute注解到方法上， 这对所有注解了 @RequestMapping的控制器内的方法有效。
+@ExceptionHandler 用于全局处理控制器里的异常
+@InitBinder 用来设置WebDataBinder，WebDataBinder用来自动绑定前台请求参数到Model中。
+@ModelAttribute 本来的作用是绑定键值对到Model里，在@ControllerAdvice中是让全局的@RequestMapping都能获得在此处设置的键值对。
+
+### 1.1.5. IOC容器
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.1.5.1. 控制反转和依赖注入
 <a href="#menu" style="float:right">目录</a>
 
 * 从概念上讲：Spring 容器是 Spring 框架的核心，是用来管理对象的。容器将创建对象，把它们连接在一起，配置它们，并管理他们的整个生命周期从创建到销毁。
@@ -262,9 +489,9 @@ IoC和DI由什么关系呢？其实它们是同一个概念的不同角度描述
     * 完全不需要实现任何特殊的接口
 
 
-#### 1.1.1.2. 依赖注入方式
+#### 1.1.5.2. 依赖注入方式
 
-##### 1.1.1.2.1. setter注入与构造方法注入
+##### 1.1.5.2.1. setter注入与构造方法注入
 spring的两种依赖注入方式：setter注入与构造方法注入，这两种方法的不同主要就是在xml文件下对应使用property和constructor-arg属性。
 
 ```java
@@ -330,7 +557,7 @@ public class Id {
 * setter方式原型，prototype
     * 对于"prototype"作用域bean，Spring容器无法完成依赖注入，因为Spring容器不进行缓存"prototype"作用域的bean，因此无法提前暴露一个创建中的bean
 
-##### 1.1.1.2.2. 自动注入方式
+##### 1.1.5.2.2. 自动注入方式
 
 上面是传统的XML配置方式,目前很少使用，一般使用自动注入
 
@@ -536,22 +763,708 @@ public class InjectBeanConfig {
 
 无论注入时使用什么样的属性名，都会注入employeeDao2。
 
-### 1.1.2. IOC容器
+### 1.1.6. IOC容器
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.1.2.1. Bean的作用域
 
-#### 1.1.2.2. Bean的生命周期
+* 构造一个IOC容器需要如下几个步骤：
+    * 第一步：资源的定位。所谓资源就是指Spring里众多的XML配置文件或者@Component,@Configuration等方式(SpringBoot)定义的Bean类，要获取到配置文件里面的信息，首先是要找到它。
+    * 第二步：加载和解析资源文件。XML文件里面定义的一些节点，和Spring里面定义的数据结构不匹配，那么就需要按照Spring的解析规则将XML解析成Spring需要的。
+    * 第三步：将解析完的数据结构注册到IOC容器中。Spring中内部的数据结构叫BeanDefinition。
+    * 经过以上三个步骤之后，IOC容器已经构造好，但是还是不能被直接使用。BeanDefinition只是配置文件里的配置在IOC中建立的一个映射，对于IOC容器来说最重要的依赖关系都还没有注入呢，相当于光有一个壳，内容还没有填充。
+    * 接下来这个过程是容器的实例化。容器的实例化只有一步，就是依赖注入。
+    * 完成IOC容器的构造和实例化之后，完整的IOC就建立好了
 
 
-
-### 1.1.3. AOP面向切面编程
+#### 1.1.6.1. BeanFactory接口以及实现类说明
 <a href="#menu" style="float:right">目录</a>
 
-### 1.1.4. Spring 事务管理
+##### 1.1.6.1.1. BeanDefinition
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.1.4.1. 数据库事务基础知识
+在Spring容器启动的过程中，会将Bean解析成Spring内部的BeanDefinition结构.
+
+```java
+
+public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
+    String SCOPE_SINGLETON = "singleton";
+    String SCOPE_PROTOTYPE = "prototype";
+    int ROLE_APPLICATION = 0;
+    int ROLE_SUPPORT = 1;
+    int ROLE_INFRASTRUCTURE = 2;
+
+    void setParentName(@Nullable String var1);
+    @Nullable
+    String getParentName();
+    void setBeanClassName(@Nullable String var1);
+    @Nullable
+    String getBeanClassName();
+    void setScope(@Nullable String var1);
+    @Nullable
+    String getScope();
+    void setLazyInit(boolean var1);
+    boolean isLazyInit();
+    void setDependsOn(@Nullable String... var1);
+    @Nullable
+    String[] getDependsOn();
+    void setAutowireCandidate(boolean var1);
+    boolean isAutowireCandidate();
+    void setPrimary(boolean var1);
+    boolean isPrimary();
+    void setFactoryBeanName(@Nullable String var1);
+    @Nullable
+    String getFactoryBeanName();
+    void setFactoryMethodName(@Nullable String var1);
+    @Nullable
+    String getFactoryMethodName();
+    ConstructorArgumentValues getConstructorArgumentValues();
+    default boolean hasConstructorArgumentValues() {
+        return !this.getConstructorArgumentValues().isEmpty();
+    }
+    MutablePropertyValues getPropertyValues();
+    default boolean hasPropertyValues() {
+        return !this.getPropertyValues().isEmpty();
+    }
+    boolean isSingleton();
+    boolean isPrototype();
+    boolean isAbstract();
+    int getRole();
+    @Nullable
+    String getDescription();
+    @Nullable
+    String getResourceDescription();
+    @Nullable
+    BeanDefinition getOriginatingBeanDefinition();
+}
+
+```
+
+可以看到上面的很多属性和方法都很熟悉，例如类名、scope、属性、构造函数参数列表、依赖的bean、是否是单例类、是否是懒加载等，其实就是将Bean的定义信息存储到这个BeanDefinition相应的属性中，后面对Bean的操作就直接对BeanDefinition进行，例如拿到这个BeanDefinition后，可以根据里面的类名、构造函数、构造函数参数，使用反射进行对象创建。
+
+BeanDefinition是一个接口，是一个抽象的定义，实际使用的是其实现类，如 ChildBeanDefinition、RootBeanDefinition、GenericBeanDefinition等。
+
+
+##### 1.1.6.1.2. BeanFactory
+<a href="#menu" style="float:right">目录</a>
+
+
+```java
+public interface BeanFactory {
+    String FACTORY_BEAN_PREFIX = "&";
+
+    Object getBean(String var1) throws BeansException;
+    <T> T getBean(String var1, @Nullable Class<T> var2) throws BeansException;
+    Object getBean(String var1, Object... var2) throws BeansException;
+    <T> T getBean(Class<T> var1) throws BeansException;
+    <T> T getBean(Class<T> var1, Object... var2) throws BeansException;
+    boolean containsBean(String var1);
+
+    boolean isSingleton(String var1) throws NoSuchBeanDefinitionException;
+    boolean isPrototype(String var1) throws NoSuchBeanDefinitionException;
+    boolean isTypeMatch(String var1, ResolvableType var2) throws NoSuchBeanDefinitionException;
+    boolean isTypeMatch(String var1, @Nullable Class<?> var2) throws NoSuchBeanDefinitionException;
+    @Nullable
+    
+    Class<?> getType(String var1) throws NoSuchBeanDefinitionException;
+    String[] getAliases(String var1);
+}
+```
+* 具体：
+    * 4个获取实例的方法。getBean的重载方法。
+    * 4个判断的方法。判断是否存在，是否为单例、原型，名称类型是否匹配。
+    * 1个获取类型的方法、一个获取别名的方法。根据名称获取类型、根据名称获取别名
+
+##### 1.1.6.1.3. HierarchicalBeanFactory
+<a href="#menu" style="float:right">目录</a>
+
+
+```java
+public interface HierarchicalBeanFactory extends BeanFactory {
+    @Nullable
+    BeanFactory getParentBeanFactory();
+
+    boolean containsLocalBean(String var1);
+}
+```
+1. 第一个方法返回本Bean工厂的父工厂。这个方法实现了工厂的分层。
+2. 第二个方法判断本地工厂是否包含这个Bean（忽略其他所有父工厂）。这也是分层思想的体现。
+总结：这个工厂接口非常简单，实现了Bean工厂的分层。这个工厂接口也是继承自BeanFacotory，也是一个二级接口，相对于父接口，它只扩展了一个重要的功能——工厂分层。
+
+##### 1.1.6.1.4. SimpleJndiBeanFactory
+<a href="#menu" style="float:right">目录</a>
+
+SimpleJndiBeanFactory 是一个实现类,并且没有继承者.
+
+```java
+public class SimpleJndiBeanFactory extends JndiLocatorSupport implements BeanFactory {
+    private final Set<String> shareableResources = new HashSet();
+    private final Map<String, Object> singletonObjects = new HashMap();
+    private final Map<String, Class<?>> resourceTypes = new HashMap();
+    .................
+}
+```
+
+可以看到,这里只是实现了一个简单的容器,使用集合来存储对象
+
+
+##### 1.1.6.1.5. AutowireCapableBeanFactory
+<a href="#menu" style="float:right">目录</a>
+
+```java
+public interface AutowireCapableBeanFactory extends BeanFactory {
+    int AUTOWIRE_NO = 0;
+    int AUTOWIRE_BY_NAME = 1;
+    int AUTOWIRE_BY_TYPE = 2;
+    int AUTOWIRE_CONSTRUCTOR = 3;
+    /** @deprecated */
+    @Deprecated
+    int AUTOWIRE_AUTODETECT = 4;
+
+    <T> T createBean(Class<T> var1) throws BeansException;
+    void autowireBean(Object var1) throws BeansException;
+    Object configureBean(Object var1, String var2) throws BeansException;
+    Object createBean(Class<?> var1, int var2, boolean var3) throws BeansException;
+    Object autowire(Class<?> var1, int var2, boolean var3) throws BeansException;
+    void autowireBeanProperties(Object var1, int var2, boolean var3) throws BeansException;
+    void applyBeanPropertyValues(Object var1, String var2) throws BeansException;
+    Object initializeBean(Object var1, String var2) throws BeansException;
+    Object applyBeanPostProcessorsBeforeInitialization(Object var1, String var2) throws BeansException;
+    Object applyBeanPostProcessorsAfterInitialization(Object var1, String var2) throws BeansException;
+    void destroyBean(Object var1);
+    <T> NamedBeanHolder<T> resolveNamedBean(Class<T> var1) throws BeansException;
+    @Nullable
+    Object resolveDependency(DependencyDescriptor var1, @Nullable String var2) throws BeansException;
+    @Nullable
+    Object resolveDependency(DependencyDescriptor var1, @Nullable String var2, @Nullable Set<String> var3, @Nullable TypeConverter var4) throws BeansException;
+}
+
+```
+
+* 具体：
+    * 总共5个静态不可变常量来指明装配策略，其中一个常量被Spring3.0废弃、一个常量表示没有自动装配，另外3个常量指明不同的装配策略——根据名称、根据类型、根据构造方法。
+    * 8个跟自动装配有关的方法，实在是繁杂，具体的意义我们研究类的时候再分辨吧。
+    * 2个执行BeanPostProcessors的方法。
+    * 2个分解指定依赖的方法
+* 总结：这个工厂接口继承自BeanFacotory，它扩展了自动装配的功能，根据类定义BeanDefinition装配Bean、执行前、后处理器等。
+
+##### 1.1.6.1.6. ListableBeanFactory
+<a href="#menu" style="float:right">目录</a>
+
+```java
+public interface ListableBeanFactory extends BeanFactory {
+
+    boolean containsBeanDefinition(String var1);
+    int getBeanDefinitionCount();
+    String[] getBeanDefinitionNames();
+
+    String[] getBeanNamesForType(ResolvableType var1);
+    String[] getBeanNamesForType(@Nullable Class<?> var1);
+    String[] getBeanNamesForType(@Nullable Class<?> var1, boolean var2, boolean var3);
+
+    <T> Map<String, T> getBeansOfType(@Nullable Class<T> var1) throws BeansException;
+    <T> Map<String, T> getBeansOfType(@Nullable Class<T> var1, boolean var2, boolean var3) throws BeansException;
+
+    String[] getBeanNamesForAnnotation(Class<? extends Annotation> var1);
+    Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> var1) throws BeansException;
+
+    @Nullable
+    <A extends Annotation> A findAnnotationOnBean(String var1, Class<A> var2) throws NoSuchBeanDefinitionException;
+}
+```
+* 具体：
+    * 3个跟BeanDefinition有关的总体操作。包括BeanDefinition的总数、名字的集合、指定类型的名字的集合。（这里指出，BeanDefinition是Spring中非常重要的一个类，每个BeanDefinition实例都包含一个类在Spring工厂中所有属性。）
+    * 3个getBeanNamesForType重载方法。根据指定类型（包括子类）获取其对应的所有Bean名字。
+    * 3个getBeansOfType重载方法。根据类型（包括子类）返回指定Bean名和Bean的Map。
+    * 2个跟注解查找有关的方法。根据注解类型，查找Bean名和Bean的Map。以及根据指定Bean名和注解类型查找指定的Bean。
+* 总结：
+    * 正如这个工厂接口的名字所示，这个工厂接口最大的特点就是可以列出工厂可以生产的所有实例。当然，工厂并没有直接提供返回所有实例的方法，也没这个必要。它可以返回指定类型的所有的实例。而且你可以通过getBeanDefinitionNames()得到工厂所有bean的名字，然后根据这些名字得到所有的Bean。这个工厂接口扩展了BeanFactory的功能，作为上文指出的BeanFactory二级接口，有9个独有的方法，扩展了跟BeanDefinition的功能，提供了BeanDefinition、BeanName、注解有关的各种操作。它可以根据条件返回Bean的集合，这就是它名字的由来——ListableBeanFactory。
+
+##### 1.1.6.1.7. ConfigurableBeanFactory
+<a href="#menu" style="float:right">目录</a>
+
+
+```java
+
+public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, SingletonBeanRegistry {
+    String SCOPE_SINGLETON = "singleton";
+    String SCOPE_PROTOTYPE = "prototype";
+
+    void setParentBeanFactory(BeanFactory var1) throws IllegalStateException;
+    void setBeanClassLoader(@Nullable ClassLoader var1);
+    @Nullable
+    ClassLoader getBeanClassLoader();
+    void setTempClassLoader(@Nullable ClassLoader var1);
+    @Nullable
+    ClassLoader getTempClassLoader();
+    void setCacheBeanMetadata(boolean var1);
+    boolean isCacheBeanMetadata();
+    void setBeanExpressionResolver(@Nullable BeanExpressionResolver var1);
+    @Nullable
+    BeanExpressionResolver getBeanExpressionResolver();
+    void setConversionService(@Nullable ConversionService var1);
+    @Nullable
+    ConversionService getConversionService();
+    void addPropertyEditorRegistrar(PropertyEditorRegistrar var1);
+    void registerCustomEditor(Class<?> var1, Class<? extends PropertyEditor> var2);
+    void copyRegisteredEditorsTo(PropertyEditorRegistry var1);
+    void setTypeConverter(TypeConverter var1);
+    TypeConverter getTypeConverter();
+    void addEmbeddedValueResolver(StringValueResolver var1);
+    boolean hasEmbeddedValueResolver();
+    @Nullable
+    String resolveEmbeddedValue(String var1);
+    void addBeanPostProcessor(BeanPostProcessor var1);
+    int getBeanPostProcessorCount();
+    void registerScope(String var1, Scope var2);
+    String[] getRegisteredScopeNames();
+    @Nullable
+    Scope getRegisteredScope(String var1);
+    AccessControlContext getAccessControlContext();
+    void copyConfigurationFrom(ConfigurableBeanFactory var1);
+    void registerAlias(String var1, String var2) throws BeanDefinitionStoreException;
+    void resolveAliases(StringValueResolver var1);
+    BeanDefinition getMergedBeanDefinition(String var1) throws NoSuchBeanDefinitionException;
+    boolean isFactoryBean(String var1) throws NoSuchBeanDefinitionException;
+    void setCurrentlyInCreation(String var1, boolean var2);
+    boolean isCurrentlyInCreation(String var1);
+    void registerDependentBean(String var1, String var2);
+    String[] getDependentBeans(String var1);
+    String[] getDependenciesForBean(String var1);
+    void destroyBean(String var1, Object var2);
+    void destroyScopedBean(String var1);
+    void destroySingletons();
+}
+
+public interface SingletonBeanRegistry {
+    void registerSingleton(String var1, Object var2);
+    @Nullable
+    Object getSingleton(String var1);
+    boolean containsSingleton(String var1);
+    String[] getSingletonNames();
+    int getSingletonCount();
+    Object getSingletonMutex();
+}
+
+```
+可以看到，SingletonBeanRegistry这个接口非常简单，5个方法，实现了单例类注册的功能。
+
+ConfigurableBeanFactory同时继承了HierarchicalBeanFactory 和 SingletonBeanRegistry 这两个接口，即同时继承了分层和单例类注册的功能。
+
+* 具体：
+    * 2个静态不可变常量分别代表单例类和原型类。
+    * 1个设置父工厂的方法，跟HierarchicalBeanFactory接口的getParentBeanFactory方法互补。
+    * 4个跟类加载器有关的方法：get/set工厂类加载器和get/set临时类加载器。
+    * 2个设置、是否缓存元数据的方法（热加载开关）。
+    * 11个处理Bean注册、加载等细节的方法，包括：Bean表达式分解器、转换服务、属性编辑登记员、属性编辑器、属性编辑注册器、类型转换器、嵌入式的字符串分解器
+    * 2个处理Bean后处理器的方法。
+    * 3个跟注册范围相关的方法。
+    * 1个返回安全访问上下文的方法、1个从其他的工厂复制相关的所有配置的方法。
+    * 2个跟Bean别名相关的方法、1个返回合并后的Bean定义的方法。
+    * 1个判断是否为工厂Bean的方法、2个跟当前Bean创建时机相关的方法。
+    * 3个跟Bean依赖相关的方法、3个销毁Bean相关的方法。
+* 总结：这个巨大的工厂接口，继承自HierarchicalBeanFactory 和 SingletonBeanRegistry 这两个接口，并额外独有37个方法！！！（看的我都快疯了...）这37个方法包含了工厂创建、注册一个Bean的众多细节。这个工厂名为ConfigurableBeanFactory，真是名不虚传！统计一下此时的ConfigurableBeanFactory的方法数吧。自有的37个方法、HierarchicalBeanFactory的2个方法、SingletonBeanRegistry的5个方法、爷爷接口BeanFactory的10个方法，共有54个方法！虽然方法繁多，还算井井有条
+
+##### 1.1.6.1.8. ConfigurableListableBeanFactory
+<a href="#menu" style="float:right">目录</a>
+
+```java
+public interface ConfigurableListableBeanFactory extends ListableBeanFactory, AutowireCapableBeanFactory, ConfigurableBeanFactory {
+    void ignoreDependencyType(Class<?> var1);
+    void ignoreDependencyInterface(Class<?> var1);
+    void registerResolvableDependency(Class<?> var1, @Nullable Object var2);
+    boolean isAutowireCandidate(String var1, DependencyDescriptor var2) throws NoSuchBeanDefinitionException;
+    BeanDefinition getBeanDefinition(String var1) throws NoSuchBeanDefinitionException;
+    Iterator<String> getBeanNamesIterator();
+    void clearMetadataCache();
+    void freezeConfiguration();
+    boolean isConfigurationFrozen();
+    void preInstantiateSingletons() throws BeansException;
+}
+
+```
+* 具体：
+    * 2个忽略自动装配的的方法。
+    * 1个注册一个可分解依赖的方法。
+    * 1个判断指定的Bean是否有资格作为自动装配的候选者的方法。
+    * 1个根据指定bean名，返回注册的Bean定义的方法。
+    * 2个冻结所有的Bean配置相关的方法。
+    * 1个使所有的非延迟加载的单例类都实例化的方法。
+* 总结：工厂接口ConfigurableListableBeanFactory同时继承了3个接口，ListableBeanFactory、AutowireCapableBeanFactory 和 ConfigurableBeanFactory，扩展之后，加上自有的这8个方法，这个工厂接口总共有83个方法，实在是巨大到不行了。这个工厂接口的自有方法总体上只是对父类接口功能的补充，包含了BeanFactory体系目前的所有方法，可以说是接口的集大成者。
+
+
+
+##### 1.1.6.1.9. BeanDefinitionRegistry
+<a href="#menu" style="float:right">目录</a>
+
+这个接口基本用来操作定义在工厂内部的BeanDefinition的
+
+
+##### 1.1.6.1.10. DefaultListableBeanFactory
+
+spring Ioc容器的实现，从根源上是beanfactory，但真正可以作为一个可以独立使用的ioc容器还是DefaultListableBeanFactory，因此可以这么说，
+DefaultListableBeanFactory 是整个spring ioc的始祖，研究透它的前生今世对我们理解spring ioc的概念有着重要的作用
+
+```java
+public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements ConfigurableListableBeanFactory, BeanDefinitionRegistry, Serializable {
+    @Nullable
+    private static Class<?> javaxInjectProviderClass;
+    private static final Map<String, Reference<DefaultListableBeanFactory>> serializableFactories;
+    @Nullable
+    private String serializationId;
+    private boolean allowBeanDefinitionOverriding = true;
+    private boolean allowEagerClassLoading = true;
+    @Nullable
+    private Comparator<Object> dependencyComparator;
+    private AutowireCandidateResolver autowireCandidateResolver = new SimpleAutowireCandidateResolver();
+    private final Map<Class<?>, Object> resolvableDependencies = new ConcurrentHashMap(16);
+    private final Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap(256);
+    private final Map<Class<?>, String[]> allBeanNamesByType = new ConcurrentHashMap(64);
+    private final Map<Class<?>, String[]> singletonBeanNamesByType = new ConcurrentHashMap(64);
+    private volatile List<String> beanDefinitionNames = new ArrayList(256);
+    private volatile Set<String> manualSingletonNames = new LinkedHashSet(16);
+    @Nullable
+    private volatile String[] frozenBeanDefinitionNames;
+    private volatile boolean configurationFrozen = false;
+
+```
+**DefaultListableBeanFactory的作用：**
+* 默认实现了ListableBeanFactory和BeanDefinitionRegistry接口，基于bean definition对象，是一个成熟的bean factroy。
+* 最典型的应用是：在访问bean前，先注册所有的definition（可能从bean definition配置文件中）。使用预先建立的bean定义元数据对象，从本地的bean definition表中查询bean definition因而将不会花费太多成本。
+* DefaultListableBeanFactory既可以作为一个单独的beanFactory，也可以作为自定义beanFactory的父类。
+
+注意：特定格式bean definition的解析器可以自己实现，也可以使用原有的解析器，如：PropertiesBeanDefinitionReader和XmLBeanDefinitionReader。
+
+**DefaultListableBeanFactory其实要实现的功能就是以list集合的方式操作bean，为什么要拆成这么多的类和接口呢。这里面可能基于几点考虑。**
+* 功能的不同维度，分不同的接口，方便以后的维护和其他人的阅读。如：AutowireCapableBeanFactory、ListableBeanFactory、HierarchicalBeanFactory等
+* 不同接口的实现，分布在不同的之类里，方便以后不同接口多种实现的扩展
+* 从整个类图的分布，可以看出spring在这块是面向接口编程，后面类的实现，他们认为只是接口功能实现的一种，随时可以拓展成多种实现
+
+#### 1.1.6.2. 单例实现
+<a href="#menu" style="float:right">目录</a>
+
+![admin首页](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/singleton.png)
+
+可以看到Spring的单例实现类是DefaultSingletonBeanRegistry的getSingleton方法
+```java
+  public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory) {
+        Assert.notNull(beanName, "Bean name must not be null");
+
+        //需要进行同步
+        synchronized(this.singletonObjects) {
+
+            //在已经注册了的单例map集合（singletonObjects）中获取特定beanName的bean
+            Object singletonObject = this.singletonObjects.get(beanName);
+
+            //如果为null,说明这个bean还没有创建
+            if (singletonObject == null) {
+                if (this.singletonsCurrentlyInDestruction) {
+                    throw new BeanCreationNotAllowedException(beanName, "Singleton bean creation not allowed while singletons of this factory are in destruction (Do not request a bean from a BeanFactory in a destroy method implementation!)");
+                }
+
+                if (this.logger.isDebugEnabled()) {
+                    this.logger.debug("Creating shared instance of singleton bean '" + beanName + "'");
+                }
+                //把当前正在创建的bean记录在缓存中，对循环依赖进行检测
+                this.beforeSingletonCreation(beanName);
+                boolean newSingleton = false;
+                boolean recordSuppressedExceptions = this.suppressedExceptions == null;
+                if (recordSuppressedExceptions) {
+                    this.suppressedExceptions = new LinkedHashSet();
+                }
+
+                try {
+                    //使用回调方法 创建单例bean
+                    singletonObject = singletonFactory.getObject();
+                    newSingleton = true;
+                } catch (IllegalStateException var16) {
+                    singletonObject = this.singletonObjects.get(beanName);
+                    if (singletonObject == null) {
+                        throw var16;
+                    }
+                } catch (BeanCreationException var17) {
+                    BeanCreationException ex = var17;
+                    if (recordSuppressedExceptions) {
+                        Iterator var8 = this.suppressedExceptions.iterator();
+
+                        while(var8.hasNext()) {
+                            Exception suppressedException = (Exception)var8.next();
+                            ex.addRelatedCause(suppressedException);
+                        }
+                    }
+
+                    throw ex;
+                } finally {
+                    if (recordSuppressedExceptions) {
+                        this.suppressedExceptions = null;
+                    }
+                    //移除缓存中对该bean正在加载的状态
+                    this.afterSingletonCreation(beanName);
+                }
+
+                if (newSingleton) {
+                    //将新创建的bean加入缓存，并且删除加载bean过程中所记录的各种辅助状态
+                    //这些辅助状态主要是在回调方法创建bean时候引入的
+                    this.addSingleton(beanName, singletonObject);
+                }
+            }
+
+            return singletonObject;
+        }
+    }
+```
+
+
+
+
+#### 1.1.6.3. Bean的作用域
+<a href="#menu" style="float:right">目录</a>
+
+
+Bean的生命周期由Scope定义
+```java
+package org.springframework.context.annotation;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import org.springframework.core.annotation.AliasFor;
+
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface Scope {
+    @AliasFor("scopeName")
+    String value() default "";
+
+    @AliasFor("value")
+    String scopeName() default "";
+
+    ScopedProxyMode proxyMode() default ScopedProxyMode.DEFAULT;
+}
+```
+一共有五个值类型
+* singleton（单例模式)默认模式
+    * 使用该属性定义Bean时，IOC容器仅创建一个Bean实例，IOC容器每次返回的是同一个Bean实例。
+* prototype（原型模式）
+    * 使用该属性定义Bean时，IOC容器可以创建多个Bean实例，每次返回的都是一个新的实例。
+* request(HTTP请求）
+    * 该属性仅对HTTP请求产生作用，使用该属性定义Bean时，每次HTTP请求都会创建一个新的Bean，适用于WebApplicationContext环境。
+* session（会话）
+    * 该属性仅用于HTTP Session，同一个Session共享一个Bean实例。不同Session使用不同的实例。
+* global-session(全局会话）
+    * 该属性仅用于HTTP Session，同session作用域不同的是，所有的Session共享一个Bean实例。
+
+应用场合：
+1.需要回收重要资源(数据库连接等)的事宜配置为singleton，如果配置为prototype需要应用确保资源正常回收。
+2.有状态的Bean配置成singleton会引发未知问题，可以考虑配置为prototype。
+
+prototype作用域的Bean会导致在每次对该Bean请求（将其注入到另一个Bean中，或者以程序的方式调用容器的getBean()方法）时都会创建一个新的Bean实例。根据经验，对有状态的Bean应使用prototype作用域，而对无状态的Bean则应该使用singleton作用域。对于具有prototype作用域的Bean，有一点很重要，即Spring不能对该Bean的整个生命周期负责。具有prototype作用域的Bean创建后交由调用者负责销毁对象回收资源。
+
+
+#### 1.1.6.4. Bean的生命周期
+
+1. Spring对bean进行实例化；
+2. Spring将值和bean的引用注入到bean对应的属性中；
+3. 如果bean实现了BeanNameAware接口，Spring将bean的ID传递给setBean-Name()方法；
+4. 如果bean实现了BeanFactoryAware接口，Spring将调用setBeanFactory()方法，将BeanFactory容器实例传入；
+5. 如果bean实现了ApplicationContextAware接口，Spring将调用setApplicationContext()方法，将bean所在的应用上下文的引用传入进来；
+6. 如果bean实现了BeanPostProcessor接口，Spring将调用它们的postProcessBeforeInitialization()方法；
+7. 如果bean实现了InitializingBean接口，Spring将调用它们的afterPropertiesSet()方法。类似地，如果bean使用init-method声明了初始化方法，该方法也会被调用；
+8. 如果bean实现了BeanPostProcessor接口，Spring将调用它们的postProcessAfterInitialization()方法；
+9. 此时，bean已经准备就绪，可以被应用程序使用了，它们将一直驻留在应用上下文中，直到该应用上下文被销毁；
+10. 如果bean实现了DisposableBean接口，Spring将调用它的destroy()接口方法。同样，如果bean使用destroy-method声明了销毁方法，该方法也会被调用。
+
+![](https://images0.cnblogs.com/i/580631/201405/181453414212066.png)
+
+Bean的完整生命周期经历了各种方法调用，这些方法可以划分为以下几类：
+* Bean自身的方法
+    * 这个包括了Bean本身调用的方法和通过配置文件中< bean>的init-method和destroy-method指定的方法
+* Bean级生命周期接口方法
+    * 这个包括了BeanNameAware、BeanFactoryAware、InitializingBean和DiposableBean这些接口的方法
+* 容器级生命周期接口方法
+    * 这个包括了InstantiationAwareBeanPostProcessor 和 BeanPostProcessor 这两个接口实现，一般称它们的实现类为“后处理器”。
+* 工厂后处理器接口方法
+    * 这个包括了AspectJWeavingEnabler, ConfigurationClassPostProcessor, CustomAutowireConfigurer等等非常有用的工厂后处理器接口的方法。工厂后处理器也是容器级的。在应用上下文装配配置文件之后立即调用。
+
+```java
+
+package com.bean.life1.service;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.PropertyValues;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.BeanNameAware;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import java.beans.PropertyDescriptor;
+
+
+@Component
+public class UserService implements
+        //BeanFactoryPostProcessor,
+        InstantiationAwareBeanPostProcessor,
+        BeanNameAware ,
+        BeanFactoryAware,
+        ApplicationContextAware,
+        BeanPostProcessor,
+        InitializingBean
+{
+
+    public UserService() {
+
+        System.out.println("Bean 的构造器");
+    }
+
+    /*
+        接口BeanFactoryPostProcessor
+        */
+
+   // @Override
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
+        System.out.println("BeanFactoryPostProcessor postProcessBeanFactory");
+    }
+
+    //InstantiationAwareBeanPostProcessor
+    @Override
+    public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
+
+        String str = "InstantiationAwareBeanPostProcessor postProcessBeforeInstantiation "
+                + "  beanClass = " + beanClass
+                + "  beanName = " + beanName ;
+
+        if("userService".equals(beanName)){
+            System.out.println(str);
+        }
+       // System.out.println(str);
+        return null;
+    }
+
+
+
+    @Override
+    public PropertyValues postProcessPropertyValues(PropertyValues pvs, PropertyDescriptor[] pds, Object bean, String beanName) throws BeansException {
+        String str = "InstantiationAwareBeanPostProcessor postProcessPropertyValues "
+                + "  bean = " + bean
+                + "  beanName = " + beanName ;
+        if("userService".equals(beanName)){
+            System.out.println(str);
+        }
+        //  System.out.println(str);
+        return null;
+    }
+
+    @Override
+    public boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException {
+
+        String str = "InstantiationAwareBeanPostProcessor postProcessAfterInstantiation "
+                + "  bean = " + bean
+                + "  beanName = " + beanName ;
+        if("userService".equals(beanName)){
+            System.out.println(str);
+        }
+       //
+
+        return false;
+    }
+
+    @Override
+    public void setBeanName(String s) {
+        String str = "BeanNameAware setBeanName "
+                + "  beanName = " + s ;
+        System.out.println(str);
+    }
+
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        String str = "BeanFactoryAware setBeanFactory ";
+        System.out.println(str);
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        String str = "ApplicationContextAware setApplicationContext ";
+        System.out.println(str);
+    }
+
+    @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+
+        String str = "BeanPostProcessor postProcessBeforeInitialization "
+                + "  bean = " + bean
+                + "  beanName = " + beanName ;
+        if("userService".equals(beanName)){
+            System.out.println(str);
+        }
+       // System.out.println(str);
+        return null;
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+
+        String str = "BeanPostProcessor postProcessAfterInitialization "
+                + "  bean = " + bean
+                + "  beanName = " + beanName ;
+        if("userService".equals(beanName)){
+            System.out.println(str);
+        }
+     //   System.out.println(str);
+        return null;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("InitializingBean afterPropertiesSet ");
+    }
+
+    @PostConstruct
+    public  void init(){
+        System.out.println("初始化方法: PostConstruct init");
+    }
+    @PreDestroy
+    public void destory(){
+        System.out.println("销毁方法: PreDestroy destory");
+    }
+
+}
+
+
+```
+输出
+```
+Bean 的构造器
+BeanNameAware setBeanName   beanName = userService
+BeanFactoryAware setBeanFactory 
+ApplicationContextAware setApplicationContext 
+初始化方法: PostConstruct init
+InitializingBean afterPropertiesSet 
+销毁方法: PreDestroy destory
+```　
+注意,上面实现了BeanFactoryPostProcessor接口,将不会调用@PostConstruct和@PreDestroy的方法.
+
+
+一般是实现BeanFactoryPostProcessor或者BeanFactoryAware获取BeanFactory ;
+实现ApplicationContextAware获取ApplicationContext 
+
+
+### 1.1.7. AOP面向切面编程
+<a href="#menu" style="float:right">目录</a>
+
+### 1.1.8. Spring 事务管理
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.1.8.1. 数据库事务基础知识
 <a href="#menu" style="float:right">目录</a>
 
 **事务的四大特性（ACID）**
@@ -670,10 +1583,10 @@ Spring事务的本质其实就是数据库对事务的支持，没有数据库�
 * 真正的数据库层的事务提交和回滚是通过binlog或者redo log实现的
 
 
-#### 1.1.4.2. Spring 对事务管理的支持
+#### 1.1.8.2. Spring 对事务管理的支持
 <a href="#menu" style="float:right">目录</a>
 
-##### 1.1.4.2.1. Spring事务传播行为和隔离级别
+##### 1.1.8.2.1. Spring事务传播行为和隔离级别
 
 **嵌套事务**
 嵌套是子事务套在父事务中执行，子事务是父事务的一部分，在进入子事务之前，父事务建立一个回滚点，叫save point，然后执行子事务，这个子事务的执行也算是父事务的一部分，然后子事务执行结束，父事务继续执行。重点就在于那个save point。看几个问题就明了了：
@@ -815,7 +1728,7 @@ spring的事务边界是在调用业务方法之前开始的，业务方法执�
 |ISOLATION_REPEATABLE_READ|	这种事务隔离级别可以防止脏读，不可重复读。但是可能出现幻像读。
 |ISOLATION_SERIALIZABLE|这是花费最高代价但是最可靠的事务隔离级别。事务被处理为顺序执行。
 
-##### 1.1.4.2.2. 事务管理关键抽象
+##### 1.1.8.2.2. 事务管理关键抽象
 
 事务管理的抽象主要包含以下三个接口
 ```java
@@ -1102,7 +2015,14 @@ public interface PlatformTransactionManager extends TransactionManager {
 
 ```
 
-##### 1.1.4.2.3. 事务管理器实现类
+### 1.1.9. 切面编程AOP
+<a href="#menu" style="float:right">目录</a>
+
+
+
+
+
+### 1.1.10. 事务管理器实现类
 Spring 将事务管理委托给底层具体的持久化实现框架来完成。因此，Spring为不同的持久化框架提供了PlatformTransactionManager 接口的实现类。
 
 |事务|	说明|
@@ -1115,12 +2035,12 @@ Spring 将事务管理委托给底层具体的持久化实现框架来完成。�
 
 
 
-#### 1.1.4.3. 编程式事务管理
+#### 1.1.10.1. 编程式事务管理
 <a href="#menu" style="float:right">目录</a>
 
 实际中很少使用
 
-#### 1.1.4.4. 使用XML配置声明式事务
+#### 1.1.10.2. 使用XML配置声明式事务
 <a href="#menu" style="float:right">目录</a>
 
 **使用原始的TransactionProxyFactoryBean**
@@ -1145,7 +2065,7 @@ Spring 2.0 之后， 由于可以通过aop/tx命名空间声明事务，因此�
         <property name="url" value="jdbc:mysql://localhost:3306/test" />  
         <property name="username" value="root" />  
         <property name="password" value="christmas258@" />  
-    </bean>  
+    </>  
     <!--配置一个JdbcTemplate实例，并将这个“共享的”，“安全的”实例注入到不同的DAO类中去 -->  
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">  
         <property name="dataSource" ref="dataSource" />  
@@ -1245,7 +2165,7 @@ Spring 2.0 之后， 由于可以通过aop/tx命名空间声明事务，因此�
 </beans>  
 ```
 
-#### 1.1.4.5. 使用注解配置事务
+#### 1.1.10.3. 使用注解配置事务
 <a href="#menu" style="float:right">目录</a>
 
 ```java
@@ -1339,13 +2259,26 @@ public void saveUserBack(){
 另外也可以把注解加到方法上来解决。
 
 
-#### 1.1.4.6. 事务实现原理
+#### 1.1.10.4. 事务实现原理
+<a href="#menu" style="float:right">目录</a>
+
+
+### 1.1.11. Spring常用工具类
 <a href="#menu" style="float:right">目录</a>
 
 
 ## 1.2. Spring 表达式语言
 <a href="#menu" style="float:right">目录</a>
 
+
+Spring 3引入了Spring表达式语言（Spring Expression Language，SpEL），它能够以一种强大和简洁的方式将值装配到bean属性和构造器参数中，在这个过程中所使用的表达式会在运行时计算得到值
+
+SpEL拥有很多特性，包括：
+* 使用bean的ID来引用bean；
+* 调用方法和访问对象的属性；
+* 对值进行算术、关系和逻辑运算；
+* 正则表达式匹配；
+* 集合操作。
 
 
 ## 1.3. Spring Cache
@@ -1845,7 +2778,7 @@ public class AdminServerProperties {
 }
 ```
 
-#### 集群
+#### 1.4.2.4. 集群
 <a href="#menu" style="float:right">目录</a>
 
 Spring Boot Admin支持集群
@@ -1867,7 +2800,7 @@ public Config hazelcastConfig() {
 }
 ```
 
-#### 1.4.2.4. 集成spring security
+#### 1.4.2.5. 集成spring security
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -1920,7 +2853,7 @@ public static class SecuritySecureConfig extends WebSecurityConfigurerAdapter {
     }
 }
 ```
-#### 1.4.2.5. 集成邮箱报警功能
+#### 1.4.2.6. 集成邮箱报警功能
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -3613,8 +4546,9 @@ maven配置文件
 使用以上任何一种方式配置时,引入官方的starter包无需指定版本
 
 ### 1.7.3. Spring Boot 环境下创建Bean
+<a href="#menu" style="float:right">目录</a>
 
-**方式1**：
+#### 1.7.3.1. 方式1:使用@Component等注解：
 
 使用@Component,@Service,@Controler,@Repository注解
 
@@ -3649,7 +4583,7 @@ public class MicroblogBlogApplication {
 ```
  
 
-**方式2**：
+#### 1.7.3.2. 方式2:使用@Bean注解
 使用@Bean注解,这种方式用在Spring Boot 应用中。
 
 @Configuration 标识这是一个Spring Boot 配置类，其将会扫描该类中是否存在@Bean 注解的方法，比如如下代码，将会创建User对象并放入容器中。
@@ -3728,7 +4662,7 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.log.config.Us
 
  
 
-**方式3**：
+#### 1.7.3.3. 方式3:使用@Import注解
 使用注解@Import,也会创建对象并注入容器中
 
 ```java
@@ -3739,7 +4673,8 @@ public class MicroblogUserWebApplication {
     }
 }
 ```
-**方式4**：
+#### 1.7.3.4. 方式4:使用ImportSelector接口
+
 使用ImportSelector或者ImportBeanDefinitionRegistrar接口，配合@Import实现。
 
 在使用一些Spring Boot第三方组件时，经常会看到@EnableXXX来使能相关的服务，这里以一个例子来实现。
@@ -3916,7 +4851,8 @@ public class ImportDemoApplication {
 
  
 
-**方式5**
+#### 1.7.3.5. 方式5:手动注册到容器
+
 手动注入Bean容器，有些场景下需要代码动态注入，以上方式都不适用。这时就需要创建 对象手动注入。
 
 通过DefaultListableBeanFactory注入。
@@ -3962,7 +4898,7 @@ Location location =  context.getBean(Location.class);
 location.run();
 ```
 
-### 1.7.4. 使用不同的容器
+### 1.7.4. 使用不同的WEB容器
 
 undertow,jetty和tomcat可以说是javaweb项目当下最火的三款服务器，tomcat是apache下的一款重量级的服务器，不用多说历史悠久，经得起实践的考验。然而：当下微服务兴起，spring boot ，spring cloud 越来越热的情况下，选择一款轻量级而性能优越的服务器是必要的选择。spring boot 完美集成了tomcat，jetty和undertow.
 
@@ -4204,6 +5140,18 @@ java -jar muti-env-config.jar --spring.profiles.active=test
 -P参数指定
 ```
 mvn package -P test 
+```
+
+@Profile可以指定Bean在何种环境下才会创建
+可以放在类上或者方法上,比如和@Configuration或者@Component或者@Bean一起使用
+```java
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Conditional({ProfileCondition.class})
+public @interface Profile {
+    String[] value();
+}
 ```
 
 #### 1.7.5.3. 注解ConfigurationProperties注入yml配置文件中的数据
@@ -4648,7 +5596,7 @@ public @interface ComponentScan {
 ### 1.7.7. Spring Boot Starter
 <a href="#menu" style="float:right">目录</a>
 
-Starter是Spring Boot中的一个非常重要的概念，Starter相当于模块，它能将模块所需的依赖整合起来并对模块内的Bean根据环境（ 条件）进行自动配置。使用者只需要依赖相应功能的Starter，无需做过多的配置和依赖，Spring Boot就能自动扫描并加载相应的模块
+Starter是Spring Boot中的一个非常重要的概念，Starter相当于模块，它能将模块所需的依赖整合起来并对模块内的Bean根据环境（ 条件）进行自动配��。使用者只需要依赖相应功能的Starter，无需做过多的配置和依赖，Spring Boot就能自动扫描并加载相应的模块
 
 * 总结：
     * 1.它整合了这个模块需要的依赖库；

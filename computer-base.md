@@ -55,23 +55,35 @@
         - [1.4.14. 国际化](#1414-国际化)
         - [1.4.15. WEB主机托管](#1415-web主机托管)
         - [1.4.16. 重定向和负载均衡](#1416-重定向和负载均衡)
-    - [1.5. Unix环境编程](#15-unix环境编程)
-        - [1.5.1. 基本概念](#151-基本概念)
-        - [1.5.2. IO模型](#152-io模型)
-        - [1.5.3. select&poll&epoll比较](#153-selectpollepoll比较)
-            - [1.5.3.1. 整体概览](#1531-整体概览)
-            - [1.5.3.2. 对比总结](#1532-对比总结)
-    - [1.6. Shell](#16-shell)
-        - [1.6.1. 文件安装](#161-文件安装)
-            - [1.6.1.1. deb文件操作](#1611-deb文件操作)
-        - [1.6.2. 文件相关](#162-文件相关)
-        - [1.6.3. 系统监控](#163-系统监控)
-        - [1.6.4. 处理数据文件](#164-处理数据文件)
-        - [1.6.5. 环境变量](#165-环境变量)
-        - [1.6.6. 基本脚本命令](#166-基本脚本命令)
-        - [1.6.7. 结构化命令](#167-结构化命令)
-        - [1.6.8. 处理用户输入](#168-处理用户输入)
-        - [1.6.9. 控制脚本](#169-控制脚本)
+    - [1.5. WEB Socket](#15-web-socket)
+        - [1.5.1. websocket与http](#151-websocket与http)
+        - [1.5.2. 数据帧格式](#152-数据帧格式)
+        - [1.5.3. 数据传递](#153-数据传递)
+        - [1.5.4. 连接保持+心跳](#154-连接保持心跳)
+        - [1.5.5. Sec-WebSocket-Key/Accept的作用](#155-sec-websocket-keyaccept的作用)
+        - [1.5.6. 数据掩码的作用](#156-数据掩码的作用)
+        - [SpringBoot + WebSocket实现案例](#springboot--websocket实现案例)
+            - [第一种实现方法](#第一种实现方法)
+            - [第二种实现方法](#第二种实现方法)
+            - [补充说明](#补充说明)
+            - [客户端的实现，js方式和java WebSocketClient两种方式](#客户端的实现js方式和java-websocketclient两种方式)
+    - [1.6. Unix环境编程](#16-unix环境编程)
+        - [1.6.1. 基本概念](#161-基本概念)
+        - [1.6.2. IO模型](#162-io模型)
+        - [1.6.3. select&poll&epoll比较](#163-selectpollepoll比较)
+            - [1.6.3.1. 整体概览](#1631-整体概览)
+            - [1.6.3.2. 对比总结](#1632-对比总结)
+    - [1.7. Shell](#17-shell)
+        - [1.7.1. 文件安装](#171-文件安装)
+            - [1.7.1.1. deb文件操作](#1711-deb文件操作)
+        - [1.7.2. 文件相关](#172-文件相关)
+        - [1.7.3. 系统监控](#173-系统监控)
+        - [1.7.4. 处理数据文件](#174-处理数据文件)
+        - [1.7.5. 环境变量](#175-环境变量)
+        - [1.7.6. 基本脚本命令](#176-基本脚本命令)
+        - [1.7.7. 结构化命令](#177-结构化命令)
+        - [1.7.8. 处理用户输入](#178-处理用户输入)
+        - [1.7.9. 控制脚本](#179-控制脚本)
 
 <!-- /TOC -->
 
@@ -955,11 +967,725 @@ HTTP是TCP的上层，主要通信实现由TCP/IP层实现，因此影响性能�
 ### 1.4.16. 重定向和负载均衡
 <a href="#menu" style="float:right">目录</a>
 
-
-## 1.5. Unix环境编程
+## 1.5. WEB Socket
 <a href="#menu" style="float:right">目录</a>
 
-### 1.5.1. 基本概念
+
+我们在上网过程中经常用到的是HTTP和HTTPS协议，HTTP协议和HTTPS协议通信过程通常是客户端通过浏览器发出一个请求，服务器接受请求后进行处理并返回结果给客户端，客户端处理结果。
+这种机制对于信息变化不是特别频繁的应用可以良好支撑，但对于实时要求高、海量并发的应用来说显得捉襟见肘，尤其在移动互联网蓬勃发展的趋势下，高并发与用户实时响应是Web应用经常面临的问题，比如金融证券的实时信息、社交网络的实时消息推送等。
+WebSocket出现前我们实现推送技术，用的都是轮询，在特定的时间间隔，浏览器自动发出请求，将服务器的消息主动的拉回来，这种情况下，我们需要不断的向服务器发送请求，并且HTTP 请求 的header非常长，里面包含的数据可能只是一个很小的值，这样会占用很多的带宽和服务器资源，并且服务器不能主动向客户端推送数据。在这种情况下需要一种高效节能的双向通信机制来保证数据的实时传输，于是基于HTML5规范的WebSocket应运而生。
+
+### 1.5.1. websocket与http
+
+WebSocket与http协议一样都是基于TCP的，所以他们都是可靠的协议，调用的WebSocket的send函数在实现中最终都是通过TCP的系统接口进行传输的。WebSocket和Http协议一样都属于应用层的协议，WebSocket在建立握手连接时，数据是通过**http协议**传输的，但是在建立连接之后，真正的数据传输阶段是不需要http协议参与的。
+
+
+HTTP实现实时推送用到的轮询，轮询分两种：长轮询和短轮询（传统轮询）
+* 短轮询：浏览器定时向服务器发送请求，服务器收到请求不管是否有数据到达都直接响应 请求，隔特定时间，浏览器又会发送相同的请求到服务器， 获取数据响应
+    * 缺点：数据交互的实时性较低，服务端到浏览器端的数据反馈效率低
+* 长轮询：浏览器发起请求到服务器，服务器一直保持连接打开，直到有数据可发送。发送完数据之后，浏览器关闭连接，随即又发起一个到服务器的新请求。这一过程在页面打开期间一直持续不断
+    * 缺点：服务器没有数据到达时，http连接会停留一段时间，造成服务器资源浪费，数据交互的实时性也很低
+无论是长轮询还是短轮询，浏览器都要先发起对服务器的连接，才能接收数据，并且实时交互性很低。
+
+然而，WebSocket的出现解决了轮询实时交互性和全双工的问题。
+在JavaScript中创建了WebSocket后，会有一个HTTP请求发送到服务器以发起连接。取得服务器响应后，建立的连接使用HTTP升级，从HTTP协议交换为WebSocket协议。即，使用标准的HTTP服务器无法实现WebSocket，只有支持这种协议的专门服务器才能正常工作。
+WebSocket使用了自定义的协议，未加密的连接不再是http://，而是ws://，默认端口为80，加密的连接也不是https://，而是wss://，默认端口为443。
+
+### 1.5.2. 数据帧格式
+
+客户端、服务端数据的交换，离不开数据帧格式的定义。因此，在实际讲解数据交换之前，我们先来看下WebSocket的数据帧格式。
+
+WebSocket客户端、服务端通信的最小单位是帧（frame），由1个或多个帧组成一条完整的消息（message）。
+* 发送端：将消息切割成多个帧，并发送给服务端；
+* 接收端：接收消息帧，并将关联的帧重新组装成完整的消息；
+
+本节的重点，就是讲解数据帧的格式。详细定义可参考 RFC6455-5.2节 。
+
+**数据帧格式概览**
+下面给出了WebSocket数据帧的统一格式。熟悉TCP/IP协议的同学对这样的图应该不陌生。
+
+从左到右，单位是比特。比如FIN、RSV1各占据1比特，opcode占据4比特。
+内容包括了标识、操作代码、掩码、数据、数据长度等。
+
+```
+ 0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ +-+-+-+-+-------+-+-------------+-------------------------------+
+ |F|R|R|R| opcode|M| Payload len |    Extended payload length    |
+ |I|S|S|S|  (4)  |A|     (7)     |             (16/64)           |
+ |N|V|V|V|       |S|             |   (if payload len==126/127)   |
+ | |1|2|3|       |K|             |                               |
+ +-+-+-+-+-------+-+-------------+ - - - - - - - - - - - - - - - +
+ |     Extended payload length continued, if payload len == 127  |
+ + - - - - - - - - - - - - - - - +-------------------------------+
+ |                               |Masking-key, if MASK set to 1  |
+ +-------------------------------+-------------------------------+
+ | Masking-key (continued)       |          Payload Data         |
+ +-------------------------------- - - - - - - - - - - - - - - - +
+ :                     Payload Data continued ...                :
+ + - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - +
+ |                     Payload Data continued ...                |
+ +---------------------------------------------------------------+
+```
+**数据帧格式详解**
+针对前面的格式概览图，这里逐个字段进行讲解，如有不清楚之处，可参考协议规范，或留言交流。
+* **FIN**：1个比特。
+如果是1，表示这是消息（message）的最后一个分片（fragment），如果是0，表示不是是消息（message）的最后一个分片（fragment）。
+
+* **RSV1, RSV2, RSV3**：各占1个比特。
+一般情况下全为0。当客户端、服务端协商采用WebSocket扩展时，这三个标志位可以非0，且值的含义由扩展进行定义。如果出现非零的值，且并没有采用WebSocket扩展，连接出错。
+
+* **Opcode**: 4个比特。
+操作代码，Opcode的值决定了应该如何解析后续的数据载荷（data payload）。如果操作代码是不认识的，那么接收端应该断开连接（fail the connection）。可选的操作代码如下：
+%x0：表示一个延续帧。当Opcode为0时，表示本次数据传输采用了数据分片，当前收到的数据帧为其中一个数据分片。
+%x1：表示这是一个文本帧（frame）
+%x2：表示这是一个二进制帧（frame）
+%x3-7：保留的操作代码，用于后续定义的非控制帧。
+%x8：表示连接断开。
+%x9：表示这是一个ping操作。
+%xA：表示这是一个pong操作。
+%xB-F：保留的操作代码，用于后续定义的控制帧。
+Mask: 1个比特。
+
+表示是否要对数据载荷进行掩码操作。从客户端向服务端发送数据时，需要对数据进行掩码操作；从服务端向客户端发送数据时，不需要对数据进行掩码操作。
+
+如果服务端接收到的数据没有进行过掩码操作，服务端需要断开连接。
+
+如果Mask是1，那么在Masking-key中会定义一个掩码键（masking key），并用这个掩码键来对数据载荷进行反掩码。所有客户端发送到服务端的数据帧，Mask都是1。
+
+掩码的算法、用途在下一小节讲解。
+
+* **Payload length**：数据载荷的长度，单位是字节。为7位，或7+16位，或1+64位。
+
+假设数Payload length === x，如果
+
+x为0~126：数据的长度为x字节。
+x为126：后续2个字节代表一个16位的无符号整数，该无符号整数的值为数据的长度。
+x为127：后续8个字节代表一个64位的无符号整数（最高位为0），该无符号整数的值为数据的长度。
+此外，如果payload length占用了多个字节的话，payload length的二进制表达采用网络序（big endian，重要的位在前）。
+
+* **Masking-key**：0或4字节（32位）
+
+所有从客户端传送到服务端的数据帧，数据载荷都进行了掩码操作，Mask为1，且携带了4字节的Masking-key。如果Mask为0，则没有Masking-key。
+
+备注：载荷数据的长度，不包括mask key的长度。
+
+* **Payload data**：(x+y) 字节
+
+载荷数据：包括了扩展数据、应用数据。其中，扩展数据x字节，应用数据y字节。
+
+扩展数据：如果没有协商使用扩展的话，扩展数据数据为0字节。所有的扩展都必须声明扩展数据的长度，或者可以如何计算出扩展数据的长度。此外，扩展如何使用必须在握手阶段就协商好。如果扩展数据存在，那么载荷数据长度必须将扩展数据的长度包含在内。
+
+应用数据：任意的应用数据，在扩展数据之后（如果存在扩展数据），占据了数据帧剩余的位置。载荷数据长度 减去 扩展数据长度，就得到应用数据的长度。
+
+**掩码算法**
+掩码键（Masking-key）是由客户端挑选出来的32位的随机数。掩码操作不会影响数据载荷的长度。掩码、反掩码操作都采用如下算法：
+
+首先，假设：
+original-octet-i：为原始数据的第i字节。
+transformed-octet-i：为转换后的数据的第i字节。
+j：为i mod 4的结果。
+masking-key-octet-j：为mask key第j字节。
+算法描述为： original-octet-i 与 masking-key-octet-j 异或后，得到 transformed-octet-i。
+```
+j = i MOD 4
+transformed-octet-i = original-octet-i XOR masking-key-octet-j
+```
+### 1.5.3. 数据传递
+<a href="#menu" style="float:right">目录</a>
+
+一旦WebSocket客户端、服务端建立连接后，后续的操作都是基于数据帧的传递。
+
+WebSocket根据opcode来区分操作的类型。比如0x8表示断开连接，0x0-0x2表示数据交互。
+
+**数据分片**
+WebSocket的每条消息可能被切分成多个数据帧。当WebSocket的接收方收到一个数据帧时，会根据FIN的值来判断，是否已经收到消息的最后一个数据帧。
+FIN=1表示当前数据帧为消息的最后一个数据帧，此时接收方已经收到完整的消息，可以对消息进行处理。FIN=0，则接收方还需要继续监听接收其余的数据帧。
+此外，opcode在数据交换的场景下，表示的是数据的类型。0x01表示文本，0x02表示二进制。而0x00比较特殊，表示延续帧（continuation frame），顾名思义，就是完整消息对应的数据帧还没接收完。
+
+**数据分片例子**
+直接看例子更形象些。下面例子来自MDN，可以很好地演示数据的分片。客户端向服务端两次发送消息，服务端收到消息后回应客户端，这里主要看客户端往服务端发送的消息。
+
+第一条消息
+FIN=1, 表示是当前消息的最后一个数据帧。服务端收到当前数据帧后，可以处理消息。opcode=0x1，表示客户端发送的是文本类型。
+第二条消息
+FIN=0，opcode=0x1，表示发送的是文本类型，且消息还没发送完成，还有后续的数据帧。
+FIN=0，opcode=0x0，表示消息还没发送完成，还有后续的数据帧，当前的数据帧需要接在上一条数据帧之后。
+FIN=1，opcode=0x0，表示消息已经发送完成，没有后续的数据帧，当前的数据帧需要接在上一条数据帧之后。服务端可以将关联的数据帧组装成完整的消息。
+Client: FIN=1, opcode=0x1, msg="hello"
+Server: (process complete message immediately) Hi.
+Client: FIN=0, opcode=0x1, msg="and a"
+Server: (listening, new message containing text started)
+Client: FIN=0, opcode=0x0, msg="happy new"
+Server: (listening, payload concatenated to previous message)
+Client: FIN=1, opcode=0x0, msg="year!"
+Server: (process complete message) Happy new year to you too!
+
+### 1.5.4. 连接保持+心跳
+<a href="#menu" style="float:right">目录</a>
+
+
+WebSocket为了保持客户端、服务端的实时双向通信，需要确保客户端、服务端之间的TCP通道保持连接没有断开。然而，对于长时间没有数据往来的连接，如果依旧长时间保持着，可能会浪费包括的连接资源。
+
+但不排除有些场景，客户端、服务端虽然长时间没有数据往来，但仍需要保持连接。这个时候，可以采用心跳来实现。
+
+发送方->接收方：ping
+接收方->发送方：pong
+ping、pong的操作，对应的是WebSocket的两个控制帧，opcode分别是0x9、0xA。
+
+举例，WebSocket服务端向客户端发送ping，只需要如下代码（采用ws模块）
+
+ws.ping('', false, true);
+
+### 1.5.5. Sec-WebSocket-Key/Accept的作用
+<a href="#menu" style="float:right">目录</a>
+
+前面提到了，Sec-WebSocket-Key/Sec-WebSocket-Accept在主要作用在于提供基础的防护，减少恶意连接、意外连接。
+
+作用大致归纳如下：
+
+避免服务端收到非法的websocket连接（比如http客户端不小心请求连接websocket服务，此时服务端可以直接拒绝连接）
+确保服务端理解websocket连接。因为ws握手阶段采用的是http协议，因此可能ws连接是被一个http服务器处理并返回的，此时客户端可以通过Sec-WebSocket-Key来确保服务端认识ws协议。（并非百分百保险，比如总是存在那么些无聊的http服务器，光处理Sec-WebSocket-Key，但并没有实现ws协议。。。）
+用浏览器里发起ajax请求，设置header时，Sec-WebSocket-Key以及其他相关的header是被禁止的。这样可以避免客户端发送ajax请求时，意外请求协议升级（websocket upgrade）
+可以防止反向代理（不理解ws协议）返回错误的数据。比如反向代理前后收到两次ws连接的升级请求，反向代理把第一次请求的返回给cache住，然后第二次请求到来时直接把cache住的请求给返回（无意义的返回）。
+Sec-WebSocket-Key主要目的并不是确保数据的安全性，因为Sec-WebSocket-Key、Sec-WebSocket-Accept的转换计算公式是公开的，而且非常简单，最主要的作用是预防一些常见的意外情况（非故意的）。
+强调：Sec-WebSocket-Key/Sec-WebSocket-Accept 的换算，只能带来基本的保障，但连接是否安全、数据是否安全、客户端/服务端是否合法的 ws客户端、ws服务端，其实并没有实际性的保证。
+
+### 1.5.6. 数据掩码的作用
+<a href="#menu" style="float:right">目录</a>
+
+WebSocket协议中，数据掩码的作用是增强协议的安全性。但数据掩码并不是为了保护数据本身，因为算法本身是公开的，运算也不复杂。除了加密通道本身，似乎没有太多有效的保护通信安全的办法。
+
+那么为什么还要引入掩码计算呢，除了增加计算机器的运算量外似乎并没有太多的收益（这也是不少同学疑惑的点）。
+
+答案还是两个字：安全。但并不是为了防止数据泄密，而是为了防止早期版本的协议中存在的代理缓存污染攻击（proxy cache poisoning attacks）等问题。
+
+**代理缓存污染攻击**
+下面摘自2010年关于安全的一段讲话。其中提到了代理服务器在协议实现上的缺陷可能导致的安全问题。猛击出处。
+```
+“We show, empirically, that the current version of the WebSocket consent mechanism is vulnerable to proxy cache poisoning attacks. Even though the WebSocket handshake is based on HTTP, which should be understood by most network intermediaries, the handshake uses the esoteric “Upgrade” mechanism of HTTP [5]. In our experiment, we find that many proxies do not implement the Upgrade mechanism properly, which causes the handshake to succeed even though subsequent traffic over the socket will be misinterpreted by the proxy.”
+
+[TALKING] Huang, L-S., Chen, E., Barth, A., Rescorla, E., and C.
+Jackson, "Talking to Yourself for Fun and Profit", 2010,
+```
+在正式描述攻击步骤之前，我们假设有如下参与者：
+* 攻击者、攻击者自己控制的服务器（简称“邪恶服务器”）、攻击者伪造的资源（简称“邪恶资源”）
+* 受害者、受害者想要访问的资源（简称“正义资源”）
+* 受害者实际想要访问的服务器（简称“正义服务器”）
+* 中间代理服务器
+
+攻击步骤一：
+* 攻击者浏览器 向 邪恶服务器 发起WebSocket连接。根据前文，首先是一个协议升级请求。
+* 协议升级请求 实际到达 代理服务器。
+* 代理服务器 将协议升级请求转发到 邪恶服务器。
+* 邪恶服务器 同意连接，代理服务器 将响应转发给 攻击者。
+
+由于 upgrade 的实现上有缺陷，代理服务器 以为之前转发的是普通的HTTP消息。因此，当协议服务器 同意连接，代理服务器 以为本次会话已经结束。
+
+攻击步骤二：
+* 攻击者 在之前建立的连接上，通过WebSocket的接口向 邪恶服务器 发送数据，且数据是精心构造的HTTP格式的文本。其中包含了 正义资源 的地址，以及一个伪造的host（指向正义服务器）。（见后面报文）
+* 请求到达 代理服务器 。虽然复用了之前的TCP连接，但 代理服务器 以为是新的HTTP请求。
+* 代理服务器 向 邪恶服务器 请求 邪恶资源。
+* 邪恶服务器 返回 邪恶资源。代理服务器 缓存住 邪恶资源（url是对的，但host是 正义服务器 的地址）。
+
+到这里，受害者可以登场了：
+* 受害者 通过 代理服务器 访问 正义服务器 的 正义资源。
+* 代理服务器 检查该资源的url、host，发现本地有一份缓存（伪造的）。
+*  代理服务器 将 邪恶资源 返回给 受害者。
+* 受害者 卒。
+
+附：前面提到的精心构造的“HTTP请求报文”。
+```
+Client → Server:
+POST /path/of/attackers/choice HTTP/1.1 Host: host-of-attackers-choice.com Sec-WebSocket-Key: <connection-key>
+Server → Client:
+HTTP/1.1 200 OK
+Sec-WebSocket-Accept: <connection-key>
+```
+**当前解决方案**
+最初的提案是对数据进行加密处理。基于安全、效率的考虑，最终采用了折中的方案：对数据载荷进行掩码处理。
+
+需要注意的是，这里只是限制了浏览器对数据载荷进行掩码处理，但是坏人完全可以实现自己的WebSocket客户端、服务端，不按规则来，攻击可以照常进行。
+
+但是对浏览器加上这个限制后，可以大大增加攻击的难度，以及攻击的影响范围。如果没有这个限制，只需要在网上放个钓鱼网站骗人去访问，一下子就可以在短时间内展开大范围的攻击。
+
+### SpringBoot + WebSocket实现案例
+<a href="#menu" style="float:right">目录</a>
+
+* 服务端实现方式
+* 第一种是用“@ServerEndPoint”注解来实现，实现简单；
+* 第二种稍显麻烦，但是可以添加拦截器在WebSocket连接建立和断开前进行一些额外操作。
+
+不管用哪种实现方式，都需要先导入jar包（如下），其中version根据实际springboot版本选择，避免冲突
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-websocket</artifactId>
+    <!-- <version>1.3.5.RELEASE</version> -->
+</dependency>
+```
+
+
+#### 第一种实现方法
+<a href="#menu" style="float:right">目录</a>
+
+（1）WebSocket 业务逻辑实现。参数传递采用路径参数的方法，通过以下方式获取参数：
+
+
+* @ServerEndpoint("/testWebSocket/{id}/{name}")
+* public void onOpen(Session session, @PathParam("id") long id, @PathParam("name") String name)
+
+```java
+import java.util.concurrent.CopyOnWriteArraySet;
+
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RestController;
+
+@ServerEndpoint("/testWebSocket/{id}/{name}")
+@RestController
+public class TestWebSocket {
+
+    // 用来记录当前连接数的变量
+    private static volatile int onlineCount = 0;
+
+    // concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象
+    private static CopyOnWriteArraySet<TestWebSocket> webSocketSet = new CopyOnWriteArraySet<TestWebSocket>();
+
+    // 与某个客户端的连接会话，需要通过它来与客户端进行数据收发
+    private Session session;
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestWebSocket.class);
+    
+　　@OnOpen
+    public void onOpen(Session session, @PathParam("id") long id, @PathParam("name") String name) throws Exception {
+        this.session = session;
+        System.out.println(this.session.getId());
+        webSocketSet.add(this);
+        LOGGER.info("Open a websocket. id={}, name={}", id, name);
+    }
+    
+    @OnClose
+    public void onClose() {
+        webSocketSet.remove(this);
+        LOGGER.info("Close a websocket. ");
+    }
+    
+    @OnMessage
+    public void onMessage(String message, Session session) {
+        LOGGER.info("Receive a message from client: " + message);
+    }
+    
+    @OnError
+    public void onError(Session session, Throwable error) {
+        LOGGER.error("Error while websocket. ", error);
+    }
+    
+    public void sendMessage(String message) throws Exception {
+        if (this.session.isOpen()) {
+            this.session.getBasicRemote().sendText("Send a message from server. ");
+        }
+    }
+    
+    public static synchronized int getOnlineCount() {
+        return onlineCount;
+    }
+
+    public static synchronized void addOnlineCount() {
+        TestWebSocket.onlineCount++;
+    }
+
+    public static synchronized void subOnlineCount() {
+        TestWebSocket.onlineCount--;
+    }
+}
+```
+（2）配置ServerEndpointExporter，配置后会自动注册所有“@ServerEndpoint”注解声明的Websocket Endpoint
+
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.socket.server.standard.ServerEndpointExporter;
+
+@Configuration
+public class WebSocketConfig {
+
+    @Bean
+    public ServerEndpointExporter serverEndpointExporter() {
+        return new ServerEndpointExporter();
+    }
+    
+}
+```
+ 
+
+#### 第二种实现方法
+<a href="#menu" style="float:right">目录</a>
+
+（1）WebSocket 业务逻辑实现。参数传递采用类似GET请求的方式传递，服务端的参数在拦截器中获取之后通过attributes传递给WebSocketHandler。
+```java
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.WebSocketHandler;
+import org.springframework.web.socket.WebSocketMessage;
+import org.springframework.web.socket.WebSocketSession;
+
+@RestController
+public class TestWebSocketController implements WebSocketHandler {
+    
+    private static AtomicInteger onlineCount = new AtomicInteger(0);
+    
+    private static final ArrayList<WebSocketSession> sessions = new ArrayList<>();
+    
+    private final Logger LOGGER = LoggerFactory.getLogger(TestWebSocketController.class);
+    
+    @Override
+    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        sessions.add(session);
+        int onlineNum = addOnlineCount();
+        LOGGER.info("Oprn a WebSocket. Current connection number: " + onlineNum);
+    }
+
+    @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        sessions.remove(session);
+        int onlineNum = subOnlineCount();
+        LOGGER.info("Close a webSocket. Current connection number: " + onlineNum);
+    }
+
+    @Override
+    public void handleMessage(WebSocketSession wsSession, WebSocketMessage<?> message) throws Exception {
+        LOGGER.info("Receive a message from client: " + message.toString());
+    }
+
+    @Override
+    public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
+        LOGGER.error("Exception occurs on webSocket connection. disconnecting....");
+        if (session.isOpen()) {
+            session.close();
+        }
+        sessions.remove(session);
+        subOnlineCount();
+    }
+
+    /*
+     * 是否支持消息拆分发送：如果接收的数据量比较大，最好打开(true), 否则可能会导致接收失败。
+     * 如果出现WebSocket连接接收一次数据后就自动断开，应检查是否是这里的问题。
+     */
+    @Override
+    public boolean supportsPartialMessages() {
+        return true;
+    }
+
+    
+    public static int getOnlineCount() {
+        return onlineCount.get();
+    }
+    
+    public static int addOnlineCount() {
+        return onlineCount.incrementAndGet();
+    }
+    
+    public static int subOnlineCount() {
+        return onlineCount.decrementAndGet();
+    }
+
+}
+```
+
+（2）HandShake 拦截器实现
+
+```java
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.http.server.ServletServerHttpRequest;
+import org.springframework.web.socket.WebSocketHandler;
+import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
+
+public class TestHandShakeInterceptor extends HttpSessionHandshakeInterceptor {
+    
+    private final Logger LOGGER = LoggerFactory.getLogger(TestHandShakeInterceptor.class);
+    
+    /*
+     * 在WebSocket连接建立之前的操作，以鉴权为例
+     */
+    @Override
+    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, 
+            WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
+        
+        LOGGER.info("Handle before webSocket connected. ");
+        
+        // 获取url传递的参数，通过attributes在Interceptor处理结束后传递给WebSocketHandler
+        // WebSocketHandler可以通过WebSocketSession的getAttributes()方法获取参数
+        ServletServerHttpRequest serverRequest = (ServletServerHttpRequest) request;
+        String id = serverRequest.getServletRequest().getParameter("id");
+        String name = serverRequest.getServletRequest().getParameter("name");
+
+        if (tokenValidation.validateSign()) {
+            LOGGER.info("Validation passed. WebSocket connecting.... ");
+            attributes.put("id", id);
+            attributes.put("name", name);
+            return super.beforeHandshake(request, response, wsHandler, attributes);
+        } else {
+            LOGGER.error("Validation failed. WebSocket will not connect. ");
+            return false;
+        }
+    }
+    
+    @Override
+    public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response,
+            WebSocketHandler wsHandler, Exception ex) {
+        // 省略
+    }
+
+}
+```
+（3）WebSocket 配置类实现（注册WebSocket实现类，绑定接口，同时将实现类和拦截器绑定）
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
+import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+
+import TestWebSocketController;
+import TestHandShakeInterceptor;
+
+@Configuration
+@EnableWebMvc
+@EnableWebSocket
+public class WebSocketConfig extends WebMvcConfigurerAdapter implements WebSocketConfigurer {
+
+    @Autowired
+    private TestWebSocketController testWebSocketController;
+
+    @Override
+    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+        registry.addHandler(TestWebSocketController, "/testWebSocket")
+                .addInterceptors(new TestHandShakeInterceptor()).setAllowedOrigins("*");
+    }
+
+}
+```
+ 
+
+#### 补充说明
+<a href="#menu" style="float:right">目录</a>
+
+（1）在WebSocket实现过程中，尤其是通过“@ServerEndpoint”实现的时候，可能会出现注入失败的问题，即注入的Bean为null的问题。可以通过手动注入的方式来解决，需要改造实现类和SpringBoot启动类，如下：
+
+```java
+@ServerEndpoint("testWebsocket")
+@RestController
+public class WebSocketController {
+
+    private TestService testService;
+    
+    private static ApplicationContext applicationContext;
+    
+    @OnOpen
+    public void onOpen(Session session) {
+        testService = applicationContext.getBean(TestService.class);
+    }
+
+    @OnClose
+    public void onClose() {}
+
+    @OnMessage
+    public void onMessage(String message, Session session) {}
+
+    @OnError
+    public void onError(Session session, Throwable error) {}
+
+    public static void setApplicationContext(ApplicationContext applicationContext) {
+        WebSocketController.applicationContext = applicationContext;
+    }
+    
+}
+```
+启动类
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+
+import WebSocketController;
+
+@SpringBootApplication
+public class Application {
+
+    public static void main(String[] args) {
+//        SpringApplication.run(Application.class, args);
+        SpringApplication springApplication = new SpringApplication(Application.class);
+        ConfigurableApplicationContext configurableApplicationContext = springApplication.run(args);
+        WebSocketController.setApplicationContext(configurableApplicationContext);  // 解决WebSocket不能注入的问题
+    }
+
+}
+```
+ 
+
+#### 客户端的实现，js方式和java WebSocketClient两种方式
+<a href="#menu" style="float:right">目录</a>
+
+**js方式实现**
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket示例</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport' />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+    <input id="text" type="text"/>
+    <button onclick="send()">发送消息</button>
+    <hr/>
+    <button onclick="closeWebSocket()">关闭WebSocket连接</button>
+    <hr/>
+    <div id="message"></div>
+</body>
+
+<script type="text/javascript">
+    var websocket = null;
+    //判断当前浏览器是否支持WebSocket
+    if ('WebSocket' in window) {
+        // 不带参数的写法
+        websocket = new WebSocket("ws://127.0.0.1:18080/testWebsocket");
+        // 通过路径传递参数的方法（服务端采用第一种方法"@ServerEndpoint"实现）
+        websocket = new WebSocket("ws://127.0.0.1:18080/testWebsocket/23/Lebron");
+        // 通过类似GET请求方式传递参数的方法（服务端采用第二种方法"WebSocketHandler"实现）
+        websocket = new WebSocket("ws://127.0.0.1:18080/testWebsocket?id=23&name=Lebron");
+    }
+    else {
+        alert('当前浏览器 Not support websocket')
+    }
+
+    //连接发生错误的回调方法
+    websocket.onerror = function () {
+        setMessageInnerHTML("WebSocket连接发生错误");
+    };
+
+    //连接成功建立的回调方法
+    websocket.onopen = function () {
+        setMessageInnerHTML("WebSocket连接成功");
+    }
+
+    //接收到消息的回调方法
+    websocket.onmessage = function (event) {
+        setMessageInnerHTML(event.data);
+    }
+
+    //连接关闭的回调方法
+    websocket.onclose = function () {
+        setMessageInnerHTML("WebSocket连接关闭");
+    }
+
+    //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+    window.onbeforeunload = function () {
+        closeWebSocket();
+    }
+
+    //将消息显示在网页上
+    function setMessageInnerHTML(innerHTML) {
+        document.getElementById('message').innerHTML += innerHTML + '<br/>';
+    }
+
+    //关闭WebSocket连接
+    function closeWebSocket() {
+        websocket.close();
+    }
+
+    //发送消息
+    function send() {
+        var message = document.getElementById('text').value;
+        websocket.send(message);
+    }
+</script>
+</html>
+```
+ 
+
+**Java WebSocketClient实现**
+
+（1）WebSocketClient 实现类
+```java
+import java.net.URI;
+
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.drafts.Draft;
+import org.java_websocket.handshake.ServerHandshake;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class TestWebSocketClient extends WebSocketClient {
+    
+    private final Logger LOGGER = LoggerFactory.getLogger(TestWebSocketClient.class);
+    
+    public TestWebSocketClient(URI serverUri) {
+        super(serverUri);
+    }
+    
+    public TestWebSocketClient(URI serverUri, Draft protocolDraft) {
+        super(serverUri, protocolDraft);
+    }
+
+    @Override
+    public void onOpen(ServerHandshake serverHandshake) {
+        LOGGER.info("Open a WebSocket connection on client. ");
+    }
+    
+    @Override
+    public void onClose(int arg0, String arg1, boolean arg2) {
+        LOGGER.info("Close a WebSocket connection on client. ");
+    }
+
+    @Override
+    public void onMessage(String msg) {
+        LOGGER.info("WebSocketClient receives a message: " + msg);
+    }
+
+    @Override
+    public void onError(Exception exception) {
+        LOGGER.error("WebSocketClient exception. ", exception);
+    }
+
+}
+```
+（2）WebSocketClient 发送数据
+```java
+String serverUrl = "ws://127.0.0.1:18080/testWebsocket"
+URI recognizeUri = new URI(serverUrl);
+client = new TestWebSocketClient(recognizeUri, new Draft_6455());
+client.connect();
+client.send("This is a message from client. ");
+```
+
+## 1.6. Unix环境编程
+<a href="#menu" style="float:right">目录</a>
+
+### 1.6.1. 基本概念
 <a href="#menu" style="float:right">目录</a>
 
 * **内核**
@@ -996,7 +1722,7 @@ HTTP是TCP的上层，主要通信实现由TCP/IP层实现，因此影响性能�
     * 进程IP
         * 每一个进程都有一个唯一标识符PID，如果有父进程，还有一个父进程PPID
 
-### 1.5.2. IO模型
+### 1.6.2. IO模型
 <a href="#menu" style="float:right">目录</a>
 
 **概念理解**
@@ -1133,11 +1859,11 @@ IO复用是先通过select调用阻塞。
 
 ![](https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=176532706,1323700702&fm=26&gp=0.jpg)
 
-### 1.5.3. select&poll&epoll比较
+### 1.6.3. select&poll&epoll比较
 <a href="#menu" style="float:right">目录</a>
 
 
-#### 1.5.3.1. 整体概览
+#### 1.6.3.1. 整体概览
 
 **水平触发和边缘触发** 
 * 水平触发通知
@@ -1152,7 +1878,7 @@ IO复用是先通过select调用阻塞。
     * 当收到通知时，应当尽可能多的读取字节，因为只有下一次I/O来时才能收到通知。
 
 
-#### 1.5.3.2. 对比总结
+#### 1.6.3.2. 对比总结
 epoll跟select都能提供多路I/O复用的解决方案。在现在的Linux内核里有都能够支持，其中epoll是Linux所特有，而select则应该是POSIX所规定，一般操作系统均有实现
 
 **select：**
@@ -1560,12 +2286,12 @@ int main(int argc, char* argv[])
 
 
 
-## 1.6. Shell
+## 1.7. Shell
 <a href="#menu" style="float:right">目录</a>
 
-### 1.6.1. 文件安装
+### 1.7.1. 文件安装
 
-#### 1.6.1.1. deb文件操作
+#### 1.7.1.1. deb文件操作
 
 dpkg 是Debian Package的简写，是为Debian 专门开发的套件管理系统，方便软件的安装、更新及移除。所有源自Debian的Linux发行版都使用dpkg，例如Ubuntu、Knoppix 等。
 以下是一些 Dpkg 的普通用法：
@@ -1588,7 +2314,7 @@ dpkg 是Debian Package的简写，是为Debian 专门开发的套件管理系统
 重新配制一个已经安装的包裹，如果它使用的是 debconf (debconf 为包裹安装提供了一个统一的配制界面)。
 ```
 
-### 1.6.2. 文件相关
+### 1.7.2. 文件相关
 * 路径
   * /   根路径
   * .   当前目录
@@ -1634,24 +2360,24 @@ dpkg 是Debian Package的简写，是为Debian 专门开发的套件管理系统
    * tail -n 2 file 实时查看文件后2行数据，动态更新。
    * head -5 file 查看看文件前5行数据
 
-### 1.6.3. 系统监控
+### 1.7.3. 系统监控
 <a href="#menu" style="float:right">目录</a>
 
-### 1.6.4. 处理数据文件
+### 1.7.4. 处理数据文件
 <a href="#menu" style="float:right">目录</a>
 
-### 1.6.5. 环境变量
+### 1.7.5. 环境变量
 <a href="#menu" style="float:right">目录</a>
 
-### 1.6.6. 基本脚本命令
+### 1.7.6. 基本脚本命令
 
 <a href="#menu" style="float:right">目录</a>
 
-### 1.6.7. 结构化命令
+### 1.7.7. 结构化命令
 <a href="#menu" style="float:right">目录</a>
 
-### 1.6.8. 处理用户输入
+### 1.7.8. 处理用户输入
 <a href="#menu" style="float:right">目录</a>
 
-### 1.6.9. 控制脚本
+### 1.7.9. 控制脚本
 <a href="#menu" style="float:right">目录</a>
