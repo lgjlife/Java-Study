@@ -12,8 +12,8 @@
             - [1.1.4.1. Spring部分](#1141-spring部分)
             - [1.1.4.2. SpringMVC部分](#1142-springmvc部分)
         - [1.1.5. 资源访问](#115-资源访问)
-            - [接口以及实现类说明](#接口以及实现类说明)
-            - [资源地址的表示](#资源地址的表示)
+            - [1.1.5.1. 接口以及实现类说明](#1151-接口以及实现类说明)
+            - [1.1.5.2. 资源地址的表示](#1152-资源地址的表示)
         - [1.1.6. IOC容器](#116-ioc容器)
             - [1.1.6.1. 控制反转和依赖注入](#1161-控制反转和依赖注入)
             - [1.1.6.2. 依赖注入方式](#1162-依赖注入方式)
@@ -266,9 +266,54 @@
             - [1.9.1.2. JUnit 中的重要的 API](#1912-junit-中的重要的-api)
             - [1.9.1.3. 常用注解](#1913-常用注解)
             - [1.9.1.4. 套件测试](#1914-套件测试)
-        - [1.9.2. 控制层测试](#192-控制层测试)
-        - [1.9.3. 服务层测试](#193-服务层测试)
-        - [1.9.4. DAO层测试](#194-dao层测试)
+        - [1.9.2. TestNG测试](#192-testng测试)
+            - [1.9.2.1. 概述](#1921-概述)
+            - [1.9.2.2. JUnit 4 Vs TestNG比较](#1922-junit-4-vs-testng比较)
+            - [1.9.2.3. 注解说明](#1923-注解说明)
+            - [1.9.2.4. 测试案例](#1924-测试案例)
+                - [1.9.2.4.1. 基本例子](#19241-基本例子)
+                - [1.9.2.4.2. 预期异常测试](#19242-预期异常测试)
+                - [1.9.2.4.3. 忽略测试](#19243-忽略测试)
+                - [1.9.2.4.4. 超时测试](#19244-超时测试)
+                - [1.9.2.4.5. 分组测试](#19245-分组测试)
+        - [1.9.3. Mockito](#193-mockito)
+            - [1.9.3.1. 介绍](#1931-介绍)
+            - [1.9.3.2. Mockito说明](#1932-mockito说明)
+            - [1.9.3.3. 例子](#1933-例子)
+                - [1.9.3.3.1. 基本的例子](#19331-基本的例子)
+                - [1.9.3.3.2. 验证行为](#19332-验证行为)
+                - [1.9.3.3.3. 模拟我们所期望的结果](#19333-模拟我们所期望的结果)
+                - [1.9.3.3.4. RETURNS_SMART_NULLS和RETURNS_DEEP_STUBS](#19334-returns_smart_nulls和returns_deep_stubs)
+                - [1.9.3.3.5. 模拟方法体抛出异常](#19335-模拟方法体抛出异常)
+                - [1.9.3.3.6. 使用注解来快速模拟](#19336-使用注解来快速模拟)
+                - [1.9.3.3.7. 参数匹配](#19337-参数匹配)
+                - [1.9.3.3.8. 自定义参数匹配](#19338-自定义参数匹配)
+                - [1.9.3.3.9. 捕获参数来进一步断言](#19339-捕获参数来进一步断言)
+                - [1.9.3.3.10. 使用方法预期回调接口生成期望值（Answer结构）](#193310-使用方法预期回调接口生成期望值answer结构)
+                - [1.9.3.3.11. 修改对未预设的调用返回默认期望](#193311-修改对未预设的调用返回默认期望)
+                - [1.9.3.3.12. 用spy监控真实对象](#193312-用spy监控真实对象)
+                - [1.9.3.3.13. 真实的部分mock](#193313-真实的部分mock)
+                - [1.9.3.3.14. 重置mock](#193314-重置mock)
+                - [1.9.3.3.15. 验证确切的调用次数](#193315-验证确切的调用次数)
+                - [1.9.3.3.16. 连续调用](#193316-连续调用)
+                - [1.9.3.3.17. 验证执行顺序](#193317-验证执行顺序)
+                - [1.9.3.3.18. 确保模拟对象上无互动发生](#193318-确保模拟对象上无互动发生)
+                - [1.9.3.3.19. 找出冗余的互动(即未被验证到的)](#193319-找出冗余的互动即未被验证到的)
+            - [1.9.3.4. Mockito如何实现Mock[3]](#1934-mockito如何实现mock3)
+        - [1.9.4. 控制层测试](#194-控制层测试)
+            - [1.9.4.1. 基本使用](#1941-基本使用)
+            - [1.9.4.2. 相关类说明](#1942-相关类说明)
+                - [1.9.4.2.1. 创建MockMvc实例](#19421-创建mockmvc实例)
+            - [1.9.4.3. 相关类说明](#1943-相关类说明)
+                - [1.9.4.3.1. MockMvcBuilder/MockMvcBuilders](#19431-mockmvcbuildermockmvcbuilders)
+                - [1.9.4.3.2. MockMvc](#19432-mockmvc)
+                - [1.9.4.3.3. RequestBuilder/MockMvcRequestBuilders](#19433-requestbuildermockmvcrequestbuilders)
+                - [1.9.4.3.4. ResultActions](#19434-resultactions)
+                - [1.9.4.3.5. ResultMatcher/MockMvcResultMatchers](#19435-resultmatchermockmvcresultmatchers)
+                - [1.9.4.3.6. ResultHandler/MockMvcResultHandlers](#19436-resulthandlermockmvcresulthandlers)
+                - [1.9.4.3.7. MvcResult](#19437-mvcresult)
+        - [1.9.5. 服务层测试](#195-服务层测试)
+        - [1.9.6. DAO层测试](#196-dao层测试)
 
 <!-- /TOC -->
 
@@ -492,7 +537,7 @@ Singleton （单例,一个Spring容器中只有一个bean实例，默认模式�
 ### 1.1.5. 资源访问
 <a href="#menu" style="float:right">目录</a>
 
-#### 接口以及实现类说明
+#### 1.1.5.1. 接口以及实现类说明
 
 
 ![admin首页](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/resource.png)
@@ -566,7 +611,7 @@ public class ResourceService {
 }
 
 ```
-#### 资源地址的表示
+#### 1.1.5.2. 资源地址的表示
 
 
 为了加载不同类型的资源,必须使用相应的Resource实现类,Spring提供了一个强大的加载资源的机制,通过地址前缀来识别不同的资源.
@@ -588,25 +633,25 @@ classpath*:com/demo/xx.xml: 扫描com/demo包路径下所有的xx.xml
 **:匹配多层路径。
 
 ```java
- public static void patternResource(){
+public static void patternResource(){
 
-        String filePath = "/home/lgj/aProject/JavaCode/SpringBoot/resource/target/classes/config.text";
-        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        try{
-            Resource resource = resolver.getResource("file:"+filePath);
-            InputStream inputStream = resource.getInputStream();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            int data;
-            while ((data = inputStream.read()) != -1){
-                baos.write(data);
-            }
-            System.out.println("patternResource读取的数据:"+baos.toString());
+    String filePath = "/home/lgj/aProject/JavaCode/SpringBoot/resource/target/classes/config.text";
+    ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+    try{
+        Resource resource = resolver.getResource("file:"+filePath);
+        InputStream inputStream = resource.getInputStream();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        int data;
+        while ((data = inputStream.read()) != -1){
+            baos.write(data);
         }
-        catch(Exception ex){
-            ex.printStackTrace();
-        }
-
+        System.out.println("patternResource读取的数据:"+baos.toString());
     }
+    catch(Exception ex){
+        ex.printStackTrace();
+    }
+
+}
 ```
 
 
@@ -13623,16 +13668,1459 @@ public class TestRunner {
 }  
 ```
 
-
-
-
-### 1.9.2. 控制层测试
+### 1.9.2. TestNG测试
 <a href="#menu" style="float:right">目录</a>
 
-### 1.9.3. 服务层测试
+
+#### 1.9.2.1. 概述
 <a href="#menu" style="float:right">目录</a>
 
-### 1.9.4. DAO层测试
+**JUnit缺点：**
+* 最初的设计，使用于单元测试，现在只用于各种测试。
+* 不能依赖测试
+* 配置控制欠佳(安装/拆卸)
+* 侵入性(强制扩展类，并以某种方式命名方法)
+* 静态编程模型(不必要的重新编译)
+* 不适合管理复杂项目应用，JUnit复杂项目中测试非常棘手原文出自
+
+TestNG是一个测试框架，其灵感来自JUnit和NUnit，但引入了一些新的功能，使其功能更强大，使用更方便。
+TestNG是一个开源自动化测试框架;TestNG表示下一代(Next Generation的首字母)。 TestNG类似于JUnit(特别是JUnit 4)，但它不是JUnit框架的扩展。它的灵感来源于JUnit。它的目的是优于JUnit，尤其是在用于测试集成多类时。 TestNG的创始人是Cedric Beust(塞德里克·博伊斯特)。
+TestNG消除了大部分的旧框架的限制，使开发人员能够编写更加灵活和强大的测试。 因为它在很大程度上借鉴了Java注解(JDK5.0引入的)来定义测试，它也可以显示如何使用这个新功能在真实的Java语言生产环境中。
+
+**TestNG的特点**
+* 注解
+* TestNG使用Java和面向对象的功能
+* 支持综合类测试(例如，默认情况下，不用创建一个新的测试每个测试方法的类的实例)
+* 独立的编译时测试代码和运行时配置/数据信息
+* 灵活的运行时配置
+* 主要介绍“测试组”。当编译测试，只要要求TestNG运行所有的“前端”的测试，或“快”，“慢”，“数据库”等
+* 支持依赖测试方法，并行测试，负载测试，局部故障灵活的插件API支持多线程测试
+
+TestNG(Next Generation)是一个测试框架，它受到JUnit和NUnit的启发，而引入了许多新的创新功能，如依赖测试，分组概念，使测试更强大，更容易做到。 它旨在涵盖所有类别的测试：单元，功能，端到端，集成等
+
+
+**对比**
+
+
+
+**依赖**
+
+```xml
+<dependency>
+    <groupId>org.testng</groupId>
+    <artifactId>testng</artifactId>
+    <version>6.10</version>
+    <scope>test</scope>
+</dependency>
+
+```
+#### 1.9.2.2. JUnit 4 Vs TestNG比较
+
+| 特点 | JUnit 4| TestNG
+|---|---|---|
+| 测试注释| @Test| @Test
+| 在套件中的所有测试运行之前运行| -| @BeforeSuite
+| 在套件中的所有测试运行之后运行| -| @AfterSuite
+| 测试之前运行| -| @BeforeTest
+| 测试之后运行| -| @AfterTest
+| 在调用属于任何这些组的第一个测试方法之前运行| -| @BeforeGroups| 
+| 在调用属于任何这些组的第一个测试方法之后运行| -| @AfterGroups
+| 在调用当前类的第一个测试方法之前运行| @BeforeClass| @BeforeClass
+| 在调用当前类的第一个测试方法之后运行| @AfterClass| @AfterClass
+| 在每个测试方法之前运行| @Before| @BeforeMethod
+| 在每个测试方法之后运行| @After| @AfterMethod
+| 忽略测试| @ignore| @Test(enbale=false)
+| 预期的异常| @Test(expected = ArithmeticException.class)| @Test(expectedExceptions = ArithmeticException.class)
+| 超时测试| @Test(timeout = 1000)| @Test(timeout = 1000)原文出自【易百教程】，商业转载请联系作者获得授权，非商业请保留原文链接：https://www.yiibai.com/testng/junit-vs-testng-comparison.html
+
+JUnit4和TestNG之间的主要注释差异是：
+* 在JUnit 4中，我们必须声明“@BeforeClass”和“@AfterClass”方法作为静态方法。 TestNG在方法声明中更灵活，它没有这个约束。
+* 3个额外的setUp / tearDown级别：suite和group(@Before / AfterSuite，@Before / After Test，@Before / After Group)。原文出自【易百教程】，商业转载请联系作者获得授权，非商业请保留原文链接：https://www.yiibai.com/testng/junit-vs-testng-comparison.html
+
+
+
+
+#### 1.9.2.3. 注解说明
+<a href="#menu" style="float:right">目录</a>
+
+TestNG支持多种注解，可以进行各种组合，如下进行简单的说明
+|注解|	描述|
+|---|---|
+|@BeforeSuite	|在该套件的所有测试都运行在注释的方法之前，仅运行一次
+|@AfterSuite	|在该套件的所有测试都运行在注释方法之后，仅运行一次
+|@BeforeClass	|在调用当前类的第一个测试方法之前运行，注释方法仅运行一次
+|@AfterClass	|在调用当前类的第一个测试方法之后运行，注释方法仅运行一次
+|@BeforeTest	|注释的方法将在属于test标签内的类的所有测试方法运行之前运行
+|@AfterTest	|注释的方法将在属于test标签内的类的所有测试方法运行之后运行
+|@BeforeGroups	|配置方法将在之前运行组列表。 此方法保证在调用属于这些组中的任何一个的第一个测试方法之前不久运行
+|@AfterGroups	|此配置方法将在之后运行组列表。该方法保证在调用属于任何这些组的最后一个测试方法之后不久运行
+|@BeforeMethod	|注释方法将在每个测试方法之前运行
+|@AfterMethod	|注释方法将在每个测试方法之后运行
+|@DataProvider	|标记一种方法来提供测试方法的数据。 注释方法必须返回一个Object [] []，其中每个Object []可以被分配给测试方法的参数列表。 要从该DataProvider接收数据的@Test方法需要使用与此注释名称相等的dataProvider名称
+|@Factory	|将一个方法标记为工厂，返回TestNG将被用作测试类的对象。 该方法必须返回Object []
+|@Listeners	|定义测试类上的侦听器
+|@Parameters|	描述如何将参数传递给@Test方法
+|@Test	|将类或方法标记为测试的一部分，此标记若放在类上，则该类所有公共方法都将被作为测试方法
+
+#### 1.9.2.4. 测试案例
+
+##### 1.9.2.4.1. 基本例子
+<a href="#menu" style="float:right">目录</a>
+
+```java
+package com.spring.test.testng;
+
+import org.testng.annotations.Test;
+
+public class TestNG {
+
+    @Test
+    public void test(){
+
+        System.out.println("test ng");
+    }
+}
+
+```
+输出
+```
+[TestNG] Running:
+  /home/lgj/.IntelliJIdea2018.3/system/temp-testng-customsuite.xml
+test ng
+
+===============================================
+Default Suite
+Total tests run: 1, Failures: 0, Skips: 0
+===============================================
+
+
+Process finished with exit code 0
+```
+
+##### 1.9.2.4.2. 预期异常测试
+<a href="#menu" style="float:right">目录</a>
+
+必须抛出ArithmeticException,否则测试失败
+```java
+@Test(expectedExceptions = ArithmeticException.class)
+public void divisionWithException() {
+    int i = 1 / 0;
+    System.out.println("After division the value of i is :"+ i);
+}
+
+```
+
+##### 1.9.2.4.3. 忽略测试
+<a href="#menu" style="float:right">目录</a>
+
+通过enabled控制
+```
+@Test(enabled = false)
+```
+##### 1.9.2.4.4. 超时测试
+<a href="#menu" style="float:right">目录</a>
+
+```java
+ @Test(timeOut = 5000)
+```
+##### 1.9.2.4.5. 分组测试 
+<a href="#menu" style="float:right">目录</a>
+
+这里有两个分组,group1-test和group2-test,只有这两个分组都执行成功了,group()方法才会执行,因为它使用dependsOnGroups依赖这两个分组.
+```java
+@Test(groups = "group1-test")
+public void group1() {
+    System.out.println("group1-test");
+}
+@Test(groups = "group1-test")
+public void group1_1() {
+    System.out.println("group1-1-test");
+}
+
+
+@Test(groups = "group2-test")
+public void group2() {
+    System.out.println("group2-test");
+}
+
+@Test(dependsOnGroups={"group1-test","group2-test"})
+public void group() {
+    System.out.println("group-test");
+}
+```
+
+### 1.9.3. Mockito  
+<a href="#menu" style="float:right">目录</a>
+
+
+#### 1.9.3.1. 介绍
+<a href="#menu" style="float:right">目录</a>
+
+**Mockito是什么？**
+Mockito是mocking框架，它让你用简洁的API做测试。而且Mockito简单易学，它可读性强和验证语法简洁。
+
+**为什么需要Mock**
+测试驱动的开发( TDD)要求我们先写单元测试，再写实现代码。在写单元测试的过程中，我们往往会遇到要测试的类有很多依赖，这些依赖的类/对象/资源又有别的依赖，从而形成一个大的依赖树，要在单元测试的环境中完整地构建这样的依赖，是一件很困难的事情。如下图所示： 
+![](https://images2015.cnblogs.com/blog/484791/201701/484791-20170120134044703-96948251.png)
+为了测试类A，我们需要Mock B类和C类（用虚拟对象来代替）如下图所示：
+![](https://images2015.cnblogs.com/blog/484791/201701/484791-20170120134311703-125872357.png)
+
+* 场景1:比如我们要测试服务层,服务层要依赖于DAO层,如果仅仅测试服务层的代码,还要去启动数据库等操作,这时可以Mock一个DAO层的对象,然后注入服务层的类
+* 场景2:代码分团队进开发,A依赖B,但是B还未开发好,也可以Mock 模块A中使用的B对象,然后注入A中.
+
+**Stub和Mock异同**
+相同：Stub和Mock都是模拟外部依赖
+不同：Stub是完全模拟一个外部依赖， 而Mock还可以用来判断测试通过还是失败
+ 
+**Mockito资源**
+官网： http://mockito.org
+API文档：http://docs.mockito.googlecode.com/hg/org/mockito/Mockito.html
+项目源码：https://github.com/mockito/mockito 
+
+**使用场景**
+* 提前创建测试; TDD（测试驱动开发）
+* 团队可以并行工作
+* 你可以创建一个验证或者演示程序
+* 为无法访问的资源编写测试
+* Mock 可以交给用户
+* 隔离系统  
+
+**引入依赖**
+```xml
+<dependency>
+    <groupId>org.mockito</groupId>
+    <artifactId>mockito-all</artifactId>
+    <version>1.9.5</version>
+    <scope>test</scope>
+</dependency>
+```
+因为是基于Junit进行测试,还需要引入Junit包
+```xml
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.11</version>
+    <scope>test</scope>
+</dependency>
+```
+
+#### 1.9.3.2. Mockito说明
+
+在使用过程中,都是使用Mockito类的相关静态方法来操作
+```java
+package org.mockito;
+
+
+public class Mockito extends ArgumentMatchers {
+    static final MockitoCore MOCKITO_CORE = new MockitoCore();
+    public static final Answer<Object> RETURNS_DEFAULTS;
+    public static final Answer<Object> RETURNS_SMART_NULLS;
+    public static final Answer<Object> RETURNS_MOCKS;
+    public static final Answer<Object> RETURNS_DEEP_STUBS;
+    public static final Answer<Object> CALLS_REAL_METHODS;
+    public static final Answer<Object> RETURNS_SELF;
+
+    public Mockito() {
+    }
+
+    public static <T> T mock(Class<T> classToMock);
+
+    @CheckReturnValue
+    public static <T> T mock(Class<T> classToMock, String name) {
+        return mock(classToMock, withSettings().name(name).defaultAnswer(RETURNS_DEFAULTS));
+    }
+
+    @CheckReturnValue
+    public static MockingDetails mockingDetails(Object toInspect) {
+        return MOCKITO_CORE.mockingDetails(toInspect);
+    }
+
+    @CheckReturnValue
+    public static <T> T mock(Class<T> classToMock, Answer defaultAnswer) {
+        return mock(classToMock, withSettings().defaultAnswer(defaultAnswer));
+    }
+
+    @CheckReturnValue
+    public static <T> T mock(Class<T> classToMock, MockSettings mockSettings) {
+        return MOCKITO_CORE.mock(classToMock, mockSettings);
+    }
+
+    @CheckReturnValue
+    public static <T> T spy(T object) {
+        return MOCKITO_CORE.mock(object.getClass(), withSettings().spiedInstance(object).defaultAnswer(CALLS_REAL_METHODS));
+    }
+
+    @Incubating
+    @CheckReturnValue
+    public static <T> T spy(Class<T> classToSpy) {
+        return MOCKITO_CORE.mock(classToSpy, withSettings().useConstructor(new Object[0]).defaultAnswer(CALLS_REAL_METHODS));
+    }
+
+    @CheckReturnValue
+    public static <T> OngoingStubbing<T> when(T methodCall) {
+        return MOCKITO_CORE.when(methodCall);
+    }
+
+    @CheckReturnValue
+    public static <T> T verify(T mock) {
+        return MOCKITO_CORE.verify(mock, times(1));
+    }
+
+    @CheckReturnValue
+    public static <T> T verify(T mock, VerificationMode mode) {
+        return MOCKITO_CORE.verify(mock, mode);
+    }
+
+    public static <T> void reset(T... mocks) {
+        MOCKITO_CORE.reset(mocks);
+    }
+
+    public static <T> void clearInvocations(T... mocks) {
+        MOCKITO_CORE.clearInvocations(mocks);
+    }
+
+    public static void verifyNoMoreInteractions(Object... mocks) {
+        MOCKITO_CORE.verifyNoMoreInteractions(mocks);
+    }
+
+    public static void verifyZeroInteractions(Object... mocks) {
+        MOCKITO_CORE.verifyNoMoreInteractions(mocks);
+    }
+
+    @CheckReturnValue
+    public static Stubber doThrow(Throwable... toBeThrown) {
+        return MOCKITO_CORE.stubber().doThrow(toBeThrown);
+    }
+
+    @CheckReturnValue
+    public static Stubber doThrow(Class<? extends Throwable> toBeThrown) {
+        return MOCKITO_CORE.stubber().doThrow(toBeThrown);
+    }
+
+    @CheckReturnValue
+    public static Stubber doThrow(Class<? extends Throwable> toBeThrown, Class... toBeThrownNext) {
+        return MOCKITO_CORE.stubber().doThrow(toBeThrown, toBeThrownNext);
+    }
+
+    @CheckReturnValue
+    public static Stubber doCallRealMethod() {
+        return MOCKITO_CORE.stubber().doCallRealMethod();
+    }
+
+    @CheckReturnValue
+    public static Stubber doAnswer(Answer answer) {
+        return MOCKITO_CORE.stubber().doAnswer(answer);
+    }
+
+    @CheckReturnValue
+    public static Stubber doNothing() {
+        return MOCKITO_CORE.stubber().doNothing();
+    }
+
+    @CheckReturnValue
+    public static Stubber doReturn(Object toBeReturned) {
+        return MOCKITO_CORE.stubber().doReturn(toBeReturned);
+    }
+
+    @CheckReturnValue
+    public static Stubber doReturn(Object toBeReturned, Object... toBeReturnedNext) {
+        return MOCKITO_CORE.stubber().doReturn(toBeReturned, toBeReturnedNext);
+    }
+
+    @CheckReturnValue
+    public static InOrder inOrder(Object... mocks) {
+        return MOCKITO_CORE.inOrder(mocks);
+    }
+
+    public static Object[] ignoreStubs(Object... mocks) {
+        return MOCKITO_CORE.ignoreStubs(mocks);
+    }
+
+    @CheckReturnValue
+    public static VerificationMode times(int wantedNumberOfInvocations) {
+        return VerificationModeFactory.times(wantedNumberOfInvocations);
+    }
+
+    @CheckReturnValue
+    public static VerificationMode never() {
+        return times(0);
+    }
+
+    @CheckReturnValue
+    public static VerificationMode atLeastOnce() {
+        return VerificationModeFactory.atLeastOnce();
+    }
+
+    @CheckReturnValue
+    public static VerificationMode atLeast(int minNumberOfInvocations) {
+        return VerificationModeFactory.atLeast(minNumberOfInvocations);
+    }
+
+    @CheckReturnValue
+    public static VerificationMode atMost(int maxNumberOfInvocations) {
+        return VerificationModeFactory.atMost(maxNumberOfInvocations);
+    }
+
+    @CheckReturnValue
+    public static VerificationMode calls(int wantedNumberOfInvocations) {
+        return VerificationModeFactory.calls(wantedNumberOfInvocations);
+    }
+
+    @CheckReturnValue
+    public static VerificationMode only() {
+        return VerificationModeFactory.only();
+    }
+
+    @CheckReturnValue
+    public static VerificationWithTimeout timeout(long millis) {
+        return new Timeout(millis, VerificationModeFactory.times(1));
+    }
+
+    @CheckReturnValue
+    public static VerificationAfterDelay after(long millis) {
+        return new After(millis, VerificationModeFactory.times(1));
+    }
+
+    public static void validateMockitoUsage() {
+        MOCKITO_CORE.validateMockitoUsage();
+    }
+
+    @CheckReturnValue
+    public static MockSettings withSettings() {
+        return (new MockSettingsImpl()).defaultAnswer(RETURNS_DEFAULTS);
+    }
+
+    @CheckReturnValue
+    public static VerificationMode description(String description) {
+        return times(1).description(description);
+    }
+
+    /** @deprecated */
+    @Deprecated
+    @CheckReturnValue
+    static MockitoDebugger debug() {
+        return new MockitoDebuggerImpl();
+    }
+
+    @Incubating
+    @CheckReturnValue
+    public static MockitoFramework framework() {
+        return new DefaultMockitoFramework();
+    }
+
+    @Incubating
+    @CheckReturnValue
+    public static MockitoSessionBuilder mockitoSession() {
+        return new DefaultMockitoSessionBuilder();
+    }
+
+    @Incubating
+    public static LenientStubber lenient() {
+        return MOCKITO_CORE.lenient();
+    }
+
+    static {
+        RETURNS_DEFAULTS = Answers.RETURNS_DEFAULTS;
+        RETURNS_SMART_NULLS = Answers.RETURNS_SMART_NULLS;
+        RETURNS_MOCKS = Answers.RETURNS_MOCKS;
+        RETURNS_DEEP_STUBS = Answers.RETURNS_DEEP_STUBS;
+        CALLS_REAL_METHODS = Answers.CALLS_REAL_METHODS;
+        RETURNS_SELF = Answers.RETURNS_SELF;
+    }
+}
+
+```
+
+#### 1.9.3.3. 例子 
+<a href="#menu" style="float:right">目录</a>
+
+
+##### 1.9.3.3.1. 基本的例子 
+<a href="#menu" style="float:right">目录</a>
+
+这里需要测试UserDemoService类的代码
+```java
+@Service
+public class UserDemoService {
+
+    @Autowired
+    private  UserDemoMapper userDemoMapper;
+    public List<UserDemo> list(){
+        return  userDemoMapper.list();
+    }
+
+    public List<UserDemo> list(String name){
+        return  userDemoMapper.list( name);
+    }
+}
+```
+
+创建测试类
+
+```java
+package com.spring.test.service;
+
+import com.spring.test.dao.UserDemo;
+import com.spring.test.dao.UserDemoMapper;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
+import java.util.ArrayList;
+import java.util.List;
+@RunWith(MockitoJUnitRunner.class)
+public class UserDemoServiceTest {
+    //Mock一个userDemoMapper对象
+    @Mock
+    UserDemoMapper userDemoMapper;
+    
+    //需要注入的对象
+    @InjectMocks
+    UserDemoService userDemoService;
+
+    @Before
+    public void init(){
+        MockitoAnnotations.initMocks(this);
+    }
+    @Test
+    public void list() {
+
+        //测试1-------------------------
+        String name = "aaa";
+
+        UserDemo userDemo = new UserDemo();
+        userDemo.setId(1000);
+        userDemo.setAge(105);
+        userDemo.setName(name);
+        List<UserDemo> userDemos = new ArrayList<>();
+        userDemos.add(userDemo);
+        
+        //当调用userDemoMapper.list(name)时返回userDemos对象
+        Mockito.when(userDemoMapper.list(name)).thenReturn(userDemos);
+
+        List<UserDemo> userDemoList =   userDemoService.list(name);
+        System.out.println("name = " + name + ", return:"+userDemoList);
+
+        //测试2-------------------------
+        String name1 = "bbb";
+
+        UserDemo userDemo1 = new UserDemo();
+        userDemo1.setId(1000);
+        userDemo1.setAge(105);
+        userDemo1.setName(name1);
+        List<UserDemo> userDemos1 = new ArrayList<>();
+        userDemos1.add(userDemo1);
+
+        Mockito.when(userDemoMapper.list(name1)).thenReturn(userDemos1);
+        List<UserDemo> userDemoList1 =   userDemoService.list(name1);
+        System.out.println("name = " + name1 + ", return:"+userDemoList1);
+
+
+    }
+}
+```
+输出
+```
+name = aaa, return:[UserDemo(id=1000, name=aaa, age=105)]
+name = bbb, return:[UserDemo(id=1000, name=bbb, age=105)]
+```
+
+##### 1.9.3.3.2. 验证行为
+<a href="#menu" style="float:right">目录</a>
+
+```java
+@Test
+public void verify_behaviour(){
+    //模拟创建一个List对象
+    List mock = mock(List.class);
+    //使用mock的对象
+    mock.add(1);
+    mock.clear();
+    //验证add(1)和clear()行为是否发生
+    verify(mock).add(1);
+    verify(mock).clear();
+}
+```
+##### 1.9.3.3.3. 模拟我们所期望的结果
+<a href="#menu" style="float:right">目录</a>
+
+```java
+    @Test
+    public void when_thenReturn(){
+        //mock一个Iterator类
+        Iterator iterator = mock(Iterator.class);
+        //预设当iterator调用next()时第一次返回hello，第n次都返回world
+        when(iterator.next()).thenReturn("hello").thenReturn("world");
+        //使用mock的对象
+        String result = iterator.next() + " " + iterator.next() + " " + iterator.next();
+        //验证结果
+        assertEquals("hello world world",result);
+    }
+```
+```java
+    @Test(expected = IOException.class)
+    public void when_thenThrow() throws IOException {
+        OutputStream outputStream = mock(OutputStream.class);
+        OutputStreamWriter writer = new OutputStreamWriter(outputStream);
+        //预设当流关闭时抛出异常
+        doThrow(new IOException()).when(outputStream).close();
+        outputStream.close();
+    }
+```
+##### 1.9.3.3.4. RETURNS_SMART_NULLS和RETURNS_DEEP_STUBS
+<a href="#menu" style="float:right">目录</a>
+
+RETURNS_SMART_NULLS实现了Answer接口的对象，它是创建mock对象时的一个可选参数，mock(Class,Answer)。
+
+在创建mock对象时，有的方法我们没有进行stubbing，所以调用时会放回Null这样在进行操作是很可能抛出NullPointerException。如果通过RETURNS_SMART_NULLS参数创建的mock对象在没有调用stubbed方法时会返回SmartNull。例如：返回类型是String，会返回"";是int，会返回0；是List，会返回空的List。另外，在控制台窗口中可以看到SmartNull的友好提示。
+
+```java
+    @Test
+    public void returnsSmartNullsTest() {
+        List mock = mock(List.class, RETURNS_SMART_NULLS);
+        System.out.println(mock.get(0));
+        
+        //使用RETURNS_SMART_NULLS参数创建的mock对象，不会抛出NullPointerException异常。另外控制台窗口会提示信息“SmartNull returned by unstubbed get() method on mock”
+        System.out.println(mock.toArray().length);
+    }
+```
+RETURNS_DEEP_STUBS也是创建mock对象时的备选参数
+
+RETURNS_DEEP_STUBS参数程序会自动进行mock所需的对象，方法deepstubsTest和deepstubsTest2是等价的
+
+```java
+    @Test
+    public void deepstubsTest(){
+        Account account=mock(Account.class,RETURNS_DEEP_STUBS);
+        when(account.getRailwayTicket().getDestination()).thenReturn("Beijing");
+        account.getRailwayTicket().getDestination();
+        verify(account.getRailwayTicket()).getDestination();
+        assertEquals("Beijing",account.getRailwayTicket().getDestination());
+    }
+    @Test
+    public void deepstubsTest2(){
+        Account account=mock(Account.class); 
+        RailwayTicket railwayTicket=mock(RailwayTicket.class);        
+        when(account.getRailwayTicket()).thenReturn(railwayTicket); 
+        when(railwayTicket.getDestination()).thenReturn("Beijing");
+        
+        account.getRailwayTicket().getDestination();
+        verify(account.getRailwayTicket()).getDestination();    
+        assertEquals("Beijing",account.getRailwayTicket().getDestination());
+    }    
+    
+    public class RailwayTicket{
+        private String destination;
+
+        public String getDestination() {
+            return destination;
+        }
+
+        public void setDestination(String destination) {
+            this.destination = destination;
+        }        
+    }
+    
+    public class Account{
+        private RailwayTicket railwayTicket;
+
+        public RailwayTicket getRailwayTicket() {
+            return railwayTicket;
+        }
+
+        public void setRailwayTicket(RailwayTicket railwayTicket) {
+            this.railwayTicket = railwayTicket;
+        }
+    }
+```
+##### 1.9.3.3.5. 模拟方法体抛出异常
+<a href="#menu" style="float:right">目录</a>
+
+```java
+    @Test(expected = RuntimeException.class)
+    public void doThrow_when(){
+        List list = mock(List.class);
+        doThrow(new RuntimeException()).when(list).add(1);
+        list.add(1);
+    }
+```
+
+##### 1.9.3.3.6. 使用注解来快速模拟 
+<a href="#menu" style="float:right">目录</a>
+
+在上面的测试中我们在每个测试方法里都mock了一个List对象，为了避免重复的mock，是测试类更具有可读性，我们可以使用下面的注解方式来快速模拟对象：
+
+```java
+    @Mock
+    private List mockList;
+OK，我们再用注解的mock对象试试 
+
+    @Test
+    public void shorthand(){
+        mockList.add(1);
+        verify(mockList).add(1);
+    }
+```
+运行这个测试类你会发现报错了，mock的对象为NULL，为此我们必须在基类中添加初始化mock的代码
+
+```java
+public class MockitoExample2 {
+    @Mock
+    private List mockList;
+
+    public MockitoExample2(){
+        MockitoAnnotations.initMocks(this);
+    }
+
+    @Test
+    public void shorthand(){
+        mockList.add(1);
+        verify(mockList).add(1);
+    }
+}
+```
+或者使用built-in runner：MockitoJUnitRunner
+
+```java
+@RunWith(MockitoJUnitRunner.class)
+public class MockitoExample2 {
+    @Mock
+    private List mockList;
+
+    @Test
+    public void shorthand(){
+        mockList.add(1);
+        verify(mockList).add(1);
+    }
+}
+```
+##### 1.9.3.3.7. 参数匹配
+<a href="#menu" style="float:right">目录</a>
+
+```java
+@Test
+public void with_arguments(){
+    Comparable comparable = mock(Comparable.class);
+    //预设根据不同的参数返回不同的结果
+    when(comparable.compareTo("Test")).thenReturn(1);
+    when(comparable.compareTo("Omg")).thenReturn(2);
+    assertEquals(1, comparable.compareTo("Test"));
+    assertEquals(2, comparable.compareTo("Omg"));
+    //对于没有预设的情况会返回默认值
+    assertEquals(0, comparable.compareTo("Not stub"));
+}
+```
+除了匹配制定参数外，还可以匹配自己想要的任意参数
+
+```java
+@Test
+public void with_unspecified_arguments(){
+    List list = mock(List.class);
+    //匹配任意参数
+    when(list.get(anyInt())).thenReturn(1);
+    when(list.contains(argThat(new IsValid()))).thenReturn(true);
+    assertEquals(1, list.get(1));
+    assertEquals(1, list.get(999));
+    assertTrue(list.contains(1));
+    assertTrue(!list.contains(3));
+}
+
+private class IsValid extends ArgumentMatcher<List>{
+    @Override
+    public boolean matches(Object o) {
+        return o == 1 || o == 2;
+    }
+}
+```
+注意：如果你使用了参数匹配，那么所有的参数都必须通过matchers来匹配，如下代码：
+
+```java
+@Test
+public void all_arguments_provided_by_matchers(){
+    Comparator comparator = mock(Comparator.class);
+    comparator.compare("nihao","hello");
+    //如果你使用了参数匹配，那么所有的参数都必须通过matchers来匹配
+    verify(comparator).compare(anyString(),eq("hello"));
+    //下面的为无效的参数匹配使用
+    //verify(comparator).compare(anyString(),"hello");
+}
+```
+##### 1.9.3.3.8. 自定义参数匹配
+<a href="#menu" style="float:right">目录</a>
+
+```java
+@Test
+public void argumentMatchersTest(){
+    //创建mock对象
+    List<String> mock = mock(List.class);
+
+    //argThat(Matches<T> matcher)方法用来应用自定义的规则，可以传入任何实现Matcher接口的实现类。
+    when(mock.addAll(argThat(new IsListofTwoElements()))).thenReturn(true);
+
+    mock.addAll(Arrays.asList("one","two","three"));
+    //IsListofTwoElements用来匹配size为2的List，因为例子传入List为三个元素，所以此时将失败。
+    verify(mock).addAll(argThat(new IsListofTwoElements()));
+}
+
+class IsListofTwoElements extends ArgumentMatcher<List>
+{
+    public boolean matches(Object list)
+    {
+        return((List)list).size()==2;
+    }
+}
+```
+##### 1.9.3.3.9. 捕获参数来进一步断言
+<a href="#menu" style="float:right">目录</a>
+
+较复杂的参数匹配器会降低代码的可读性，有些地方使用参数捕获器更加合适。
+
+```java
+@Test
+public void capturing_args(){
+    PersonDao personDao = mock(PersonDao.class);
+    PersonService personService = new PersonService(personDao);
+
+    ArgumentCaptor<Person> argument = ArgumentCaptor.forClass(Person.class);
+    personService.update(1,"jack");
+    verify(personDao).update(argument.capture());
+    assertEquals(1,argument.getValue().getId());
+    assertEquals("jack",argument.getValue().getName());
+}
+
+    class Person{
+    private int id;
+    private String name;
+
+    Person(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+
+interface PersonDao{
+    public void update(Person person);
+}
+
+class PersonService{
+    private PersonDao personDao;
+
+    PersonService(PersonDao personDao) {
+        this.personDao = personDao;
+    }
+
+    public void update(int id,String name){
+        personDao.update(new Person(id,name));
+    }
+}
+```
+##### 1.9.3.3.10. 使用方法预期回调接口生成期望值（Answer结构）
+<a href="#menu" style="float:right">目录</a>
+
+```java
+@Test
+public void answerTest(){
+    when(mockList.get(anyInt())).thenAnswer(new CustomAnswer());
+    assertEquals("hello world:0",mockList.get(0));
+    assertEquals("hello world:999",mockList.get(999));
+}
+
+private class CustomAnswer implements Answer<String>{
+    @Override
+    public String answer(InvocationOnMock invocation) throws Throwable {
+        Object[] args = invocation.getArguments();
+        return "hello world:"+args[0];
+    }
+}
+```
+也可使用匿名内部类实现
+
+```java
+@Test
+public void answer_with_callback(){
+    //使用Answer来生成我们我们期望的返回
+    when(mockList.get(anyInt())).thenAnswer(new Answer<Object>() {
+        @Override
+        public Object answer(InvocationOnMock invocation) throws Throwable {
+            Object[] args = invocation.getArguments();
+            return "hello world:"+args[0];
+        }
+    });
+    assertEquals("hello world:0",mockList.get(0));
+    assertEquals("hello world:999",mockList.get(999));
+}
+```
+##### 1.9.3.3.11. 修改对未预设的调用返回默认期望
+<a href="#menu" style="float:right">目录</a>
+
+```java
+@Test
+public void unstubbed_invocations(){
+    //mock对象使用Answer来对未预设的调用返回默认期望值
+    List mock = mock(List.class,new Answer() {
+        @Override
+        public Object answer(InvocationOnMock invocation) throws Throwable {
+            return 999;
+        }
+    });
+    //下面的get(1)没有预设，通常情况下会返回NULL，但是使用了Answer改变了默认期望值
+    assertEquals(999, mock.get(1));
+    //下面的size()没有预设，通常情况下会返回0，但是使用了Answer改变了默认期望值
+    assertEquals(999,mock.size());
+}
+```
+##### 1.9.3.3.12. 用spy监控真实对象 
+<a href="#menu" style="float:right">目录</a>
+
+Mock不是真实的对象，它只是用类型的class创建了一个虚拟对象，并可以设置对象行为
+Spy是一个真实的对象，但它可以设置对象行为
+InjectMocks创建这个类的对象并自动将标记@Mock、@Spy等注解的属性值注入到这个中
+```java
+@Test(expected = IndexOutOfBoundsException.class)
+public void spy_on_real_objects(){
+    List list = new LinkedList();
+    List spy = spy(list);
+    //下面预设的spy.get(0)会报错，因为会调用真实对象的get(0)，所以会抛出越界异常
+    //when(spy.get(0)).thenReturn(3);
+
+    //使用doReturn-when可以避免when-thenReturn调用真实对象api
+    doReturn(999).when(spy).get(999);
+    //预设size()期望值
+    when(spy.size()).thenReturn(100);
+    //调用真实对象的api
+    spy.add(1);
+    spy.add(2);
+    assertEquals(100,spy.size());
+    assertEquals(1,spy.get(0));
+    assertEquals(2,spy.get(1));
+    verify(spy).add(1);
+    verify(spy).add(2);
+    assertEquals(999,spy.get(999));
+    spy.get(2);
+}
+```
+##### 1.9.3.3.13. 真实的部分mock
+<a href="#menu" style="float:right">目录</a>
+
+```java
+@Test
+public void real_partial_mock(){
+    //通过spy来调用真实的api
+    List list = spy(new ArrayList());
+    assertEquals(0,list.size());
+    A a  = mock(A.class);
+    //通过thenCallRealMethod来调用真实的api
+    when(a.doSomething(anyInt())).thenCallRealMethod();
+    assertEquals(999,a.doSomething(999));
+}
+
+
+class A{
+    public int doSomething(int i){
+        return i;
+    }
+}
+```
+##### 1.9.3.3.14. 重置mock
+<a href="#menu" style="float:right">目录</a>
+
+```java
+@Test
+public void reset_mock(){
+    List list = mock(List.class);
+    when(list.size()).thenReturn(10);
+    list.add(1);
+    assertEquals(10,list.size());
+    //重置mock，清除所有的互动和预设
+    reset(list);
+    assertEquals(0,list.size());
+}
+```
+##### 1.9.3.3.15. 验证确切的调用次数
+<a href="#menu" style="float:right">目录</a>
+
+```java
+@Test
+public void verifying_number_of_invocations(){
+    List list = mock(List.class);
+    list.add(1);
+    list.add(2);
+    list.add(2);
+    list.add(3);
+    list.add(3);
+    list.add(3);
+    //验证是否被调用一次，等效于下面的times(1)
+    verify(list).add(1);
+    verify(list,times(1)).add(1);
+    //验证是否被调用2次
+    verify(list,times(2)).add(2);
+    //验证是否被调用3次
+    verify(list,times(3)).add(3);
+    //验证是否从未被调用过
+    verify(list,never()).add(4);
+    //验证至少调用一次
+    verify(list,atLeastOnce()).add(1);
+    //验证至少调用2次
+    verify(list,atLeast(2)).add(2);
+    //验证至多调用3次
+    verify(list,atMost(3)).add(3);
+}
+```
+##### 1.9.3.3.16. 连续调用
+<a href="#menu" style="float:right">目录</a>
+
+```java
+@Test(expected = RuntimeException.class)
+public void consecutive_calls(){
+    //模拟连续调用返回期望值，如果分开，则只有最后一个有效
+    when(mockList.get(0)).thenReturn(0);
+    when(mockList.get(0)).thenReturn(1);
+    when(mockList.get(0)).thenReturn(2);
+    when(mockList.get(1)).thenReturn(0).thenReturn(1).thenThrow(new RuntimeException());
+    assertEquals(2,mockList.get(0));
+    assertEquals(2,mockList.get(0));
+    assertEquals(0,mockList.get(1));
+    assertEquals(1,mockList.get(1));
+    //第三次或更多调用都会抛出异常
+    mockList.get(1);
+}
+```
+##### 1.9.3.3.17. 验证执行顺序
+<a href="#menu" style="float:right">目录</a>
+
+```java
+@Test
+public void verification_in_order(){
+    List list = mock(List.class);
+    List list2 = mock(List.class);
+    list.add(1);
+    list2.add("hello");
+    list.add(2);
+    list2.add("world");
+    //将需要排序的mock对象放入InOrder
+    InOrder inOrder = inOrder(list,list2);
+    //下面的代码不能颠倒顺序，验证执行顺序
+    inOrder.verify(list).add(1);
+    inOrder.verify(list2).add("hello");
+    inOrder.verify(list).add(2);
+    inOrder.verify(list2).add("world");
+}
+```
+##### 1.9.3.3.18. 确保模拟对象上无互动发生
+<a href="#menu" style="float:right">目录</a>
+
+```java
+@Test
+public void verify_interaction(){
+    List list = mock(List.class);
+    List list2 = mock(List.class);
+    List list3 = mock(List.class);
+    list.add(1);
+    verify(list).add(1);
+    verify(list,never()).add(2);
+    //验证零互动行为
+    verifyZeroInteractions(list2,list3);
+}
+```
+##### 1.9.3.3.19. 找出冗余的互动(即未被验证到的)
+<a href="#menu" style="float:right">目录</a>
+
+```java
+@Test(expected = NoInteractionsWanted.class)
+public void find_redundant_interaction(){
+    List list = mock(List.class);
+    list.add(1);
+    list.add(2);
+    verify(list,times(2)).add(anyInt());
+    //检查是否有未被验证的互动行为，因为add(1)和add(2)都会被上面的anyInt()验证到，所以下面的代码会通过
+    verifyNoMoreInteractions(list);
+
+    List list2 = mock(List.class);
+    list2.add(1);
+    list2.add(2);
+    verify(list2).add(1);
+    //检查是否有未被验证的互动行为，因为add(2)没有被验证，所以下面的代码会失败抛出异常
+    verifyNoMoreInteractions(list2);
+}
+```
+#### 1.9.3.4. Mockito如何实现Mock[3]
+<a href="#menu" style="float:right">目录</a>
+
+Mockito并不是创建一个真实的对象，而是模拟这个对象，他用简单的when(mock.method(params)).thenRetrun(result)语句设置mock对象的行为，如下语句：
+
+// 设置mock对象的行为 － 当调用其get方法获取第0个元素时，返回"first"
+Mockito.when(mockedList.get(0)).thenReturn("first");
+在Mock对象的时候，创建一个proxy对象，保存被调用的方法名（get），以及调用时候传递的参数（0），然后在调用thenReturn方法时再把“first”保存起来，这样，就有了构建一个stub方法所需的所有信息，构建一个stub。当get方法被调用的时候，实际上调用的是之前保存的proxy对象的get方法，返回之前保存的数据。
+
+
+### 1.9.4. 控制层测试
+<a href="#menu" style="float:right">目录</a>
+
+主要思路是：使用MockMvc发起请求，然后执行相应的代码，在执行的过程中使用Mockito的mock模拟底层数据的返回，最后结果验证。
+
+Mockito框架[官方地址mockito:https://site.mockito.org/](https://site.mockito.org/)，
+[文档地址:https://static.javadoc.io/org.mockito/mockito-core/3.0.0/org/mockito/Mockito.html](https://static.javadoc.io/org.mockito/mockito-core/3.0.0/org/mockito/Mockito.html)
+
+MockMvc相关[官方地址官方指南:https://spring.io/guides/gs/testing-web/](https://spring.io/guides/gs/testing-web/)，
+[文档地址:https://spring.io/guides/gs/testing-web/](https://spring.io/guides/gs/testing-web/)
+
+
+#### 1.9.4.1. 基本使用
+<a href="#menu" style="float:right">目录</a>
+
+**首先需要增加相应的依赖：**
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-test</artifactId>
+    <scope>test</scope>
+</dependency>
+```
+需要在测试类中增加如下注解：
+
+```java
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+public class MockXXXTest {
+  
+}
+```
+注解的大概使用是（想知道详细的可自行去网上找一下）：
+@RunWith(SpringRunner.class)，就是指用SpringRunner来运行，其中
+SpringJUnit4ClassRunner 和 SpringRunner 区别是什么？
+在官方文档中有如下这句话：
+
+SpringRunner is an alias for the SpringJUnit4ClassRunner
+
+@SpringBootTest是SpringBoot的一个用于测试的注解，通过SpringApplication在测试中创建ApplicationContext。
+
+@AutoConfigureMockMvc是用于自动配置MockMvc
+
+**接着需要使用@MockBean模拟相应对象**
+这里的主要作用是：使用mock对象代替原来spring的bean，然后模拟底层数据的返回，而不是调用原本真正的实现。
+
+注：与@MockBean 对应的还有@SpyBean（有兴趣可以去找一下相关的内容）。 @SpyBean与 @Spy 的关系类似于 @MockBean 与 @Mock 的关系。和 @MockBean 不同的是，它不会生成一个 Bean 的替代品装配到类中，而是会监听一个真正的 Bean 中某些特定的方法，并在调用这些方法时给出指定的反馈。
+
+首先增加 @MockBean 注解
+public class MockXXXTest {
+    @MockBean
+    private XXXDao xxxtDao;
+ 
+
+}
+SpringBoot 中, @MockBean 会将mock的bean替换掉 SpringBoot 管理的原生bean，从而达到mock的效果。
+
+mock:在软件开发的世界之外, "mock"一词是指模仿或者效仿. 因此可以将“mock”理解为一个替身，替代者. 在软件开发中提及"mock"，通常理解为模拟对象或者Fake
+
+然后 Stub 打桩
+```java
+ Mockito.when(
+        xxxDao.findMapBySql(
+                Mockito.anyString(),Mockito.anyList()
+        )
+ ).thenReturn(dataList);
+```
+   这里的when(…).thenReturn(…)表示的是：当定义(when)对象、方法和参数（输入），然后(thenReturn) 中返回结果（输出）。默认情况下，所有的函数都有返回值。mock函数默认返回的是null，一个空的集合或者一个被对象类型包装的内置类型，例如：0、false对应的对象类型为Integer、Boolean。
+
+  这里值得注意的是：方法中使用的参数可以使用参数匹配器，如：Mockito.anyString(),Mockito.anyList()，当其中有一个参数使用了参数匹配器，其实的所有参数也需要使用参数匹配器，否则会出现异常。
+
+**使用MockMvc发送请求**
+
+这里的主要作用是：使用MockMvc发起一个请求，然后进行验证规则、进一步处理返回结果等。
+
+```java
+//配置MockMvc
+@Autowired
+protected MockMvc mockMvc;
+@Test
+public void TestXXX() throws Exception {
+       MvcResult result = mockMvc.perform(
+                MockMvcRequestBuilders.get("/xxxController/xxx_query")
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)      
+                        .param("xxx","xxx")
+                    
+
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+       
+    }
+｝
+```
+* perform() 执行一个MockMvcRequestBuilders请求。其中.get()表示发送get请求（可以使用get、post、put、delete等）；.contentType()设置编码格式；.param()请求参数,可以带多个。
+andExpect()添加 MockMvcResultMatchers验证规则，验证执行结果是否正确。
+* .andDo()添加 MockMvcResultHandlers结果处理器,这是可以用于打印结果输出。
+* .andReturn()结果还回，然后可以进行下一步的处理。
+
+**完整例子如下：**
+
+```java
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+public class MockXXXTest {
+    @Autowired
+    protected MockMvc mockMvc;
+    @MockBean
+    private XXXDao xxxtDao;
+    @Test
+    public void TestXXX() throws Exception {
+        List<Map<String,Object>> dataList= new ArrayList<>();
+        Map m=new HashMap();
+        m.put("name","test");
+        dataList.add(m);
+        Mockito.when(xxxDao.findMapBySql(Mockito.anyString(),Mockito.anyList())).thenReturn(dataList);
+
+        Mockito.when(xxxDao.findTotalCountBySql(Mockito.anyString(),Mockito.any())).thenReturn((long)1);
+     
+        MvcResult result = mockMvc.perform(
+                MockMvcRequestBuilders.get("/xxxController/xxx_query")
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)      
+                        .param("xxx","xxx")
+                    
+
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+        System.out.println(result);
+    }
+}
+```
+
+#### 1.9.4.2. 相关类说明
+<a href="#menu" style="float:right">目录</a>
+
+##### 1.9.4.2.1. 创建MockMvc实例
+
+**方式1**
+使用注解:@AutoConfigureMockMvc
+
+**方式2**
+在启动前创建
+```java
+
+@Autowired
+WebApplicationContext context;
+    
+@Before
+public void setupMockMvc() throws Exception {
+    MockitoAnnotations.initMocks(this);
+
+    mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+    //或者
+    mockMvc = MockMvcBuilders
+            .standaloneSetup(userDemoController)
+            .setRemoveSemicolonContent(false)
+            .build();
+
+}
+
+```
+ 
+#### 1.9.4.3. 相关类说明
+<a href="#menu" style="float:right">目录</a>
+
+Spring mvc测试框架提供了测试MVC需要的API，主要包括Servlet/JSP Mock、MockMvcBuilder、MockMvc、RequestBuilder、ResultMatcher、ResultHandler、MvcResult等。另外提供了几个静态工厂方法便于测试：MockMvcBuilders、MockMvcRequestBuilders、MockMvcResultMatchers、MockMvcResultHandlers。在使用时请使用静态方法导入方便测试，如：
+
+```java
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;  
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;  
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;  
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;  
+```
+
+##### 1.9.4.3.1. MockMvcBuilder/MockMvcBuilders
+<a href="#menu" style="float:right">目录</a>
+
+MockMvcBuilder是用来构造MockMvc的构造器，其主要有两个实现：StandaloneMockMvcBuilder和DefaultMockMvcBuilder，分别对应之前的两种测试方式。对于我们来说直接使用静态工厂MockMvcBuilders创建即可：
+* MockMvcBuilders.webAppContextSetup(WebApplicationContext context)：指定WebApplicationContext，将会从该上下文获取相应的控制器并得到相应的MockMvc
+* MockMvcBuilders.standaloneSetup(Object... controllers)：通过参数指定一组控制器，这样就不需要从上下文获取了；
+
+```java
+@Autowired
+private WebApplicationContext context;
+private MockMvc mockMvc;
+@Before
+public void setupMockMvc() throws Exception {
+    MockitoAnnotations.initMocks(this);
+
+    // mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+
+    mockMvc = MockMvcBuilders
+            .standaloneSetup(userDemoController)
+            .setRemoveSemicolonContent(false)
+            .build();
+
+}
+```
+
+
+其中DefaultMockMvcBuilder还提供了如下API：
+* addFilters(Filter... filters)/addFilter(Filter filter, String... urlPatterns)：添加javax.servlet.Filter过滤器
+* defaultRequest(RequestBuilder requestBuilder)：默认的RequestBuilder，每次执行时会合并到自定义的RequestBuilder中，即提供公共请求数据的；
+* alwaysExpect(ResultMatcher resultMatcher)：定义全局的结果验证器，即每次执行请求时都进行验证的规则；
+* alwaysDo(ResultHandler resultHandler)：定义全局结果处理器，即每次请求时都进行结果处理；
+* dispatchOptions：DispatcherServlet是否分发OPTIONS请求方法到控制器；
+
+ 
+
+StandaloneMockMvcBuilder继承了DefaultMockMvcBuilder，又提供了如下API：
+* setMessageConverters(HttpMessageConverter<?>...messageConverters)：设置HTTP消息转换器；
+* setValidator(Validator validator)：设置验证器；
+* setConversionService(FormattingConversionService conversionService)：设置转换服务；
+* addInterceptors(HandlerInterceptor... interceptors)/addMappedInterceptors(String[] pathPatterns, HandlerInterceptor... interceptors)：添加spring mvc拦截器；
+* setContentNegotiationManager(ContentNegotiationManager contentNegotiationManager)：设置内容协商管理器；
+* setAsyncRequestTimeout(long timeout)：设置异步超时时间；
+* setCustomArgumentResolvers(HandlerMethodArgumentResolver... argumentResolvers)：设置自定义控制器方法参数解析器；
+* setCustomReturnValueHandlers(HandlerMethodReturnValueHandler... handlers)：设置自定义控制器方法返回值处理器；
+* setHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers)/setHandlerExceptionResolvers(HandlerExceptionResolver... exceptionResolvers)：设置异常解析器；
+* setViewResolvers(ViewResolver...resolvers)：设置视图解析器；
+* setSingleView(View view)：设置单个视图，即视图解析时总是解析到这一个（仅适用于只有一个视图的情况）；
+* setLocaleResolver(LocaleResolver localeResolver)：设置Local解析器；
+* setFlashMapManager(FlashMapManager flashMapManager)：设置FlashMapManager，如存储重定向数据；
+* setUseSuffixPatternMatch(boolean useSuffixPatternMatch)：设置是否是后缀模式匹配，如“/user”是否匹配"/user.*"，默认真即匹配；
+* setUseTrailingSlashPatternMatch(boolean useTrailingSlashPatternMatch)：设置是否自动后缀路径模式匹配，如“/user”是否匹配“/user/”，默认真即匹配；
+* addPlaceHolderValue(String name, String value) ：添加request mapping中的占位符替代；
+
+
+因为StandaloneMockMvcBuilder不会加载Spring MVC配置文件，因此就不会注册我们需要的一些组件，因此就提供了如上API用于注册我们需要的相应组件。
+
+##### 1.9.4.3.2. MockMvc
+<a href="#menu" style="float:right">目录</a>
+
+使用之前的MockMvcBuilder.build()得到构建好的MockMvc；这个是mvc测试的核心API，对于该API的使用方式如下：
+```java
+MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/user/1"))  
+       .andExpect(MockMvcResultMatchers.view().name("user/view"))  
+       .andExpect(MockMvcResultMatchers.model().attributeExists("user"))  
+       .andDo(MockMvcResultHandlers.print())  
+       .andReturn(); 
+```
+* perform：执行一个RequestBuilder请求，会自动执行SpringMVC的流程并映射到相应的控制器执行处理；
+* andExpect：添加ResultMatcher验证规则，验证控制器执行完成后结果是否正确；
+* andDo：添加ResultHandler结果处理器，比如调试时打印结果到控制台；
+* andReturn：最后返回相应的MvcResult；然后进行自定义验证/进行下一步的异步处理；
+
+另外还提供了以下API：
+* setDefaultRequest：设置默认的RequestBuilder，用于在每次perform执行相应的RequestBuilder时自动把该默认的RequestBuilder合并到perform的RequestBuilder中；
+* setGlobalResultMatchers：设置全局的预期结果验证规则，如我们通过MockMvc测试多个控制器时，假设它们都想验证某个规则时，就可以使用这个；
+* setGlobalResultHandlers：设置全局的ResultHandler结果处理器；
+
+  
+
+##### 1.9.4.3.3. RequestBuilder/MockMvcRequestBuilders
+<a href="#menu" style="float:right">目录</a>
+
+从名字可以看出，RequestBuilder用来构建请求的，其提供了一个方法buildRequest(ServletContext servletContext)用于构建MockHttpServletRequest；其主要有两个子类MockHttpServletRequestBuilder和MockMultipartHttpServletRequestBuilder（如文件上传使用），即用来Mock客户端请求需要的所有数据。
+
+
+MockMvcRequestBuilders主要API：
+* MockHttpServletRequestBuilder get(String urlTemplate, Object... urlVariables)：根据uri模板和uri变量值得到一个GET请求方式的MockHttpServletRequestBuilder；如get("/user/{id}", 1L)；
+* MockHttpServletRequestBuilder post(String urlTemplate, Object... urlVariables)：同get类似，但是是POST方法；
+* MockHttpServletRequestBuilder put(String urlTemplate, Object... urlVariables)：同get类似，但是是PUT方法；
+* MockHttpServletRequestBuilder delete(String urlTemplate, Object... urlVariables) ：同get类似，但是是DELETE方法；
+* MockHttpServletRequestBuilder options(String urlTemplate, Object... urlVariables)：同get类似，但是是OPTIONS方法；
+* MockHttpServletRequestBuilder request(HttpMethod httpMethod, String urlTemplate, Object... urlVariables)：提供自己的Http请求方法及uri模板和uri变量，如上API都是委托给这个API；
+* MockMultipartHttpServletRequestBuilder fileUpload(String urlTemplate, Object... urlVariables)：提供文件上传方式的请求，得到MockMultipartHttpServletRequestBuilder；
+* RequestBuilder asyncDispatch(final MvcResult mvcResult)：创建一个从启动异步处理的请求的MvcResult进行异步分派的RequestBuilder；
+
+接下来再看看MockHttpServletRequestBuilder和MockMultipartHttpServletRequestBuilder API：
+* MockHttpServletRequestBuilder API：
+* MockHttpServletRequestBuilder header(String name, Object... values)/MockHttpServletRequestBuilder headers(HttpHeaders httpHeaders)：添加头信息；
+* MockHttpServletRequestBuilder contentType(MediaType mediaType)：指定请求的contentType头信息；
+* MockHttpServletRequestBuilder accept(MediaType... mediaTypes)/MockHttpServletRequestBuilder accept(String... mediaTypes)：指定请求的Accept头信息；
+* MockHttpServletRequestBuilder content(byte[] content)/MockHttpServletRequestBuilder content(String content)：指定请求Body体内容；
+* MockHttpServletRequestBuilder cookie(Cookie... cookies)：指定请求的Cookie；
+* MockHttpServletRequestBuilder locale(Locale locale)：指定请求的Locale；
+* MockHttpServletRequestBuilder characterEncoding(String encoding)：指定请求字符编码；
+* MockHttpServletRequestBuilder requestAttr(String name, Object value) ：设置请求属性数据；
+* MockHttpServletRequestBuilder sessionAttr(String name, Object value)/MockHttpServletRequestBuilder sessionAttrs(Map<String, Object> * sessionAttributes)：设置请求session属性数据；
+* MockHttpServletRequestBuilder flashAttr(String name, Object value)/MockHttpServletRequestBuilder flashAttrs(Map<String, Object> flashAttributes)：指定请求的flash信息，比如重定向后的属性信息；
+* MockHttpServletRequestBuilder session(MockHttpSession session) ：指定请求的Session；
+* MockHttpServletRequestBuilder principal(Principal principal) ：指定请求的Principal；
+* MockHttpServletRequestBuilder contextPath(String contextPath) ：指定请求的上下文路径，必须以“/”开头，且不能以“/”结尾；
+* MockHttpServletRequestBuilder pathInfo(String pathInfo) ：请求的路径信息，必须以“/”开头；
+* MockHttpServletRequestBuilder secure(boolean secure)：请求是否使用安全通道；
+* MockHttpServletRequestBuilder with(RequestPostProcessor postProcessor)：请求的后处理器，用于自定义一些请求处理的扩展点；
+
+MockMultipartHttpServletRequestBuilder继承自MockHttpServletRequestBuilder，又提供了如下API：
+* MockMultipartHttpServletRequestBuilder file(String name, byte[] content)/MockMultipartHttpServletRequestBuilder file(MockMultipartFile file)：指定要上传的文件；
+
+ 
+
+##### 1.9.4.3.4. ResultActions
+<a href="#menu" style="float:right">目录</a>
+
+调用MockMvc.perform(RequestBuilder requestBuilder)后将得到ResultActions，通过ResultActions完成如下三件事：
+* ResultActions andExpect(ResultMatcher matcher) ：添加验证断言来判断执行请求后的结果是否是预期的；
+* ResultActions andDo(ResultHandler handler) ：添加结果处理器，用于对验证成功后执行的动作，如输出下请求/结果信息用于调试；
+* MvcResult andReturn() ：返回验证成功后的MvcResult；用于自定义验证/下一步的异步处理；
+
+ 
+
+##### 1.9.4.3.5. ResultMatcher/MockMvcResultMatchers
+<a href="#menu" style="float:right">目录</a>
+
+ResultMatcher用来匹配执行完请求后的结果验证，其就一个match(MvcResult result)断言方法，如果匹配失败将抛出相应的异常；spring mvc测试框架提供了很多***ResultMatchers来满足测试需求。注意这些***ResultMatchers并不是ResultMatcher的子类，而是返回ResultMatcher实例的。Spring mvc测试框架为了测试方便提供了MockMvcResultMatchers静态工厂方法方便操作；具体的API如下：
+* HandlerResultMatchers handler()：请求的Handler验证器，比如验证处理器类型/方法名；此处的Handler其实就是处理请求的控制器；
+* RequestResultMatchers request()：得到RequestResultMatchers验证器；
+* ModelResultMatchers model()：得到模型验证器；
+* ViewResultMatchers view()：得到视图验证器；
+* FlashAttributeResultMatchers flash()：得到Flash属性验证；
+* StatusResultMatchers status()：得到响应状态验证器；
+* HeaderResultMatchers header()：得到响应Header验证器；
+* CookieResultMatchers cookie()：得到响应Cookie验证器；
+* ContentResultMatchers content()：得到响应内容验证器；
+* JsonPathResultMatchers jsonPath(String expression, Object ... args)/ResultMatcher jsonPath(String expression, Matcher<T> matcher)：得到Json表达式验证器；
+* XpathResultMatchers xpath(String expression, Object... args)/XpathResultMatchers xpath(String expression, Map<String, String> namespaces, Object... args)：得到Xpath表达式验证器；
+* ResultMatcher forwardedUrl(final String expectedUrl)：验证处理完请求后转发的url（绝对匹配）；
+* ResultMatcher forwardedUrlPattern(final String urlPattern)：验证处理完请求后转发的url（Ant风格模式匹配，@since spring4）；
+* ResultMatcher redirectedUrl(final String expectedUrl)：验证处理完请求后重定向的url（绝对匹配）；
+* ResultMatcher redirectedUrlPattern(final String expectedUrl)：验证处理完请求后重定向的url（Ant风格模式匹配，@since spring4）；
+
+
+得到相应的***ResultMatchers后，接着再调用其相应的API得到ResultMatcher，如ModelResultMatchers.attributeExists(final String... names)判断Model属性是否存在。具体请查看相应的API。再次就不一一列举了。
+
+##### 1.9.4.3.6. ResultHandler/MockMvcResultHandlers
+<a href="#menu" style="float:right">目录</a>
+
+ResultHandler用于对处理的结果进行相应处理的，比如输出整个请求/响应等信息方便调试，Spring mvc测试框架提供了MockMvcResultHandlers静态工厂方法，该工厂提供了ResultHandler print()返回一个输出MvcResult详细信息到控制台的ResultHandler实现。
+
+
+##### 1.9.4.3.7. MvcResult
+<a href="#menu" style="float:right">目录</a>
+
+即执行完控制器后得到的整个结果，并不仅仅是返回值，其包含了测试时需要的所有信息，如：
+* MockHttpServletRequest getRequest()：得到执行的请求；
+* MockHttpServletResponse getResponse()：得到执行后的响应；
+* Object getHandler()：得到执行的处理器，一般就是控制器；
+* HandlerInterceptor[] getInterceptors()：得到对处理器进行拦截的拦截器；
+* ModelAndView getModelAndView()：得到执行后的ModelAndView；
+* Exception getResolvedException()：得到HandlerExceptionResolver解析后的异常；
+* FlashMap getFlashMap()：得到FlashMap；
+* Object getAsyncResult()/Object getAsyncResult(long timeout)：得到异步执行的结果；
+
+
+### 1.9.5. 服务层测试
+<a href="#menu" style="float:right">目录</a>
+
+### 1.9.6. DAO层测试
 <a href="#menu" style="float:right">目录</a>
 
 
