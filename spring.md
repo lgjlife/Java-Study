@@ -23,297 +23,107 @@
             - [1.1.7.1. IOC 容器的设计](#1171-ioc-容器的设计)
             - [1.1.7.2. BeanFactory接口以及实现类说明](#1172-beanfactory接口以及实现类说明)
                 - [1.1.7.2.1. BeanDefinition](#11721-beandefinition)
+                    - [1.1.7.2.1.1. AbstractBeanDefinition](#117211-abstractbeandefinition)
+                    - [1.1.7.2.1.2. RootBeanDefinition](#117212-rootbeandefinition)
                 - [1.1.7.2.2. BeanFactory](#11722-beanfactory)
-                - [1.1.7.2.3. HierarchicalBeanFactory](#11723-hierarchicalbeanfactory)
-                - [1.1.7.2.4. SimpleJndiBeanFactory](#11724-simplejndibeanfactory)
-                - [1.1.7.2.5. AutowireCapableBeanFactory](#11725-autowirecapablebeanfactory)
-                - [1.1.7.2.6. ListableBeanFactory](#11726-listablebeanfactory)
-                - [1.1.7.2.7. ConfigurableBeanFactory](#11727-configurablebeanfactory)
-                - [1.1.7.2.8. ConfigurableListableBeanFactory](#11728-configurablelistablebeanfactory)
-                - [1.1.7.2.9. BeanDefinitionRegistry](#11729-beandefinitionregistry)
-                - [1.1.7.2.10. DefaultListableBeanFactory](#117210-defaultlistablebeanfactory)
-            - [1.1.7.3. 单例实现](#1173-单例实现)
+                - [1.1.7.2.3. ApplicationContext](#11723-applicationcontext)
+                    - [1.1.7.2.3.1. 基本介绍](#117231-基本介绍)
+                    - [1.1.7.2.3.2. 启动介绍](#117232-启动介绍)
+                - [1.1.7.2.4. WebApplicationContext](#11724-webapplicationcontext)
+                - [1.1.7.2.5. 父子容器](#11725-父子容器)
+                - [1.1.7.2.6. DefaultListableBeanFactory](#11726-defaultlistablebeanfactory)
+                - [1.1.7.2.7. HierarchicalBeanFactory](#11727-hierarchicalbeanfactory)
+                - [1.1.7.2.8. SimpleJndiBeanFactory](#11728-simplejndibeanfactory)
+                - [1.1.7.2.9. AutowireCapableBeanFactory](#11729-autowirecapablebeanfactory)
+                - [1.1.7.2.10. ListableBeanFactory](#117210-listablebeanfactory)
+                - [1.1.7.2.11. ConfigurableBeanFactory](#117211-configurablebeanfactory)
+                - [1.1.7.2.12. ConfigurableListableBeanFactory](#117212-configurablelistablebeanfactory)
+                - [1.1.7.2.13. BeanDefinitionRegistry](#117213-beandefinitionregistry)
+                - [1.1.7.2.14. 单例管理接口SingletonBeanRegistry](#117214-单例管理接口singletonbeanregistry)
+                    - [1.1.7.2.14.1. AliasRegistry](#1172141-aliasregistry)
+                    - [1.1.7.2.14.2. SingletonBeanRegistry](#1172142-singletonbeanregistry)
+                    - [1.1.7.2.14.3. DefaultSingletonBeanRegistry](#1172143-defaultsingletonbeanregistry)
+            - [1.1.7.3. Bean创建过程](#1173-bean创建过程)
             - [1.1.7.4. Bean的作用域](#1174-bean的作用域)
             - [1.1.7.5. Bean的生命周期](#1175-bean的生命周期)
-        - [1.1.8. AOP面向切面编程](#118-aop面向切面编程)
-        - [1.1.9. Spring 事务管理](#119-spring-事务管理)
-            - [1.1.9.1. 数据库事务基础知识](#1191-数据库事务基础知识)
-            - [1.1.9.2. Spring 对事务管理的支持](#1192-spring-对事务管理的支持)
-                - [1.1.9.2.1. Spring事务传播行为和隔离级别](#11921-spring事务传播行为和隔离级别)
-                - [1.1.9.2.2. 事务管理关键抽象](#11922-事务管理关键抽象)
-        - [1.1.10. 切面编程AOP](#1110-切面编程aop)
-            - [1.1.10.1. AOP概述](#11101-aop概述)
-            - [1.1.10.2. 切点函数](#11102-切点函数)
-                - [1.1.10.2.1. 常用切点函数](#111021-常用切点函数)
-                - [1.1.10.2.2. 通配符](#111022-通配符)
-                - [1.1.10.2.3. 逻辑运算符](#111023-逻辑运算符)
-            - [1.1.10.3. 切点函数详解](#11103-切点函数详解)
-                - [1.1.10.3.1. @annotation()](#111031-annotation)
-                - [1.1.10.3.2. execution()](#111032-execution)
-                - [1.1.10.3.3. args和@args()](#111033-args和args)
-                - [1.1.10.3.4. within()](#111034-within)
-                - [1.1.10.3.5. @within()和@target()](#111035-within和target)
-                - [1.1.10.3.6. target()和this()](#111036-target和this)
-            - [1.1.10.4. 切点函数高级用法](#11104-切点函数高级用法)
-                - [1.1.10.4.1. 切点复合运算](#111041-切点复合运算)
-                - [1.1.10.4.2. 命名切点](#111042-命名切点)
-                - [1.1.10.4.3. 增强织入的顺序](#111043-增强织入的顺序)
-                - [1.1.10.4.4. 访问连接点信息](#111044-访问连接点信息)
-                - [1.1.10.4.5. 绑定连接点方法入参](#111045-绑定连接点方法入参)
-                - [1.1.10.4.6. 绑定代理对象](#111046-绑定代理对象)
-                - [1.1.10.4.7. 绑定类注解对象](#111047-绑定类注解对象)
-                - [1.1.10.4.8. 绑定返回值](#111048-绑定返回值)
-                - [1.1.10.4.9. 绑定抛出的异常](#111049-绑定抛出的异常)
-            - [1.1.10.5. Spring AOP案例](#11105-spring-aop案例)
-            - [1.1.10.6. 实现原理](#11106-实现原理)
-                - [1.1.10.6.1. 五种通知的执行顺序](#111061-五种通知的执行顺序)
-                - [1.1.10.6.2. 代理实现](#111062-代理实现)
-        - [1.1.11. 事务管理器实现类](#1111-事务管理器实现类)
-            - [1.1.11.1. 编程式事务管理](#11111-编程式事务管理)
-            - [1.1.11.2. 使用XML配置声明式事务](#11112-使用xml配置声明式事务)
-            - [1.1.11.3. 使用注解配置事务](#11113-使用注解配置事务)
-            - [1.1.11.4. 事务实现原理](#11114-事务实现原理)
-        - [1.1.12. Spring常用工具类](#1112-spring常用工具类)
-            - [1.1.12.1. web](#11121-web)
-            - [1.1.12.2. 内置的resouce类型](#11122-内置的resouce类型)
-            - [1.1.12.3. 工具类](#11123-工具类)
-            - [1.1.12.4. xml工具](#11124-xml工具)
-            - [1.1.12.5. 其它工具集](#11125-其它工具集)
-    - [1.2. Spring 表达式语言](#12-spring-表达式语言)
-    - [1.3. Spring Cache](#13-spring-cache)
-        - [1.3.1. 几个重要概念&缓存注解](#131-几个重要概念缓存注解)
-        - [1.3.2. 缓存管理器](#132-缓存管理器)
-            - [1.3.2.1. SimpleCacheManager](#1321-simplecachemanager)
-            - [1.3.2.2. NoOpCacheManager](#1322-noopcachemanager)
-            - [1.3.2.3. ConcurrentMapCacheManager](#1323-concurrentmapcachemanager)
-            - [1.3.2.4. CompositeCacheManager](#1324-compositecachemanager)
-        - [1.3.3. SpEL上下文数据](#133-spel上下文数据)
-        - [1.3.4. 基本使用](#134-基本使用)
-    - [1.4. Spring Boot Admin](#14-spring-boot-admin)
-        - [1.4.1. 基础认识](#141-基础认识)
-        - [1.4.2. 使用实例](#142-使用实例)
-            - [1.4.2.1. Server应用](#1421-server应用)
-            - [1.4.2.2. Client应用](#1422-client应用)
-            - [1.4.2.3. Client配置说明](#1423-client配置说明)
-            - [1.4.2.4. 集群](#1424-集群)
-            - [1.4.2.5. 集成spring security](#1425-集成spring-security)
-            - [1.4.2.6. 集成邮箱报警功能](#1426-集成邮箱报警功能)
-    - [1.5. Spring Security](#15-spring-security)
-        - [1.5.1. 简介](#151-简介)
-        - [1.5.2. 提供的功能](#152-提供的功能)
-        - [1.5.3. 核心类](#153-核心类)
-    - [1.6. Sppring MVC](#16-sppring-mvc)
-        - [1.6.1. MVC体系概述](#161-mvc体系概述)
-            - [1.6.1.1. MVC 架构](#1611-mvc-架构)
-        - [1.6.2. Restful](#162-restful)
-            - [1.6.2.1. URL 设计](#1621-url-设计)
-            - [1.6.2.2. 状态码](#1622-状态码)
-            - [1.6.2.3. 服务器回应](#1623-服务器回应)
-        - [1.6.3. 注解说明](#163-注解说明)
-        - [1.6.4. 拦截器](#164-拦截器)
-        - [1.6.5. 过滤器](#165-过滤器)
-            - [1.6.5.1. 过滤器和拦截器的区别：](#1651-过滤器和拦截器的区别)
-            - [1.6.5.2. 拦截器（Interceptor）和过滤器（Filter）的一些用途](#1652-拦截器interceptor和过滤器filter的一些用途)
-    - [1.7. SpringBoot](#17-springboot)
-        - [1.7.1. 基本概念](#171-基本概念)
-        - [1.7.2. 基本使用](#172-基本使用)
-        - [1.7.3. Spring Boot 环境下创建Bean](#173-spring-boot-环境下创建bean)
-            - [1.7.3.1. 方式1:使用@Component等注解：](#1731-方式1使用component等注解)
-            - [1.7.3.2. 方式2:使用@Bean注解](#1732-方式2使用bean注解)
-            - [1.7.3.3. 方式3:使用@Import注解](#1733-方式3使用import注解)
-            - [1.7.3.4. 方式4:使用ImportSelector接口](#1734-方式4使用importselector接口)
-            - [1.7.3.5. 方式5:手动注册到容器](#1735-方式5手动注册到容器)
-        - [1.7.4. 使用不同的WEB容器](#174-使用不同的web容器)
-        - [1.7.5. 配置文件](#175-配置文件)
-            - [1.7.5.1. bootstrap.yml与application.yml区别](#1751-bootstrapyml与applicationyml区别)
-            - [1.7.5.2. 多环境配置](#1752-多环境配置)
-                - [1.7.5.2.1. 配置文件](#17521-配置文件)
-                - [1.7.5.2.2. 多环境配置](#17522-多环境配置)
-            - [1.7.5.3. 注解ConfigurationProperties注入yml配置文件中的数据](#1753-注解configurationproperties注入yml配置文件中的数据)
-            - [1.7.5.4. 使用随机数](#1754-使用随机数)
-            - [1.7.5.5. 从命令行指定参数](#1755-从命令行指定参数)
-            - [1.7.5.6. 配置日志](#1756-配置日志)
-        - [1.7.6. 启动类 @SpringBootApplication 注解](#176-启动类-springbootapplication-注解)
-            - [1.7.6.1. @Inherited 注解](#1761-inherited-注解)
-            - [1.7.6.2. @SpringBootConfiguration](#1762-springbootconfiguration)
-            - [1.7.6.3. @EnableAutoConfiguration](#1763-enableautoconfiguration)
-            - [1.7.6.4. @ComponentScan](#1764-componentscan)
-        - [1.7.7. Spring Boot Starter](#177-spring-boot-starter)
-            - [1.7.7.1. 常用的Starter](#1771-常用的starter)
-            - [1.7.7.2. 创建自己的Starter](#1772-创建自己的starter)
-            - [1.7.7.3. Starter原理](#1773-starter原理)
-        - [1.7.8. Actuator 的端点](#178-actuator-的端点)
-            - [1.7.8.1. 揭秘 Actuator 的端点](#1781-揭秘-actuator-的端点)
-            - [1.7.8.2. 自定义监控](#1782-自定义监控)
-        - [1.7.9. Spring Boot 项目发布](#179-spring-boot-项目发布)
-        - [1.7.10. Maven打包](#1710-maven打包)
-        - [1.7.11. Spring Boot原理分析](#1711-spring-boot原理分析)
-            - [1.7.11.1. 启动流程分析](#17111-启动流程分析)
-                - [1.7.11.1.1. 创建SpringApplication对象](#171111-创建springapplication对象)
-                - [1.7.11.1.2. 执行Run方法](#171112-执行run方法)
-        - [1.7.12. 种保护 Spring Boot 应用的绝佳方法](#1712-种保护-spring-boot-应用的绝佳方法)
-            - [1.7.12.1. 在生产中使用HTTPS](#17121-在生产中使用https)
-            - [1.7.12.2. 使用Snyk检查你的依赖关系](#17122-使用snyk检查你的依赖关系)
-            - [1.7.12.3. 升级到最新版本](#17123-升级到最新版本)
-            - [1.7.12.4. 启用CSRF保护](#17124-启用csrf保护)
-            - [1.7.12.5. 使用内容安全策略防止XSS攻击](#17125-使用内容安全策略防止xss攻击)
-            - [1.7.12.6. 使用OpenID Connect进行身份验证](#17126-使用openid-connect进行身份验证)
-            - [1.7.12.7. 管理密码？使用密码哈希！](#17127-管理密码使用密码哈希)
-            - [1.7.12.8. 安全地存储秘密](#17128-安全地存储秘密)
-            - [1.7.12.9. 使用OWASP的ZAP测试您的应用程序](#17129-使用owasp的zap测试您的应用程序)
-            - [1.7.12.10. 让你的安全团队进行代码审查](#171210-让你的安全团队进行代码审查)
-        - [1.7.13. 项目实践](#1713-项目实践)
-            - [1.7.13.1. 跨域配置](#17131-跨域配置)
-            - [1.7.13.2. 全局异常处理](#17132-全局异常处理)
-        - [1.7.14. 其他一些问题](#1714-其他一些问题)
-            - [1.7.14.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？](#17141-如何在-spring-boot-启动的时候运行一些特定的代码)
-            - [1.7.14.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？](#17142-如何重新加载spring-boot上的更改而无需重新启动服务器)
-            - [1.7.14.3. Spring Boot 有哪几种读取配置的方式？](#17143-spring-boot-有哪几种读取配置的方式)
-    - [1.8. SpringCloud](#18-springcloud)
-        - [1.8.1. 基础知识](#181-基础知识)
-            - [1.8.1.1. 微服务概念](#1811-微服务概念)
-            - [1.8.1.2. SpringCloud子项目](#1812-springcloud子项目)
-            - [1.8.1.3. 版本说明](#1813-版本说明)
-        - [1.8.2. 服务治理Eureka](#182-服务治理eureka)
-            - [1.8.2.1. 基本使用](#1821-基本使用)
-            - [1.8.2.2. 高可用注册中心](#1822-高可用注册中心)
-            - [1.8.2.3. 原理说明](#1823-原理说明)
-                - [1.8.2.3.1. 基础模块说明](#18231-基础模块说明)
-                - [1.8.2.3.2. Region,Zone](#18232-regionzone)
-                - [1.8.2.3.3. 源码分析](#18233-源码分析)
-                    - [1.8.2.3.3.1. EnableDiscoveryClient注解说明](#182331-enablediscoveryclient注解说明)
-                    - [1.8.2.3.3.2. 服务注册](#182332-服务注册)
-                    - [1.8.2.3.3.3. 服务续约](#182333-服务续约)
-            - [1.8.2.4. 更多配置说明](#1824-更多配置说明)
-                - [1.8.2.4.1. 服务注册类配置](#18241-服务注册类配置)
-                - [1.8.2.4.2. 服务实例类配置](#18242-服务实例类配置)
-        - [1.8.3. 负载均衡Ribbon](#183-负载均衡ribbon)
-            - [1.8.3.1. 基本使用](#1831-基本使用)
-            - [1.8.3.2. 原理说明](#1832-原理说明)
-                - [1.8.3.2.1. 源码分析](#18321-源码分析)
-                - [1.8.3.2.2. 负载均衡器](#18322-负载均衡器)
-                - [1.8.3.2.3. 负载均衡策略](#18323-负载均衡策略)
-                - [1.8.3.2.4. 配置详解](#18324-配置详解)
-            - [1.8.3.3. ribbon配置](#1833-ribbon配置)
-                - [1.8.3.3.1. 配置参数说明](#18331-配置参数说明)
-                - [1.8.3.3.2. 重试机制](#18332-重试机制)
-        - [1.8.4. 声明式服务调用feign](#184-声明式服务调用feign)
-            - [1.8.4.1. 使用案例](#1841-使用案例)
-            - [1.8.4.2. 实现原理](#1842-实现原理)
-                - [1.8.4.2.1. 配置类](#18421-配置类)
-                - [1.8.4.2.2. 启动注解说明](#18422-启动注解说明)
-                - [1.8.4.2.3. 调用实现原理](#18423-调用实现原理)
-                - [1.8.4.2.4. 总结](#18424-总结)
-        - [1.8.5. 服务容错保护 Hystrix](#185-服务容错保护-hystrix)
-            - [1.8.5.1. Ribbon中使用Hystrix](#1851-ribbon中使用hystrix)
-            - [1.8.5.2. Feign中使用Hystrix](#1852-feign中使用hystrix)
-            - [1.8.5.3. Hystrix详解](#1853-hystrix详解)
-                - [1.8.5.3.1. 背景](#18531-背景)
-                - [1.8.5.3.2. 基本认识](#18532-基本认识)
-                - [1.8.5.3.3. hystrix适用场景](#18533-hystrix适用场景)
-                - [1.8.5.3.4. 注解说明](#18534-注解说明)
-                - [1.8.5.3.5. 如何使用](#18535-如何使用)
-                    - [1.8.5.3.5.1. 基本的实例](#185351-基本的实例)
-                    - [1.8.5.3.5.2. 同步执行](#185352-同步执行)
-                    - [1.8.5.3.5.3. 异步执行](#185353-异步执行)
-                    - [1.8.5.3.5.4. Reactive Execution](#185354-reactive-execution)
-                    - [1.8.5.3.5.5. Reactive Commands](#185355-reactive-commands)
-                    - [1.8.5.3.5.6. Fallback](#185356-fallback)
-                    - [1.8.5.3.5.7. Error Propagation](#185357-error-propagation)
-                    - [1.8.5.3.5.8. Command Name](#185358-command-name)
-                    - [1.8.5.3.5.9. Command Group](#185359-command-group)
-                    - [1.8.5.3.5.10. Command Thread-Pool](#1853510-command-thread-pool)
-                    - [1.8.5.3.5.11. Request Cache](#1853511-request-cache)
-                    - [1.8.5.3.5.12. Request Collapsing](#1853512-request-collapsing)
-                    - [1.8.5.3.5.13. Request Context Setup](#1853513-request-context-setup)
-                    - [1.8.5.3.5.14. Common Patterns](#1853514-common-patterns)
-                    - [1.8.5.3.5.15. Fail Silent](#1853515-fail-silent)
-                    - [1.8.5.3.5.16. Fallback: Static](#1853516-fallback-static)
-                    - [1.8.5.3.5.17. Fallback: Stubbed](#1853517-fallback-stubbed)
-                    - [1.8.5.3.5.18. Fallback: Cache via Network](#1853518-fallback-cache-via-network)
-                    - [1.8.5.3.5.19. Primary + Secondary with Fallback](#1853519-primary--secondary-with-fallback)
-                    - [1.8.5.3.5.20. Client Doesn't Perform Network Access](#1853520-client-doesnt-perform-network-access)
-                    - [1.8.5.3.5.21. Get-Set-Get with Request Cache Invalidation](#1853521-get-set-get-with-request-cache-invalidation)
-                    - [1.8.5.3.5.22. Get-Set-Get with Request Cache Invalidation](#1853522-get-set-get-with-request-cache-invalidation)
-                - [1.8.5.3.6. 工作原理](#18536-工作原理)
-            - [1.8.5.4. Spring Cloud 中使用Hystrix原理](#1854-spring-cloud-中使用hystrix原理)
-            - [1.8.5.5. Hystrix监控](#1855-hystrix监控)
-        - [1.8.6. API网关服务](#186-api网关服务)
-            - [1.8.6.1. zuul](#1861-zuul)
-            - [1.8.6.2. GateWay](#1862-gateway)
-        - [1.8.7. 分布式配置中心Config](#187-分布式配置中心config)
-            - [1.8.7.1. 基本使用](#1871-基本使用)
-                - [1.8.7.1.1. 配置中心](#18711-配置中心)
-                - [1.8.7.1.2. bootstrap.yml与application.yml区别](#18712-bootstrapyml与applicationyml区别)
-                - [1.8.7.1.3. 客户端配置](#18713-客户端配置)
-                - [1.8.7.1.4. 刷新配置](#18714-刷新配置)
-            - [1.8.7.2. 原理说明](#1872-原理说明)
-            - [1.8.7.3. 更多使用方式](#1873-更多使用方式)
-        - [1.8.8. 消息总线bus](#188-消息总线bus)
-            - [1.8.8.1. 消息代理](#1881-消息代理)
-        - [1.8.9. 消息驱动的微服务Stream](#189-消息驱动的微服务stream)
-        - [1.8.10. 分布式服务跟踪Sleuth](#1810-分布式服务跟踪sleuth)
-            - [1.8.10.1. 基本使用](#18101-基本使用)
-            - [1.8.10.2. 跟踪原理](#18102-跟踪原理)
-                - [1.8.10.2.1. 基本实现原理](#181021-基本实现原理)
-                - [1.8.10.2.2. 支持的组件](#181022-支持的组件)
-                - [1.8.10.2.3. 一些基本概念](#181023-一些基本概念)
-                - [1.8.10.2.4. zipkin](#181024-zipkin)
-                - [1.8.10.2.5. 调用过程](#181025-调用过程)
-    - [1.9. 单元测试](#19-单元测试)
-        - [1.9.1. Junit](#191-junit)
-            - [1.9.1.1. 概述](#1911-概述)
-            - [1.9.1.2. JUnit 中的重要的 API](#1912-junit-中的重要的-api)
-            - [1.9.1.3. 常用注解](#1913-常用注解)
-            - [1.9.1.4. 套件测试](#1914-套件测试)
-        - [1.9.2. TestNG测试](#192-testng测试)
-            - [1.9.2.1. 概述](#1921-概述)
-            - [1.9.2.2. JUnit 4 Vs TestNG比较](#1922-junit-4-vs-testng比较)
-            - [1.9.2.3. 注解说明](#1923-注解说明)
-            - [1.9.2.4. 测试案例](#1924-测试案例)
-                - [1.9.2.4.1. 基本例子](#19241-基本例子)
-                - [1.9.2.4.2. 预期异常测试](#19242-预期异常测试)
-                - [1.9.2.4.3. 忽略测试](#19243-忽略测试)
-                - [1.9.2.4.4. 超时测试](#19244-超时测试)
-                - [1.9.2.4.5. 分组测试](#19245-分组测试)
-        - [1.9.3. Mockito](#193-mockito)
-            - [1.9.3.1. 介绍](#1931-介绍)
-            - [1.9.3.2. Mockito说明](#1932-mockito说明)
-            - [1.9.3.3. 例子](#1933-例子)
-                - [1.9.3.3.1. 基本的例子](#19331-基本的例子)
-                - [1.9.3.3.2. 验证行为](#19332-验证行为)
-                - [1.9.3.3.3. 模拟我们所期望的结果](#19333-模拟我们所期望的结果)
-                - [1.9.3.3.4. RETURNS_SMART_NULLS和RETURNS_DEEP_STUBS](#19334-returns_smart_nulls和returns_deep_stubs)
-                - [1.9.3.3.5. 模拟方法体抛出异常](#19335-模拟方法体抛出异常)
-                - [1.9.3.3.6. 使用注解来快速模拟](#19336-使用注解来快速模拟)
-                - [1.9.3.3.7. 参数匹配](#19337-参数匹配)
-                - [1.9.3.3.8. 自定义参数匹配](#19338-自定义参数匹配)
-                - [1.9.3.3.9. 捕获参数来进一步断言](#19339-捕获参数来进一步断言)
-                - [1.9.3.3.10. 使用方法预期回调接口生成期望值（Answer结构）](#193310-使用方法预期回调接口生成期望值answer结构)
-                - [1.9.3.3.11. 修改对未预设的调用返回默认期望](#193311-修改对未预设的调用返回默认期望)
-                - [1.9.3.3.12. 用spy监控真实对象](#193312-用spy监控真实对象)
-                - [1.9.3.3.13. 真实的部分mock](#193313-真实的部分mock)
-                - [1.9.3.3.14. 重置mock](#193314-重置mock)
-                - [1.9.3.3.15. 验证确切的调用次数](#193315-验证确切的调用次数)
-                - [1.9.3.3.16. 连续调用](#193316-连续调用)
-                - [1.9.3.3.17. 验证执行顺序](#193317-验证执行顺序)
-                - [1.9.3.3.18. 确保模拟对象上无互动发生](#193318-确保模拟对象上无互动发生)
-                - [1.9.3.3.19. 找出冗余的互动(即未被验证到的)](#193319-找出冗余的互动即未被验证到的)
-            - [1.9.3.4. Mockito如何实现Mock[3]](#1934-mockito如何实现mock3)
-        - [1.9.4. 控制层测试](#194-控制层测试)
-            - [1.9.4.1. 基本使用](#1941-基本使用)
-            - [1.9.4.2. 相关类说明](#1942-相关类说明)
-                - [1.9.4.2.1. 创建MockMvc实例](#19421-创建mockmvc实例)
-            - [1.9.4.3. 相关类说明](#1943-相关类说明)
-                - [1.9.4.3.1. MockMvcBuilder/MockMvcBuilders](#19431-mockmvcbuildermockmvcbuilders)
-                - [1.9.4.3.2. MockMvc](#19432-mockmvc)
-                - [1.9.4.3.3. RequestBuilder/MockMvcRequestBuilders](#19433-requestbuildermockmvcrequestbuilders)
-                - [1.9.4.3.4. ResultActions](#19434-resultactions)
-                - [1.9.4.3.5. ResultMatcher/MockMvcResultMatchers](#19435-resultmatchermockmvcresultmatchers)
-                - [1.9.4.3.6. ResultHandler/MockMvcResultHandlers](#19436-resulthandlermockmvcresulthandlers)
-                - [1.9.4.3.7. MvcResult](#19437-mvcresult)
-        - [1.9.5. 服务层测试](#195-服务层测试)
-        - [1.9.6. DAO层测试](#196-dao层测试)
+        - [1.1.8. 切面编程AOP](#118-切面编程aop)
+            - [1.1.8.1. AOP概述](#1181-aop概述)
+            - [1.1.8.2. 切点函数](#1182-切点函数)
+                - [1.1.8.2.1. 常用切点函数](#11821-常用切点函数)
+                - [1.1.8.2.2. 通配符](#11822-通配符)
+                - [1.1.8.2.3. 逻辑运算符](#11823-逻辑运算符)
+            - [1.1.8.3. 切点函数详解](#1183-切点函数详解)
+                - [1.1.8.3.1. @annotation()](#11831-annotation)
+                - [1.1.8.3.2. execution()](#11832-execution)
+                - [1.1.8.3.3. args和@args()](#11833-args和args)
+                - [1.1.8.3.4. within()](#11834-within)
+                - [1.1.8.3.5. @within()和@target()](#11835-within和target)
+                - [1.1.8.3.6. target()和this()](#11836-target和this)
+            - [1.1.8.4. 切点函数高级用法](#1184-切点函数高级用法)
+                - [1.1.8.4.1. 切点复合运算](#11841-切点复合运算)
+                - [1.1.8.4.2. 命名切点](#11842-命名切点)
+                - [1.1.8.4.3. 增强织入的顺序](#11843-增强织入的顺序)
+                - [1.1.8.4.4. 访问连接点信息](#11844-访问连接点信息)
+                - [1.1.8.4.5. 绑定连接点方法入参](#11845-绑定连接点方法入参)
+                - [1.1.8.4.6. 绑定代理对象](#11846-绑定代理对象)
+                - [1.1.8.4.7. 绑定类注解对象](#11847-绑定类注解对象)
+                - [1.1.8.4.8. 绑定返回值](#11848-绑定返回值)
+                - [1.1.8.4.9. 绑定抛出的异常](#11849-绑定抛出的异常)
+            - [1.1.8.5. Spring AOP案例](#1185-spring-aop案例)
+            - [1.1.8.6. 实现原理](#1186-实现原理)
+                - [1.1.8.6.1. 五种通知的执行顺序](#11861-五种通知的执行顺序)
+                - [1.1.8.6.2. 代理实现](#11862-代理实现)
+        - [1.1.9. Spring对DAO的支持](#119-spring对dao的支持)
+            - [1.1.9.1. Spring DAO理念](#1191-spring-dao理念)
+            - [1.1.9.2. 统一的异常体系](#1192-统一的异常体系)
+            - [1.1.9.3. 统一的数据访问模板](#1193-统一的数据访问模板)
+            - [1.1.9.4. 数据源](#1194-数据源)
+        - [1.1.10. Spring事务管理](#1110-spring事务管理)
+            - [1.1.10.1. 数据库事务基础知识](#11101-数据库事务基础知识)
+            - [1.1.10.2. Jdbc对事务的支持](#11102-jdbc对事务的支持)
+            - [1.1.10.3. Spring对事务的支持](#11103-spring对事务的支持)
+                - [1.1.10.3.1. 编程式事务管理](#111031-编程式事务管理)
+                - [1.1.10.3.2. 使用XML配置声明式事务](#111032-使用xml配置声明式事务)
+                - [1.1.10.3.3. 使用注解配置事务](#111033-使用注解配置事务)
+            - [1.1.10.4. Spring事务实现原理](#11104-spring事务实现原理)
+                - [1.1.10.4.1. 事务管理关键抽象](#111041-事务管理关键抽象)
+                    - [1.1.10.4.1.1. TransactionDefinition](#1110411-transactiondefinition)
+                    - [1.1.10.4.1.2. TransactionStatus](#1110412-transactionstatus)
+                    - [1.1.10.4.1.3. PlatformTransactionManager](#1110413-platformtransactionmanager)
+            - [1.1.10.5. 事务管理器实现类](#11105-事务管理器实现类)
+                - [1.1.10.5.1. Spring事务执行流程](#111051-spring事务执行流程)
+                    - [1.1.10.5.1.1. 基本原理](#1110511-基本原理)
+                    - [1.1.10.5.1.2. 代理类](#1110512-代理类)
+                    - [1.1.10.5.1.3. TransactionAspectSupport中的处理](#1110513-transactionaspectsupport中的处理)
+                    - [1.1.10.5.1.4. 事务管理类DataSourceTransactionManager](#1110514-事务管理类datasourcetransactionmanager)
+- [2. properties](#2-properties)
+- [3. yml](#3-yml)
+- [4. LOGGING](#4-logging)
+- [5. ----------------------------------------](#5-----------------------------------------)
+- [6. ACTUATOR PROPERTIES](#6-actuator-properties)
+- [7. ----------------------------------------](#7-----------------------------------------)
+- [8. MANAGEMENT HTTP SERVER (ManagementServerProperties)](#8-management-http-server-managementserverproperties)
+- [9. CLOUDFOUNDRY](#9-cloudfoundry)
+- [10. ENDPOINTS GENERAL CONFIGURATION](#10-endpoints-general-configuration)
+- [11. ENDPOINTS JMX CONFIGURATION (JmxEndpointProperties)](#11-endpoints-jmx-configuration-jmxendpointproperties)
+- [12. ENDPOINTS WEB CONFIGURATION (WebEndpointProperties)](#12-endpoints-web-configuration-webendpointproperties)
+- [13. 配置开放的端点](#13-配置开放的端点)
+- [14. 配置不包括的端点](#14-配置不包括的端点)
+- [15. war文件也可以使用该方式运行](#15-war文件也可以使用该方式运行)
+- [16. 开启重试机制,默认打开](#16-开启重试机制默认打开)
+- [17. 断路器的超时时间需要大于Ribbon的超时时间， 不然不会触发重试](#17-断路器的超时时间需要大于ribbon的超时时间-不然不会触发重试)
+- [18. 请求连接的超时时间。](#18-请求连接的超时时间)
+- [19. 请求处理的超时时间。](#19-请求处理的超时时间)
+- [20. 对所有操作请求都进行重试](#20-对所有操作请求都进行重试)
+- [21. 切换实例的重试次数](#21-切换实例的重试次数)
+- [22. 对当前实例的重试次数](#22-对当前实例的重试次数)
+- [23. 默认是false](#23-默认是false)
+- [24. spring-cloud-context-1.1.1.RELEASE.jar](#24-spring-cloud-context-111releasejar)
+- [25. spring.factories](#25-springfactories)
+- [26. AutoConfiguration](#26-autoconfiguration)
+- [27. Application Listeners](#27-application-listeners)
+- [28. Bootstrap components](#28-bootstrap-components)
+- [29. 必须放在bootstrap.yml中](#29-必须放在bootstrapyml中)
 
 <!-- /TOC -->
 
@@ -680,6 +490,10 @@ Context模块构建于核心模块之上,扩展了BeanFactory的功能,添加了
 * 谁控制谁，控制什么：传统Java SE程序设计，我们直接在对象内部通过new进行创建对象，是程序主动去创建依赖对象；而IoC是有专门一个容器来创建这些对象，即由Ioc容器来控制对 象的创建；谁控制谁？当然是IoC 容器控制了对象；控制什么？那就是主要控制了外部资源获取（不只是对象包括比如文件等）。
 * 为何是反转，哪些方面反转了：有反转就有正转，传统应用程序是由我们自己在对象中主动控制去直接获取依赖对象，也就是正转；而反转则是由容器来帮忙创建及注入依赖对象；为何是反转？因为由容器帮我们查找及注入依赖对象，对象只是被动的接受依赖对象，所以是反转；哪些方面反转了？依赖对象的获取被反转了。
 
+依赖控制反转的实现有很多种方式,在Spring中嗯,IOC容器是shaitan这个模式的载体,它可以在对象生成或者初始化时直接将数据注入到对象中,也可以通过将对象引用注入到对象数据域中的方式来注入对方法调用的依赖,这种依赖注入是可以递归的,对象被逐层注入.这种方案把对象依赖关系有序地建立起来,简化了对象依赖关系的管理,在很大程度上简化了面向对象系统的复杂性.
+
+如何反转对依赖的控制,将控制权从具体业务对象手中转交到平台或者框架中,是降低面向对象系统设计复杂性和提高面向对象系统可测试性的一个有效的解决方案.
+
 **IoC能做什么**
 　　IoC 不是一种技术，只是一种思想，一个重要的面向对象编程的法则，它能指导我们如何设计出松耦合、更优良的程序。传统应用程序都是由我们在类内部主动创建依赖对象，从而导致类与类之间高耦合，难于测试；有了IoC容器后，把创建和查找依赖对象的控制权交给了容器，由容器进行注入组合对象，所以对象与对象之间是 松散耦合，这样也方便测试，利于功能复用，更重要的是使得程序的整个体系结构变得非常灵活。
 其实IoC对编程带来的最大改变不是从代码上，而是从思想上，发生了“主从换位”的变化。应用程序原本是老大，要获取什么资源都是主动出击，但是在IoC/DI思想中，应用程序就变成被动的了，被动的等待IoC容器来创建并注入它所需要的资源了。
@@ -712,6 +526,7 @@ IoC和DI由什么关系呢？其实它们是同一个概念的不同角度描述
     * 可从应用程序代码中完全删除查找逻辑代码,依赖项可以以一种可插拔的方式注入目标组件.这样组件就不需要知道依赖项的位置或者类.
     * 对容器的API没有任何依赖.可以将代码从一个容器转移到另一个容器中,不需要进行任何修改就能运行
     * 完全不需要实现任何特殊的接口
+
 
 
 #### 1.1.6.2. 依赖注入方式
@@ -1003,6 +818,10 @@ public class InjectBeanConfig {
 #### 1.1.7.1. IOC 容器的设计
 <a href="#menu" style="float:right">目录</a>
 
+在Spring IOC容器的设计中,有两个主要的容器系列,一个是实现BeanFactory接口的简单容器系列,这系列容器只实现了容器最基本功能
+另一个是ApplicationContext应用上下文,作为容器的高级形态存在,这个也是BeanFactory的子类.其增加了许多面向框架的特性,同时对应用环境做了许多的适配.
+
+
 * 从接口BeanFactory到HierarchicalBeanFactory再到ConfigurableBeanFactory是一条主要的BeanFactory设计路径.
     * BeanFactory接口定义了基本的IOC容器的规范.包括getBean()这样的基本方法
     * HierarchicalBeanFactory在继承BeanFactory之后,增加了getParentBeanFactory()接口功能,使其具备了双亲IOC容器的管理功能.
@@ -1025,7 +844,11 @@ public class InjectBeanConfig {
 ##### 1.1.7.2.1. BeanDefinition
 <a href="#menu" style="float:right">目录</a>
 
+
+
+
 在Spring容器启动的过程中，会将Bean解析成Spring内部的BeanDefinition结构.
+
 
 ```java
 
@@ -1086,6 +909,321 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 
 BeanDefinition是一个接口，是一个抽象的定义，实际使用的是其实现类，如 ChildBeanDefinition、RootBeanDefinition、GenericBeanDefinition等。
 
+![BeanDefinition](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/beanfactory/BeanDefinition.png)
+
+
+###### 1.1.7.2.1.1. AbstractBeanDefinition
+
+AbstractBeanDefinition直接继承BeanDefiniton，实现了BeanDefinition定义的一系列操作，定义了描述Bean画像的一系列属性，在AbstractBeanDefinition的基础上，Spring衍生出了一系列具有特殊用途的BeanDefinition
+
+**定义的常量**
+
+这一些常量会直接影响到spring实例化Bean时的策略
+```java
+	/**
+	 * Constant for the default scope name: {@code ""}, equivalent to singleton
+	 * status unless overridden from a parent bean definition (if applicable).
+	 */
+	//默认的SCOPE，默认是单例
+	public static final String SCOPE_DEFAULT = "";
+ 
+	/**
+	 * Constant that indicates no autowiring at all.
+	 * @see #setAutowireMode
+	 */
+	//不进行自动装配
+	public static final int AUTOWIRE_NO = AutowireCapableBeanFactory.AUTOWIRE_NO;
+ 
+	/**
+	 * Constant that indicates autowiring bean properties by name.
+	 * @see #setAutowireMode
+	 */
+	//根据Bean的名字进行自动装配，即autowired属性的值为byname
+	public static final int AUTOWIRE_BY_NAME = AutowireCapableBeanFactory.AUTOWIRE_BY_NAME;
+ 
+	/**
+	 * Constant that indicates autowiring bean properties by type.
+	 * @see #setAutowireMode
+	 */
+	//根据Bean的类型进行自动装配，调用setter函数装配属性，即autowired属性的值为byType
+	public static final int AUTOWIRE_BY_TYPE = AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE;
+ 
+	/**
+	 * Constant that indicates autowiring a constructor.
+	 * @see #setAutowireMode
+	 */
+	//自动装配构造函数的形参，完成对应属性的自动装配，即autowired属性的值为byConstructor
+	public static final int AUTOWIRE_CONSTRUCTOR = AutowireCapableBeanFactory.AUTOWIRE_CONSTRUCTOR;
+ 
+	/**
+	 * Constant that indicates determining an appropriate autowire strategy
+	 * through introspection of the bean class.
+	 * @see #setAutowireMode
+	 * @deprecated as of Spring 3.0: If you are using mixed autowiring strategies,
+	 * use annotation-based autowiring for clearer demarcation of autowiring needs.
+	 */
+	/*通过Bean的class推断适当的自动装配策略（autowired=autodetect），如果Bean定义有有参构造函数，则通过自动装配构造函数形参，完成对应属性的自动装配（AUTOWIRE_CONSTRUCTOR），否则，使用setter函数（AUTOWIRE_BY_TYPE）*/
+	@Deprecated
+	public static final int AUTOWIRE_AUTODETECT = AutowireCapableBeanFactory.AUTOWIRE_AUTODETECT;
+ 
+	//大概是检查依赖是否合法，在本类中，默认不进行依赖检查
+	/**
+	 * Constant that indicates no dependency check at all.
+	 * @see #setDependencyCheck
+	 */ 
+	//不进行依赖检查
+	public static final int DEPENDENCY_CHECK_NONE = 0;
+ 
+	/**
+	 * Constant that indicates dependency checking for object references.
+	 * @see #setDependencyCheck
+	 */
+	//如果依赖类型为对象引用，则需要检查
+	public static final int DEPENDENCY_CHECK_OBJECTS = 1;
+ 
+	/**
+	 * Constant that indicates dependency checking for "simple" properties.
+	 * @see #setDependencyCheck
+	 * @see org.springframework.beans.BeanUtils#isSimpleProperty
+	 */
+	//对简单属性的依赖进行检查
+	public static final int DEPENDENCY_CHECK_SIMPLE = 2;
+ 
+	/**
+	 * Constant that indicates dependency checking for all properties
+	 * (object references as well as "simple" properties).
+	 * @see #setDependencyCheck
+	 */
+	//对所有属性的依赖进行检查
+	public static final int DEPENDENCY_CHECK_ALL = 3;
+ 
+	/**
+	 * Constant that indicates the container should attempt to infer the
+	 * {@link #setDestroyMethodName destroy method name} for a bean as opposed to
+	 * explicit specification of a method name. The value {@value} is specifically
+	 * designed to include characters otherwise illegal in a method name, ensuring
+	 * no possibility of collisions with legitimately named methods having the same
+	 * name.
+	 * <p>Currently, the method names detected during destroy method inference
+	 * are "close" and "shutdown", if present on the specific bean class.
+	 */
+	/*若Bean未指定销毁方法，容器应该尝试推断Bean的销毁方法的名字，目前来说，推断的销毁方法的名字一般为close或是shutdown
+    （即未指定Bean的销毁方法，但是内部定义了名为close或是shutdown的方法，则容器推断其为销毁方法）*/
+	public static final String INFER_METHOD = "(inferred)";
+```
+**属性**
+AbstractBeanDefinition定义的属性基本囊括了Bean实例化需要的所有信息
+
+```java
+	//Bean的class对象或是类的全限定名
+	@Nullable
+	private volatile Object beanClass;
+ 
+	//默认的scope是单例
+	@Nullable
+	private String scope = SCOPE_DEFAULT;
+ 
+	//默认不为抽象类
+	private boolean abstractFlag = false;
+ 
+	//默认不是懒加载
+	private boolean lazyInit = false;
+ 
+	//默认不进行自动装配
+	private int autowireMode = AUTOWIRE_NO;
+ 
+	//默认不进行依赖检查
+	private int dependencyCheck = DEPENDENCY_CHECK_NONE;
+ 
+	//这里只会存放<bean/>标签的depends-on属性或是@DependsOn注解的值
+	@Nullable
+	private String[] dependsOn;
+ 
+	//是自动装配的候选者，意味着可以自动装配到其他Bean的某个属性中
+	private boolean autowireCandidate = true;
+ 
+	//当某个Bean的某个属性自动装配有多个候选者（包括自己）时，是否优先注入，即@Primary注解
+	private boolean primary = false;
+ 
+	//这个不是很清楚，查看了这个类的定义，AutowireCandidateQualifier用于解析自动装配的候选者
+	private final Map<String, AutowireCandidateQualifier> qualifiers = new LinkedHashMap<>();
+ 
+	//用于初始化Bean的回调函数，一旦指定，这个方法会覆盖工厂方法以及构造函数中的元数据
+    //我理解为通过这个函数的逻辑初始化Bean，而不是构造函数或是工厂方法
+	@Nullable
+	private Supplier<?> instanceSupplier;
+ 
+	//是否允许访问非public方法和属性，应用于构造函数、工厂方法、init、destroy方法的解析，具体作用是什么我也不是很清楚
+	private boolean nonPublicAccessAllowed = true;
+ 
+	//指定解析构造函数的模式，是宽松还是严格（什么是宽松、什么是严格，我没有找到解释）
+	private boolean lenientConstructorResolution = true;
+ 
+	//工厂类名（注意是String类型，不是Class类型）
+	@Nullable
+	private String factoryBeanName;
+ 
+	//工厂方法名（注意是String类型，不是Method类型）
+	@Nullable
+	private String factoryMethodName;
+ 
+	//存储构造函数形参的值
+	@Nullable
+	private ConstructorArgumentValues constructorArgumentValues;
+ 
+	//Bean属性的名称以及对应的值，这里不会存放构造函数相关的参数值，只会存放通过setter注入的依赖
+	@Nullable
+	private MutablePropertyValues propertyValues;
+ 
+	//存储被IOC容器覆盖的方法的相关信息（例如replace-method属性指定的函数）
+	@Nullable
+	private MethodOverrides methodOverrides;
+ 
+	//init函数的名字
+	@Nullable
+	private String initMethodName;
+ 
+	//destory函数的名字
+	@Nullable
+	private String destroyMethodName;
+ 
+	//文档解释，不知道啥意思，Specify whether or not the configured init method is the default
+	private boolean enforceInitMethod = true;
+ 
+	//文档解释，不知道啥意思，Specify whether or not the configured destroy method is the default
+	private boolean enforceDestroyMethod = true;
+ 
+	//是否是合成类（是不是应用自定义的，例如生成AOP代理时，会用到某些辅助类，这些辅助类不是应用自定义的，这个就是合成类）
+	private boolean synthetic = false;
+ 
+	//Bean的角色，为用户自定义Bean
+	private int role = BeanDefinition.ROLE_APPLICATION;
+ 
+	//Bean的描述
+	@Nullable
+	private String description;
+ 
+	
+	@Nullable
+	private Resource resource;
+```
+总的来说，AbstractBeanDefinition保存的属性包括：
+* Bean的描述信息（例如是否是抽象类、是否单例）
+* depends-on属性（String类型，不是Class类型）
+* 自动装配的相关信息
+* init函数、destroy函数的名字（String类型）
+* 工厂方法名、工厂类名（String类型，不是Class类型）
+* 构造函数形参的值
+* 被IOC容器覆盖的方法
+* Bean的属性以及对应的值（在初始化后会进行填充）
+ 
+
+**总结**
+AbstractBeanDefinition定义了一系列描述Bean画像的属性，同时实现了BeanDefinition定义的方法，通过这个类，可以窥见Bean的某些默认设置（例如默认为单例），这个类的属性基本可以在xml配置文件中找到相应的属性或是标签（例如该类的scope属性对应xml配置文件中的scope属性）
+
+
+###### 1.1.7.2.1.2. RootBeanDefinition
+注：从spring2.5开始，spring一开始都是使用GenericBeanDefinition类保存Bean的相关信息，在需要时，在将其转换为其他的BeanDefinition类型
+
+* 是运行时使用的Bean视图，即spring会使用RootBeanDefinition初始化Bean
+* 在源码注释中，有这么一句：It might have been created from multiple original bean definitions that inherit from each other，spring会依据多个具有继承关系的BeanDefinition（实际上是GenericBeanDefinition类型）来创建RootBeanDefinition，换句话说，在多继承体系中，RootBeanDefinition代表的是当前初始化类的父类的BeanDefinition
+* RootBeanDefinition可用于没有继承关系的Bean的创建
+
+**变量声明**
+```java
+	BeanDefinitionHolder存储有Bean的名称、别名、BeanDefinition
+	@Nullable
+	private BeanDefinitionHolder decoratedDefinition;
+ 
+    //是java反射包的接口，通过它可以查看Bean的注解信息，具体方法请查看：https://blog.csdn.net/u010142437/article/details/51589939
+	@Nullable
+	private AnnotatedElement qualifiedElement;
+ 
+	//允许缓存
+	boolean allowCaching = true;
+ 
+	//从字面上理解：工厂方法是否唯一
+	boolean isFactoryMethodUnique = false;
+ 
+	//封装了java.lang.reflect.Type,提供了泛型相关的操作，具体请查看：
+	https://blog.wangqi.love/articles/Spring/Spring%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90.%E7%95%AA%E5%A4%96(ResolvableType).html
+	@Nullable
+	volatile ResolvableType targetType;
+ 
+	//缓存class，表明RootBeanDefinition存储哪个类的信息
+	/** Package-visible field for caching the determined Class of a given bean definition. */
+	@Nullable
+	volatile Class<?> resolvedTargetType;
+ 
+	//缓存工厂方法的返回类型
+	/** Package-visible field for caching the return type of a generically typed factory method. */
+	@Nullable
+	volatile ResolvableType factoryMethodReturnType;
+ 
+	//缓存工厂方法
+	/** Package-visible field for caching a unique factory method candidate for introspection. */
+	@Nullable
+	volatile Method factoryMethodToIntrospect;
+ 
+	//以下四个变量的锁
+	/** Common lock for the four constructor fields below. */
+	final Object constructorArgumentLock = new Object();
+ 
+	//缓存已经解析的构造函数或是工厂方法，Executable是Method、Constructor类型的父类，关于java反射的更多信息请查看：
+	https://www.cnblogs.com/guangshan/p/4888656.html
+	/** Package-visible field for caching the resolved constructor or factory method. */
+	@Nullable
+	Executable resolvedConstructorOrFactoryMethod;
+ 
+	//表明构造函数参数是否解析完毕
+	/** Package-visible field that marks the constructor arguments as resolved. */
+	boolean constructorArgumentsResolved = false;
+ 
+	//缓存完全解析的构造函数参数
+	/** Package-visible field for caching fully resolved constructor arguments. */
+	@Nullable
+	Object[] resolvedConstructorArguments;
+ 
+	//缓存待解析的构造函数参数，即还没有找到对应的实例，可以理解为还没有注入依赖的形参（我的理解）
+	/** Package-visible field for caching partly prepared constructor arguments. */
+	@Nullable
+	Object[] preparedConstructorArguments;
+ 
+	//以下两个变量的锁
+	/** Common lock for the two post-processing fields below. */
+	final Object postProcessingLock = new Object();
+ 
+	//表明是否被MergedBeanDefinitionPostProcessor处理过
+	/** Package-visible field that indicates MergedBeanDefinitionPostProcessor having been applied. */
+	boolean postProcessed = false;
+ 
+	//在生成代理的时候会使用，表明是否已经生成代理
+	/** Package-visible field that indicates a before-instantiation post-processor having kicked in. */
+	@Nullable
+	volatile Boolean beforeInstantiationResolved;
+ 
+    //以下三个属性是外部管理的方法集合（配置、初始化、銷毀），似乎可以缓存自动装配对象的值
+ 
+	//实际缓存的类型是Constructor、Field、Method类型，更多信息请查看：http://shouce.jb51.net/java/jdk1.5/java/lang/reflect/class-use/Member.html
+	@Nullable
+	private Set<Member> externallyManagedConfigMembers;
+ 
+	@Nullable
+    // InitializingBean中的init回调函数名——afterPropertiesSet会在这里记录，以便进行生命周期回调
+	private Set<String> externallyManagedInitMethods;
+ 
+	@Nullable
+    // DisposableBean的destroy回调函数名——destroy会在这里记录，以便进行生命周期回调
+	private Set<String> externallyManagedDestroyMethods;
+```
+总结一下，RootBeanDefiniiton保存了以下信息
+* 定义了id、别名与Bean的对应关系（BeanDefinitionHolder）
+* Bean的注解（AnnotatedElement）
+* 具体的工厂方法（Class类型），包括工厂方法的返回类型，工厂方法的Method对象
+* 构造函数、构造函数形参类型
+* Bean的class对象
+
+可以看到，RootBeanDefinition与AbstractBeanDefinition是互补关系，RootBeanDefinition在AbstractBeanDefinition的基础上定义了更多属性，初始化Bean需要的信息基本完善
 
 ##### 1.1.7.2.2. BeanFactory
 <a href="#menu" style="float:right">目录</a>
@@ -1119,8 +1257,780 @@ public interface BeanFactory {
 
 BeanFactory提供最基本的IOC容器的功能.其继承者通过增加接口方法或者继承实现其他类或者接口来扩展功能.
 
+##### 1.1.7.2.3. ApplicationContext
+<a href="#menu" style="float:right">目录</a>
 
-##### 1.1.7.2.3. HierarchicalBeanFactory
+![ApplicationContext](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/beanfactory/AbstractApplicationContext.png)
+
+###### 1.1.7.2.3.1. 基本介绍
+<a href="#menu" style="float:right">目录</a>
+
+ApplicationContext继承了HierarchicalBeanFactory和ListableBeanFactory接口,在此基础上,还通过继承其他接口扩展了BeanFactory的功能,这些接口如下:
+* ApplicationEventPublisher
+    * 让容器拥有发布应用上下文事件的功能,包括容器启动事件,关闭事件等
+    * 实现了ApplicationListen事件监听接口的Bean可以接收到容器事件,并对事件进行响应处理
+    * 在ApplicationContext抽象实现类AbstractApplicationContext中存在一个ApplicationEventMulticaster,负责保存所有的监听器,以便在容器产生上下文事件时通知这些事件监听者
+* MessageSource
+    * 为应用提供i18n国际化消息访问的功能
+* ResourcePatternResolver 
+    * 所有的ApplicationContext实现类都实现了类似于PathMatchingResourcePatternResolver的功能,可以通过带前缀的Ant风格的资源文件路径装载Spring的配置文件
+* Lifecycle
+    * 提供了start, stop, isRunning方法
+    * 主要用于控制异步处理过程
+
+ConfigurableApplicationContext扩展于ApplicationContext,新增了两个主要的方法:refresh()和close(),让ApplicationContext具有启动,刷新和关闭应用上下文的能力.在应用上下文关闭的情况下调用refresh()即可启动应用上下文,在已经启动的状态下调用refresh()则可清除缓存并重新装载配置信息,而调用cloase()则可以关闭应用上下文.
+
+
+ApplicationContext的初始化和BeanFactory的初始化有一个重大区别,BeanFactory在初始化容器时,并未实例化Bean,直到第一次访问某个bean时才实例化目标bena.而ApplicationContext则在初始化应用上下文时就实例化所有单实例的bean.
+
+###### 1.1.7.2.3.2. 启动介绍
+<a href="#menu" style="float:right">目录</a>
+
+**refresh()方法**
+该方法是触发容器加载BeanDefinition以及创建对象等等一切操作的始发点，定义了作为应用上下文对象的一个抽象层面的标准流程。
+所有spring应用上下文的初始化都是基于这个标准流程的。
+
+```java
+@Override
+public void refresh() throws BeansException, IllegalStateException {
+    synchronized (this.startupShutdownMonitor) {
+        //设置容器启动开始时间，容器启动状态、初始化环境配置等等
+        prepareRefresh();
+        //获取beanFactory并触发loadBeanDefinitions，默认是创建DefaultListableBeanFactory
+        ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
+        //准备工作，对beanFactory作基本的配置工作
+        prepareBeanFactory(beanFactory);
+        try {
+            //给子类预留的beanFacotry已准备完毕执行BeanFactoryPostProcessors之前的一个hook
+            postProcessBeanFactory(beanFactory);
+            //上面AnnotationConfigUtils注册的PostProcessors实际都会注册到这里的beanFactory中
+            //这里通过PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors());
+            //来执行所有关于Factory的Processors
+            invokeBeanFactoryPostProcessors(beanFactory);
+            //这里虽然还没有正式开始实例化对象工厂中的实例，但是BeanDefinition都已准备完毕，因此已经可以通过类型获取
+            //所有对应的实现了BeanPostProcessor的 BeanDefinition，然后将对应的类注册到beanFactory中
+            registerBeanPostProcessors(beanFactory);
+            //这个是spring容器对国际化的实现，可以处理有本地化需求的信息
+            initMessageSource();
+            //这里是对容器事件广播的实现类初始化默认是使用SimpleApplicationEventMulticaster
+            initApplicationEventMulticaster();
+            //给子类提供的hook
+            onRefresh();
+            //这里实现注册监听容器事件的监听者
+            registerListeners();
+            //这里是实现对容器内所有单例对象的实例化
+            finishBeanFactoryInitialization(beanFactory);
+            //到这refresh的整个过程就基本完成了，这里主要做容器refresh完毕的事件发布，以及实现容器内对Lifecycle的支持（start）
+            finishRefresh();
+        }
+        catch (BeansException ex) {
+            if (logger.isWarnEnabled()) {
+                logger.warn("Exception encountered during context initialization - " +
+                        "cancelling refresh attempt: " + ex);
+            }
+
+            // Destroy already created singletons to avoid dangling resources.
+            destroyBeans();
+            // Reset 'active' flag.
+            cancelRefresh(ex);
+            // Propagate exception to caller.
+            throw ex;
+        }
+
+        finally {
+            // Reset common introspection caches in Spring's core, since we
+            // might not ever need metadata for singleton beans anymore...
+            resetCommonCaches();
+        }
+    }
+}
+```
+**查看prepareRefresh();执行的细节**
+
+```java
+protected void prepareRefresh() {
+    //设置容器状态
+    this.startupDate = System.currentTimeMillis();
+    this.closed.set(false);
+    this.active.set(true);
+
+    if (logger.isInfoEnabled()) {
+        logger.info("Refreshing " + this);
+    }
+
+    //对propertySources作进一步初始化处理的一个hook，例如spring boot拓展的web容器对servletContext servletConfig转换为propertySource放到environment中
+    initPropertySources();
+
+    //校验environment中的必须的存在的配置信息是否存在，这里在查看Environment源码时，再看spring对配置propertySource怎么划分哪些是必要配置，哪些是可选配置的
+    getEnvironment().validateRequiredProperties();
+
+    //这里容器事件的publisher还未初始化，如果publisher初始化前注册的ApplicationEvents会注册到这里，待后面一起发布。
+    this.earlyApplicationEvents = new LinkedHashSet<>();
+}
+```
+**查看 ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();的执行细节**
+
+看是如何获取的BeanFacotry，
+虽然ApplicationContext实现了ListableBeanFactory与HierarchicalBeanFactory跟BeanFactory有关的接口，不过具体的接口实现是通过委托给了
+这里获取的ConfigurableListableBeanFactory来处理的。
+从下面的obtainFreshBeanFactory()方法中可以看到，AbstractApplicationContext并没有作具体实现，而是通过两个抽象方法定义了refresh的过程
+只是定义了 refreshBeanFactory(); 加上 getBeanFactory();这两个抽象操作，对obtainFreshBeanFactory()这一步作了个细分（刷新、获取）。
+其中refreshBeanFactory()与getBeanFactory()在AbstractRefreshableApplicationContext中进行实现的。
+
+```java
+protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
+    //对于可能已存在的BeanFacotry进行refresh
+    refreshBeanFactory();
+    //获取并返回具体的BeanFacotry
+    ConfigurableListableBeanFactory beanFactory = getBeanFactory();
+    if (logger.isDebugEnabled()) {
+        logger.debug("Bean factory for " + getDisplayName() + ": " + beanFactory);
+    }
+    return beanFactory;
+}
+```
+下面查看在AbstractRefreshableApplicationContext中的refreshBeanFactory();方法
+这里定义了BeanFactory创建以及初始配置、loadBeanDefinition的操作
+
+```java
+@Override
+protected final void refreshBeanFactory() throws BeansException {
+    //检查是否存在beanFacotry，如果是初次refresh操作是不存在的
+    if (hasBeanFactory()) { 
+        destroyBeans();     //对实现了destory生命周期的对象做 destory回调
+        closeBeanFactory(); //实现AbstractApplicationContext中定义的关闭BeanFactory方法，这里就是将this.beanFactory引用置为null
+    }
+    try {
+        //通过new DefaultListableBeanFactory(getInternalParentBeanFactory())创建DefaultListableBeanFactory，getInternalParentBeanFactory()获取的是
+        //当前应用上下文中设置的父上下文（ConfigurableApplicationContext）对象中的BeanFactory获取父上下文（ApplicationContext）作为BeanFacotry的父级
+        //因此，如果是一个有子父关系的容器，那么它内部的BeanFactory也会建立子父关系，子容器refresh并不会丢失BeanFactory的中的子父关系。
+        DefaultListableBeanFactory beanFactory = createBeanFactory();
+        beanFactory.setSerializationId(getId());
+        //配置对象工厂
+        customizeBeanFactory(beanFactory);
+        //这里基于应用上下文给beanFactory进行一次BeanDefinition的加载，
+        //如：ClassPathXmlApplicationContext中构造时指定了xml资源路径会在此触发解析xml中的BeanDefinition
+        loadBeanDefinitions(beanFactory);
+        synchronized (this.beanFactoryMonitor) {
+            //保持一个引用，供容器做BeanFactory相关操作的委托调用
+            this.beanFactory = beanFactory;
+        }
+    }
+    catch (IOException ex) {
+        throw new ApplicationContextException("I/O error parsing bean definition source for " + getDisplayName(), ex);
+    }
+}
+```
+
+**查看prepareBeanFactory(beanFactory);的执行细节**
+这里是对beanFactory作的一个应用层面上的配置。
+应用上下文相关的接口注入是在这里处理的.
+
+```java
+protected void prepareBeanFactory(ConfigurableListableBeanFactory beanFactory) {
+    //统一BeanFactory与应用上下文对象的ClassLoader
+    beanFactory.setBeanClassLoader(getClassLoader());
+    //实现SPEL表达式的解析器
+    beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver(beanFactory.getBeanClassLoader()));
+
+    //这个添加的是一些基于ResourceLoader的PropertyEditorRegistrar用来注册相关的属性编辑器PropertyEditor，PropertyEditor是java内省中定义的接口
+    //功能就是支持通过string类型来编辑属性值，例如：通过字符串给long类型设置值，可以是输入longEditor.setAsText("1000");
+    //其实实现很简单，就是将string转换为Long进行修改值即可，这里是spring拓展一些的PropertyEditor的拓展
+    beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
+
+    //这个是关于ApplicationContext的一些对象的接口注入实现，该processor实现的是BeanPostProcessor，因此是在bean创建的相关回调阶段，然后判断接口类型，
+    //执行对应的注入方法
+    beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
+    //下面六种对象都是通过ApplicationContextAwareProcessor来执行接口注入的
+    beanFactory.ignoreDependencyInterface(EnvironmentAware.class);
+    beanFactory.ignoreDependencyInterface(EmbeddedValueResolverAware.class);
+    beanFactory.ignoreDependencyInterface(ResourceLoaderAware.class);
+    beanFactory.ignoreDependencyInterface(ApplicationEventPublisherAware.class);
+    beanFactory.ignoreDependencyInterface(MessageSourceAware.class);
+    beanFactory.ignoreDependencyInterface(ApplicationContextAware.class);
+
+    //通过下面的接口可以将这四个对象由依赖注入，注到实例中使用（因为这些对象都是直接创建的，不是通过BeanDefinition，所以需要这里显式的注册到依赖列表中）。
+    beanFactory.registerResolvableDependency(BeanFactory.class, beanFactory);
+    beanFactory.registerResolvableDependency(ResourceLoader.class, this);
+    beanFactory.registerResolvableDependency(ApplicationEventPublisher.class, this);
+    beanFactory.registerResolvableDependency(ApplicationContext.class, this);
+
+    //该对象用来处理实现了ApplicationListener接口的实例，处理在Bean创建完毕的回调中进行注册实例到应用监听列表中，以及在destroy时执行移除操作
+    beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(this));
+
+    //这个是实现对LoadTimeWeaverAware接口实现接口注入的处理器
+    if (beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {
+        beanFactory.addBeanPostProcessor(new LoadTimeWeaverAwareProcessor(beanFactory));
+        // Set a temporary ClassLoader for type matching.
+        beanFactory.setTempClassLoader(new ContextTypeMatchClassLoader(beanFactory.getBeanClassLoader()));
+    }
+
+    //将environment相关的对象注册到对beanFacotry中
+    if (!beanFactory.containsLocalBean(ENVIRONMENT_BEAN_NAME)) {
+        beanFactory.registerSingleton(ENVIRONMENT_BEAN_NAME, getEnvironment());
+    }
+    if (!beanFactory.containsLocalBean(SYSTEM_PROPERTIES_BEAN_NAME)) {
+        beanFactory.registerSingleton(SYSTEM_PROPERTIES_BEAN_NAME, getEnvironment().getSystemProperties());
+    }
+    if (!beanFactory.containsLocalBean(SYSTEM_ENVIRONMENT_BEAN_NAME)) {
+        beanFactory.registerSingleton(SYSTEM_ENVIRONMENT_BEAN_NAME, getEnvironment().getSystemEnvironment());
+    }
+}
+```
+
+**查看postProcessBeanFactory(beanFactory);的处理细节**
+这个是给子类预留的一个阶段回调，方便子类在BeanFacotry准备完毕下一个阶段开始之前做一些拓展。
+因此在AbstractApplicationContext中未作任何操作
+
+**查看invokeBeanFactoryPostProcessors(beanFactory);的处理细节**
+
+这里主要是去调用BeanFactoryPostProcessor中的postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory)
+
+```java
+protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
+    //执行所有的BeanFactoryPostProcessor
+    PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors());
+
+    // Detect a LoadTimeWeaver and prepare for weaving, if found in the meantime
+    // (e.g. through an @Bean method registered by ConfigurationClassPostProcessor)
+    if (beanFactory.getTempClassLoader() == null && beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {
+        beanFactory.addBeanPostProcessor(new LoadTimeWeaverAwareProcessor(beanFactory));
+        beanFactory.setTempClassLoader(new ContextTypeMatchClassLoader(beanFactory.getBeanClassLoader()));
+    }
+}
+```
+查看PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors())
+中的具体执行逻辑
+可以看到BeanDefinitionRegistryPostProcessor中的回调是优先于BeanPostProcessor的。
+BeanDefinitionRegistryPostProcessor的作用是针对registry注册、修改BeanDefinition用的。
+
+```java
+public static void invokeBeanFactoryPostProcessors(
+            ConfigurableListableBeanFactory beanFactory, List<BeanFactoryPostProcessor> beanFactoryPostProcessors) {
+
+    // Invoke BeanDefinitionRegistryPostProcessors first, if any.
+    Set<String> processedBeans = new HashSet<>();
+
+    if (beanFactory instanceof BeanDefinitionRegistry) { //BeanFacotry实现了BeanDefinitionRegistry的情况
+
+        BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
+        List<BeanFactoryPostProcessor> regularPostProcessors = new LinkedList<>();
+        List<BeanDefinitionRegistryPostProcessor> registryProcessors = new LinkedList<>();
+        //这里将通过应用上下文注册的BeanFacotryPostProcessor根据是否是它的子类型BeanDefinitionRegistryPostProcessor划分为两个部分
+        for (BeanFactoryPostProcessor postProcessor : beanFactoryPostProcessors) {
+            if (postProcessor instanceof BeanDefinitionRegistryPostProcessor) {
+                //这里先执行BeanDefinitionRegistryPostProcessor拓展的postProcessBeanDefinitionRegistry回调。
+                //由于它是先与postProcessBeanFactory回调进行调用的，因此通过postProcessBeanDefinitionRegistry中注册BeanFactoryPostProcessor的
+                //话，是没问题的。
+                BeanDefinitionRegistryPostProcessor registryProcessor =
+                        (BeanDefinitionRegistryPostProcessor) postProcessor;
+                registryProcessor.postProcessBeanDefinitionRegistry(registry);
+                registryProcessors.add(registryProcessor);
+            }
+            else {
+                regularPostProcessors.add(postProcessor);
+            }
+        }
+
+        // Do not initialize FactoryBeans here: We need to leave all regular beans
+        // uninitialized to let the bean factory post-processors apply to them!
+        // Separate between BeanDefinitionRegistryPostProcessors that implement
+        // PriorityOrdered, Ordered, and the rest.
+        List<BeanDefinitionRegistryPostProcessor> currentRegistryProcessors = new ArrayList<>();
+
+        // First, invoke the BeanDefinitionRegistryPostProcessors that implement PriorityOrdered.
+        //由于上面在创建BeanFactory时进行过一次BeanDefinition的加载，因此在BeanFactory中会存在BeanDefinitionRegistryPostProcessor类型的BeanDefinition
+        //这里仅仅是获取名称，并未进行实例化
+        String[] postProcessorNames =
+                beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
+        //这里把实现了PriorityOrdered的Processor进行优先处理并进行排序
+        for (String ppName : postProcessorNames) {
+            //这里beanFactory中，由于实例尚未初始化，因此是通过BeanDefinition来判断类型是否匹配的
+            if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
+                currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
+                processedBeans.add(ppName);
+            }
+        }
+        //根据PriorityOrdered进行排序
+        sortPostProcessors(currentRegistryProcessors, beanFactory);
+        //未实现排序的追到到后面去
+        registryProcessors.addAll(currentRegistryProcessors);
+        //这里先执行BeanDefinitionRegistryPostProcessor拓展的postProcessBeanDefinitionRegistry回调。
+        invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
+        currentRegistryProcessors.clear();
+
+        // Next, invoke the BeanDefinitionRegistryPostProcessors that implement Ordered.
+        //这里处理实现Ordered的BeanDefinitionRegistryPostProcessors，由于PriorityOrdered先于
+        postProcessorNames = beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
+        for (String ppName : postProcessorNames) {
+            if (!processedBeans.contains(ppName) && beanFactory.isTypeMatch(ppName, Ordered.class)) {
+                currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
+                processedBeans.add(ppName);
+            }
+        }
+        sortPostProcessors(currentRegistryProcessors, beanFactory);
+        registryProcessors.addAll(currentRegistryProcessors);
+        invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
+        currentRegistryProcessors.clear();
+
+        // Finally, invoke all other BeanDefinitionRegistryPostProcessors until no further ones appear
+        //循环处理BeanDefinitionRegistryPostProcessors直到没有类型为BeanDefinitionRegistryPostProcessor的为止
+        boolean reiterate = true;
+        while (reiterate) {
+            reiterate = false;
+            postProcessorNames = beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
+            for (String ppName : postProcessorNames) {
+                if (!processedBeans.contains(ppName)) {
+                    currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
+                    processedBeans.add(ppName);
+                    reiterate = true;
+                }
+            }
+            sortPostProcessors(currentRegistryProcessors, beanFactory);
+            registryProcessors.addAll(currentRegistryProcessors);
+            invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
+            currentRegistryProcessors.clear();
+        }
+
+        // Now, invoke the postProcessBeanFactory callback of all processors handled so far.
+        //调用BeanPostProcessor中的回调
+        invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);
+        invokeBeanFactoryPostProcessors(regularPostProcessors, beanFactory);
+    }
+
+    else {
+        // Invoke factory processors registered with the context instance.
+        invokeBeanFactoryPostProcessors(beanFactoryPostProcessors, beanFactory);
+    }
+
+    // Do not initialize FactoryBeans here: We need to leave all regular beans
+    // uninitialized to let the bean factory post-processors apply to them!
+    //处理所有通过BeanDefinitionRegistryPostProcessor注册BeanPostProcessor
+    String[] postProcessorNames =
+            beanFactory.getBeanNamesForType(BeanFactoryPostProcessor.class, true, false);
+
+    // Separate between BeanFactoryPostProcessors that implement PriorityOrdered,
+    // Ordered, and the rest.
+    //分组
+    List<BeanFactoryPostProcessor> priorityOrderedPostProcessors = new ArrayList<>();
+    List<String> orderedPostProcessorNames = new ArrayList<>();
+    List<String> nonOrderedPostProcessorNames = new ArrayList<>();
+    for (String ppName : postProcessorNames) {
+        if (processedBeans.contains(ppName)) {
+            // skip - already processed in first phase above
+        }
+        else if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
+            priorityOrderedPostProcessors.add(beanFactory.getBean(ppName, BeanFactoryPostProcessor.class));
+        }
+        else if (beanFactory.isTypeMatch(ppName, Ordered.class)) {
+            orderedPostProcessorNames.add(ppName);
+        }
+        else {
+            nonOrderedPostProcessorNames.add(ppName);
+        }
+    }
+
+    // First, invoke the BeanFactoryPostProcessors that implement PriorityOrdered.
+    //排序调用
+    sortPostProcessors(priorityOrderedPostProcessors, beanFactory);
+    invokeBeanFactoryPostProcessors(priorityOrderedPostProcessors, beanFactory);
+
+    // Next, invoke the BeanFactoryPostProcessors that implement Ordered.
+    List<BeanFactoryPostProcessor> orderedPostProcessors = new ArrayList<>();
+    for (String postProcessorName : orderedPostProcessorNames) {
+        orderedPostProcessors.add(beanFactory.getBean(postProcessorName, BeanFactoryPostProcessor.class));
+    }
+    sortPostProcessors(orderedPostProcessors, beanFactory);
+    invokeBeanFactoryPostProcessors(orderedPostProcessors, beanFactory);
+
+    // Finally, invoke all other BeanFactoryPostProcessors.
+    List<BeanFactoryPostProcessor> nonOrderedPostProcessors = new ArrayList<>();
+    for (String postProcessorName : nonOrderedPostProcessorNames) {
+        nonOrderedPostProcessors.add(beanFactory.getBean(postProcessorName, BeanFactoryPostProcessor.class));
+    }
+    invokeBeanFactoryPostProcessors(nonOrderedPostProcessors, beanFactory);
+
+    // Clear cached merged bean definitions since the post-processors might have
+    // modified the original metadata, e.g. replacing placeholders in values...
+    beanFactory.clearMetadataCache();
+}
+```
+可以看到这里BeanFactoryPostProcessors的顺序细节
+1.直接注册到AbstractApplicationContext中的beanFactoryPostProcessors且类型为BeanDefinitionRegistryPostProcessor
+    执行BeanDefinitionRegistryPostProcessor.postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry)
+2.被BeanFactory通过AbstractRefreshableApplicationContext创建BeanFactory时的loadBeanDefinition加载的（或者第一步修改registry注册进去的）类型为
+    BeanDefinitionRegistryPostProcessor的而且实现了PriorityOrdered接口的BeanDefinition。然后根据getOrder()的值通过排序器
+    ((DefaultListableBeanFactory) beanFactory).getDependencyComparator()如果不存在则用OrderComparator.INSTANCE。
+    调用postProcessor.postProcessBeanDefinitionRegistry(registry);
+3.被BeanFactory通过AbstractRefreshableApplicationContext创建BeanFactory时的loadBeanDefinition加载的（或者第一步、第二步修改registry注册进去的）类型为
+    BeanDefinitionRegistryPostProcessor的而且实现了Ordered接口的BeanDefinition,然后根据getOrder()的值通过排序器
+    ((DefaultListableBeanFactory) beanFactory).getDependencyComparator()如果不存在则用OrderComparator.INSTANCE。
+    调用postProcessor.postProcessBeanDefinitionRegistry(registry);
+    注意：PriorityOrdered是Ordered的子接口，因此这里就算第二部注册了一些实现了PriorityOrdered的BeanDefinitionRegistryPostProcessor，
+    仅仅会根据getOrder()值进行排序执行的。
+4.到这可能会由3步骤产生新的BeanDefinitionRegistryPostProcessor类型的BeanDefinition，而且每一次调用都可能会产生新的该类型BeanDefinition
+    这里直接循环（+ 排序）调用postProcessor.postProcessBeanDefinitionRegistry(registry);，
+    直至没有需要处理的BeanDefinitionRegistryPostProcessor类型的为止。
+5.执行上面获取的所有BeanPostProcessor中的postProcessor.postProcessBeanFactory(beanFactory);
+    虽然BeanDefinitionRegistryPostProcessor为BeanPostProcessor的子类，但是上面处理并没有开始执行postProcessor.postProcessBeanFactory(beanFactory);
+    方法，这一步直接全部挨个先调用BeanDefinitionRegistryPostProcessor的postProcessBeanFactory(beanFactory)后调用
+    上面从AbstractApplicationContext中获取的类型不为BeanDefinitionRegistryPostProcessor以及1、2、3、4获取的类型为BeanPostProcessor的
+    postProcessBeanFactory(beanFactory)回调。
+6.在第四步循环处理的是为子类型BeanDefinitionRegistryPostProcessor，因此会产生很多新的BeanPostProcessor这里统一处理有类型为BeanFactoryPostProcessor的
+   将所有类型为BeanPostProcessor的根据实现了1、ProrityOrdered接口的与实现2、Ordered接口的以及3、未实现排序接口的分为三组
+   然后排序依次执行
+
+**查看registerBeanPostProcessors(beanFactory);处理细**
+
+```java
+protected void registerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory) {
+    PostProcessorRegistrationDelegate.registerBeanPostProcessors(beanFactory, this);
+}
+```
+查看PostProcessorRegistrationDelegate.registerBeanPostProcessors(beanFactory, this);代码
+```java
+public static void registerBeanPostProcessors(
+        ConfigurableListableBeanFactory beanFactory, AbstractApplicationContext applicationContext) {
+
+    String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanPostProcessor.class, true, false);
+
+    // Register BeanPostProcessorChecker that logs an info message when
+    // a bean is created during BeanPostProcessor instantiation, i.e. when
+    // a bean is not eligible for getting processed by all BeanPostProcessors.
+    //需要执行是BeanPostProcessor的个数 = 注册到BeanFactory中的个数 + BeanDefinition类型为BeanPostProcessor的个数 + 下面 1 个
+    int beanProcessorTargetCount = beanFactory.getBeanPostProcessorCount() + 1 + postProcessorNames.length;
+    beanFactory.addBeanPostProcessor(new BeanPostProcessorChecker(beanFactory, beanProcessorTargetCount));
+
+    // Separate between BeanPostProcessors that implement PriorityOrdered,
+    // Ordered, and the rest.
+    //根据PriorityOrdered、Ordered、其他进行分组
+    List<BeanPostProcessor> priorityOrderedPostProcessors = new ArrayList<>();
+    List<BeanPostProcessor> internalPostProcessors = new ArrayList<>();
+    List<String> orderedPostProcessorNames = new ArrayList<>();
+    List<String> nonOrderedPostProcessorNames = new ArrayList<>();
+    for (String ppName : postProcessorNames) {
+        if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
+            BeanPostProcessor pp = beanFactory.getBean(ppName, BeanPostProcessor.class);
+            priorityOrderedPostProcessors.add(pp);
+            if (pp instanceof MergedBeanDefinitionPostProcessor) {
+                internalPostProcessors.add(pp);
+            }
+        }
+        else if (beanFactory.isTypeMatch(ppName, Ordered.class)) {
+            orderedPostProcessorNames.add(ppName);
+        }
+        else {
+            nonOrderedPostProcessorNames.add(ppName);
+        }
+    }
+
+    // First, register the BeanPostProcessors that implement PriorityOrdered.
+    //priorityOrdered组排序注册到BeanFactory
+    sortPostProcessors(priorityOrderedPostProcessors, beanFactory);
+    registerBeanPostProcessors(beanFactory, priorityOrderedPostProcessors);
+
+    // Next, register the BeanPostProcessors that implement Ordered.
+    //ordered组排序注册到BeanFactory
+    List<BeanPostProcessor> orderedPostProcessors = new ArrayList<>();
+    for (String ppName : orderedPostProcessorNames) {
+        BeanPostProcessor pp = beanFactory.getBean(ppName, BeanPostProcessor.class);
+        orderedPostProcessors.add(pp);
+        if (pp instanceof MergedBeanDefinitionPostProcessor) {
+            internalPostProcessors.add(pp);
+        }
+    }
+    sortPostProcessors(orderedPostProcessors, beanFactory);
+    registerBeanPostProcessors(beanFactory, orderedPostProcessors);
+
+    // Now, register all regular BeanPostProcessors.
+    //普通的BeanPostProcessor注册到BeanFactory
+    List<BeanPostProcessor> nonOrderedPostProcessors = new ArrayList<>();
+    for (String ppName : nonOrderedPostProcessorNames) {
+        BeanPostProcessor pp = beanFactory.getBean(ppName, BeanPostProcessor.class);
+        nonOrderedPostProcessors.add(pp);
+        if (pp instanceof MergedBeanDefinitionPostProcessor) {
+            internalPostProcessors.add(pp);
+        }
+    }
+    registerBeanPostProcessors(beanFactory, nonOrderedPostProcessors);
+
+    // Finally, re-register all internal BeanPostProcessors.
+    //将MergedBeanDefinitionPostProcessor类型的重新注册到靠后的位置
+    sortPostProcessors(internalPostProcessors, beanFactory);
+    registerBeanPostProcessors(beanFactory, internalPostProcessors);
+
+    // Re-register post-processor for detecting inner beans as ApplicationListeners,
+    // moving it to the end of the processor chain (for picking up proxies etc).
+    //将ApplicationListenerDetector这个processor放到最后面
+    //在前面prepareBeanFactory(ConfigurableListableBeanFactory beanFactory)方法中注册过一次，是为了处理BeanFactoryPostProcessor处理过程中可能存在的注册
+    //这里重新注册下是为了将这个BeanPostProcessor放到最最后面处理，因为如果可能存在一些通过代理实现监听的对象，包保证它一定能处理到。
+    beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(applicationContext));
+}
+```
+BeanPostProcessor注册在BeanFacotry中的顺序关系
+1.此前直接注册到BeanFactory中的顺序不变
+2.BeanPostProcessorChecker紧随此前直接注册到BeanFacotry中BeanPostProcessor
+3.实现了PriorityOrdered接口的BeanPostProcessor (根据getOrder()排序)
+4.实现了Ordered接口的BeanPostProcessor（根据getOrder()排序）
+5.未实现关于Order接口的普通BeanPostProcessor
+6.所有类型为BeanPostProcessor的子类型的MergedBeanDefinitionPostProcessor重新注册，使它们的执行顺序在BeanPostProcessor直接类型的后面
+7.ApplicationListenerDetector这个BeanPostProcessor放到最最后面执行
+
+**查看initMessageSource();执行细节**
+MessageSource是spring中对本地化消息的支持
+可以通过自定义BeanID为messageSource的方式来自定义 MessageSource 在SpringBoot中是通过autoconfigure中的
+org.springframework.boot.autoconfigure.context.MessageSourceAutoConfiguration来定制容器中使用
+org.springframework.boot.autoconfigure.context.MessageSourceAutoConfiguration.ResourceBundleCondition作为自动配置下的MessageSource
+
+```java
+protected void initMessageSource() {
+    ConfigurableListableBeanFactory beanFactory = getBeanFactory();
+    //这里判断是否定义过BeanID为messageSource的对象
+    if (beanFactory.containsLocalBean(MESSAGE_SOURCE_BEAN_NAME)) {
+        this.messageSource = beanFactory.getBean(MESSAGE_SOURCE_BEAN_NAME, MessageSource.class);
+        如果ApplicationContext有父应用上下文对象，那么给messageSource也维护下父级关系
+        if (this.parent != null && this.messageSource instanceof HierarchicalMessageSource) {
+            HierarchicalMessageSource hms = (HierarchicalMessageSource) this.messageSource;
+            if (hms.getParentMessageSource() == null) {
+                // Only set parent context as parent MessageSource if no parent MessageSource
+                // registered already.
+                hms.setParentMessageSource(getInternalParentMessageSource());
+            }
+        }
+        if (logger.isDebugEnabled()) {
+            logger.debug("Using MessageSource [" + this.messageSource + "]");
+        }
+    }
+    else {
+        // 没有自定义MessageSource的情况下，使用默认委托父级处理的MessageSource（如果没有父级，都进行空处理）
+        DelegatingMessageSource dms = new DelegatingMessageSource();
+        dms.setParentMessageSource(getInternalParentMessageSource());
+        this.messageSource = dms;
+        // 注册到Bean容器中 以便在应用上下文环境中 使用依赖注入、接口注入等方式获取当前MessageSource
+        beanFactory.registerSingleton(MESSAGE_SOURCE_BEAN_NAME, this.messageSource);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Unable to locate MessageSource with name '" + MESSAGE_SOURCE_BEAN_NAME +
+                    "': using default [" + this.messageSource + "]");
+        }
+    }
+}
+```
+**查看initApplicationEventMulticaster();执行细节**
+这里主要配置应用上下文中的ApplicationEvent的事件广播实现类对象，来处理容器中的事件分发工作。
+实现方式与上面MessageSource类似，如果没有自定义的bean选用默认的
+
+```java
+protected void initApplicationEventMulticaster() {
+    ConfigurableListableBeanFactory beanFactory = getBeanFactory();
+    if (beanFactory.containsLocalBean(APPLICATION_EVENT_MULTICASTER_BEAN_NAME)) {
+        this.applicationEventMulticaster =
+                beanFactory.getBean(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, ApplicationEventMulticaster.class);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Using ApplicationEventMulticaster [" + this.applicationEventMulticaster + "]");
+        }
+    }
+    else {
+        this.applicationEventMulticaster = new SimpleApplicationEventMulticaster(beanFactory);
+        beanFactory.registerSingleton(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, this.applicationEventMulticaster);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Unable to locate ApplicationEventMulticaster with name '" +
+                    APPLICATION_EVENT_MULTICASTER_BEAN_NAME +
+                    "': using default [" + this.applicationEventMulticaster + "]");
+        }
+    }
+}
+```
+**查看onRefresh()**
+
+这里主要是实现将，应用上下文事件监听对象的注册。
+
+```java
+protected void registerListeners() {
+    // 注册直接设置到容器中的监听实现类对象（在容器事件发布器未初始化时执行addApplicationListener的对象会设置到这里）
+    for (ApplicationListener<?> listener : getApplicationListeners()) {
+        getApplicationEventMulticaster().addApplicationListener(listener);
+    }
+
+    // 对于其他对象 由于还没有开始初始化执行对应的BeanPostProcessor 这里只是注册进去一个BeanName
+    String[] listenerBeanNames = getBeanNamesForType(ApplicationListener.class, true, false);
+    for (String listenerBeanName : listenerBeanNames) {
+        getApplicationEventMulticaster().addApplicationListenerBean(listenerBeanName);
+    }
+
+    // 对于ApplicationEventMulticaster尚未初始化前发布的一些事件 会缓存到earlyApplicationEvents中，在这里执行事件分发
+    Set<ApplicationEvent> earlyEventsToProcess = this.earlyApplicationEvents;
+    this.earlyApplicationEvents = null;
+    if (earlyEventsToProcess != null) {
+        for (ApplicationEvent earlyEvent : earlyEventsToProcess) {
+            getApplicationEventMulticaster().multicastEvent(earlyEvent);
+        }
+    }
+}
+```
+
+**查看finishBeanFactoryInitialization(beanFactory);实现**
+
+这一步是将无需懒加载的单例对象都进行初始化
+```java
+protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory) {
+    // 初始化一个ConversionService，它的作用类似于JavaBean中的PropertyEditor用来转换配置值
+    if (beanFactory.containsBean(CONVERSION_SERVICE_BEAN_NAME) &&
+            beanFactory.isTypeMatch(CONVERSION_SERVICE_BEAN_NAME, ConversionService.class)) {
+        beanFactory.setConversionService(
+                beanFactory.getBean(CONVERSION_SERVICE_BEAN_NAME, ConversionService.class));
+    }
+
+    // Register a default embedded value resolver if no bean post-processor
+    // (such as a PropertyPlaceholderConfigurer bean) registered any before:
+    // at this point, primarily for resolution in annotation attribute values.
+    // 如果不存在value解析器，添加一个基于environment的占位符解析器
+    if (!beanFactory.hasEmbeddedValueResolver()) {
+        beanFactory.addEmbeddedValueResolver(strVal -> getEnvironment().resolvePlaceholders(strVal));
+    }
+
+    // Initialize LoadTimeWeaverAware beans early to allow for registering their transformers early.
+    String[] weaverAwareNames = beanFactory.getBeanNamesForType(LoadTimeWeaverAware.class, false, false);
+    for (String weaverAwareName : weaverAwareNames) {
+        getBean(weaverAwareName);
+    }
+
+    // Stop using the temporary ClassLoader for type matching.
+    beanFactory.setTempClassLoader(null);
+
+    // Allow for caching all bean definition metadata, not expecting further changes.
+    beanFactory.freezeConfiguration();
+
+    // Instantiate all remaining (non-lazy-init) singletons.
+    // 这里开始进行单例对象实例化工作。 后面详细查看创建单例对象的实现细节。
+    beanFactory.preInstantiateSingletons();
+}
+
+```
+
+**finishRefresh();**
+这里应用上下文 已经准备完毕，主要负责事件发布，以及与处理应用上下文Lifecycle的实现
+
+```java
+protected void finishRefresh() {
+    // Clear context-level resource caches (such as ASM metadata from scanning).
+    clearResourceCaches();
+
+    // Initialize lifecycle processor for this context.
+    //这里初始化一个Lifecycle的处理器，与MessageSource类似，如果不指定Bean ID 为lifecycleProcessor的对象，那么会选用一个默认的处理器
+    initLifecycleProcessor();
+
+    // Propagate refresh to lifecycle processor first.
+    //这里是启动是实现SmartLifecycle且isAutoStartup()返回true的对象，如果其他的对象想执行start()必须进行手动调用applicationContext.start()
+    getLifecycleProcessor().onRefresh();
+
+    // Publish the final event.
+    //发布容器初始化完成的事件
+    publishEvent(new ContextRefreshedEvent(this));
+
+    // Participate in LiveBeansView MBean, if active.
+    // 这里是对于容器实现的一个json视图
+    LiveBeansView.registerApplicationContext(this);
+}
+```
+
+##### 1.1.7.2.4. WebApplicationContext
+<a href="#menu" style="float:right">目录</a>
+
+![WebApplicationContext](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/beanfactory/WebApplicationContext.png)
+
+WebApplicationContext是专门为web应用准备的,他允许从相对于web根目录的路劲中装载配置文件完成初始化工作，从WebApplicationContext中可以获得ServletContext的引用，整个Web应用上下文对象将作为属性放置在ServletContext中，以便web应用可以访问spring上下文,spring中提供WebApplicationContextUtils的getWebApplicationContext(ServletContext src)方法来获得WebApplicationContext对象
+
+在非web环境下,Bean只有singleton和prototype两种作用域.
+WebApplicationContext为Bean添加了三个新的作用域request,session,global session.
+
+WebApplicationContext扩展了ApplicationContext.在 WebApplicationContext中定义了一个常量 ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE，在上下文启动时,WebApplicationContext以此为键放置在ServletContext属性列表中
+
+##### 1.1.7.2.5. 父子容器
+<a href="#menu" style="float:right">目录</a>
+
+通过HierarchicalBeanFactory接口,Spring的IOC容器可以建立父子层级关联的容器体系,子容器可以访问父容器中的Bean,但是父容器不能访问子容器中的Bean.在容器内,Bean的id必须是唯一的,但子容器可以拥有一个和父容器id相同的Bean.父子容器层级体系增强了Spring容器架构的扩展性和灵活性,因为第三方可以通过编程的方式为一个已经存在的容器添加一个或多个特殊的子容器,以提供一些额外的功能.
+
+Spring使用父子容器实现了很多功能,比如在Spring MVC中,展现层Bean位于一个子容器中,而业务层和持久层Bean位于父容器中.这样,展现层的Bean可以访问业务层和持久层的bean,反之则不行.
+
+
+##### 1.1.7.2.6. DefaultListableBeanFactory
+<a href="#menu" style="float:right">目录</a>
+
+spring Ioc容器的实现，从根源上是beanfactory，但真正可以作为一个可以独立使用的ioc容器还是DefaultListableBeanFactory，因此可以这么说，
+DefaultListableBeanFactory 是整个spring ioc的始祖，研究透它的前生今世对我们理解spring ioc的概念有着重要的作用
+
+![DefaultListableBeanFactory](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/beanfactory/DefaultListableBeanFactory.png)
+
+```java
+public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements ConfigurableListableBeanFactory, BeanDefinitionRegistry, Serializable {
+    @Nullable
+    private static Class<?> javaxInjectProviderClass;
+    private static final Map<String, Reference<DefaultListableBeanFactory>> serializableFactories;
+    @Nullable
+    private String serializationId;
+    private boolean allowBeanDefinitionOverriding = true;
+    private boolean allowEagerClassLoading = true;
+    @Nullable
+    private Comparator<Object> dependencyComparator;
+    private AutowireCandidateResolver autowireCandidateResolver = new SimpleAutowireCandidateResolver();
+    private final Map<Class<?>, Object> resolvableDependencies = new ConcurrentHashMap(16);
+    private final Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap(256);
+    private final Map<Class<?>, String[]> allBeanNamesByType = new ConcurrentHashMap(64);
+    private final Map<Class<?>, String[]> singletonBeanNamesByType = new ConcurrentHashMap(64);
+    private volatile List<String> beanDefinitionNames = new ArrayList(256);
+    private volatile Set<String> manualSingletonNames = new LinkedHashSet(16);
+    @Nullable
+    private volatile String[] frozenBeanDefinitionNames;
+    private volatile boolean configurationFrozen = false;
+
+```
+**DefaultListableBeanFactory的作用：**
+* 默认实现了ListableBeanFactory和BeanDefinitionRegistry接口，基于bean definition对象，是一个成熟的bean factroy。
+* 最典型的应用是：在访问bean前，先注册所有的definition（可能从bean definition配置文件中）。使用预先建立的bean定义元数据对象，从本地的bean definition表中查询bean definition因而将不会花费太多成本。
+* DefaultListableBeanFactory既可以作为一个单独的beanFactory，也可以作为自定义beanFactory的父类。
+
+注意：特定格式bean definition的解析器可以自己实现，也可以使用原有的解析器，如：PropertiesBeanDefinitionReader和XmLBeanDefinitionReader。
+
+**DefaultListableBeanFactory其实要实现的功能就是以list集合的方式操作bean，为什么要拆成这么多的类和接口呢。这里面可能基于几点考虑。**
+* 功能的不同维度，分不同的接口，方便以后的维护和其他人的阅读。如：AutowireCapableBeanFactory、ListableBeanFactory、HierarchicalBeanFactory等
+* 不同接口的实现，分布在不同的之类里，方便以后不同接口多种实现的扩展
+* 从整个类图的分布，可以看出spring在这块是面向接口编程，后面类的实现，他们认为只是接口功能实现的一种，随时可以拓展成多种实现
+
+**相关类说明**
+* AliasRegistry
+    * 定义对alias的简单增删改等操作
+* SimpleAliasRegistry
+    * 主要使用map作为alias的缓存,并对接口AliasRegister进行实现
+* SingletonBeanRegistry
+    * 定义对单例的注册即获取
+* BeanFactory
+    * 容器的顶层接口
+* DefaultSingletonBeanRegistry
+    * 对接口SingletonBeanRegistry的实现
+* HierarchicalBeanFactory
+    * 在BeanFactory的基础上增加parentFactory的支持
+* BeanDefinitionRegister
+    * 定义对BeanDefinition的各种增删改
+* FactoryBeanRegisterSupport
+    * 在DefaultSingletonBeanRegistry的基础上增加对FactoryBean的特殊处理功能
+* ConfigurableBeanFactory
+    * 提供配置Factory的各种方法
+* ListableBeanFactory
+    * 根据各种条件获取bean的配置清单
+* AbstractBeanFactory
+    * 综合FactoryBeanRegisterSupport和ConfigurableBeanFactory的功能
+* AutowireCapableBeanFactory
+    * 提供创建Bean,自动注入,初始化以及应用bean的后处理器
+* AbstractAutowireCapableBeanFactory
+    * 综合AbstractBeanFactory并对AutowireCapableBeanFactory接口进行实现
+* ConfigurableListableBeanFactory
+    * BeanFactory配置清单,指定忽略类型和接口
+* DefaultListableBeanFactory
+    * 综合上面所有的功能
+* XmlBeanFactory
+    * 从xml文件中加载资源
+    
+##### 1.1.7.2.7. HierarchicalBeanFactory
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -1136,7 +2046,7 @@ public interface HierarchicalBeanFactory extends BeanFactory {
 2. 第二个方法判断本地工厂是否包含这个Bean（忽略其他所有父工厂）。这也是分层思想的体现。
 总结：这个工厂接口非常简单，实现了Bean工厂的分层。这个工厂接口也是继承自BeanFacotory，也是一个二级接口，相对于父接口，它只扩展了一个重要的功能——工厂分层。
 
-##### 1.1.7.2.4. SimpleJndiBeanFactory
+##### 1.1.7.2.8. SimpleJndiBeanFactory
 <a href="#menu" style="float:right">目录</a>
 
 SimpleJndiBeanFactory 是一个实现类,并且没有继承者.
@@ -1153,7 +2063,7 @@ public class SimpleJndiBeanFactory extends JndiLocatorSupport implements BeanFac
 可以看到,这里只是实现了一个简单的容器,使用集合来存储对象
 
 
-##### 1.1.7.2.5. AutowireCapableBeanFactory
+##### 1.1.7.2.9. AutowireCapableBeanFactory
 <a href="#menu" style="float:right">目录</a>
 
 ```java
@@ -1193,7 +2103,7 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
     * 2个分解指定依赖的方法
 * 总结：这个工厂接口继承自BeanFacotory，它扩展了自动装配的功能，根据类定义BeanDefinition装配Bean、执行前、后处理器等。
 
-##### 1.1.7.2.6. ListableBeanFactory
+##### 1.1.7.2.10. ListableBeanFactory
 <a href="#menu" style="float:right">目录</a>
 
 ```java
@@ -1225,7 +2135,7 @@ public interface ListableBeanFactory extends BeanFactory {
 * 总结：
     * 正如这个工厂接口的名字所示，这个工厂接口最大的特点就是可以列出工厂可以生产的所有实例。当然，工厂并没有直接提供返回所有实例的方法，也没这个必要。它可以返回指定类型的所有的实例。而且你可以通过getBeanDefinitionNames()得到工厂所有bean的名字，然后根据这些名字得到所有的Bean。这个工厂接口扩展了BeanFactory的功能，作为上文指出的BeanFactory二级接口，有9个独有的方法，扩展了跟BeanDefinition的功能，提供了BeanDefinition、BeanName、注解有关的各种操作。它可以根据条件返回Bean的集合，这就是它名字的由来——ListableBeanFactory。
 
-##### 1.1.7.2.7. ConfigurableBeanFactory
+##### 1.1.7.2.11. ConfigurableBeanFactory
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -1310,7 +2220,7 @@ ConfigurableBeanFactory同时继承了HierarchicalBeanFactory 和 SingletonBeanR
     * 3个跟Bean依赖相关的方法、3个销毁Bean相关的方法。
 * 总结：这个巨大的工厂接口，继承自HierarchicalBeanFactory 和 SingletonBeanRegistry 这两个接口，并额外独有37个方法！！！（看的我都快疯了...）这37个方法包含了工厂创建、注册一个Bean的众多细节。这个工厂名为ConfigurableBeanFactory，真是名不虚传！统计一下此时的ConfigurableBeanFactory的方法数吧。自有的37个方法、HierarchicalBeanFactory的2个方法、SingletonBeanRegistry的5个方法、爷爷接口BeanFactory的10个方法，共有54个方法！虽然方法繁多，还算井井有条
 
-##### 1.1.7.2.8. ConfigurableListableBeanFactory
+##### 1.1.7.2.12. ConfigurableListableBeanFactory
 <a href="#menu" style="float:right">目录</a>
 
 ```java
@@ -1339,56 +2249,330 @@ public interface ConfigurableListableBeanFactory extends ListableBeanFactory, Au
 
 
 
-##### 1.1.7.2.9. BeanDefinitionRegistry
+##### 1.1.7.2.13. BeanDefinitionRegistry
 <a href="#menu" style="float:right">目录</a>
 
 这个接口基本用来操作定义在工厂内部的BeanDefinition的
 
-
-##### 1.1.7.2.10. DefaultListableBeanFactory
-
-spring Ioc容器的实现，从根源上是beanfactory，但真正可以作为一个可以独立使用的ioc容器还是DefaultListableBeanFactory，因此可以这么说，
-DefaultListableBeanFactory 是整个spring ioc的始祖，研究透它的前生今世对我们理解spring ioc的概念有着重要的作用
-
-```java
-public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements ConfigurableListableBeanFactory, BeanDefinitionRegistry, Serializable {
-    @Nullable
-    private static Class<?> javaxInjectProviderClass;
-    private static final Map<String, Reference<DefaultListableBeanFactory>> serializableFactories;
-    @Nullable
-    private String serializationId;
-    private boolean allowBeanDefinitionOverriding = true;
-    private boolean allowEagerClassLoading = true;
-    @Nullable
-    private Comparator<Object> dependencyComparator;
-    private AutowireCandidateResolver autowireCandidateResolver = new SimpleAutowireCandidateResolver();
-    private final Map<Class<?>, Object> resolvableDependencies = new ConcurrentHashMap(16);
-    private final Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap(256);
-    private final Map<Class<?>, String[]> allBeanNamesByType = new ConcurrentHashMap(64);
-    private final Map<Class<?>, String[]> singletonBeanNamesByType = new ConcurrentHashMap(64);
-    private volatile List<String> beanDefinitionNames = new ArrayList(256);
-    private volatile Set<String> manualSingletonNames = new LinkedHashSet(16);
-    @Nullable
-    private volatile String[] frozenBeanDefinitionNames;
-    private volatile boolean configurationFrozen = false;
-
-```
-**DefaultListableBeanFactory的作用：**
-* 默认实现了ListableBeanFactory和BeanDefinitionRegistry接口，基于bean definition对象，是一个成熟的bean factroy。
-* 最典型的应用是：在访问bean前，先注册所有的definition（可能从bean definition配置文件中）。使用预先建立的bean定义元数据对象，从本地的bean definition表中查询bean definition因而将不会花费太多成本。
-* DefaultListableBeanFactory既可以作为一个单独的beanFactory，也可以作为自定义beanFactory的父类。
-
-注意：特定格式bean definition的解析器可以自己实现，也可以使用原有的解析器，如：PropertiesBeanDefinitionReader和XmLBeanDefinitionReader。
-
-**DefaultListableBeanFactory其实要实现的功能就是以list集合的方式操作bean，为什么要拆成这么多的类和接口呢。这里面可能基于几点考虑。**
-* 功能的不同维度，分不同的接口，方便以后的维护和其他人的阅读。如：AutowireCapableBeanFactory、ListableBeanFactory、HierarchicalBeanFactory等
-* 不同接口的实现，分布在不同的之类里，方便以后不同接口多种实现的扩展
-* 从整个类图的分布，可以看出spring在这块是面向接口编程，后面类的实现，他们认为只是接口功能实现的一种，随时可以拓展成多种实现
-
-#### 1.1.7.3. 单例实现
+##### 1.1.7.2.14. 单例管理接口SingletonBeanRegistry
 <a href="#menu" style="float:right">目录</a>
 
-![admin首页](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/singleton.png)
+
+![DefaultSingletonBeanRegistry](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/beanfactory/DefaultSingletonBeanRegistry.png)
+
+###### 1.1.7.2.14.1. AliasRegistry 
+<a href="#menu" style="float:right">目录</a>
+
+AliasRegistry 用于管理别名的公共接口,定义对别名的简单增删等操作。用作超级接口
+```java
+public interface AliasRegistry {
+    //注册表中给name注册一个别名alias
+	void registerAlias(String name, String alias);
+    // 移除注册表中的别名alias
+	void removeAlias(String alias); 
+    //校验注册表中是否存在别名name
+	boolean isAlias(String name);
+
+	// 在注册表中获取给定那么的所有别名信息
+	String[] getAliases(String name);
+
+}
+```
+SimpleAliasRegistry： AliasRegistry的简单实现类
+
+###### 1.1.7.2.14.2. SingletonBeanRegistry
+<a href="#menu" style="float:right">目录</a>
+
+此接口是针对Spring中的单例Bean设计的。提供了统一访问单例Bean的功能，BeanFactory可实现此接口以提供访问内部单例Bean的能力
+
+```java
+public interface SingletonBeanRegistry {
+
+    /**
+     * 以指定的名字将给定Object注册到BeanFactory中。
+     * 给定的Object必须是被完全初始化了的，此注册接口不会提供任何用以初始化的回调函数，需要特意提及的
+     * 一点是InitializingBean的afterPropertiesSet方法也不会被此注册接口调用，并且，指定实例
+     * 也不会收到destroy的信息.
+     * 如果此接口的实现类是一个BeanFactory，最好将你的类注册成Bean Definition而不是直接使用对象
+     * 注册，前一种注册方式的好处在于，它可以使你定义的Bean收到initialization和destruction回调。
+     * 此方法通常在配置和注册Bean期间调用，但是也不排斥在运行时动态的向其中注册单例对象。因此实现类
+     * 应该同步代码对单例Bean的访问方法
+     */
+    void registerSingleton(String beanName, Object singletonObject);
+
+    /**
+     * 以Object的形式返回指定名字的Bean。仅仅返回已经初始化完成的Bean，对于还没有初始化的
+     * Bean Definition不予以考虑
+     * 此方法的主要目的是提供一种手动获取已注册单例Bean的方式，同样的对于通过Bean Definition注册的
+     * Bean也可以通过此方式获得
+     * 但是要注意，此方法并不支持使用别名对Bean进行查找，如果只有别名的话，要先通过BeanFactory的接口
+     * 获取到Bean对应的全限定名称
+     */
+    Object getSingleton(String beanName);
+
+    /**
+     * Check if this registry contains a singleton instance with the given name.
+     * 检查此实例是否包含指定名字的并且！！！已经初始化完成的单例Bean。
+     * 此方法的主要目标是提供一种手动检测Bean是否初始化完成的手段。也可用于检测通过BeanDefinition
+     * 定义的Bean是否创建完成。
+     * 如果要检测BeanFactory中是否包含指定name的BeanDefinition（不管是否初始化完毕），可使用BeanFactory
+     * 的containsBeanDefinition。同时判断containsBeanDefinition和本方法，可以判断BeanFactory是否包含
+     * 已经初始化完毕的Bean
+     * 而BeanFactory的containsBean方法是用于通用检测一个BeanFactory或者其父上下文是否有
+     * 一个指定名字的Bean的手段。
+     * 不支持别名查找
+     */
+    boolean containsSingleton(String beanName);
+
+    //获取所有单例的bean名称
+    String[] getSingletonNames();
+
+    //获取单例的数量
+    int getSingletonCount();
+
+    //Return the singleton mutex used by this registry (for external collaborators).
+    //不太明白
+    Object getSingletonMutex();
+
+}
+```
+
+###### 1.1.7.2.14.3. DefaultSingletonBeanRegistry
+<a href="#menu" style="float:right">目录</a>
+
+DefaultSingletonBeanRegistry是SingletonBeanRegistry的实现类,也就是实现单例的增删改功能.
+
+
+```java
+public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements SingletonBeanRegistry {
+
+	//是存放singleton对象的缓存  
+	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
+
+	//ObjectFactory工厂对象的缓存
+	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
+
+	//是存放singletonFactory 制造出来的 singleton 的缓存早期单例对象缓存,什么是早期对象
+	private final Map<String, Object> earlySingletonObjects = new HashMap<>(16);
+
+	/** Set of registered singletons, containing the bean names in registration order. */
+    //就是单例注册表
+	private final Set<String> registeredSingletons = new LinkedHashSet<>(256);
+
+	/** Names of beans that are currently in creation. */
+    //目前正在创建中的单例bean的名称的集合
+	private final Set<String> singletonsCurrentlyInCreation =
+			Collections.newSetFromMap(new ConcurrentHashMap<>(16));
+
+	/** Names of beans currently excluded from in creation checks. */
+	private final Set<String> inCreationCheckExclusions =
+			Collections.newSetFromMap(new ConcurrentHashMap<>(16));
+
+	/** List of suppressed Exceptions, available for associating related causes. */
+    //存放异常出现的相关的原因的集合
+	@Nullable
+	private Set<Exception> suppressedExceptions;
+
+	/** Flag that indicates whether we're currently within destroySingletons. */
+    // 标志，指示我们目前是否在销毁单例中
+	private boolean singletonsCurrentlyInDestruction = false;
+
+	/** Disposable bean instances: bean name to disposable instance. */
+	private final Map<String, Object> disposableBeans = new LinkedHashMap<>();
+
+	/** Map between containing bean names: bean name to Set of bean names that the bean contains. */
+	private final Map<String, Set<String>> containedBeanMap = new ConcurrentHashMap<>(16);
+
+	/** Map between dependent bean names: bean name to Set of dependent bean names. */
+	private final Map<String, Set<String>> dependentBeanMap = new ConcurrentHashMap<>(64);
+
+	/** Map between depending bean names: bean name to Set of bean names for the bean's dependencies. */
+	private final Map<String, Set<String>> dependenciesForBeanMap = new ConcurrentHashMap<>(64);
+
+```
+
+#### 1.1.7.3. Bean创建过程
+<a href="#menu" style="float:right">目录</a>
+
+这里以DemoService类为例
+在构造函数里面设置断点
+
+```java
+@Service
+public class DemoService {
+
+    public DemoService() {
+
+        System.out.println("ss");
+    }
+}
+```
+![create-bean](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/beanfactory/create-bean.png)
+
+这里来看下AbstractBeanFactory的doGetBean
+
+```java
+
+    public <T> T getBean(String name, @Nullable Class<T> requiredType, @Nullable Object... args) throws BeansException {
+        return this.doGetBean(name, requiredType, args, false);
+    }
+
+    protected <T> T doGetBean(String name, @Nullable Class<T> requiredType, @Nullable Object[] args, boolean typeCheckOnly) throws BeansException {
+        //获取对应的bean name 
+        String beanName = this.transformedBeanName(name);
+
+        /*
+        * 检查缓存中或者实例工厂是否有对应的实例
+        * 为什么会首先使用这段代码
+        * 因为在创建单例bean的时候会存在依赖注入的情况,而在创建依赖的情况下为了避免循环依赖Spring创建bean的原则是不等bean创建完成酒水将创建bean的ObjectFactory提早曝光
+        ,也就是将ObjectFactory加入到缓存中,一旦一个bean创建时需要依赖上个bean则直接使用ObjectFactory
+
+        */
+        //直接从缓存中获取或者singletonFactoties中的ObjectFactory中获取
+        Object sharedInstance = this.getSingleton(beanName);
+        Object bean;
+        if (sharedInstance != null && args == null) {
+            if (this.logger.isTraceEnabled()) {
+                if (this.isSingletonCurrentlyInCreation(beanName)) {
+                    this.logger.trace("Returning eagerly cached instance of singleton bean '" + beanName + "' that is not fully initialized yet - a consequence of a circular reference");
+                } else {
+                    this.logger.trace("Returning cached instance of singleton bean '" + beanName + "'");
+                }
+            }
+
+            bean = this.getObjectForBeanInstance(sharedInstance, name, beanName, (RootBeanDefinition)null);
+        } else {
+            if (this.isPrototypeCurrentlyInCreation(beanName)) {
+                throw new BeanCurrentlyInCreationException(beanName);
+            }
+
+            BeanFactory parentBeanFactory = this.getParentBeanFactory();
+            if (parentBeanFactory != null && !this.containsBeanDefinition(beanName)) {
+                String nameToLookup = this.originalBeanName(name);
+                if (parentBeanFactory instanceof AbstractBeanFactory) {
+                    return ((AbstractBeanFactory)parentBeanFactory).doGetBean(nameToLookup, requiredType, args, typeCheckOnly);
+                }
+
+                if (args != null) {
+                    return parentBeanFactory.getBean(nameToLookup, args);
+                }
+
+                if (requiredType != null) {
+                    return parentBeanFactory.getBean(nameToLookup, requiredType);
+                }
+
+                return parentBeanFactory.getBean(nameToLookup);
+            }
+
+            if (!typeCheckOnly) {
+                this.markBeanAsCreated(beanName);
+            }
+
+            try {
+                RootBeanDefinition mbd = this.getMergedLocalBeanDefinition(beanName);
+                this.checkMergedBeanDefinition(mbd, beanName, args);
+                String[] dependsOn = mbd.getDependsOn();
+                String[] var11;
+                if (dependsOn != null) {
+                    var11 = dependsOn;
+                    int var12 = dependsOn.length;
+
+                    for(int var13 = 0; var13 < var12; ++var13) {
+                        String dep = var11[var13];
+                        if (this.isDependent(beanName, dep)) {
+                            throw new BeanCreationException(mbd.getResourceDescription(), beanName, "Circular depends-on relationship between '" + beanName + "' and '" + dep + "'");
+                        }
+
+                        this.registerDependentBean(dep, beanName);
+
+                        try {
+                            this.getBean(dep);
+                        } catch (NoSuchBeanDefinitionException var24) {
+                            throw new BeanCreationException(mbd.getResourceDescription(), beanName, "'" + beanName + "' depends on missing bean '" + dep + "'", var24);
+                        }
+                    }
+                }
+
+                if (mbd.isSingleton()) {
+                    //如果是单例
+                    sharedInstance = this.getSingleton(beanName, () -> {
+                        try {
+                            return this.createBean(beanName, mbd, args);
+                        } catch (BeansException var5) {
+                            this.destroySingleton(beanName);
+                            throw var5;
+                        }
+                    });
+                    //返回对应的实例,有时候存在诸如BeanFactory的情况并不是直接返回实例本身而是返回指定方法返回的实例
+                    bean = this.getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
+                } else if (mbd.isPrototype()) {
+                    //如果是多例
+                    var11 = null;
+
+                    Object prototypeInstance;
+                    try {
+                        this.beforePrototypeCreation(beanName);
+                        prototypeInstance = this.createBean(beanName, mbd, args);
+                    } finally {
+                        this.afterPrototypeCreation(beanName);
+                    }
+
+                    bean = this.getObjectForBeanInstance(prototypeInstance, name, beanName, mbd);
+                } else {
+                    String scopeName = mbd.getScope();
+                    Scope scope = (Scope)this.scopes.get(scopeName);
+                    if (scope == null) {
+                        throw new IllegalStateException("No Scope registered for scope name '" + scopeName + "'");
+                    }
+
+                    try {
+                        Object scopedInstance = scope.get(beanName, () -> {
+                            this.beforePrototypeCreation(beanName);
+
+                            Object var4;
+                            try {
+                                var4 = this.createBean(beanName, mbd, args);
+                            } finally {
+                                this.afterPrototypeCreation(beanName);
+                            }
+
+                            return var4;
+                        });
+                        bean = this.getObjectForBeanInstance(scopedInstance, name, beanName, mbd);
+                    } catch (IllegalStateException var23) {
+                        throw new BeanCreationException(beanName, "Scope '" + scopeName + "' is not active for the current thread; consider defining a scoped proxy for this bean if you intend to refer to it from a singleton", var23);
+                    }
+                }
+            } catch (BeansException var26) {
+                this.cleanupAfterBeanCreationFailure(beanName);
+                throw var26;
+            }
+        }
+
+        if (requiredType != null && !requiredType.isInstance(bean)) {
+            try {
+                T convertedBean = this.getTypeConverter().convertIfNecessary(bean, requiredType);
+                if (convertedBean == null) {
+                    throw new BeanNotOfRequiredTypeException(name, requiredType, bean.getClass());
+                } else {
+                    return convertedBean;
+                }
+            } catch (TypeMismatchException var25) {
+                if (this.logger.isTraceEnabled()) {
+                    this.logger.trace("Failed to convert bean '" + name + "' to required type '" + ClassUtils.getQualifiedName(requiredType) + "'", var25);
+                }
+
+                throw new BeanNotOfRequiredTypeException(name, requiredType, bean.getClass());
+            }
+        } else {
+            return bean;
+        }
+    }
+```
+
+
+
+![singleton](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/singleton.png)
 
 可以看到Spring的单例实现类是DefaultSingletonBeanRegistry的getSingleton方法
 ```java
@@ -1528,9 +2712,11 @@ Bean的完整生命周期经历了各种方法调用，这些方法可以划分�
 * Bean自身的方法
     * 这个包括了Bean本身调用的方法和通过配置文件中< bean>的init-method和destroy-method指定的方法
 * Bean级生命周期接口方法
-    * 这个包括了BeanNameAware、BeanFactoryAware、InitializingBean和DiposableBean这些接口的方法
+    * 这个包括了BeanNameAware、BeanFactoryAware、InitializingBean和DiposableBean这些接口的方法,这些方法由Bean类直接实现
 * 容器级生命周期接口方法
     * 这个包括了InstantiationAwareBeanPostProcessor 和 BeanPostProcessor 这两个接口实现，一般称它们的实现类为“后处理器”。
+    * 当Spring容器创建任何Bean的时候,这些后处理器都会发生作用,这些后处理器的影响是全局性的
+    * 用户可以通过合理地编写后处理器,让其仅对感兴趣的Bean进行加工处理
 * 工厂后处理器接口方法
     * 这个包括了AspectJWeavingEnabler, ConfigurationClassPostProcessor, CustomAutowireConfigurer等等非常有用的工厂后处理器接口的方法。工厂后处理器也是容器级的。在应用上下文装配配置文件之后立即调用。
 
@@ -1684,10 +2870,9 @@ public class UserService implements
     }
 
 }
-
-
 ```
 输出
+
 ```
 Bean 的构造器
 BeanNameAware setBeanName   beanName = userService
@@ -1696,575 +2881,71 @@ ApplicationContextAware setApplicationContext
 初始化方法: PostConstruct init
 InitializingBean afterPropertiesSet 
 销毁方法: PreDestroy destory
-```　
+```
+　
 注意,上面实现了BeanFactoryPostProcessor接口,将不会调用@PostConstruct和@PreDestroy的方法.
+
 
 
 一般是实现BeanFactoryPostProcessor或者BeanFactoryAware获取BeanFactory ;
 实现ApplicationContextAware获取ApplicationContext 
 
-
-### 1.1.8. AOP面向切面编程
-<a href="#menu" style="float:right">目录</a>
-
-### 1.1.9. Spring 事务管理
-<a href="#menu" style="float:right">目录</a>
-
-#### 1.1.9.1. 数据库事务基础知识
-<a href="#menu" style="float:right">目录</a>
-
-**事务的四大特性（ACID）**
-如果一个数据库声称支持事务的操作，那么该数据库必须要具备以下四个特性：
-* 原子性（Atomicity）
-    * 原子性是指事务包含的所有操作要么全部成功，要么全部失败回滚，因此事务的操作如果成功就必须要完全应用到数据库，如果操作失败则不能对数据库有任何影响。
-* 一致性（Consistency）
-    * 一致性是指事务必须使数据库从一个一致性状态变换到另一个一致性状态，也就是说一个事务执行之前和执行之后都必须处于一致性状态。
-    * 拿转账来说，假设用户A和用户B两者的钱加起来一共是5000，那么不管A和B之间如何转账，转几次账，事务结束后两个用户的钱相加起来应该还得是5000，这就是事务的一致性。
-* 隔离性（Isolation）
-    * 隔离性是当多个用户并发访问数据库时，比如操作同一张表时，数据库为每一个用户开启的事务，不能被其他事务的操作所干扰，多个并发事务之间要相互隔离。
-    * 即要达到这么一种效果：对于任意两个并发的事务T1和T2，在事务T1看来，T2要么在T1开始之前就已经结束，要么在T1结束之后才开始，这样每个事务都感觉不到有其他事务在并发地执行。
-* 持久性（Durability）
-    * 持久性是指一个事务一旦被提交了，那么对数据库中的数据的改变就是永久性的，即便是在数据库系统遇到故障的情况下也不会丢失提交事务的操作。
-    * 例如我们在使用JDBC操作数据库时，在提交事务方法后，提示用户事务操作完成，当我们程序执行完成直到看到提示后，就可以认定事务以及正确提交，即使这时候数据库出现了问题，也必须要将我们的事务完全执行完成，否则就会造成我们看到提示事务处理完毕，但是数据库因为故障而没有执行事务的重大错误。
-
-**事务的隔离级别（默认事务级别为可重复读）**
-总的说，数据库事务无非就两种：读取事务（select）、修改事务（update,insert）。在没有事务隔离控制的时候，多个事务在同一时刻对同一数据的操作可能就会影响到最终期望的结果，通常有四种情况：
-* 两个更新事务同时修改一条数据时，很显然这种情况是最严重的了，程序中无论如何也不能出现这种情况，因为它会造成更新的丢失！
-* 一个更新事务更新一条数据时，另一个读取事务读取了还没提交的更新，这种情况下会出现读取到脏数据。
-* 一个读取事务读取一条数据时，另一个更新事务修改了这条数据，这时就会出现不可重现的读取。
-* 一个读取事务读取时，另一个插入事务（注意此处时插入）插入了一条新数据，这样就可能多读出一条数据，出现幻读。
-
-以上四种情况描述完毕，相信大家也发现规律了，前三种是对同一条数据的并发操作，对程序的结果可能产生致命影响，尤其是金融等实时性，准确性要求极高的系统，绝不容许这三中情况的出现，
-相比第四种情况不会影响数据的真实性，在很多情况下是允许的，如社交论坛等实时性要求不高的系统！
-综上四个情况，我们可以大致这样简单的理解（最初说的两种事务的自由组合2*2=4）：
-* 修改时允许修改（丢失更新）
-* 修改时允许读取（脏读）
-* 读取时允许修改（不可重复读）
-* 读取时允许插入（幻读）
-从上到下问题越来越不严重，但所需的性能开销却越大。因为不同的系统允许不同级别的情况，所以就出现了事务隔离这么一个东东，来允许我们设定数据库的并发行为。
-
-总结下如果不考虑事务的隔离性，会发生的几种问题：
-
-* 脏读
-    * 脏读是指在一个事务处理过程里读取了另一个未提交的事务中的数据。
-    * 当一个事务正在多次修改某个数据，而在这个事务中这多次的修改都还未提交，这时一个并发的事务来访问该数据，就会造成两个事务得到的数据不一致。例如：用户A向用户B转账100元，对应SQL命令如下
-        * update account set money=money+100 where name=’B’;  (此时A通知B)
-        * update account set money=money - 100 where name=’A’;
-    * 当只执行第一条SQL时，A通知B查看账户，B发现确实钱已到账（此时即发生了脏读），而之后无论第二条SQL是否执行，只要该事务不提交，则所有操作都将回滚，那么当B以后再次查看账户时就会发现钱其实并没有转。
-* 不可重复读
-    * 不可重复读是指在对于数据库中的某个数据，一个事务范围内多次查询却返回了不同的数据值，这是由于在查询间隔，被另一个事务修改并提交了。
-    * 例如事务T1在读取某一数据，而事务T2立马修改了这个数据并且提交事务给数据库，事务T1再次读取该数据就得到了不同的结果，发送了不可重复读。
-    * 不可重复读和脏读的区别是，脏读是某一事务读取了另一个事务未提交的脏数据，而不可重复读则是读取了前一事务提交的数据。
-    * 在某些情况下，不可重复读并不是问题，比如我们多次查询某个数据当然以最后查询得到的结果为主。但在另一些情况下就有可能发生问题，例如对于同一个数据A和B依次查询就可能不同，A和B就可能打起来了……
-* 虚读(幻读)
-    * 幻读是事务非独立执行时发生的一种现象。例如事务T1对一个表中所有的行的某个数据项做了从“1”修改为“2”的操作，这时事务T2又对这个表中插入了一行数据项，而这个数据项的数值还是为“1”并且提交给数据库。而操作事务T1的用户如果再查看刚刚修改的数据，会发现还有一行没有修改，其实这行是从事务T2中添加的，就好像产生幻觉一样，这就是发生了幻读。
-    * 幻读和不可重复读都是读取了另一条已经提交的事务（这点就脏读不同），所不同的是不可重复读查询的都是同一个数据项，而幻读针对的是一批数据整体（比如数据的个数）。
-
-SQL标准定义了4类隔离级别，包括了一些具体规则，用来限定事务内外的哪些改变是可见的，哪些是不可见的。低级别的隔离级一般支持更高的并发处理，并拥有更低的系统开销。
-MySQL数据库的四种事务隔离级别
-* Read Uncommitted（读取未提交内容）
-    * 在该隔离级别，所有事务都可以看到其他未提交事务的执行结果。本隔离级别很少用于实际应用，因为它的性能也不比其他级别好多少。读取未提交的数据，也被称之为脏读（Dirty Read）；
-* Read Committed（读取提交内容）
-    * 这是大多数数据库系统的默认隔离级别（但不是MySQL默认的）。它满足了隔离的简单定义：一个事务只能看见已经提交事务所做的改变。这种隔离级别 也支持所谓的不可重复读（Nonrepeatable Read），因为同一事务的其他实例在该实例处理其间可能会有新的commit，所以同一select可能返回不同结果；
-* Repeatable Read（可重读）
-    * 这是MySQL的默认事务隔离级别，它确保同一事务的多个实例在并发读取数据时，会看到同样的数据行。不过理论上，这会导致另一个棘手的问题：幻读 （Phantom Read）。
-    * 简单的说，幻读指当用户读取某一范围的数据行时，另一个事务又在该范围内插入了新行，当用户再读取该范围的数据行时，会发现有新的“幻影” 行。
-    * InnoDB和Falcon存储引擎通过多版本并发控制（MVCC，Multiversion Concurrency Control）机制解决了该问题
-* Serializable（可串行化） 
-    * 这是最高的隔离级别，它通过强制事务排序，使之不可能相互冲突，从而解决幻读问题。简言之，它是在每个读的数据行上加上共享锁。在这个级别，可能导致大量的超时现象和锁竞争。
-    * 这四种隔离级别采取不同的锁类型来实现，若读取的是同一个数据的话，就容易发生问题。例如：
-        * 脏读(Drity Read)：某个事务已更新一份数据，另一个事务在此时读取了同一份数据，由于某些原因，前一个RollBack了操作，则后一个事务所读取的数据就会是不正确的。
-        * 不可重复读(Non-repeatable read):在一个事务的两次查询之中数据不一致，这可能是两次查询过程中间插入了一个事务更新的原有的数据。
-        * 幻读(Phantom Read):在一个事务的两次查询中数据笔数不一致，例如有一个事务查询了几列(Row)数据，而另一个事务却在此时插入了新的几列数据，先前的事务在接下来的查询中，就会发现有几列数据是它先前所没有的。
-         
-在MySQL中，实现了这四种隔离级别，分别有可能产生问题如下所示：
-* Serializable (串行化)：可避免脏读、不可重复读、幻读的发生。
-* Repeatable read (可重复读)：可避免脏读、不可重复读的发生。
-* Read committed (读已提交)：可避免脏读的发生。
-* Read uncommitted (读未提交)：最低级别，任何情况都无法保证。
-
-　　以上四种隔离级别最高的是Serializable级别，最低的是Read uncommitted级别，当然级别越高，执行效率就越低。像Serializable这样的级别，就是以锁表的方式(类似于Java多线程中的锁)使得其他的线程只能在锁外等待，所以平时选用何种隔离级别应该根据实际情况。在MySQL数据库中默认的隔离级别为Repeatable read (可重复读)。
-
-　　在MySQL数据库中，支持上面四种隔离级别，默认的为Repeatable read (可重复读)；而在Oracle数据库中，只支持Serializable (串行化)级别和Read committed (读已提交)这两种级别，其中默认的为Read committed级别。
-
-
-总结：
-
-隔离级别越高，越能保证数据的完整性和一致性，但是对并发性能的影响也越大。
-大多数的数据库默认隔离级别为 Read Commited，比如 SqlServer、Oracle
-少数数据库默认隔离级别为：Repeatable Read 比如： MySQL InnoDB
-
-补充：
-　　1、SQL规范所规定的标准，不同的数据库具体的实现可能会有些差异
-　　2、mysql中默认事务隔离级别是可重复读时并不会锁住读取到的行
-　　3、事务隔离级别为读提交时，写数据只会锁住相应的行
-　　4、事务隔离级别为可重复读时，如果有索引（包括主键索引）的时候，以索引列为条件更新数据，会存在间隙锁间隙锁、行锁、下一键锁的问题，从而锁住一些行；如果没有索引，更新数据时会锁住整张表。
-    5、事务隔离级别为串行化时，读写数据都会锁住整张表
-    6、隔离级别越高，越能保证数据的完整性和一致性，但是对并发性能的影响也越大，鱼和熊掌不可兼得啊。对于多数应用程序，可以优先考虑把数据库系统的隔离级别设为Read Committed，它能够避免脏读取，而且具有较好的并发性能。尽管它会导致不可重复读、幻读这些并发问题，在可能出现这类问题的个别场合，可以由应用程序采用悲观锁或乐观锁来控制。
-
-**事务的分类**
-* 数据库分为本地事务跟全局事务
-    * 本地事务：普通事务，独立一个数据库，能保证在该数据库上操作的ACID。
-    * 分布式事务：涉及两个或多个数据库源的事务，即跨越多台同类或异类数据库的事务（由每台数据库的本地事务组成的），分布式事务旨在保证这些本地事务的所有操作的ACID，使事务可以跨越多台数据库；
-* Java事务类型分为JDBC事务跟JTA事务
-    * JDBC事务：即为上面说的数据库事务中的本地事务，通过connection对象控制管理。
-    * JTA事务：JTA指Java事务API(Java Transaction API)，是Java EE数据库事务规范， JTA只提供了事务管理接口，由应用程序服务器厂商（如WebSphere Application Server）提供实现，JTA事务比JDBC更强大，支持分布式事务。
-* 按是否通过编程分为声明式事务和编程式事务，参考http://blog.csdn.net/liaohaojian/article/details/70139151
-    * 声明式事务：通过XML配置或者注解实现。
-    * 编程式事务：通过编程代码在业务逻辑时需要时自行实现，粒度更小。
-
-**事务的基本原理**
-Spring事务的本质其实就是数据库对事务的支持，没有数据库的事务支持，spring是无法提供事务功能的。对于纯JDBC操作数据库，想要用到事务，可以按照以下步骤进行：
-
-* 获取连接 Connection con = DriverManager.getConnection()
-* 开启事务con.setAutoCommit(true/false);
-* 执行CRUD
-* 提交事务/回滚事务 con.commit() / con.rollback();
-* 关闭连接 conn.close()；
-
-使用Spring的事务管理功能后，我们可以不再写步骤 2 和 4 的代码，而是由Spirng 自动完成。那么Spring是如何在我们书写的 CRUD 之前和之后开启事务和关闭事务的呢？解决这个问题，也就可以从整体上理解Spring的事务管理实现原理了。下面简单地介绍下，注解方式为例子
-
-* 配置文件开启注解驱动，在相关的类和方法上通过注解@Transactional标识。
-* spring 在启动的时候会去解析生成相关的bean，这时候会查看拥有相关注解的类和方法，并且为这些类和方法生成代理，并根据@Transaction的相关参数进行相关配置注入，这样就在代理中为我们把相关的事务处理掉了（开启正常提交事务，异常回滚事务）。
-* 真正的数据库层的事务提交和回滚是通过binlog或者redo log实现的
-
-
-#### 1.1.9.2. Spring 对事务管理的支持
-<a href="#menu" style="float:right">目录</a>
-
-##### 1.1.9.2.1. Spring事务传播行为和隔离级别
-
-**嵌套事务**
-嵌套是子事务套在父事务中执行，子事务是父事务的一部分，在进入子事务之前，父事务建立一个回滚点，叫save point，然后执行子事务，这个子事务的执行也算是父事务的一部分，然后子事务执行结束，父事务继续执行。重点就在于那个save point。看几个问题就明了了：
-
-* 如果子事务回滚，会发生什么？
-父事务会回滚到进入子事务前建立的save point，然后尝试其他的事务或者其他的业务逻辑，父事务之前的操作不会受到影响，更不会自动回滚。
-
-* 如果父事务回滚，会发生什么？
-父事务回滚，子事务也会跟着回滚！为什么呢，因为父事务结束之前，子事务是不会提交的，我们说子事务是父事务的一部分，正是这个道理。
-
-* 事务的提交，是什么情况？
-是父事务先提交，然后子事务提交，还是子事务先提交，父事务再提交？答案是第二种情况，还是那句话，子事务是父事务的一部分，由父事务统一提交。
-
-
-**事务传播行为**
-* PROPAGATION_REQUIRED
-    * 如果存在一个事务，则支持当前事务。如果没有事务则开启一个新的事务。
-    * 默认的spring事务传播级别，使用该级别的特点是，如果上下文中已经存在事务，那么就加入到事务中执行，如果当前上下文中不存在事务，则新建事务执行。所以这个级别通常能满足处理大多数的业务场景。
-* PROPAGATION_SUPPORTS 
-    * 如果存在一个事务，支持当前事务。如果没有事务，则非事务的执行。但是对于事务同步的事务管理器，PROPAGATION_SUPPORTS与不使用事务有少许不同。
-    * 从字面意思就知道，supports，支持，该传播级别的特点是，如果上下文存在事务，则支持事务加入事务，如果没有事务，则使用非事务的方式执行。所以说，并非所有的包在transactionTemplate.execute中的代码都会有事务支持。这个通常是用来处理那些并非原子性的非核心业务逻辑操作。应用场景较少。
-* PROPAGATION_MANDATORY 
-    * 如果已经存在一个事务，支持当前事务。如果没有一个活动的事务，则抛出异常。
-    * 该级别的事务要求上下文中必须要存在事务，否则就会抛出异常！配置该方式的传播级别是有效的控制上下文调用代码遗漏添加事务控制的保证手段。比如一段代码不能单独被调用执行，但是一旦被调用，就必须有事务包含的情况，就可以使用这个传播级别。
-* PROPAGATION_REQUIRES_NEW
-    * 总是开启一个新的事务。如果一个事务已经存在，则将这个存在的事务挂起。
-    * 从字面即可知道，new，每次都要一个新事务，该传播级别的特点是，每次都会新建一个事务，并且同时将上下文中的事务挂起，执行当前新建事务完成以后，上下文事务恢复再执行。
-    * 这是一个很有用的传播级别，举一个应用场景：现在有一个发送100个红包的操作，在发送之前，要做一些系统的初始化、验证、数据记录操作，然后发送100封红包，然后再记录发送日志，发送日志要求100%的准确，如果日志不准确，那么整个父事务逻辑需要回滚。怎么处理整个业务需求呢？就是通过这个PROPAGATION_REQUIRES_NEW 级别的事务传播控制就可以完成。发送红包的子事务不会直接影响到父事务的提交和回滚。
-* PROPAGATION_NOT_SUPPORTED 
-    * 总是非事务地执行，并挂起任何存在的事务。
-    * 这个也可以从字面得知，not supported ，不支持，当前级别的特点就是上下文中存在事务，则挂起事务，执行当前逻辑，结束后恢复上下文的事务。
-    * 这个级别有什么好处？可以帮助你将事务极可能的缩小。我们知道一个事务越大，它存在的风险也就越多。所以在处理事务的过程中，要保证尽可能的缩小范围。比如一段代码，是每次逻辑操作都必须调用的，比如循环1000次的某个非核心业务逻辑操作。这样的代码如果包在事务中，势必造成事务太大，导致出现一些难以考虑周全的异常情况。所以这个事务这个级别的传播级别就派上用场了。用当前级别的事务模板抱起来就可以了。
-* PROPAGATION_NEVER
-    * 总是非事务地执行，如果存在一个活动事务，则抛出异常
-    * 该事务更严格，上面一个事务传播级别只是不支持而已，有事务就挂起，而PROPAGATION_NEVER传播级别要求上下文中不能存在事务，一旦有事务，就抛出runtime异常，强制停止执行！
-* PROPAGATION_NESTED
-    * 如果一个活动的事务存在，则运行在一个嵌套的事务中. 如果没有活动事务, 则按TransactionDefinition.PROPAGATION_REQUIRED 属性执行
-    * 字面也可知道，nested，嵌套级别事务。该传播级别特征是，如果上下文中存在事务，则嵌套事务执行，如果不存在事务，则新建事务
-
-
-**例子讲解以上七中事务传播机制**
-假设有类A的方法methodB(),有类B的方法methodB().
-![](https://img-blog.csdn.net/20170228222731090)
-
-* **PROPAGATION_REQUIRED**
-
-A.methodA()调用B的methodB()方法，那么如果A的方法包含事务，则B的方法则不重新开启事务，
-1. 如果B的methodB()抛出异常，A的methodB()没有捕获，则A和B的事务都会回滚；
-2. 如果B的methodB()运行期间异常会导致B的methodB()的回滚，A如果捕获了异常，并正常提交事务，则会发生Transaction rolled back because it has been marked as rollback-only的异常。
-3. 如果A的methodA()运行期间异常，则A和B的Method的事务都会被回滚
-
-* **PROPAGATION_SUPPORTS**
-
-A.methodA()调用B的methodB()方法，那么如果A的方法包含事务，则B运行在此事务环境中，如果A的方法不包含事务，则B运行在非事务环境；
-1. 如果A没有事务，则A和B的运行出现异常都不会回滚。
-2. 如果A有事务，A的method方法执行抛出异常，B.methodB和A.methodA都会回滚。
-3. 如果A有事务，B.method抛出异常，B.methodB和A.methodA都会回滚，如果A捕获了B.method抛出的异常，则会出现异常Transactionrolled back because it has been marked as rollback-only。
-
- 
-
-* **PROPAGATION_MANDATORY**
-
-表示当前方法必须在一个事务中运行，如果没有事务，将抛出异常，如下图调用关系：
-B.methodB()事务传播特性定义为:PROPAGATION_MANDATORY
-1. 如果A的methoda()方法没有事务运行环境，则B的methodB()执行的时候会报如下异常：No existingtransaction found for transaction marked with propagation 'mandatory'
-2. 如果A的Methoda()方法有事务并且执行过程中抛出异常，则A.methoda（）和B.methodb（）执行的操作被回滚；
-3. 如果A的methoda()方法有事务，则B.methodB()抛出异常时，A的methoda()和B.methodB()都会被回滚；如果A捕获了B.method抛出的异常，则会出现异常Transaction rolled back because ithas been marked as rollback-only
-
-* **PROPAGATION_NESTED**
-
-B的methodB()定义的事务为PROPAGATION_NESTED；
-1. 如果A的MethodA()不存在事务，则B的methodB()运行在一个新的事务中，B.method()抛出的异常，B.methodB()回滚,但A.methodA()不回滚；如果A.methoda()抛出异常，则A.methodA()和B.methodB()操作不回。
-2. 如果A的methodA()存在事务，则A的methoda()抛出异常，则A的methoda()和B的Methodb()都会被回滚；
-3. 如果A的MethodA()存在事务，则B的methodB()抛出异常，B.methodB()回滚，如果A不捕获异常，则A.methodA()和B.methodB()都会回滚，如果A捕获异常，则B.methodB()回滚,A不回滚；
-
-* **PROPAGATION_NEVER**
-
-表示事务传播特性定义为PROPAGATION_NEVER的方法不应该运行在一个事务环境中
-
-如果B.methodB()的事务传播特性被定义为PROPAGATION_NEVER，则如果A.methodA()方法存在事务，则会出现异常Existingtransaction found for transaction marked with propagation 'never'。
-
-* **PROPAGATION_REQUIRES_NEW**
-
-表示事务传播特性定义为PROPAGATION_REQUIRES_NEW的方法需要运行在一个新的事务中。
-1. 如果A存在事务，A.methodA()抛出异常，A.methodA()的事务被回滚，但B.methodB()事务不受影响；如果B.methodB()抛出异常，A不捕获的话，A.methodA()和B.methodB()的事务都会被回滚。如果A捕获的话，A.methodA()的事务不受影响但B.methodB()的事务回滚。
-
-* **PROPAGATION_NOT_SUPPORTED**
-
-表示该方法不应该在一个事务中运行。如果有一个事务正在运行，他将在运行期被挂起，直到这个事务提交或者回滚才恢复执行。
-1. 如果A.methodA()存在事务，如果B.methodB()抛出异常，A.methodA()不捕获的话，A.methodA()的事务被回滚，而B.methodB()出现异常前数据库操作不受影响。如果A.methodA()捕获的话，则A.methodA()的事务不受影响，B.methodB()异常抛出前的数据操作不受影响。
-
-
-**实际场景中的七大事务传播行为的使用**
-1. 在一个话费充值业务处理逻辑中，有如下图所示操作:
-![](https://img-blog.csdn.net/20170228222113143?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcG1sMTg3MTA5NzMwMzY=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
-
-业务需要扣款操作和创建订单操作同成功或者失败，因此，charger()和order()的事务不能相互独立，需要包含在chargeHandle()的事务中；
-通过以上需求，可以给charge()和order()的事务传播行为定义成：PROPAGATION_MANDATORY
-只要charge()或者order()抛出异常整个chargeHandle()都一起回滚，即使chargeHandle()捕获异常也没用，不允许提交事务。
-
-2. 如果业务需求每接受到一次请求到要记录日志到数据库，如下图：
-![](https://img-blog.csdn.net/20170228222320615?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcG1sMTg3MTA5NzMwMzY=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
-
-因为log()的操作不管扣款和创建订单成功与否都要生成日志，并且日志的操作成功与否不影响充值处理，所以log()方法的事务传播行为可以定义为:PROPAGATION_REQUIRES_NEW.
-
-3. 在订单的售后处理中，更新完订单金额后，需要自动统计销售报表，如下图所示：
-![](https://img-blog.csdn.net/20170228222423429)
-根据业务可知，售后是已经处理完订单的充值请求后的功能，是对订单的后续管理，统计报表report()方法耗时较长，因此，我们需要设置report()的事务传播行为为:PROPAGATION_NEVER,表示不适合在有事务的操作中调用，因为report()太耗时。
-
-
-4. 在银行新增银行卡业务中，需要执行两个操作，一个是保存银行卡信息，一个是登记新创建的银行卡信息，其中登记银行卡信息成功与否不影响银行卡的创建。
-![](https://img-blog.csdn.net/20170228222634004)
-
-
-由以上需求，我们可知对于regster()方法的事务传播行为，可以设置为PROPAGATION_NESTED，action()事务的回滚，regster()保存的信息就没意义，也就需要跟着回滚，而regster()的回滚不影响action()事务；insert()的事务传播行为可以设置为PROPAGATION_REQUIRED, PROPAGATION_MANDATORY，即insert()回滚事务，action()的事务必须跟着回滚。
-
-
-
-
-
-**spring 什么情况下进行事务回滚**
-
-Spring、EJB的声明式事务默认情况下都是在抛出unchecked exception后才会触发事务的回滚
-
-unchecked异常,即运行时异常runntimeException 回滚事务;
-
-checked异常,即Exception可try{}捕获的不会回滚.当然也可配置spring参数让其回滚.
-
-spring的事务边界是在调用业务方法之前开始的，业务方法执行完毕之后来执行commit or rollback(Spring默认取决于是否抛出runtime异常).
-如果抛出runtime exception 并在你的业务方法中没有catch到的话，事务会回滚。
-一般不需要在业务方法中catch异常，如果非要catch，在做完你想做的工作后（比如关闭文件等）一定要抛出runtime exception，否则spring会将你的操作commit,这样就会产生脏数据.所以你的catch代码是画蛇添足。
-
-**Spring中的隔离级别**
-|常量|	解释|
-|---|---|
-|ISOLATION_DEFAULT|	这是个 PlatfromTransactionManager 默认的隔离级别，使用数据库默认的事务隔离级别。另外四个与 JDBC 的隔离级别相对应。
-|ISOLATION_READ_UNCOMMITTED	|这是事务最低的隔离级别，它充许另外一个事务可以看到这个事务未提交的数据。这种隔离级别会产生脏读，不可重复读和幻像读。
-|ISOLATION_READ_COMMITTED|	保证一个事务修改的数据提交后才能被另外一个事务读取。另外一个事务不能读取该事务未提交的数据。
-|ISOLATION_REPEATABLE_READ|	这种事务隔离级别可以防止脏读，不可重复读。但是可能出现幻像读。
-|ISOLATION_SERIALIZABLE|这是花费最高代价但是最可靠的事务隔离级别。事务被处理为顺序执行。
-
-##### 1.1.9.2.2. 事务管理关键抽象
-
-事务管理的抽象主要包含以下三个接口
+ApplicationContextAware是上下文ApplicationContex提供的,也是和BeanFactory的区别.
+
+**总结**
+ApplicationContex的Bean生命周期
+
+1. 启动容器
+2. 调用BeanFactoryPostProcessor的postProcessBeanFactory方法对工厂定义信息进行后处理
+3. 通过getBean调用一个Bean
+4. 调用InstantiationAwareBeanPostProcessor的postProcessBeforeInstantiation方法
+5. 实例化
+6. 调用InstantiationAwareBeanPostProcessor的postProcessAfterInstantiation方法
+7. 调用InstantiationAwareBeanPostProcessor的postProcessPropertyValues方法
+8. 设置属性值
+9. 调用BeanNameAware的setBeanName
+10. 调用BeanFactoryAware的setBeanFactory
+11. 调用ApplicationContextAware的setApplicationContext
+12. 调用BeanPostProcessor的postProcessBeforeInitialization方法
+13. 调用init-method配置的方法
+14. 调用InitializingBean的afterPropertiesSet
+15. 调用BeanPostProcessor的postProcessAfterInitialization方法
+16. 如果是单例,则放入单例缓存池中,创建阶段完成.如果容器销毁,则调用DisposableBean的destroy().最后调用定义的destory-method销毁方法
+17. 如果是prototype,则将准备就绪的Bean交给调用者
+ 
 ```java
-org.springframework.transaction.PlatformTransactionManager
-org.springframework.transaction.TransactionDefinition
-org.springframework.transaction.TransactionStatus
-```
+//org.springframework.beans.factory.config.BeanPostProcessor
+void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException;
 
-**org.springframework.transaction.TransactionDefinition**
-用于描述事务的隔离级别，超时时间，是否是只读事务和事务传播规则等控制事务具体行为的事务属性，这些事务属性可以通过XML方式、注解、编程方式指定
-PlatformTransactionManager根据TransactionDefinition指定的参数创建事务，并用TransactionStatus描述事务状态
+//org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor
+Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName)
+boolean postProcessAfterInstantiation(Object bean, String beanName) 
+PropertyValues postProcessPropertyValues(PropertyValues pvs, PropertyDescriptor[] pds, Object bean, String beanName)
 
+//org.springframework.beans.factory.BeanNameAware
+void setBeanName(String name);
+//org.springframework.beans.factory.BeanFactoryAware
+void setBeanFactory(BeanFactory beanFactory) throws BeansException;
 
-* **TransactionDefinition**
-定义了事务传播行为和隔离特性的常量
-```java
+//org.springframework.context.ApplicationContextAware
+void setApplicationContext(ApplicationContext applicationContext) throws BeansException;
 
-package org.springframework.transaction;
+//org.springframework.beans.factory.config.BeanPostProcessor
+Object postProcessBeforeInitialization(Object bean, String beanName) 
+Object postProcessAfterInitialization(Object bean, String beanName) 
 
-import org.springframework.lang.Nullable;
+//org.springframework.beans.factory.InitializingBean
+void afterPropertiesSet()
 
-public interface TransactionDefinition {
-
-    //事务传播行为
-	int PROPAGATION_REQUIRED = 0;
-	int PROPAGATION_SUPPORTS = 1;
-	int PROPAGATION_MANDATORY = 2;
-	int PROPAGATION_REQUIRES_NEW = 3;
-	int PROPAGATION_NOT_SUPPORTED = 4;
-	int PROPAGATION_NEVER = 5;
-	int PROPAGATION_NESTED = 6;
-    //事务隔离特性
-	int ISOLATION_DEFAULT = -1;
-	int ISOLATION_READ_UNCOMMITTED = 1;  // same as java.sql.Connection.TRANSACTION_READ_UNCOMMITTED;
-	int ISOLATION_READ_COMMITTED = 2;  // same as java.sql.Connection.TRANSACTION_READ_COMMITTED;
-	int ISOLATION_REPEATABLE_READ = 4;  // same as java.sql.Connection.TRANSACTION_REPEATABLE_READ;
-	int ISOLATION_SERIALIZABLE = 8;  // same as java.sql.Connection.TRANSACTION_SERIALIZABLE;
-
-    //事务超时时间，超时时间到就执行回滚
-	int TIMEOUT_DEFAULT = -1;
-
-
-	default int getPropagationBehavior() {
-		return PROPAGATION_REQUIRED;
-	}
-	default int getIsolationLevel() {
-		return ISOLATION_DEFAULT;
-	}
-
-	default int getTimeout() {
-		return TIMEOUT_DEFAULT;
-	}
-
-    //只读状态，只读事务会进行相关的优化，提高运行性能
-	default boolean isReadOnly() {
-		return false;
-	}
-    //事务名称
-	@Nullable
-	default String getName() {
-		return null;
-	}
-
-	static TransactionDefinition withDefaults() {
-		return StaticTransactionDefinition.INSTANCE;
-	}
-
-}
+//org.springframework.beans.factory.DisposableBean
+void destroy()
 
 ```
 
-* **TransactionStatus**
-
-TransactionStatus代表一个事务的具体运行状态，事务管理器可以通过该接口获取事务运行期的状态信息，也可以通过该接口间接的回滚事务。相比于抛出异常时回滚事务的方式更具有可控性。
-SavepointManager基于JDBC3.0保存点的分段事务控制能力提供了嵌套事务的机制
-```java
-public interface SavepointManager {
-
-	/**
-	 * Create a new savepoint. You can roll back to a specific savepoint
-	 * via {@code rollbackToSavepoint}, and explicitly release a savepoint
-	 * that you don't need anymore via {@code releaseSavepoint}.
-	 * <p>Note that most transaction managers will automatically release
-	 * savepoints at transaction completion.
-	 * @return a savepoint object, to be passed into
-	 * {@link #rollbackToSavepoint} or {@link #releaseSavepoint}
-	 * @throws NestedTransactionNotSupportedException if the underlying
-	 * transaction does not support savepoints
-	 * @throws TransactionException if the savepoint could not be created,
-	 * for example because the transaction is not in an appropriate state
-	 * @see java.sql.Connection#setSavepoint
-	 */
-     //创建保存点对象
-	Object createSavepoint() throws TransactionException;
-
-	/**
-	 * Roll back to the given savepoint.
-	 * <p>The savepoint will <i>not</i> be automatically released afterwards.
-	 * You may explicitly call {@link #releaseSavepoint(Object)} or rely on
-	 * automatic release on transaction completion.
-	 * @param savepoint the savepoint to roll back to
-	 * @throws NestedTransactionNotSupportedException if the underlying
-	 * transaction does not support savepoints
-	 * @throws TransactionException if the rollback failed
-	 * @see java.sql.Connection#rollback(java.sql.Savepoint)
-	 */
-     //将事务回滚到特定的保存点上，被回滚的保存点将自动释放
-	void rollbackToSavepoint(Object savepoint) throws TransactionException;
-
-	/**
-	 * Explicitly release the given savepoint.
-	 * <p>Note that most transaction managers will automatically release
-	 * savepoints on transaction completion.
-	 * <p>Implementations should fail as silently as possible if proper
-	 * resource cleanup will eventually happen at transaction completion.
-	 * @param savepoint the savepoint to release
-	 * @throws NestedTransactionNotSupportedException if the underlying
-	 * transaction does not support savepoints
-	 * @throws TransactionException if the release failed
-	 * @see java.sql.Connection#releaseSavepoint
-	 */
-     //释放保存点，如果事务提交，则所有的保存点将会自动释放，无需手动清除
-	void releaseSavepoint(Object savepoint) throws TransactionException;
-
-}
-public interface TransactionExecution {
-
-	/**
-	 * Return whether the present transaction is new; otherwise participating
-	 * in an existing transaction, or potentially not running in an actual
-	 * transaction in the first place.
-	 */
-     //是否是一个新事务，false:当前事务是一个已经存在的事务，或者当前未运行在事务环境中
-	boolean isNewTransaction();
-
-	/**
-	 * Set the transaction rollback-only. This instructs the transaction manager
-	 * that the only possible outcome of the transaction may be a rollback, as
-	 * alternative to throwing an exception which would in turn trigger a rollback.
-	 */
-     
-	void setRollbackOnly();
-
-	/**
-	 * Return whether the transaction has been marked as rollback-only
-	 * (either by the application or by the transaction infrastructure).
-	 */
-	boolean isRollbackOnly();
-
-	/**
-	 * Return whether this transaction is completed, that is,
-	 * whether it has already been committed or rolled back.
-	 */
-     //事务是否已经结束(提交或者回滚)
-	boolean isCompleted();
-
-}
-
-
-public interface TransactionStatus extends TransactionExecution, SavepointManager, Flushable {
-
-
-	/**
-	 * Return whether this transaction internally carries a savepoint,
-	 * that is, has been created as nested transaction based on a savepoint.
-	 * <p>This method is mainly here for diagnostic purposes, alongside
-	 * {@link #isNewTransaction()}. For programmatic handling of custom
-	 * savepoints, use the operations provided by {@link SavepointManager}.
-	 * @see #isNewTransaction()
-	 * @see #createSavepoint()
-	 * @see #rollbackToSavepoint(Object)
-	 * @see #releaseSavepoint(Object)
-	 */
-     //判断当前事务是否内部创建了一个保存点
-	boolean hasSavepoint();
-
-	/**
-	 * Flush the underlying session to the datastore, if applicable:
-	 * for example, all affected Hibernate/JPA sessions.
-	 * <p>This is effectively just a hint and may be a no-op if the underlying
-	 * transaction manager does not have a flush concept. A flush signal may
-	 * get applied to the primary resource or to transaction synchronizations,
-	 * depending on the underlying resource.
-	 */
-	@Override
-	void flush();
-
-}
-```
-
-* **PlatformTransactionManager**
-
-
-```java
-
-package org.springframework.transaction;
-
-import org.springframework.lang.Nullable;
-
-/**
-
- * @author Rod Johnson
- * @author Juergen Hoeller
- * @since 16.05.2003
- * @see org.springframework.transaction.support.TransactionTemplate
- * @see org.springframework.transaction.interceptor.TransactionInterceptor
- */
-public interface PlatformTransactionManager extends TransactionManager {
-
-	/**
-	 * Return a currently active transaction or create a new one, according to
-	 * the specified propagation behavior.
-	 * <p>Note that parameters like isolation level or timeout will only be applied
-	 * to new transactions, and thus be ignored when participating in active ones.
-	 * <p>Furthermore, not all transaction definition settings will be supported
-	 * by every transaction manager: A proper transaction manager implementation
-	 * should throw an exception when unsupported settings are encountered.
-	 * <p>An exception to the above rule is the read-only flag, which should be
-	 * ignored if no explicit read-only mode is supported. Essentially, the
-	 * read-only flag is just a hint for potential optimization.
-	 * @param definition the TransactionDefinition instance (can be {@code null} for defaults),
-	 * describing propagation behavior, isolation level, timeout etc.
-	 * @return transaction status object representing the new or current transaction
-	 * @throws TransactionException in case of lookup, creation, or system errors
-	 * @throws IllegalTransactionStateException if the given transaction definition
-	 * cannot be executed (for example, if a currently active transaction is in
-	 * conflict with the specified propagation behavior)
-	 * @see TransactionDefinition#getPropagationBehavior
-	 * @see TransactionDefinition#getIsolationLevel
-	 * @see TransactionDefinition#getTimeout
-	 * @see TransactionDefinition#isReadOnly
-	 */
-	TransactionStatus getTransaction(@Nullable TransactionDefinition definition)
-			throws TransactionException;
-
-	/**
-	 * Commit the given transaction, with regard to its status. If the transaction
-	 * has been marked rollback-only programmatically, perform a rollback.
-	 * <p>If the transaction wasn't a new one, omit the commit for proper
-	 * participation in the surrounding transaction. If a previous transaction
-	 * has been suspended to be able to create a new one, resume the previous
-	 * transaction after committing the new one.
-	 * <p>Note that when the commit call completes, no matter if normally or
-	 * throwing an exception, the transaction must be fully completed and
-	 * cleaned up. No rollback call should be expected in such a case.
-	 * <p>If this method throws an exception other than a TransactionException,
-	 * then some before-commit error caused the commit attempt to fail. For
-	 * example, an O/R Mapping tool might have tried to flush changes to the
-	 * database right before commit, with the resulting DataAccessException
-	 * causing the transaction to fail. The original exception will be
-	 * propagated to the caller of this commit method in such a case.
-	 * @param status object returned by the {@code getTransaction} method
-	 * @throws UnexpectedRollbackException in case of an unexpected rollback
-	 * that the transaction coordinator initiated
-	 * @throws HeuristicCompletionException in case of a transaction failure
-	 * caused by a heuristic decision on the side of the transaction coordinator
-	 * @throws TransactionSystemException in case of commit or system errors
-	 * (typically caused by fundamental resource failures)
-	 * @throws IllegalTransactionStateException if the given transaction
-	 * is already completed (that is, committed or rolled back)
-	 * @see TransactionStatus#setRollbackOnly
-	 */
-	void commit(TransactionStatus status) throws TransactionException;
-
-	/**
-	 * Perform a rollback of the given transaction.
-	 * <p>If the transaction wasn't a new one, just set it rollback-only for proper
-	 * participation in the surrounding transaction. If a previous transaction
-	 * has been suspended to be able to create a new one, resume the previous
-	 * transaction after rolling back the new one.
-	 * <p><b>Do not call rollback on a transaction if commit threw an exception.</b>
-	 * The transaction will already have been completed and cleaned up when commit
-	 * returns, even in case of a commit exception. Consequently, a rollback call
-	 * after commit failure will lead to an IllegalTransactionStateException.
-	 * @param status object returned by the {@code getTransaction} method
-	 * @throws TransactionSystemException in case of rollback or system errors
-	 * (typically caused by fundamental resource failures)
-	 * @throws IllegalTransactionStateException if the given transaction
-	 * is already completed (that is, committed or rolled back)
-	 */
-	void rollback(TransactionStatus status) throws TransactionException;
-
-}
-
-```
-
-### 1.1.10. 切面编程AOP
+### 1.1.8. 切面编程AOP
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.1.10.1. AOP概述
+#### 1.1.8.1. AOP概述
 <a href="#menu" style="float:right">目录</a>
 
 在软件业，AOP为Aspect Oriented Programming的缩写，意为：面向切面编程，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。AOP是OOP的延续，是软件开发中的一个
@@ -2323,11 +3004,11 @@ Spring中，通过动态代理和动态字节码技术实现了AOP.
 * Spring AOP
     * 通过代理的方式向目标类织入增强代码
 
-#### 1.1.10.2. 切点函数
+#### 1.1.8.2. 切点函数
 <a href="#menu" style="float:right">目录</a>
 
 
-##### 1.1.10.2.1. 常用切点函数
+##### 1.1.8.2.1. 常用切点函数
 
 **方法切点函数**
 
@@ -2377,7 +3058,7 @@ com.xxx.AService 类型中的任意方法，任意类型返回结果，参数表
 如：this(com.xxx.IA)  代理对象 Proxy如果实现了IA接口，则作为连接点
 应用：针对某个具体的代理提供的配置。比target切点粒度细致。因为目标对象可以多实现。代理对象可以针对目标对象实现的多个接口的某一个接口，提供特定的切点。如，银行中的登录，银行中的账户种类非常多，且有交叉。如借记卡，贷记卡，借记还贷卡。。。。可以针对还贷接口提供一个切点，做还贷信息 的记录等。
 
-##### 1.1.10.2.2. 通配符
+##### 1.1.8.2.2. 通配符
 
 "*":匹配任意字符,但只能匹配上下文中的一个元素
 "..":匹配任意字符,可以匹配上下文中的多个元素,但在表示类时,必须和*联合使用,而在表示入参时则单独使用
@@ -2388,7 +3069,7 @@ com.xxx.AService 类型中的任意方法，任意类型返回结果，参数表
 * @xxx不支持通配符
 
 
-##### 1.1.10.2.3. 逻辑运算符
+##### 1.1.8.2.3. 逻辑运算符
 
 包括&&,||,!或者and ,or ,not
 
@@ -2397,58 +3078,58 @@ com.xxx.AService 类型中的任意方法，任意类型返回结果，参数表
 2. exection(* com.xxx.AService.*(..))|| exection(* com.xxx.AService.*(..))
 3. !exection(* com.xxx.AService.*(..))
 
-#### 1.1.10.3. 切点函数详解
+#### 1.1.8.3. 切点函数详解
 
-##### 1.1.10.3.1. @annotation()
+##### 1.1.8.3.1. @annotation()
 <a href="#menu" style="float:right">目录</a>
 
-##### 1.1.10.3.2. execution()
+##### 1.1.8.3.2. execution()
 <a href="#menu" style="float:right">目录</a>
 
-##### 1.1.10.3.3. args和@args()
+##### 1.1.8.3.3. args和@args()
 <a href="#menu" style="float:right">目录</a>
 
-##### 1.1.10.3.4. within()
+##### 1.1.8.3.4. within()
 <a href="#menu" style="float:right">目录</a>
 
-##### 1.1.10.3.5. @within()和@target()
+##### 1.1.8.3.5. @within()和@target()
 <a href="#menu" style="float:right">目录</a>
 
-##### 1.1.10.3.6. target()和this()
+##### 1.1.8.3.6. target()和this()
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.1.10.4. 切点函数高级用法
+#### 1.1.8.4. 切点函数高级用法
 
-##### 1.1.10.4.1. 切点复合运算
+##### 1.1.8.4.1. 切点复合运算
 <a href="#menu" style="float:right">目录</a>
 
-##### 1.1.10.4.2. 命名切点 
+##### 1.1.8.4.2. 命名切点 
 <a href="#menu" style="float:right">目录</a>
 
-##### 1.1.10.4.3. 增强织入的顺序
+##### 1.1.8.4.3. 增强织入的顺序
 <a href="#menu" style="float:right">目录</a>
 
-##### 1.1.10.4.4. 访问连接点信息
+##### 1.1.8.4.4. 访问连接点信息
 <a href="#menu" style="float:right">目录</a>
 
-##### 1.1.10.4.5. 绑定连接点方法入参
-<a href="#menu" style="float:right">目录</a>
-
-
-##### 1.1.10.4.6. 绑定代理对象
-<a href="#menu" style="float:right">目录</a>
-
-##### 1.1.10.4.7. 绑定类注解对象
-<a href="#menu" style="float:right">目录</a>
-
-##### 1.1.10.4.8. 绑定返回值
-<a href="#menu" style="float:right">目录</a>
-
-##### 1.1.10.4.9. 绑定抛出的异常
+##### 1.1.8.4.5. 绑定连接点方法入参
 <a href="#menu" style="float:right">目录</a>
 
 
-#### 1.1.10.5. Spring AOP案例
+##### 1.1.8.4.6. 绑定代理对象
+<a href="#menu" style="float:right">目录</a>
+
+##### 1.1.8.4.7. 绑定类注解对象
+<a href="#menu" style="float:right">目录</a>
+
+##### 1.1.8.4.8. 绑定返回值
+<a href="#menu" style="float:right">目录</a>
+
+##### 1.1.8.4.9. 绑定抛出的异常
+<a href="#menu" style="float:right">目录</a>
+
+
+#### 1.1.8.5. Spring AOP案例
 <a href="#menu" style="float:right">目录</a>
 
 引入依赖
@@ -2627,11 +3308,11 @@ public interface ProceedingJoinPoint extends JoinPoint {
 
 ```
 
-#### 1.1.10.6. 实现原理
+#### 1.1.8.6. 实现原理
 <a href="#menu" style="float:right">目录</a>
 
 
-##### 1.1.10.6.1. 五种通知的执行顺序
+##### 1.1.8.6.1. 五种通知的执行顺序
 
 **正常情况**
 
@@ -2643,7 +3324,7 @@ public interface ProceedingJoinPoint extends JoinPoint {
 ![](https://upload-images.jianshu.io/upload_images/12170632-46a72d800cf64036.jpeg?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
 
 
-##### 1.1.10.6.2. 代理实现
+##### 1.1.8.6.2. 代理实现
 Spring AOP通过动态代理和责任链模式来实现.
 在启动创建Bean时如果判断该方法有使用AOP功能,将会为该类创建代理对象并注入容器,当调用该类的方法时,将会被拦截,进而通过责任链模式一步步执行相关的切面代码.
 
@@ -2862,12 +3543,199 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 }
 
 ```
+### 1.1.9. Spring对DAO的支持
+<a href="#menu" style="float:right">目录</a>
 
-### 1.1.11. 事务管理器实现类
 
+#### 1.1.9.1. Spring DAO理念
+<a href="#menu" style="float:right">目录</a>
+
+
+#### 1.1.9.2. 统一的异常体系
+<a href="#menu" style="float:right">目录</a>
+
+
+#### 1.1.9.3. 统一的数据访问模板
+<a href="#menu" style="float:right">目录</a>
+
+
+#### 1.1.9.4. 数据源 
+<a href="#menu" style="float:right">目录</a>
+
+
+### 1.1.10. Spring事务管理
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.1.10.1. 数据库事务基础知识
+<a href="#menu" style="float:right">目录</a>
+
+**事务的四大特性（ACID）**
+如果一个数据库声称支持事务的操作，那么该数据库必须要具备以下四个特性：
+* 原子性（Atomicity）
+    * 原子性是指事务包含的所有操作要么全部成功，要么全部失败回滚，因此事务的操作如果成功就必须要完全应用到数据库，如果操作失败则不能对数据库有任何影响。
+* 一致性（Consistency）
+    * 一致性是指事务必须使数据库从一个一致性状态变换到另一个一致性状态，也就是说一个事务执行之前和执行之后都必须处于一致性状态。
+    * 拿转账来说，假设用户A和用户B两者的钱加起来一共是5000，那么不管A和B之间如何转账，转几次账，事务结束后两个用户的钱相加起来应该还得是5000，这就是事务的一致性。
+* 隔离性（Isolation）
+    * 隔离性是当多个用户并发访问数据库时，比如操作同一张表时，数据库为每一个用户开启的事务，不能被其他事务的操作所干扰，多个并发事务之间要相互隔离。
+    * 即要达到这么一种效果：对于任意两个并发的事务T1和T2，在事务T1看来，T2要么在T1开始之前就已经结束，要么在T1结束之后才开始，这样每个事务都感觉不到有其他事务在并发地执行。
+* 持久性（Durability）
+    * 持久性是指一个事务一旦被提交了，那么对数据库中的数据的改变就是永久性的，即便是在数据库系统遇到故障的情况下也不会丢失提交事务的操作。
+    * 例如我们在使用JDBC操作数据库时，在提交事务方法后，提示用户事务操作完成，当我们程序执行完成直到看到提示后，就可以认定事务以及正确提交，即使这时候数据库出现了问题，也必须要将我们的事务完全执行完成，否则就会造成我们看到提示事务处理完毕，但是数据库因为故障而没有执行事务的重大错误。
+
+**事务的隔离级别（默认事务级别为可重复读）**
+总的说，数据库事务无非就两种：读取事务（select）、修改事务（update,insert）。在没有事务隔离控制的时候，多个事务在同一时刻对同一数据的操作可能就会影响到最终期望的结果，通常有四种情况：
+* 两个更新事务同时修改一条数据时，很显然这种情况是最严重的了，程序中无论如何也不能出现这种情况，因为它会造成更新的丢失！
+* 一个更新事务更新一条数据时，另一个读取事务读取了还没提交的更新，这种情况下会出现读取到脏数据。
+* 一个读取事务读取一条数据时，另一个更新事务修改了这条数据，这时就会出现不可重现的读取。
+* 一个读取事务读取时，另一个插入事务（注意此处时插入）插入了一条新数据，这样就可能多读出一条数据，出现幻读。
+
+以上四种情况描述完毕，相信大家也发现规律了，前三种是对同一条数据的并发操作，对程序的结果可能产生致命影响，尤其是金融等实时性，准确性要求极高的系统，绝不容许这三中情况的出现，
+相比第四种情况不会影响数据的真实性，在很多情况下是允许的，如社交论坛等实时性要求不高的系统！
+综上四个情况，我们可以大致这样简单的理解（最初说的两种事务的自由组合2*2=4）：
+* 修改时允许修改（丢失更新）
+* 修改时允许读取（脏读）
+* 读取时允许修改（不可重复读）
+* 读取时允许插入（幻读）
+从上到下问题越来越不严重，但所需的性能开销却越大。因为不同的系统允许不同级别的情况，所以就出现了事务隔离这么一个东东，来允许我们设定数据库的并发行为。
+
+总结下如果不考虑事务的隔离性，会发生的几种问题：
+
+* 脏读
+    * 脏读是指在一个事务处理过程里读取了另一个未提交的事务中的数据。
+    * 当一个事务正在多次修改某个数据，而在这个事务中这多次的修改都还未提交，这时一个并发的事务来访问该数据，就会造成两个事务得到的数据不一致。例如：用户A向用户B转账100元，对应SQL命令如下
+        * update account set money=money+100 where name=’B’;  (此时A通知B)
+        * update account set money=money - 100 where name=’A’;
+    * 当只执行第一条SQL时，A通知B查看账户，B发现确实钱已到账（此时即发生了脏读），而之后无论第二条SQL是否执行，只要该事务不提交，则所有操作都将回滚，那么当B以后再次查看账户时就会发现钱其实并没有转。
+* 不可重复读
+    * 不可重复读是指在对于数据库中的某个数据，一个事务范围内多次查询却返回了不同的数据值，这是由于在查询间隔，被另一个事务修改并提交了。
+    * 例如事务T1在读取某一数据，而事务T2立马修改了这个数据并且提交事务给数据库，事务T1再次读取该数据就得到了不同的结果，发送了不可重复读。
+    * 不可重复读和脏读的区别是，脏读是某一事务读取了另一个事务未提交的脏数据，而不可重复读则是读取了前一事务提交的数据。
+    * 在某些情况下，不可重复读并不是问题，比如我们多次查询某个数据当然以最后查询得到的结果为主。但在另一些情况下就有可能发生问题，例如对于同一个数据A和B依次查询就可能不同，A和B就可能打起来了……
+* 虚读(幻读)
+    * 幻读是事务非独立执行时发生的一种现象。例如事务T1对一个表中所有的行的某个数据项做了从“1”修改为“2”的操作，这时事务T2又对这个表中插入了一行数据项，而这个数据项的数值还是为“1”并且提交给数据库。而操作事务T1的用户如果再查看刚刚修改的数据，会发现还有一行没有修改，其实这行是从事务T2中添加的，就好像产生幻觉一样，这就是发生了幻读。
+    * 幻读和不可重复读都是读取了另一条已经提交的事务（这点就脏读不同），所不同的是不可重复读查询的都是同一个数据项，而幻读针对的是一批数据整体（比如数据的个数）。
+
+SQL标准定义了4类隔离级别，包括了一些具体规则，用来限定事务内外的哪些改变是可见的，哪些是不可见的。低级别的隔离级一般支持更高的并发处理，并拥有更低的系统开销。
+MySQL数据库的四种事务隔离级别
+* Read Uncommitted（读取未提交内容）
+    * 在该隔离级别，所有事务都可以看到其他未提交事务的执行结果。本隔离级别很少用于实际应用，因为它的性能也不比其他级别好多少。读取未提交的数据，也被称之为脏读（Dirty Read）；
+* Read Committed（读取提交内容）
+    * 这是大多数数据库系统的默认隔离级别（但不是MySQL默认的）。它满足了隔离的简单定义：一个事务只能看见已经提交事务所做的改变。这种隔离级别 也支持所谓的不可重复读（Nonrepeatable Read），因为同一事务的其他实例在该实例处理其间可能会有新的commit，所以同一select可能返回不同结果；
+* Repeatable Read（可重读）
+    * 这是MySQL的默认事务隔离级别，它确保同一事务的多个实例在并发读取数据时，会看到同样的数据行。不过理论上，这会导致另一个棘手的问题：幻读 （Phantom Read）。
+    * 简单的说，幻读指当用户读取某一范围的数据行时，另一个事务又在该范围内插入了新行，当用户再读取该范围的数据行时，会发现有新的“幻影” 行。
+    * InnoDB和Falcon存储引擎通过多版本并发控制（MVCC，Multiversion Concurrency Control）机制解决了该问题
+* Serializable（可串行化） 
+    * 这是最高的隔离级别，它通过强制事务排序，使之不可能相互冲突，从而解决幻读问题。简言之，它是在每个读的数据行上加上共享锁。在这个级别，可能导致大量的超时现象和锁竞争。
+    * 这四种隔离级别采取不同的锁类型来实现，若读取的是同一个数据的话，就容易发生问题。例如：
+        * 脏读(Drity Read)：某个事务已更新一份数据，另一个事务在此时读取了同一份数据，由于某些原因，前一个RollBack了操作，则后一个事务所读取的数据就会是不正确的。
+        * 不可重复读(Non-repeatable read):在一个事务的两次查询之中数据不一致，这可能是两次查询过程中间插入了一个事务更新的原有的数据。
+        * 幻读(Phantom Read):在一个事务的两次查询中数据笔数不一致，例如有一个事务查询了几列(Row)数据，而另一个事务却在此时插入了新的几列数据，先前的事务在接下来的查询中，就会发现有几列数据是它先前所没有的。
+         
+在MySQL中，实现了这四种隔离级别，分别有可能产生问题如下所示：
+* Serializable (串行化)：可避免脏读、不可重复读、幻读的发生。
+* Repeatable read (可重复读)：可避免脏读、不可重复读的发生。
+* Read committed (读已提交)：可避免脏读的发生。
+* Read uncommitted (读未提交)：最低级别，任何情况都无法保证。
+
+　　以上四种隔离级别最高的是Serializable级别，最低的是Read uncommitted级别，当然级别越高，执行效率就越低。像Serializable这样的级别，就是以锁表的方式(类似于Java多线程中的锁)使得其他的线程只能在锁外等待，所以平时选用何种隔离级别应该根据实际情况。在MySQL数据库中默认的隔离级别为Repeatable read (可重复读)。
+
+　　在MySQL数据库中，支持上面四种隔离级别，默认的为Repeatable read (可重复读)；而在Oracle数据库中，只支持Serializable (串行化)级别和Read committed (读已提交)这两种级别，其中默认的为Read committed级别。
+
+
+总结：
+
+隔离级别越高，越能保证数据的完整性和一致性，但是对并发性能的影响也越大。
+大多数的数据库默认隔离级别为 Read Commited，比如 SqlServer、Oracle
+少数数据库默认隔离级别为：Repeatable Read 比如： MySQL InnoDB
+
+补充：
+　　1、SQL规范所规定的标准，不同的数据库具体的实现可能会有些差异
+　　2、mysql中默认事务隔离级别是可重复读时并不会锁住读取到的行
+　　3、事务隔离级别为读提交时，写数据只会锁住相应的行
+　　4、事务隔离级别为可重复读时，如果有索引（包括主键索引）的时候，以索引列为条件更新数据，会存在间隙锁间隙锁、行锁、下一键锁的问题，从而锁住一些行；如果没有索引，更新数据时会锁住整张表。
+    5、事务隔离级别为串行化时，读写数据都会锁住整张表
+    6、隔离级别越高，越能保证数据的完整性和一致性，但是对并发性能的影响也越大，鱼和熊掌不可兼得啊。对于多数应用程序，可以优先考虑把数据库系统的隔离级别设为Read Committed，它能够避免脏读取，而且具有较好的并发性能。尽管它会导致不可重复读、幻读这些并发问题，在可能出现这类问题的个别场合，可以由应用程序采用悲观锁或乐观锁来控制。
+
+**事务的分类**
+* 数据库分为本地事务跟全局事务
+    * 本地事务：普通事务，独立一个数据库，能保证在该数据库上操作的ACID。
+    * 分布式事务：涉及两个或多个数据库源的事务，即跨越多台同类或异类数据库的事务（由每台数据库的本地事务组成的），分布式事务旨在保证这些本地事务的所有操作的ACID，使事务可以跨越多台数据库；
+* Java事务类型分为JDBC事务跟JTA事务
+    * JDBC事务：即为上面说的数据库事务中的本地事务，通过connection对象控制管理。
+    * JTA事务：JTA指Java事务API(Java Transaction API)，是Java EE数据库事务规范， JTA只提供了事务管理接口，由应用程序服务器厂商（如WebSphere Application Server）提供实现，JTA事务比JDBC更强大，支持分布式事务。
+* 按是否通过编程分为声明式事务和编程式事务，参考http://blog.csdn.net/liaohaojian/article/details/70139151
+    * 声明式事务：通过XML配置或者注解实现。
+    * 编程式事务：通过编程代码在业务逻辑时需要时自行实现，粒度更小。
+
+**事务的基本原理**
+Spring事务的本质其实就是数据库对事务的支持，没有数据库的事务支持，spring是无法提供事务功能的。对于纯JDBC操作数据库，想要用到事务，可以按照以下步骤进行：
+
+* 获取连接 Connection con = DriverManager.getConnection()
+* 开启事务con.setAutoCommit(true/false);
+* 执行CRUD
+* 提交事务/回滚事务 con.commit() / con.rollback();
+* 关闭连接 conn.close()；
+
+使用Spring的事务管理功能后，我们可以不再写步骤 2 和 4 的代码，而是由Spirng 自动完成。那么Spring是如何在我们书写的 CRUD 之前和之后开启事务和关闭事务的呢？解决这个问题，也就可以从整体上理解Spring的事务管理实现原理了。下面简单地介绍下，注解方式为例子
+
+* 配置文件开启注解驱动，在相关的类和方法上通过注解@Transactional标识。
+* spring 在启动的时候会去解析生成相关的bean，这时候会查看拥有相关注解的类和方法，并且为这些类和方法生成代理，并根据@Transaction的相关参数进行相关配置注入，这样就在代理中为我们把相关的事务处理掉了（开启正常提交事务，异常回滚事务）。
+* 真正的数据库层的事务提交和回滚是通过binlog或者redo log实现的
+
+
+#### 1.1.10.2. Jdbc对事务的支持
+
+```java
+public interface Connection  extends Wrapper, AutoCloseable {
+
+    void setAutoCommit(boolean autoCommit) throws SQLException;
+    void commit() throws SQLException;
+    void rollback() throws SQLException;
+    void rollback(Savepoint savepoint) throws SQLException;
+    void setTransactionIsolation(int level) throws SQLException;
+    Savepoint setSavepoint() throws SQLException;
+    Savepoint setSavepoint(String name) throws SQLException;
+
+}
+```
+Savepoint 接口允许用户将事务分割成多个阶段.用户可以指定回滚到事务特定的保存点.
+Savepoint 是数据库支持的功能,并不是所有数据库都具备该功能,MySQL支持.
+
+```java
+Statement stmt = conn.createStatement();
+
+int rows =stmt.executeUpdate("xxx");
+Savepoint  point1 = conn.setSavepoint("point1")；
+
+int rows1 =stmt.executeUpdate("xxx");
+int rows2 =stmt.executeUpdate("xxx");
+
+//回滚到point1处,point1处之前的仍然会被提交,point1之后的不会被提交.
+conn.rollback(point1); 
+
+conn.commit();
+```
+
+#### 1.1.10.3. Spring对事务的支持
 <a href="#menu" style="float:right">目录</a>
 
 Spring 将事务管理委托给底层具体的持久化实现框架来完成。因此，Spring为不同的持久化框架提供了PlatformTransactionManager 接口的实现类。
+
+事务在遇到异常的时候会回滚，默认只有在发生运行时异常即：RunTimeException时才会发生事务，如果一个方法抛出Exception或者Checked异常Spring的事务并不会回滚。
+
+**spring 什么情况下进行事务回滚**
+
+Spring、EJB的声明式事务默认情况下都是在抛出unchecked exception后才会触发事务的回滚
+
+unchecked异常,即运行时异常runntimeException 回滚事务;
+
+checked异常,即Exception可try{}捕获的不会回滚.当然也可配置spring参数让其回滚.
+
+spring的事务边界是在调用业务方法之前开始的，业务方法执行完毕之后来执行commit or rollback(Spring默认取决于是否抛出runtime异常).
+如果抛出runtime exception 并在你的业务方法中没有catch到的话，事务会回滚。
+一般不需要在业务方法中catch异常，如果非要catch，在做完你想做的工作后（比如关闭文件等）一定要抛出runtime exception，否则spring会将你的操作commit,这样就会产生脏数据.所以你的catch代码是画蛇添足。
 
 |事务|	说明|
 |---|---|
@@ -2879,12 +3747,12 @@ Spring 将事务管理委托给底层具体的持久化实现框架来完成。�
 
 
 
-#### 1.1.11.1. 编程式事务管理
+##### 1.1.10.3.1. 编程式事务管理
 <a href="#menu" style="float:right">目录</a>
 
 实际中很少使用
 
-#### 1.1.11.2. 使用XML配置声明式事务
+##### 1.1.10.3.2. 使用XML配置声明式事务
 <a href="#menu" style="float:right">目录</a>
 
 **使用原始的TransactionProxyFactoryBean**
@@ -3009,7 +3877,7 @@ Spring 2.0 之后， 由于可以通过aop/tx命名空间声明事务，因此�
 </beans>  
 ```
 
-#### 1.1.11.3. 使用注解配置事务
+##### 1.1.10.3.3. 使用注解配置事务
 <a href="#menu" style="float:right">目录</a>
 
 ```java
@@ -3103,15 +3971,779 @@ public void saveUserBack(){
 另外也可以把注解加到方法上来解决。
 
 
-#### 1.1.11.4. 事务实现原理
+#### 1.1.10.4. Spring事务实现原理
+<a href="#menu" style="float:right">目录</a>
+
+##### 1.1.10.4.1. 事务管理关键抽象
+<a href="#menu" style="float:right">目录</a>
+
+在Spring事务管理SPI(Service Provider Interface)的抽象层主要包括3个接口,分别是PlatformTransactionManager,TransactionDefinition,TransactionStatus
+
+```java
+
+package org.springframework.transaction;
+
+import org.springframework.lang.Nullable;
+
+public interface PlatformTransactionManager {
+    TransactionStatus getTransaction(@Nullable TransactionDefinition var1) throws TransactionException;
+
+    void commit(TransactionStatus var1) throws TransactionException;
+
+    void rollback(TransactionStatus var1) throws TransactionException;
+}
+
+-------------
+package org.springframework.transaction;
+
+import org.springframework.lang.Nullable;
+
+public interface TransactionDefinition {
+    int PROPAGATION_REQUIRED = 0;
+    int PROPAGATION_SUPPORTS = 1;
+    int PROPAGATION_MANDATORY = 2;
+    int PROPAGATION_REQUIRES_NEW = 3;
+    int PROPAGATION_NOT_SUPPORTED = 4;
+    int PROPAGATION_NEVER = 5;
+    int PROPAGATION_NESTED = 6;
+
+    int ISOLATION_DEFAULT = -1;
+    int ISOLATION_READ_UNCOMMITTED = 1;
+    int ISOLATION_READ_COMMITTED = 2;
+    int ISOLATION_REPEATABLE_READ = 4;
+    int ISOLATION_SERIALIZABLE = 8;
+
+    int TIMEOUT_DEFAULT = -1;
+
+    int getPropagationBehavior();
+
+    int getIsolationLevel();
+
+    int getTimeout();
+
+    boolean isReadOnly();
+
+    @Nullable
+    String getName();
+}
+
+
+-----------
+package org.springframework.transaction;
+
+import java.io.Flushable;
+
+public interface TransactionStatus extends SavepointManager, Flushable {
+    //判断当前事务是否在内部创建了一个保存点
+    boolean isNewTransaction();
+    //判断当前事务是否是一个新的保存点
+    boolean hasSavepoint();
+    //设置为RollbackOnly,事务管理器只能将该事务回滚,事务管理器将显示调用回滚命令回滚或者抛出异常方式回滚
+    void setRollbackOnly();
+    //
+    boolean isRollbackOnly();
+    void flush();
+    boolean isCompleted();
+}
+
+```
+
+TransactionDefinition 用于描述事务的隔离级别,超时时间,是否为只读事务和事务传播规则等控制事务具体行为的事务属性,这些事务属性可以通过XML配置或者注解提供,也可以通过手工编程确定.
+
+PlatformTransactionManager根据TransactionDefinition提供的配置信息创建事务,并用TransactionStatus描述这个激活事务的状态
+
+###### 1.1.10.4.1.1. TransactionDefinition
+<a href="#menu" style="float:right">目录</a>
+
+**事务隔离级别**
+
+ISOLATION_DEFAULT:默认,根据数据库不同而不同,MySQL是ISOLATION_REPEATABLE_READ
+ISOLATION_READ_UNCOMMITTED:读未提交
+ISOLATION_READ_COMMITTED : 读以提交
+ISOLATION_REPEATABLE_READ :可重复读
+ISOLATION_SERIALIZABLE : 可序列化
+
+**事务传播特性**
+PROPAGATION_REQUIRED = 0;
+PROPAGATION_SUPPORTS = 1;
+PROPAGATION_MANDATORY = 2;
+PROPAGATION_REQUIRES_NEW = 3;
+PROPAGATION_NOT_SUPPORTED = 4;
+PROPAGATION_NEVER = 5;
+PROPAGATION_NESTED = 6;
+
+**事务传播行为**
+* PROPAGATION_REQUIRED
+    * 如果存在一个事务，则支持当前事务。如果没有事务则开启一个新的事务。
+    * 默认的spring事务传播级别，使用该级别的特点是，如果上下文中已经存在事务，那么就加入到事务中执行，如果当前上下文中不存在事务，则新建事务执行。所以这个级别通常能满足处理大多数的业务场景。
+* PROPAGATION_SUPPORTS 
+    * 如果存在一个事务，支持当前事务。如果没有事务，则非事务的执行。但是对于事务同步的事务管理器，PROPAGATION_SUPPORTS与不使用事务有少许不同。
+    * 从字面意思就知道，supports，支持，该传播级别的特点是，如果上下文存在事务，则支持事务加入事务，如果没有事务，则使用非事务的方式执行。所以说，并非所有的包在transactionTemplate.execute中的代码都会有事务支持。这个通常是用来处理那些并非原子性的非核心业务逻辑操作。应用场景较少。
+* PROPAGATION_MANDATORY 
+    * 如果已经存在一个事务，支持当前事务。如果没有一个活动的事务，则抛出异常。
+    * 该级别的事务要求上下文中必须要存在事务，否则就会抛出异常！配置该方式的传播级别是有效的控制上下文调用代码遗漏添加事务控制的保证手段。比如一段代码不能单独被调用执行，但是一旦被调用，就必须有事务包含的情况，就可以使用这个传播级别。
+* PROPAGATION_REQUIRES_NEW
+    * 总是开启一个新的事务。如果一个事务已经存在，则将这个存在的事务挂起。
+    * 从字面即可知道，new，每次都要一个新事务，该传播级别的特点是，每次都会新建一个事务，并且同时将上下文中的事务挂起，执行当前新建事务完成以后，上下文事务恢复再执行。
+    * 这是一个很有用的传播级别，举一个应用场景：现在有一个发送100个红包的操作，在发送之前，要做一些系统的初始化、验证、数据记录操作，然后发送100封红包，然后再记录发送日志，发送日志要求100%的准确，如果日志不准确，那么整个父事务逻辑需要回滚。怎么处理整个业务需求呢？就是通过这个PROPAGATION_REQUIRES_NEW 级别的事务传播控制就可以完成。发送红包的子事务不会直接影响到父事务的提交和回滚。
+* PROPAGATION_NOT_SUPPORTED 
+    * 总是非事务地执行，并挂起任何存在的事务。
+    * 这个也可以从字面得知，not supported ，不支持，当前级别的特点就是上下文中存在事务，则挂起事务，执行当前逻辑，结束后恢复上下文的事务。
+    * 这个级别有什么好处？可以帮助你将事务极可能的缩小。我们知道一个事务越大，它存在的风险也就越多。所以在处理事务的过程中，要保证尽可能的缩小范围。比如一段代码，是每次逻辑操作都必须调用的，比如循环1000次的某个非核心业务逻辑操作。这样的代码如果包在事务中，势必造成事务太大，导致出现一些难以考虑周全的异常情况。所以这个事务这个级别的传播级别就派上用场了。用当前级别的事务模板抱起来就可以了。
+* PROPAGATION_NEVER
+    * 总是非事务地执行，如果存在一个活动事务，则抛出异常
+    * 该事务更严格，上面一个事务传播级别只是不支持而已，有事务就挂起，而PROPAGATION_NEVER传播级别要求上下文中不能存在事务，一旦有事务，就抛出runtime异常，强制停止执行！
+* PROPAGATION_NESTED
+    * 如果一个活动的事务存在，则运行在一个嵌套的事务中. 如果没有活动事务, 则按TransactionDefinition.PROPAGATION_REQUIRED 属性执行
+    * 字面也可知道，nested，嵌套级别事务。该传播级别特征是，如果上下文中存在事务，则嵌套事务执行，如果不存在事务，则新建事务
+
+
+
+**事务超时**
+超时时间到,则事务回滚.
+有些事务管理器不支持事务过期功能,如果设置为TIMEOUT_DEFAULT之外的值,将会抛出异常.
+
+**只读状态**
+只读事务(比如查询)不修改数据,资源事务管理器可以对只读事务做一些优化,提高性能.
+尝试在只读事务中修改数据将会抛出异常.
+
+###### 1.1.10.4.1.2. TransactionStatus
+<a href="#menu" style="float:right">目录</a>
+
+TransactionStatus 代表一个事务的运行状态.事务管理器可以通过该接口获取事务运行期的状态信息 .也可以通过该接口间接地回滚事务 ,它相比于在抛出异常时回滚事务的方式更具可控性.该接口继承于SavepointManager接口,该接口基于 JDBC3.0保存点的分段事务控制能力提供了嵌套事务的机制.
+
+```java
+public interface SavepointManager {
+    //如果数据库不支持保存点,调用将会抛出异常
+    //创建一个保存点对象
+    Object createSavepoint() throws TransactionException;
+    //将事务回滚到特定的保存点,被回滚的保存点将会自动释放
+    void rollbackToSavepoint(Object var1) throws TransactionException;
+    //释放一个保存点,如果事务提交,保存点将会自动释放
+    void releaseSavepoint(Object var1) throws TransactionException;
+}
+```
+
+###### 1.1.10.4.1.3. PlatformTransactionManager
 <a href="#menu" style="float:right">目录</a>
 
 
-### 1.1.12. Spring常用工具类
+```java
+/*
+根据事务信息从事务环境中返回一个已存在的事务,或者创建一个新的事务,并用TransactionStatus描述事务状态
+*/
+TransactionStatus getTransaction(@Nullable TransactionDefinition var1) throws TransactionException;
+//根据事务状态提交事务
+void commit(TransactionStatus var1) throws TransactionException;
+//根据事务状态回滚事务
+void rollback(TransactionStatus var1) throws TransactionException;
+```
+
+
+#### 1.1.10.5. 事务管理器实现类
+<a href="#menu" style="float:right">目录</a>
+
+Spring 将事务管理委托给底层具体的持久化实现框架来完成。因此，Spring为不同的持久化框架提供了PlatformTransactionManager 接口的实现类
+
+|事务|	说明|
+|---|---|
+|org.springframework.transaction.jta.JtaTransactionManager|	使用JPA进行持久化时，使用该事务管理器
+|org.springframework.orm.hibernate3.HibernateTransactionManager|	使用Hibernate X.0(X 可以为3 4 5)版本进行持久化时，使用该事务管理器
+|org.springframework.jdbc.datasource.DataSourceTransactionManager|	使用Spring JDBC  或 **Mybatis** 等基于DataSource数据源的持久化技术时，使用 该事务管理器
+|org.springframework.orm.jdo.JdoTransactionManager|	使用JDO进行持久化时 ，使用该事务管理器
+|org.springframework.transaction.jta.JtaTransactionManager|	具有多个数据源的全局事务使用该事务管理器(不管采用何种持久化技术)
+
+##### 1.1.10.5.1. Spring事务执行流程
 <a href="#menu" style="float:right">目录</a>
 
 
-#### 1.1.12.1. web
+###### 1.1.10.5.1.1. 基本原理
+<a href="#menu" style="float:right">目录</a>
+
+这里以一个事务方法为例
+```java
+@Transactional
+public int insert(){
+
+    UserDelete userDelete = new UserDelete();
+    userDelete.setUserId(100L);
+    int id =  userDeleteMapper.insert(userDelete);
+
+    return id;
+}
+```
+如果使用mapper进行调用,Spring实际上使用cglib创建了mapper的代理类,通过代理拦截来实现相关的调用.
+因此会被代理的intercept方法拦截,在拦截的责任链中进行事务处理
+
+
+###### 1.1.10.5.1.2. 代理类
+<a href="#menu" style="float:right">目录</a>
+
+当方法存在事务时,会以责任链的方式进行调用处理
+```java
+class CglibAopProxy implements AopProxy, Serializable {
+
+    //代理类
+    private static class DynamicAdvisedInterceptor implements MethodInterceptor, Serializable {
+        private final AdvisedSupport advised;
+
+        public DynamicAdvisedInterceptor(AdvisedSupport advised) {
+            this.advised = advised;
+        }
+
+        //mapper调用时,将会被该方法进行拦截
+        @Nullable
+        public Object intercept(Object proxy, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+            Object oldProxy = null;
+            boolean setProxyContext = false;
+            Object target = null;
+            TargetSource targetSource = this.advised.getTargetSource();
+
+            Object var16;
+            try {
+                if (this.advised.exposeProxy) {
+                    oldProxy = AopContext.setCurrentProxy(proxy);
+                    setProxyContext = true;
+                }
+
+                target = targetSource.getTarget();
+                Class<?> targetClass = target != null ? target.getClass() : null;
+                //获取责任链的
+                List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
+                Object retVal;
+                if (chain.isEmpty() && Modifier.isPublic(method.getModifiers())) {
+                    Object[] argsToUse = AopProxyUtils.adaptArgumentsIfNecessary(method, args);
+                    retVal = methodProxy.invoke(target, argsToUse);
+                } else {
+                    //处理责任链中的
+                    retVal = (new CglibAopProxy.CglibMethodInvocation(proxy, target, method, args, targetClass, chain, methodProxy)).proceed();
+                }
+
+                retVal = CglibAopProxy.processReturnType(proxy, target, method, retVal);
+                var16 = retVal;
+            } finally {
+                if (target != null && !targetSource.isStatic()) {
+                    targetSource.releaseTarget(target);
+                }
+
+                if (setProxyContext) {
+                    AopContext.setCurrentProxy(oldProxy);
+                }
+
+            }
+
+            return var16;
+        }
+
+        public boolean equals(Object other) {
+            return this == other || other instanceof CglibAopProxy.DynamicAdvisedInterceptor && this.advised.equals(((CglibAopProxy.DynamicAdvisedInterceptor)other).advised);
+        }
+
+        public int hashCode() {
+            return this.advised.hashCode();
+        }
+    }
+}
+```
+###### 1.1.10.5.1.3. TransactionAspectSupport中的处理
+
+后续会调用TransactionAspectSupport的invokeWithinTransaction的方法,进行相关的启动事务,执行业务,事务回滚,事务提交操作
+
+```java
+public abstract class TransactionAspectSupport implements BeanFactoryAware, InitializingBean {
+    @Nullable
+    protected Object invokeWithinTransaction(Method method, @Nullable Class<?> targetClass, TransactionAspectSupport.InvocationCallback invocation) throws Throwable {
+        TransactionAttributeSource tas = this.getTransactionAttributeSource();
+        TransactionAttribute txAttr = tas != null ? tas.getTransactionAttribute(method, targetClass) : null;
+        PlatformTransactionManager tm = this.determineTransactionManager(txAttr);
+        String joinpointIdentification = this.methodIdentification(method, targetClass, txAttr);
+        Object result;
+        if (txAttr != null && tm instanceof CallbackPreferringPlatformTransactionManager) {
+            TransactionAspectSupport.ThrowableHolder throwableHolder = new TransactionAspectSupport.ThrowableHolder();
+
+            try {
+                result = ((CallbackPreferringPlatformTransactionManager)tm).execute(txAttr, (status) -> {
+                    TransactionAspectSupport.TransactionInfo txInfo = this.prepareTransactionInfo(tm, txAttr, joinpointIdentification, status);
+
+                    Object var9;
+                    try {
+                        Object var8 = invocation.proceedWithInvocation();
+                        return var8;.'
+                    } catch (Throwable var13) {
+                        if (txAttr.rollbackOn(var13)) {
+                            if (var13 instanceof RuntimeException) {
+                                throw (RuntimeException)var13;
+                            }
+
+                            throw new TransactionAspectSupport.ThrowableHolderException(var13);
+                        }
+
+                        throwableHolder.throwable = var13;
+                        var9 = null;
+                    } finally {
+                        this.cleanupTransactionInfo(txInfo);
+                    }
+
+                    return var9;
+                });
+                if (throwableHolder.throwable != null) {
+                    throw throwableHolder.throwable;
+                } else {
+                    return result;
+                }
+            } catch (TransactionAspectSupport.ThrowableHolderException var19) {
+                throw var19.getCause();
+            } catch (TransactionSystemException var20) {
+                if (throwableHolder.throwable != null) {
+                    this.logger.error("Application exception overridden by commit exception", throwableHolder.throwable);
+                    var20.initApplicationException(throwableHolder.throwable);
+                }
+
+                throw var20;
+            } catch (Throwable var21) {
+                if (throwableHolder.throwable != null) {
+                    this.logger.error("Application exception overridden by commit exception", throwableHolder.throwable);
+                }
+
+                throw var21;
+            }
+        } else {
+
+            //启动事务
+            TransactionAspectSupport.TransactionInfo txInfo = this.createTransactionIfNecessary(tm, txAttr, joinpointIdentification);
+
+            try {
+                //SQL业务处理
+                result = invocation.proceedWithInvocation();
+            } catch (Throwable var17) {
+                //异常处理
+                this.completeTransactionAfterThrowing(txInfo, var17);
+                throw var17;
+            } finally {
+                //清除事务信息
+                this.cleanupTransactionInfo(txInfo);
+            }
+            //事务完成处理
+            this.commitTransactionAfterReturning(txInfo);
+            return result;
+        }
+    }
+}
+```
+
+可以看到,上面有几个任务
+1. 启动事务
+2. SQL业务处理
+3. 异常处理
+4. 清除事务信息
+5. 事务完成处理
+
+###### 1.1.10.5.1.4. 事务管理类DataSourceTransactionManager
+
+以上的操作最终都是交由事务操作的核心管理类PlatformTransactionManager来实现,由于本例使用MyBatis,所以其实现类是DataSourceTransactionManager
+
+主要包括以下几个关键方法:
+* doBegin
+* doSuspend
+* doCommit
+* doRollback
+* doSetRollbackOnly
+* doCleanupAfterCompletion
+
+**doBegin**
+
+最终会交由DataSourceTransactionManager的doBegin()进行处理
+a. 从DataSourceTransactionObject拿出ConnectionHolder
+b. 从ConnectionHolder拿Connection，设置事务的隔离级别，并开启事务
+c. 将ConnectionHolder绑定到当前Connection上，以被嵌套的事务获取(因为JDBC连接池是根据线程绑定Connection的，所有一次嵌套事务中，使用的是同一个Connection)
+
+```java
+ protected void doBegin(Object transaction, TransactionDefinition definition) {
+        DataSourceTransactionManager.DataSourceTransactionObject txObject = (DataSourceTransactionManager.DataSourceTransactionObject)transaction;
+        Connection con = null;
+
+        try {
+            if (!txObject.hasConnectionHolder() || txObject.getConnectionHolder().isSynchronizedWithTransaction()) {
+                Connection newCon = this.obtainDataSource().getConnection();
+                if (this.logger.isDebugEnabled()) {
+                    this.logger.debug("Acquired Connection [" + newCon + "] for JDBC transaction");
+                }
+
+                txObject.setConnectionHolder(new ConnectionHolder(newCon), true);
+            }
+
+            txObject.getConnectionHolder().setSynchronizedWithTransaction(true);
+            con = txObject.getConnectionHolder().getConnection();
+            Integer previousIsolationLevel = DataSourceUtils.prepareConnectionForTransaction(con, definition);
+            txObject.setPreviousIsolationLevel(previousIsolationLevel);
+            if (con.getAutoCommit()) {
+                txObject.setMustRestoreAutoCommit(true);
+                if (this.logger.isDebugEnabled()) {
+                    this.logger.debug("Switching JDBC Connection [" + con + "] to manual commit");
+                }
+
+                con.setAutoCommit(false);
+            }
+
+            this.prepareTransactionalConnection(con, definition);
+            txObject.getConnectionHolder().setTransactionActive(true);
+            int timeout = this.determineTimeout(definition);
+            if (timeout != -1) {
+                txObject.getConnectionHolder().setTimeoutInSeconds(timeout);
+            }
+
+            if (txObject.isNewConnectionHolder()) {
+                TransactionSynchronizationManager.bindResource(this.obtainDataSource(), txObject.getConnectionHolder());
+            }
+
+        } catch (Throwable var7) {
+            if (txObject.isNewConnectionHolder()) {
+                DataSourceUtils.releaseConnection(con, this.obtainDataSource());
+                txObject.setConnectionHolder((ConnectionHolder)null, false);
+            }
+
+            throw new CannotCreateTransactionException("Could not open JDBC Connection for transaction", var7);
+        }
+    }
+
+```
+
+**doSuspend**
+```
+```java
+protected Object doSuspend(Object transaction) {
+        DataSourceTransactionManager.DataSourceTransactionObject txObject = (DataSourceTransactionManager.DataSourceTransactionObject)transaction;
+        txObject.setConnectionHolder((ConnectionHolder)null);
+        return TransactionSynchronizationManager.unbindResource(this.obtainDataSource());
+    }
+```
+**doResume**
+
+```java
+    protected void doResume(@Nullable Object transaction, Object suspendedResources) {
+        TransactionSynchronizationManager.bindResource(this.obtainDataSource(), suspendedResources);
+    }
+```
+
+**doCommit**
+
+```java
+    protected void doCommit(DefaultTransactionStatus status) {
+        DataSourceTransactionManager.DataSourceTransactionObject txObject = (DataSourceTransactionManager.DataSourceTransactionObject)status.getTransaction();
+        Connection con = txObject.getConnectionHolder().getConnection();
+        if (status.isDebug()) {
+            this.logger.debug("Committing JDBC transaction on Connection [" + con + "]");
+        }
+
+        try {
+            con.commit();
+        } catch (SQLException var5) {
+            throw new TransactionSystemException("Could not commit JDBC transaction", var5);
+        }
+    }
+```
+**doRollback**
+```java
+    protected void doRollback(DefaultTransactionStatus status) {
+        DataSourceTransactionManager.DataSourceTransactionObject txObject = (DataSourceTransactionManager.DataSourceTransactionObject)status.getTransaction();
+        Connection con = txObject.getConnectionHolder().getConnection();
+        if (status.isDebug()) {
+            this.logger.debug("Rolling back JDBC transaction on Connection [" + con + "]");
+        }
+
+        try {
+            con.rollback();
+        } catch (SQLException var5) {
+            throw new TransactionSystemException("Could not roll back JDBC transaction", var5);
+        }
+    }
+```
+**doSetRollbackOnly**
+```java
+    protected void doSetRollbackOnly(DefaultTransactionStatus status) {
+        DataSourceTransactionManager.DataSourceTransactionObject txObject = (DataSourceTransactionManager.DataSourceTransactionObject)status.getTransaction();
+        if (status.isDebug()) {
+            this.logger.debug("Setting JDBC transaction [" + txObject.getConnectionHolder().getConnection() + "] rollback-only");
+        }
+
+        txObject.setRollbackOnly();
+    }
+```
+
+
+**doCleanupAfterCompletion**
+a. 从ThreadLocal中将ConnectionHolder清除
+b. 回复Connecton之前的AutoCommit和IsolationLevel属性
+c. 释放connection
+d. 清除ConnectHolder相应的对象属性
+
+```java
+    protected void doCleanupAfterCompletion(Object transaction) {
+        DataSourceTransactionManager.DataSourceTransactionObject txObject = (DataSourceTransactionManager.DataSourceTransactionObject)transaction;
+        if (txObject.isNewConnectionHolder()) {
+            TransactionSynchronizationManager.unbindResource(this.obtainDataSource());
+        }
+
+        Connection con = txObject.getConnectionHolder().getConnection();
+
+        try {
+            if (txObject.isMustRestoreAutoCommit()) {
+                con.setAutoCommit(true);
+            }
+
+            DataSourceUtils.resetConnectionAfterTransaction(con, txObject.getPreviousIsolationLevel());
+        } catch (Throwable var5) {
+            this.logger.debug("Could not reset JDBC Connection after transaction", var5);
+        }
+
+        if (txObject.isNewConnectionHolder()) {
+            if (this.logger.isDebugEnabled()) {
+                this.logger.debug("Releasing JDBC Connection [" + con + "] after transaction");
+            }
+
+            DataSourceUtils.releaseConnection(con, this.dataSource);
+        }
+
+        txObject.getConnectionHolder().clear();
+    }
+```
+
+
+
+
+
+
+
+#### 1.1.9.6. 事务同步管理器
+<a href="#menu" style="float:right">目录</a>
+
+Spring 将 JDBC 的 Connection、Hibernate 的 Session 等访问数据库的连接或者会话对象统称为资源，这些资源在同一时刻是不能多线程共享的 。 为了让 DAO 或 Service 类可以实现单例模式， Spring 的事务同步管理类 org.springframework.transaction.support.TransactionSynchronizationManager 利用 ThreadLocal 为不同的事务线程提供了独立的资源副本，并同时维护这些事务的配置属性和运行状态信息 。
+
+Spring 框架为不同的持久化技术提供了一套从 TransactionSynchronizationManager 中获取对应线程绑定资源的工具类，这些工具类都提供了可以获取绑定当前线程资源的静态方法：
+
+|持久化技术	|线程绑定资源获取工具	|静态方法
+|---|---|---|
+|Spring JDBC 或 MyBatis|	org.springframework.jdbc.datasource.DataSourceUtils|	public static Connection getConnection(DataSource dataSource)
+|HibernateX.0	|org.springframework.orm.hibernateC.SessionFactoryUtils	public static Session getSession(SessionFactory sessionFactory, boolean allowCreate)
+|JPA	|org.springframework.orm.jpa.EntityManagerFactoryUtils	|public static EntityManager getTransactionalEntityManager(EntityManagerFactory emf)
+|JDO	|org.springframework.orm.jdo.PersistenceManagerFactoryUtils	|public static PersistenceManager getPersistenceManager(PersistenceManagerFactory pmf, boolean allowCreate)
+
+某些场景下，可能无法使用 Spring 提供的模板类。这时，就必须通过操作底层持久化技术所提供的原生 API ，而这就需要通过这些工具类来获取线程绑定的资源。如果直接从 DataSource 或 SessionFactory 中获取资源，那么就无法让数据操作参与到与本线程相关的事务环境，因为这些对象不能获取和当前线程相关的资源。
+
+TransactionSynchronizationManager 源码如下：
+```java
+public abstract class TransactionSynchronizationManager {
+
+	private static final Log logger = LogFactory.getLog(TransactionSynchronizationManager.class);
+
+    //事务线程对应的Connection或Session等类型的资源
+	private static final ThreadLocal<Map<Object, Object>> resources =
+			new NamedThreadLocal<Map<Object, Object>>("Transactional resources");
+    //事务线程对应的
+	private static final ThreadLocal<Set<TransactionSynchronization>> synchronizations =
+			new NamedThreadLocal<Set<TransactionSynchronization>>("Transaction synchronizations");
+    //事务线程对应的事务名称
+	private static final ThreadLocal<String> currentTransactionName =
+			new NamedThreadLocal<String>("Current transaction name");
+    //事务线程对应的 read-only状态
+	private static final ThreadLocal<Boolean> currentTransactionReadOnly =
+			new NamedThreadLocal<Boolean>("Current transaction read-only status");
+    //事务线程对应的事务隔离级别
+	private static final ThreadLocal<Integer> currentTransactionIsolationLevel =
+			new NamedThreadLocal<Integer>("Current transaction isolation level");
+    //事务线程对应的事务激活状态
+	private static final ThreadLocal<Boolean> actualTransactionActive =
+			new NamedThreadLocal<Boolean>("Actual transaction active");
+}
+```
+
+|事务线程成员变量	|说明|
+|---|---|
+|resources|	Connection 或 Session 等资源
+|currentTransactionName	|事务名称
+|currentTransactionReadOnly	|事务只读状态
+|currentTransactionIsolationLevel	|事务隔离级别
+|actualTransactionActive|	事务激活状态
+
+TransactionSynchronizationManager 将 Dao、Service 类中影响线程安全的所有 “ 状态 ” 都统一抽取到该类中，并用 ThreadLocal 进行封装，这样一来， Dao （基于模板类或资源获取工具类创建的 Dao ）和 Service （采用 Spring 事务管理机制）就变成线程安全的对象
+
+
+#### 1.1.9.7. 事务传播行为
+<a href="#menu" style="float:right">目录</a>
+
+
+**嵌套事务**
+嵌套是子事务套在父事务中执行，子事务是父事务的一部分，在进入子事务之前，父事务建立一个回滚点，叫save point，然后执行子事务，这个子事务的执行也算是父事务的一部分，然后子事务执行结束，父事务继续执行。重点就在于那个save point。看几个问题就明了了：
+
+* 如果子事务回滚，会发生什么？
+父事务会回滚到进入子事务前建立的save point，然后尝试其他的事务或者其他的业务逻辑，父事务之前的操作不会受到影响，更不会自动回滚。
+
+* 如果父事务回滚，会发生什么？
+父事务回滚，子事务也会跟着回滚！为什么呢，因为父事务结束之前，子事务是不会提交的，我们说子事务是父事务的一部分，正是这个道理。
+
+* 事务的提交，是什么情况？
+是父事务先提交，然后子事务提交，还是子事务先提交，父事务再提交？答案是第二种情况，还是那句话，子事务是父事务的一部分，由父事务统一提交。
+
+
+
+##### 1.1.9.7.1. 事务传播行为说明
+
+|常量名称	|常量解释
+|---|---|
+|PROPAGATION_REQUIRED	|支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择，也是 Spring 默认的事务的传播。
+|PROPAGATION_REQUIRES_NEW	|新建事务，如果当前存在事务，把当前事务挂起。新建的事务将和被挂起的事务没有任何关系，是两个独立的事务，外层事务失败回滚之后，不能回滚内层事务执行的结果，内层事务失败抛出异常，外层事务捕获，也可以不处理回滚操作
+|PROPAGATION_SUPPORTS	|支持当前事务，如果当前没有事务，就以非事务方式执行。
+|PROPAGATION_MANDATORY	|支持当前事务，如果当前没有事务，就抛出异常。
+|PROPAGATION_NOT_SUPPORTED|	以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。
+|PROPAGATION_NEVER|	以非事务方式执行，如果当前存在事务，则抛出异常。
+|PROPAGATION_NESTED	|如果一个活动的事务存在，则运行在一个嵌套的事务中。如果没有活动事务，则按REQUIRED属性执行。它使用了一个单独的事务，这个事务拥有多个可以回滚的保存点。内部事务的回滚不会对外部事务造成影响。它只对DataSourceTransactionManager事务管理器起效。
+
+##### 1.1.9.7.2. 具体说明
+
+假设有类A的方法methodA(),有类B的方法methodB().
+
+```java
+
+public class A{
+
+    B b;
+    @Transactional
+    public void methodA(){
+
+        b.methodB();
+    }
+
+}
+
+public class B{
+
+    @Transactional(propagation=TransactionDefinition.XXX)
+    public void methodB(){
+
+    }
+
+}
+
+```
+事务传播特性指 methodA中调用 methodB时, methodA有无事务的情况下,methodB定义不同的传播特性,最后呈现的是怎样的事务形态.
+
+
+###### 1.1.9.7.2.1. PROPAGATION_REQUIRED
+定义:支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择，也是 Spring 默认的事务的传播
+
+如果方法methodA有事务,则方法methodB不创建事务,使用和方法methodA同一个事务.
+如果没有methodA没有事务,相当于一个普通方法调用,不存在事务传播,methodB就创建一个事务.
+
+由于是同一事务,发生任何运行期异常,所有的操作都会回滚.
+
+###### 1.1.9.7.2.2. PROPAGATION_REQUIRES_NEW
+定义:新建事务，如果当前存在事务，把当前事务挂起。新建的事务将和被挂起的事务没有任何关系，是两个独立的事务，外层事务失败回滚之后，不能回滚内层事务执行的结果，内层事务失败抛出异常，外层事务捕获，也可以不处理回滚操作
+
+methodA和methodB是独立的事务,发生异常不会互相影响 ,但是methodB抛出异常被A捕获,A不会发生回滚.
+
+
+###### 1.1.9.7.2.3. PROPAGATION_SUPPORTS
+定义:支持当前事务，如果当前没有事务，就以非事务方式执行。
+
+如果methodA没有事务,则两个方法都以无事务方式运行,发生异常都不会回滚
+如果methodA有事务,则两个都处于同一个事务中.
+
+###### 1.1.9.7.2.4. PROPAGATION_MANDATORY	
+定义:支持当前事务，如果当前没有事务，就抛出异常。
+
+如果methodA没有事务,将会抛出异常
+如果methodA有事务,则两个都处于同一个事务中.
+
+###### 1.1.9.7.2.5. PROPAGATION_NOT_SUPPORTED
+定义:以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。
+
+如果A.methodA()存在事务，如果B.methodB()抛出异常，A.methodA()不捕获的话，A.methodA()的事务被回滚，而B.methodB()出现异常前数据库操作不受影响。如果A.methodA()捕获的话，则A.methodA()的事务不受影响，B.methodB()异常抛出前的数据操作不受影响。
+
+
+###### 1.1.9.7.2.6. PROPAGATION_NEVER
+定义:以非事务方式执行，如果当前存在事务，则抛出异常。
+
+如果method存在事务,则抛出异常.
+
+###### 1.1.9.7.2.7. PROPAGATION_NESTED
+定义:如果一个活动的事务存在，则运行在一个嵌套的事务中。如果没有活动事务，则按REQUIRED属性执行。它使用了一个单独的事务，这个事务拥有多个可以回滚的保存点。内部事务的回滚不会对外部事务造成影响。它只对DataSourceTransactionManager事务管理器起效。
+
+* 如果A的MethodA()不存在事务，则B的methodB()运行在一个新的事务中，B.method()抛出的异常，B.methodB()回滚,但A.methodA()不回滚；如果A.methoda()抛出异常，则A.methodA()和B.methodB()操作不回滚。
+* 如果A的methodA()存在事务，则A的methodA()抛出异常，则A的methodA()和B的MethodB()都会被回滚；
+* 如果A的MethodA()存在事务，则B的methodB()抛出异常，B.methodB()回滚，如果A不捕获异常，则A.methodA()和B.methodB()都会回滚，如果A捕获异常，则B.methodB()回滚,A不回滚；
+
+
+
+#### 1.1.9.8. 使用场景
+
+**在一个话费充值业务处理逻辑中**
+
+```java
+//充值处理
+chargeHandle(){
+    //扣款操作
+    charger();
+    //创建订单操作
+    order();
+}
+```
+业务需要扣款操作和创建订单操作同成功或者失败，因此，charger()和order()的事务不能相互独立，需要包含在chargeHandle()的事务中；
+
+通过以上需求，可以给charge()和order()的事务传播行为定义成：PROPAGATION_MANDATORY
+
+只要charge()或者order()抛出异常整个chargeHandle()都一起回滚，即使chargeHandle()捕获异常也没用，不允许提交事务。
+
+
+**如果业务需求没接受到一次请求到要记录日志到数据库**
+
+```java
+//充值处理
+chargeHandle(){
+    //记录请求日志
+    log();
+    //扣款操作
+    charger();
+    //创建订单操作
+    order();
+}
+```
+因为log()的操作不管扣款和创建订单成功与否都要生成日志，并且日志的操作成功与否不影响充值处理，所以log()方法的事务传播行为可以定义为:PROPAGATION_REQUIRES_NEW.
+
+**在订单的售后处理中，更新完订单金额后，需要自动统计销售报表**
+
+```java
+
+//售后处理
+postHandle(){
+    //修改订单金额
+    update();
+    //报表统计
+    report();
+}
+```
+根据业务可知，售后是已经处理完订单的充值请求后的功能，是对订单的后续管理，统计报表report()方法耗时较长，因此，我们需要设置report()的事务传播行为为:PROPAGATION_NEVER,表示不适合在有事务的操作中调用，因为report()太耗时。
+
+**在银行新增银行卡业务中，需要执行两个操作，一个是保存银行卡信息，一个是登记新创建的银行卡信息，其中登记银行卡信息成功与否不影响银行卡的创建。**
+
+```java
+//新增银行卡
+action(){
+
+    //保存银行卡信息
+    insert();
+    //登记
+    regster()
+}
+```
+由以上需求，我们可知对于regster()方法的事务传播行为，可以设置为PROPAGATION_NESTED，action()事务的回滚，regster()保存的信息就没意义，也就需要跟着回滚，而regster()的回滚不影响action()事务；insert()的事务传播行为可以设置为PROPAGATION_REQUIRED, PROPAGATION_MANDATORY，即insert()回滚事务，action()的事务必须跟着回滚。
+
+
+
+### 1.1.10. Spring常用工具类
+<a href="#menu" style="float:right">目录</a>
+
+
+#### 1.1.10.1. web
 * [org.springframework.web.util.CookieGenerator](https://github.com/lgjlife/spring-utils/blob/master/src%2Fmain%2Fjava%2Fcom%2Fspring%2Futils%2Fweb%2FCookieGeneratorUtil.java)
     * 给HttpServletResponse添加cookies
 * org.springframework.web.util.HtmlCharacterEntityDecoder
@@ -3127,7 +4759,7 @@ public void saveUserBack(){
     * 处理uri里特殊字符的编码
 * org.springframework.web.util.WebUtils
 
-#### 1.1.12.2. 内置的resouce类型
+#### 1.1.10.2. 内置的resouce类型
 * UrlResource
 * ClassPathResource
 * FileSystemResource
@@ -3139,7 +4771,7 @@ public void saveUserBack(){
 * org.springframework.util.xml.ResourceUtils 用于处理表达资源字符串前缀描述资源的工具. 如: "classpath:".
     * 有 getURL, getFile, isFileURL, isJarURL, extractJarFileURL
 
-#### 1.1.12.3. 工具类
+#### 1.1.10.3. 工具类
 * org.springframework.core.annotation.AnnotationUtils
     * 处理注解
 * org.springframework.core.io.support.PathMatchingResourcePatternResolver
@@ -3152,7 +4784,7 @@ public void saveUserBack(){
     * 范型分析器, 在用于对范型方法, 参数分析.
 * org.springframework.core.NestedExceptionUtils
 
-#### 1.1.12.4. xml工具
+#### 1.1.10.4. xml工具
 * org.springframework.util.xml.AbstractStaxContentHandler
 * org.springframework.util.xml.AbstractStaxXMLReader
 * org.springframework.util.xml.AbstractXMLReader
@@ -3164,7 +4796,7 @@ public void saveUserBack(){
 * org.springframework.util.xml.StaxUtils
 * org.springframework.util.xml.TransformerUtils
 
-#### 1.1.12.5. 其它工具集
+#### 1.1.10.5. 其它工具集
 * [org.springframework.util.xml.AntPathMatcher](https://github.com/lgjlife/spring-utils/blob/master/src/main/java/com/spring/utils/util/AntPathMatcherUtil.java)
     * ant风格的处理,路径匹配校验
 * [org.springframework.util.xml.Assert](https://github.com/lgjlife/spring-utils/blob/master/src/main/java/com/spring/utils/util/AssertUtil.java)
@@ -4407,6 +6039,7 @@ HttpMessageConveter： 将请求消息（如Json、xml等数据）转换成一�
 6.  根据返回的ModelAndView，选择一个适合的ViewResolver（必须是已经注册到Spring容器中的ViewResolver)返回给DispatcherServlet ；
 7. ViewResolver 结合Model和View，来渲染视图
 8. 将渲染结果返回给客户端。
+
 ### 1.6.2. Restful
 <a href="#menu" style="float:right">目录</a>
 
@@ -6248,10 +7881,10 @@ Spring支持两种类型的配置文件,后缀名分别为properties和yml.
 
 ```yml
 
-# properties
+# 2. properties
 server.port=8001
 
-# yml
+# 3. yml
 server:
     port: 8001
 ```
@@ -6604,7 +8237,7 @@ java -jar xx.jar --server.port=8001
 
 日志相关配置
 ```yml
-# LOGGING
+# 4. LOGGING
 logging.config= # Location of the logging configuration file. For instance, `classpath:logback.xml` for Logback.
 logging.exception-conversion-word=%wEx # Conversion word used when logging exceptions.
 logging.file= # Log file name (for instance, `myapp.log`). Names can be an exact location or relative to the current directory.
@@ -7021,10 +8654,10 @@ Spring Boot Actuator的关键特性是在应用程序里提供众多Web端点，
 
 **ACTUATOR 配置**
 ```yml
-# ----------------------------------------
-# ACTUATOR PROPERTIES
-# ----------------------------------------
-# MANAGEMENT HTTP SERVER (ManagementServerProperties)
+# 5. ----------------------------------------
+# 6. ACTUATOR PROPERTIES
+# 7. ----------------------------------------
+# 8. MANAGEMENT HTTP SERVER (ManagementServerProperties)
 management.server.add-application-context-header=false # Add the "X-Application-Context" HTTP header in each response.
 management.server.address= # Network address to which the management endpoints should bind. Requires a custom management.server.port.
 management.server.port= # Management endpoint HTTP port (uses the same port as the application by default). Configure a different port to use management-specific SSL.
@@ -7044,21 +8677,21 @@ management.server.ssl.trust-store= # Trust store that holds SSL certificates. Re
 management.server.ssl.trust-store-password= # Password used to access the trust store. Requires a custom management.server.port.
 management.server.ssl.trust-store-provider= # Provider for the trust store. Requires a custom management.server.port.
 management.server.ssl.trust-store-type= # Type of the trust store. Requires a custom management.server.port.
-# CLOUDFOUNDRY
+# 9. CLOUDFOUNDRY
 management.cloudfoundry.enabled=true # Whether to enable extended Cloud Foundry actuator endpoints.
 management.cloudfoundry.skip-ssl-validation=false # Whether to skip SSL verification for Cloud Foundry actuator endpoint security calls.
-# ENDPOINTS GENERAL CONFIGURATION
+# 10. ENDPOINTS GENERAL CONFIGURATION
 management.endpoints.enabled-by-default= # Whether to enable or disable all endpoints by default.
-# ENDPOINTS JMX CONFIGURATION (JmxEndpointProperties)
+# 11. ENDPOINTS JMX CONFIGURATION (JmxEndpointProperties)
 management.endpoints.jmx.domain=org.springframework.boot # Endpoints JMX domain name. Fallback to 'spring.jmx.default-domain' if set.
 management.endpoints.jmx.exposure.include=* # Endpoint IDs that should be included or '*' for all.
 management.endpoints.jmx.exposure.exclude= # Endpoint IDs that should be excluded.
 management.endpoints.jmx.static-names= # Additional static properties to append to all ObjectNames of MBeans representing Endpoints.
 management.endpoints.jmx.unique-names=false # Whether to ensure that ObjectNames are modified in case of conflict.
-# ENDPOINTS WEB CONFIGURATION (WebEndpointProperties)
-# 配置开放的端点
+# 12. ENDPOINTS WEB CONFIGURATION (WebEndpointProperties)
+# 13. 配置开放的端点
 management.endpoints.web.exposure.include=health,info # Endpoint IDs that should be included or '*' for all.
-# 配置不包括的端点
+# 14. 配置不包括的端点
 management.endpoints.web.exposure.exclude= # Endpoint IDs that should be excluded
 ```
 
@@ -7176,7 +8809,7 @@ mvn package
 ```
 打包的文件位于target目录中
 ```yml
-# war文件也可以使用该方式运行
+# 15. war文件也可以使用该方式运行
 java -jar  xxx.jar 
 ```
 * 直接使用插件运行
@@ -10354,19 +11987,19 @@ public abstract class CommonClientConfigKey<T> implements IClientConfigKey<T> {
 由于Spring Cloud Eureka在可用性与一致性上的取舍， 不论是由于触发了保护机制还是服务剔除的延迟， 引起服务调用到故障实例的时候， 我们还是希望能够增强对这类问题的容错。 所以， 我们在实现服务调用的时候通常会加入一些重试机制。 在目前我们使用的Brixton版本中， 对于重试机制的实现需要我们自己来扩展完成。 而从CamdenSR2版本开始，Spring Cloud整合了SpringRetry来增强RestTernplate的重试能力， 对于开发者来说只需通过简单的配置， 原来那些通过 RestTemplate 实现的服务访问就会自动根据配置来实现重试策略
 
 ```yml
-#开启重试机制,默认打开
+# 16. 开启重试机制,默认打开
 spring.cloud.loadbalancer.retry.enabled=true
-#断路器的超时时间需要大于Ribbon的超时时间， 不然不会触发重试
+# 17. 断路器的超时时间需要大于Ribbon的超时时间， 不然不会触发重试
 hystrix.command.default.execution.isolation.thread.timeoutinMilliseconds=lOOOO
-# 请求连接的超时时间。
+# 18. 请求连接的超时时间。
 hello-service.ribbon.ConnectTimeout=250
-#请求处理的超时时间。
+# 19. 请求处理的超时时间。
 hello-service.ribbon.ReadTimeout=lOOO
-#对所有操作请求都进行重试
+# 20. 对所有操作请求都进行重试
 hello-service.ribbon.OkToRetryOnAllOperations=true
-#切换实例的重试次数
+# 21. 切换实例的重试次数
 hello-service.ribbon.MaxAutoRe七riesNex七Server=2
-#对当前实例的重试次数
+# 22. 对当前实例的重试次数
 hello-service.ribbon.MaxAutoRetries=l
 ```
 根据如上配置， 当访问到故障请求的时候， 它会再尝试访问 一次当前实例（次数由MaxAutoRetries配置）， 如果不行， 就换 一个实例进行访问， 如果还是不行， 再换 一次实例访问（更换次数由MaxAutoRe红iesNextServer配置）， 如果依然不行， 返回失败信息
@@ -10987,7 +12620,7 @@ public class RibbonService {
 由 于 Feign 的起步依赖中已经引入了 Hystrix 的依赖，所以在 Feign 中使用 Hystrix 不需要引入任何的依赖 。 只需要在 eureka-feign”client 工程的配置文件 application.yml 中配置开启Hystrix 的功能，配置文件 application.yml 中加以下配置 ：
 
 ```yml
-#默认是false
+# 23. 默认是false
 feign.hystrix.enable=true
 ```
 
@@ -12999,21 +14632,21 @@ spring.cloud.config.allowOverride=true（这个配置不能在本地被设置）
 bootstrap context是依赖/META-INF/spring.factories文件里面的org.springframework.cloud.bootstrap.BootstrapConfiguration条目下面，通过逗号分隔的Spring  @Configuration类来建立的配置。任何main application context需要的自动注入的Bean可以在这里通过这种方式来获取。这也是ApplicationContextInitializer建立@Bean的方式。可以通过@Order来更改初始化序列，默认是”last”。
 
 ```yml
-# spring-cloud-context-1.1.1.RELEASE.jar
-# spring.factories
-# AutoConfiguration
+# 24. spring-cloud-context-1.1.1.RELEASE.jar
+# 25. spring.factories
+# 26. AutoConfiguration
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration,\
 org.springframework.cloud.autoconfigure.RefreshAutoConfiguration,\
 org.springframework.cloud.autoconfigure.RefreshEndpointAutoConfiguration,\
 org.springframework.cloud.autoconfigure.LifecycleMvcEndpointAutoConfiguration
 
-# Application Listeners
+# 27. Application Listeners
 org.springframework.context.ApplicationListener=\
 org.springframework.cloud.bootstrap.BootstrapApplicationListener,\
 org.springframework.cloud.context.restart.RestartListener
 
-# Bootstrap components
+# 28. Bootstrap components
 org.springframework.cloud.bootstrap.BootstrapConfiguration=\
 org.springframework.cloud.bootstrap.config.PropertySourceBootstrapConfiguration,\
 org.springframework.cloud.bootstrap.encrypt.EncryptionBootstrapConfiguration,\
@@ -13068,7 +14701,7 @@ org.springframework.cloud.bootstrap.BootstrapConfiguration=sample.custom.CustomP
 
 **yml配置文件**
 ```yml
-# 必须放在bootstrap.yml中
+# 29. 必须放在bootstrap.yml中
 spring:
   application:
     name: config-client
@@ -14903,37 +16536,9 @@ public class MockXXXTest {
 }
 ```
 
-#### 1.9.4.2. 相关类说明
-<a href="#menu" style="float:right">目录</a>
 
-##### 1.9.4.2.1. 创建MockMvc实例
-
-**方式1**
-使用注解:@AutoConfigureMockMvc
-
-**方式2**
-在启动前创建
-```java
-
-@Autowired
-WebApplicationContext context;
-    
-@Before
-public void setupMockMvc() throws Exception {
-    MockitoAnnotations.initMocks(this);
-
-    mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
-    //或者
-    mockMvc = MockMvcBuilders
-            .standaloneSetup(userDemoController)
-            .setRemoveSemicolonContent(false)
-            .build();
-
-}
-
-```
  
-#### 1.9.4.3. 相关类说明
+#### 1.9.4.2. 相关类说明
 <a href="#menu" style="float:right">目录</a>
 
 Spring mvc测试框架提供了测试MVC需要的API，主要包括Servlet/JSP Mock、MockMvcBuilder、MockMvc、RequestBuilder、ResultMatcher、ResultHandler、MvcResult等。另外提供了几个静态工厂方法便于测试：MockMvcBuilders、MockMvcRequestBuilders、MockMvcResultMatchers、MockMvcResultHandlers。在使用时请使用静态方法导入方便测试，如：
@@ -14945,7 +16550,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;  
 ```
 
-##### 1.9.4.3.1. MockMvcBuilder/MockMvcBuilders
+##### 1.9.4.2.1. MockMvcBuilder/MockMvcBuilders
 <a href="#menu" style="float:right">目录</a>
 
 MockMvcBuilder是用来构造MockMvc的构造器，其主要有两个实现：StandaloneMockMvcBuilder和DefaultMockMvcBuilder，分别对应之前的两种测试方式。对于我们来说直接使用静态工厂MockMvcBuilders创建即可：
@@ -14969,7 +16574,43 @@ public void setupMockMvc() throws Exception {
 
 }
 ```
+也可以使用注解:@AutoConfigureMockMvc+@WebAppConfiguration
+```java
+//测试环境使用，用来表示测试环境使用的ApplicationContext将是WebApplicationContext类型的；value指定web应用的根；
+public @interface WebAppConfiguration {
+    String value() default "src/main/webapp";
+}
+```
+```java
+@ImportAutoConfiguration
+@PropertyMapping("spring.test.mockmvc")
+public @interface AutoConfigureMockMvc {
+    boolean addFilters() default true;
 
+    @PropertyMapping(
+        skip = SkipPropertyMapping.ON_DEFAULT_VALUE
+    )
+    MockMvcPrint print() default MockMvcPrint.DEFAULT;
+
+    boolean printOnlyOnFailure() default true;
+
+    @PropertyMapping("webclient.enabled")
+    boolean webClientEnabled() default true;
+
+    @PropertyMapping("webdriver.enabled")
+    boolean webDriverEnabled() default true;
+
+    /** @deprecated */
+    @Deprecated
+    boolean secure() default true;
+}
+```
+
+然后
+```java
+@Autowired
+protected MockMvc mockMvc;
+```
 
 其中DefaultMockMvcBuilder还提供了如下API：
 * addFilters(Filter... filters)/addFilter(Filter filter, String... urlPatterns)：添加javax.servlet.Filter过滤器
@@ -15001,7 +16642,7 @@ StandaloneMockMvcBuilder继承了DefaultMockMvcBuilder，又提供了如下API�
 
 因为StandaloneMockMvcBuilder不会加载Spring MVC配置文件，因此就不会注册我们需要的一些组件，因此就提供了如上API用于注册我们需要的相应组件。
 
-##### 1.9.4.3.2. MockMvc
+##### 1.9.4.2.2. MockMvc
 <a href="#menu" style="float:right">目录</a>
 
 使用之前的MockMvcBuilder.build()得到构建好的MockMvc；这个是mvc测试的核心API，对于该API的使用方式如下：
@@ -15024,7 +16665,7 @@ MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/user/1"))
 
   
 
-##### 1.9.4.3.3. RequestBuilder/MockMvcRequestBuilders
+##### 1.9.4.2.3. RequestBuilder/MockMvcRequestBuilders
 <a href="#menu" style="float:right">目录</a>
 
 从名字可以看出，RequestBuilder用来构建请求的，其提供了一个方法buildRequest(ServletContext servletContext)用于构建MockHttpServletRequest；其主要有两个子类MockHttpServletRequestBuilder和MockMultipartHttpServletRequestBuilder（如文件上传使用），即用来Mock客户端请求需要的所有数据。
@@ -15064,7 +16705,7 @@ MockMultipartHttpServletRequestBuilder继承自MockHttpServletRequestBuilder，�
 
  
 
-##### 1.9.4.3.4. ResultActions
+##### 1.9.4.2.4. ResultActions
 <a href="#menu" style="float:right">目录</a>
 
 调用MockMvc.perform(RequestBuilder requestBuilder)后将得到ResultActions，通过ResultActions完成如下三件事：
@@ -15074,7 +16715,7 @@ MockMultipartHttpServletRequestBuilder继承自MockHttpServletRequestBuilder，�
 
  
 
-##### 1.9.4.3.5. ResultMatcher/MockMvcResultMatchers
+##### 1.9.4.2.5. ResultMatcher/MockMvcResultMatchers
 <a href="#menu" style="float:right">目录</a>
 
 ResultMatcher用来匹配执行完请求后的结果验证，其就一个match(MvcResult result)断言方法，如果匹配失败将抛出相应的异常；spring mvc测试框架提供了很多***ResultMatchers来满足测试需求。注意这些***ResultMatchers并不是ResultMatcher的子类，而是返回ResultMatcher实例的。Spring mvc测试框架为了测试方便提供了MockMvcResultMatchers静态工厂方法方便操作；具体的API如下：
@@ -15097,13 +16738,13 @@ ResultMatcher用来匹配执行完请求后的结果验证，其就一个match(M
 
 得到相应的***ResultMatchers后，接着再调用其相应的API得到ResultMatcher，如ModelResultMatchers.attributeExists(final String... names)判断Model属性是否存在。具体请查看相应的API。再次就不一一列举了。
 
-##### 1.9.4.3.6. ResultHandler/MockMvcResultHandlers
+##### 1.9.4.2.6. ResultHandler/MockMvcResultHandlers
 <a href="#menu" style="float:right">目录</a>
 
 ResultHandler用于对处理的结果进行相应处理的，比如输出整个请求/响应等信息方便调试，Spring mvc测试框架提供了MockMvcResultHandlers静态工厂方法，该工厂提供了ResultHandler print()返回一个输出MvcResult详细信息到控制台的ResultHandler实现。
 
 
-##### 1.9.4.3.7. MvcResult
+##### 1.9.4.2.7. MvcResult
 <a href="#menu" style="float:right">目录</a>
 
 即执行完控制器后得到的整个结果，并不仅仅是返回值，其包含了测试时需要的所有信息，如：
