@@ -350,7 +350,7 @@ Singleton （单例,一个Spring容器中只有一个bean实例，默认模式�
 #### 1.1.5.1. 接口以及实现类说明
 
 
-![admin首页](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/resource.png)
+![admin首页](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/resource.png?raw=true)
 
 * WritableResource:可写资源接口，是Spring3.1版本新增的接口，有两个实现类FileSystemResource和PathResource，其中PathResource是Spring4.0提供的实现类。
 * ByteArrayResource:二进制数组表示的资源，二进制数组资源可以在内存中通过程序构造。
@@ -909,7 +909,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 
 BeanDefinition是一个接口，是一个抽象的定义，实际使用的是其实现类，如 ChildBeanDefinition、RootBeanDefinition、GenericBeanDefinition等。
 
-![BeanDefinition](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/beanfactory/BeanDefinition.png)
+![BeanDefinition](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/beanfactory/BeanDefinition.png?raw=true)
 
 
 ###### 1.1.7.2.1.1. AbstractBeanDefinition
@@ -1260,7 +1260,7 @@ BeanFactory提供最基本的IOC容器的功能.其继承者通过增加接口�
 ##### 1.1.7.2.3. ApplicationContext
 <a href="#menu" style="float:right">目录</a>
 
-![ApplicationContext](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/beanfactory/AbstractApplicationContext.png)
+![ApplicationContext](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/beanfactory/AbstractApplicationContext.png?raw=true)
 
 ###### 1.1.7.2.3.1. 基本介绍
 <a href="#menu" style="float:right">目录</a>
@@ -1271,7 +1271,7 @@ ApplicationContext继承了HierarchicalBeanFactory和ListableBeanFactory接口,�
     * 实现了ApplicationListen事件监听接口的Bean可以接收到容器事件,并对事件进行响应处理
     * 在ApplicationContext抽象实现类AbstractApplicationContext中存在一个ApplicationEventMulticaster,负责保存所有的监听器,以便在容器产生上下文事件时通知这些事件监听者
 * MessageSource
-    * 为应用提供i18n国际化消息访问的功能
+    * 为应用提供i18n国际化消息访问的功能,为开发多语言版本的应用提供服务
 * ResourcePatternResolver 
     * 所有的ApplicationContext实现类都实现了类似于PathMatchingResourcePatternResolver的功能,可以通过带前缀的Ant风格的资源文件路径装载Spring的配置文件
 * Lifecycle
@@ -1936,7 +1936,7 @@ protected void finishRefresh() {
 ##### 1.1.7.2.4. WebApplicationContext
 <a href="#menu" style="float:right">目录</a>
 
-![WebApplicationContext](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/beanfactory/WebApplicationContext.png)
+![WebApplicationContext](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/beanfactory/WebApplicationContext.png?raw=true)
 
 WebApplicationContext是专门为web应用准备的,他允许从相对于web根目录的路劲中装载配置文件完成初始化工作，从WebApplicationContext中可以获得ServletContext的引用，整个Web应用上下文对象将作为属性放置在ServletContext中，以便web应用可以访问spring上下文,spring中提供WebApplicationContextUtils的getWebApplicationContext(ServletContext src)方法来获得WebApplicationContext对象
 
@@ -1959,7 +1959,7 @@ Spring使用父子容器实现了很多功能,比如在Spring MVC中,展现层Be
 spring Ioc容器的实现，从根源上是beanfactory，但真正可以作为一个可以独立使用的ioc容器还是DefaultListableBeanFactory，因此可以这么说，
 DefaultListableBeanFactory 是整个spring ioc的始祖，研究透它的前生今世对我们理解spring ioc的概念有着重要的作用
 
-![DefaultListableBeanFactory](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/beanfactory/DefaultListableBeanFactory.png)
+![DefaultListableBeanFactory](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/beanfactory/DefaultListableBeanFactory.png?raw=true)
 
 ```java
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements ConfigurableListableBeanFactory, BeanDefinitionRegistry, Serializable {
@@ -2258,7 +2258,7 @@ public interface ConfigurableListableBeanFactory extends ListableBeanFactory, Au
 <a href="#menu" style="float:right">目录</a>
 
 
-![DefaultSingletonBeanRegistry](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/beanfactory/DefaultSingletonBeanRegistry.png)
+![DefaultSingletonBeanRegistry](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/beanfactory/DefaultSingletonBeanRegistry.png?raw=true)
 
 ###### 1.1.7.2.14.1. AliasRegistry 
 <a href="#menu" style="float:right">目录</a>
@@ -2407,7 +2407,7 @@ public class DemoService {
     }
 }
 ```
-![create-bean](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/beanfactory/create-bean.png)
+![create-bean](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/beanfactory/create-bean.png?raw=true)
 
 这里来看下AbstractBeanFactory的doGetBean
 
@@ -2572,7 +2572,7 @@ public class DemoService {
 
 
 
-![singleton](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/singleton.png)
+![singleton](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/singleton.png?raw=true)
 
 可以看到Spring的单例实现类是DefaultSingletonBeanRegistry的getSingleton方法
 ```java
@@ -3328,7 +3328,7 @@ public interface ProceedingJoinPoint extends JoinPoint {
 Spring AOP通过动态代理和责任链模式来实现.
 在启动创建Bean时如果判断该方法有使用AOP功能,将会为该类创建代理对象并注入容器,当调用该类的方法时,将会被拦截,进而通过责任链模式一步步执行相关的切面代码.
 
-![aop-create-proxy](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/aop-create-proxy.png)
+![aop-create-proxy](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/spring/aop-create-proxy.png?raw=true)
 
 代理实现分别由CglibAopProxy和JdkDynamicAopProxy类来实现
 
@@ -5444,10 +5444,10 @@ management:
 访问地址: http://localhost:8122
 
 首页可以查看应用列表和状态
-![admin首页](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springadmin/admin-mainpage.png)
+![admin首页](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springadmin/admin-mainpage.png?raw=true)
 
 可以点击应用查看监控数据
-![admin应用监控页面](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springadmin/admin-app.png)
+![admin应用监控页面](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springadmin/admin-app.png?raw=true)
 
 #### 1.4.2.3. Client配置说明
 
@@ -9773,7 +9773,7 @@ public class ConsumerApplication {
 
 访问地址:http://localhost:8001/
 
-![注册中心页面](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/center.png)
+![注册中心页面](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/center.png?raw=true)
 这里配置了一个消费者(8003)和两个服务提供者（8002/8012）
 
 status的UP后面的字符串即为服务的唯一标识instance-id。可以通过eureka.instance.instance-id进行修改。
@@ -9843,7 +9843,7 @@ EurekaServer的高可用实际上就是将自己作为服务向其他服务注�
     * 消费者应用从服务注册中心获取服务列表， 从而使消费者可以知道去何处调用其所需要的服务
 
 **服务治理机制**
-![Spring Cloud服务架构图](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/eureka.png)
+![Spring Cloud服务架构图](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/eureka.png?raw=true)
 
 * **服务提供者**
     * 服务注册
@@ -10806,7 +10806,7 @@ public class LoadBalancerAutoConfiguration {
 ```
 当一个被@LoadBalanced 注解修饰的 RestTemplate 对象向外发起 HTTP 请求时， 会被 LoadBalancerinterceptor 类的 intercept 函数所拦截。
 
-![ribbon请求流程](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/ribbon-dorequest.png)
+![ribbon请求流程](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/ribbon-dorequest.png?raw=true)
 
 restTemplate.getForObject()-->RestTemplate.execute()-->RestTemplate.doExecute()-->AbstractClientHttpRequest.execute()-->AbstractBufferingClientHttpRequest.executeInternal()-->InterceptingClientHttpRequest.execute()-->InterceptingClientHttpRequest.InterceptingRequestExecution.execute()
 
@@ -10948,7 +10948,7 @@ public interface ILoadBalancer {
     List<Server> getAllServers();
 }
 ```
-![负载均衡实现类](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/loadbalance-extends.png)
+![负载均衡实现类](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/loadbalance-extends.png?raw=true)
 
 可以看到默认的是ZoneAwareLoadBalancer方式
 ```java
@@ -11019,7 +11019,7 @@ public <T> T execute(String serviceId, ServiceInstance serviceInstance, LoadBala
 
 ##### 1.8.3.2.2. 负载均衡器
 
-![负载均衡实现类](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/loadbalance-extends.png)
+![负载均衡实现类](https://github.com/lgjlife/Java-Study/blob/master/pic/spring/springcloud/loadbalance-extends.png?raw=true)
 
 **AbstractLoadBalancer**是ILoadBalancer接口的抽象实现。在该抽象类中定义了一个关于服务实例的分组枚举类 ServerGroup
 ```java
