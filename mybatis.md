@@ -52,39 +52,50 @@
         - [1.4.5. foreach](#145-foreach)
         - [1.4.6. script](#146-script)
         - [1.4.7. bind](#147-bind)
-    - [1.5. 缓存](#15-缓存)
-        - [1.5.1. Mybatis 缓存](#151-mybatis-缓存)
-        - [1.5.2. 使用自定义缓存](#152-使用自定义缓存)
-    - [1.6. 插件](#16-插件)
-        - [1.6.1. 拦截的接口](#161-拦截的接口)
-        - [1.6.2. 拦截器实现](#162-拦截器实现)
-    - [1.7. 代码生成器](#17-代码生成器)
-        - [1.7.1. 创建需要生成的数据表](#171-创建需要生成的数据表)
-        - [1.7.2. 创建Mybatis代码自动生成配置文件](#172-创建mybatis代码自动生成配置文件)
-        - [1.7.3. 配置运行](#173-配置运行)
-    - [1.8. Mybatis整体架构](#18-mybatis整体架构)
-        - [1.8.1. 基础支持层](#181-基础支持层)
-        - [1.8.2. 核心处理层](#182-核心处理层)
-        - [1.8.3. 接口层](#183-接口层)
-        - [1.8.4. 模块说明](#184-模块说明)
-    - [1.9. MyBatis实现原理](#19-mybatis实现原理)
-        - [1.9.1. 基本的例子](#191-基本的例子)
-        - [1.9.2. 执行流程](#192-执行流程)
-            - [1.9.2.1. 解析XML配置文件](#1921-解析xml配置文件)
-            - [1.9.2.2. 获取mapper对象](#1922-获取mapper对象)
-            - [1.9.2.3. 执行拦截](#1923-执行拦截)
-            - [1.9.2.4. SqlSession处理](#1924-sqlsession处理)
-            - [1.9.2.5. MappedStatement](#1925-mappedstatement)
-            - [1.9.2.6. Executor](#1926-executor)
-                - [1.9.2.6.1. BaseExecutor](#19261-baseexecutor)
-                - [1.9.2.6.2. SimpleExecutor](#19262-simpleexecutor)
-                - [1.9.2.6.3. BatchExecutor](#19263-batchexecutor)
-                - [1.9.2.6.4. ReuseExecutor](#19264-reuseexecutor)
-                - [1.9.2.6.5. CachingExecutor](#19265-cachingexecutor)
-            - [1.9.2.7. Statement](#1927-statement)
-            - [ResultSetHandler](#resultsethandler)
-            - [RowBounds分页说明](#rowbounds分页说明)
-        - [1.9.3. 缓存实现原理](#193-缓存实现原理)
+    - [1.5. 插件](#15-插件)
+        - [1.5.1. 拦截的接口](#151-拦截的接口)
+        - [1.5.2. 拦截器实现](#152-拦截器实现)
+    - [1.6. 代码生成器](#16-代码生成器)
+        - [1.6.1. 创建需要生成的数据表](#161-创建需要生成的数据表)
+        - [1.6.2. 创建Mybatis代码自动生成配置文件](#162-创建mybatis代码自动生成配置文件)
+        - [1.6.3. 配置运行](#163-配置运行)
+    - [1.7. Mybatis整体架构](#17-mybatis整体架构)
+        - [1.7.1. 基础支持层](#171-基础支持层)
+        - [1.7.2. 核心处理层](#172-核心处理层)
+        - [1.7.3. 接口层](#173-接口层)
+        - [1.7.4. 模块说明](#174-模块说明)
+    - [1.8. MyBatis实现原理](#18-mybatis实现原理)
+        - [1.8.1. 基本的例子](#181-基本的例子)
+        - [1.8.2. 执行流程](#182-执行流程)
+            - [1.8.2.1. 解析XML配置文件](#1821-解析xml配置文件)
+            - [1.8.2.2. 获取mapper对象](#1822-获取mapper对象)
+            - [1.8.2.3. 执行拦截](#1823-执行拦截)
+            - [1.8.2.4. SqlSession处理](#1824-sqlsession处理)
+            - [1.8.2.5. MappedStatement](#1825-mappedstatement)
+            - [1.8.2.6. Executor](#1826-executor)
+                - [1.8.2.6.1. BaseExecutor](#18261-baseexecutor)
+                - [1.8.2.6.2. SimpleExecutor](#18262-simpleexecutor)
+                - [1.8.2.6.3. BatchExecutor](#18263-batchexecutor)
+                - [1.8.2.6.4. ReuseExecutor](#18264-reuseexecutor)
+                - [1.8.2.6.5. CachingExecutor](#18265-cachingexecutor)
+            - [1.8.2.7. Statement](#1827-statement)
+            - [1.8.2.8. ResultSetHandler](#1828-resultsethandler)
+            - [1.8.2.9. RowBounds分页说明](#1829-rowbounds分页说明)
+        - [1.8.3. Mybatis 缓存](#183-mybatis-缓存)
+            - [1.8.3.1. 基本介紹](#1831-基本介紹)
+        - [1.8.4. 使用自定义缓存](#184-使用自定义缓存)
+            - [1.8.4.1. 缓存顶层接口](#1841-缓存顶层接口)
+            - [1.8.4.2. 缓存实现类](#1842-缓存实现类)
+                - [1.8.4.2.1. BlockingCache](#18421-blockingcache)
+                - [1.8.4.2.2. FifoCache](#18422-fifocache)
+                - [1.8.4.2.3. LoggingCache](#18423-loggingcache)
+                - [1.8.4.2.4. LruCache](#18424-lrucache)
+                - [1.8.4.2.5. ScheduledCache](#18425-scheduledcache)
+                - [1.8.4.2.6. SerializedCache](#18426-serializedcache)
+                - [1.8.4.2.7. SoftCache](#18427-softcache)
+                - [1.8.4.2.8. SynchronizedCache](#18428-synchronizedcache)
+                - [1.8.4.2.9. TransactionalCache](#18429-transactionalcache)
+                - [1.8.4.2.10. WeakCache](#184210-weakcache)
 
 <!-- /TOC -->
 
@@ -2765,160 +2776,9 @@ public interface Mapper {
 ```
 
 
-## 1.5. 缓存
-<a href="#menu" style="float:right">目录</a>
-
-### 1.5.1. Mybatis 缓存
-
-MyBatis 内置了一个强大的事务性查询缓存机制，它可以非常方便地配置和定制。 为了使它更加强大而且易于配置，我们对 MyBatis 3 中的缓存实现进行了许多改进。
-
-默认情况下，只启用了本地的会话缓存，它仅仅对一个会话中的数据进行缓存。 要启用全局的二级缓存，只需要在你的 SQL 映射文件中添加一行：
-```xml
-<cache/>
-```
-基本上就是这样。这个简单语句的效果如下:
-* 映射语句文件中的所有 select 语句的结果将会被缓存。
-* 映射语句文件中的所有 insert、update 和 delete 语句会刷新缓存。
-* 缓存会使用最近最少使用算法（LRU, Least Recently Used）算法来清除不需要的缓存。
-* 缓存不会定时进行刷新（也就是说，没有刷新间隔）。
-* 缓存会保存列表或对象（无论查询方法返回哪种）的 1024 个引用。
-* 缓存会被视为读/写缓存，这意味着获取到的对象并不是共享的，可以安全地被调用者修改，而不干扰其他调用者或线程所做的潜在修改。
-提示 缓存只作用于 cache 标签所在的映射文件中的语句。如果你混合使用 Java API 和 XML 映射文件，在共用接口中的语句将不会被默认缓存。你需要使用 @CacheNamespaceRef 注解指定缓存作用域。
-
-这些属性可以通过 cache 元素的属性来修改。比如：
-
-```xml
-<cache
-  eviction="FIFO"
-  flushInterval="60000"
-  size="512"
-  readOnly="true"/>
-```
-这个更高级的配置创建了一个 FIFO 缓存，每隔 60 秒刷新，最多可以存储结果对象或列表的 512 个引用，而且返回的对象被认为是只读的，因此对它们进行修改可能会在不同线程中的调用者产生冲突。
-
-**可用的清除策略有：**
-* LRU – 最近最少使用：移除最长时间不被使用的对象。
-* FIFO – 先进先出：按对象进入缓存的顺序来移除它们。
-* SOFT – 软引用：基于垃圾回收器状态和软引用规则移除对象。
-* WEAK – 弱引用：更积极地基于垃圾收集器状态和弱引用规则移除对象。
-默认的清除策略是 LRU。
-
-**flushInterval**（刷新间隔）属性可以被设置为任意的正整数，设置的值应该是一个以毫秒为单位的合理时间量。 默认情况是不设置，也就是没有刷新间隔，缓存仅仅会在调用语句时刷新。
-
-**size**（引用数目）属性可以被设置为任意正整数，要注意欲缓存对象的大小和运行环境中可用的内存资源。默认值是 1024。
-**readOnly**（只读）属性可以被设置为 true 或 false。只读的缓存会给所有调用者返回缓存对象的相同实例。 因此这些对象不能被修改。这就提供了可观的性能提升。而可读写的缓存会（通过序列化）返回缓存对象的拷贝。 速度上会慢一些，但是更安全，因此默认值是 false。
-
-提示 二级缓存是事务性的。这意味着，当 SqlSession 完成并提交时，或是完成并回滚，但没有执行 flushCache=true 的 insert/delete/update 语句时，缓存会获得更新。
-
-**一级缓存**
-* 一级缓存默认开启，存在SqlSession的生命周期中。也就是缓存共享于同一个SqlSession
-* 在同一个SqlSession查询中，Mybatis会把执行的方法和参数通过一定的方法生成缓存的键值，将键值和查询结果存入一个map中
-BaseExecutor
-```java
-@Override
-public CacheKey createCacheKey(MappedStatement ms, Object parameterObject, RowBounds rowBounds, BoundSql boundSql) {
-    if (closed) {
-        throw new ExecutorException("Executor was closed.");
-    }
-    CacheKey cacheKey = new CacheKey();
-    cacheKey.update(ms.getId());
-    cacheKey.update(rowBounds.getOffset());
-    cacheKey.update(rowBounds.getLimit());
-    cacheKey.update(boundSql.getSql());
-    List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
-    TypeHandlerRegistry typeHandlerRegistry = ms.getConfiguration().getTypeHandlerRegistry();
-    // mimic DefaultParameterHandler logic
-    for (ParameterMapping parameterMapping : parameterMappings) {
-        if (parameterMapping.getMode() != ParameterMode.OUT) {
-        Object value;
-        String propertyName = parameterMapping.getProperty();
-        if (boundSql.hasAdditionalParameter(propertyName)) {
-            value = boundSql.getAdditionalParameter(propertyName);
-        } else if (parameterObject == null) {
-            value = null;
-        } else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
-            value = parameterObject;
-        } else {
-            MetaObject metaObject = configuration.newMetaObject(parameterObject);
-            value = metaObject.getValue(propertyName);
-        }
-        cacheKey.update(value);
-        }
-    }
-    if (configuration.getEnvironment() != null) {
-        // issue #176
-        cacheKey.update(configuration.getEnvironment().getId());
-    }
-    return cacheKey;
-}
-```
-
-**二级缓存**
-* 二级缓存存在于SqlSessionFactory生命周期中，也就是缓存共享于同一个SqlSessionFactory
-
-**注意:**缓存使用的是堆内存，使用前应确认是否是必须的，也需要配置好回收策略，避免出现频繁的垃圾回收。
-
-### 1.5.2. 使用自定义缓存
-<a href="#menu" style="float:right">目录</a>
 
 
-除了上述自定义缓存的方式，你也可以通过实现你自己的缓存，或为其他第三方缓存方案创建适配器，来完全覆盖缓存行为。
-
-```xml
-<cache type="com.domain.something.MyCustomCache"/>
-```
-
-这个示例展示了如何使用一个自定义的缓存实现。type 属性指定的类必须实现 org.mybatis.cache.Cache 接口，且提供一个接受 String 参数作为 id 的构造器。 这个接口是 MyBatis 框架中许多复杂的接口之一，但是行为却非常简单。
-```java
-public interface Cache {
-  String getId();
-  int getSize();
-  void putObject(Object key, Object value);
-  Object getObject(Object key);
-  boolean hasKey(Object key);
-  Object removeObject(Object key);
-  void clear();
-}
-```
-
-为了对你的缓存进行配置，只需要简单地在你的缓存实现中添加公有的 JavaBean 属性，然后通过 cache 元素传递属性值，例如，下面的例子将在你的缓存实现上调用一个名为 setCacheFile(String file) 的方法：
-```xml
-<cache type="com.domain.something.MyCustomCache">
-  <property name="cacheFile" value="/tmp/my-custom-cache.tmp"/>
-</cache>
-```
-
-你可以使用所有简单类型作为 JavaBean 属性的类型，MyBatis 会进行转换。 你也可以使用占位符（如 ${cache.file}），以便替换成在配置文件属性中定义的值。
-
-从版本 3.4.2 开始，MyBatis 已经支持在所有属性设置完毕之后，调用一个初始化方法。 如果想要使用这个特性，请在你的自定义缓存类里实现 org.apache.ibatis.builder.InitializingObject 接口。
-
-```java
-public interface InitializingObject {
-  void initialize() throws Exception;
-}
-```
-
-提示 上一节中对缓存的配置（如清除策略、可读或可读写等），不能应用于自定义缓存。
-
-请注意，缓存的配置和缓存实例会被绑定到 SQL 映射文件的命名空间中。 因此，同一命名空间中的所有语句和缓存将通过命名空间绑定在一起。 每条语句可以自定义与缓存交互的方式，或将它们完全排除于缓存之外，这可以通过在每条语句上使用两个简单属性来达成。 默认情况下，语句会这样来配置：
-
-```xml
-<select ... flushCache="false" useCache="true"/>
-<insert ... flushCache="true"/>
-<update ... flushCache="true"/>
-<delete ... flushCache="true"/>
-```
-
-鉴于这是默认行为，显然你永远不应该以这样的方式显式配置一条语句。但如果你想改变默认的行为，只需要设置 flushCache 和 useCache 属性。比如，某些情况下你可能希望特定 select 语句的结果排除于缓存之外，或希望一条 select 语句清空缓存。类似地，你可能希望某些 update 语句执行时不要刷新缓存。
-
-**cache-ref**
-回想一下上一节的内容，对某一命名空间的语句，只会使用该命名空间的缓存进行缓存或刷新。 但你可能会想要在多个命名空间中共享相同的缓存配置和实例。要实现这种需求，你可以使用 cache-ref 元素来引用另一个缓存。
-
-```xml
-<cache-ref namespace="com.someone.application.data.SomeMapper"/>
-```
-
-## 1.6. 插件
+## 1.5. 插件
 <a href="#menu" style="float:right">目录</a>
 
 前言
@@ -2929,7 +2789,7 @@ MyBatis开放用户实现自己的插件，从而对整个调用过程进行个�
 ![](https://img2018.cnblogs.com/blog/1404294/201906/1404294-20190610164312882-425922091.png)
  
 
-### 1.6.1. 拦截的接口
+### 1.5.1. 拦截的接口
 MyBatis允许拦截的接口如下
 
 Executor
@@ -2995,7 +2855,7 @@ public interface StatementHandler {
 
 只要拦截器定义了拦截的接口和方法，后续调用该方法时，将会被拦截。
 
-### 1.6.2. 拦截器实现
+### 1.5.2. 拦截器实现
 如果要实现自己的拦截器，需要实现接口Interceptor
 
 ```java
@@ -3165,16 +3025,13 @@ proceed()用于继续执行并获得最终的结果。
 
 否则直接调用method.invoke(this.target, args);
 
- 
-
- 
 
 4. 拦截器在执行前输出"MyIntercetor ..."，在数据库操作返回后输出"result =xxx"
-
-       log.info("MyIntercetor ...");
-        Object result = invocation.proceed();
-        log.info("result = " + result); 
-
+```java
+log.info("MyIntercetor ...");
+Object result = invocation.proceed();
+log.info("result = " + result); 
+```
 插件实现完成！
 
 **测试**
@@ -3330,10 +3187,10 @@ Statement需要定义statementType="STATEMENT"，这个时候SQL语句不需要�
   </select>
 ```
 
-## 1.7. 代码生成器
+## 1.6. 代码生成器
 <a href="#menu" style="float:right">目录</a>
 
-### 1.7.1. 创建需要生成的数据表
+### 1.6.1. 创建需要生成的数据表
 <a href="#menu" style="float:right">目录</a>
 
 数据表结构
@@ -3348,7 +3205,7 @@ CREATE TABLE `scheduler` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务调度表'
 ```
 
-### 1.7.2. 创建Mybatis代码自动生成配置文件
+### 1.6.2. 创建Mybatis代码自动生成配置文件
 <a href="#menu" style="float:right">目录</a>
 
 默认名称为：generatorConfig.xml
@@ -3447,7 +3304,7 @@ CREATE TABLE `scheduler` (
  </plugin>
 ```
 
-### 1.7.3. 配置运行
+### 1.6.3. 配置运行
 <a href="#menu" style="float:right">目录</a>
 
 选择Maven选项。 
@@ -3474,7 +3331,7 @@ Command line 填入：mybatis-generator:generate -e
 [INFO] ------------------------------------------------------------------------
 ```
 
-## 1.8. Mybatis整体架构
+## 1.7. Mybatis整体架构
 
 <a href="#menu" style="float:right">目录</a>
 
@@ -3483,7 +3340,7 @@ Command line 填入：mybatis-generator:generate -e
 MyBatis 的整体架构分为三层 ， 分别是基础支持层 、 核心处理层和接口层
 ![MyBatis 的整体架构](https://github.com/lgjlife/Java-Study/blob/master/pic/mybatis/mybatis.png?raw=true)
 
-### 1.8.1. 基础支持层
+### 1.7.1. 基础支持层
 <a href="#menu" style="float:right">目录</a>
 
 基础支持层包含整个 MyBatis 的基础模块，这些模块为核心处理层的功能提供了良好的支
@@ -3520,7 +3377,7 @@ MyBatis 对数据库中的事务进行了抽象，其自身提供了相应的事
 
 值得读者注意的是，开发人员无须编写自定义 Mapper 接口的实现， MyBatis 会自动为其创建动态代理对象 。在有些场景中，自定义Mapper接口可以完全代替映射配置文件，但有的映射规则和 SQL 语句的定义还是写在映射配置文件中比较方便，例如动态 SQL语句的定义 。
 
-### 1.8.2. 核心处理层
+### 1.7.2. 核心处理层
 <a href="#menu" style="float:right">目录</a>
 
 介绍完 MyBatis 的基础支持层之后，我们来分析 MyBatis 的核心处理层。在核心处理层中实现了MyBatis的核心处理流程，其中包括MyBatis 的初始化以及完成一次数据库操作的涉及的全部流程 。
@@ -3539,12 +3396,12 @@ Mybatis 自身的功能虽然强大，但是并不能完美切合所有 的应�
 
 ![SQL执行流程](https://github.com/lgjlife/Java-Study/blob/master/pic/mybatis/mybatis-excute-sql.png?raw=true)
 
-### 1.8.3. 接口层
+### 1.7.3. 接口层
 <a href="#menu" style="float:right">目录</a>
 
 接口层相对简单，其核心是 SqlSession 接口，该接口中定义了 MyBatis 暴露给应用程序调用的 API，也就是上层应用与 MyBatis 交互的桥梁。接口层在接收到调用请求时，会调用核心处理层的相应模块来完成具体的数据库操作
 
-### 1.8.4. 模块说明
+### 1.7.4. 模块说明
 <a href="#menu" style="float:right">目录</a>
 
 * SqlSession 作为MyBatis工作的主要顶层API，表示和数据库交互的会话，完成必要数据库增删改查功能
@@ -3607,10 +3464,10 @@ public interface SqlSession extends Closeable {
 
 ```
 
-## 1.9. MyBatis实现原理
+## 1.8. MyBatis实现原理
 <a href="#menu" style="float:right">目录</a>
 
-### 1.9.1. 基本的例子
+### 1.8.1. 基本的例子
 <a href="#menu" style="float:right">目录</a>
 
 1. 获取SqlSession
@@ -3628,7 +3485,7 @@ mapper.xxx()
 ```
 
 
-### 1.9.2. 执行流程
+### 1.8.2. 执行流程
 <a href="#menu" style="float:right">目录</a>
 
 分析上面的执行流程
@@ -3638,7 +3495,7 @@ InputStream inputStream = Resources.getResourceAsStream(resource);
 SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream,prop);
 ```
 
-#### 1.9.2.1. 解析XML配置文件
+#### 1.8.2.1. 解析XML配置文件
 <a href="#menu" style="float:right">目录</a>
 
 上面的build()方法有两个作用:
@@ -3698,7 +3555,7 @@ private void parseConfiguration(XNode root) {
 }
 ```
 
-#### 1.9.2.2. 获取mapper对象
+#### 1.8.2.2. 获取mapper对象
 <a href="#menu" style="float:right">目录</a>
 
 getMapper()通过mapper的类类型获取mapper对象,这是SqlSession类中的方法,由于mapper文件是接口类型,因此这也是获取mapper的代理对象的过程
@@ -3766,7 +3623,7 @@ public class MapperProxyFactory<T> {
 }
 ```
 
-#### 1.9.2.3. 执行拦截
+#### 1.8.2.3. 执行拦截
 <a href="#menu" style="float:right">目录</a>
 
 MapperProxy是InvocationHandler的实现类,也就是说执行mapper的相关方法时,将会被invoke方法拦截.
@@ -3869,7 +3726,7 @@ public class MapperMethod {
 }
 ```
 
-#### 1.9.2.4. SqlSession处理
+#### 1.8.2.4. SqlSession处理
 <a href="#menu" style="float:right">目录</a>
 
 DefaultSqlSession是SqlSession的实现类
@@ -3923,7 +3780,7 @@ public int update(String statement, Object parameter) {
 //key为方法id
  protected final Map<String, MappedStatement> mappedStatements;
 ```
-#### 1.9.2.5. MappedStatement
+#### 1.8.2.5. MappedStatement
 <a href="#menu" style="float:right">目录</a>
 
 MappedStatement维护了一条< select|update|delete|insert>节点的封装
@@ -3957,7 +3814,7 @@ public final class MappedStatement {
     //setter getter  
 }
 ```
-#### 1.9.2.6. Executor
+#### 1.8.2.6. Executor
 <a href="#menu" style="float:right">目录</a>
 
 ![Executor](https://github.com/lgjlife/Java-Study/blob/master/pic/mybatis/Executor.png?raw=true)
@@ -3992,7 +3849,7 @@ public interface Executor {
 }
 ```
 
-##### 1.9.2.6.1. BaseExecutor
+##### 1.8.2.6.1. BaseExecutor
 
 BaseExecutor是一个抽象类，采用模板方法的设计模式。
 
@@ -4059,7 +3916,7 @@ public int update(MappedStatement ms, Object parameter) throws SQLException {
     BoundSql boundSql = ms.getBoundSql(parameter);
     // 创建一级缓存的键对象
     CacheKey key = createCacheKey(ms, parameter, rowBounds, boundSql);
-            // 调用下面的 query 方法
+   // 调用下面的 query 方法
     return query(ms, parameter, rowBounds, resultHandler, key, boundSql);
  }
 
@@ -4165,7 +4022,7 @@ protected abstract <E> Cursor<E> doQueryCursor(MappedStatement ms, Object parame
   throws SQLException;
 ```
 
-##### 1.9.2.6.2. SimpleExecutor
+##### 1.8.2.6.2. SimpleExecutor
 <a href="#menu" style="float:right">目录</a>
 
 最简单的执行器，根据对应的sql直接执行即可，不会做一些额外的操作；
@@ -4227,13 +4084,13 @@ public class SimpleExecutor extends BaseExecutor {
 }
 
 ```
-##### 1.9.2.6.3. BatchExecutor
+##### 1.8.2.6.3. BatchExecutor
 <a href="#menu" style="float:right">目录</a>
 通过批量操作来优化性能。通常需要注意的是批量更新操作，由于内部有缓存的实现，使用完成后记得调用flushStatements来清除缓存。
 
 
 
-##### 1.9.2.6.4. ReuseExecutor
+##### 1.8.2.6.4. ReuseExecutor
 <a href="#menu" style="float:right">目录</a>
 
 可重用的执行器，重用的对象是Statement，也就是说该执行器会缓存同一个sql的Statement，省去Statement的重新创建，优化性能。
@@ -4293,7 +4150,7 @@ public class ReuseExecutor extends BaseExecutor {
 }
 ```
 
-##### 1.9.2.6.5. CachingExecutor
+##### 1.8.2.6.5. CachingExecutor
 
 启用于二级缓存时的执行器；
 采用静态代理；代理一个 Executor 对象。
@@ -4355,7 +4212,7 @@ public class CachingExecutor implements Executor {
 从上面可以看出一级缓存是存放在Executor中的localCache,而Executor对象是存在SqlSession中,因此一级缓存是基于SqlSession,只要更换SqlSession,缓存就会失效
 而二级缓存是存放在MappedStatement中的cache变量,MappedStatement对象存放在mappedStatements中的,因此可以跨SqlSession.
 
-#### 1.9.2.7. Statement
+#### 1.8.2.7. Statement
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -4418,7 +4275,7 @@ public class RoutingStatementHandler implements StatementHandler {
 ```
 
 
-#### ResultSetHandler
+#### 1.8.2.8. ResultSetHandler
 <a href="#menu" style="float:right">目录</a>
 
 在StatementHandler里的查询,最后的结果都是交由ResultSetHandler来进行处理
@@ -4488,7 +4345,8 @@ public List<Object> handleResultSets(Statement stmt) throws SQLException {
 ```
 处理完成后将结果返回.上面就是mybatis的执行流程.
 
-#### RowBounds分页说明
+#### 1.8.2.9. RowBounds分页说明
+<a href="#menu" style="float:right">目录</a>
 
 ```java
 public class RowBounds {
@@ -4526,10 +4384,173 @@ private <E> Object executeForMany(SqlSession sqlSession, Object[] args) {
 ```
 
 
-### 1.9.3. 缓存实现原理
+### 1.8.3. Mybatis 缓存
 <a href="#menu" style="float:right">目录</a>
 
-Mybatis的缓存是通过Cache接口以及其子类实现的
+#### 1.8.3.1. 基本介紹
+<a href="#menu" style="float:right">目录</a>
+
+MyBatis内置了查询缓存,包括一级缓存和二级缓存.
+一级缓存的生命周期在SqlSession内,也就是缓存不能跨SqlSession.
+二级缓存的生命周期是SqlSessionFactory,SqlSessionFactory一般在mybatis中是单例存在,因此二级缓存是全局有效的.
+
+全局缓存使能,默认使能,也就是以及缓存是打开的.
+```yml
+mybatis:
+  configuration:
+    cache-enabled: true
+```
+默认情况下，只启用了本地的会话缓存，它仅仅对一个会话中的数据进行缓存。 要启用全局的二级缓存，只需要在你的 SQL 映射文件中添加一行：
+```xml
+<cache/>
+```
+基本上就是这样。这个简单语句的效果如下:
+* 映射语句文件中的所有 select 语句的结果将会被缓存。
+* 映射语句文件中的所有 insert、update 和 delete 语句会刷新缓存。
+* 缓存会使用最近最少使用算法（LRU, Least Recently Used）算法来清除不需要的缓存。
+* 缓存不会定时进行刷新（也就是说，没有刷新间隔）。
+* 缓存会保存列表或对象（无论查询方法返回哪种）的 1024 个引用。
+* 缓存会被视为读/写缓存，这意味着获取到的对象并不是共享的，可以安全地被调用者修改，而不干扰其他调用者或线程所做的潜在修改。
+提示 缓存只作用于 cache 标签所在的映射文件中的语句。如果你混合使用 Java API 和 XML 映射文件，在共用接口中的语句将不会被默认缓存。你需要使用 @CacheNamespaceRef 注解指定缓存作用域。
+
+这些属性可以通过 cache 元素的属性来修改。比如：
+
+```xml
+<cache
+  eviction="FIFO"
+  flushInterval="60000"
+  size="512"
+  readOnly="true"/>
+```
+这个更高级的配置创建了一个 FIFO 缓存，每隔 60 秒刷新，最多可以存储结果对象或列表的 512 个引用，而且返回的对象被认为是只读的，因此对它们进行修改可能会在不同线程中的调用者产生冲突。
+
+**可用的清除策略有：**
+* LRU – 最近最少使用：移除最长时间不被使用的对象。
+* FIFO – 先进先出：按对象进入缓存的顺序来移除它们。
+* SOFT – 软引用：基于垃圾回收器状态和软引用规则移除对象。
+* WEAK – 弱引用：更积极地基于垃圾收集器状态和弱引用规则移除对象。
+默认的清除策略是 LRU。
+
+**flushInterval**（刷新间隔）属性可以被设置为任意的正整数，设置的值应该是一个以毫秒为单位的合理时间量。 默认情况是不设置，也就是没有刷新间隔，缓存仅仅会在调用语句时刷新。
+
+**size**（引用数目）属性可以被设置为任意正整数，要注意欲缓存对象的大小和运行环境中可用的内存资源。默认值是 1024。
+**readOnly**（只读）属性可以被设置为 true 或 false。只读的缓存会给所有调用者返回缓存对象的相同实例。 因此这些对象不能被修改。这就提供了可观的性能提升。而可读写的缓存会（通过序列化）返回缓存对象的拷贝。 速度上会慢一些，但是更安全，因此默认值是 false。
+
+提示 二级缓存是事务性的。这意味着，当 SqlSession 完成并提交时，或是完成并回滚，但没有执行 flushCache=true 的 insert/delete/update 语句时，缓存会获得更新。
+
+**一级缓存**
+* 一级缓存默认开启，存在SqlSession的生命周期中。也就是缓存共享于同一个SqlSession
+* 在同一个SqlSession查询中，Mybatis会把执行的方法和参数通过一定的方法生成缓存的键值，将键值和查询结果存入一个map中
+BaseExecutor
+```java
+@Override
+public CacheKey createCacheKey(MappedStatement ms, Object parameterObject, RowBounds rowBounds, BoundSql boundSql) {
+    if (closed) {
+        throw new ExecutorException("Executor was closed.");
+    }
+    CacheKey cacheKey = new CacheKey();
+    cacheKey.update(ms.getId());
+    cacheKey.update(rowBounds.getOffset());
+    cacheKey.update(rowBounds.getLimit());
+    cacheKey.update(boundSql.getSql());
+    List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
+    TypeHandlerRegistry typeHandlerRegistry = ms.getConfiguration().getTypeHandlerRegistry();
+    // mimic DefaultParameterHandler logic
+    for (ParameterMapping parameterMapping : parameterMappings) {
+        if (parameterMapping.getMode() != ParameterMode.OUT) {
+        Object value;
+        String propertyName = parameterMapping.getProperty();
+        if (boundSql.hasAdditionalParameter(propertyName)) {
+            value = boundSql.getAdditionalParameter(propertyName);
+        } else if (parameterObject == null) {
+            value = null;
+        } else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
+            value = parameterObject;
+        } else {
+            MetaObject metaObject = configuration.newMetaObject(parameterObject);
+            value = metaObject.getValue(propertyName);
+        }
+        cacheKey.update(value);
+        }
+    }
+    if (configuration.getEnvironment() != null) {
+        // issue #176
+        cacheKey.update(configuration.getEnvironment().getId());
+    }
+    return cacheKey;
+}
+```
+
+**二级缓存**
+* 二级缓存存在于SqlSessionFactory生命周期中，也就是缓存共享于同一个SqlSessionFactory
+
+**注意:**缓存使用的是堆内存，使用前应确认是否是必须的，也需要配置好回收策略，避免出现频繁的垃圾回收。
+
+### 1.8.4. 使用自定义缓存
+<a href="#menu" style="float:right">目录</a>
+
+
+除了上述自定义缓存的方式，你也可以通过实现你自己的缓存，或为其他第三方缓存方案创建适配器，来完全覆盖缓存行为。
+
+```xml
+<cache type="com.domain.something.MyCustomCache"/>
+```
+
+这个示例展示了如何使用一个自定义的缓存实现。type 属性指定的类必须实现 org.mybatis.cache.Cache 接口，且提供一个接受 String 参数作为 id 的构造器。 这个接口是 MyBatis 框架中许多复杂的接口之一，但是行为却非常简单。
+```java
+public interface Cache {
+  String getId();
+  int getSize();
+  void putObject(Object key, Object value);
+  Object getObject(Object key);
+  boolean hasKey(Object key);
+  Object removeObject(Object key);
+  void clear();
+}
+```
+
+为了对你的缓存进行配置，只需要简单地在你的缓存实现中添加公有的 JavaBean 属性，然后通过 cache 元素传递属性值，例如，下面的例子将在你的缓存实现上调用一个名为 setCacheFile(String file) 的方法：
+```xml
+<cache type="com.domain.something.MyCustomCache">
+  <property name="cacheFile" value="/tmp/my-custom-cache.tmp"/>
+</cache>
+```
+
+你可以使用所有简单类型作为 JavaBean 属性的类型，MyBatis 会进行转换。 你也可以使用占位符（如 ${cache.file}），以便替换成在配置文件属性中定义的值。
+
+从版本 3.4.2 开始，MyBatis 已经支持在所有属性设置完毕之后，调用一个初始化方法。 如果想要使用这个特性，请在你的自定义缓存类里实现 org.apache.ibatis.builder.InitializingObject 接口。
+
+```java
+public interface InitializingObject {
+  void initialize() throws Exception;
+}
+```
+
+提示 上一节中对缓存的配置（如清除策略、可读或可读写等），不能应用于自定义缓存。
+
+请注意，缓存的配置和缓存实例会被绑定到 SQL 映射文件的命名空间中。 因此，同一命名空间中的所有语句和缓存将通过命名空间绑定在一起。 每条语句可以自定义与缓存交互的方式，或将它们完全排除于缓存之外，这可以通过在每条语句上使用两个简单属性来达成。 默认情况下，语句会这样来配置：
+
+```xml
+<select ... flushCache="false" useCache="true"/>
+<insert ... flushCache="true"/>
+<update ... flushCache="true"/>
+<delete ... flushCache="true"/>
+```
+
+鉴于这是默认行为，显然你永远不应该以这样的方式显式配置一条语句。但如果你想改变默认的行为，只需要设置 flushCache 和 useCache 属性。比如，某些情况下你可能希望特定 select 语句的结果排除于缓存之外，或希望一条 select 语句清空缓存。类似地，你可能希望某些 update 语句执行时不要刷新缓存。
+
+**cache-ref**
+回想一下上一节的内容，对某一命名空间的语句，只会使用该命名空间的缓存进行缓存或刷新。 但你可能会想要在多个命名空间中共享相同的缓存配置和实例。要实现这种需求，你可以使用 cache-ref 元素来引用另一个缓存。
+
+```xml
+<cache-ref namespace="com.someone.application.data.SomeMapper"/>
+```
+
+
+#### 1.8.4.1. 缓存顶层接口
+<a href="#menu" style="float:right">目录</a>
+
+Mybatis的缓存是通过Cache接口以及其子类实现的.
 ```java
 public interface Cache {
     String getId();
@@ -4543,3 +4564,203 @@ public interface Cache {
     }
 }
 ```
+其中一个实现类是PerpetualCache
+```java
+package org.apache.ibatis.cache.impl;
+
+import java.util.HashMap;
+import java.util.Map;
+import org.apache.ibatis.cache.Cache;
+import org.apache.ibatis.cache.CacheException;
+
+public class PerpetualCache implements Cache {
+    private final String id;
+    private Map<Object, Object> cache = new HashMap();
+
+    public PerpetualCache(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public int getSize() {
+        return this.cache.size();
+    }
+
+    public void putObject(Object key, Object value) {
+        this.cache.put(key, value);
+    }
+
+    public Object getObject(Object key) {
+        return this.cache.get(key);
+    }
+
+    public Object removeObject(Object key) {
+        return this.cache.remove(key);
+    }
+
+    public void clear() {
+        this.cache.clear();
+    }
+
+    public boolean equals(Object o) {
+        if (this.getId() == null) {
+            throw new CacheException("Cache instances require an ID.");
+        } else if (this == o) {
+            return true;
+        } else if (!(o instanceof Cache)) {
+            return false;
+        } else {
+            Cache otherCache = (Cache)o;
+            return this.getId().equals(otherCache.getId());
+        }
+    }
+
+    public int hashCode() {
+        if (this.getId() == null) {
+            throw new CacheException("Cache instances require an ID.");
+        } else {
+            return this.getId().hashCode();
+        }
+    }
+}
+
+```
+
+其他的实现类通过装饰器模式来扩展功能
+* BlockingCache
+* FifoCache
+* LoggingCache
+* LruCache
+* ScheduledCache
+* SerializedCache
+* SoftCache
+* SynchronizedCache
+* TransactionalCache
+* WeakCache  
+
+**CacheKey**
+
+CacheKey是缓存的键对象,根据SQL的ID，参数，SQL本身，分页参数以及JDBC的参数信息构成。
+
+```java
+public class CacheKey implements Cloneable, Serializable {
+    private static final long serialVersionUID = 1146682552656046210L;
+    public static final CacheKey NULL_CACHE_KEY = new NullCacheKey();
+    private static final int DEFAULT_MULTIPLYER = 37;
+    private static final int DEFAULT_HASHCODE = 17;
+    private final int multiplier;
+    private int hashcode;
+    private long checksum;
+    private int count;
+    //存放组成缓存键的各个对象
+    private List<Object> updateList;
+
+    public CacheKey() {
+        this.hashcode = 17;
+        this.multiplier = 37;
+        this.count = 0;
+        this.updateList = new ArrayList();
+    }
+
+    public CacheKey(Object[] objects) {
+        this();
+        this.updateAll(objects);
+    }
+
+    public int getUpdateCount() {
+        return this.updateList.size();
+    }
+
+    public void update(Object object) {
+        int baseHashCode = object == null ? 1 : ArrayUtil.hashCode(object);
+        ++this.count;
+        this.checksum += (long)baseHashCode;
+        baseHashCode *= this.count;
+        this.hashcode = this.multiplier * this.hashcode + baseHashCode;
+        this.updateList.add(object);
+    }
+}
+```
+
+BaseExecutor中获取CacheKey对象
+```java
+@Override
+  // 创建CacheKey对象
+  public CacheKey createCacheKey(MappedStatement ms, Object parameterObject, RowBounds rowBounds, BoundSql boundSql) {
+    if (closed) {
+      throw new ExecutorException("Executor was closed.");
+    }
+    CacheKey cacheKey = new CacheKey();
+    // MappedStatement的id
+    cacheKey.update(ms.getId());
+    // 分页参数的offset
+    cacheKey.update(rowBounds.getOffset());
+    // 分页参数的limit
+    cacheKey.update(rowBounds.getLimit());
+    // SQL语句本身
+    cacheKey.update(boundSql.getSql());
+    // 传递给jdbc的参数
+    List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
+    TypeHandlerRegistry typeHandlerRegistry = ms.getConfiguration().getTypeHandlerRegistry();
+    // mimic DefaultParameterHandler logic
+    for (ParameterMapping parameterMapping : parameterMappings) {
+      if (parameterMapping.getMode() != ParameterMode.OUT) {
+        Object value;
+        String propertyName = parameterMapping.getProperty();
+        if (boundSql.hasAdditionalParameter(propertyName)) {
+          value = boundSql.getAdditionalParameter(propertyName);
+        } else if (parameterObject == null) {
+          value = null;
+        } else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
+          value = parameterObject;
+        } else {
+          MetaObject metaObject = configuration.newMetaObject(parameterObject);
+          value = metaObject.getValue(propertyName);
+        }
+        cacheKey.update(value);
+      }
+    }
+    if (configuration.getEnvironment() != null) {
+      // issue #176
+      cacheKey.update(configuration.getEnvironment().getId());
+    }
+    return cacheKey;
+  }
+```
+
+#### 1.8.4.2. 缓存实现类
+<a href="#menu" style="float:right">目录</a>
+
+
+##### 1.8.4.2.1. BlockingCache
+<a href="#menu" style="float:right">目录</a>
+
+##### 1.8.4.2.2. FifoCache
+<a href="#menu" style="float:right">目录</a>
+
+##### 1.8.4.2.3. LoggingCache
+<a href="#menu" style="float:right">目录</a>
+
+##### 1.8.4.2.4. LruCache
+<a href="#menu" style="float:right">目录</a>
+
+##### 1.8.4.2.5. ScheduledCache
+<a href="#menu" style="float:right">目录</a>
+
+##### 1.8.4.2.6. SerializedCache
+<a href="#menu" style="float:right">目录</a>
+
+##### 1.8.4.2.7. SoftCache
+<a href="#menu" style="float:right">目录</a>
+
+##### 1.8.4.2.8. SynchronizedCache
+<a href="#menu" style="float:right">目录</a>
+
+##### 1.8.4.2.9. TransactionalCache
+<a href="#menu" style="float:right">目录</a>
+
+##### 1.8.4.2.10. WeakCache  
+<a href="#menu" style="float:right">目录</a>

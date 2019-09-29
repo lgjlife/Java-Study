@@ -21,6 +21,7 @@
     - [1.3. Git](#13-git)
         - [1.3.1. 基本概念](#131-基本概念)
         - [1.3.2. 常用命令](#132-常用命令)
+        - [1.3.3. 远程仓库版本回退](#133-远程仓库版本回退)
     - [1.4. Maven](#14-maven)
         - [1.4.1. 基本概念](#141-基本概念)
         - [1.4.2. 基本命令](#142-基本命令)
@@ -68,6 +69,7 @@
     - [1.13. 常见时区缩写](#113-常见时区缩写)
     - [1.14. 日志](#114-日志)
         - [1.14.1. SLF4J](#1141-slf4j)
+            - [1.14.1.1. slf4j绑定log4j2日志系统启动分析](#11411-slf4j绑定log4j2日志系统启动分析)
         - [1.14.2. LOG4J2](#1142-log4j2)
             - [1.14.2.1. 基本特性](#11421-基本特性)
             - [1.14.2.2. 配置文件优先级](#11422-配置文件优先级)
@@ -187,7 +189,7 @@ dia
         * 版本库配置文件，优先级最高位于版本库.git/config中
             * 进入工作空间
             * git config -e 打开，编辑
-        * 全局配置文件，优先级次之，用户目录下的。gitconfig
+        * 全局配置文件，优先级次之，用户目录下的.gitconfig
             * git config -e --global 打开编辑
         * 系统级配置文件,优先级最低，/etc/gitconfig
             * git config -e --system
@@ -230,6 +232,7 @@ dia
     * git log --graph --oneline 查看每次提交的短ID
     * git reflog 查看当前仓库的操作日志，获取短ID
 * 查看更改前后的区别
+    * git diff之后按enter键查看更多的更改内容
     * 工作树---git add --> 暂存区---git commit --> 本地仓库---git push --> 远程仓库
     * 修改文件--->git diff--->显示工作树和暂存区的区别
     * git add --->git diff ---> 什么都不显示，因为工作树和暂存区内容一致
@@ -252,6 +255,10 @@ dia
     * 合并分支
         * 注意每次合并前必须git add和git commit 
         * git merge --no-ff feature-A  合并当前分支和feature-A
+        * --no-ff：不使用fast-forward方式合并，保留分支的commit历史
+        * --squash：使用squash方式合并，把多次分支commit历史压缩为一次
+
+
     * 删除分支
         * git branch -d fea-A
 * 更改提交
@@ -302,6 +309,81 @@ dia
         * target 忽略target 下的所有文件
     * 如果之前已经提交过，必须先执行如下清空缓存,否则远端的文件还是会存在。须在当前的工作目录执行。
         * git rm -r --cached .
+
+### 1.3.3. 远程仓库版本回退
+<a href="#menu" style="float:right">目录</a>
+
+有两种方法：git reset 和 git revert
+
+一. 问题
+如果提交了一个错误的版本，怎么回退版本？
+如果提交了一个错误的版本到远程分支（一个人用），怎么回退版本？
+如果提交了一个错误的版本到公共远程分支，怎么回退版本？
+
+二. 本地分支版本回退
+git reflog 找到要回退的版本 commit id：xxxxx
+git reset --hard xxxxx 回退版本
+
+三. 自己远程分支版本回退
+首先回退本地分支：
+1. get reflog
+2. git reset --hard xxxx
+接着强制推送到远程分支：
+git push -f
+
+
+四. 公共远程分支版本回退
+考虑这样一种情况：假如你的远程 master 分支情况是这样的：
+
+A1-A2-B1
+其中A、B分别代表两个人，A1、A2、B1代表各自的提交。并且所有人的本地分支都已经更新到最新版本，和远程分支一致。
+
+这个时候你发现 A2 这次提交有错误，你用 reset 回滚远程分支 master 到A1，那么理想状态是你的队友 Tony 一拉代码 git pull，他们的 master 分支也回滚了，然而现实却是，Tony 会看到下面的提示：
+
+$ git status
+On branch master
+Your branch is ahead of 'origin/master' by 2 commits.
+  (use "git push" to publish your local commits)
+nothing to commit, working directory clean
+也就是说，Tony 的分支并没有主动回退，而是比远程分支超前了两次提交，因为远程分支回退了嘛。
+
+这时，Tony 应该：
+
+1. git reflog 找出 B1 的 commitid
+2. git checkout tony_branch 回到自己的分支
+3. git reset --hard B1 回到被覆盖的B1的提交
+4. git checkout -b tony_backup 拉个分支，用于保存 B1
+5. git checkout tony_branch  回到自己分支
+6. git reset --hard 0bbbb 回到自己分支最前端
+这时，B1的那次提交被找回来了，接着要将本地 master 与远程 master 保持一致：
+
+git reset --hard origin/master
+这时，Tony 的 master 分支才算真正回退了，也就是说你的回滚才对 Tony 生效，这时 Tony 的本地 master 是这样的：
+
+A1
+接着 Tony 要再次合并那个被丢掉的 B1 到 master：
+
+git checkout master
+git merge tony_backup
+这时，Tony 的 master 是这样的：A1-B1
+
+五. 公共远程分支回退使用 git revert
+使用 git reset 回退公共远程分支的版本后，需要其他所有人手动用远程 master 分支覆盖本地 master 分支，显然，这不是优雅的回退方法，下面我们使用另个一个命令来回退版本：
+
+git revert HEAD                     //撤销最近一次提交
+git revert HEAD~1                //撤销上上次的提交，注意：数字从0开始
+git revert 0ffaacc                  //撤销0ffaacc这次提交
+git revert 命令意思是撤销某次提交。它会产生一个新的提交，虽然代码回退了，但是版本依然是向前的，所以，当你用 revert 回退之后，所有人 pull 之后，他们的代码也自动的回退了。
+
+但是，要注意以下几点：
+
+revert 是撤销一次提交，所以后面的 commit id 是你需要回滚到的版本的前一次提交
+使用 revert HEAD 是撤销最近的一次提交，如果你最近一次提交是用revert 命令产生的，那么你再执行一次，就相当于撤销了上次的撤销操作，换句话说，你连续执行两次 revert HEAD 命令，就跟没执行是一样的
+使用 revert HEAD~1 表示撤销最近2次提交，这个数字是从 0 开始的，如果你之前撤销过产生了commi id，那么也会计算在内的。
+如果使用 revert 撤销的不是最近一次提交，那么一定会有代码冲突，需要你合并代码，合并代码只需要把当前的代码全部去掉，保留之前版本的代码就可以了.
+git revert 命令的好处就是不会丢掉别人的提交，即使你撤销后覆盖了别人的提交，他更新代码后，可以在本地用 reset 向前回滚，找到自己的代码，然后拉一下分支，再回来合并上去就可以找回被你覆盖的提交了。
+
+六. 如果错的太远，revert 又要解决大面积冲突，可以从错误提交的前一次拉取一份代码放到其他目录，然后将 master 的代码全部删除，把那份新的代码放上去，然后提交。
 
 ## 1.4. Maven
 <a href="#menu" style="float:right">目录</a>
@@ -2518,6 +2600,262 @@ slf4j是门面模式的典型应用.门面模式，其核心为外部与一个�
 log4j、logback、log4j2都是一种日志具体实现框架，所以既可以单独使用也可以结合slf4j一起搭配使用。
 
 
+#### 1.14.1.1. slf4j绑定log4j2日志系统启动分析
+<a href="#menu" style="float:right">目录</a>
+
+```java
+public class LogUtil {
+	//获取Logger
+	public static Logger testLog = LoggerFactory.getLogger(LogUtil.class);
+}
+```
+也就是以下方法
+LoggerFactory.class
+```java
+public static Logger getLogger(String name) {
+    ILoggerFactory iLoggerFactory = getILoggerFactory();
+    return iLoggerFactory.getLogger(name);
+}
+```
+```java
+public static ILoggerFactory getILoggerFactory() {
+    if (INITIALIZATION_STATE == 0) {
+        Class var0 = LoggerFactory.class;
+        synchronized(LoggerFactory.class) {
+            if (INITIALIZATION_STATE == 0) {
+                INITIALIZATION_STATE = 1;
+                performInitialization();
+            }
+        }
+    }
+
+    switch(INITIALIZATION_STATE) {
+    case 1:
+        return SUBST_FACTORY;
+    case 2:
+        throw new IllegalStateException("org.slf4j.LoggerFactory in failed state. Original exception was thrown EARLIER. See also http://www.slf4j.org/codes.html#unsuccessfulInit");
+    case 3:
+        return StaticLoggerBinder.getSingleton().getLoggerFactory();
+    case 4:
+        return NOP_FALLBACK_FACTORY;
+    default:
+        throw new IllegalStateException("Unreachable code");
+    }
+}
+private static final void performInitialization() {
+    //调用bind方法
+    bind();
+    if (INITIALIZATION_STATE == 3) {
+        versionSanityCheck();
+    }
+
+}
+```
+
+查看bind方法
+```java
+ private static final void bind() {
+    String msg;
+    try {
+        Set<URL> staticLoggerBinderPathSet = null;
+        if (!isAndroid()) {
+            staticLoggerBinderPathSet = findPossibleStaticLoggerBinderPathSet();
+            reportMultipleBindingAmbiguity(staticLoggerBinderPathSet);
+        }
+
+        StaticLoggerBinder.getSingleton();
+        //设置初始化状态为3
+        INITIALIZATION_STATE = 3;
+        reportActualBinding(staticLoggerBinderPathSet);
+        fixSubstituteLoggers();
+        replayEvents();
+        SUBST_FACTORY.clear();
+    } catch (NoClassDefFoundError var2) {
+        msg = var2.getMessage();
+        if (!messageContainsOrgSlf4jImplStaticLoggerBinder(msg)) {
+            failedBinding(var2);
+            throw var2;
+        }
+
+        INITIALIZATION_STATE = 4;
+        Util.report("Failed to load class \"org.slf4j.impl.StaticLoggerBinder\".");
+        Util.report("Defaulting to no-operation (NOP) logger implementation");
+        Util.report("See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.");
+    } catch (NoSuchMethodError var3) {
+        msg = var3.getMessage();
+        if (msg != null && msg.contains("org.slf4j.impl.StaticLoggerBinder.getSingleton()")) {
+            INITIALIZATION_STATE = 2;
+            Util.report("slf4j-api 1.6.x (or later) is incompatible with this binding.");
+            Util.report("Your binding is version 1.5.5 or earlier.");
+            Util.report("Upgrade your binding to version 1.6.x.");
+        }
+
+        throw var3;
+    } catch (Exception var4) {
+        failedBinding(var4);
+        throw new IllegalStateException("Unexpected initialization failure", var4);
+    }
+
+}
+```
+staticLoggerBinderPathSet存放的是StaticLoggerBinder类的类路径.
+findPossibleStaticLoggerBinderPathSet()发现可能的binder路径，从类路径中寻找org/slf4j/impl/StaticLoggerBinder.class类：LoggerFactory.java
+
+如果类中同时引入了logback和log4j2相关的包,将会触发警告.也就是同时发现了两个StaticLoggerBinder.class的实现类
+```
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/home/lgj/.m2/repository/ch/qos/logback/logback-classic/1.2.3/logback-classic-1.2.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/home/lgj/.m2/repository/org/apache/logging/log4j/log4j-slf4j-impl/2.11.2/log4j-slf4j-impl-2.11.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [ch.qos.logback.classic.util.ContextSelectorStaticBinder]
+```
+
+获取到staticLoggerBinderPathSet,可以看到初始化状态为3.
+```java
+ case 3:
+        return StaticLoggerBinder.getSingleton().getLoggerFactory();
+```
+
+```java
+public final class StaticLoggerBinder implements LoggerFactoryBinder {
+    public static String REQUESTED_API_VERSION = "1.6";
+    private static final String LOGGER_FACTORY_CLASS_STR = Log4jLoggerFactory.class.getName();
+    private static final StaticLoggerBinder SINGLETON = new StaticLoggerBinder();
+
+    //最终返回的是log4j2的工厂类Log4jLoggerFactory
+    private final ILoggerFactory loggerFactory = new Log4jLoggerFactory();
+
+    private StaticLoggerBinder() {
+    }
+
+    public static StaticLoggerBinder getSingleton() {
+        return SINGLETON;
+    }
+
+    public ILoggerFactory getLoggerFactory() {
+        return this.loggerFactory;
+    }
+
+    public String getLoggerFactoryClassStr() {
+        return LOGGER_FACTORY_CLASS_STR;
+    }
+}
+```
+
+返回到最开始的地方
+```java
+public static Logger getLogger(String name) {
+    ILoggerFactory iLoggerFactory = getILoggerFactory();
+    return iLoggerFactory.getLogger(name);
+}
+```
+获取到ILoggerFactory后,则调用方法getLogger.
+调用的是其抽象父类的方法
+Log4jLoggerFactory.class
+```java
+public class Log4jLoggerFactory extends AbstractLoggerAdapter<Logger> implements ILoggerFactory {
+    private static final String FQCN = Log4jLoggerFactory.class.getName();
+    private static final String PACKAGE = "org.slf4j";
+
+    public Log4jLoggerFactory() {
+    }
+
+    protected Logger newLogger(String name, LoggerContext context) {
+        String key = "ROOT".equals(name) ? "" : name;
+        return new Log4jLogger(context.getLogger(key), name);
+    }
+
+    protected LoggerContext getContext() {
+        Class<?> anchor = StackLocatorUtil.getCallerClass(FQCN, "org.slf4j");
+        return anchor == null ? LogManager.getContext() : this.getContext(StackLocatorUtil.getCallerClass(anchor));
+    }
+}
+```
+AbstractLoggerAdapter的getLogger
+```java
+public L getLogger(String name) {
+    LoggerContext context = this.getContext();
+    ConcurrentMap<String, L> loggers = this.getLoggersInContext(context);
+    L logger = loggers.get(name);
+    if (logger != null) {
+        return logger;
+    } else {
+        loggers.putIfAbsent(name, this.newLogger(name, context));
+        return loggers.get(name);
+    }
+}
+```
+```java
+
+protected LoggerContext getContext() {
+    Class<?> anchor = StackLocatorUtil.getCallerClass(FQCN, "org.slf4j");
+    //anchor = 
+    org.slf4j.LoggerFactory
+    return anchor == null ? LogManager.getContext() : this.getContext(StackLocatorUtil.getCallerClass(anchor));
+}
+```
+最终调用的是log4j2中的Log4jContextFactory的getContext方法
+```java
+ public static LoggerContext getContext(ClassLoader loader, boolean currentContext) {
+    try {
+        return factory.getContext(FQCN, loader, (Object)null, currentContext);
+    } catch (IllegalStateException var3) {
+        LOGGER.warn(var3.getMessage() + " Using SimpleLogger");
+        return (new SimpleLoggerContextFactory()).getContext(FQCN, loader, (Object)null, currentContext);
+    }
+}
+
+public LoggerContext getContext(String fqcn, ClassLoader loader, Object externalContext, boolean currentContext) {
+    LoggerContext ctx = this.selector.getContext(fqcn, loader, currentContext);
+    if (externalContext != null && ctx.getExternalContext() == null) {
+        ctx.setExternalContext(externalContext);
+    }
+
+    if (ctx.getState() == State.INITIALIZED) {
+        // //初始获取，会解析配置文件log4j2.xml
+        ctx.start();
+    }
+
+    return ctx;
+}
+    
+```
+
+没有配置的情况下，默认的配置为
+
+```java
+public class DefaultConfiguration extends AbstractConfiguration {
+    public static final String DEFAULT_NAME = "Default";
+    public static final String DEFAULT_LEVEL = "org.apache.logging.log4j.level";
+    public static final String DEFAULT_PATTERN = "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n";
+
+    public DefaultConfiguration() {
+        super((LoggerContext)null, ConfigurationSource.NULL_SOURCE);
+        this.setToDefault();
+    }
+
+    protected void doConfigure() {
+    }
+}
+
+ protected void setToDefault() {
+    this.setName("Default@" + Integer.toHexString(this.hashCode()));
+    Layout<? extends Serializable> layout = PatternLayout.newBuilder().withPattern("%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n").withConfiguration(this).build();
+    Appender appender = ConsoleAppender.createDefaultAppenderForLayout(layout);
+    appender.start();
+    this.addAppender(appender);
+    LoggerConfig rootLoggerConfig = this.getRootLogger();
+    rootLoggerConfig.addAppender(appender, (Level)null, (Filter)null);
+    Level defaultLevel = Level.ERROR;
+    String levelName = PropertiesUtil.getProperties().getStringProperty("org.apache.logging.log4j.level", defaultLevel.name());
+    Level level = Level.valueOf(levelName);
+    rootLoggerConfig.setLevel(level != null ? level : defaultLevel);
+}
+    
+
+```
+
+
 
 ### 1.14.2. LOG4J2
 
@@ -2975,6 +3313,7 @@ Disruptor框架内部核心数据结构为RingBuffer，其为无锁环形队列
 ### 1.15.1. 常用快捷键
 <a href="#menu" style="float:right">目录</a>
 
+```
 Ctrl+Shift + Enter，语句完成
 “！”，否定完成，输入表达式时按 “！”键
 Ctrl+E，最近的文件
@@ -3110,6 +3449,7 @@ Alt+F7，查找用法
 Ctrl+Alt+F7，显示用法
 Ctrl+F7，在文件中查找用法
 Ctrl+Shift+F7，在文件中高亮显示用法
+```
 
 ### 1.15.2. 常用插件
 <a href="#menu" style="float:right">目录</a>

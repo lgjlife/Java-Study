@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.apache.logging.log4j.core.config.AbstractConfiguration</OriginalElement>
+  <nodes>
+    <node x="915.8888888888889" y="496.4444444444445">org.apache.logging.log4j.core.config.yaml.YamlConfiguration</node>
+    <node x="642.0" y="502.0">org.springframework.boot.logging.log4j2.SpringBootConfigurationFactory.SpringBootConfiguration</node>
+    <node x="655.5" y="420.0">org.apache.logging.log4j.core.config.DefaultConfiguration</node>
+    <node x="559.875" y="0.0">org.apache.logging.log4j.core.LifeCycle</node>
+    <node x="531.1666666666666" y="554.0952380952381">org.apache.logging.log4j.core.config.NullConfiguration</node>
+    <node x="458.25" y="82.0">org.apache.logging.log4j.core.LifeCycle2</node>
+    <node x="432.75" y="164.0">org.apache.logging.log4j.core.AbstractLifeCycle</node>
+    <node x="474.25" y="246.0">org.apache.logging.log4j.core.filter.AbstractFilterable</node>
+    <node x="398.33333333333314" y="464.9761904761905">org.apache.logging.log4j.core.config.composite.CompositeConfiguration</node>
+    <node x="269.2857142857143" y="501.16666666666663">org.apache.logging.log4j.core.config.properties.PropertiesConfiguration</node>
+    <node x="668.25" y="246.0">org.apache.logging.log4j.core.config.Configuration</node>
+    <node x="655.5" y="164.0">org.apache.logging.log4j.core.filter.Filterable</node>
+    <node x="548.5" y="328.0">org.apache.logging.log4j.core.config.AbstractConfiguration</node>
+    <node x="289.61904761904765" y="426.1904761904762">org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration</node>
+    <node x="794.5000000000001" y="571.3333333333333">org.apache.logging.log4j.core.config.xml.XmlConfiguration</node>
+    <node x="915.2777777777778" y="424.44444444444446">org.apache.logging.log4j.core.config.json.JsonConfiguration</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.apache.logging.log4j.core.config.json.JsonConfiguration" target="org.apache.logging.log4j.core.config.AbstractConfiguration">
+      <point x="0.0" y="-16.0" />
+      <point x="980.1666666666667" y="385.3333333333333" />
+      <point x="737.3333333333334" y="380.0" />
+      <point x="85.83333333333337" y="16.0" />
+    </edge>
+    <edge source="org.apache.logging.log4j.core.AbstractLifeCycle" target="org.apache.logging.log4j.core.LifeCycle2">
+      <point x="0.0" y="-16.0" />
+      <point x="0.0" y="16.0" />
+    </edge>
+    <edge source="org.springframework.boot.logging.log4j2.SpringBootConfigurationFactory.SpringBootConfiguration" target="org.apache.logging.log4j.core.config.DefaultConfiguration">
+      <point x="0.0" y="-16.0" />
+      <point x="0.0" y="16.0" />
+    </edge>
+    <edge source="org.apache.logging.log4j.core.config.DefaultConfiguration" target="org.apache.logging.log4j.core.config.AbstractConfiguration">
+      <point x="0.0" y="-16.0" />
+      <point x="755.0" y="400.0" />
+      <point x="668.6666666666666" y="400.0" />
+      <point x="17.16666666666663" y="16.0" />
+    </edge>
+    <edge source="org.apache.logging.log4j.core.filter.Filterable" target="org.apache.logging.log4j.core.LifeCycle">
+      <point x="0.0" y="-16.0" />
+      <point x="713.0" y="57.0" />
+      <point x="643.125" y="57.0" />
+      <point x="27.75" y="16.0" />
+    </edge>
+    <edge source="org.apache.logging.log4j.core.config.composite.CompositeConfiguration" target="org.apache.logging.log4j.core.config.AbstractConfiguration">
+      <point x="0.0" y="-16.0" />
+      <point x="588.4523809523808" y="401.90476190476187" />
+      <point x="600.0" y="390.0" />
+      <point x="-51.5" y="16.0" />
+    </edge>
+    <edge source="org.apache.logging.log4j.core.config.xml.XmlConfiguration" target="org.apache.logging.log4j.core.config.AbstractConfiguration">
+      <point x="0.0" y="-16.0" />
+      <point x="884.3333333333334" y="397.77777777777777" />
+      <point x="703.0" y="390.0" />
+      <point x="51.5" y="16.0" />
+    </edge>
+    <edge source="org.apache.logging.log4j.core.LifeCycle2" target="org.apache.logging.log4j.core.LifeCycle">
+      <point x="0.0" y="-16.0" />
+      <point x="517.75" y="57.0" />
+      <point x="587.625" y="57.0" />
+      <point x="-27.75" y="16.0" />
+    </edge>
+    <edge source="org.apache.logging.log4j.core.config.Configuration" target="org.apache.logging.log4j.core.filter.Filterable">
+      <point x="0.0" y="-16.0" />
+      <point x="28.75" y="16.0" />
+    </edge>
+    <edge source="org.apache.logging.log4j.core.config.AbstractConfiguration" target="org.apache.logging.log4j.core.config.Configuration">
+      <point x="51.5" y="-16.0" />
+      <point x="703.0" y="303.0" />
+      <point x="741.75" y="303.0" />
+      <point x="0.0" y="16.0" />
+    </edge>
+    <edge source="org.apache.logging.log4j.core.filter.AbstractFilterable" target="org.apache.logging.log4j.core.filter.Filterable">
+      <point x="43.5" y="-16.0" />
+      <point x="604.75" y="221.0" />
+      <point x="684.25" y="221.0" />
+      <point x="-28.75" y="16.0" />
+    </edge>
+    <edge source="org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration" target="org.apache.logging.log4j.core.config.AbstractConfiguration">
+      <point x="0.0" y="-16.0" />
+      <point x="404.26190476190476" y="403.09523809523813" />
+      <point x="565.6666666666666" y="380.0" />
+      <point x="-85.83333333333337" y="16.0" />
+    </edge>
+    <edge source="org.apache.logging.log4j.core.config.AbstractConfiguration" target="org.apache.logging.log4j.core.filter.AbstractFilterable">
+      <point x="-51.5" y="-16.0" />
+      <point x="600.0" y="303.0" />
+      <point x="561.25" y="303.0" />
+      <point x="0.0" y="16.0" />
+    </edge>
+    <edge source="org.apache.logging.log4j.core.config.NullConfiguration" target="org.apache.logging.log4j.core.config.AbstractConfiguration">
+      <point x="0.0" y="-16.0" />
+      <point x="634.9523809523807" y="489.0476190476191" />
+      <point x="634.3333333333334" y="400.0" />
+      <point x="-17.16666666666663" y="16.0" />
+    </edge>
+    <edge source="org.apache.logging.log4j.core.config.properties.PropertiesConfiguration" target="org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration">
+      <point x="0.0" y="-16.0" />
+      <point x="0.0" y="16.0" />
+    </edge>
+    <edge source="org.apache.logging.log4j.core.filter.AbstractFilterable" target="org.apache.logging.log4j.core.AbstractLifeCycle">
+      <point x="-43.5" y="-16.0" />
+      <point x="0.0" y="16.0" />
+    </edge>
+    <edge source="org.apache.logging.log4j.core.config.yaml.YamlConfiguration" target="org.apache.logging.log4j.core.config.json.JsonConfiguration">
+      <point x="0.0" y="-16.0" />
+      <point x="0.0" y="16.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.6999999999999997" x="1093.4469084836737" y="167.84523809523807" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
