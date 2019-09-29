@@ -69,7 +69,11 @@
     - [1.13. 常见时区缩写](#113-常见时区缩写)
     - [1.14. 日志](#114-日志)
         - [1.14.1. SLF4J](#1141-slf4j)
-            - [1.14.1.1. slf4j绑定log4j2日志系统启动分析](#11411-slf4j绑定log4j2日志系统启动分析)
+            - [1.14.1.1. 基本介绍](#11411-基本介绍)
+            - [1.14.1.2. 依赖](#11412-依赖)
+            - [1.14.1.3. slf4j绑定log4j2日志系统启动分析](#11413-slf4j绑定log4j2日志系统启动分析)
+            - [1.14.1.4. slf4j绑定logback日志系统启动分析](#11414-slf4j绑定logback日志系统启动分析)
+            - [1.14.1.5. 总结](#11415-总结)
         - [1.14.2. LOG4J2](#1142-log4j2)
             - [1.14.2.1. 基本特性](#11421-基本特性)
             - [1.14.2.2. 配置文件优先级](#11422-配置文件优先级)
@@ -2576,6 +2580,8 @@ IDLW -12:00 国际日期变更线，西边
 ## 1.14. 日志 
 
 ### 1.14.1. SLF4J
+
+#### 1.14.1.1. 基本介绍 
 <a href="#menu" style="float:right">目录</a>
 
 ![](https://images0.cnblogs.com/blog/449064/201412/071507136869713.jpg)
@@ -2599,8 +2605,35 @@ slf4j是门面模式的典型应用.门面模式，其核心为外部与一个�
 使用日志接口便于更换为其他日志框架
 log4j、logback、log4j2都是一种日志具体实现框架，所以既可以单独使用也可以结合slf4j一起搭配使用。
 
+#### 1.14.1.2. 依赖
 
-#### 1.14.1.1. slf4j绑定log4j2日志系统启动分析
+SpringBoot默认使用logback,spring-boot-starter中已经包含日志的依赖
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter</artifactId>
+</dependency>
+```
+更换为log4j2,先移除logback的依赖
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter</artifactId>
+    <exclusions>
+        <exclusion>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-log4j2</artifactId>
+</dependency>
+```
+
+#### 1.14.1.3. slf4j绑定log4j2日志系统启动分析
 <a href="#menu" style="float:right">目录</a>
 
 ```java
@@ -2723,6 +2756,7 @@ public final class StaticLoggerBinder implements LoggerFactoryBinder {
     private static final StaticLoggerBinder SINGLETON = new StaticLoggerBinder();
 
     //最终返回的是log4j2的工厂类Log4jLoggerFactory
+   
     private final ILoggerFactory loggerFactory = new Log4jLoggerFactory();
 
     private StaticLoggerBinder() {
@@ -2746,6 +2780,9 @@ public final class StaticLoggerBinder implements LoggerFactoryBinder {
 ```java
 public static Logger getLogger(String name) {
     ILoggerFactory iLoggerFactory = getILoggerFactory();
+
+    //如果是log4j2,则为Log4jLoggerFactory
+    //如果是logback,则为LoggerContext
     return iLoggerFactory.getLogger(name);
 }
 ```
@@ -2858,9 +2895,206 @@ public class DefaultConfiguration extends AbstractConfiguration {
 ```
 可以看到AbstractConfiguration有多个不同的子类,用于支持不同的配置方式.
 AbstractConfiguration.png
-![AbstractConfiguration]()
+![AbstractConfiguration](https://github.com/lgjlife/Java-Study/blob/master/pic/util/log/AbstractConfiguration.png?raw=true)
 
 
+#### 1.14.1.4. slf4j绑定logback日志系统启动分析
+<a href="#menu" style="float:right">目录</a>
+
+再回到getILoggerFactory()方法
+
+```java
+public static ILoggerFactory getILoggerFactory() {
+        if (INITIALIZATION_STATE == 0) {
+            Class var0 = LoggerFactory.class;
+            synchronized(LoggerFactory.class) {
+                if (INITIALIZATION_STATE == 0) {
+                    INITIALIZATION_STATE = 1;
+                    performInitialization();
+                }
+            }
+        }
+
+        switch(INITIALIZATION_STATE) {
+        case 1:
+            return SUBST_FACTORY;
+        case 2:
+            throw new IllegalStateException("org.slf4j.LoggerFactory in failed state. Original exception was thrown EARLIER. See also http://www.slf4j.org/codes.html#unsuccessfulInit");
+        case 3:
+            return StaticLoggerBinder.getSingleton().getLoggerFactory();
+        case 4:
+            return NOP_FALLBACK_FACTORY;
+        default:
+            throw new IllegalStateException("Unreachable code");
+        }
+    }
+```
+performInitialization()搜索到的Slf4j StaticLoggerBinder实现类是org.slf4j.impl.StaticLoggerBinder
+```java
+public class StaticLoggerBinder implements LoggerFactoryBinder {
+    public static String REQUESTED_API_VERSION = "1.7.16";
+    static final String NULL_CS_URL = "http://logback.qos.ch/codes.html#null_CS";
+    private static StaticLoggerBinder SINGLETON = new StaticLoggerBinder();
+    private static Object KEY = new Object();
+    private boolean initialized = false;
+    private LoggerContext defaultLoggerContext = new LoggerContext();
+    private final ContextSelectorStaticBinder contextSelectorBinder = ContextSelectorStaticBinder.getSingleton();
+
+    private StaticLoggerBinder() {
+        this.defaultLoggerContext.setName("default");
+    }
+
+    public static StaticLoggerBinder getSingleton() {
+        return SINGLETON;
+    }
+
+    static void reset() {
+        SINGLETON = new StaticLoggerBinder();
+        SINGLETON.init();
+    }
+
+    void init() {
+        try {
+            try {
+                //加载配置文件
+                (new ContextInitializer(this.defaultLoggerContext)).autoConfig();
+            } catch (JoranException var2) {
+                Util.report("Failed to auto configure default logger context", var2);
+            }
+
+            if (!StatusUtil.contextHasStatusListener(this.defaultLoggerContext)) {
+                StatusPrinter.printInCaseOfErrorsOrWarnings(this.defaultLoggerContext);
+            }
+            //初始化
+            this.contextSelectorBinder.init(this.defaultLoggerContext, KEY);
+            this.initialized = true;
+        } catch (Exception var3) {
+            Util.report("Failed to instantiate [" + LoggerContext.class.getName() + "]", var3);
+        }
+
+    }
+
+    public ILoggerFactory getLoggerFactory() {
+        if (!this.initialized) {
+            //没有初始化
+            return this.defaultLoggerContext;
+        } else if (this.contextSelectorBinder.getContextSelector() == null) {
+            throw new IllegalStateException("contextSelector cannot be null. See also http://logback.qos.ch/codes.html#null_CS");
+        } else {
+            return this.contextSelectorBinder.getContextSelector().getLoggerContext();
+        }
+    }
+
+    public String getLoggerFactoryClassStr() {
+        return this.contextSelectorBinder.getClass().getName();
+    }
+
+    static {
+        SINGLETON.init();
+    }
+}
+
+```
+
+获取到ILoggerFactory之后,就通过工厂类来获取logger
+
+```java
+public static Logger getLogger(String name) {
+    ILoggerFactory iLoggerFactory = getILoggerFactory();
+    return iLoggerFactory.getLogger(name);
+}
+```
+ ch.qos.logback.classic.LoggerContext
+```java
+public class LoggerContext extends ContextBase implements ILoggerFactory, LifeCycle {
+    public static final boolean DEFAULT_PACKAGING_DATA = false;
+
+    //root 已经创建好
+    final Logger root = new Logger("ROOT", (Logger)null, this);
+    //统计logger的数量
+    private int size;
+    private int noAppenderWarning = 0;
+    private final List<LoggerContextListener> loggerContextListenerList = new ArrayList();
+    //存放logger缓存
+    private Map<String, Logger> loggerCache = new ConcurrentHashMap();
+    private LoggerContextVO loggerContextRemoteView = new LoggerContextVO(this);
+    private final TurboFilterList turboFilterList = new TurboFilterList();
+    private boolean packagingDataEnabled = false;
+    private int maxCallerDataDepth = 8;
+    int resetCount = 0;
+    private List<String> frameworkPackages;
+
+     public final Logger getLogger(String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("name argument cannot be null");
+        } else if ("ROOT".equalsIgnoreCase(name)) {
+            return this.root;
+        } else {
+            int i = 0;
+            Logger logger = this.root;
+
+            //先从缓存查询
+            Logger childLogger = (Logger)this.loggerCache.get(name);
+            if (childLogger != null) {
+                return childLogger;
+            } else {
+                int h;
+                do {
+                    h = LoggerNameUtil.getSeparatorIndexOf(name, i);
+                    String childName;
+                    if (h == -1) {
+                        childName = name;
+                    } else {
+                        childName = name.substring(0, h);
+                    }
+
+                    i = h + 1;
+                    synchronized(logger) {
+                        childLogger = logger.getChildByName(childName);
+                        if (childLogger == null) {
+                            //创建子logger
+                            childLogger = logger.createChildByName(childName);
+                            this.loggerCache.put(childName, childLogger);
+                            this.incSize();
+                        }
+                    }
+
+                    logger = childLogger;
+                } while(h != -1);
+
+                return childLogger;
+            }
+        }
+    }
+
+    Logger createChildByName(String childName) {
+        int i_index = LoggerNameUtil.getSeparatorIndexOf(childName, this.name.length() + 1);
+        if (i_index != -1) {
+            throw new IllegalArgumentException("For logger [" + this.name + "] child name [" + childName + " passed as parameter, may not include '.' after index" + (this.name.length() + 1));
+        } else {
+            if (this.childrenList == null) {
+                this.childrenList = new CopyOnWriteArrayList();
+            }
+
+            Logger childLogger = new Logger(childName, this, this.loggerContext);
+            this.childrenList.add(childLogger);
+            childLogger.effectiveLevelInt = this.effectiveLevelInt;
+            return childLogger;
+        }
+    }
+    
+}
+```
+#### 1.14.1.5. 总结 
+<a href="#menu" style="float:right">目录</a>
+
+1. 先搜索类路径下StaticLoggerBinder的实现类,由日志实现库提供
+2. 获取日志库对应的ILoggerFactory,ILoggerFactory用于创建Logger
+3. ILoggerFactory读取配置文件,创建Logger.所有的Logger都是rootLogger的子Logger
+4. 通过Slf4j的Logger接口调用info等方法
+5. 交由日志实现类处理
+6. 生成LogEvent对象,这个对象包括,日志时间,级别,内容,线程等信息
+7. 循环执行logger对应的appender
 
 ### 1.14.2. LOG4J2
 
@@ -3131,7 +3365,7 @@ AbstractConfiguration.png
         * Logger的Level为TRACE，表示允许输出TRACE级别及以上级别的日志。logger.info()请求输出INFO级别的日志，通过。
     * 3.生成日志输出内容Message。
         * 使用占位符的方式输出日志，输出语句为logger.info("increase {} from {} to {}", arg1, arg2, arg3)的形式，最终输出时{}占位符处的内容将用arg1,arg2,arg3的字符串填充。
-        * log4j2用Object[]保存参数信息，在这一阶段会将Object[]转换为String[]，生成含有输出模式串"increase {} from {} to {}"和参数数组String[]的Message，为后续日志格式化输出做准备。
+        * log4j2用Object[ ]保存参数信息，在这一阶段会将Object[ ]转换为String[]，生成含有输出模式串"increase {} from {} to {}"和参数数组String[]的Message，为后续日志格式化输出做准备。
     * 4.生成LogEvent。
         * LogEvent中含有loggerName（日志的输出者），level（日志级别），timeMillis（日志的输出时间），message（��志��出内容），threadName（线程名称）等信息。
         * 在上述程序中，生成的LogEvent的属性值为loggerName=com.meituan.Main，Level=INFO，timeMillis=1505659461759，message为步骤3中创建的Message，threadNama=main。
