@@ -2837,10 +2837,12 @@ public class DefaultConfiguration extends AbstractConfiguration {
     protected void doConfigure() {
     }
 }
-
+//默认的配置
  protected void setToDefault() {
     this.setName("Default@" + Integer.toHexString(this.hashCode()));
+    //layout
     Layout<? extends Serializable> layout = PatternLayout.newBuilder().withPattern("%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n").withConfiguration(this).build();
+    //Console Appender
     Appender appender = ConsoleAppender.createDefaultAppenderForLayout(layout);
     appender.start();
     this.addAppender(appender);
@@ -2854,6 +2856,9 @@ public class DefaultConfiguration extends AbstractConfiguration {
     
 
 ```
+可以看到AbstractConfiguration有多个不同的子类,用于支持不同的配置方式.
+AbstractConfiguration.png
+![AbstractConfiguration]()
 
 
 
