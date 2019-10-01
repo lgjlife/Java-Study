@@ -1547,7 +1547,7 @@ public static void invokeBeanFactoryPostProcessors(
         for (String ppName : postProcessorNames) {
             //这里beanFactory中，由于实例尚未初始化，因此是通过BeanDefinition来判断类型是否匹配的
             if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
-                currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
+            currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
                 processedBeans.add(ppName);
             }
         }

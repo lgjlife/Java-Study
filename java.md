@@ -1629,7 +1629,7 @@ public boolean isAbsolute()
 public String getAbsolutePath()
 //测试应用程序是否可以读取此抽象路径名表示的文件。
 public boolean canRead()
-//测试应用程序是否可以修改此抽象路径名表示的文件。
+//测试应用程序是否可以修改此抽象路径名���示的文件。
 public boolean canWrite()
 //测试此抽象路径名表示的文件或目录是否存在
 public boolean exists()
@@ -3308,6 +3308,7 @@ try {
 
 
 
+
 ## 1.10. JDK版本变化
 <a href="#menu" style="float:right">目录</a>
 
@@ -4301,7 +4302,7 @@ public class AdapterPatternDemo {
 * 主要解决
     * 一个对象状态改变给其他对象通知的问题，而且要考虑到易用和低耦合，保证高度的协作。
 * 何时使用
-    * 一个对象（目标对象）的状态发生改变，所有的依赖对象（观察者对象）都将得到通知，进行广播通知。
+    * 一个对象（目标对象）的状态发生改变，所有的依赖对象（观察者对象��都将得到通知，进行广播通知。
 * 如何解决
     * 使用面向对象技术，可以将这种依赖关系弱化。
 * 关键代码
