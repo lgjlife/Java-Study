@@ -14,10 +14,14 @@
             - [1.3.1.3. 交换器,路由键,绑定](#1313-交换器路由键绑定)
             - [1.3.1.4. 交换器类型](#1314-交换器类型)
             - [1.3.1.5. RabbitMQ运转流程](#1315-rabbitmq运转流程)
+            - [1.3.1.6. 通信模式](#1316-通信模式)
         - [1.3.2. AMQP协议介绍](#132-amqp协议介绍)
             - [1.3.2.1. AMQP生产者流转过程](#1321-amqp生产者流转过程)
             - [1.3.2.2. AMQP消费者流转过程](#1322-amqp消费者流转过程)
         - [1.3.3. 配置](#133-配置)
+            - [1.3.3.1. 环境变量](#1331-环境变量)
+            - [1.3.3.2. 配置文件](#1332-配置文件)
+            - [1.3.3.3. 参数和策略](#1333-参数和策略)
     - [1.4. 客户端开发](#14-客户端开发)
         - [1.4.1. 依赖](#141-依赖)
         - [1.4.2. 连接RabbitMQ](#142-连接rabbitmq)
@@ -46,9 +50,18 @@
             - [1.5.10.1. 消息分发](#15101-消息分发)
             - [1.5.10.2. 消息顺序性](#15102-消息顺序性)
         - [1.5.11. 消息传输保障](#1511-消息传输保障)
-    - [1.6. 数据存储](#16-数据存储)
-    - [1.7. 集群](#17-集群)
-    - [1.8. 源码说明](#18-源码说明)
+    - [1.6. Spring集成RabbitMQ](#16-spring集成rabbitmq)
+        - [1.6.1. 依赖](#161-依赖)
+        - [1.6.2. 配置](#162-配置)
+        - [1.6.3. 配置类](#163-配置类)
+        - [1.6.4. 生产者](#164-生产者)
+        - [1.6.5. 消费者](#165-消费者)
+        - [1.6.6. 为Rabbitmq中的Jackson2JsonMessageConverter自定义ClassMapper](#166-为rabbitmq中的jackson2jsonmessageconverter自定义classmapper)
+        - [1.6.7. SimpleMessageListenerContainer](#167-simplemessagelistenercontainer)
+    - [1.7. RabbitMQ管理](#17-rabbitmq管理)
+    - [1.8. 数据存储](#18-数据存储)
+    - [1.9. 集群](#19-集群)
+    - [1.10. 源码说明](#110-源码说明)
 
 <!-- /TOC -->
 # 1. RabbitMQ
@@ -266,6 +279,17 @@ NIO，也称非阻塞 UO ， 包含三大核心部分 Channel (信道)、 Buffer
 
 信道在 AMQP 中是一个很重要的概念，大多数操作都是在信道这个层面展开的。
 
+
+#### 1.3.1.6. 通信模式
+<a href="#menu" style="float:right">目录</a>
+
+* TCP的创建和销毁，开销大，创建需要三次握手，销毁需要四次分手
+* 如果不使用信道，那么应用程序就会使用TCP的方式连接到rabbitmq，高峰时每秒成千上万条连接会造成资源的巨大浪费(一条tcp消耗资源，成千上万的tcp会非常消耗资源)，而且操作系统每秒处理TCP连接数量也是有限的，必定会造成性能瓶颈
+* 信道的原理是一条线程一条信道，多条线程多条信道共同使用一条TCP连接。一条TCP连接可以容纳无限的信道，及时每秒造成成千上万的请求也不会造成性能瓶颈
+
+**为什么使用信道而不是连接**
+对操作系统来说,建立和销毁TCP会话是非常昂贵的开销.假设每个线程都需要自行连接到RabbitMQ服务器.将会导致高峰期连接数很高.导致连接资源不够用,造成性能问题.
+
 ### 1.3.2. AMQP协议介绍
 <a href="#menu" style="float:right">目录</a>
 
@@ -288,6 +312,22 @@ AMQP 说到底还是一个通信协议，通信协议都会涉及报文交互，
 
 ### 1.3.3. 配置
 <a href="#menu" style="float:right">目录</a>
+
+RabbitMQ提供了三种方式来定制化服务:
+(1)环境变量(EnviromentVariables).RabbitMQ服务端参数可以通过环境变量进行配置，例如，节点名称、RabbitMQ配直文件的地址、节点内部通信端口等。
+(2)配直文件(ConfigurationFile).可以定义RabbitMQ服务和插件设直，例如，TCP监听端口，以及其他网络相关的设直、内存限制、磁盘限制等。
+(3)运行时参数和策略(RuntimeParametersandPolicies)。可以在运行时定义集群层面的服务设直.
+
+#### 1.3.3.1. 环境变量
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.3.3.2. 配置文件
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.3.3.3. 参数和策略
+<a href="#menu" style="float:right">目录</a>
+
+
 
 ## 1.4. 客户端开发
 <a href="#menu" style="float:right">目录</a>
@@ -961,7 +1001,7 @@ publisher confirm的优势在于并不一定需要同步确认.其他优化方�
 * 批量confirm方法:每发送一批消息后，调用channel.waitForConfirms方法，等待服务器的确认返回。
 * 异步confirm方法:提供一个回调方法，服务端确认了一条或者多条消息后客户端会回调这个方法进行处理。
 
-在批量confirm方法中，客户端程序需要定期或者定量(达到多少条)，亦或者两者结合起来调用channel.waitForConfirms来等待RabbitMQ的确认返回。相比于前面示例中的普通confirm方法，批量极大地提升了confirm的效率，但是问题在于出现返回Basic.Nack或者超时情况时，客户端需要将这一批次的消息全部重发，这会带来明显的重复消息数量，并且当消息经常丢失时，批量confirm的性能应该是不升反降的。
+在批量confirm方法中，客户端程序需要定期或者定量(达到多少条)，亦或者两者结合起来调用channel.waitForConfirms来等待RabbitMQ的确认返回。相比于前面示例中的普通confirm方法，批量极大地提升了confirm的效率，但是问题在于出现返回Basic.Nack或者超时情况时，客户端需要将这一批次的消息全部重发，这会带来明显的重复消息���量，并且当消息经常丢失时，批量confirm的性能应该是不升反降的。
 
 异步confirm方法的编程实现最为复杂。在客户端Channel接口中提供的addConfirmListener方法可以添加ConfirmListener这个回调接口，这个ConfirmListener接口包含两个方法:handleAck和handleNack，分别用来处理RabbitMQ回传的Basic.Ack和Basic.Nack。在这两个方法中都包含有一个参数deliveryTag(在publisher  confirm模式下用来标记消息的唯一有序序号),我们需要为每一个信道维护一个"unconfirm"的消息序号集合，每发送一条消息，集合中的元素加1。每当调用ConfirmListener中的handleAck方法时，"unconfirm"集合中删掉相应的一条(multiple设置为false)或者多条(multiple设置为true)记录。从程序运行效率上来看，这个"unconfrrm"集合最好采用有序集合SortedSet的存储结构。事实上，Java客户端SDK中的waitForConfirms方法也是通过SortedSet维护消息序号的。
 
@@ -1111,15 +1151,442 @@ publisherconfirm机制的时候，发送完一条消息等待RabbitMQ返回确�
 
 那么RabbitMQ有没有去重的机制来保证"恰好一次"呢?答案是并没有，不仅是RabbitMQ，目前大多数主流的消息中间件都没有消息去重机制，也不保障"恰好一次"。去重处理一般是在业务客户端实现，比如引入GUID(GloballyUniqueIdentifier)的概念。针对GUID，如果从客户端的角度去重，那么需要引入集中式缓存，必然会增加依赖复杂度，另外缓存的大小也难以界定。建议在实际生产环境中，业务方根据自身的业务特性进行去重，比如业务消息本身具备军等'性，或者借助Redis等其他产品进行去重处理。
 
-## 1.6. 数据存储
+## 1.6. Spring集成RabbitMQ
+
+### 1.6.1. 依赖
+<a href="#menu" style="float:right">目录</a>
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-amqp</artifactId>
+</dependency>
+```
+
+### 1.6.2. 配置
+<a href="#menu" style="float:right">目录</a>
+
+```java
+@ConfigurationProperties(
+    prefix = "spring.rabbitmq"
+)
+public class RabbitProperties {
+    //ip
+    private String host = "localhost";
+    //端口
+    private int port = 5672;
+    //用户名称和密码
+    private String username = "guest";
+    private String password = "guest";
+    private final RabbitProperties.Ssl ssl = new RabbitProperties.Ssl();
+    //虚拟主机
+    private String virtualHost;
+    //
+    private String addresses;
+    @DurationUnit(ChronoUnit.SECONDS)
+    private Duration requestedHeartbeat;
+    private boolean publisherConfirms;
+    private boolean publisherReturns;
+    private Duration connectionTimeout;
+    private final RabbitProperties.Cache cache = new RabbitProperties.Cache();
+    private final RabbitProperties.Listener listener = new RabbitProperties.Listener();
+    private final RabbitProperties.Template template = new RabbitProperties.Template();
+    private List<RabbitProperties.Address> parsedAddresses;
+}
+```
+
+```yml
+spring:
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /rabbitmq
+```
+### 1.6.3. 配置类
+
+```java
+@Slf4j
+@Configuration
+public class RabbitConfig {
+
+    @Value("${spring.rabbitmq.host}")
+    private String host;
+
+    @Value("${spring.rabbitmq.port}")
+    private int port;
+
+    @Value("${spring.rabbitmq.username}")
+    private String username;
+
+    @Value("${spring.rabbitmq.password}")
+    private String password;
+
+    @Value("${spring.rabbitmq.virtual-host}")
+    private String virtualhost;
+
+
+    public static final String EXCHANGE_A = "my-mq-exchange_A";
+    public static final String EXCHANGE_B = "my-mq-exchange_B";
+    public static final String EXCHANGE_C = "my-mq-exchange_C";
+
+
+    public static final String QUEUE_A = "QUEUE_A";
+    public static final String QUEUE_B = "QUEUE_B";
+    public static final String QUEUE_C = "QUEUE_C";
+
+    public static final String ROUTINGKEY_A = "spring-boot-routingKey_A";
+    public static final String ROUTINGKEY_B = "spring-boot-routingKey_B";
+    public static final String ROUTINGKEY_C = "spring-boot-routingKey_C";
+
+    /*
+    配置工厂
+    */
+    @Bean
+    public ConnectionFactory connectionFactory() {
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory(host,port);
+        connectionFactory.setUsername(username);
+        connectionFactory.setPassword(password);
+        connectionFactory.setVirtualHost(virtualhost);
+        connectionFactory.setPublisherConfirms(true);
+        return connectionFactory;
+    }
+    
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    //必须是prototype类型
+    public RabbitTemplate rabbitTemplate() {
+        RabbitTemplate template = new RabbitTemplate(connectionFactory());
+        return template;
+    }
+
+
+    //配置队列
+    /**
+     * 获取队列A
+     * @return
+     */
+    @Bean
+    public Queue queueA() {
+        return new Queue(QUEUE_A, true); //队列持久
+    }
+
+    /**
+     * 获取队列A
+     * @return
+     */
+    @Bean
+    public Queue queueB() {
+        return new Queue(QUEUE_B, true); //队列持久
+    }
+
+
+
+
+
+    /**
+     * 针对消费者配置
+     * 1. 设置交换机类型
+     * 2. 将队列绑定到交换机
+     FanoutExchange: 将消息分发到所有的绑定队列，无routingkey的概念
+     HeadersExchange ：通过添加属性key-value匹配
+     DirectExchange:按照routingkey分发到指定队列
+     TopicExchange:多关键字匹配
+     */
+    @Bean
+    public DirectExchange defaultExchange() {
+        return new DirectExchange(EXCHANGE_A);
+    }
+
+    //绑定
+    @Bean
+    public Binding bindingA() {
+        return BindingBuilder.bind(queueA()).to(defaultExchange()).with(RabbitConfig.ROUTINGKEY_A);
+    }
+    @Bean
+    public Binding bindingB(){
+        return BindingBuilder.bind(queueB()).to(defaultExchange()).with(RabbitConfig.ROUTINGKEY_B);
+    }
+}
+```
+
+从上面可以看到主要有以下几个步骤
+* 配置连接工厂,用于创建连接
+* 配置RabbitTemplate,后续通过这个对象发送数据
+* 配置队列Queue
+* 配置交换器Exchange
+* 绑定交换器和队列
+
+**队列**
+```java
+ public Queue(String name, boolean durable, boolean exclusive, boolean autoDelete, Map<String, Object> arguments);
+```
+* name : 队列的名称。
+* durable: 设置是否持久化。为 true 则设置队列为持久化。持久化的队列会存盘，在服务器重启的时候可以保证不丢失相关信息。
+* exclusive : 设置是否排他。为 true 则设置队列为排他的。如果一个队列被声明为排他队列，该队列仅对首次声明它的连接可见，并在连接断开时自动删除。这里需要注意三点:排他队列是基于连接( Connection) 可见的，同一个连接的不同信道 (Channel)是可以同时访问同一连接创建的排他队列; "首次"是指如果一个连接己经声明了 一个排他队列，其他连接是不允许建立同名的排他队列的，这个与普通队列不同:即使该队列是持久化的，一旦连接关闭或者客户端退出，该排他队列都会被自动删除，这种队列适用于一个客户端同时发送和读取消息的应用场景。
+* autoDelete: 设置是否自动删除。为 true 则设置队列为自动删除。自动删除的前提是:至少有一个消费者连接到这个队列，之后所有与这个队列连接的消费者都断开时，才会自动删除。不能把这个参数错误地理解为: "当连接到此队列的所有客户端断开时，这个队列自动删除"，因为生产者客户端创建这个队列，或者没有消费者客户端与这个队列连接时，都不会自动删除这个队列。
+* argurnents: 设置队列的其他一些参数，如 x-rnessage-ttl 、 x-expires ,x -rnax-length 、 x-rnax-length-bytes 、 x-dead-letter-exchange 、x-deadletter-routing-key, x-rnax-priority 等。
+
+**交换器**
+```java
+public Exchange(String name, boolean durable, boolean autoDelete, Map<String, Object> arguments)
+```
+* name : 交换器的名称。
+* durable: 设置是否持久化 。 durable 设置为 true 表示持久化， 反之是非持久化 。持久化可以将交换器存盘，在服务器重启 的时候不会丢失相关信息。
+* autoDelete : 设置是否自动删除。 autoDelete 设置为 true 则表示自动删除。自动删除的前提是至少有一个队列或者交换器与这个交换器绑定 ， 之后所有与这个交换器绑定的队列或者交器都与此解绑。注意不能错误地把这个参数理解为 : "当与此交换器连接的客户端都断开时 ， RabbitMQ 会自动删除本交换器 "。
+* argument : 其他一些结构化参数，比如 alternate - exchange
+
+根据不同的类型,一共有以下几种交换器
+* DirectExchange
+* FanoutExchange
+* CustomExchange(自定义)
+* TopicExchange
+* HeadersExchange
+
+
+
+### 1.6.4. 生产者
+<a href="#menu" style="float:right">目录</a>
+
+```java
+@Slf4j
+@Component
+public class MsgProducer implements RabbitTemplate.ConfirmCallback {
+
+ 
+    //由于rabbitTemplate的scope属性设置为ConfigurableBeanFactory.SCOPE_PROTOTYPE，所以不能自动注入
+    private RabbitTemplate rabbitTemplate;
+    /**
+     * 构造方法注入rabbitTemplate
+     */
+    @Autowired
+    public MsgProducer(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
+        rabbitTemplate.setConfirmCallback(this); //rabbitTemplate如果为单例的话，那回调就是最后设置的内容
+    }
+
+    public void sendMsg(String content) {
+        CorrelationData correlationId = new CorrelationData(UUID.randomUUID().toString());
+        //把消息放入ROUTINGKEY_A对应的队列当中去，对应的是队列A
+        rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE_A, RabbitConfig.ROUTINGKEY_A, content, correlationId);
+    }
+    /**
+     * 回调
+     */
+    @Override
+    public void confirm(CorrelationData correlationData, boolean ack, String cause) {
+        logger.info(" 回调id:" + correlationData);
+        if (ack) {
+            logger.info("消息成功消费");
+        } else {
+            logger.info("消息消费失败:" + cause);
+        }
+    }
+}
+```
+
+### 1.6.5. 消费者
 <a href="#menu" style="float:right">目录</a>
 
 
-## 1.7. 集群
+```java
+@Slf4j
+@Component
+@RabbitListener(queues = RabbitConfig.QUEUE_A)
+public class MsgReceiver {
+    
+    @RabbitHandler
+    public void process(String content) {
+        log.info("接收处理队列A当中的消息： " + content);
+    }
+}
+
+```
+
+### 1.6.6. 为Rabbitmq中的Jackson2JsonMessageConverter自定义ClassMapper
+<a href="#menu" style="float:right">目录</a>
+
+每次发消息都要自己构造 Message 对象比较麻烦。Spring-AMQP 允许我们直接使用自定义的类，然后会利用指定好的 MessageConverter 将自定义的类转换为 Message 进行发送，在接收时也会利用 MessageConverter 将接收到的 Message 对象转成需要的对象。Spring-AMQP 提供了多种 MessageConverter，比如 SimpleMessageConverter，SerializerMessageConverter，Jackson2JsonMessageConverter，MarshallingMessageConverter等等，如果发送的消息对象不是 Message 实例，并且没有指定 MessageConverter 的话，默认用 SimpleMessageConverter。以上各种 MessageConverter 归根结底都是实现了 MessageConverter 接口，该接口只有两个方法：
+
+```java
+public interface MessageConverter {
+    Message toMessage(Object var1, MessageProperties var2) throws MessageConversionException;
+
+    default Message toMessage(Object object, MessageProperties messageProperties, @Nullable Type genericType) throws MessageConversionException {
+        return this.toMessage(object, messageProperties);
+    }
+
+    Object fromMessage(Message var1) throws MessageConversionException;
+}
+```
+这两个方法一个是在发送消息时将我们的消息对象转换成标准的 Message 对象，另一个是在接受消息时将 Message 对象转换为相应的对象。
+比较常用的 Converter 就是 Jackson2JsonMessageConverter(以下简称 JsonMessageConverter)，在发送消息时，它会先将自定义的消息类序列化成json格式，再转成byte构造 Message，在接收消息时，会将接收到的 Message 再反序列化成自定义的类
+
+不过使用 JsonMessageConverter 时有一个小问题，在不对它进行任何改造的前提下，发送消息的类和接受消息的类必须是一样的，不仅是要里面的字段一样，类名一样，连类的包路径都要一样。
+
+所以当系统1使用 JsonMessageConverter 发送消息类A给系统2时，系统2可以有如下几种方式来接收：
+1.依赖系统1的jar包,直接使用类A来接收
+2.不依赖系统1的jar包，自己建一个和A一模一样的类，连名称，包路径都一样
+3.负责监听 queue 的类实现 MessageListener 接口，直接接收 Message 类，再自己转换
+上面三个方法都不是很好，按照正常的想法，我们肯定是期望系统2直接使用自己的类来接收就可以了，只要与A类的字段名一样即可。那有没有方法可以让系统2既不依赖无用的jar包，也不用建立个与自己命名规范不相符的类， 也无需自己转换呢?
+
+要解决这个问题，就要先看看 JsonMessageConverter 是如何将 Message 进行反序列化的。
+在 JsonMessageConverter 的 fromMessage 方法中有这么一段:
+```java
+if (conversionHint instanceof ParameterizedTypeReference) {
+    content = this.convertBytesToObject(message.getBody(), encoding, this.objectMapper.getTypeFactory().constructType(((ParameterizedTypeReference)conversionHint).getType()));
+} else if (this.getClassMapper() == null) {
+    JavaType targetJavaType = this.getJavaTypeMapper().toJavaType(message.getMessageProperties());
+    content = this.convertBytesToObject(message.getBody(), encoding, targetJavaType);
+} else {
+    Class<?> targetClass = this.getClassMapper().toClass(message.getMessageProperties());
+    content = this.convertBytesToObject(message.getBody(), encoding, targetClass);
+}
+```
+
+就是说默认情况下，JsonMessageConverter 使用的 ClassMapper 是 DefaultJackson2JavaTypeMapper，在转换时通过 Message 的 Properties 来获取要转换的目标类的类型。通过 Debug 可以发现，目标类的类型是存储在 Message 的 Proterties 的 一个 headers 的 Map 中，Key 叫“__TypeId__”。所以只要想办法在传输消息时更改__TypeId__的值即可。
+
+下面是解决办法，在消息的生产者端为 JsonMessageConverter， 设置一个自定义的 ClassMapper，重写 fromClass 方法，将 __TypeId__ 的值设为消费端用来接收的类的路径+名称。当然了，也可以在消费者端重写toClass方法，直接返回想要转换的目标类的类类型。两种选一种就可以。
+
+```java
+Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();
+converter.setClassMapper(new ClassMapper() {
+
+    //发送端重写
+    @Override
+    public void fromClass(Class<?> aClass, MessageProperties messageProperties) {
+
+        // messageProperties.setHeader("__TypeId__", "com.xxx.B");
+        throw new UnsupportedOperationException("this mapper is only for outbound, do not use for receive message");
+
+    }
+    //消费端重写
+    @Override
+    public Class<?> toClass(MessageProperties messageProperties) {
+        // messageProperties.setHeader("__TypeId__", "com.xxx.B");
+        return UserRecDto.class;
+    }
+});
+```
+
+### 1.6.7. SimpleMessageListenerContainer
+<a href="#menu" style="float:right">目录</a>
+
+SimpleMessageListenerContainer 即简单消息监听容器。
+
+这个类非常的强大，我们可以对他进行很多的设置，用对于消费者的配置项，这个类都可以满足。它有监听单个或多个队列、自动启动、自动声明功能。
+* 它可以设置事务特性、事务管理器、事务属性、事务并发、是否开启事务、回滚消息等。但是我们在实际生产中，很少使用事务，基本都是采用补偿机制。
+* 它可以设置消费者数量、最小最大数量、批量消费。
+* 它可以设置消息确认和自动确认模式、是否重回队列、异常捕获 Handler 函数。
+* 它可以设置消费者标签生成策略、是否独占模式、消费者属性等。
+* 它还可以设置具体的监听器、消息转换器等等。
+注意: SimpleMessageListenerContainer 可以进行动态设置，比如在运行中的应用可以动态的修改其消费者数量的大小、接收消息的模式等。
+很多基于 rabbitMQ 的自制定化后端管控台在进行设置的时候，也是根据这一去实现的。所以可以看出 SpringAMQP 非常的强大。
+
+```java
+@Bean
+public SimpleMessageListenerContainer messageContainer() {
+    //加载处理消息A的队列
+    SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory());
+    //设置接收多个队列里面的消息，这里设置接收队列A
+    //假如想一个消费者处理多个队列里面的信息可以如下设置：
+    //container.setQueues(queueA(),queueB(),queueC());
+    //container.setQueues(queueA());
+    container.setQueueNames(RabbitConfig.QUEUE_A);
+    container.setExposeListenerChannel(true);
+    //设置最大的并发的消费者数量
+    container.setMaxConcurrentConsumers(10);
+    //最小的并发消费者的数量
+    container.setConcurrentConsumers(1);
+    //设置确认模式手工确认
+    container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
+
+
+    MessageListenerAdapter messageListener = new MessageListenerAdapter(new Object() {
+
+        @SuppressWarnings("unused")
+        public void handleMessage(UserRecDto object) {
+            System.out.println("Got a " + object);
+        }
+
+    });
+
+
+    Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();
+    converter.setClassMapper(new ClassMapper() {
+        @Override
+        public void fromClass(Class<?> aClass, MessageProperties messageProperties) {
+
+            throw new UnsupportedOperationException("this mapper is only for outbound, do not use for receive message");
+
+        }
+
+        @Override
+        public Class<?> toClass(MessageProperties messageProperties) {
+            // messageProperties.setHeader("__TypeId__", "com.xxx.B");
+            return UserRecDto.class;
+        }
+    });
+    container.setMessageConverter(converter);
+
+    //定义接收监听器
+    container.setMessageListener(new ChannelAwareMessageListener(){
+
+        @Override
+        public void onMessage(Message message, Channel channel) throws Exception {
+
+            /**通过basic.qos方法设置prefetch_count=1，这样RabbitMQ就会使得每个Consumer在同一个时间点最多处理一个Message，
+                换句话说,在接收到该Consumer的ack前,它不会将新的Message分发给它 */
+            channel.basicQos(1);
+
+            UserRecDto userRecDto = (UserRecDto)container.getMessageConverter().fromMessage(message);
+
+            log.info("接收处理队列A当中的消息:" + userRecDto);
+            long deliveryTag = message.getMessageProperties().getDeliveryTag();
+            /**为了保证永远不会丢失消息，RabbitMQ支持消息应答机制。
+                当消费者接收到消息并完成任务后会往RabbitMQ服务器发送一条确认的命令，然后RabbitMQ才会将消息删除。*/
+            channel.basicAck(deliveryTag,false);
+        }
+    });
+    
+    return container;
+}
+```
+
+同时生产者要设定MessageConverter为jackson2JsonMessageConverter.
+```java
+@Bean
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+//必须是prototype类型
+public RabbitTemplate rabbitTemplate() {
+    RabbitTemplate template = new RabbitTemplate(connectionFactory());
+    template.setMessageConverter(jackson2JsonMessageConverter());
+    return template;
+}
+```
+发送消息
+```java
+public void sendMsgObject(Object content) {
+    CorrelationData correlationId = new CorrelationData(UUID.randomUUID().toString());
+    //把消息放入ROUTINGKEY_A对应的队列当中去，对应的是队列A
+    rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE_A, RabbitConfig.ROUTINGKEY_A, content, correlationId);
+}
+```
+
+
+## 1.7. RabbitMQ管理
+<a href="#menu" style="float:right">目录</a>
+
+## 1.8. 数据存储
 <a href="#menu" style="float:right">目录</a>
 
 
-## 1.8. 源码说明
+## 1.9. 集群
+<a href="#menu" style="float:right">目录</a>
+
+
+## 1.10. 源码说明
 
 ```java
 //
