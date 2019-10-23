@@ -6,21 +6,34 @@
     - [1.1. 概述](#11-概述)
     - [1.2. 安装和使用](#12-安装和使用)
         - [1.2.1. 安装](#121-安装)
-        - [1.2.2. 启动](#122-启动)
+        - [1.2.2. 服务器管理](#122-服务器管理)
+            - [1.2.2.1. 启动节点](#1221-启动节点)
+            - [1.2.2.2. 停止节点](#1222-停止节点)
+            - [1.2.2.3. 关闭和重启应用程序:有何差别](#1223-关闭和重启应用程序有何差别)
+            - [1.2.2.4. 其他命令](#1224-其他命令)
+        - [1.2.3. 请求许可](#123-请求许可)
+            - [1.2.3.1. 权限系统](#1231-权限系统)
+        - [1.2.4. 检查](#124-检查)
+            - [1.2.4.1. 查看数据统计](#1241-查看数据统计)
+            - [1.2.4.2. 理解日志](#1242-理解日志)
+        - [1.2.5. 疑难解答](#125-疑难解答)
     - [1.3. 入门](#13-入门)
         - [1.3.1. 相关概念介绍](#131-相关概念介绍)
             - [1.3.1.1. 生产者和消费值](#1311-生产者和消费值)
             - [1.3.1.2. 队列](#1312-队列)
             - [1.3.1.3. 交换器,路由键,绑定](#1313-交换器路由键绑定)
             - [1.3.1.4. 交换器类型](#1314-交换器类型)
-            - [1.3.1.5. RabbitMQ运转流程](#1315-rabbitmq运转流程)
-            - [1.3.1.6. 通信模式](#1316-通信模式)
+            - [1.3.1.5. 多租户模式:虚拟主机和隔离](#1315-多租户模式虚拟主机和隔离)
+            - [1.3.1.6. 消息持久化](#1316-消息持久化)
+            - [1.3.1.7. RabbitMQ运转流程](#1317-rabbitmq运转流程)
+            - [1.3.1.8. 通信模式](#1318-通信模式)
         - [1.3.2. AMQP协议介绍](#132-amqp协议介绍)
             - [1.3.2.1. AMQP生产者流转过程](#1321-amqp生产者流转过程)
             - [1.3.2.2. AMQP消费者流转过程](#1322-amqp消费者流转过程)
         - [1.3.3. 配置](#133-配置)
             - [1.3.3.1. 环境变量](#1331-环境变量)
             - [1.3.3.2. 配置文件](#1332-配置文件)
+                - [1.3.3.2.1. 常用配置说明](#13321-常用配置说明)
             - [1.3.3.3. 参数和策略](#1333-参数和策略)
     - [1.4. 客户端开发](#14-客户端开发)
         - [1.4.1. 依赖](#141-依赖)
@@ -28,8 +41,8 @@
         - [1.4.3. 使用交换器和队列](#143-使用交换器和队列)
         - [1.4.4. 发送消息](#144-发送消息)
         - [1.4.5. 消费消息](#145-消费消息)
-            - [1.4.5.1. 推模式](#1451-推模式)
-            - [1.4.5.2. 拉模式](#1452-拉模式)
+            - [1.4.5.1. 推模式(push)](#1451-推模式push)
+            - [1.4.5.2. 拉模式(pull)](#1452-拉模式pull)
         - [1.4.6. 消息端的确认和拒绝](#146-消息端的确认和拒绝)
         - [1.4.7. 关闭连接](#147-关闭连接)
     - [1.5. 进阶](#15-进阶)
@@ -61,7 +74,41 @@
     - [1.7. RabbitMQ管理](#17-rabbitmq管理)
     - [1.8. 数据存储](#18-数据存储)
     - [1.9. 集群](#19-集群)
-    - [1.10. 源码说明](#110-源码说明)
+        - [1.9.1. 集群架构](#191-集群架构)
+        - [1.9.2. 集群搭建](#192-集群搭建)
+            - [1.9.2.1. 多机多节点配置](#1921-多机多节点配置)
+            - [1.9.2.2. 集群节点类型](#1922-集群节点类型)
+            - [1.9.2.3. 删除单个节点](#1923-删除单个节点)
+            - [1.9.2.4. 集群节点的升级](#1924-集群节点的升级)
+            - [1.9.2.5. 单机多节点配置](#1925-单机多节点配置)
+        - [1.9.3. 镜像队列](#193-镜像队列)
+    - [1.10. 网络分区](#110-网络分区)
+        - [1.10.1. 网络分区的意义](#1101-网络分区的意义)
+        - [1.10.2. 网络分区的判定](#1102-网络分区的判定)
+        - [1.10.3. 网络分区的模拟](#1103-网络分区的模拟)
+        - [1.10.4. 网络分区的影响](#1104-网络分区的影响)
+            - [1.10.4.1. 未配置的镜像](#11041-未配置的镜像)
+            - [1.10.4.2. 已配置的镜像](#11042-已配置的镜像)
+        - [1.10.5. 手动处理网络分区](#1105-手动处理网络分区)
+        - [1.10.6. 自动处理网络分区](#1106-自动处理网络分区)
+            - [1.10.6.1. pause-minority模式](#11061-pause-minority模式)
+            - [1.10.6.2. pause-if-all-down模式](#11062-pause-if-all-down模式)
+            - [1.10.6.3. autoheal模式](#11063-autoheal模式)
+            - [1.10.6.4. 模式选择](#11064-模式选择)
+    - [1.11. RabbitMQ扩展](#111-rabbitmq扩展)
+        - [1.11.1. 消息追踪](#1111-消息追踪)
+            - [1.11.1.1. Firehose](#11111-firehose)
+            - [1.11.1.2. rabbitmq_tracing 插件](#11112-rabbitmq_tracing-插件)
+        - [1.11.2. 负载均衡](#1112-负载均衡)
+            - [1.11.2.1. 客户端内部实现负载均衡](#11121-客户端内部实现负载均衡)
+            - [1.11.2.2. 使用HAProxy实现负载均衡](#11122-使用haproxy实现负载均衡)
+                - [1.11.2.2.1. HaProxy基本介绍](#111221-haproxy基本介绍)
+                - [1.11.2.2.2. 安装](#111222-安装)
+                - [1.11.2.2.3. 配置文件](#111223-配置文件)
+            - [1.11.2.3. 使用Keepalived实现高可靠负载均衡](#11123-使用keepalived实现高可靠负载均衡)
+            - [1.11.2.4. 使用Keepalived+LVS实现负载均衡](#11124-使用keepalivedlvs实现负载均衡)
+    - [1.12. 源码说明](#112-源码说明)
+    - [1.13. 面试总结](#113-面试总结)
 
 <!-- /TOC -->
 # 1. RabbitMQ
@@ -152,8 +199,15 @@ export RABBITMQ HOME=/opt/rabbitmq
 ```
 之后执行 source/etc/profile 命令让配置文件生效。
 
+### 1.2.2. 服务器管理
+<a href="#menu" style="float:right">目录</a>
 
-### 1.2.2. 启动
+RabbitMQ是基于Erlang编写的,Erlang也有虚拟机,而虚拟机的每个实例称之为节点(node),不同于JVM,多个Erlang应用程序可以运行在同一个节点之上,节点之间可以进行本地通信,
+
+![erlang](https://github.com/lgjlife/Java-Study/blob/master/pic/rabbitmq/erlang.png?raw=true)
+
+
+#### 1.2.2.1. 启动节点
 <a href="#menu" style="float:right">目录</a>
 
 在修改了 /etc/profile 配置文件之后，可以任意打开一个 Shell 窗口，输入如下命令以运行 RabbitMQ 服务 :
@@ -163,7 +217,274 @@ rabbitmq-server -detached
 
 在 rabbitmq-s erver 命令后面添加一个 "-detached" 参数是为了能够让 RabbitMQ服务以守护进程的方式在后台运行，这样就不会因为当前 Shell 窗口的关闭而影响服务。
 
+启动之后可以在 /var/log/rabbitmq查看日志文件
+```java
+lgj@lgj-Lenovo-G470:/var/log/rabbitmq$ ls -l
+total 8
+-rw-r--r-- 1 rabbitmq rabbitmq    0 Jan  6  2019 rabbit@lgj-Lenovo-G470-sasl.log
+-rw-r--r-- 1 rabbitmq rabbitmq    0 Jan 13  2019 rabbit@lgj-Lenovo-G470.log
+-rw-r--r-- 1 rabbitmq rabbitmq 3946 Jan  6  2019 rabbit@lgj-Lenovo-G470.log.1
+-rw-r--r-- 1 rabbitmq rabbitmq    0 Jan  6  2019 startup_err
+-rw-r--r-- 1 rabbitmq rabbitmq  364 Jan  6  2019 startup_log
+
+```
+
 运行 rabbitmqctl status 命令查看 RabbitMQ 是否正常启动
+
+```java
+lgj@lgj-Lenovo-G470:~/java/rabbitmq_server-3.7.9/sbin$ ./rabbitmqctl status
+warning: the VM is running with native name encoding of latin1 which may cause Elixir to malfunction as it expects utf8. Please ensure your locale is set to UTF-8 (which can be verified by running "locale" in your shell)
+Status of node rabbit@lgj-Lenovo-G470 ...
+[{pid,10267},
+ {running_applications,
+     [{rabbitmq_management,"RabbitMQ Management Console","3.7.9"},
+      {rabbitmq_web_dispatch,"RabbitMQ Web Dispatcher","3.7.9"},
+      {cowboy,"Small, fast, modern HTTP server.","2.4.0"},
+      {rabbitmq_management_agent,"RabbitMQ Management Agent","3.7.9"},
+      {rabbit,"RabbitMQ","3.7.9"},
+      {amqp_client,"RabbitMQ AMQP Client","3.7.9"},
+      {rabbit_common,
+          "Modules shared by rabbitmq-server and rabbitmq-erlang-client",
+          "3.7.9"},
+      {ranch_proxy_protocol,"Ranch Proxy Protocol Transport","2.1.1"},
+      {ranch,"Socket acceptor pool for TCP protocols.","1.6.2"},
+      {ssl,"Erlang/OTP SSL application","8.2.3"},
+      {public_key,"Public key infrastructure","1.5.2"},
+      {asn1,"The Erlang ASN1 compiler version 5.0.4","5.0.4"},
+      {cowlib,"Support library for manipulating Web protocols.","2.3.0"},
+      {crypto,"CRYPTO","4.2"},
+      {recon,"Diagnostic tools for production use","2.3.6"},
+      {os_mon,"CPO  CXC 138 46","2.4.4"},
+      {jsx,"a streaming, evented json parsing toolkit","2.9.0"},
+      {inets,"INETS  CXC 138 49","6.4.5"},
+      {xmerl,"XML parser","1.3.16"},
+      {mnesia,"MNESIA  CXC 138 12","4.15.3"},
+      {lager,"Erlang logging framework","3.6.5"},
+      {goldrush,"Erlang event stream processor","0.1.9"},
+      {compiler,"ERTS  CXC 138 10","7.1.4"},
+      {syntax_tools,"Syntax tools","2.1.4"},
+      {sasl,"SASL  CXC 138 11","3.1.1"},
+      {stdlib,"ERTS  CXC 138 10","3.4.3"},
+      {kernel,"ERTS  CXC 138 10","5.4.1"}]},
+ {os,{unix,linux}},
+ {erlang_version,
+     "Erlang/OTP 20 [erts-9.2] [source] [64-bit] [smp:4:4] [ds:4:4:10] [async-threads:64] [kernel-poll:true]\n"},
+ {memory,
+     [{connection_readers,56696},
+      {connection_writers,3104},
+      {connection_channels,10648},
+      {connection_other,149464},
+      {queue_procs,76816},
+      {queue_slave_procs,0},
+      {plugins,1964632},
+      {other_proc,24516952},
+      {metrics,223656},
+      {mgmt_db,444384},
+      {mnesia,98688},
+      {other_ets,2306064},
+      {binary,5362208},
+      {msg_index,62816},
+      {code,28496931},
+      {atom,1131721},
+      {other_system,11206564},
+      {allocated_unused,18481680},
+      {reserved_unallocated,0},
+      {strategy,rss},
+      {total,[{erlang,76111344},{rss,80449536},{allocated,94593024}]}]},
+ {alarms,[]},
+ {listeners,[{clustering,25672,"::"},{amqp,5672,"::"},{http,15672,"::"}]},
+ {vm_memory_calculation_strategy,rss},
+ {vm_memory_high_watermark,0.4},
+ {vm_memory_limit,4167485030},
+ {disk_free_limit,50000000},
+ {disk_free,9088753664},
+ {file_descriptors,
+     [{total_limit,924},{total_used,8},{sockets_limit,829},{sockets_used,2}]},
+ {processes,[{limit,1048576},{used,410}]},
+ {run_queue,0},
+ {uptime,153140},
+ {kernel,{net_ticktime,60}}]
+
+```
+
+#### 1.2.2.2. 停止节点
+<a href="#menu" style="float:right">目录</a>
+
+使用rabbitmqctl stop来停止节点
+注意这里是停止整个RabbitMQ节点(应用程序和Erlang节点一起).
+```
+lgj@lgj-Lenovo-G470:~/java/rabbitmq_server-3.7.9/sbin$ ./rabbitmqctl stop 
+ 
+warning: the VM is running with native name encoding of latin1 which may cause Elixir to malfunction as it expects utf8. Please ensure your locale is set to UTF-8 (which can be verified by running "locale" in your shell)
+Stopping and halting node rabbit@lgj-Lenovo-G470 ...
+```
+也可以关闭远程节点: rabbitmqctl stop -n rabbit@[hostname]
+再次查看状态
+```
+lgj@lgj-Lenovo-G470:~/java/rabbitmq_server-3.7.9/sbin$ ./rabbitmqctl status
+
+warning: the VM is running with native name encoding of latin1 which may cause Elixir to malfunction as it expects utf8. Please ensure your locale is set to UTF-8 (which can be verified by running "locale" in your shell)
+Status of node rabbit@lgj-Lenovo-G470 ...
+Error: unable to perform an operation on node 'rabbit@lgj-Lenovo-G470'. Please see diagnostics information and suggestions below.
+
+Most common reasons for this are:
+
+ * Target node is unreachable (e.g. due to hostname resolution, TCP connection or firewall issues)
+ * CLI tool fails to authenticate with the server (e.g. due to CLI tool's Erlang cookie not matching that of the server)
+ * Target node is not running
+
+In addition to the diagnostics info below:
+
+ * See the CLI, clustering and networking guides on http://rabbitmq.com/documentation.html to learn more
+ * Consult server logs on node rabbit@lgj-Lenovo-G470
+
+DIAGNOSTICS
+===========
+
+attempted to contact: ['rabbit@lgj-Lenovo-G470']
+
+rabbit@lgj-Lenovo-G470:
+  * connected to epmd (port 4369) on lgj-Lenovo-G470
+  * epmd reports: node 'rabbit' not running at all
+                  no other nodes on lgj-Lenovo-G470
+  * suggestion: start the node
+
+Current node details:
+ * node name: 'rabbitmqcli-31202-rabbit@lgj-Lenovo-G470'
+ * effective user's home directory: /home/lgj
+ * Erlang cookie hash: 5OQcUQr6ixZUDypELnFO3g==
+
+
+
+```
+#### 1.2.2.3. 关闭和重启应用程序:有何差别
+<a href="#menu" style="float:right">目录</a>
+
+rabbitmqctl stop来停止节点,如果只是需要重启节点上的应用程序而保持节点的运行.
+
+使用rabbitmqctl stop_app来关闭应用
+
+```
+rabbitmqctl stop_app
+```
+
+#### 1.2.2.4. 其他命令
+<a href="#menu" style="float:right">目录</a>
+
+```
+rabbitmqctl list_queues：查看所有队列信息
+
+rabbitmqctl stop_app：关闭应用（关闭当前启动的节点）
+
+rabbitmqctl start_app：启动应用，和上述关闭命令配合使用，达到清空队列的目的
+
+rabbitmqctl reset：从管理数据库中移除所有数据，例如配置过的用户和虚拟宿主, 删除所有持久化的消息（这个命令要在rabbitmqctl stop_app之后使用）
+
+rabbitmqctl force_reset：作用和rabbitmqctl reset一样，区别是无条件重置节点，不管当前管理数据库状态以及集群的配置。如果数据库或者集群配置发生错误才使用这个最后的手段
+
+rabbitmqctl status：节点状态
+
+rabbitmqctl add_user username password：添加用户
+
+rabbitmqctl list_users：列出所有用户
+
+rabbitmqctl list_user_permissions username：列出用户权限
+
+rabbitmqctl change_password username newpassword：修改密码
+
+rabbitmqctl add_vhost vhostpath：创建虚拟主机
+
+rabbitmqctl list_vhosts：列出所有虚拟主机
+
+rabbitmqctl set_permissions -p vhostpath username ".*" ".*" ".*"：设置用户权限
+
+rabbitmqctl list_permissions -p vhostpath：列出虚拟主机上的所有权限 
+
+rabbitmqctl clear_permissions -p vhostpath username：清除用户权限
+
+rabbitmqctl -p vhostpath purge_queue blue：清除队列里的消息
+
+rabbitmqctl delete_user username：删除用户
+
+rabbitmqctl delete_vhost vhostpath：删除虚拟主机
+```
+### 1.2.3. 请求许可
+<a href="#menu" style="float:right">目录</a>
+
+
+#### 1.2.3.1. 权限系统
+<a href="#menu" style="float:right">目录</a>
+
+
+**权限**
+* 读
+    * 有关消费消息的任何操作,包括清除整个队列
+* 写
+    * 发布消息
+* 配置
+    * 队列和交换器的创建和删除
+
+每个用户创建时都有tags
+* management
+    * User can access the management plugin
+* policymaker
+    * User can access the management plugin and manage policies and parameters for the vhosts they have access to.
+* monitoring
+    * User can access the management plugin and see all connections and channels as well as node-related information.
+* administrator
+    * User can do everything monitoring can do, manage users, vhosts and permissions, close other user's connections, and manage policies and parameters for all vhosts.
+
+AMQP操作到RabbitMQ权限的映射关系
+
+|AMQP命令|配置|写|读|
+|---|---|---|---|
+|exchange.declare|exchange|-|-|
+|exchange.delete|exchange|-|-|
+|queue.declare|queue|-|-|
+|queue.delete|queue|-|-|
+|queue.bind|-|queue|-|
+|basic.publish|-|exchange|-|
+|basic.get|-|-|queue|
+|basic.consume|-|-|queue|
+|queue.purge|-|-|queue|
+
+每一条访问控制条目由以下四部分组成
+* 被授予访问权限的用户
+* 权限控制应用的vhost
+* 需要授予的读写配置权限的组合
+* 权限范围--权限控制仅应用于客户端命名的队列/交换器还是仅应用于服务端命名的队列/交换器?抑或两者兼顾
+
+注意用户不是和权限绑定的,用户只是提供访问认证,而访问权限由vhost-(用户+权限)控制.也就是说vhost可以配置不同的访问用户,并为该用户分配权限. 
+
+
+web配置vhost权限
+
+![vhost-permissions](https://github.com/lgjlife/Java-Study/blob/master/pic/rabbitmq/vhost-permissions.png?raw=true)
+
+可以看到,图中的".*"即为分配权限的表达式
+* ".*" 匹配任何队列和交换器
+* "check-.*" 只匹配名字以"check-"开头的队列和交换器
+* ""不匹配任何队列和交换器,也就是不分配权限
+ 
+
+ 
+### 1.2.4. 检查
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.2.4.1. 查看数据统计
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.2.4.2. 理解日志
+<a href="#menu" style="float:right">目录</a>
+
+### 1.2.5. 疑难解答
+<a href="#menu" style="float:right">目录</a>
+
+
+
+
+
+
 
 
 
@@ -171,7 +492,7 @@ rabbitmq-server -detached
 <a href="#menu" style="float:right">目录</a>
 
 整体模型
-![ribbitmq](https://github.com/lgjlife/Java-Study/blob/master/pic/ribbitmq/ribbitmq.png?raw=true)
+![rabbitmq](https://github.com/lgjlife/Java-Study/blob/master/pic/rabbitmq/rabbitmq.png?raw=true)
 
 ### 1.3.1. 相关概念介绍
 <a href="#menu" style="float:right">目录</a>
@@ -193,23 +514,46 @@ rabbitmq-server -detached
 * Broker
     * 消息中间件的服务节点
 * 消息流转流程
-    * 生产者发送数据
-    * 数据被序列化为字节数据
+    * 连接到RabbitMQ
+    * 从连接中获取信道
+    * 声明信道和队列并绑定
+    * 应用数据被序列化为字节数据
+    * 创建消息
+    * 生产者发送数据    
     * 指定交换器路由方式等信息
     * 发送到Broker
     * 消息根据指定的策略分发到队列中
     * 消费者获取消息
     * 对消息进行反序列化操作
     * 获取到实际的消息,并进行处理
+    * 关闭信道
+    * 关闭连接
+
+消费者收到消息之后,必须进行确认回复,可以配置成手动和自动的方式.如果,没有确认,rabbit将不会给该消费者再发送数据.这是因为rabbit认为没有收到确认之前,消费者还没有准备好接收下一条消息.如果确认之前,发生宕积,rabbit将会将该条消息重新放入队列从而发送给其他消费者.除此之外,还可以使用basicReject拒绝消息,rabbit收到后也会将消息重新入队.
+
+```JAVA
+public void basicReject(long deliveryTag, boolean requeue) throws IOException {
+    //deliveryTag:相当于消息的ID
+    //requeue:是否需要重新放入队列,以便进行继续消费,false的消息将可以被放入死信队列
+    this.transmit(new Reject(deliveryTag, requeue));
+    this.metricsCollector.basicReject(this, deliveryTag);
+}
+```
+其中 deliveryTag 可以看作消息的编号 ，它是一个 64 位的长整型值，最大值是9223372036854775807 。如果 requeue 参数设置为 true ，则 RabbitMQ 会重新将这条消息存入队列，以便可以发送给下一个订阅的消费者;如果 requeue 参数设置为 false，则 RabbitMQ立即会把消息从队列中移除，而不会把它发送给新的消费者。
+
 
 #### 1.3.1.2. 队列
 <a href="#menu" style="float:right">目录</a>
 
 Queue: 队列，是 RabbitMQ 的内部对象，用于存储消息
 
-RabbitMQ 中消息都只能存储在队列中，这一点和 Katka 这种消息中间件相反 。 Katka 将消息存储在 topic C 主题)这个逻辑层面，而相对应的队列逻辑只是 topic 实际存储文件中的位移标识。 RabbitMQ 的生产者生产消息井最终技递到队列中，消费者可以从队列中获取消息并消费 。
+RabbitMQ中消息都只能存储在队列中，这一点和Katka这种消息中间件相反 。Katka 将消息存储在 topic(主题)这个逻辑层面，而相对应的队列逻辑只是topic实际存储文件中的位移标识。 RabbitMQ 的生产者生产消息井最终技递到队列中，消费者可以从队列中获取消息并消费 。
 
 多个消费者可以订阅同一个队列，这时队列中的消息会被平均分摊 CRound-Robin ，即轮询)给多个消费者进行处理，而不是每个消费者都收到所有的消息井处理.RabbitMQ 不支持队列层面的广播消费，如果需要广播消费,可在消费端进行处理.
+
+**消息分发:**当队列有多个消费者订阅时,队列将收到的消息循环发送给消费者,每条消息只会发送给一个消费者.
+
+
 
 #### 1.3.1.3. 交换器,路由键,绑定
 <a href="#menu" style="float:right">目录</a>
@@ -244,7 +588,38 @@ RabbitMQ 常用的交换器类型有 fanout 、 direct 、topic 、headers 这�
 * headers
     * headers 类型的交换器不依赖于路由键的匹配规则来路由消息，而是根据发送的消息内容中的 headers 属性进行匹配。在绑定队列和交换器时制定一组键值对 ， 当发送消息到交换器时，RabbitMQ 会获取到该消息的 headers (也是一个键值对的形式) ，对比其中的键值对是否完全匹配队列和交换器绑定时指定的键值对，如果完全匹配则消息会路由到该队列，否则不会路由到该队列 。 headers 类型的交换器性能会很差，而且也不实用，基本上不会看到它的存在。
 
-#### 1.3.1.5. RabbitMQ运转流程
+#### 1.3.1.5. 多租户模式:虚拟主机和隔离
+<a href="#menu" style="float:right">目录</a>
+
+每个RabbitMQ都能创建虚拟消息服务器(也就是虚拟主机vhost),每一个vhost本质上是一个mini版的RabbitMQ服务器,每个vhost之间相互独立,有独立的权限控制,可以创建同名的交换器和队列.但还是同一个实例,只是逻辑上的隔离.
+
+![rabbitmq](https://github.com/lgjlife/Java-Study/blob/master/pic/rabbitmq/vhost.png?raw=true)
+
+如上图,根主机是"/",如果不需要配置新的虚拟主机,使用"/"即可.上面配置了两个虚拟主机"/blog"和"/rabbitmq",可以分配不同的用户进行管理
+
+
+#### 1.3.1.6. 消息持久化
+<a href="#menu" style="float:right">目录</a>
+
+发送消息时,需要把投递模式(delivery mode)选项设置为2来把消息标记为持久化.它还必须被发布到持久化的交换器并且到达持久化队列中才行.否则,会在崩溃后重启消息不复存在.
+因为消息想要实现从崩溃中恢复:
+* 消息投递模式选项设计为2(持久化)
+* 消息发送到持久化的交换器
+* 消息发送到持久化的队列
+
+RabbitMQ确保持久性消息能从服务器重启中恢复的方式是,将它们写入磁盘上的一个持久化日志文件.当发布一条持久性的消息到持久交换器上时,RabbitMQ会在消息提交到日志文件后才发送响应.如果这条消息被路由到非持久化的队列中,这条消息会从持久化文件中删除,并且无法恢复.一旦从持久化队列中消费了一条持久化消息(必须收到消费者消费成功的消息ack),Rabbit会将持久化日志中的这条消息标记为等待垃圾收集.
+当出现异常并重启RabbitMQ服务器,服务器会自动重建交换器和队列,并重播消息到交换器或者队列上(取决于宕积时消息路由所在的过程)
+
+使用持久化会增加性能消耗,降低吞吐量.因为写入磁盘速度较慢.
+
+持久消息在RabbitMQ内建集群环境下工作并不是很好.虽然Rabbit集群允许客户端和集群中的任何节点的任一队列进行通信,但是事实上那些队列均匀地分布在各个节点而没有冗余(在集群中任何一个队列都没有备份地拷贝),如果运行某个队列的集群节点崩溃了,那么直到节点恢复之前,这个队列也就从整个集群中消失了(如果队列是可持久化的),这时这些消息将暂时无法被消费.
+
+**发送方确认模式**
+RabbitMQ没有使用事务来提高消息可靠性,而是使用发送方确认模式(异步).使用时需要将信道设置成confirm模式,而且只能通过重新创建信道来关闭该设置.一旦信道进入confirm模式,所有在信道上发布的消息都会被指派一个唯一的ID号.一旦消息被投递到所有匹配的队列后,信道会发送一个发送方确认模式给生产者应用程序(包括消息的唯一ID).这使得生产者可以知道消息是否发送成功.如果消息和队列都是持久化的,那么消息只有在写入磁盘后才会返回应答消息.如果Rabbit发生内部错误导致消息的丢失,其会返回nack(not acknowledged,未确认)消息.由于没有消息回滚的概念(同事务相比),因此发送方确认模式更加轻量级.
+
+
+
+#### 1.3.1.7. RabbitMQ运转流程
 <a href="#menu" style="float:right">目录</a>
 
 **生产者**
@@ -280,7 +655,7 @@ NIO，也称非阻塞 UO ， 包含三大核心部分 Channel (信道)、 Buffer
 信道在 AMQP 中是一个很重要的概念，大多数操作都是在信道这个层面展开的。
 
 
-#### 1.3.1.6. 通信模式
+#### 1.3.1.8. 通信模式
 <a href="#menu" style="float:right">目录</a>
 
 * TCP的创建和销毁，开销大，创建需要三次握手，销毁需要四次分手
@@ -323,6 +698,1174 @@ RabbitMQ提供了三种方式来定制化服务:
 
 #### 1.3.3.2. 配置文件
 <a href="#menu" style="float:right">目录</a>
+
+Ubuntu系统上RabbitMQ的配置文件应该存储在/etc/rabbitmq/rabbitmq.conf
+
+如果没有，在RabbitMQ的启动log里面会有如下的信息：
+```
+=INFO REPORT==== 6-Jan-2019::04:27:20 ===
+Starting RabbitMQ 3.6.10 on Erlang 20.2.2
+Copyright (C) 2007-2017 Pivotal Software, Inc.
+Licensed under the MPL.  See http://www.rabbitmq.com/
+
+=INFO REPORT==== 6-Jan-2019::04:27:20 ===
+node           : rabbit@lgj-Lenovo-G470
+home dir       : /var/lib/rabbitmq
+config file(s) : /etc/rabbitmq/rabbitmq.config (not found)
+cookie hash    : MzWDEruAg0nLfcY+xw6MOg==
+log            : /var/log/rabbitmq/rabbit@lgj-Lenovo-G470.log
+sasl log       : /var/log/rabbitmq/rabbit@lgj-Lenovo-G470-sasl.log
+database dir   : /var/lib/rabbitmq/mnesia/rabbit@lgj-Lenovo-G470
+
+```
+
+这个时候可以复制RabbitMQ的example文件: https://github.com/rabbitmq/rabbitmq-server/blob/master/docs/rabbitmq.conf.example
+
+如果系统不能识别， 试试在/etc/rabbitmq下面增加rabbitmq-env.conf, 内容如下：
+```
+root@iZuf6cdovpqjj6q2xqxrjlZ:/etc/rabbitmq# vim /etc/rabbitmq/rabbitmq-env.conf
+```
+CONFIG_FILE=/etc/rabbitmq/rabbitmq
+ 注意： 没有.conf后缀！
+
+配置文件改动之后， 需要杀掉rabbitmq-server的进程重新启动。
+
+官方提供的配置文件
+
+```yml
+# ======================================
+# RabbitMQ broker section
+# ======================================
+
+## Related doc guide: https://rabbitmq.com/configure.html. See
+## https://rabbitmq.com/documentation.html for documentation ToC.
+
+## Networking
+## ====================
+##
+## Related doc guide: https://rabbitmq.com/networking.html.
+##
+## By default, RabbitMQ will listen on all interfaces, using
+## the standard (reserved) AMQP 0-9-1 and 1.0 port.
+##
+# listeners.tcp.default = 5672
+
+
+## To listen on a specific interface, provide an IP address with port.
+## For example, to listen only on localhost for both IPv4 and IPv6:
+##
+# IPv4
+# listeners.tcp.local    = 127.0.0.1:5672
+# IPv6
+# listeners.tcp.local_v6 = ::1:5672
+
+## You can define multiple listeners using listener names
+# listeners.tcp.other_port = 5673
+# listeners.tcp.other_ip   = 10.10.10.10:5672
+
+
+## TLS listeners are configured in the same fashion as TCP listeners,
+## including the option to control the choice of interface.
+##
+# listeners.ssl.default = 5671
+
+## Number of Erlang processes that will accept connections for the TCP
+## and TLS listeners.
+##
+# num_acceptors.tcp = 10
+# num_acceptors.ssl = 10
+
+
+## Maximum amount of time allowed for the AMQP 0-9-1 and AMQP 1.0 handshake
+## (performed after socket connection and TLS handshake) to complete, in milliseconds.
+##
+# handshake_timeout = 10000
+
+## Set to 'true' to perform reverse DNS lookups when accepting a
+## connection. rabbitmqctl and management UI will then display hostnames
+## instead of IP addresses. Default value is `false`.
+##
+# reverse_dns_lookups = false
+
+##
+## Security, Access Control
+## ==============
+##
+
+## Related doc guide: https://rabbitmq.com/access-control.html.
+
+## The default "guest" user is only permitted to access the server
+## via a loopback interface (e.g. localhost).
+## {loopback_users, [<<"guest">>]},
+##
+# loopback_users.guest = true
+
+## Uncomment the following line if you want to allow access to the
+## guest user from anywhere on the network.
+# loopback_users.guest = false
+
+## TLS configuration.
+##
+## Related doc guide: https://rabbitmq.com/ssl.html.
+##
+# ssl_options.verify               = verify_peer
+# ssl_options.fail_if_no_peer_cert = false
+# ssl_options.cacertfile           = /path/to/cacert.pem
+# ssl_options.certfile             = /path/to/cert.pem
+# ssl_options.keyfile              = /path/to/key.pem
+#
+# ssl_options.honor_cipher_order   = true
+# ssl_options.honor_ecc_order      = true
+
+# ssl_options.ciphers.1  = ECDHE-ECDSA-AES256-GCM-SHA384
+# ssl_options.ciphers.2  = ECDHE-RSA-AES256-GCM-SHA384
+# ssl_options.ciphers.3  = ECDHE-ECDSA-AES256-SHA384
+# ssl_options.ciphers.4  = ECDHE-RSA-AES256-SHA384
+# ssl_options.ciphers.5  = ECDH-ECDSA-AES256-GCM-SHA384
+# ssl_options.ciphers.6  = ECDH-RSA-AES256-GCM-SHA384
+# ssl_options.ciphers.7  = ECDH-ECDSA-AES256-SHA384
+# ssl_options.ciphers.8  = ECDH-RSA-AES256-SHA384
+# ssl_options.ciphers.9  = DHE-RSA-AES256-GCM-SHA384
+# ssl_options.ciphers.10 = DHE-DSS-AES256-GCM-SHA384
+# ssl_options.ciphers.11 = DHE-RSA-AES256-SHA256
+# ssl_options.ciphers.12 = DHE-DSS-AES256-SHA256
+# ssl_options.ciphers.13 = ECDHE-ECDSA-AES128-GCM-SHA256
+# ssl_options.ciphers.14 = ECDHE-RSA-AES128-GCM-SHA256
+# ssl_options.ciphers.15 = ECDHE-ECDSA-AES128-SHA256
+# ssl_options.ciphers.16 = ECDHE-RSA-AES128-SHA256
+# ssl_options.ciphers.17 = ECDH-ECDSA-AES128-GCM-SHA256
+# ssl_options.ciphers.18 = ECDH-RSA-AES128-GCM-SHA256
+# ssl_options.ciphers.19 = ECDH-ECDSA-AES128-SHA256
+# ssl_options.ciphers.20 = ECDH-RSA-AES128-SHA256
+# ssl_options.ciphers.21 = DHE-RSA-AES128-GCM-SHA256
+# ssl_options.ciphers.22 = DHE-DSS-AES128-GCM-SHA256
+# ssl_options.ciphers.23 = DHE-RSA-AES128-SHA256
+# ssl_options.ciphers.24 = DHE-DSS-AES128-SHA256
+# ssl_options.ciphers.25 = ECDHE-ECDSA-AES256-SHA
+# ssl_options.ciphers.26 = ECDHE-RSA-AES256-SHA
+# ssl_options.ciphers.27 = DHE-RSA-AES256-SHA
+# ssl_options.ciphers.28 = DHE-DSS-AES256-SHA
+# ssl_options.ciphers.29 = ECDH-ECDSA-AES256-SHA
+# ssl_options.ciphers.30 = ECDH-RSA-AES256-SHA
+# ssl_options.ciphers.31 = ECDHE-ECDSA-AES128-SHA
+# ssl_options.ciphers.32 = ECDHE-RSA-AES128-SHA
+# ssl_options.ciphers.33 = DHE-RSA-AES128-SHA
+# ssl_options.ciphers.34 = DHE-DSS-AES128-SHA
+# ssl_options.ciphers.35 = ECDH-ECDSA-AES128-SHA
+# ssl_options.ciphers.36 = ECDH-RSA-AES128-SHA
+
+## Select an authentication/authorisation backend to use.
+##
+## Alternative backends are provided by plugins, such as rabbitmq-auth-backend-ldap.
+##
+## NB: These settings require certain plugins to be enabled.
+##
+## Related doc guides:
+##
+##  * https://rabbitmq.com/plugins.html
+##  * https://rabbitmq.com/access-control.html
+##
+
+# auth_backends.1   = rabbit_auth_backend_internal
+
+## uses separate backends for authentication and authorisation,
+## see below.
+# auth_backends.1.authn = rabbit_auth_backend_ldap
+# auth_backends.1.authz = rabbit_auth_backend_internal
+
+## The rabbitmq_auth_backend_ldap plugin allows the broker to
+## perform authentication and authorisation by deferring to an
+## external LDAP server.
+##
+## Relevant doc guides:
+##
+## * https://rabbitmq.com/ldap.html
+## * https://rabbitmq.com/access-control.html
+##
+## uses LDAP for both authentication and authorisation
+# auth_backends.1 = rabbit_auth_backend_ldap
+
+## uses HTTP service for both authentication and
+## authorisation
+# auth_backends.1 = rabbit_auth_backend_http
+
+## uses two backends in a chain: HTTP first, then internal
+# auth_backends.1   = rabbit_auth_backend_http
+# auth_backends.2   = rabbit_auth_backend_internal
+
+## Authentication
+## The built-in mechanisms are 'PLAIN',
+## 'AMQPLAIN', and 'EXTERNAL' Additional mechanisms can be added via
+## plugins.
+##
+## Related doc guide: https://rabbitmq.com/authentication.html.
+##
+# auth_mechanisms.1 = PLAIN
+# auth_mechanisms.2 = AMQPLAIN
+
+## The rabbitmq-auth-mechanism-ssl plugin makes it possible to
+## authenticate a user based on the client's x509 (TLS) certificate.
+## Related doc guide: https://rabbitmq.com/authentication.html.
+##
+## To use auth-mechanism-ssl, the EXTERNAL mechanism should
+## be enabled:
+##
+# auth_mechanisms.1 = PLAIN
+# auth_mechanisms.2 = AMQPLAIN
+# auth_mechanisms.3 = EXTERNAL
+
+## To force x509 certificate-based authentication on all clients,
+## exclude all other mechanisms (note: this will disable password-based
+## authentication even for the management UI!):
+##
+# auth_mechanisms.1 = EXTERNAL
+
+## This pertains to both the rabbitmq-auth-mechanism-ssl plugin and
+## STOMP ssl_cert_login configurations. See the RabbitMQ STOMP plugin
+## configuration section later in this file and the README in
+## https://github.com/rabbitmq/rabbitmq-auth-mechanism-ssl for further
+## details.
+##
+## To use the TLS cert's CN instead of its DN as the username
+##
+# ssl_cert_login_from   = common_name
+
+## TLS handshake timeout, in milliseconds.
+##
+# ssl_handshake_timeout = 5000
+
+
+## Cluster name
+##
+# cluster_name = dev3.eng.megacorp.local
+
+## Password hashing implementation. Will only affect newly
+## created users. To recalculate hash for an existing user
+## it's necessary to update her password.
+##
+## To use SHA-512, set to rabbit_password_hashing_sha512.
+##
+# password_hashing_module = rabbit_password_hashing_sha256
+
+## When importing definitions exported from versions earlier
+## than 3.6.0, it is possible to go back to MD5 (only do this
+## as a temporary measure!) by setting this to rabbit_password_hashing_md5.
+##
+# password_hashing_module = rabbit_password_hashing_md5
+
+##
+## Default User / VHost
+## ====================
+##
+
+## On first start RabbitMQ will create a vhost and a user. These
+## config items control what gets created.
+## Relevant doc guide: https://rabbitmq.com/access-control.html
+##
+# default_vhost = /
+# default_user = guest
+# default_pass = guest
+
+# default_permissions.configure = .*
+# default_permissions.read = .*
+# default_permissions.write = .*
+
+## Tags for default user
+##
+## For more details about tags, see the documentation for the
+## Management Plugin at https://rabbitmq.com/management.html.
+##
+# default_user_tags.administrator = true
+
+## Define other tags like this:
+# default_user_tags.management = true
+# default_user_tags.custom_tag = true
+
+##
+## Additional network and protocol related configuration
+## =====================================================
+##
+
+## Set the default AMQP 0-9-1 heartbeat interval (in seconds).
+## Related doc guides:
+##
+## * https://rabbitmq.com/heartbeats.html
+## * https://rabbitmq.com/networking.html
+##
+# heartbeat = 60
+
+## Set the max permissible size of an AMQP frame (in bytes).
+##
+# frame_max = 131072
+
+## Set the max frame size the server will accept before connection
+## tuning occurs
+##
+# initial_frame_max = 4096
+
+## Set the max permissible number of channels per connection.
+## 0 means "no limit".
+##
+# channel_max = 128
+
+## Customising TCP Listener (Socket) Configuration.
+##
+## Related doc guides:
+##
+## * https://rabbitmq.com/networking.html
+## * https://www.erlang.org/doc/man/inet.html#setopts-2
+##
+
+# tcp_listen_options.backlog = 128
+# tcp_listen_options.nodelay = true
+# tcp_listen_options.exit_on_close = false
+#
+# tcp_listen_options.keepalive = true
+# tcp_listen_options.send_timeout = 15000
+#
+# tcp_listen_options.buffer = 196608
+# tcp_listen_options.sndbuf = 196608
+# tcp_listen_options.recbuf = 196608
+
+##
+## Resource Limits & Flow Control
+## ==============================
+##
+## Related doc guide: https://rabbitmq.com/memory.html.
+
+## Memory-based Flow Control threshold.
+##
+# vm_memory_high_watermark.relative = 0.4
+
+## Alternatively, we can set a limit (in bytes) of RAM used by the node.
+##
+# vm_memory_high_watermark.absolute = 1073741824
+
+## Or you can set absolute value using memory units (with RabbitMQ 3.6.0+).
+## Absolute watermark will be ignored if relative is defined!
+##
+# vm_memory_high_watermark.absolute = 2GB
+##
+## Supported unit symbols:
+##
+## k, kiB: kibibytes (2^10 - 1,024 bytes)
+## M, MiB: mebibytes (2^20 - 1,048,576 bytes)
+## G, GiB: gibibytes (2^30 - 1,073,741,824 bytes)
+## kB: kilobytes (10^3 - 1,000 bytes)
+## MB: megabytes (10^6 - 1,000,000 bytes)
+## GB: gigabytes (10^9 - 1,000,000,000 bytes)
+
+
+
+## Fraction of the high watermark limit at which queues start to
+## page message out to disc in order to free up memory.
+## For example, when vm_memory_high_watermark is set to 0.4 and this value is set to 0.5,
+## paging can begin as early as when 20% of total available RAM is used by the node.
+##
+## Values greater than 1.0 can be dangerous and should be used carefully.
+##
+## One alternative to this is to use durable queues and publish messages
+## as persistent (delivery mode = 2). With this combination queues will
+## move messages to disk much more rapidly.
+##
+## Another alternative is to configure queues to page all messages (both
+## persistent and transient) to disk as quickly
+## as possible, see https://rabbitmq.com/lazy-queues.html.
+##
+# vm_memory_high_watermark_paging_ratio = 0.5
+
+## Selects Erlang VM memory consumption calculation strategy. Can be `allocated`, `rss` or `legacy` (aliased as `erlang`),
+## Introduced in 3.6.11. `rss` is the default as of 3.6.12.
+## See https://github.com/rabbitmq/rabbitmq-server/issues/1223 and rabbitmq/rabbitmq-common#224 for background.
+# vm_memory_calculation_strategy = rss
+
+## Interval (in milliseconds) at which we perform the check of the memory
+## levels against the watermarks.
+##
+# memory_monitor_interval = 2500
+
+## The total memory available can be calculated from the OS resources
+## - default option - or provided as a configuration parameter.
+# total_memory_available_override_value = 2GB
+
+## Set disk free limit (in bytes). Once free disk space reaches this
+## lower bound, a disk alarm will be set - see the documentation
+## listed above for more details.
+##
+## Absolute watermark will be ignored if relative is defined!
+# disk_free_limit.absolute = 50000
+
+## Or you can set it using memory units (same as in vm_memory_high_watermark)
+## with RabbitMQ 3.6.0+.
+# disk_free_limit.absolute = 500KB
+# disk_free_limit.absolute = 50mb
+# disk_free_limit.absolute = 5GB
+
+## Alternatively, we can set a limit relative to total available RAM.
+##
+## Values lower than 1.0 can be dangerous and should be used carefully.
+# disk_free_limit.relative = 2.0
+
+##
+## Clustering
+## =====================
+##
+# cluster_partition_handling = ignore
+
+## pause_if_all_down strategy require additional configuration
+# cluster_partition_handling = pause_if_all_down
+
+## Recover strategy. Can be either 'autoheal' or 'ignore'
+# cluster_partition_handling.pause_if_all_down.recover = ignore
+
+## Node names to check
+# cluster_partition_handling.pause_if_all_down.nodes.1 = rabbit@localhost
+# cluster_partition_handling.pause_if_all_down.nodes.2 = hare@localhost
+
+## Mirror sync batch size, in messages. Increasing this will speed
+## up syncing but total batch size in bytes must not exceed 2 GiB.
+## Available in RabbitMQ 3.6.0 or later.
+##
+# mirroring_sync_batch_size = 4096
+
+## Make clustering happen *automatically* at startup. Only applied
+## to nodes that have just been reset or started for the first time.
+##
+## Relevant doc guide: https://rabbitmq.com//cluster-formation.html
+##
+
+# cluster_formation.peer_discovery_backend     = rabbit_peer_discovery_classic_config
+#
+# cluster_formation.classic_config.nodes.1 = rabbit1@hostname
+# cluster_formation.classic_config.nodes.2 = rabbit2@hostname
+# cluster_formation.classic_config.nodes.3 = rabbit3@hostname
+# cluster_formation.classic_config.nodes.4 = rabbit4@hostname
+
+## DNS-based peer discovery. This backend will list A records
+## of the configured hostname and perform reverse lookups for
+## the addresses returned.
+
+# cluster_formation.peer_discovery_backend = rabbit_peer_discovery_dns
+# cluster_formation.dns.hostname = discovery.eng.example.local
+
+## This node's type can be configured. If you are not sure
+## what node type to use, always use 'disc'.
+# cluster_formation.node_type = disc
+
+## Interval (in milliseconds) at which we send keepalive messages
+## to other cluster members. Note that this is not the same thing
+## as net_ticktime; missed keepalive messages will not cause nodes
+## to be considered down.
+##
+# cluster_keepalive_interval = 10000
+
+##
+## Statistics Collection
+## =====================
+##
+
+## Set (internal) statistics collection granularity.
+##
+## Can be none, coarse or fine
+# collect_statistics = none
+
+# collect_statistics = coarse
+
+## Statistics collection interval (in milliseconds). Increasing
+## this will reduce the load on management database.
+##
+# collect_statistics_interval = 5000
+
+##
+## Misc/Advanced Options
+## =====================
+##
+## NB: Change these only if you understand what you are doing!
+##
+
+## Explicitly enable/disable hipe compilation.
+##
+# hipe_compile = false
+
+## Timeout used when waiting for Mnesia tables in a cluster to
+## become available.
+##
+# mnesia_table_loading_retry_timeout = 30000
+
+## Retries when waiting for Mnesia tables in the cluster startup. Note that
+## this setting is not applied to Mnesia upgrades or node deletions.
+##
+# mnesia_table_loading_retry_limit = 10
+
+## Size in bytes below which to embed messages in the queue index.
+## Related doc guide: https://rabbitmq.com/persistence-conf.html
+##
+# queue_index_embed_msgs_below = 4096
+
+## You can also set this size in memory units
+##
+# queue_index_embed_msgs_below = 4kb
+
+## Whether or not to enable background periodic forced GC runs for all
+## Erlang processes on the node in "waiting" state.
+##
+## Disabling background GC may reduce latency for client operations,
+## keeping it enabled may reduce median RAM usage by the binary heap
+## (see https://www.erlang-solutions.com/blog/erlang-garbage-collector.html).
+##
+## Before trying this option, please take a look at the memory
+## breakdown (https://www.rabbitmq.com/memory-use.html).
+##
+# background_gc_enabled = false
+
+## Target (desired) interval (in milliseconds) at which we run background GC.
+## The actual interval will vary depending on how long it takes to execute
+## the operation (can be higher than this interval). Values less than
+## 30000 milliseconds are not recommended.
+##
+# background_gc_target_interval = 60000
+
+## Whether or not to enable proxy protocol support.
+## Once enabled, clients cannot directly connect to the broker
+## anymore. They must connect through a load balancer that sends the
+## proxy protocol header to the broker at connection time.
+## This setting applies only to AMQP clients, other protocols
+## like MQTT or STOMP have their own setting to enable proxy protocol.
+## See the plugins documentation for more information.
+##
+# proxy_protocol = false
+
+## ----------------------------------------------------------------------------
+## Advanced Erlang Networking/Clustering Options.
+##
+## Related doc guide: https://rabbitmq.com/clustering.html
+## ----------------------------------------------------------------------------
+
+# ======================================
+# Kernel section
+# ======================================
+
+## Timeout used to detect peer unavailability, including CLI tools.
+## Related doc guide: https://www.rabbitmq.com/nettick.html.
+##
+# net_ticktime = 60
+
+## Inter-node communication port range.
+## The parameters inet_dist_listen_min and inet_dist_listen_max
+## can be configured in the classic config format only.
+## Related doc guide: https://www.rabbitmq.com/networking.html#epmd-inet-dist-port-range.
+
+
+## ----------------------------------------------------------------------------
+## RabbitMQ Management Plugin
+##
+## Related doc guide: https://rabbitmq.com/management.html.
+## ----------------------------------------------------------------------------
+
+# =======================================
+# Management section
+# =======================================
+
+## Preload schema definitions from the following JSON file.
+## Related doc guide: https://rabbitmq.com/management.html#load-definitions.
+##
+# management.load_definitions = /path/to/exported/definitions.json
+
+## Log all requests to the management HTTP API to a file.
+##
+# management.http_log_dir = /path/to/access.log
+
+## HTTP listener and embedded Web server settings.
+# ## See https://rabbitmq.com/management.html for details.
+#
+# management.tcp.port = 15672
+# management.tcp.ip   = 0.0.0.0
+#
+# management.tcp.shutdown_timeout   = 7000
+# management.tcp.max_keepalive      = 120
+# management.tcp.idle_timeout       = 120
+# management.tcp.inactivity_timeout = 120
+# management.tcp.request_timeout    = 120
+# management.tcp.compress           = true
+
+## HTTPS listener settings.
+## See https://rabbitmq.com/management.html and https://rabbitmq.com/ssl.html for details.
+##
+# management.ssl.port       = 15671
+# management.ssl.cacertfile = /path/to/ca_certificate.pem
+# management.ssl.certfile   = /path/to/server_certificate.pem
+# management.ssl.keyfile    = /path/to/server_key.pem
+
+## More TLS options
+# management.ssl.honor_cipher_order   = true
+# management.ssl.honor_ecc_order      = true
+# management.ssl.client_renegotiation = false
+# management.ssl.secure_renegotiate   = true
+
+## Supported TLS versions
+# management.ssl.versions.1 = tlsv1.2
+# management.ssl.versions.2 = tlsv1.1
+
+## Cipher suites the server is allowed to use
+# management.ssl.ciphers.1 = ECDHE-ECDSA-AES256-GCM-SHA384
+# management.ssl.ciphers.2 = ECDHE-RSA-AES256-GCM-SHA384
+# management.ssl.ciphers.3 = ECDHE-ECDSA-AES256-SHA384
+# management.ssl.ciphers.4 = ECDHE-RSA-AES256-SHA384
+# management.ssl.ciphers.5 = ECDH-ECDSA-AES256-GCM-SHA384
+# management.ssl.ciphers.6 = ECDH-RSA-AES256-GCM-SHA384
+# management.ssl.ciphers.7 = ECDH-ECDSA-AES256-SHA384
+# management.ssl.ciphers.8 = ECDH-RSA-AES256-SHA384
+# management.ssl.ciphers.9 = DHE-RSA-AES256-GCM-SHA384
+
+
+
+## One of 'basic', 'detailed' or 'none'. See
+## https://rabbitmq.com/management.html#fine-stats for more details.
+# management.rates_mode = basic
+
+## Configure how long aggregated data (such as message rates and queue
+## lengths) is retained. Please read the plugin's documentation in
+## https://rabbitmq.com/management.html#configuration for more
+## details.
+## Your can use 'minute', 'hour' and 'day' keys or integer key (in seconds)
+# management.sample_retention_policies.global.minute    = 5
+# management.sample_retention_policies.global.hour  = 60
+# management.sample_retention_policies.global.day = 1200
+
+# management.sample_retention_policies.basic.minute   = 5
+# management.sample_retention_policies.basic.hour = 60
+
+# management.sample_retention_policies.detailed.10 = 5
+
+## ----------------------------------------------------------------------------
+## RabbitMQ Shovel Plugin
+##
+## Related doc guide: https://rabbitmq.com/shovel.html
+## ----------------------------------------------------------------------------
+
+## See advanced.config.example for a Shovel plugin example
+
+
+## ----------------------------------------------------------------------------
+## RabbitMQ STOMP Plugin
+##
+## Related doc guide: https://rabbitmq.com/stomp.html
+## ----------------------------------------------------------------------------
+
+# =======================================
+# STOMP section
+# =======================================
+
+## See https://rabbitmq.com/stomp.html for details.
+
+## TCP listeners.
+##
+# stomp.listeners.tcp.1 = 127.0.0.1:61613
+# stomp.listeners.tcp.2 = ::1:61613
+
+## TCP listener settings
+##
+# stomp.tcp_listen_options.backlog   = 2048
+# stomp.tcp_listen_options.recbuf    = 131072
+# stomp.tcp_listen_options.sndbuf    = 131072
+#
+# stomp.tcp_listen_options.keepalive = true
+# stomp.tcp_listen_options.nodelay   = true
+#
+# stomp.tcp_listen_options.exit_on_close = true
+# stomp.tcp_listen_options.send_timeout  = 120
+
+## Proxy protocol support
+##
+# stomp.proxy_protocol = false
+
+## TLS listeners
+## See https://rabbitmq.com/stomp.html and https://rabbitmq.com/ssl.html for details.
+# stomp.listeners.ssl.default = 61614
+#
+# ssl_options.cacertfile = path/to/cacert.pem
+# ssl_options.certfile   = path/to/cert.pem
+# ssl_options.keyfile    = path/to/key.pem
+# ssl_options.verify     =  verify_peer
+# ssl_options.fail_if_no_peer_cert = true
+
+
+## Number of Erlang processes that will accept connections for the TCP
+## and TLS listeners.
+##
+# stomp.num_acceptors.tcp = 10
+# stomp.num_acceptors.ssl = 1
+
+## Additional TLS options
+
+## Extract a name from the client's certificate when using TLS.
+##
+# stomp.ssl_cert_login = true
+
+## Set a default user name and password. This is used as the default login
+## whenever a CONNECT frame omits the login and passcode headers.
+##
+## Please note that setting this will allow clients to connect without
+## authenticating!
+##
+# stomp.default_user = guest
+# stomp.default_pass = guest
+
+## If a default user is configured, or you have configured use TLS client
+## certificate based authentication, you can choose to allow clients to
+## omit the CONNECT frame entirely. If set to true, the client is
+## automatically connected as the default user or user supplied in the
+## TLS certificate whenever the first frame sent on a session is not a
+## CONNECT frame.
+##
+# stomp.implicit_connect = true
+
+## Whether or not to enable proxy protocol support.
+## Once enabled, clients cannot directly connect to the broker
+## anymore. They must connect through a load balancer that sends the
+## proxy protocol header to the broker at connection time.
+## This setting applies only to STOMP clients, other protocols
+## like MQTT or AMQP have their own setting to enable proxy protocol.
+## See the plugins or broker documentation for more information.
+##
+# stomp.proxy_protocol = false
+
+## ----------------------------------------------------------------------------
+## RabbitMQ MQTT Adapter
+##
+## See https://github.com/rabbitmq/rabbitmq-mqtt/blob/stable/README.md
+## for details
+## ----------------------------------------------------------------------------
+
+# =======================================
+# MQTT section
+# =======================================
+
+## TCP listener settings.
+##
+# mqtt.listeners.tcp.1 = 127.0.0.1:61613
+# mqtt.listeners.tcp.2 = ::1:61613
+
+## TCP listener options (as per the broker configuration).
+##
+# mqtt.tcp_listen_options.backlog = 4096
+# mqtt.tcp_listen_options.recbuf  = 131072
+# mqtt.tcp_listen_options.sndbuf  = 131072
+#
+# mqtt.tcp_listen_options.keepalive = true
+# mqtt.tcp_listen_options.nodelay   = true
+#
+# mqtt.tcp_listen_options.exit_on_close = true
+# mqtt.tcp_listen_options.send_timeout  = 120
+
+## TLS listener settings
+## ## See https://rabbitmq.com/mqtt.html and https://rabbitmq.com/ssl.html for details.
+#
+# mqtt.listeners.ssl.default = 8883
+#
+# ssl_options.cacertfile = /path/to/tls/ca_certificate_bundle.pem
+# ssl_options.certfile   = /path/to/tls/server_certificate.pem
+# ssl_options.keyfile    = /path/to/tls/server_key.pem
+# ssl_options.verify     = verify_peer
+# ssl_options.fail_if_no_peer_cert  = true
+#
+
+
+## Number of Erlang processes that will accept connections for the TCP
+## and TLS listeners.
+##
+# mqtt.num_acceptors.tcp = 10
+# mqtt.num_acceptors.ssl = 10
+
+## Whether or not to enable proxy protocol support.
+## Once enabled, clients cannot directly connect to the broker
+## anymore. They must connect through a load balancer that sends the
+## proxy protocol header to the broker at connection time.
+## This setting applies only to STOMP clients, other protocols
+## like STOMP or AMQP have their own setting to enable proxy protocol.
+## See the plugins or broker documentation for more information.
+##
+# mqtt.proxy_protocol = false
+
+## Set the default user name and password used for anonymous connections (when client
+## provides no credentials). Anonymous connections are highly discouraged!
+##
+# mqtt.default_user = guest
+# mqtt.default_pass = guest
+
+## Enable anonymous connections. If this is set to false, clients MUST provide
+## credentials in order to connect. See also the mqtt.default_user/mqtt.default_pass
+## keys. Anonymous connections are highly discouraged!
+##
+# mqtt.allow_anonymous = true
+
+## If you have multiple vhosts, specify the one to which the
+## adapter connects.
+##
+# mqtt.vhost = /
+
+## Specify the exchange to which messages from MQTT clients are published.
+##
+# mqtt.exchange = amq.topic
+
+## Specify TTL (time to live) to control the lifetime of non-clean sessions.
+##
+# mqtt.subscription_ttl = 1800000
+
+## Set the prefetch count (governing the maximum number of unacknowledged
+## messages that will be delivered).
+##
+# mqtt.prefetch = 10
+
+
+## ----------------------------------------------------------------------------
+## RabbitMQ AMQP 1.0 Support
+##
+## See https://github.com/rabbitmq/rabbitmq-amqp1.0/blob/stable/README.md.
+## ----------------------------------------------------------------------------
+
+# =======================================
+# AMQP 1.0 section
+# =======================================
+
+
+## Connections that are not authenticated with SASL will connect as this
+## account. See the README for more information.
+##
+## Please note that setting this will allow clients to connect without
+## authenticating!
+##
+# amqp1_0.default_user = guest
+
+## Enable protocol strict mode. See the README for more information.
+##
+# amqp1_0.protocol_strict_mode = false
+
+## Logging settings.
+##
+## See https://rabbitmq.com/logging.html and https://github.com/erlang-lager/lager for details.
+##
+
+## Log directory, taken from the RABBITMQ_LOG_BASE env variable by default.
+##
+# log.dir = /var/log/rabbitmq
+
+## Logging to file. Can be false or a filename.
+## Default:
+# log.file = rabbit.log
+
+## To disable logging to a file
+# log.file = false
+
+## Log level for file logging
+##
+# log.file.level = info
+
+## File rotation config. No rotation by default.
+## DO NOT SET rotation date to ''. Leave the value unset if "" is the desired value
+# log.file.rotation.date = $D0
+# log.file.rotation.size = 0
+
+## Logging to console (can be true or false)
+##
+# log.console = false
+
+## Log level for console logging
+##
+# log.console.level = info
+
+## Logging to the amq.rabbitmq.log exchange (can be true or false)
+##
+# log.exchange = false
+
+## Log level to use when logging to the amq.rabbitmq.log exchange
+##
+# log.exchange.level = info
+
+
+
+## ----------------------------------------------------------------------------
+## RabbitMQ LDAP Plugin
+##
+## Related doc guide: https://rabbitmq.com/ldap.html.
+##
+## ----------------------------------------------------------------------------
+
+# =======================================
+# LDAP section
+# =======================================
+
+##
+## Connecting to the LDAP server(s)
+## ================================
+##
+
+## Specify servers to bind to. You *must* set this in order for the plugin
+## to work properly.
+##
+# auth_ldap.servers.1 = your-server-name-goes-here
+
+## You can define multiple servers
+# auth_ldap.servers.2 = your-other-server
+
+## Connect to the LDAP server using TLS
+##
+# auth_ldap.use_ssl = false
+
+## Specify the LDAP port to connect to
+##
+# auth_ldap.port = 389
+
+## LDAP connection timeout, in milliseconds or 'infinity'
+##
+# auth_ldap.timeout = infinity
+
+## Or number
+# auth_ldap.timeout = 500
+
+## Enable logging of LDAP queries.
+## One of
+##   - false (no logging is performed)
+##   - true (verbose logging of the logic used by the plugin)
+##   - network (as true, but additionally logs LDAP network traffic)
+##
+## Defaults to false.
+##
+# auth_ldap.log = false
+
+## Also can be true or network
+# auth_ldap.log = true
+# auth_ldap.log = network
+
+##
+## Authentication
+## ==============
+##
+
+## Pattern to convert the username given through AMQP to a DN before
+## binding
+##
+# auth_ldap.user_dn_pattern = cn=${username},ou=People,dc=example,dc=com
+
+## Alternatively, you can convert a username to a Distinguished
+## Name via an LDAP lookup after binding. See the documentation for
+## full details.
+
+## When converting a username to a dn via a lookup, set these to
+## the name of the attribute that represents the user name, and the
+## base DN for the lookup query.
+##
+# auth_ldap.dn_lookup_attribute = userPrincipalName
+# auth_ldap.dn_lookup_base      = DC=gopivotal,DC=com
+
+## Controls how to bind for authorisation queries and also to
+## retrieve the details of users logging in without presenting a
+## password (e.g., SASL EXTERNAL).
+## One of
+##  - as_user (to bind as the authenticated user - requires a password)
+##  - anon    (to bind anonymously)
+##  - {UserDN, Password} (to bind with a specified user name and password)
+##
+## Defaults to 'as_user'.
+##
+# auth_ldap.other_bind = as_user
+
+## Or can be more complex:
+# auth_ldap.other_bind.user_dn  = User
+# auth_ldap.other_bind.password = Password
+
+## If user_dn and password defined - other options is ignored.
+
+# -----------------------------
+# Too complex section of LDAP
+# -----------------------------
+
+##
+## Authorisation
+## =============
+##
+
+## The LDAP plugin can perform a variety of queries against your
+## LDAP server to determine questions of authorisation.
+##
+## Related doc guide: https://rabbitmq.com/ldap.html#authorisation.
+
+## Following configuration should be defined in advanced.config file
+## DO NOT UNCOMMENT THESE LINES!
+
+## Set the query to use when determining vhost access
+##
+## {vhost_access_query, {in_group,
+##                       "ou=${vhost}-users,ou=vhosts,dc=example,dc=com"}},
+
+## Set the query to use when determining resource (e.g., queue) access
+##
+## {resource_access_query, {constant, true}},
+
+## Set queries to determine which tags a user has
+##
+## {tag_queries, []}
+#   ]},
+# -----------------------------
+
+```
+
+##### 1.3.3.2.1. 常用配置说明
+
+* tcp_listeners 
+    * 用于监听 AMQP连接的端口列表(无SSL). 可以包含整数 (即"监听所有接口")或者元组如 {"127.0.0.1", 5672} 用于监听一个或多个接口.
+    * Default: [5672]
+* num_tcp_acceptors
+    * 接受TCP侦听器连接的Erlang进程数。
+    * Default: 10
+
+* handshake_timeout
+    * AMQP 0-8/0-9/0-9-1 handshake (在 socket连接和SSL 握手之后）的最大时间, 毫秒为单位.
+    * Default: 10000
+* ssl_listeners
+    * 如上所述，用于SSL连接。
+    * Default: []
+* num_ssl_acceptors
+    * 接受SSL侦听器连接的Erlang进程数。
+    * Default: 1
+* ssl_options
+    * SSL配置.参考SSL documentation.
+    * Default: []
+* ssl_handshake_timeout
+    * SSL handshake超时时间,毫秒为单位.
+    * Default: 5000
+* vm_memory_high_watermark
+    * 流程控制触发的内存阀值．相看memory-based flow control 文档.
+    * Default: 0.4
+* vm_memory_high_watermark_paging_ratio
+    * 高水位限制的分数，当达到阀值时，队列中消息消息会转移到磁盘上以释放内存. 参考memory-based flow control 文档.
+    * Default: 0.5
+* disk_free_limit
+    * RabbitMQ存储数据分区的可用磁盘空间限制．当可用空间值低于阀值时，流程控制将被触发.此值可根据RAM的总大小来相对设置 (如.{mem_relative, 1.0}).此值也可以设为整数(单位为bytes)或者使用数字单位(如．"50MB").默认情况下，可用磁盘空间必须超过50MB.参考 Disk Alarms 文档.
+    * Default: 50000000
+* log_levels
+    * 控制日志的粒度.其值是日志事件类别(category)和日志级别(level)成对的列表．
+    * level 可以是 'none' (不记录日志事件), 'error' (只记录错误), 'warning' (只记录错误和警告), 'info' (记录错误，警告和信息), or 'debug' (记录错误，警告，信息以及调试信息).
+    * 目前定义了４种日志类别. 它们是：
+        * channel -针对所有与AMQP channels相关的事件
+        * connection - 针对所有与网络连接相关的事件
+        * federation - 针对所有与federation相关的事件
+        * mirroring -针对所有与 mirrored queues相关的事件
+    * Default: [{connection, info}]
+* frame_max
+    * 与客户端协商的允许最大frame大小. 设置为０表示无限制，但在某些QPid客户端会引发bug. 设置较大的值可以提高吞吐量;设置一个较小的值可能会提高延迟.
+    * Default: 131072
+* channel_max
+    * 与客户端协商的允许最大chanel大小. 设置为０表示无限制．该数值越大，则broker使用的内存就越高．
+    * Default: 0
+* channel_operation_timeout
+    * Channel 操作超时时间(毫秒为单位） (内部使用，因为消息协议的区别和限制，不暴露给客户端).
+    * Default: 5000
+* heartbeat
+    * 表示心跳延迟(单位为秒) ，服务器将在connection.tune frame中发送.如果设置为 0, 心跳将被禁用. 客户端可以不用遵循服务器的建议, 查看 AMQP reference 来了解详情. 禁用心跳可以在有大量连接的场景中提高性能，但可能会造成关闭了非活动连接的网络设备上的连接落下．
+    * Default: 60 (3.5.5之前的版本是580)
+* default_vhost
+    * 当RabbitMQ从头开始创建数据库时创建的虚拟主机. amq.rabbitmq.log交换器会存在于这个虚拟主机中.
+    * Default: <<"/">>
+* default_user
+    * RabbitMQ从头开始创建数据库时，创建的用户名.
+    * Default: <<"guest">>
+* default_pass
+    * 默认用户的密码.
+    * Default: <<"guest">>
+* default_user_tags
+    * 默认用户的Tags.
+    * Default: [administrator]
+* default_permissions
+    * 创建用户时分配给它的默认Permissions .
+    * Default: [<<".*">>, <<".*">>, <<".*">>]
+* loopback_users
+    * 只能通过环回接口(即localhost)连接broker的用户列表
+    * 如果你希望默认的guest用户能远程连接,你必须将其修改为[].
+    * Default: [<<"guest">>]
+* cluster_nodes
+    * 当节点第一次启动的时候，设置此选项会导致集群动作自动发生. 元组的第一个元素是其它节点想与其建立集群的节点. 第二个元素是节点的类型，要么是disc,要么是ram
+    * Default: {[], disc}
+* server_properties
+    * 连接时向客户端声明的键值对列表
+    * Default: []
+* collect_statistics
+    * 统计收集模式。主要与管理插件相关。选项：
+        * none (不发出统计事件)
+        * coarse (发出每个队列 /每个通道 /每个连接的统计事件)
+        * fine (也发出每个消息统计事件)
+        * 你自已可不用修改此选项.
+    * Default: none
+* collect_statistics_interval
+    * 统计收集时间间隔(毫秒为单位)． 主要针对于 management plugin.
+    * Default: 5000
+* auth_mechanisms
+    * 提供给客户端的SASL authentication mechanisms.
+    * Default: ['PLAIN', 'AMQPLAIN']
+* auth_backends
+    * 用于 authentication / authorisation backends 的列表. 此列表可包含模块的名称(在模块相同的情况下，将同时用于认证来授权)或像{ModN, ModZ}这样的元组，在这里ModN将用于认证，ModZ将用于授权.
+    * 在２元组的情况中, ModZ可由列表代替,列表中的所有元素必须通过每个授权的确认，如{ModN, [ModZ1, ModZ2]}.这就允许授权插件进行组合提供额外的安全约束.
+    * 除rabbit_auth_backend_internal外，其它数据库可以通常 plugins来使用.
+    * Default: [rabbit_auth_backend_internal]
+* reverse_dns_lookups
+    * 设置为true,可让客户端在连接时让RabbitMQ 执行一个反向DNS查找, 然后通过 rabbitmqctl 和 管理插件来展现信息.
+    * Default: false
+* delegate_count
+    * 内部集群通信中，委派进程的数目. 在一个有非常多核的机器(集群的一部分)上,你可以增加此值.
+    * Default: 16
+* trace_vhosts
+    * tracer内部使用.你不应该修改.
+    * Default: []
+* tcp_listen_options
+    * 默认socket选项. 你可能不想修改这个选项.
+    * Default:
+    * [{backlog,       128},          {nodelay,       true},          {exit_on_close, false}]
+* hipe_compile
+    * 将此选项设置为true,将会使用HiPE预编译部分RabbitMQ,Erlang的即时编译器.
+    * 这可以增加服务器吞吐量，但会增加服务器的启动时间．
+    * 你可以看到花费几分钟延迟启动的成本，就可以带来20-50% 更好性能.这些数字与高度依赖于工作负载和硬件．
+    * HiPE 支持可能没有编译进你的Erlang安装中.如果没有的话，启用这个选项,并启动RabbitMQ时，会看到警告消息． 例如, Debian / Ubuntu 用户需要安装erlang-base-hipe 包.
+    * HiPE并非在所有平台上都可用,尤其是Windows.
+    * 在 Erlang/OTP 1７.５版本之前，HiPE有明显的问题 . 对于HiPE,使用最新的OTP版本是高度推荐的．
+    * Default: false
+* cluster_partition_handling
+    * 如何处理网络分区.可用模式有:
+        * ignore
+        * pause_minority
+        * {pause_if_all_down, [nodes], ignore | autoheal}where [nodes] is a list of node names(ex: ['rabbit@node1', 'rabbit@node2'])
+        * autoheal
+    * 参考documentation on partitions 来了解更多信息
+    * Default: ignore
+* cluster_keepalive_interval
+    * 节点向其它节点发送存活消息和频率(毫秒). 注意，这与 net_ticktime是不同的;丢失存活消息不会引起节点掉线
+    * Default: 10000
+
+* queue_index_embed_msgs_below
+    * 消息大小在此之下的会直接内嵌在队列索引中. 在修改此值时，建议你先阅读　 persister tuning 文档.
+    * Default: 4096
+* msg_store_index_module
+    * 队列索引的实现模块. 在修改此值时，建议你先阅读　 persister tuning 文档.
+    * Default: rabbit_msg_store_ets_index
+* backing_queue_module
+    * 队列内容的实现模块. 你可能不想修改此值．
+    * Default: rabbit_variable_queue
+* msg_store_file_size_limit
+    * Tunable value for the persister. 你几乎肯定不应该改变此值。
+    * Default: 16777216
+* mnesia_table_loading_timeout
+    * 在集群中等待使用Mnesia表可用的超时时间。
+    * Default: 30000
+* queue_index_max_ journal_entries
+    * Tunable value for the persister. 你几乎肯定不应该改变此值。
+    * Default: 65536
+* queue_master_locator
+    * Queue master 位置策略.可用策略有:
+        * <<"min-masters">>
+        * <<"client-local">>
+        * <<"random">>
+    * 查看documentation on queue master location 来了解更多信息．
+    * Default: <<"client-local">>
+
 
 #### 1.3.3.3. 参数和策略
 <a href="#menu" style="float:right">目录</a>
@@ -518,7 +2061,7 @@ RabbitMQ 的消费模式分两种 : 推 ( Push )模式和拉 ( Pull )模式 。 
 推模式由RabbitMQ向消费者推送数据.
 而拉模式由消费者主动向RabbitMQ获取数据.
 
-#### 1.4.5.1. 推模式
+#### 1.4.5.1. 推模式(push)
 <a href="#menu" style="float:right">目录</a>
 
 ```JAVA
@@ -562,7 +2105,7 @@ public String basicConsume(String queue, boolean autoAck, String consumerTag, bo
 
 每个 Channel 都拥有自己独立的线程。最常用的做法是一个 Channel 对应一个消费者，也就是意味着消费者彼此之间没有任何关联。当然也可以在一个 Channel 中维持多个消费者，但是要注意一个问题，如果 Channel 中的一个消费者一直在运行，那么其他消费者的 callback会被"耽搁"。
 
-#### 1.4.5.2. 拉模式
+#### 1.4.5.2. 拉模式(pull)
 <a href="#menu" style="float:right">目录</a>
 
 ```java
@@ -573,10 +2116,12 @@ public void pushMode()throws Exception{
     channel .basicAck(response.getEnvelope().getDeliveryTag() , false);
 }
 ```
-通过 channel.basicGet方法可以单条地获取消息，其返回值是GetRespone . Channel 类的 basicGet 方法没有其他重载方法，只有 :GetResponse basicGet(String queue , boolean autoAck) throws IOException;
+通过 channel.basicGet方法可以单条地获取消息，其返回值是GetRespone.Channel 类的 basicGet 方法没有其他重载方法，只有:GetResponse basicGet(String queue ,boolean autoAck) throws IOException;
 其中 queue 代表队列的名称，如果设置 autoAck 为 false ， 那么同样需要调用channel.basicAck 来确认消息己被成功接收。
 
 Basic.Consume 将信道 (Channel) 设置为接收模式，直到取消队列的订阅为止。在接收模式期间， RabbitMQ 会不断地推送消息给消费者，当然推送消息的个数还是会受到 Basic.Qos的限制.如果只想从队列获得单条消息而不是持续订阅，建议还是使用 Basic.Get 进行消费.但是不能将 Basic.Get 放在一个循环里来代替 Basic.Consume ，这样做会严重影响 RabbitMQ的性能.如果要实现高吞吐量，消费者理应使用 Basic.Consume 方法。
+
+Spring 的amqp包中使用的是推模式(push).
 
 
 
@@ -1003,7 +2548,7 @@ publisher confirm的优势在于并不一定需要同步确认.其他优化方�
 
 在批量confirm方法中，客户端程序需要定期或者定量(达到多少条)，亦或者两者结合起来调用channel.waitForConfirms来等待RabbitMQ的确认返回。相比于前面示例中的普通confirm方法，批量极大地提升了confirm的效率，但是问题在于出现返回Basic.Nack或者超时情况时，客户端需要将这一批次的消息全部重发，这会带来明显的重复消息���量，并且当消息经常丢失时，批量confirm的性能应该是不升反降的。
 
-异步confirm方法的编程实现最为复杂。在客户端Channel接口中提供的addConfirmListener方法可以添加ConfirmListener这个回调接口，这个ConfirmListener接口包含两个方法:handleAck和handleNack，分别用来处理RabbitMQ回传的Basic.Ack和Basic.Nack。在这两个方法中都包含有一个参数deliveryTag(在publisher  confirm模式下用来标记消息的唯一有序序号),我们需要为每一个信道维护一个"unconfirm"的消息序号集合，每发送一条消息，集合中的元素加1。每当调用ConfirmListener中的handleAck方法时，"unconfirm"集合中删掉相应的一条(multiple设置为false)或者多条(multiple设置为true)记录。从程序运行效率上来看，这个"unconfrrm"集合最好采用有序集合SortedSet的存储结构。事实上，Java客户端SDK中的waitForConfirms方法也是通过SortedSet维护消息序号的。
+异步confirm方法的编程实现最为复杂。在客户端Channel接口中提供的addConfirmListener方法可以添加ConfirmListener这个回调接口，这个ConfirmListener接口包含两个方法:handleAck和handleNack，分别用来处理RabbitMQ回传的Basic.Ack和Basic.Nack。在这两个方法中都包含有一个参数deliveryTag(在publisher  confirm模式下用来标记消息的唯一有序序号),我们需要为每一个信道维护一个"unconfirm"的消息序号集合，每发送一条消息，集合中的元素加1。每当调用ConfirmListener中的handleAck方法时，"unconfirm"集合中删掉相应的一条(multiple设置为false)或者多条(multiple设置为true)记录。从程序运行效率上来看，这个"unconfirm"集合最好采用有序集合SortedSet的存储结构。事实上，Java客户端SDK中的waitForConfirms方法也是通过SortedSet维护消息序号的。
 
 
 ```java
@@ -1585,8 +3130,407 @@ public void sendMsgObject(Object content) {
 ## 1.9. 集群
 <a href="#menu" style="float:right">目录</a>
 
+### 1.9.1. 集群架构
+<a href="#menu" style="float:right">目录</a>
 
-## 1.10. 源码说明
+
+
+在单一节点内,RabbitMQ会将所有这些信息存储在内存中,同时将那些标记为持久化的队列和交换器(以及它们的绑定)存储在磁盘上.以确保重启之后能够恢复.
+
+RabbitMQ集群允许消费者和生产者在RabbitMQ单个节点崩惯的情况下继续运行，它可以通过添加更多的节点来线性地扩展消息通信的吞吐量。当失去一个RabbitMQ节点时,客户端能够重新连接到集群中的任何其他节点并继续生产或者消费。
+
+不过RabbitMQ集群不能保证消息的万无一失，即将消息、队列、交换器等都设置为可持久化，生产端和消费端都正确地使用了确认方式。当集群中一个RabbitMQ节点崩溃时，该节点上的所有队列中的消息也会丢失。RabbitMQ集群中的所有节点都会备份所有的元数据信息，包括以下内容
+RabbitMQ会记录以下四种类型的内部元数据
+* 队列元数据
+    * 队列名称和它们的属性(是否可持久化,是否可删除)
+* 交换器元数据
+    * 交换器名称.类型,属性(可持久化等)
+* 绑定元数据
+    * 一张简单的表格展示了如何将消息路由到队列
+* vhost元数据
+    * 为vhost内的队列,交换器和绑定提供命名空间和安全属性
+
+在将两个节点组成集群之后,不是每一个节点都有所有队列的完全拷贝,如果在集群中创建队列,集群只会在单个节点而不是所有节点上创建完整的队列信息(元数据,状态,内容).结果是只有队列的所有者节点知道队列的所有信息.其他非所有者节点只知道队列的元数据和指向该队列存在的那个节点的指针.因此,当集群节点崩溃时,该节点的队列和关联的绑定就都消失了.附加在那些队列上的消费者丢失了其订阅的信息,并且任何匹配该队列绑定信息的新消息也丢失了.
+
+独立节点和集群配置下的队列行为
+![独立节点和集群配置下的队列行为](https://github.com/lgjlife/Java-Study/blob/master/pic/rabbitmq/cluster-queue.png?raw=true)
+
+
+但是不会备份消息(当然通过特殊的配置比如镜像队列可以解决这个问题)。基于存储空间和性能的考虑，在RabbitMQ集群中创建队列，集群只会在单个节点而不是在所有节点上创建队列的进程井包含完整的队列信息(元数据、状态、内容)。这样只有队列的宿主节点，即所有者节点知道队列的所有信息，所有其他非所有者节点只知道队列的元数据和指向该队列存在的那个节点的指针。因此当集群节点崩溃时，该节点的队列进程和关联的绑定都会消失。附加在那些队列上的消费者也会丢失其所订阅的信息，井且任何匹配该队列绑定信息的新消息也都会消失。
+
+不同于队列那样拥有自己的进程，交换器其实只是一个名称和绑定列表。当消息发布到交换器时，实际上是由所连接的信道将消息上的路由键同交换器的绑定列表进行比较，然后再路由消息。当创建一个新的交换器时，RabbitMQ所要做的就是将绑定列表添加到集群中的所有节点上。这样，每个节点上的每条信道都可以访问到新的交换器了
+
+### 1.9.2. 集群搭建
+<a href="#menu" style="float:right">目录</a>
+
+RabbitMQ 集群对延迟非常敏感，应当只在本地局域网内使用。在广域网中不应该使用集群，而应该使用 Federation 或者 Shove1 来代替。
+
+#### 1.9.2.1. 多机多节点配置
+<a href="#menu" style="float:right">目录</a>
+
+第一步，配置各个节点的hosts文件，让各个节点都能互相识别对方的存在。比如在Linux系统中可以编辑/etc/hosts文件，在其上添加IP地址与节点名称的映射信息:
+192.168.0.2 node1
+192.168.0.3 node2
+192.168.0.4 node3
+
+第二步，编辑RabbitMQ的cookie文件，以确保各个节点的cookie文件使用的是同一个值。可以读取node1节点的cookie值，然后将其复制到node2和node3节点中。cookie文件默认路径为/var/lib/rabbitmq/.erlang.cookie或者$HOME/.erlang.cookieocookie相当于密钥令牌，集群中的RabbitMQ节点需要通过交换密钥令牌以获得相互认证。如果节点的密钥令牌不一致，那么在配置节点时就会报错
+```
+lgj@lgj-Lenovo-G470:/var/lib/rabbitmq$ sudo cat .erlang.cookie 
+JRIGDZZMGHCTSBWBLRFO
+```
+
+第三步，配置集群。配置集群有三种方式:通过rabbitmqctl工具配置;通过rabbitmq.config配置文件配置;通过rabbitmq-autocluster插件配置。这里主要讲的是通过rabbitmqctl工具的方式配置集群，这种方式也是最常用的方式
+
+首先启动 nodel ， node2 和 node3 这 3 个节点 的 RabbitMQ 服务。
+```
+[root@nodel -]# rabbitmq- server -detached
+[root@node2 -]# rabbitmq- server - detached
+[root@node3 - ]# rabbitmq-server - detached
+```
+这 3 个节点目前都是以独立节点存在的单个集群。通过 rabbitmqctl cluster_status 命令来查看各个节点的状态。
+```
+[root@nodel -]# rabbitmqctl cluster_status
+Cluster status of node rabbit@nodel
+[{nodes , [{disc , [rabbit@nodel]}]} ,
+{running_nodes , [rabbit@nodel]} ,
+{cluster name, <<" rabbit@nodel " >>} ,
+{partitions , []} ,
+{alarms , [{rabbit@nodel , []}]}]
+```
+
+
+#### 1.9.2.2. 集群节点类型
+<a href="#menu" style="float:right">目录</a>
+
+
+#### 1.9.2.3. 删除单个节点
+<a href="#menu" style="float:right">目录</a>
+
+
+#### 1.9.2.4. 集群节点的升级
+<a href="#menu" style="float:right">目录</a>
+
+
+#### 1.9.2.5. 单机多节点配置
+<a href="#menu" style="float:right">目录</a>
+
+
+
+### 1.9.3. 镜像队列
+<a href="#menu" style="float:right">目录</a>
+
+如果RabbitMQ集群中只有一个Broker节点，那么该节点的失效将导致整体服务的临时'性不可用，并且也可能会导致消息的丢失。可以将所有消息都设置为持久化，并且对应队列的durable属性也设置为true，但是这样仍然无法避免由于缓存导致的问题:因为消息在发送之后和被写入磁盘井执行刷盘动作之间存在一个短暂却会产生问题的时间窗。通过publisherconfmn机制能够确保客户端知道哪些消息己经存入磁盘，尽管如此，一般不希望遇到因单点故障导致的服务不可用。
+
+如果RabbitMQ集群是由多个Broker节点组成的，那么从服务的整体可用性上来讲，该集群对于单点故障是有弹性的，但是同时也需要注意:尽管交换器和绑定关系能够在单点故障问题上幸免于难，但是队列和其上的存储的消息却不行，这是因为队列进程及其内容仅仅维持在单个节点之上，所以一个节点的失效表现为其对应的队列不可用。
+
+引入镜像队列(MirrorQueue)的机制，可以将队列镜像到集群中的其他Broker节点之上，如果集群中的一个节点失效了，队列能自动地切换到镜像中的另一个节点上以保证服务的可用性。在通常的用法中，针对每一个配置镜像的队列(以下简称镜像队列〉都包含一个主节点(master)和若干个从节点(slave)
+
+* 生产者发送消息时会同时向master和slave节点发送,除发送消息外,其他命令只向master发送.再由master将命令执行的结果广播给各个slave。
+* 如果master挂掉.那么运行最长的slave(最早加入)会被提升为master.
+* 如果消费者与slaver建立连接,发送获取消息的请求,slave收到后会将请求转发给master,再由master准备好数据返回给slave，最后由slave投递给消费者
+
+大多的读写压力都落到了master上，那么这样是否负载会做不到有效的均衡?或者说是否可以像MySQL一样能够实现master写而slave读呢?注意这里的master和slave是针对队列而言的，而队列可以均匀地散落在集群的各个Broker节点中以达到负载均衡的目的，因为真正的负载还是针对实际的物理机器而言的，而不是内存中驻留的队列进程。
+
+集群中的每个Broker节点都包含1个队列的master和2个队列的slave，Ql的负载大多都集中在brokerl上，Q2的负载大多都集中在broker2上，Q3的负载大多都集中在broker3上，只要确保队列的master节点均匀散落在集群中的各个Broker节点即可确保很大程度上的负载均衡(每个队列的流量会有不同，因此均匀散落各个队列的master也无法确保绝对的负载均衡)。至于为什么不像MySQL一样读写分离，RabbitMQ从编程逻辑上来说完全可以实现，但是这样得不到更好的收益，即读写分离并不能进一步优化负载，却会增加编码实现的复杂度，增加出错的可能
+
+![集群架构](https://github.com/lgjlife/Java-Study/blob/master/pic/rabbitmq/cluster.png?raw=true)
+
+
+## 1.10. 网络分区
+<a href="#menu" style="float:right">目录</a>
+
+### 1.10.1. 网络分区的意义
+<a href="#menu" style="float:right">目录</a>
+
+当出现网络分区时，不同分区里的节点会认为不属于自身所在分区的节点都已经挂(down)了，对于队列、交换器、绑定的操作仅对当前分区有效。在RabbitMQ的默认配置下，即使网络恢复了也不会自动处理网络分区带来的问题。RabbitMQ从3.1版本开始会自动探测网络分区，并且提供了相应的配置来解决这个问题。
+
+当一个集群发生网络分区时，这个集群会分成两个部分或者更多，它们各自为政，互相都认为对方分区内的节点已经挂了，包括队列、交换器及绑定等元数据的创建和销毁都处于自身分区内，与其他分区无关。如果原集群中配置了镜像队列，而这个镜像队列又牵涉两个或者更多个网络分区中的节点时，每一个网络分区中都会出现一个master节点，对于各个网络分区，此队列都是相互独立的。当然也会有一些其他未知的、怪异的事情发生。当网络恢复时，网络分区的状态还是会保持，除非你采取了一些措施去解决它。极端情况下不仅会造成数据丢失，还会影响服务的可用性。
+
+RabbitMQ采用的镜像队列是一种环形的逻辑结构,某队列配置了4个镜像，其中A节点作为master节点，其余B、C和D节点作为slave节点，4个镜像节点组成一个环形结构。假如需要确认(ack)一条消息，先会在A节点即master节点上执行确认命令，之后转向B节点，然后是C和D节点，最后由D将执行操作返回给A节点，这样才真正确认了一条消息，之后才可以继续相应的处理。这种复制原理和ZooKeeperl的Quorum2原理不同，它可以保证更强的一致性。在这种一致性数据模型下，如果出现网络波动或者网络故障等异常情况，那么整个数据链的性能就会大大降低。如果C节点网络异常，那么整个A→B→C→D→A的数据链就会被阻塞，继而相关服务也会被阻塞，所以这里就需要寻|入网络分区来将异常的节点剥离出整个分区，以确保RabbitMQ服务的可用性及可靠性。等待网络恢复之后，可以进行相应的处理来将此前的异常节点加入集群中。
+
+许多情况下，网络分区都是由单个节点的网络故障引起的，且通常会形成一个大分区和一个单节点的分区，如果之前又配置了镜像，那么可以在不影响服务可用性，不丢失消息的情况下从网络分区的情形下得以恢复 。
+
+### 1.10.2. 网络分区的判定
+<a href="#menu" style="float:right">目录</a>
+
+### 1.10.3. 网络分区的模拟
+<a href="#menu" style="float:right">目录</a>
+
+### 1.10.4. 网络分区的影响
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.10.4.1. 未配置的镜像
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.10.4.2. 已配置的镜像
+<a href="#menu" style="float:right">目录</a>
+
+### 1.10.5. 手动处理网络分区
+<a href="#menu" style="float:right">目录</a>
+
+### 1.10.6. 自动处理网络分区
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.10.6.1. pause-minority模式
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.10.6.2. pause-if-all-down模式
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.10.6.3. autoheal模式
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.10.6.4. 模式选择
+<a href="#menu" style="float:right">目录</a>
+
+
+
+## 1.11. RabbitMQ扩展
+<a href="#menu" style="float:right">目录</a>
+
+
+### 1.11.1. 消息追踪
+<a href="#menu" style="float:right">目录</a>
+
+在使用任何消息中间件的过程中，难免会出现消息异常丢失的情况。对于RabbitMQ而言，可能是生产者与Broker断开了连接并且也没有任何重试机制;也可能是消费者在处理消息时发生了异常，不过却提前进行了ack;甚至是交换器并没有与任何队列进行绑定，生产者感知不到或者没有采取相应的措施;另外RabbitMQ本身的集群策略也可能导致消息的丢失。这个时候就需要有一个良好的机制来跟踪记录消息的投递过程，以此协助开发或者运维人员快速地定位问题。
+
+#### 1.11.1.1. Firehose
+<a href="#menu" style="float:right">目录</a>
+
+在RabbitMQ中可以使用Firehose功能来实现消息追踪，Firehose可以记录每一次发送或者消费消息的记录，方便RabbitMQ的使用者进行调试、排错等。
+
+Firehose的原理是将生产者投递给RabbitMQ的消息，或者RabbitMQ投递给消费者的消息按照指定的格式发送到默认的交换器上。这个默认的交换器的名称为amq.rabbitmq.trace，它是一个topic类型的交换器,每个虚拟主机都有一个。发送到这个交换器上的消息的路由键为publish.{exchangenam}和deliver.{queuename}。其中exchangename和queuename为交换器和队列的名称，分别对应生产者投递到交换器的消息和消费者从队列中获取的消息。
+
+也就是说
+* Firehose功能相当于将消息记录下来,以便后续调试和排错
+* 默认的交换器的名称为amq.rabbitmq.trace,该交换器为topic类型,也就是通配符匹配
+* 该功能默认关闭,必须打开才能使用
+    * 开启:rabbitmqctl trace_on [-p vhost]
+    * 关闭: rabbitmqctl trace_off [-p vhost]
+* 消息发送到正常的交换器时或者消费消息时,同时会封装成一条特殊的消息,分别以路由键publish.{exchangenam}和deliver.{queuename}发送到trace交换器
+* 交换器可以使用不同的绑定键来绑定不同的队列,比如 "#",publish.#,deliver.queuename
+
+Firehose默认情况下处于关闭状态，并且Firehose的状态也是非持久化的，会在RabbitMQ服务重启的时候还原成默认的状态。Firehose开启之后多少会影响RabbitMQ整体服务的性能，因为它会引起额外的消息生成、路由和存储
+
+在Firehose开启状态下，当有客户端发送或者消费消息时，Firehose会自动封装相应的消息体，并添加详细的headers属性。
+
+#### 1.11.1.2. rabbitmq_tracing 插件
+<a href="#menu" style="float:right">目录</a>
+
+rabbitrnq_tracing插件相当于Firehose的GUI版本，它同样能跟踪RabbitMQ中消息的流入流出情况。rabbitrnqtracing插件同样会对流入流出的消息进行封装，然后将封装后的消息日志存入相应的trace文件之中。
+* 打开:rabbitmq-plugins enable rabbitmq_tracing
+* 关闭:rabbitmq-plugins disable rabbitmq_tracing
+
+```
+lgj@lgj-Lenovo-G470:~/java/rabbitmq_server-3.7.9/sbin$ ./rabbitmq-plugins enable rabbitmq_tracing
+warning: the VM is running with native name encoding of latin1 which may cause Elixir to malfunction as it expects utf8. Please ensure your locale is set to UTF-8 (which can be verified by running "locale" in your shell)
+The following plugins have been configured:
+  rabbitmq_management
+  rabbitmq_management_agent
+  rabbitmq_tracing
+  rabbitmq_web_dispatch
+Applying plugin configuration to rabbit@lgj-Lenovo-G470...
+The following plugins have been enabled:
+  rabbitmq_tracing
+
+started 1 plugins.
+
+```
+使能之后web管理页面的admin选型即增加tracing选项.
+
+
+### 1.11.2. 负载均衡
+<a href="#menu" style="float:right">目录</a>
+
+面对大量业务访问、高并发请求，可以使用高性能的服务器来提升RabbitMQ服务的负载能力。当单机容量达到极限时，可以采取集群的策略来对负载能力做进一步的提升，但这里还存在一个负载不均衡的问题。试想如果一个集群中有3个节点，那么所有的客户端都与其中的单个节点nodel建立TCP连接，那么nodel的网络负载必然会大大增加而显得难以承受，其他节点又由于没有那么多的负载而造成硬件资源的浪费，所以负载均衡显得尤为重要。
+
+对于RabbitMQ而言，客户端与集群建立的TCP连接不是与集群中所有的节点建立连接，而是挑选其中一个节点建立连接,在引入了负载均衡之后，各个客户端的连接可以分摊到集群的各个节点之中，进而避免了前面所讨论的缺陷。
+
+
+负载均衡(Loadbalance)是一种计算机网络技术，用于在多个计算机(计算机集群〉、网络连接、CPU、磁盘驱动器或其他资源中分配负载，以达到最佳资源使用、最大化吞吐率、最小响应时间及避免过载的目的。使用带有负载均衡的多个服务器组件，取代单一的组件，可以通过冗余提高可靠性。
+
+负载均衡通常分为软件负载均衡和硬件负载均衡两种。
+
+软件负载均衡是指在一个或者多个交互的网络系统中的多台服务器上安装一个或多个相应的负载均衡软件来实现的一种均衡负载技术。软件可以很方便地安装在服务器上，并且实现一定的均衡负载功能。软件负载均衡技术配置简单、操作也方便，最重要的是成本很低。
+硬件负载均衡是指在多台服务器间安装相应的负载均衡设备，也就是负载均衡器(如F5)来完成均衡负载技术，与软件负载均衡技术相比，能达到更好的负载均衡效果。由于硬件负载均衡技术需要额外增加负载均衡器，成本比较高，所以适用于流量高的大型网站系统。
+
+这里主要讨论的是如何有效地对RabbitMQ集群使用软件负载均衡技术，目前主流的方式有在客户端内部实现负载均衡，或者使用HAProxy、LVS等负载均衡软件来实现
+
+
+#### 1.11.2.1. 客户端内部实现负载均衡
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.11.2.2. 使用HAProxy实现负载均衡
+<a href="#menu" style="float:right">目录</a>
+
+##### 1.11.2.2.1. HaProxy基本介绍
+<a href="#menu" style="float:right">目录</a>
+
+（1）HAProxy 是一款提供高可用性、负载均衡以及基于TCP（第四层）和HTTP（第七层）应用的代理软件，支持虚拟主机，它是免费、快速并且可靠的一种解决方案。 HAProxy特别适用于那些负载特大的web站点，这些站点通常又需要会话保持或七层处理。HAProxy运行在时下的硬件上，完全可以支持数以万计的 并发连接。并且它的运行模式使得它可以很简单安全的整合进您当前的架构中， 同时可以保护你的web服务器不被暴露到网络上。
+
+（2）HAProxy 实现了一种事件驱动、单一进程模型，此模型支持非常大的并发连接数。多进程或多线程模型受内存限制 、系统调度器限制以及无处不在的锁限制，很少能处理数千并发连接。事件驱动模型因为在有更好的资源和时间管理的用户端(User-Space) 实现所有这些任务，所以没有这些问题。此模型的弊端是，在多核系统上，这些程序通常扩展性较差。这就是为什么他们必须进行优化以 使每个CPU时间片(Cycle)做更多的工作。
+
+（3）HAProxy 支持连接拒绝 : 因为维护一个连接的打开的开销是很低的，有时我们很需要限制攻击蠕虫（attack bots），也就是说限制它们的连接打开从而限制它们的危害。 这个已经为一个陷于小型DDoS攻击的网站开发了而且已经拯救
+
+了很多站点，这个优点也是其它负载均衡器没有的。
+
+（4）HAProxy 支持全透明代理（已具备硬件防火墙的典型特点）: 可以用客户端IP地址或者任何其他地址来连接后端服务器. 这个特性仅在Linux 2.4/2.6内核打了cttproxy补丁后才可以使用. 这个特性也使得为某特殊服务器处理部分流量同时又不修改服务器的地址成为可能。
+
+**性能**
+
+HAProxy借助于OS上几种常见的技术来实现性能的最大化。
+1，单进程、事件驱动模型显著降低了上下文切换的开销及内存占用。
+2，O(1)事件检查器(event checker)允许其在高并发连接中对任何连接的任何事件实现即时探测。
+3，在任何可用的情况下，单缓冲(single buffering)机制能以不复制任何数据的方式完成读写操作，这会节约大量的CPU时钟周期及内存带宽；
+4，借助于Linux 2.6 (>= 2.6.27.19)上的splice()系统调用，HAProxy可以实现零复制转发(Zero-copy forwarding)，在Linux 3.5及以上的OS中还可以实现零复制启动(zero-starting)；
+5，内存分配器在固定大小的内存池中可实现即时内存分配，这能够显著减少创建一个会话的时长；
+6，树型存储：侧重于使用作者多年前开发的弹性二叉树，实现了以O(log(N))的低开销来保持计时器命令、保持运行队列命令及管理轮询及最少连接队列；
+7，优化的HTTP首部分析：优化的首部分析功能避免了在HTTP首部分析过程中重读任何内存区域；
+8，精心地降低了昂贵的系统调用，大部分工作都在用户空间完成，如时间读取、缓冲聚合及文件描述符的启用和禁用等；
+
+所有的这些细微之处的优化实现了在中等规模负载之上依然有着相当低的CPU负载，甚至于在非常高的负载场景中，5%的用户空间占用率和95%的系统空间占用率也是非常普遍的现象，这意味着HAProxy进程消耗比系统空间消耗低20倍以上。因此，对OS进行性能调优是非常重要的。即使用户空间的占用率提高一倍，其CPU占用率也仅为10%，这也解释了为何7层处理对性能影响有限这一现象。由此，在高端系统上HAProxy的7层性能可轻易超过硬件负载均衡设备。
+
+在生产环境中，在7层处理上使用HAProxy作为昂贵的高端硬件负载均衡设备故障故障时的紧急解决方案也时长可见。硬件负载均衡设备在“报文”级别处理请求，这在支持跨报文请求(request across multiple packets)有着较高的难度，并且它们不缓冲任何数据，因此有着较长的响应时间。对应地，软件负载均衡设备使用TCP缓冲，可建立极长的请求，且有着较大的响应时间。
+
+##### 1.11.2.2.2. 安装
+<a href="#menu" style="float:right">目录</a>
+
+下载解压,进入解压后的目录
+安装 
+```
+lgj@lgj-Lenovo-G470:~/java/haproxy-2.0.0$ uname -r
+4.15.0-46-generic
+lgj@lgj-Lenovo-G470:~/java/haproxy-2.0.0$ sudo make TARGET=4.15.0-46-generic PREFIX=/usr/local/haproxy
+lgj@lgj-Lenovo-G470:~/java/haproxy-2.0.0$ sudo make install PREFIX=/usr/local/haproxy
+```
+参数说明：
+
+* TARGET=linux310，内核版本，使用uname -r查看内核，如：3.10.0-514.el7，此时该参数就为linux310；kernel 大于2.6.28的可以用：TARGET=linux2628；
+* ARCH=x86_64，系统位数；
+* PREFIX=/usr/local/haprpxy #/usr/local/haprpxy，为haprpxy安装路径。
+
+1.79及以后的版本解压后文件内就没有haproxy.cfg配置文件,进入上面的安装路径,创建文件haproxy.cfg,相关配置查看下一节内容
+
+进入/usr/local/haproxy/sbin.
+启动: haproxy -f haproxy.cfg命令运行HAProxy服务之后，可以在浏览器上输入 htφ://192.168.0.9:8100/stats 来加载相关的页面，
+
+
+##### 1.11.2.2.3. 配置文件
+<a href="#menu" style="float:right">目录</a>
+haproxy 的配置文件由两部分组成：全局设定和对代理的设定，共分为五段：global，defaults，frontend，backend，listen。
+
+HAProxy的配置处理3类来主要参数来源：
+* 最优先处理的命令行参数;
+* “global”配置段，用于设定全局配置参数；
+* proxy相关配置段，如“defaults”、“listen”、“frontend”和“backend”；
+
+**时间格式**
+一些包含了值的参数表示时间，如超时时长。这些值一般以毫秒为单位，但也可以使用其它的时间单位后缀。
+```
+us: 微秒(microseconds)，即1/1000000秒；
+ms: 毫秒(milliseconds)，即1/1000秒；
+s: 秒(seconds)；
+m: 分钟(minutes)；
+h：小时(hours)；
+d: 天(days)；
+```
+
+更多配置参考[配置文说明](http://www.ttlsa.com/linux/haproxy-study-tutorial/)
+
+RabbitMQ负载均衡配置示例
+```yml
+#全局配置
+global
+    #日志输出配置，所有日志都记录在本机 ， 通过 localO 输出
+    log 127.0.0.1 local0 info
+    #最大连接数
+    maxconn 4096
+    #改变当前的工作目录
+    chroot /opt/haproxy-1.7.8
+    #以指定的 UID 运行 haproxy 进程
+    uid 99
+    #以指定的 GID 运行 haproxy 进程
+    gid 99
+    #以守护进程方式运行 haproxy #debug #quiet
+    daemon
+    #debug
+    #当前进程 pid 文件
+    pidfile /opt/haproxy-1.7.8/haproxy.pid
+
+#默认配置
+defaults
+    #应用全局的日志配置
+    log global
+    #默认的模式 mode{tcplhttplhealth}
+    #T CP 是 4 层， HTTP 是 7 层， health 只返回 OK
+    mode tcp
+    #日志类别 tcplog
+    option tcplog
+    #不记录健康检查日志信息
+    option dontlognull
+    #3 次失败则认为服务不可用
+    retries 3
+    #每个进程可用 的最大连接数
+    maxconn 2000
+    #连接超时
+    timeout connect 55
+    #客户端超时
+    timeout client 1205
+    #服务端超时
+    timeout 5erver 1205
+    
+#绑定配置
+1isten rabbitmq c1uster : 5671
+    #配置 TCP 模式
+    mode tcp
+    #简单的轮询
+    ba1ance roundrobin
+    #RabbitMQ 集群节点配置
+    server rmq_node1 192.168.0.2:5672 check inter 5000 rise 2 fa11 3 weight 1
+    server rmq_node2 192.168.0.3:5672 check inter 5000 rise 2 fa11 3 weight 1
+    server rmq_node3 192.168.0.4:5672 check inter 5000 rise 2 fa11 3 weight 1
+
+#haproxy 监控页面地址
+1isten monitor : 8100
+    mode http
+    option httplog
+    stats enab1e
+    stats uri /stats
+    stats refresh 5s
+```
+```
+(1) server <name> : 定义 RabbitMQ 服务的内部标识，注意这里的 "rmq_nodel "是指
+包含有含义的字符串名称，不是指 RabbitMQ 的节点名称。
+(2) <ip>:<port> : 定义 RabbitMQ 服务连接的 IP 地址和端口号。
+(3) check inter <va1ue> : 定义每隔多少毫秒检查 RabbitMQ 服务是否可用。
+(4) rise <value> : 定义 RabbitMQ 服务在发生故障之后，需要多少次健康检查才能被
+再次确认可用。
+(5) fall <value > : 定义需要经历多少次失败的健康检查之后 ， HAProxy 才会停止使用
+此 RabbitMQ 服务。
+(6) weight <value> : 定义当前 RabbitMQ 服务的权重。
+```
+
+
+#### 1.11.2.3. 使用Keepalived实现高可靠负载均衡
+<a href="#menu" style="float:right">目录</a>
+
+试想如果前面配置的HAProxy主机192.168.0.9突然岩机或者网卡失效，那么虽然RabbitMQ集群没有任何故障，但是对于外界的客户端来说所有的连接都会被断开，结果将是灾难性的。
+确保负载均衡服务的可靠性同样显得十分重要。这里就需要引入Keepalived工具，它能够通过自身健康检查、资源接管功能做高可用(双机热备)，实现故障转移
+
+Keepalived采用VRRP(VirtualRouterRedundancyProtocol，虚拟路由冗余协议)，以软件的形式实现服务的热备功能。通常情况下是将两台Linux服务器组成一个热备组(Master和Backup)，同一时间内热备组只有一台主服务器Master提供服务，同时Master会虚拟出一个公用的虚拟E地址，简称VIP。这个VIP只存在于Master上并对外提供服务。如果Keepalived检测到Master宿机或者服务故障，备份服务器Backup会自动接管VIP并成为Master，Keepalived将原Master从热备组中移除。当原Master恢复后，会自动加入到热备组，默认再抢占成为Master，起到故障转移的功能。
+
+Keepalived工作在OSI模型中的第3层、第4层和第7层。
+工作在第3层是指Keepalived会定期向热备组中的服务器发送一个ICMP数据包来判断某台服务器是否故障，如果故障则将这台服务器从热备组移除。
+工作在第4层是指Keepalived以TCP端口的状态判断服务器是否故障，比如检测RabbitMQ的5672端口，如果故障则将这台服务器从热备组中移除。
+工作在第7层是指Keepalived根据用户设定的策略(通常是一个自定义的检测脚本)判断服务器上的程序是否正常运行，如果故障将这台服务器从热备组移除。
+
+
+#### 1.11.2.4. 使用Keepalived+LVS实现负载均衡
+<a href="#menu" style="float:right">目录</a>
+
+
+
+## 1.12. 源码说明
 
 ```java
 //
@@ -1710,3 +3654,4 @@ public interface Channel extends ShutdownNotifier, AutoCloseable {
 }
 
 ```
+## 1.13. 面试总结

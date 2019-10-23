@@ -26,28 +26,42 @@
         - [1.4.1. 基本概念](#141-基本概念)
         - [1.4.2. 基本命令](#142-基本命令)
         - [1.4.3. Maven中的dependency详解](#143-maven中的dependency详解)
+        - [1.4.4. Maven依赖冲突的产生原因和解决方式](#144-maven依赖冲突的产生原因和解决方式)
     - [1.5. Gradle](#15-gradle)
         - [1.5.1. 基本介绍](#151-基本介绍)
         - [1.5.2. 安装](#152-安装)
             - [1.5.2.1. Ubuntu下安装](#1521-ubuntu下安装)
     - [1.6. Jenkins](#16-jenkins)
     - [1.7. Docker](#17-docker)
-        - [1.7.1. Docker常用指令](#171-docker常用指令)
-            - [1.7.1.1. 基本概念](#1711-基本概念)
-        - [1.7.2. 常用指令](#172-常用指令)
-        - [1.7.3. 容器](#173-容器)
-            - [1.7.3.1. 容器的管理操作](#1731-容器的管理操作)
-            - [1.7.3.2. 容器内部信息的获取](#1732-容器内部信息的获取)
-        - [1.7.4. 镜像](#174-镜像)
-            - [1.7.4.1. 基本概念](#1741-基本概念)
-            - [1.7.4.2. 本地镜像的管理](#1742-本地镜像的管理)
-        - [1.7.5. Docker File](#175-docker-file)
-        - [1.7.6. 数据卷和容器连接](#176-数据卷和容器连接)
-            - [1.7.6.1. 容器网络基础](#1761-容器网络基础)
-            - [1.7.6.2. 数据卷](#1762-数据卷)
-        - [1.7.7. 案例](#177-案例)
-            - [1.7.7.1. docker 安装Mysqk主从复制](#1771-docker-安装mysqk主从复制)
-            - [1.7.7.2. docker 安装mycat](#1772-docker-安装mycat)
+        - [1.7.1. 基本概念](#171-基本概念)
+        - [1.7.2. docker的8个使用场景](#172-docker的8个使用场景)
+        - [1.7.3. Docker 安装](#173-docker-安装)
+        - [1.7.4. 常用指令](#174-常用指令)
+        - [1.7.5. 镜像](#175-镜像)
+            - [1.7.5.1. 基本概念](#1751-基本概念)
+            - [1.7.5.2. 本地镜像的管理](#1752-本地镜像的管理)
+            - [1.7.5.3. Docker Hub 简介](#1753-docker-hub-简介)
+        - [1.7.6. 容器](#176-容器)
+            - [1.7.6.1. 容器的管理操作](#1761-容器的管理操作)
+            - [1.7.6.2. 容器内部信息的获取](#1762-容器内部信息的获取)
+            - [1.7.6.3. 容器的启动过程](#1763-容器的启动过程)
+        - [1.7.7. Docker File](#177-docker-file)
+            - [1.7.7.1. Docker File中的命令](#1771-docker-file中的命令)
+            - [1.7.7.2. docker build 说明](#1772-docker-build-说明)
+        - [1.7.8. 容器网络](#178-容器网络)
+            - [1.7.8.1. 基本原理](#1781-基本原理)
+            - [1.7.8.2. docker网络模式](#1782-docker网络模式)
+            - [1.7.8.3. 自定义网路](#1783-自定义网路)
+            - [1.7.8.4. 容器之间的通信](#1784-容器之间的通信)
+            - [1.7.8.5. 容器与外部通信](#1785-容器与外部通信)
+            - [1.7.8.6. 容器间通信](#1786-容器间通信)
+        - [1.7.9. 数据卷](#179-数据卷)
+            - [1.7.9.1. 基本概念](#1791-基本概念)
+            - [1.7.9.2. 数据卷操作](#1792-数据卷操作)
+            - [1.7.9.3. 共享数据卷](#1793-共享数据卷)
+        - [1.7.10. 案例](#1710-案例)
+            - [1.7.10.1. docker 安装Mysqk主从复制](#17101-docker-安装mysqk主从复制)
+            - [1.7.10.2. docker 安装mycat](#17102-docker-安装mycat)
     - [1.8. Docker Compose](#18-docker-compose)
         - [1.8.1. 编排和部署](#181-编排和部署)
         - [1.8.2. 多容器的问题](#182-多容器的问题)
@@ -58,6 +72,8 @@
         - [1.8.7. 工程、服务、容器](#187-工程服务容器)
         - [1.8.8. Docker Compose 常用命令与配置](#188-docker-compose-常用命令与配置)
         - [1.8.9. docker-compose.yml 属性](#189-docker-composeyml-属性)
+            - [1.8.9.1. 基本例子](#1891-基本例子)
+            - [1.8.9.2. 配置选项](#1892-配置选项)
         - [1.8.10. Docker Compose 其它](#1810-docker-compose-其它)
         - [1.8.11. Compose 原理](#1811-compose-原理)
     - [1.9. VIM](#19-vim)
@@ -393,6 +409,7 @@ git revert 命令的好处就是不会丢掉别人的提交，即使你撤销后
 <a href="#menu" style="float:right">目录</a>
 
 ### 1.4.1. 基本概念
+<a href="#menu" style="float:right">目录</a>
 
 Maven主要做了两件事：
 * 统一开发规范与工具
@@ -441,6 +458,7 @@ Maven的目录结构：
 * pom.xml是Maven项目的配置文件
 
 ### 1.4.2. 基本命令
+<a href="#menu" style="float:right">目录</a>
 
 * mvn compile 编译源代码
 * mvn test-compile 编译测试代码
@@ -469,21 +487,28 @@ Maven的目录结构：
 ```
 
 ### 1.4.3. Maven中的dependency详解
+<a href="#menu" style="float:right">目录</a>
 
 ```xml
+ <dependencies>
+    <dependency>
+        <groupId></groupId>
+        <artifactId></artifactId>
+        <version>版本</version>
+        <type>依赖的类型，对应于项目的packing，默认是jar</type>
+        <scope>依赖范围</scope>
+        <systemPath>配合 scope=system时使用</systemPath>
+        <optional>标记是否为可选依赖</optional>
+        <exclusions>
+            用来排除传递性依赖
+            <exclusion>
+                <groupId>*</groupId>
+                <artifactId>*</artifactId>
+            </exclusion>
+        </exclusions>
 
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-logging</artifactId>
-    <version>4.12</version>
-    <scope>test</scope>
-    <exclusions>
-        <exclusion>
-            <groupId>*</groupId>
-            <artifactId>*</artifactId>
-        </exclusion>
-    </exclusions>
-</dependency>
+    </dependency>
+</dependencies>
 ```
 * **groupId** ：创建项目的组织或团体的唯一 Id.可视为公司名
 * **artifactId** ：项目的唯一 Id, 可视为项目名 .
@@ -494,6 +519,15 @@ Maven的目录结构：
     * provided依赖：在编译和测试的过程有效，最后生成war包时不会加入，诸如：servlet-api，因为servlet-api，tomcat等web服务器已经存在了，如果再打包会冲突 
     * runtime在运行的时候依赖，在编译的时候不依赖 
     * 默认的依赖范围是compile 
+
+|scope|	编译	|测试	|运行
+|---|---|---|---|
+|compile	|Y	|Y	|Y
+|test		|-   |Y	|-
+|provided	|Y	|Y	|-
+|runtime	|-	|Y	|Y
+|system	    |Y	|Y	|-
+
 * **type**
     * 有时候我们引入某一个依赖时，必须指定type，这是因为用于匹配dependency引用和dependencyManagement部分的最小信息集实际上是{groupId，artifactId，type，classifier}。在很多情况下，这些依赖关系将引用没有classifier的jar依赖。这允许我们将标识设置为{groupId，artifactId}，因为type的默认值是jar，并且默认classifier为null。
     * type的值一般有jar、war、pom等，声明引入的依赖的类型
@@ -554,10 +588,88 @@ classifier它表示在相同版本下针对不同的环境或者jdk使用的jar,
     </exclusions>
 </dependency>
 ```
+**传递性依赖**
+我们的工程，所使用的大多数情况下，不会只有一成依赖关系，例如 a依赖b，我们用a->b表示，那么，a->b，b->c，则a对于b是第一依赖，b对于c是第二依赖，而a对于c是传递性依赖
 
+传递性依赖的scope传递规则，与第一依赖和第二依赖有关，下表第一列表示第一依赖，第一行表示第二依赖
+|	       |compile	  |test	|provided	|runtime
+|---|---|---|---|
+|compile   |compile	  |	-	|   -       |runtime
+|test	   |test	  |	-   |   -       |test
+|provided  |provided  |	-   |provided	|provided
+|runtime   |runtie	  |	-	|   -       |runtime
+从上表我们可以轻松得到几点信息
+* 第二依赖为complie不改变第一依赖
+* 第二依赖test不传递依赖
+* 第二依赖provided只传递provided
+* 第二依赖runtime对compile第一依赖的传递依赖是runtime
+
+**依赖调节**
+常遇到的问题是，有不同版本的包，他们都存在传递性依赖，如下
+a->b->c->x(1.0)
+a->b->x(2.0)
+那么此时，根据maven依赖调节第一原则最短路径的规则，使用的x包的版本是2.0，如果当2个不同版本的包的依赖相同怎么办？这个时候就启动了第二原则，也就是按pom中声明的顺序，谁先被声明，谁优先的策略去选择包。
+
+**可选依赖**
+假设有 a->b，b->x和 b->y的 optional值都是true，那么a对于x和y的依赖不会被传递，如果a想要使用x或y的包，那么需要在a中重新进行依赖
+
+### 1.4.4. Maven依赖冲突的产生原因和解决方式
+<a href="#menu" style="float:right">目录</a>
+
+**依赖冲突产生的原因：**
+* 如果项目的依赖A和依赖B同时引入了依赖C。
+* 如果依赖C在A和B中的版本不一致就可能依赖冲突。
+* 比如 项目 <- A, B， A <- C(1.0)，B <- C(1.1)。
+* 那么maven如果选择高版本C(1.1)来导入(这个选择maven会根据不等路径短路径原则和同等路径第一声明原则选取)，C(1.0)中的类c在C(1.1)中被修改而不存在了。
+* 在编译期可能并不会报错，因为编译的目的只是把业务源代码编译成class文件，所以如果项目源代码中没有引入共有依赖C因升级而缺失的类c，就不会出现编译失败。除非源代码就引入了共有依赖C因升级而缺失的类c则会直接编译失败。
+* 在运行期，很有可能出现依赖A在执行过程中调用C(1.0)以前有但是升级到C(1.1)就缺失的类c，导致运行期失败，出现很典型的依赖冲突时的NoClassDefFoundError错误。
+* 如果是升级后出现原有的方法被修改而不存在的情况时，就会抛出NoSuchMethodError错误
+
+**怎么来解决依赖冲突**
+* 首先可以借助Maven查看依赖的依赖树来分析一下：mvn dependency:tree，或者使用IDEA的插件Maven Helper插件来可视化地分析依赖关系。这个过程后可以明确哪些dependency引入了可能会冲突的依赖。
+* 比如我们的项目引入A的依赖C为1.1版本，引入的B会在内部依赖C的1.0版本，那么Maven Helper插件会出现依赖冲突提示，会提示B引入的C的1.0版本和当前选用的C的1.1版本冲突因而被忽略(1.0 omitted for conflict with 1.1)。
+* 如果这时候打war包出来启动很有可能会遇到因依赖冲突而出现的NoClassDefFoundError或NoSuchMethodError，导致编译期正常的代码无法在运行期跑起来。
+由于A引入的C的版本高而B依赖的C版本低，我们优先会选择兼容高版本C的方案，即试图把B的版本调高以使得引入的依赖C可以和A引入的依赖A达到一致的版本，以此来解决依赖冲突。当然这是一个理想状况。
+* 如果找到了目前已有的所有的B的版本，均发现其依赖的C没有与A一致的1.1版本，比如B是一个许久未升级的旧项目，那么也可以考虑把A的版本拉低以使得C的版本降到与B一致的1.0版本，当然这也可能会反过来导致A不能正常工作。
+* 上面已经可以看出来解决依赖冲突这件事情并不简单，很难顾及两边，很多情况下引入不同版本依赖的很可能超过两方而是更多方。
+* 那么来考虑一下妥协的方案，如果A引入的C使用的功能并不跟被抛弃的类或方法有关，而是其他在1.1版本中仍然没有改变的类或方法，那么可以考虑直接使用旧的1.0版本，那么可以使用exclusion标签来在A中排除掉对C的依赖，那么A在使用到C的功能时会使用B引入的1.0旧版本C。即A其实向B妥协使用了B依赖的C。
+
+Maven Helper插件安装完成后,在打开的pom文件的下方可以看到Dependency Analyzer按钮.
+
+mvn dependency:tree
+```
+[INFO] com.mq:rabbitmq:jar:0.0.1-SNAPSHOT
+[INFO] +- org.springframework.boot:spring-boot-starter-web:jar:2.1.3.RELEASE:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:2.1.3.RELEASE:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot:jar:2.1.3.RELEASE:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-autoconfigure:jar:2.1.3.RELEASE:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-logging:jar:2.1.3.RELEASE:compile
+[INFO] |  |  |  +- ch.qos.logback:logback-classic:jar:1.2.3:compile
+[INFO] |  |  |  |  \- ch.qos.logback:logback-core:jar:1.2.3:compile
+[INFO] |  |  |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.11.2:compile
+[INFO] |  |  |  |  \- org.apache.logging.log4j:log4j-api:jar:2.11.2:compile
+[INFO] |  |  |  \- org.slf4j:jul-to-slf4j:jar:1.7.25:compile
+[INFO] |  |  +- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[INFO] |  |  \- org.yaml:snakeyaml:jar:1.23:runtime
+[INFO] |  +- org.springframework.boot:spring-boot-starter-json:jar:2.1.3.RELEASE:compile
+[INFO] |  |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.9.8:compile
+[INFO] |  |  |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.0:compile
+[INFO] |  |  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.9.8:compile
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.9.8:compile
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.9.8:compile
+[INFO] |  |  \- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.9.8:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:2.1.3.RELEASE:compile
+[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:9.0.16:compile
+[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:9.0.16:compile
+[INFO] |  |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:9.0.16:compile
+
+```
 ## 1.5. Gradle
+<a href="#menu" style="float:right">目录</a>
 
 ### 1.5.1. 基本介绍
+<a href="#menu" style="float:right">目录</a>
+
 Gradle 是一种构建工具，它抛弃了基于XML的构建脚本，取而代之的是采用一种基于Groovy（现在也支持 Kotlin）的内部领域特定语言
 
 **Gradle特点**
@@ -569,8 +681,11 @@ Gradle 是一种构建工具，它抛弃了基于XML的构建脚本，取而代�
 
 
 ### 1.5.2. 安装
+<a href="#menu" style="float:right">目录</a>
 
 #### 1.5.2.1. Ubuntu下安装
+<a href="#menu" style="float:right">目录</a>
+
 下载地址[http://services.gradle.org/distributions/](http://services.gradle.org/distributions/)
 
 这里下载gradle-5.6-all.zip包
@@ -634,16 +749,41 @@ OS:           Linux 4.15.0-46-generic amd64
 ## 1.7. Docker
 <a href="#menu" style="float:right">目录</a>
 
-### 1.7.1. Docker常用指令
+### 1.7.1. 基本概念
 
-#### 1.7.1.1. 基本概念
 * Docker： 可以让开发者打包它们的应用和依赖包到一个可移植的容器中，然后将其发布到任何流行该的Linux机器上。利用docker,可以实现软件一次配置，出处运行。
 * DockerHub:存储DOCKER镜像远程仓库，类似GitHub,用户可以进行对镜像进行存储，分享，管理。
-* Docker是一种容器，容器是一种轻量级的虚拟技术，和容器相对应的是更为重量级的虚拟技术是虚拟机。
+* Docker是一种容器，容器是一种轻量级的虚拟技术，和容器相对应的是更为重量级的虚拟技术是虚拟机,它几乎没有任何额外开销,首先你在享有Docker带来的虚拟化能力的时候无需担心它带来的额外开销。其次，相比于虚拟机，你可以在同一台机器上创建更多数量的容器。
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/docker/docker1.png?raw=true)
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/docker/docker2.png?raw=true)
+* Docker也可以被称为轻量级虚拟化技术,与传统的VM相比,更轻量,启动速度更快,单台硬件上可以同时跑成百上千个容器.
+
+Docker是一个典型的C/S结构的程序，其主要功能都集成在DockerDaemon中。可以把DockerDaemon理解为Docker的Server端，保证了容器技术的实现。在DockerDaemon的外层，包裹着一层RESTAPI，这些接口由DockerDaemon提供，井可以使用它们对DockerDaemon进行操作。这些能够操作Docker服务的API，称为Docker API.Docker软件不仅包含了DockerDaemon服务端，还打包进了DockerCLI客户端程序。DockerCLI将DockerRESTAPI中的操作中继到命令行中的命令，这就是使用Docker所输入的命令了。当我们启动Docker服务时，其实启动的是DockerDaemon，而当我们使用Docker命令进行操作时，其实是控制DockerCLI通过DockerRESTAPI发送控制命令到DockerDaemon。
+
+在Docker所提供的容器技术中，主要有镜像、容器、数据卷、网络四大核心模块。镜像是容器所打包的应用程序、系统类库等运行时环境的文件，Docker为镜像提供了一种类似Git的版本管理方式，这种形式实现了镜像之间相同的基础部分的共享，也大幅减少了镜像所占用的存储空间。容器也是Docker中重要的概念，在Docker中，容器代表的是被容器技术所隔离的运行时环境。另外，Docker还提供网络、数据卷等其他辅助模块，为容器提供网络连接、数据存储等层面的支持。上述组件都可以通过DockerCLI的docker命令进行配置和操作.
+
+Docker作为一款优秀的容器集成软件，和传统的容器虚拟化工具相比，有着非常多的改进与优化。采用Libcontainer作为容器技术支撑的Docker，通过Linux内核命名空间实现了程序进程、网络、文件系统、IPC等的分离，充分保障了容器的隔离性。而通过使用Linux控制群组，Docker可以让用户根据自己的需求，将己经虚拟的CPU、内存等硬件资源进行配置，在资源被充分利用的同时使资源的分配更可控。
+
+重新定义的镜像技术，更是为Docker增光添彩。Docker不改变基础镜像只进行上层写操作的增量镜像技术，大大增加了基础镜像可共享的内容。这不但可以让更多的容器共享同一个基础镜像，还减少了迁移过程中所需要传输镜像的体积，并且避免了修改容器和写入镜像时多次重复操作。
+
+在安全性上，有着内核级隔离的Docker容器，可以保障运行在容器之中的应用程序，不会干扰其他容器中的应用程序的运行，也不会受到其他容器中应用程序及其依赖库的影响，这样可以有效防范漏洞的产生并抑制漏洞的扩散。因为它高度解捐了应用程序间的关系，当遇到故障或者问题时，我们可以很容易地通过替换问题模块所在的模块来进行修复，其他模块的程序和相关依赖不会受到替换过程的影响，整个过程就像更换汽车零部件一样。
+
+
+
+* 发布流程
+    * 开发工程师开发,提交代码到代码服务器(github等)
+    * Jenkins之类的拉取代码
+    * 构建Docker镜像,并进行测试
+    * 自动集成测试通过以后,就可以将之前构建的镜像推送到私有Register
+    * 运维使用新版的Docker镜像进行部署
 
 * Docker组件
+    * 客户端
+        * 用于向Docker服务器发出请求命令,比如运行容器等操作
+        * 客户端和服务器可以运行在同一主机上,客户端也可以连接到远端的Docker服务器
+    * 服务器
+        * Docker的守护进行,管理Docker相关模块
+        * 也可称为守护进程
     * 镜像Image
         * 只读的静态模板，保存容器需要的环境和应用的执行代码，可以把镜像看成容器的带代码。
         * 当代码运行起来就成了容器
@@ -653,7 +793,7 @@ OS:           Linux 4.15.0-46-generic amd64
         * 是一个运行时环境，是镜像的运行状态
         * 容器是可读写的
         * 可以在容器中运行多个服务
-    * 仓库
+    * 仓库 Registry
         * 用于存放镜像
         * 可以从仓库中拉取镜像，向仓库传送镜像
         * 可以创建私有和公有的仓库  
@@ -664,8 +804,46 @@ OS:           Linux 4.15.0-46-generic amd64
     * 可度量性
     * 移植性
     * 安全性
-* Docker 安装
-    * 文档地址 https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-from-a-package
+
+**运行环境**
+* 支持所有的Linux系列系统,可通过Boot2Docker工具实现在OS X和WIN上运行
+* 必须是64位的机器上运行仅支持(X86_64和AMD64),不支持32位
+* 系统的Linux内核必须是3.8及以上版本的,内核支持Device Mapper,AUFS,VFS,btrfs等存储格式
+* 内核必须支持cgoups和命名空间
+### 1.7.2. docker的8个使用场景
+<a href="#menu" style="float:right">目录</a>
+
+* 简化配置
+    * 虚拟机的最大好处是能在你的硬件设施上运行各种配置不一样的平台(软件, 系统), Docker在降低额外开销的情况下提供了同样的功能. 它能让你将运行环境和配置放在代码汇总然后部署, 同一个Docker的配置可以在不同的环境环境中使用, 这样就降低了硬件要求和应用环境之间耦合度.
+* 代码流水线管理
+    * 代码从开发者的机器到最终在生产环境上的部署, 需要经过很多的中坚环境. 而每一个中间环境都有自己微小的差别,  Docker给应用提供了一个从开发到上线均一致的环境, 让代码的流水线变得简单不少.
+* 提升开发效率
+    * 不同环境中, 开发者的共同目标:
+        * 想让开发环境尽量贴近生产环境.
+        * 想快速搭建开发环境
+    * 开发环境的机器通常内存比较小, 之前使用虚拟的时候, 我们经常需要为开发环境的机器加内存, 而现在Docker可以轻易的让几十个服务在Docker中跑起来.
+* 隔离应用
+    * 开发时会在一个台机器上运行不同的应用.
+        * 为了降低成本, 进行服务器整合
+        * 将一个整体式的应用拆分成低耦合的单个服务(微服务架构)
+* 整合服务器
+    * Docker隔离应用的能力使得Docker可以整合多个服务器以降低成本. 由于没有多个操作系统的内存占用, 以及能在多个实例之间共享没有使用的内存, Docker可以比虚拟机提供更好的服务器整合解决方案.
+* 调试能力
+    * Docker提供了很多的工具, 这些工具不一定只是针对容器, 但是却适用于容器. 他们提供了很多功能, 包括可以为容器设置检查点, 设置版本, 查看两个容器之间的差别, 这些特性可以帮助调试Bug.
+* 多租户环境
+    * 多租户环境的应用中, 它可以避免关键应用的重写.我们一个特别的关于这个场景的例子是为loT(物联网)的应用开发一个快速, 易用的多租户环境. 这种多租户的基本代码非常复杂, 很难处理, 重新规划以应用不但消耗时间, 也浪费金钱.
+    * 使用Docker, 可以为每一个租户的应用层的多个实例创建隔离的环境, 这不仅简单而且成本低廉, 因为Docker环境启动的速度快, diff命令很高效.
+* 快速部署
+    * Docker为进程创建一个容器, 不需要启动一个操作系统, 时间缩短为秒级别.
+    * 可以在数据中心创建销毁资源而无须担心重新启动带来的开销. 通常数据中心的资源利用率只有30% , 通过使用Docker并进行有效的资源分配可以提高资源的利用率.
+
+
+
+
+### 1.7.3. Docker 安装
+<a href="#menu" style="float:right">目录</a>
+
+* 文档地址 https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-from-a-package
 ```bash
 # 查看可以安装的版本
 lgj@lgj-Lenovo-G470:~/Downloads$ apt-cache madison docker-ce
@@ -708,9 +886,67 @@ Server:
 
 
 ```
+
+**查看docker相关信息**
+
+返回容器和镜像的数量,使用的执行驱动和存储驱动,以及基本配置
+```
+lgj@lgj-Lenovo-G470:~$ docker info
+Client:
+ Debug Mode: false
+
+Server:
+ Containers: 14
+  Running: 0
+  Paused: 0
+  Stopped: 14
+ Images: 11
+ Server Version: 19.03.1
+ Storage Driver: overlay2
+  Backing Filesystem: extfs
+  Supports d_type: true
+  Native Overlay Diff: true
+ Logging Driver: json-file
+ Cgroup Driver: cgroupfs
+ Plugins:
+  Volume: local
+  Network: bridge host ipvlan macvlan null overlay
+  Log: awslogs fluentd gcplogs gelf journald json-file local logentries splunk syslog
+ Swarm: inactive
+ Runtimes: runc
+ Default Runtime: runc
+ Init Binary: docker-init
+ containerd version: 894b81a4b802e4eb2a91d1ce216b8817763c29fb
+ runc version: 425e105d5a03fabd737a126ad93d62a9eeede87f
+ init version: fec3683
+ Security Options:
+  apparmor
+  seccomp
+   Profile: default
+ Kernel Version: 4.15.0-46-generic
+ Operating System: Ubuntu 18.04.2 LTS
+ OSType: linux
+ Architecture: x86_64
+ CPUs: 4
+ Total Memory: 9.703GiB
+ Name: lgj-Lenovo-G470
+ ID: NNMX:QTBV:M2EV:N2DP:2UYP:2HYT:AA2A:5HAN:MSW6:XLNI:ZHH7:B2CQ
+ Docker Root Dir: /var/lib/docker
+ Debug Mode: false
+ Username: lgjlife
+ Registry: https://index.docker.io/v1/
+ Labels:
+ Experimental: false
+ Insecure Registries:
+  127.0.0.0/8
+ Live Restore Enabled: false
+
+WARNING: No swap limit support
+```
             
-### 1.7.2. 常用指令
+### 1.7.4. 常用指令
 <a href="#menu" style="float:right">目录</a>
+
 * 安装
    * 安装 sudo snap install docker
    * 移除 sudo snap remove docker
@@ -722,10 +958,130 @@ Server:
 * 查看正在运行的容器: docker ps -a
 * 查看容器信息: docker inspect 容器名称/ID
 
-### 1.7.3. 容器
+### 1.7.5. 镜像
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.7.3.1. 容器的管理操作
+#### 1.7.5.1. 基本概念
+<a href="#menu" style="float:right">目录</a>
+
+
+* 镜像是一个包含程序运行必要依赖环境和代码的只读文件，采用分层的文件系统，将每一次改变以读写层的形式增加到原来的只读文件上
+* 镜像是虚拟机运行环境中硬盘数据的副本,是运行虚拟环境的基础.
+* 镜像名称
+    * Namespace/Repository:Tag
+    * Namespace:镜像的命名空间，用于区别构建镜像的组织或个人，所以我们在构建自己的镜像时，可以将自己的名字或代号放在命名空间里 
+    * Repository:镜像的档案名称，通常采用这个镜像中所包含的应用程序或者微服务的名字作为镜像的档案名称。
+    * Tag:镜像的标签，类似于 Git 中的 Tag，我们习惯采用镜像的 Tag 来区别镜像．的版本，所以镜像的 Tag 通常采用镜像所包含的应用程序或者微服务的版本来制定。
+    * 除了可以通过 Namespace 、 Repository 、 Tag 组成的字符串来识别镜像，每个镜像都有一个独立的 Image ID。镜像的 ID 是长度为 64 位的十六进制字符串
+    
+* Docker镜像的系统结构(由上而下)
+    * kernel(bootfs),启动文件系统
+    * ubuntu(根镜像),操作系统层
+    * add nginx （镜像1）
+    * add vim (镜像2)
+    * 可读写(容器)
+* 镜像的本质是磁盘上一系列文件的集合。创建新的镜像是在原有的镜像文件上进行增删改，镜像之间并不孤立，而是上层依赖下层。
+* 镜像的写时复制机制
+    * 流程
+        * 创建一个容器时，实际上是在该镜像上创建一个空的可读写文件系统层级。可以将这个容器当成一个临时镜像。
+        * 原镜像的内容都是以只读方式挂载进来的，容器会读取镜像的内容。
+        * 一旦涉及到修改镜像文件，便会触发Docker从原镜像中复制这个文件到临时镜像中，所有修改均发生在临时镜像中。不会对原镜像产生任何影响。 
+    * 好处
+        * Docker 的写时复制机制既保证了原有镜像不会受到容器运行的影响，又通过消除容器启动时复制镜像到沙盒环境的过程，大幅提升了容器的启动速度。 
+
+#### 1.7.5.2. 本地镜像的管理
+<a href="#menu" style="float:right">目录</a>
+
+* 查看本地镜像
+    * docker images
+    * 显示参数说明
+        * REPOSITORY
+            * 镜像仓库
+        * TAG
+            * 镜像标签，没指定则latest
+        * IMAGE ID
+            * 镜像ID
+        * CREATE
+            * 创建时间信息
+        * VIRTUAL SIZE
+            * 镜像所占用的虚拟大小，包括所有共享文件的大小
+    * 镜像的完整标识
+        * 仓库：TAG
+
+* 下载镜像
+    * docker run 时，如果本地没有，则从仓库下载
+    * docker search 搜索dockerhub镜像
+        * 显示信息说明
+            * mame
+                * 镜像名称,由命名空间和仓库名称组成
+            * description 
+                * 镜像描述
+            * stars
+                * 评分
+            * official
+                * 是否为官方镜像
+            * automated
+                * 是否使用了自动构建
+    * 拉取镜像到本地
+        * docker pull ubuntu:18
+* 推送docker镜像到dockerhub
+```
+lgj@lgj-Lenovo-G470:~$ docker push --help
+Usage:	docker push [OPTIONS] NAME[:TAG]
+Push an image or a repository to a registry
+Options:
+      --disable-content-trust   Skip image signing (default true)
+
+```
+* 删除镜像
+    * docker rmi name|id
+
+* 创建本地镜像
+    * 基于容器创建
+        * docker commit -m="xxxx" --author="xxx"  containName|id  xxx/xxx:1.0
+```bash
+lgj@lgj-Lenovo-G470:~$ docker commit --help
+
+Usage:	docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
+
+Create a new image from a container's changes
+
+Options:
+  -a, --author string    Author (e.g., "John Hannibal Smith <hannibal@a-team.com>")
+  -c, --change list      Apply Dockerfile instruction to the created image
+  -m, --message string   Commit message
+  -p, --pause            Pause container during commit (default true)
+
+```
+
+* 镜像迁移
+    * 导出
+        * docker save 命令是把镜像写出到输出流中，可以通过-o 或--output 参数将导出的镜像数据写入到指定文件，也可以使用＞写出到指定文件
+        * docker save -o redis.tar redis:4.0 [xx:1.0...] (支持多个导出)
+        * docker save --output redis.tar redis:4.0
+        * docker save redis:4.0>redis.tar
+    * 导入
+        * docker load 命令从输入流中读取镜像数据，可以通过-i 或--input 参数将指定的文件传入镜像数据，也可以通过＜来完成：
+        * docker load -i redis.tar
+        * docker load < redis.tar
+
+#### 1.7.5.3. Docker Hub 简介
+
+Docker提供了部署在互联网服务器上的镜像仓库。而Docker Hub就是由Docker官方提供的镜像仓库.镜像仓库分为本地镜像仓库和远程镜像仓库。本地镜像仓库主要支持我们对镜像的操作并为容器的运行提供镜像，远程镜像仓库更多地用于对镜像的分发
+
+镜像仓库主要囊括了镜像管理系统和用户系统。镜像管理系统为镜像仓库提供了类似代码库式的镜像存取和管理方式，而用户系统则为镜像仓库中的镜像管理操作的授权提供支持。
+如果需要上传镜像,需要进行登录认证操作
+
+```
+docker login -u <username> -p <password> <server>
+```
+在最后还可以给出需要连接的镜像仓库服务器的地址 。如果没有给出镜像仓库服务器的地址，会采用 Docker Daemon 中的默认值 .
+
+
+### 1.7.6. 容器
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.7.6.1. 容器的管理操作
 * 创建容器
     * docker create image-name
         * 创建的容器处于停止状态
@@ -909,20 +1265,103 @@ Options:
             * 异常 : exited（0），数字为错误码
         * PORTS ： 开放的端口
         * NAMES : 容器的名称，不使用--name指定则系统随机生成
+```
+Usage:	docker ps [OPTIONS]
 
+List containers
+
+Options:
+  -a, --all             Show all containers (default shows just running)
+  -f, --filter filter   Filter output based on conditions provided
+      --format string   Pretty-print containers using a Go template
+  -n, --last int        Show n last created containers (includes all states) (default -1), -n 5
+  -l, --latest          Show the latest created container (includes all states)
+      --no-trunc        Don't truncate output
+  -q, --quiet           Only display numeric IDs
+  -s, --size            Display total file sizes
+
+```
 * 启动容器
     * docker start name|id
-
+    * docker restart name|id 重启
 * 终止容器
     * docker stop name|id
 * 删除容器
     * docker rm name|id
 
+* 暂停和恢复
+    * docker pause cantainer_name
+    * docker unpause cantainer_name
 以上操作可能会出现无法执行的问题，执行以下指令再操作
 ```
 sudo aa-remove-unknown
 ```
-#### 1.7.3.2. 容器内部信息的获取
+
+* 容器自动重启
+    * docker run --reatart=always xxx : 容器任何情况下异常退出都会自动重启
+    * docker run --reatart=on-failure xxx: 退出代码为非0时才会自动重启
+    * docker run --reatart=on-failure:5 xxx: 退出代码为非0时才会自动重启,并且最多重启5次
+
+* docker top命令
+    * 执行效果类似于linux的ps命令
+    * docker top name|id
+
+* 在容器中执行命令(exec)
+    * docker exec web ps
+    * 后台执行,添加- d参数
+   
+* 创建本地镜像
+    * 基于容器创建
+        * docker commit -m="xxxx" --author="xxx"  containName|id  xxx/xxx:1.0
+```bash
+lgj@lgj-Lenovo-G470:~$ docker commit --help
+
+Usage:	docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
+
+Create a new image from a container's changes
+
+Options:
+  -a, --author string    Author (e.g., "John Hannibal Smith <hannibal@a-team.com>")
+  -c, --change list      Apply Dockerfile instruction to the created image
+  -m, --message string   Commit message
+  -p, --pause            Pause container during commit (default true)
+
+```
+
+**容器的导入／导出**
+
+包括 Docker 在内的虚拟化技术，进行快速迁移是重要的目标之一，前面的章节中谈到了镜像的迁移，在某些场合下也需要对容器进行迁移。我们了解了将容器提交成镜像的方法，结合导入／导出容器的命令，可以实现将容器转换成镜像，再通过镜像运行成容器完成迁移。不过这种方式过于烦琐，还要浪费时间去处理生成的这些无用镜像。好在Docker 也为容器提供了导入／导出的方法，通过容器的导入／导出命令，让我们可以轻松地完成对容器的迁移。
+不论容器是否处于运行的状态，都可以使用 docker export 命令将容器保存到一个压缩文件中。
+* 导出:docker export -o web.tar d68d9aaf5d05
+```
+lgj@lgj-Lenovo-G470:~/Desktop$ docker export --help
+
+Usage:	docker export [OPTIONS] CONTAINER
+
+Export a container's filesystem as a tar archive
+
+Options:
+  -o, --output string   Write to a file, instead of STDOUT
+
+```
+* 导出:docker import web.tar 
+```
+Usage:	docker import [OPTIONS] file|URL|- [REPOSITORY[:TAG]]
+
+Import the contents from a tarball to create a filesystem image
+
+Options:
+  -c, --change list      Apply Dockerfile instruction to the created image
+  -m, --message string   Set commit message for imported image
+
+```
+
+虽然容器的导入和镜像的导入都是导入到主机的本地镜像库中，但两者还是有区别的，因为容器的导出文件与镜像的导出文件在结构上是有差异的。容器的导出文件着重记录容器导出时容器内的状况，包括容器中所有的文件：而镜像的导出文件，除了记录所有镜像层的文件，还保持着镜像原有的元数据信息。所以，在使用空间上镜像的导出文件一般会比容器的导出文件大一些。
+
+
+#### 1.7.6.2. 容器内部信息的获取
+<a href="#menu" style="float:right">目录</a>
+
 * 查看容器日志
     * docker logs -f --tail=5 name|id
 ```bash
@@ -944,88 +1383,73 @@ Options:
 
 * 查看容器进程
     * docker top name|id
-
-* 查看容器信息
-    * docker inspect name|id
-
-* 容器内执行命令
-    * docker exec -it name /bin/bash 执行时确保容器处于运行状态
+* 显示一个或者多个容器的统计信息
+    * docker stats
     
-### 1.7.4. 镜像
-<a href="#menu" style="float:right">目录</a>
-
-#### 1.7.4.1. 基本概念
-* 镜像是一个包含程序运行必要依赖环境和代码的只读文件，采用分层的文件系统，将每一次改变以读写层的形式增加到原来的只读文件上
-
-* Docker镜像的系统结构(由上而下)
-    * kernel(bootfs)
-    * ubuntu(根镜像)
-    * add nginx （镜像1）
-    * add vim (镜像2)
-    * 可读写(容器)
-* 镜像的本质是磁盘上一系列文件的集合。创建新的镜像是在原有的镜像文件上进行增删改，镜像之间并不孤立，而是上层依赖下层。
-* 镜像的写时复制机制
-    * 创建一个容器时，实际上是在该镜像上创建一个空的可读写文件系统层级。可以将这个容器当成一个临时镜像。
-    * 原镜像的内容都是以只读方式挂载进来的，容器会读取镜像的内容。
-    * 一旦涉及到修改镜像文件，便会触发Docker从原镜像中复制这个文件到临时镜像中，所有修改均发生在临时镜像中。不会对原镜像产生任何影响。  
-
-#### 1.7.4.2. 本地镜像的管理
-
-* 查看镜像
-    * docker images
-    * 显示参数说明
-        * REPOSITORY
-            * 镜像仓库
-        * TAG
-            * 镜像标签，没指定则latest
-        * IMAGE ID
-            * 镜像ID
-        * CREATE
-            * 创建时间信息
-        * VIRTUAL SIZE
-            * 镜像所占用的虚拟大小，包括所有共享文件的大小
-    * 镜像的完整标识
-        * 仓库：TAG
-
-* 下载镜像
-    * docker run 时，如果本地没有，则从仓库下载
-    * docker search 搜素镜像
-        * 显示信息说明
-            *  mame
-                * 镜像名称,由命名空间和仓库名称组成
-            * description 
-                * 镜像描述
-            * stars
-                * 评分
-            * official
-                * 是否为官方镜像
-            * automated
-                * 是否使用了自动构建
-    * 拉取镜像到本地
-        * docker pull ubuntu:18
-
-* 删除镜像
-    * docker rmi name|id
-
-* 创建本地镜像
-    * 基于容器创建
-        * docker commit -m="xxxx" --author="xxx"  containName|id  xxx/xxx:1.0
 ```bash
-lgj@lgj-Lenovo-G470:~$ docker commit --help
+lgj@lgj-Lenovo-G470:~$ docker stats --help
 
-Usage:	docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
+Usage:	docker stats [OPTIONS] [CONTAINER...]
 
-Create a new image from a container's changes
+Display a live stream of container(s) resource usage statistics
 
 Options:
-  -a, --author string    Author (e.g., "John Hannibal Smith <hannibal@a-team.com>")
-  -c, --change list      Apply Dockerfile instruction to the created image
-  -m, --message string   Commit message
-  -p, --pause            Pause container during commit (default true)
+  -a, --all             Show all containers (default shows just running)
+      --format string   Pretty-print images using a Go template
+      --no-stream       Disable streaming stats and only pull the first result
+      --no-trunc        Do not truncate output
 
 ```
-### 1.7.5. Docker File
+可以查看内存占用率等信息
+```
+CONTAINER ID  NAME   CPU %  MEM USAGE / LIMIT     MEM %  NET I/O      BLOCK I/O    PIDS
+17f22be07c51  mycat  0.00%  1.613MiB / 9.703GiB   0.02%  9.11kB / 0B  9.61MB / 0B  1
+
+```
+* 查看容器信息
+    * 查看全部信息
+        * docker inspect name|id
+    * 格式化查看某一项
+        * docker inspect mycat --format|-f="{{.State.Status}}"
+    * 显示的信息
+        * Id：容器 ID 。
+        * Created：容器创建时间。
+        * Path：容器启动命令。
+        * Args：启动命令附带的参数。
+        * State：容器的状态。
+        * Image：容器所基于的镜像，展示的是镜像的校验码。
+        * ResolvConfPath ：容器的配置文件路径。
+        * HostnamePath：容器的 hostname 文件的存储位置。
+        * HostsPath：容器的 hosts 文件的存储位置。
+        * LogPath：容器日志记录文件。
+        * Name：容器的名称。
+        * RestartCount：容器的重启次数。
+        * Driver：文件系统驱动。
+        * MountLabel：挂载标签。
+        * ProcessLabel：进程标签。
+        * AppArmorProfile：安全配置。
+        * ExecIDs：执行 ID 。
+        * HostConfig：主机配置 。
+        * GraphDriver：图形驱动。
+        * Mounts：挂载数据卷。
+        * Config：容器配置。
+        * NetworkSettings ：网络配置
+        
+* 容器内执行命令
+    * docker exec -it container_name /bin/bash 执行时确保容器处于运行状态
+
+#### 1.7.6.3. 容器的启动过程
 <a href="#menu" style="float:right">目录</a>
+
+* 创建容器时， Docker会先检查本地镜像库中是否有指定用于创建容器的镜像，如果没有在本地镜像库中找到镜像， Docker 会先从远程仓库中查找井下载到本地
+* Docker 会创建容器的实例，将镜像以只读的方式挂载在为容器分配的文件系统上,并在只读镜像层的外侧，创建一个读写的层 。
+* Docker 会配置容器的网络，连接到宿主机中专用的网桥上，并为容器分配网络地址。
+* 当我们启动已经创建好的容器时，所指定的应用程序会被运行，且容器会绑定到这个程序的启动进程上。当容器所绑定的进程结束时，容器也会随之停止
+    
+### 1.7.7. Docker File
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.7.7.1. Docker File中的命令
 
 **FROM**
 * 功能为指定基础镜像，并且必须是第一条指令。
@@ -1288,10 +1712,17 @@ CMD curl -f http://localhost/ || exit 1
 两次检查的间隔时间是5秒
 命令超时时间为3秒    
 
+
+
+#### 1.7.7.2. docker build 说明 
+<a href="#menu" style="float:right">目录</a>
+
+
 ```
+
 lgj@lgj-Lenovo-G470:~$ docker build --help
 
-Usage:	docker build [OPTIONS] PATH | URL | -
+Usage:	docker build [OPTIONS] PATH|URL|-
 
 Build an image from a Dockerfile
 
@@ -1330,51 +1761,118 @@ Options:
 OPTIONS说明：
 
 --build-arg=[] :设置镜像创建时的变量；
-
 --cpu-shares :设置 cpu 使用权重；
-
 --cpu-period :限制 CPU CFS周期；
-
 --cpu-quota :限制 CPU CFS配额；
-
 --cpuset-cpus :指定使用的CPU id；
-
 --cpuset-mems :指定使用的内存 id；
-
 --disable-content-trust :忽略校验，默认开启；
-
 -f :指定要使用的Dockerfile路径；
-
 --force-rm :设置镜像过程中删除中间容器；
-
 --isolation :使用容器隔离技术；
-
 --label=[] :设置镜像使用的元数据；
-
 -m :设置内存最大值；
-
 --memory-swap :设置Swap的最大值为内存+swap，"-1"表示不限swap；
-
 --no-cache :创建镜像的过程不使用缓存；
-
 --pull :尝试去更新镜像的新版本；
-
 --quiet, -q :安静模式，成功后只输出镜像 ID；
-
 --rm :设置镜像成功后删除中间容器；
-
 --shm-size :设置/dev/shm的大小，默认值是64M；
-
 --ulimit :Ulimit配置。
-
 --tag, -t: 镜像的名字及标签，通常 name:tag 或者 name 格式；可以在一次构建中为一个镜像设置多个标签。
-
 --network: 默认 default。在构建期间设置RUN指令的网络模式
 ```
-### 1.7.6. 数据卷和容器连接
+* 例子
+    * 使用当前目录的 Dockerfile 创建镜像，标签为 runoob/ubuntu:v1。
+        * docker build -t runoob/ubuntu:v1 . 
+    * 使用URL github.com/creack/docker-firefox 的 Dockerfile 创建镜像。
+        * docker build github.com/creack/docker-firefox
+    * 也可以通过 -f Dockerfile 文件的位置：
+        * docker build -f /path/to/a/Dockerfile .
+
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.7.6.1. 容器网络基础
+### 1.7.8. 容器网络
+<a href="#menu" style="float:right">目录</a>
+
+
+#### 1.7.8.1. 基本原理
+<a href="#menu" style="float:right">目录</a>
+
+
+容器技术的特点就是隔离性，网络作为计算机重要的资源之一，自然也在容器隔离的范围之内。 Docker 通过 Network Namespace 的方式，为每一个容器建立了独立的网络，形成了完全与宿主机隔离的环境。 Network Namespace 与我们之前谈到的用于隔离应用运行环境的 Namespace 技术相似，是用来隔离应用运行的网络环境的。它能让应用运行所在的网络环境完全虚拟出来，并能提供独立的网络设备、 E 协议栈、 IP 路由表、防火墙、／proc/net 目录、 Isys!class/net 目录、端口套接字等的支持。运行在 Network Namespace下的应用，就如同拥有了单独的网络硬件和单独的网络配置。
+
+默认情况下， Docker 启动时会在宿主机上架设一个名为 dockerO 的虚拟网络，用来连接宿主机与容器。既然容器的网络是以独立隔离的形式存在的，那么 Docker 又是如何利用 dockerO 来实现容器与宿主机，乃至外界网络之间的相互通信的呢？
+
+容器启动时， Docker 会把容器内通过 Network Namespace 建立的独立网络，通过 Veth Pair 连接到 dockerO 所在的虚拟网络上 。 Veth Pair 是专门用于虚拟网卡间通信的通道，它就像普通的数据管道一样，将容器中的网络数据包传递到 dockerO 上，也将 dockerO 发出的数据包传递到容器中。通过 Veth Pair 在本来己经隔离的 Network Namespace 打出了一个小洞，把容器内部网络与容器外部网络连接起来。
+
+当容器内部的网络通过 Veth Pair 连接到 dockerO 上时，它就与其他连接到 dockerO 上的容器同属于一个子网中，而宿主机也通过虚拟网卡连接到了 dockerO上。也就是说，宿主机与容器间通过 dockerO 达到了互相访问的目的。
+
+
+Docker的本地网络实现其实就是利用了Linux上的网络命名空间和虚拟网络设备（特别是veth pair）。
+
+直观上看，要实现网络通信，机器需要至少一个网络接口（物理接口或虚拟接口）与外界相通，并可以收发数据包；此外，如果不同子网之间要进行通信，需要额外的路由机制。
+
+Docker中的网络接口默认都是虚拟的接口。虚拟接口的最大优势就是转发效率极高。这是因为Linux通过在内核中进行数据复制来实现虚拟接口之间的数据转发，即发送接口的发送缓存中的数据包将被直接复制到接收接口的接收缓存中，而无需通过外部物理网络设备进行交换。对于本地系统和容器内系统来看，虚拟接口跟一个正常的以太网卡相比并无区别，只是它速度要快得多。
+
+Docker容器网络就很好地利用了Linux虚拟网络技术，在本地主机和容器内分别创建一个虚拟接口，并让它们彼此连通（这样的一对接口叫做veth pair）。
+![容器网络拓扑](https://images2018.cnblogs.com/blog/1387124/201809/1387124-20180906001135535-1543428479.png)
+
+一般情况下，Docker创建一个容器的时候，会具体执行如下操作：
+* 创建一对虚拟接口，分别放到本地主机和新容器的命名空间中；
+* 本地主机一端的虚拟接口连接到默认的docker0网桥或指定网桥上，并具有一个以veth开头的唯一名字，如veth1234；
+* 容器一端的虚拟接口将放到新创建的容器中，并修改名字作为eth0。这个接口只在容器的命名空间可见；
+* 从网桥可用地址段中获取一个空闲地址分配给容器的eth0（例如172.17.0.2/16），并配置默认路由网关为docker0网卡的内部接口docker0的IP地址（例如172.17.42.1/16）。
+完成这些之后，容器就可以使用它所能看到的eth0虚拟网卡来连接其他容器和访问外部网络。用户也可以通过docker network命令来手动管理网络。
+
+
+ Docker所提供的容器技术，是基于LinuxKernel提供的LinuxContainer的。在LinuxContainer中，包含能够用于隔离程序进程的Namespaces。而在Namespaces技术里，存在一个用于隔离程序对网络信息调用的子模块，也就是NetworkNamespaces。每个被NetworkNamespaces隔离的空间都拥有自己的网络设备、IP地址、路由表、防火墙、网络配置、端口表等。Docker正是借助NetworkNamespaces完成了对容器网络的隔离。
+
+ 被隔离在 Network Namespaces 中的程序，是无法了解其他 Network Namespaces 或宿主机的网络环境与配置的。网络是双向的，既然不能了解对方的信息，就不能建立网络的连接 。 所以，通过 Network Namespaces，只具备了隔离网络的功能，还没有完成与其他网络连接的任务。
+
+ 要突破 Network Namespaces 的隔离，可以使用 Veth Pair CVirtual Ethernet Pair）来实现 。 Veth Pair 是一个虚拟网络通道，功能十分简单，就是将来自通道一端的数据输送到
+另外一端。这个简单的功能，正好可以帮助我们打穿被 Network Namespaces 隔离的网络，让内外网络能够通信
+
+Veth Pair 打通了 Network Namespaces，实现了容器所隔离的网络环境与容器外部的网络通信 。 但 Veth Pair 只提供了两个端点，所以只能连接某两个网络终端。对于可能运行着众多容器的宿主机来说，如果只使用 Veth Pair 需要建立非常冗杂的数据隧道。因此，Docker 利用 Linux Bridge 把 Veth Pair 的一端都连接到宿主机中某个网桥所构成的交换机中，把容器连接不同的外部网络的任务由 Veth Pair 转移到了网桥上。这样，每个容器只需要建立一个 Veth Pair，就能连接任意外部的可达网络。并且，由于多个容器都连接到了同一个网桥，所以可以很容易地利用网桥构建的子网实现容器间的网络访问。
+
+利用 Linux Bridge，不但不用为容器设置众多复杂的 Veth Pair 通信通道，也很容易地实现了容器间的网络连接。但用于连接容器的网桥，只是宿主机系统中虚拟生成的，与宿主机真实的网卡仍然不能互通。所以要实现容器与宿主机以外的网络互通，需要借助其他技术。在 Docker 的实现中，使用 Iptables 来解决这个问题。
+
+Iptables 是 Linux 中用于管理网络过滤的程序，能够根据指定的规则，对位于 Linux内核中的 netfilter 进行操作，实现对网络信息包过滤的功能。利用 Iptables，还可以实现端口的映射，让宿主机外部访问到容器的端口正是通过端口映射实现的。除了能够实现容器与宿主机外部网络进行沟通， Iptables 还能起到防火墙的作用，可以增强 Docker 网络的安全性
+
+所以， Docker 网络主要是由 Network Namespace 、 Veth Pair 、 Linux Bridge 、 Iptables等技术实现的。
+* Network Namespace：实现了网络资源的隔离 。对隔离环境提供了网络设备、协议械、路由表、防火墙、／proc/net 目录、／sys/class/net 目录、端口表等网络配置和实现。
+* Veth Pair：实现了打穿隔离环境的网络传输数据通道。在 Docker 中，它的一端连接到容器中虚拟的网卡上，另一端连接到宿主机中专用的网桥上，通过这种方式实现了 Docker 容器与外部网络的互通。
+* Linux Bridge：放置在宿主机中的网桥，起到网络交换机的作用。因为容器网络通过 Veth Pair 连接到了网桥上，所以它能够在容器问转发网络数据。
+![网络结构](https://github.com/lgjlife/Java-Study/blob/master/pic/util/docker/network-struct.png?raw=true)
+
+
+#### 1.7.8.2. docker网络模式
+<a href="#menu" style="float:right">目录</a>
+
+安装Docker时，它会自动创建三个网络，bridge（创建容器默认连接到此网络，也就是在不使用--network参数时）、 none 、host。还有以后一种自定义模式，自定义模式有三种：bridge、overlay、macvlan。
+* host：容器将不会虚拟出自己的网卡，配置自己的IP等，而是使用宿主机的IP和端口。
+* Container：创建的容器不会创建自己的网卡，配置自己的IP，而是和一个指定的容器共享IP、端口范围。
+* None：该模式关闭了容器的网络功能。
+* Bridge：此模式会为每一个容器分配、设置IP等，并将容器连接到一个docker0虚拟网桥，通过docker0网桥以及Iptables nat表配置与宿主机通信
+
+在使用docker run命令启动容器的时候，可以通过--net参数来指定容器的网络配置。
+有5个可选值bridge、none、container、host和用户定义的网络：
+* --net=bridge：默认值，在Docker网桥docker0上为容器创建新的网络栈。
+* --net=none：让Docker将新容器放到隔离的网络栈中，但是不进行网络配置。之后，用户可以自行进行配置。
+* --net=container：NAME_or_ID：让Docker将新建容器的进程放到一个已存在容器的网络栈中，新容器进程有自己的文件系统、进程列表和资源限制，但会和已存在的容器共享IP地址和端口等网络资源，两者进程可以直接通过lo环回接口通信。
+* --net=host：告诉Docker不要将容器网络放到隔离的命名空间中，即不要容器化容器内的网络。此时容器使用本地主机的网络，它拥有完全的本地主机接口访问权限。容器进程可以跟主机其他root进程一样打开低范围的端口，可以访问本地网络服务，比如D-bus，还可以让容器做一些影响整个主机系统的事情，比如重启主机。因此使用这个选项的时候要非常小心。如果进一步的使用--privileged=true参数，容器甚至会被允许直接配置主机的网络栈。
+* --net=user_defined_network：用户自行用network相关命令创建一个网络，通过这种方式将容器连接到指定的已创建网络上去。
+
+查看docker网络
+```
+lgj@lgj-Lenovo-G470:$ docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+43f480b04c30        bridge              bridge              local
+b213652ffd3d        host                host                local
+ba9675414ac1        none                null                local
+```
+这三个网络都是 Docker 的默认实现， bridge 网络是 Docker 容器中默认使用的网络。在宿主机的网络中，它对应着 dockerO 网络，一旦安装了 Docker，就可以看到 Docker 在宿主机中创建的 dockerO 网络。 dockerO 在 Docker 中扮演着网桥的角色，也就是容器网络模型中的网络
+
 ifconfig 可以看到docker的默认分配地址是172.17.0.1
 ```bash
 lgj@lgj-Lenovo-G470:~$ ifconfig
@@ -1387,6 +1885,181 @@ docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
 ```
+
+在默认情况下，创建的容器会被 Docker 连接到 bridge 这个网络上，这个网络所使用的正是宿主机中的 dockerO 网。如果想改变容器使用的网络，可以在创建容器时使用--network 参数进行修改。
+
+none 网络表示不使用网络。容器如果绑定在 none 网络上，则 Docker 不会为容器分配带有网络连接的网络枝，而是通过一个无连接的网络让容器处于与外界网络环境完全隔离的状态 。
+
+host 网络直接使用宿主机的网络环境。容器如果绑定在 host 网络中，则 Docker 会直接采用宿主机内的网卡作为容器的网络连接对象。也就是说，其他与宿主机同在一个子网的机器也能发现容器的存在 。
+
+
+
+
+* Docker设置固定IP
+    * Docker安装后，默认会创建下面三种网络类型
+        * docker network ls 查看
+            * bridge：桥接网络
+                * 默认情况下启动的Docker容器，都是使用 bridge，Docker安装时创建的桥接网络，每次Docker容器重启时，会按照顺序获取对应的IP地址，这个就导致重启下，Docker的IP地址就变了
+            * none：无指定网络
+                * 使用 --network=none ，docker 容器就不会分配局域网的IP
+            * host： 主机网络
+                * 使用 --network=host，此时，Docker 容器的网络会附属在主机上，两者是互通的。
+
+* 创建容器时指定IP
+    * --net mynetwork 指定网络
+    * --ip 172.18.0.5 指定ip
+    * docker run --net mynetwork --ip 172.18.0.5 -p 7205:6379 --name redis7205 -d redis-cluster:5.0.3 redis-server /etc/redis/redis.conf
+    * 查看 docker inspect redis7205 |grep IPAddress
+    * docker inspect --format '{{.NetworkSettings.IPAddress}}' mysqlslaver
+
+#### 1.7.8.3. 自定义网路
+<a href="#menu" style="float:right">目录</a>
+
+如果没有为容器选定网络，则 Docker 会将新创建的容器连接到 bridge 默认网络上 。这样在一个网络中的容器，就有了互相进行访问的可能性，这在某些情况下并不是我们所期望的 。 有时，对于由数个容器所组成的一个小型模块，我们希望这些容器只能相互访问，而不能访问其他容器， 1 也不能被其他容器访问。此时，就需要为这几个容器单独分配网络，让它们连接到一个独立的网络中，从而隔绝其他网络中的容器对这几个容器的连接。
+
+* 创建自定义网络：（设置固定IP）
+    *  创建自定义网络，并且指定网段：172.18.0.0/16
+    *  docker network create --subnet=172.18.0.0/16 mynetwork
+```
+Usage:	docker network create [OPTIONS] NETWORK
+
+Create a network
+
+Options:
+      --attachable           Enable manual container attachment
+      --aux-address map      Auxiliary IPv4 or IPv6 addresses used by Network driver (default map[])
+      --config-from string   The network from which copying the configuration
+      --config-only          Create a configuration only network
+  -d, --driver string        Driver to manage the Network (default "bridge")
+      --gateway strings      IPv4 or IPv6 Gateway for the master subnet
+      --ingress              Create swarm routing-mesh network
+      --internal             Restrict external access to the network
+      --ip-range strings     Allocate container ip from a sub-range
+      --ipam-driver string   IP Address Management Driver (default "default")
+      --ipam-opt map         Set IPAM driver specific options (default map[])
+      --ipv6                 Enable IPv6 networking
+      --label list           Set metadata on a network
+  -o, --opt map              Set driver specific options (default map[])
+      --scope string         Control the network's scope
+      --subnet strings       Subnet in CIDR format that represents a network segment
+```
+|名称，简写|默认|说明
+|---|---|---|
+|--attachable|false|启用手动容器安装
+|--aux-address|map[]|网络驱动程序使用的辅助IPv4或IPv6地址
+|--driver, -d|bridge|驱动程序管理网络
+|--gateway|-|用于主子网的IPv4或IPv6网关
+|--internal|false|限制对网络的外部访问
+|--ip-range|-|从子范围分配容器ip
+|--ipam-driver|default|IP地址管理驱动程序
+|--ipam-opt|map[]|设置IPAM驱动程序的具体选项
+|--ipv6|false|启用IPv6网络
+|--label|-|在网络上设置元数据
+|--opt, -o|map[]|设置驱动程序特定选项
+|--subnet|-|表示网段的CIDR格式的子网
+
+相关命令
+|命令名称|说明
+|---|---|
+|docker network connect|将容器连接到网络
+|docker network create|创建一个网络
+|docker network disconnect|断开容器的网络
+|docker network inspect|显示一个或多个网络的详细信息
+|docker network ls|列出网络
+|docker network prune|删除所有未使用的网络
+|docker network rm|删除一个或多个网络
+
+
+#### 1.7.8.4. 容器之间的通信
+<a href="#menu" style="float:right">目录</a>
+
+容器之间可通过IP，DockerDNSServer和joined容器三种方式通信。
+
+**IP通信**
+
+两个容器要能通信，必须要有属于同一个网络的网卡。满足这个条件后，容器就可以通过IP交互了。具体做法是在容器创建时通过--network指定相应的网络，或者通过dockernetworkconnect将现有容器加入到指定网络。
+
+**Docker DNS Server**
+
+通过IP访问容器虽然满足了通信的需求，但还是不够灵活。因为我们在部署应用之前可能无法确定IP，部署之后再指定要访问的IP会比较麻烦。对于这个问题，可以通过docker自带的DNS服务解决。
+
+从Docker1.10版本开始，dockerdaemon实现了一个内嵌的DNSserver，使容器可以直接通过"容器名"通信。方法很简单，只要在启动时用--name为容器命名就可以了。
+
+下面启动两个容器box1和box2，并且在上面定义的网络模式bridge2中：
+docker run -it --network=bridge2 --name box1 busybox
+docker run -it --network=bridge2 --name box2 busybox
+可以使用ping box1|box2进行测试
+
+使用dockerDNS有个限制：只能在user-defined网络中使用。也就是说，默认的bridge网络是无法使用DNS的。
+
+**joined 容器**
+
+joined容器是另一种实现容器间通信的方式。它可以使两个或多个容器共享一个网络栈，共享网卡和配置信息，joined容器之间可以通过127.0.0.1直接通信
+
+先创建一个http容器，名字为box1
+docker run -it --name box1 http
+然后创建busybox容器并通过--network=container:box1指定jointed容器为box1：
+docker run -it --network=container:box1 busybox
+
+busybox和box1的网卡mac地址与IP完全一样，它们共享了相同的网络栈。busybox可以直接用127.0.0.1访问box1的http服务。
+
+joined 容器非常适合以下场景：
+
+不同容器中的程序希望通过 loopback 高效快速地通信，比如 web server 与 app server。
+
+希望监控其他容器的网络流量，比如运行在独立容器中的网络监控程序。
+
+#### 1.7.8.5. 容器与外部通信
+<a href="#menu" style="float:right">目录</a>
+
+在默认情况下，容器位于Docker管理的dockerO网桥中，这个网桥搭建在宿主机的一张虚拟网卡上，不与宿主机的其他网络挂钩。也就是说，容器所在的网络环境其实是隔绝在宿主机内的，宿主机外的计算机和程序是无法发觉和发现容器网络的存在的，也无法连接到容器上。
+数据从容器网络传输到dockerO或其他宿主机上的虚拟网卡后，会被转发到其他的宿主机网卡上。如果这些网卡能够访问外部网络，那么容器自然也就拥有了访问外部网络的权利。
+要使容器与外部通信都正常运作，最关键的就是要保证网络数据转发，也就是IPforward功能正常启用。Docker daemon启动时，我们可以通过--ip-forward参数来控制Docker是否使用IP forward，默认配置是开启使用，所以通常情况下不需要对其专门进行设置。如果Docker daemon己经开启了对IP forward的支持，但容器仍然无法连接外部网络，可以检查宿主机系统中的IP forward 是否被禁用 。
+
+```
+lgj@lgj-Lenovo-G470:~$ sysctl net.ipv4.conf.all.forwarding
+net.ipv4.conf.all.forwarding = 1
+
+```
+
+容器可以通过虚拟网卡在宿主机内的转接，访问到宿主机外部的网络。外部网络想要访问容器，则需要实现端口映射。只有将容器的端口映射到宿主机上，位于宿主机外部网络上的计算机和其中的程序，才能够通过访问宿主机的方式访问到容器中。
+
+实现外部与容器通信的端口映射方案，是基于 Iptables 这个防火墙的，更确切地说，是基于 Iptables 中的 DNAT (Destination Network AddressTranslation，目标地址转换〉的 。
+当我们通过启动容器时传递的－P 或－p 参数使容器内的端口映射到宿主机上时，Docker 会在 Iptables 中增加一条通过容器网络连接到容器上的 DNAT 。在 Iptables 的规则中，可以看到这条转发记录。
+
+
+在 Iptables 的规则列表中可以发现相应的转发规则。转发源是在－p 参数没有传入具体的监昕地址时默认的全部地址 0.0.0.0，目标地址是容器在容器网络中的地址和端口 。
+```
+#创建一个容器,端口映射3521:3621
+lgj@lgj-Lenovo-G470:~$ docker run -it -p 3521:3621 openjdk-vim:8 /bin/bash
+
+#查看转发规则
+lgj@lgj-Lenovo-G470:~$ sudo iptables -t nat -L -n
+Chain PREROUTING (policy ACCEPT)
+target     prot opt source               destination         
+DOCKER     all  --  0.0.0.0/0            0.0.0.0/0            ADDRTYPE match dst-type LOCAL
+
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination         
+DOCKER     all  --  0.0.0.0/0           !127.0.0.0/8          ADDRTYPE match dst-type LOCAL
+
+Chain POSTROUTING (policy ACCEPT)
+target     prot opt source               destination         
+MASQUERADE  all  --  172.17.0.0/16        0.0.0.0/0           
+MASQUERADE  all  --  172.18.0.0/16        0.0.0.0/0           
+MASQUERADE  tcp  --  172.17.0.3           172.17.0.3           tcp dpt:3621
+
+Chain DOCKER (2 references)
+target     prot opt source               destination         
+RETURN     all  --  0.0.0.0/0            0.0.0.0/0           
+RETURN     all  --  0.0.0.0/0            0.0.0.0/0           
+DNAT       tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:3521 to:172.17.0.3:3621
+
+```
+
 * 配置容器端口
     * 大写 -P
         * docker run|create -P
@@ -1400,29 +2073,69 @@ docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
         * docker port name|id  5000  查看容器5000端口与主机端口映射情况
     * 查看容器所有信息，包括端口映射
         * docker inspect name|id 
-
-* Docker设置固定IP
-    * Docker安装后，默认会创建下面三种网络类型
-        * docker network ls 查看
-            * bridge：桥接网络
-                * 默认情况下启动的Docker容器，都是使用 bridge，Docker安装时创建的桥接网络，每次Docker容器重启时，会按照顺序获取对应的IP地址，这个就导致重启下，Docker的IP地址就变了
-            * none：无指定网络
-                * 使用 --network=none ，docker 容器就不会分配局域网的IP
-            * host： 主机网络
-                * 使用 --network=host，此时，Docker 容器的网络会附属在主机上，两者是互通的。
-    * 创建自定义网络：（设置固定IP）
-        *  创建自定义网络，并且指定网段：172.18.0.0/16
-        *  docker network create --subnet=172.18.0.0/16 mynetwork
-    * 创建容器时指定IP
-        * --net mynetwork 指定网络
-        * --ip 172.18.0.5 指定ip
-        * docker run --net mynetwork --ip 172.18.0.5 -p 7205:6379 --name redis7205 -d redis-cluster:5.0.3 redis-server /etc/redis/redis.conf
-        * 查看 docker inspect redis7205 |grep IPAddress
-        * docker inspect --format '{{.NetworkSettings.IPAddress}}' mysqlslaver
+        
+#### 1.7.8.6. 容器间通信
+<a href="#menu" style="float:right">目录</a>
 
 
+```yml
+# 创建容器vim-1.0
+lgj@lgj-Lenovo-G470:~$ docker run -it --name vim-1.0 openjdk-vim:8  /bin/bash
+# 创建容器vim-1.1 并使用--link指定需要进行访问的容器
+lgj@lgj-Lenovo-G470:~$ docker run -it --name vim-1.2 --link vim-1.0  openjdk-vim:8  /bin/bash
 
-#### 1.7.6.2. 数据卷
+#ping 进行网络测试,可以联通
+root@0a322b390ec2:/# ping vim-1.0
+PING vim-1.0 (172.17.0.2) 56(84) bytes of data.
+64 bytes from vim-1.0 (172.17.0.2): icmp_seq=1 ttl=64 time=0.098 ms
+64 bytes from vim-1.0 (172.17.0.2): icmp_seq=2 ttl=64 time=0.136 ms
+64 bytes from vim-1.0 (172.17.0.2): icmp_seq=3 ttl=64 time=0.160 ms
+
+```
+在容器的信息中，展示了连接到的容器，以及这个容器在当前容器中的别名 
+```yml
+"HostConfig": {
+            "Links": [
+                "/vim-1.0:/vim-1.1/vim-1.0"
+            ],
+}
+```
+
+容器间通信的主要目的并不是实现网络的访问，而是将容器间访问的方式更抽象化 。我们知道， Docker 设计的目的是快速部署，而快速部署需要解决的问题就是减少和避免因为宿主机环境变化而带来的配置和适配时间问题 。 网络作为宿主机环境的重要组成部分之一，自然也是影响 Docker 是否能够完成快速部署最重要的因素之一。
+
+同在一个容器网络中的容器因为连接了同一个子网，所以它们之间进行网络访问是非常容易的。然而由于宿主机的网络环境并不固定，也就不能保证 Docker 申请到的容器网络的网段总是一致。如果让容器中的程序以其他容器在网络中的 IP 地址进行访问，则势必会因宿主机网络环境的改变而引起容器网络的改变，进而导致网络访问并不牢靠。在这种情况下，就需要修改容器中访问其他容器所使用的 IP 地址，但这样做就达不到Docker 快速部署的目的。
+
+Docker 通过修改 hosts 的方式实现了 一种既简单又无须修改 IP 地址的方案 。我们使用 Docker 连接其他容器时， Docker 会在／etc/hosts 中添加一条基于容器名称或别名的条目，这条解析的指向正是被连接的容器。当我们需要在容器中使用被连接容器地址的时候，只使用容器的名称或设置的别名即可 。 这种方式巧妙地利用了域名解析机制实现了变化的 IP 到固定的名称的转变，无须再考虑容器 IP 因为网络环境而发生变化的问题 。
+
+当我们创建容器并且使用了容器间连接时， Docker 会在容器中做两件事情。第一件事情是修改／etc/hosts 文件，第二件事情是增加相关的环境变量
+
+查看上述-1.1的host文件
+```
+root@e100b11eef79:/# cat /etc/hosts
+127.0.0.1	localhost
+::1	localhost ip6-localhost ip6-loopback
+fe00::0	ip6-localnet
+ff00::0	ip6-mcastprefix
+ff02::1	ip6-allnodes
+ff02::2	ip6-allrouters
+172.17.0.2	vim-1.0 97570007328c
+172.17.0.3	e100b11eef79
+
+```
+
+### 1.7.9. 数据卷
+<a href="#menu" style="float:right">目录</a>
+
+
+#### 1.7.9.1. 基本概念
+<a href="#menu" style="float:right">目录</a>
+
+容器内的文件环境，是由联合文件系统提供的一个临时层，虽然能够让程序随意操作其中的文件，但所有的读写都是在北］；盒环境中进行的。当容器停止运行并被删除时，这个临时记录着文件修改的层就会被一同丢弃。即使我们能够通过提交镜像的方式保存容器中文件的修改，但利用这种方式实现文件的持久化不但操作过于烦琐，也不便于进行自动化管理，仍然达不到我们想要的效果。更何况通过镜像的方式保存文件，只解决了文件的输出问题，并没有解决文件输入的问题。
+
+为了达到从外界获取文件以及持久化存储文件的目的， Docker 提出了数据卷（ Data Volume ）的概念。简而言之，数据卷就是一个挂载在容器内文件系统中的文件或目录。在容器中，数据卷和其他的文件或目录看起来别无二致，但是因为数据卷是从外界挂载在容器中的，所以它可以脱离容器的生命周期而独立存在。正是由于数据卷的生命周期并不等同于容器的生命周期，在容器退出乃至删除之后，数据卷仍不会受到影响，会依然存在于 Docker 之中 。所以，如果通过数据卷保存文件，那么这些文件就不会因为容器的终结而消失。
+
+
+
 * 数据卷作用
     * 是一个目录或者文件，绑定到容器的目录或者文件，两处内容同步更新   
     * 绕过"拷贝写"系统，以达到本地磁盘IO性能
@@ -1430,25 +2143,121 @@ docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
     * 在多个容器之间共享目录
     * 在宿主和容器之间共享目录
     * 在宿主和容器之间共享单个文件
-* 创建数据卷
-    * 路径需要是绝对路径
-    * dockerfile
-        * volume /xxx/xxx
-    * docker run -v 容器目录
-    * docker inspect |grep volumns 查看
-    * 挂载文件
-        * -v 本地目录:容器目录 ，本地目录为绝对目录，可以是文件 
-        * docker run -v /xx/xx.text:/xx/xx.text
-    * 主机上的数据卷位置为/var/lib/docker/volumes
-    * 共享数据卷
-        * docker run --volumes-from=aaa   --name=bbb    xxxx
-        * 容器bbb 将共享容器aaa的数据卷
-        * 无论是声明数据卷的容器还是后续引用该数据卷的容器，容器的停止和删除都不会导致数据卷本身删除。如果需要将数据卷删除，那么需要删除所有它依赖的容器，并且在删除最后一个依赖的容器时加入-v标识。docker rm -v name|id
 
+* 数据卷的特点
+    * 数据卷中的数据并不继承于镜像，也不在联合文件系统临时层所管理的范围内，所以镜像层的写时复制机制不会作用于数据卷中的数据，而这些数据也不会被 docker commit 提交到新的镜像之中
+    * 因为文件的操作不是在沙盒环境中进行的，而是直接作用于宿主机内真实的硬盘 IO 中，所以我们对数据卷中数据的操作会马上产生效果，并且操作速度也要比对临时层中数据的操作来得快。
+    * 数据卷不依赖于容器，它的生命周期也不受容器的控制，所以，我们能够安全地存储文件到数据卷中 。 也正是因为数据卷独立于容器之外，所以多个容器可以共享同一个数据卷。通过数据卷，我们就可以实现在容器之间进行文件数据的共享了。
+    * 数据卷为容器提供了持续稳定的存储空间，数据卷中文件的更新，也不会影响到使用它的容器
+
+数据卷其实就是放置在数据主机内的一个特殊目录，只是 Docker将其封装在容器中进行展示。通过 Docker 的封装，程序在容器中就无法判断数据卷到底从何处挂载，也觉察不出数据卷与其他文件或目录有任何区别，它们甚至不知道容器中哪些目录是数据卷，哪些又不是。正是 Docker 为数据卷设计的良好的封装性，使迁移过程结束后，程序不会因为数据卷在本地环境中的改变，而不能正常运
+行 。
+
+通过创建容器而创建的数据卷，会自动挂载到容器之中，成为容器中目录树的一部分。对于通过－v 参数指定的，并且己经存在于宿主机中的数据卷， Docker 也会找到它们并进行挂载。
+对于那些通过 docker volume create 命令创建的数据卷，我们可以在使用 docker create或 docker m 命令时，采用－v < name>:< dest>的形式来实现数据卷的挂载。
+
+
+在－v < name>:< dest>这种参形式中，name 表示数据卷的名称 。因为我们使用 了定义的数据卷名称，所以可以比较方便地配置数据卷，否则需要输入冗长的数据卷随机名称。而 < dest 表示数据卷挂载到容器中的路径，如果容器中对应的目录己经存在，那么挂载操作会把原有的目录暂时隐藏，数据卷会被替换到那个地方去。
+其实－v < name>:< dest>与－v < dest>类似，只是因为我们没有在－v < dest>这种形式中给出数据卷，所以 Docker 会自动创建一个数据卷用于挂载，而这个创建的数据卷没有直接
+展示给我们。
+
+既然 Docker 能够将这些宿主机中的特殊目录挂载到容器里作为数据卷，那自然也能将宿主机中其他己经存在的目录挂载到容器中当作数据卷。在创建容器时，可以使用” -v < src>:< dest>这种参数形式，挂载宿主机中的目录到容器中。
+
+我们除了挂载宿主机的目录作为数据卷，还可以挂载单个文件到容器之中。不过更推荐以目录的形式挂载数据卷，因为如果直接挂载文件到容器里，当我们在容器中使用Vim 或其他文件编辑工具对文件进行修改时，可能会造成文件 inode(inode）信息的改变。而这些改变并不在容器内外同步，这就会造成一些意想不到的错误。挂载文件更适用于文件不被修改的场景，例如挂载配置文件到容器中。
+
+因为－v < src>:< dest>与－v < name>:< dest>两种参数传入形式是一致的，为了保证不出现歧义，在使用－v 挂载宿主机目录或文件时，必须使用目录或文件的绝对路径。
+
+使用挂载宿主机目录或文件成为数据卷的方式，可以非常方便地在容器内部与外部之间共享文件。特别是将配置、代码类可能需要临时修改的文件，通过主机目录挂载的方式放置到容器中时，修改结果会马上体现到容器里，让修改文件变得更加简单。
+
+#### 1.7.9.2. 数据卷操作
+<a href="#menu" style="float:right">目录</a>
+
+* 创建数据卷
+    * 创建数据卷
+        * 创建的数据卷一般在/var/lib/docker/volumes中
+        * 方式1
+            * 创建容器时使用-v参数创建
+            * docker run|create -v /aaa 
+            * 会在容器中自动创建/aaa目录,并在主机/var/lib/docker中创建数据卷,容器对/aaa进行操作(添加文件修改文件等操作),也同时对数据卷进行操作
+        * docker volume create
+            * 返回唯一ID字符串(64个字符)
+        * docker volume create  name
+            * 自定义数据卷名字
+        * 查看创建的数据卷信息:docker volume inspect my-redis,显示如下信息
+            * "CreatedAt": "2019-10-17T01:36:22+08:00",
+            * "Driver": "local",
+            * "Labels": {},
+            * "Mountpoint": "/var/lib/docker/volumes/my-redis/_data",
+            * "Name": "my-redis",
+            * "Options": {},
+            * "Scope": "local"
+    * 挂载数据卷
+        * docker run|create -v name:/aaa 
+        * 创建时挂载容器中的/aaa目录到数据卷,name这里可以使用数据卷的名称或者唯一ID
+    * 挂载宿主机目录或文件到容器中
+        * 为了避免和上面的挂载数据卷冲突,路径需要是绝对路径
+        * -v 本地目录(文件):容器目录(文件) ，本地目录为绝对目录，可以是文件 
+        * docker run -v /xx/xx.text:/xx/xx.text
+        * dockerfile 也类似
+            * volume /xxx/xxx:/xx/xx
+
+    * docker inspect -f="{{.Mounts}}"
+    
+    * 主机上的数据卷位置为/var/lib/docker/volumes
+
+
+
+指定两个数据卷:
+docker run -it  --name vim-1.3 -v ~/aname -v ~/aname1  -v /xx/xx.text:/xx/xx.text -v /aa:/bb openjdk-vim:8 /bin/bash
+```yml
+"Mounts": [
+            # 这两种是绑定主机目录到容器目录
+            {
+                "Type": "bind",
+                "Source": "/aa",
+                "Destination": "/bb",
+                "Mode": "",
+                "RW": true,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "bind",
+                "Source": "/xx/xx.text",
+                "Destination": "/xx/xx.text",
+                "Mode": "",
+                "RW": true,
+                "Propagation": "rprivate"
+            },
+            #  这两种是绑定数据卷到容器目录
+            {
+                "Type": "volume",
+                "Name": "bcdecf8775299f04605baa3a3f9de95f58af7b12cebb0a6c3de96d6afe92cfbd",
+                "Source": "/var/lib/docker/volumes/bcdecf8775299f04605baa3a3f9de95f58af7b12cebb0a6c3de96d6afe92cfbd/_data",
+                "Destination": "/home/lgj/aname",
+                "Driver": "local",
+                "Mode": "",
+                "RW": true,
+                "Propagation": ""
+            },
+            {
+                "Type": "volume",
+                "Name": "ba84d853878a43f2b15a79ecb6969e817ea781ada28e3629f9a488a937f675ed",
+                "Source": "/var/lib/docker/volumes/ba84d853878a43f2b15a79ecb6969e817ea781ada28e3629f9a488a937f675ed/_data",
+                "Destination": "/home/lgj/aname1",
+                "Driver": "local",
+                "Mode": "",
+                "RW": true,
+                "Propagation": ""
+            },
+            
+        ],
+
+
+```
 * 数据卷管理
     * docker volume ls  列出数据卷
     * docker volume rm volume_id  根据数据卷ID删除 
-    * docker rm -v name|id  随人容器删除，数据卷没被其他容器使用才会被删除
+    * docker rm -v name|id  随容器删除，数据卷没被其他容器使用才会被删除
 ```
 docker volume  --help
 
@@ -1465,14 +2274,34 @@ Commands:
 
 ```
 
-
-### 1.7.7. 案例
+#### 1.7.9.3. 共享数据卷
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.7.7.1. docker 安装Mysqk主从复制
+若要更好地在容器之间共享数据卷，可以使用数据卷容器来实现。通过数据卷容器，我们可以更轻松地将数据卷进行归类和汇总，也能更好地管理容器与数据卷之间的关系，并且可以更加合理地控制数据卷的生命周期。
+
+
+随容器创建的数据卷最好也随容器删除。而需要长期存储数据的数据卷，特别是用于持久化保存数据的数据卷，可以通过挂载宿主机目录的方式来实现。不过这种方式仍然存在弊端一一容易破坏 Docker 的统一性。为了解决这个问题，我们可以使用数据卷容器来管理数据卷。
+
+数据卷容器是专门用于存放数据卷的容器，我们在其他的容器中需要使用数据卷时，就不再把宿主机的目录当作数据卷进行挂载，而是从数据卷容器中将数据卷挂载
+
+数据卷是独立于容器而存在的，那么，数据卷容器又是如何管理数据卷的呢？其实，数据卷容器并没有直接管理或控制数据卷，它只是其他容器使用数据卷的桥梁。我们知道，使用－v 参数删除数据卷时， Docker 会保证此数据卷没有被其他容器所使用。而当我们使用数据卷容器进行数据卷的挂载时，虽然数据卷被其他容器所引用和使用，而其他容器在删除时也能尝试对数据卷进行删除，但是由于数据卷仍然被数据卷容器所引用，Docker 就不会删除这个数据卷以及其中的数据。这样就有力地保证了数据卷的安全，我们也能通过数据卷容器来清楚地了解数据卷的状态，而不需要在 docker volume list 的结果中逐个核对。
+
+因为数据卷容器只是其他容器与数据卷连接的桥梁，而数据卷也可以独立于容器存在。所以我们在其他容器中通过数据卷容器来访问数据卷时，并不需要保证数据卷容器必须在运行的状态。也就是说，其他容器只是利用数据卷容器所给出的数据卷信息，在Docker 中找到对应的数据卷，并不是一直通过数据卷容器来访问数据卷，因此数据卷容器的运行与否，并不影响其他容器对数据卷的使用。
+
+数据卷容器和上面的容器创建方法一样,但是作为数据卷容器,需要使用-v参数创建多个数据卷.
+
+* 共享数据卷
+    * docker run --volumes-from=aaa(数据卷容器的名字)   --name=bbb(本容器名字)    xxxx(其他参数)
+    * 容器bbb 将共享容器aaa的数据卷
+    * 无论是声明数据卷的容器还是后续引用该数据卷的容器，容器的停止和删除都不会导致数据卷本身删除。如果需要将数据卷删除，那么需要删除所有它依赖的容器，并且在删除最后一个依赖的容器时加入-v标识。docker rm -v name|id
+
+### 1.7.10. 案例
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.7.10.1. docker 安装Mysqk主从复制
 * https://www.cnblogs.com/songwenjie/p/9371422.html
 
-#### 1.7.7.2. docker 安装mycat
+#### 1.7.10.2. docker 安装mycat
 
 
 * 安装openjdk:8镜像
@@ -1538,7 +2367,12 @@ docker-compose -v
     * 输出运行中 service 的日志
     * 在 service 中执行一次性的命令
 
+Compose 是一个用户定义和运行多个容器的 Docker 应用程序。在 Compose 中你可以使用 YAML 文件来配置你的应用服务。然后，只需要一个简单的命令，就可以创建并启动你配置的所有服务。
 
+使用 Compose 基本会有如下三步流程：
+* 在 Dockfile 中定义你的应用环境，使其可以在任何地方复制。
+* 在 docker-compose.yml 中定义组成应用程序的服务，以便它们可以在隔离的环境中一起运行。
+* 最后，运行dcoker-compose up，Compose 将启动并运行整个应用程序。
 
 ### 1.8.6. 快速入门
 
@@ -1639,8 +2473,10 @@ docker-compose run web bash
 * version：指定 docker-compose.yml 文件的写法格式
 * services：多个容器集合
     * 一个service代表一个container，这个container可以从dockerhub的image来创建，或者从本地的Dockerfile build出来的image来创建。
-    * service的�����动类似docker run，我们可以给其指定network和volme，所以可以给service指定network和volume的引用
+    * service的启动类似docker run，我们可以给其指定network和volme，所以可以给service指定network和volume的引用
 * build：配置构建时，Compose 会利用它自动构建镜像，该值可以是一个路径，也可以是一个对象，用于指定 Dockerfile 参数
+
+#### 1.8.9.1. 基本例子
 
 ```yml
 #docker-Compse的版本
@@ -1678,84 +2514,780 @@ networks:
     driver: bridge
 ```
 
+#### 1.8.9.2. 配置选项
+<a href="#menu" style="float:right">目录</a>
 
+**bulid**
+服务除了可以基于指定的镜像，还可以基于一份 Dockerfile，在使用 up 启动之时执行构建任务，这个构建标签就是 build，它可以指定 Dockerfile 所在文件夹的路径。Compose 将会利用它自动构建这个镜像，然后使用这个镜像启动服务容器
 
+```yml
+build: /path/to/build/dir
 ```
+也可以是相对路径
+```yml
 build: ./dir
----------------
+```
+设定上下文根目录，然后以该目录为准指定 Dockerfile
+```yml
 build:
-    context: ./dir
-    dockerfile: Dockerfile
-    args:
+  context: ../
+  dockerfile: path/of/Dockerfile
+```
+例子
+```yml
+version: '3'
+services:
+  webapp:
+    build: ./dir
+```
+如果 context 中有指定的路径，并且可以选定 Dockerfile 和 args。那么 arg 这个标签，就像 Dockerfile 中的 ARG 指令，它可以在构建过程中指定环境变量，但是在构建成功后取消，在 docker-compose.yml 文件中也支持这样的写法：
+```yml
+version: '3'
+services:
+  webapp:
+    build:
+      context: ./dir
+      dockerfile: Dockerfile-alternate
+      args:
         buildno: 1
 ```
-
-
-* command：覆盖容器启动后默认执行的命令
+与 ENV 不同的是，ARG 可以为空值
+```yml
+args:
+  - buildno
+  - password
 ```
+如果要指定 image 以及 build ，选项格式为
+```
+build: ./dir
+image: webapp:tag
+```
+这会在 ./dir 目录生成一个名为 webaapp 和标记为 tag 的镜像
+
+Note:当用(Version 3) Compose 文件在群集模式下部署堆栈时，该选项被忽略。因为 docker stack 命令只接受预先构建的镜像
+
+
+**context**
+context 选项可以是 Dockerfile 的文件路径，也可以是到链接到 git 仓库的 url
+
+当提供的值是相对路径时，它被解析为相对于撰写文件的路径，此目录也是发送到 Docker 守护进程的 context
+```yml
+build:
+  context: ./dir
+```
+
+**dockerfile**
+使用此 dockerfile 文件来构建，必须指定构建路径
+
+```yml
+build:
+  context: .
+  dockerfile: Dockerfile-alternate
+```
+
+**args**
+添加构建参数，这些参数是仅在构建过程中可访问的环境变量
+
+首先， 在Dockerfile中指定参数：
+
+```yml
+ARG buildno
+ARG password
+
+RUN echo "Build number: $buildno"
+RUN script-requiring-password.sh "$password"
+```
+
+然后指定 build 下的参数,可以传递映射或列表
+```yml
+build:
+  context: .
+  args:
+    buildno: 1
+    password: secret
+```
+或
+```yml
+build:
+  context: .
+  args:
+    - buildno=1
+    - password=secret
+```
+
+指定构建参数时可以省略该值，在这种情况下，构建时的值默认构成运行环境中的值
+```yml
+args:
+  - buildno
+  - password
+```
+Note： YAML 布尔值（true，false，yes，no，on，off）必须使用引号括起来，以为了能够正常被解析为字符串
+
+**cache_from**
+编写缓存解析镜像列表
+```yml
+build:
+  context: .
+  cache_from:
+    - alpine:latest
+    - corp/web_app:3.14
+```
+
+**labels**
+使用 Docker标签 将元数据添加到生成的镜像中，可以使用数组或字典。
+
+建议使用反向 DNS 标记来防止签名与其他软件所使用的签名冲突
+
+```yml
+build:
+  context: .
+  labels:
+    com.example.description: "Accounting webapp"
+    com.example.department: "Finance"
+    com.example.label-with-empty-value: ""
+```
+或
+```yml
+build:
+  context: .
+  labels:
+    - "com.example.description=Accounting webapp"
+    - "com.example.department=Finance"
+    - "com.example.label-with-empty-value"
+```
+
+**shm_size**
+设置容器 /dev/shm 分区的大小，值为表示字节的整数值或表示字符的字符串
+```yml
+build:
+  context: .
+  shm_size: '2gb'
+```
+或
+```yml
+build:
+  context: .
+  shm_size: 10000000
+```
+
+**target**
+根据对应的 Dockerfile 构建指定 Stage
+
+```yml
+build:
+    context: .
+    target: prod
+```
+
+**cap_add、cap_drop**
+添加或删除容器功能，可查看 man 7 capabilities
+
+```yml
+cap_add:
+  - ALL
+
+cap_drop:
+  - NET_ADMIN
+  - SYS_ADMIN
+```
+Note:当用(Version 3) Compose 文件在群集模式下部署堆栈时，该选项被忽略。因为 docker stack 命令只接受预先构建的镜像
+
+**command**
+覆盖容器启动后默认执行的命令
+
+```yml
 command: bundle exec thin -p 3000
-----------------------------------
-command: [bundle,exec,thin,-p,3000]
+```
+该命令也可以是一个列表，方法类似于 dockerfile:
+```yml
+command: ["bundle", "exec", "thin", "-p", "3000"]
 ```
 
+**configs**
+使用服务 configs 配置为每个服务赋予相应的访问权限，支持两种不同的语法。
 
-dns：配置 dns 服务器，可以是一个值或列表
+Note: 配置必须存在或在 configs 此堆栈文件的顶层中定义，否则堆栈部署失效
+
+1. SHORT 语法
+SHORT 语法只能指定配置名称，这允许容器访问配置并将其安装在 /< config_name> 容器内，源名称和目标装入点都设为配置名称。
+
+```yml
+version: "3.3"
+services:
+  redis:
+    image: redis:latest
+    deploy:
+      replicas: 1
+    configs:
+      - my_config
+      - my_other_config
+configs:
+  my_config:
+    file: ./my_config.txt
+  my_other_config:
+    external: true
 ```
+以上实例使用 SHORT 语法将 redis 服务访问授予 my_config 和 my_other_config ,并被 my_other_config 定义为外部资源，这意味着它已经在 Docker 中定义。可以通过 docker config create 命令或通过另一个堆栈部署。如果外部部署配置都不存在，则堆栈部署会失败并出现 config not found 错误。
+
+Note: config 定义仅在 3.3 版本或在更高版本的撰写文件格式中受支持，YAML 的布尔值（true, false, yes, no, on, off）必须要使用引号引起来（单引号、双引号均可），否则会当成字符串解析。
+
+2. LONG 语法
+LONG 语法提供了创建服务配置的更加详细的信息
+
+source:Docker 中存在的配置的名称
+target:要在服务的任务中装载的文件的路径或名称。如果未指定则默认为 /<source>
+uid 和 gid:在服务的任务容器中拥有安装的配置文件的数字 UID 或 GID。如果未指定，则默认为在Linux上。Windows不支持。
+mode:在服务的任务容器中安装的文件的权限，以八进制表示法。例如，0444 代表文件可读的。默认是 0444。如果配置文件无法写入，是因为它们安装在临时文件系统中，所以如果设置了可写位，它将被忽略。可执行位可以设置。如果您不熟悉 UNIX 文件权限模式，Unix Permissions Calculator
+下面示例在容器中将 my_config 名称设置为 redis_config，将模式设置为 0440（group-readable）并将用户和组设置为 103。该　｀redis　服务无法访问 my_other_config 配置。
+```yml
+version: "3.3"
+services:
+  redis:
+    image: redis:latest
+    deploy:
+      replicas: 1
+    configs:
+      - source: my_config
+        target: /redis_config
+        uid: '103'
+        gid: '103'
+        mode: 0440
+configs:
+  my_config:
+    file: ./my_config.txt
+  my_other_config:
+    external: true
+```
+可以同时授予多个配置的服务相应的访问权限，也可以混合使用 LONG 和 SHORT 语法。定义配置并不意味着授予服务访问权限。
+
+**cgroup_parent**
+可以为容器选择一个可选的父 cgroup
+
+```yml
+cgroup_parent: m-executor-abcd
+```
+注意：当 使用（Version 3）Compose 文件在群集模式下部署堆栈时，忽略此选项
+
+**container_name**
+为自定义的容器指定一个名称，而不是使用默认的名称
+
+```yml
+container_name: my-web-container
+```
+因为 docker 容器名称必须是唯一的，所以如果指定了一个自定义的名称，不能扩展一个服务超过 1 个容器
+
+**credential_spec**
+为托管服务账户配置凭据规范，此选项仅适用于 Windows 容器服务
+
+在 credential_spec 上的配置列表格式为 file://< filename> 或 registry://<value-name>
+
+使用 file: 应该注意引用的文件必须存在于　CredentialSpecs,docker 数据目录的子目录中。在 Windows 上，该目录默认为 C:\ProgramData\Docker\。以下示例从名为C:\ProgramData\Docker\CredentialSpecs\my-credential-spec.json 的文件加载凭证规范 ：
+```yml
+credential_spec:
+  file: my-credential-spec.json
+```
+使用 registry: 将从守护进程主机上的 Windows 注册表中读取凭据规范。其注册表值必须位于：
+
+```yml
+HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Virtualization\Containers\CredentialSpecs
+```
+下面的示例通过 my-credential-spec 注册表中指定的值加载凭证规范：
+```yml
+credential_spec:
+  registry: my-credential-spec
+```
+
+**deploy**
+指定与部署和运行服务相关的配置
+```yml
+version: '3'
+services:
+  redis:
+    image: redis:alpine
+    deploy:
+      replicas: 6
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+```
+这里有几个子选项
+
+1. endpoint_mode
+指定连接到群组外部客户端服务发现方法
+
+endpoint_mode:vip ：Docker 为该服务分配了一个虚拟 IP(VIP),作为客户端的 “前端“ 部位用于访问网络上的服务。
+endpoint_mode: dnsrr : DNS轮询（DNSRR）服务发现不使用单个虚拟 IP。Docker为服务设置 DNS 条目，使得服务名称的 DNS 查询返回一个 IP 地址列表，并且客户端直接连接到其中的一个。如果想使用自己的负载平衡器，或者混合 Windows 和 Linux 应用程序，则 DNS 轮询调度（round-robin）功能就非常实用。
+version: "3.3"
+```yml
+services:
+  wordpress:
+    image: wordpress
+    ports:
+      - 8080:80
+    networks:
+      - overlay
+    deploy:
+      mode: replicated
+      replicas: 2
+      endpoint_mode: vip
+
+  mysql:
+    image: mysql
+    volumes:
+       - db-data:/var/lib/mysql/data
+    networks:
+       - overlay
+    deploy:
+      mode: replicated
+      replicas: 2
+      endpoint_mode: dnsrr
+
+volumes:
+  db-data:
+
+networks:
+  overlay:
+```
+相关信息：Swarm 模式 CLI 命令 、Configure 服务发现
+
+2. labels
+指定服务的标签，这些标签仅在服务上设置。
+
+```yml
+version: "3"
+services:
+  web:
+    image: web
+    deploy:
+      labels:
+        com.example.description: "This label will appear on the web service"
+```
+通过将 deploy 外面的 labels 标签来设置容器上的 labels
+```yml
+version: "3"
+services:
+  web:
+    image: web
+    labels:
+      com.example.description: "This label will appear on all containers for the web service"
+```
+
+3. mode
+global:每个集节点只有一个容器
+replicated:指定容器数量（默认）
+```yml
+version: '3'
+services:
+  worker:
+    image: dockersamples/examplevotingapp_worker
+    deploy:
+      mode: global
+```
+
+4. placement
+指定 constraints 和 preferences
+```yml
+version: '3'
+services:
+  db:
+    image: postgres
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+          - engine.labels.operatingsystem == ubuntu 14.04
+        preferences:
+          - spread: node.labels.zone
+```
+
+５.replicas
+如果服务是 replicated（默认)，需要指定运行的容器数量
+
+```yml
+version: '3'
+services:
+  worker:
+    image: dockersamples/examplevotingapp_worker
+    networks:
+      - frontend
+      - backend
+    deploy:
+      mode: replicated
+      replicas: 6
+```
+
+6. resources
+配置资源限制
+
+```yml
+version: '3'
+services:
+  redis:
+    image: redis:alpine
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 50M
+        reservations:
+          cpus: '0.25'
+          memory: 20M
+```
+
+此例子中，redis 服务限制使用不超过 50M 的内存和 0.50（50％）可用处理时间（CPU），并且 保留 20M 了内存和 0.25 CPU时间
+
+7. restart_policy
+配置容器的重新启动，代替 restart
+
+condition:值可以为 none 、on-failure 以及 any(默认)
+delay: 尝试重启的等待时间，默认为 0
+max_attempts:在放弃之前尝试重新启动容器次数（默认：从不放弃）。如果重新启动在配置中没有成功 window，则此尝试不计入配置max_attempts 值。例如，如果 max_attempts 值为 2，并且第一次尝试重新启动失败，则可能会尝试重新启动两次以上。
+windows:在决定重新启动是否成功之前的等时间，指定为持续时间（默认值：立即决定）。
+```yml
+version: "3"
+services:
+  redis:
+    image: redis:alpine
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+```
+
+8. update_config
+配置更新服务，用于无缝更新应用（rolling update)
+
+parallelism：一次性更新的容器数量
+delay：更新一组容器之间的等待时间。
+failure_action：如果更新失败，可以执行的的是 continue、rollback 或 pause （默认）
+monitor：每次任务更新后监视失败的时间(ns|us|ms|s|m|h)（默认为0）
+max_failure_ratio：在更新期间能接受的失败率
+order：更新次序设置，top-first（旧的任务在开始新任务之前停止）、start-first（新的任务首先启动，并且正在运行的任务短暂重叠）（默认 stop-first）
+```yml
+version: '3.4'
+services:
+  vote:
+    image: dockersamples/examplevotingapp_vote:before
+    depends_on:
+      - redis
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 2
+        delay: 10s
+        order: stop-first
+```
+
+不支持 Docker stack desploy 的几个子选项 
+build、cgroup_parent、container_name、devices、tmpfs、external_links、inks、network_mode、restart、security_opt、stop_signal、sysctls、userns_mode
+
+**devices**
+设置映射列表，与 Docker 客户端的 --device 参数类似 :
+
+```yml
+devices:
+  - "/dev/ttyUSB0:/dev/ttyUSB0"
+
+```
+
+**depends_on**
+此选项解决了启动顺序的问题
+
+在使用 Compose 时，最大的好处就是少打启动命令，但是一般项目容器启动的顺序是有要求的，如果直接从上到下启动容器，必然会因为容器依赖问题而启动失败。例如在没启动数据库容器的时候启动了应用容器，这时候应用容器会因为找不到数据库而退出，为了避免这种情况我们需要加入一个标签，就是 depends_on，这个标签解决了容器的依赖、启动先后的问题。
+
+指定服务之间的依赖关系，有两种效果
+
+docker-compose up 以依赖顺序启动服务，下面例子中 redis 和 db 服务在 web 启动前启动
+docker-compose up SERVICE 自动包含 SERVICE 的依赖性，下面例子中，例如下面容器会先启动 redis 和 db 
+两个服务，最后才启动 web 服务：
+```yml
+version: '3'
+services:
+  web:
+    build: .
+    depends_on:
+      - db
+      - redis
+  redis:
+    image: redis
+  db:
+    image: postgres
+```
+
+注意的是，默认情况下使用 docker-compose up web 这样的方式启动 web 服务时，也会启动 redis 和 db 两个服务，因为在配置文件中定义了依赖关系
+
+**dns**
+自定义 DNS 服务器，与 --dns 具有一样的用途，可以是单个值或列表
+```yml
 dns: 8.8.8.8
-------------
 dns:
-    - 8.8.8.8
-    - 9.9.9.9
+  - 8.8.8.8
+  - 9.9.9.9
 ```
+**dns_search**
+自定义 DNS 搜索域，可以是单个值或列表
 
-
-dns_search：配置 DNS 搜索域，可以是一个值或列表
-```
+```yml
 dns_search: example.com
-------------------------
 dns_search:
-    - dc1.example.com
-    - dc2.example.com
+  - dc1.example.com
+  - dc2.example.com
 ```
 
-
-environment：环境变量配置，可以用数组或字典两种方式
-```
-environment:
-    RACK_ENV: development
-    SHOW: 'ture'
--------------------------
-environment:
-    - RACK_ENV=development
-    - SHOW=ture
+**tmpfs**
+挂载临时文件目录到容器内部，与 run 的参数一样效果，可以是单个值或列表
+```yml
+tmpfs: /run
+tmpfs:
+  - /run
+  - /tmp
 ```
 
+**entrypoint**
+在 Dockerfile 中有一个指令叫做 ENTRYPOINT 指令，用于指定接入点。在 docker-compose.yml 中可以定义接入点，覆盖 Dockerfile 中的定义：
 
-env_file：从文件中获取环境变量，可以指定一个文件路径或路径列表，其优先级低于 environment 指定的环境变量
+```yml
+entrypoint: /code/entrypoint.sh
 ```
+entrypoint 也可以是一个列表，方法类似于 dockerfile
+```yml
+entrypoint:
+    - php
+    - -d
+    - zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20100525/xdebug.so
+    - -d
+    - memory_limit=-1
+    - vendor/bin/phpunit
+```
+
+**env_file**
+从文件中添加环境变量。可以是单个值或是列表 
+如果已经用 docker-compose -f FILE 指定了 Compose 文件，那么 env_file 路径值为相对于该文件所在的目录
+
+但 environment 环境中的设置的变量会会覆盖这些值，无论这些值未定义还是为 None
+```yml
 env_file: .env
----------------
+```
+或者根据 docker-compose.yml 设置多个：
+```yml
 env_file:
-    - ./common.env
+  - ./common.env
+  - ./apps/web.env
+  - /opt/secrets.env
+```
+环境配置文件 env_file 中的声明每行都是以 VAR=VAL 格式，其中以 # 开头的被解析为注释而被忽略
+
+注意环境变量配置列表的顺序*,例如下面例子
+
+docker_compose.yml
+```yml
+services:
+  some-service:
+    env_file:
+      - a.env
+      - b.env
+```
+a.env 文件
+```yml
+# 2. a.env
+VAR=1
+```
+b.env文件
+
+对于在文件a.env 中指定的相同变量但在文件 b.env 中分配了不同的值，如果 b.env 像下面列在 a.env 之后，则刚在 a.env 设置的值被 b.env 相同变量的值覆盖，此时 $VAR 值为 hello。此外，这里所说的环境变量是对宿主机的 Compose 而言的，如果在配置文件中有 build 操作，这些变量并不会进入构建过程中，如果要在构建中使用变量还是首选 arg 标签
+
+**environment**
+添加环境变量，可以使用数组或字典。与上面的 env_file 选项完全不同，反而和 arg 有几分类似，这个标签的作用是设置镜像变量，它可以保存变量到镜像里面，也就是说启动的容器也会包含这些变量设置，这是与 arg 最大的不同。 
+一般 arg 标签的变量仅用在构建过程中。而 environment 和 Dockerfile 中的 ENV 指令一样会把变量一直保存在镜像、容器中，类似 docker run -e 的效果
+```yml
+environment:
+  RACK_ENV: development
+  SHOW: 'true'
+  SESSION_SECRET:
+```
+或
+```yml
+environment:
+  - RACK_ENV=development
+  - SHOW=true
+  - SESSION_SECRET
 ```
 
+**expose**
+暴露端口，但不映射到宿主机，只被连接的服务访问。这个标签与 Dockerfile 中的 EXPOSE 指令一样，用于指定暴露的端口，但是只是作为一种参考，实际上 docker-compose.yml 的端口映射还得 ports 这样的标签
 
-expose：暴露端口，只将端口暴露给连接的服务，而不暴露给主机
-```
+```yml
 expose:
-    - "3000"
-    - "8000"
+ - "3000"
+ - "8000"
 ```
 
+**external_links**
+链接到 docker-compose.yml 外部的容器，甚至 并非 Compose 项目文件管理的容器。参数格式跟 links 类似
 
-image：指定服务所使用的镜像
-```
-image: java
+在使用Docker过程中，会有许多单独使用 docker run 启动的容器的情况，为了使 Compose 能够连接这些不在docker-compose.yml 配置文件中定义的容器，那么就需要一个特殊的标签，就是 external_links，它可以让Compose 项目里面的容器连接到那些项目配置外部的容器（前提是外部容器中必须至少有一个容器是连接到与项目内的服务的同一个网络里面）。
+
+格式如下
+```yml
+external_links:
+ - redis_1
+ - project_db_1:mysql
+ - project_db_1:postgresql
 ```
 
+**extra_hosts**
+添加主机名的标签，就是往 /etc/hosts 文件中添加一些记录，与 Docker 客户端 中的 --add-host 类似：
 
-network_mode：设置网络模式
+```yml
+extra_hosts:
+ - "somehost:162.242.195.82"
+ - "otherhost:50.31.209.229"
 ```
+
+具有 IP 地址和主机名的条目在 /etc/hosts 内部容器中创建。启动之后查看容器内部 hosts ，例如：
+
+```yml
+162.242.195.82  somehost
+50.31.209.229   otherhost
+```
+
+**healthcheck**
+用于检查测试服务使用的容器是否正常
+
+```yml
+healthcheck:
+  test: ["CMD", "curl", "-f", "http://localhost"]
+  interval: 1m30s
+  timeout: 10s
+  retries: 3
+  start_period: 40s
+```
+interval，timeout 以及 start_period 都定为持续时间
+
+test 必须是字符串或列表，如果它是一个列表，第一项必须是 NONE，CMD 或 CMD-SHELL ；如果它是一个字符串，则相当于指定CMD-SHELL 后跟该字符串。
+```yml
+# 3. Hit the local web app
+test: ["CMD", "curl", "-f", "http://localhost"]
+
+# 4. As above, but wrapped in /bin/sh. Both forms below are equivalent.
+test: ["CMD-SHELL", "curl -f http://localhost || exit 1"]
+test: curl -f https://localhost || exit 1
+```
+
+如果需要禁用镜像的所有检查项目，可以使用 disable:true,相当于 test:["NONE"]
+
+```yml
+healthcheck:
+  disable: true
+```
+
+**image**
+从指定的镜像中启动容器，可以是存储仓库、标签以及镜像 ID
+
+```yml
+image: redis
+image: ubuntu:14.04
+image: tutum/influxdb
+image: example-registry.com:4000/postgresql
+image: a4bc65fd
+```
+
+如果镜像不存在，Compose 会自动拉去镜像
+
+**isolation**
+Linux 上仅仅支持 default 值
+
+**labels**
+使用 Docker 标签将元数据添加到容器，可以使用数组或字典。与 Dockerfile 中的 LABELS 类似：
+```yml
+labels:
+  com.example.description: "Accounting webapp"
+  com.example.department: "Finance"
+  com.example.label-with-empty-value: ""
+
+labels:
+  - "com.example.description=Accounting webapp"
+  - "com.example.department=Finance"
+  - "com.example.label-with-empty-value"
+```
+
+**links**
+链接到其它服务的中的容器，可以指定服务名称也可以指定链接别名（SERVICE：ALIAS)，与 Docker 客户端的 --link 有一样效果，会连接到其它服务中的容器
+```yml
+web:
+  links:
+   - db
+   - db:database
+   - redis
+```
+
+使用的别名将会自动在服务容器中的 /etc/hosts 里创建。例如：
+```yml
+172.12.2.186  db
+172.12.2.186  database
+172.12.2.187  redis
+```
+
+相应的环境变量也将被创建
+
+**logging**
+配置日志服务
+
+```yml
+logging:
+  driver: syslog
+  options:
+    syslog-address: "tcp://192.168.0.42:123"
+```
+
+该 driver值是指定服务器的日志记录驱动程序，默认值为 json-file,与 --log-diver 选项一样
+
+```yml
+driver: "json-file"
+driver: "syslog"
+driver: "none"
+```
+
+注意：只有驱动程序 json-file 和 journald 驱动程序可以直接从 docker-compose up 和 docker-compose logs 获取日志。使用任何其他方式不会显示任何日志。
+
+对于可选值，可以使用 options 指定日志记录中的日志记录选项
+
+```yml
+driver: "syslog"
+options:
+  syslog-address: "tcp://192.168.0.42:123"
+```
+
+默认驱动程序 json-file 具有限制存储日志量的选项，所以，使用键值对来获得最大存储大小以及最小存储数量
+
+```yml
+options:
+  max-size: "200k"
+  max-file: "10"
+```
+
+上面实例将存储日志文件，直到它们达到max-size:200kB，存储的单个日志文件的数量由该 max-file 值指定。随着日志增长超出最大限制，旧日志文件将被删除以存储新日志
+
+docker-compose.yml 限制日志存储的示例
+```yml
+services:
+  some-service:
+    image: some-service
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+```
+
+**network_mode**
+网络模式，用法类似于 Docke 客户端的 --net 选项，格式为：service:[service name]
+
+```yml
 network_mode: "bridge"
 network_mode: "host"
 network_mode: "none"
@@ -1763,39 +3295,451 @@ network_mode: "service:[service name]"
 network_mode: "container:[container name/id]"
 ```
 
+可以指定使用服务或者容器的网络
 
-ports：对外暴露的端口定义，和 expose 对应
-```
-ports:   # 暴露端口信息  - "宿主机端口:容器暴露端口"
-- "8763:8763"
-- "8763:8763"
-```
-
-
-links：将指定容器连接到当前连接，可以设置别名，避免ip方式导致的容器重启动态改变的无法连接情况
-```
-links:    # 指定服务名称:别名 
-    - docker-compose-eureka-server:compose-eureka
+**networks**
+加入指定网络
+```yml
+services:
+  some-service:
+    networks:
+     - some-network
+     - other-network
 ```
 
+**aliases**
+同一网络上的其他容器可以使用服务器名称或别名来连接到其他服务的容器
 
-volumes：卷挂载路径
+```yml
+services:
+  some-service:
+    networks:
+      some-network:
+        aliases:
+         - alias1
+         - alias3
+      other-network:
+        aliases:
+         - alias2
 ```
+下面实例中，提供 web 、worker以及db 服务，伴随着两个网络 new 和 legacy 。
+```yml
+version: '2'
+
+services:
+  web:
+    build: ./web
+    networks:
+      - new
+
+  worker:
+    build: ./worker
+    networks:
+      - legacy
+
+  db:
+    image: mysql
+    networks:
+      new:
+        aliases:
+          - database
+      legacy:
+        aliases:
+          - mysql
+
+networks:
+  new:
+  legacy:
+```
+
+相同的服务可以在不同的网络有不同的别名
+
+**ipv4_address、ipv6_address**
+为服务的容器指定一个静态 IP 地址
+```yml
+version: '2.1'
+
+services:
+  app:
+    image: busybox
+    command: ifconfig
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.10
+        ipv6_address: 2001:3984:3989::10
+
+networks:
+  app_net:
+    driver: bridge
+    enable_ipv6: true
+    ipam:
+      driver: default
+      config:
+      -
+        subnet: 172.16.238.0/24
+      -
+        subnet: 2001:3984:3989::/64
+```
+
+**PID**
+```yml
+pid: "host"
+```
+
+将 PID 模式设置为主机 PID 模式，可以打开容器与主机操作系统之间的共享 PID 地址空间。使用此标志启动的容器可以访问和操作宿主机的其他容器，反之亦然。
+
+**ports**
+映射端口
+
+1. SHORT 语法
+可以使用 HOST:CONTAINER 的方式指定端口，也可以指定容器端口（选择临时主机端口），宿主机会随机映射端口
+```yml
+ports:
+ - "3000"
+ - "3000-3005"
+ - "8000:8000"
+ - "9090-9091:8080-8081"
+ - "49100:22"
+ - "127.0.0.1:8001:8001"
+ - "127.0.0.1:5000-5010:5000-5010"
+ - "6060:6060/udp"
+```
+
+注意：当使用 HOST:CONTAINER 格式来映射端口时，如果使用的容器端口小于 60 可能会得到错误得结果，因为YAML 将会解析 xx:yy 这种数字格式为 60 进制，所以建议采用字符串格式。
+
+2. LONG 语法
+LONG 语法支持 SHORT 语法不支持的附加字段
+```yml
+target：容器内的端口
+published：公开的端口
+protocol： 端口协议（tcp 或 udp）
+mode：通过host 用在每个节点还是哪个发布的主机端口或使用 ingress 用于集群模式端口进行平衡负载，
+ports:
+  - target: 80
+    published: 8080
+    protocol: tcp
+    mode: host
+```
+
+**secrets**
+通过 secrets为每个服务授予相应的访问权限
+
+1. SHORT 语法
+```yml
+version: "3.1"
+services:
+  redis:
+    image: redis:latest
+    deploy:
+      replicas: 1
+    secrets:
+      - my_secret
+      - my_other_secret
+secrets:
+  my_secret:
+    file: ./my_secret.txt
+  my_other_secret:
+    external: true
+```
+
+2.. LONG 语法
+LONG 语法可以添加其他选项
+```yml
+source：secret 名称
+target：在服务任务容器中需要装载在 /run/secrets/ 中的文件名称，如果 source 未定义，那么默认为此值
+uid&gid：在服务的任务容器中拥有该文件的 UID 或 GID 。如果未指定，两者都默认为 0。
+mode：以八进制表示法将文件装载到服务的任务容器中 /run/secrets/ 的权限。例如，0444 代表可读。
+version: "3.1"
+services:
+  redis:
+    image: redis:latest
+    deploy:
+      replicas: 1
+    secrets:
+      - source: my_secret
+        target: redis_secret
+        uid: '103'
+        gid: '103'
+        mode: 0440
+secrets:
+  my_secret:
+    file: ./my_secret.txt
+  my_other_secret:
+    external: true
+```
+
+**security_opt**
+为每个容器覆盖默认的标签。简单说来就是管理全部服务的标签，比如设置全部服务的 user 标签值为 USER
+
+```yml
+security_opt:
+  - label:user:USER
+  - label:role:ROLE
+
+```
+
+**stop_grace_period**
+在发送 SIGKILL 之前指定 stop_signal ，如果试图停止容器（如果它没有处理 SIGTERM（或指定的任何停止信号）），则需要等待的时间
+
+
+```yml
+stop_grace_period: 1s
+stop_grace_period: 1m30s
+```
+
+默认情况下，stop 在发送SIGKILL之前等待10秒钟容器退出
+
+**stop_signal**
+设置另一个信号来停止容器。在默认情况下使用的 SIGTERM 来停止容器。设置另一个信号可以使用 stop_signal 标签：
+
+```yml
+stop_signal: SIGUSR1
+```
+
+**sysctls**
+在容器中设置的内核参数，可以为数组或字典
+
+```yml
+sysctls:
+  net.core.somaxconn: 1024
+  net.ipv4.tcp_syncookies: 0
+
+sysctls:
+  - net.core.somaxconn=1024
+  - net.ipv4.tcp_syncookies=0
+```
+
+**ulimits**
+覆盖容器的默认限制，可以单一地将限制值设为一个整数，也可以将soft/hard 限制指定为映射
+
+```yml
+ulimits:
+  nproc: 65535
+  nofile:
+    soft: 20000
+    hard: 40000
+```
+
+**userns_mode**
+```yml
+userns_mode: "host"
+```
+
+**volumes**
+挂载一个目录或者一个已存在的数据卷容器，可以直接使用 HOST:CONTAINER 这样的格式，或者使用 HOST:CONTAINER:ro 这样的格式，后者对于容器来说，数据卷是只读的，这样可以有效保护宿主机的文件系统
+```yml
+version: "3.2"
+services:
+  web:
+    image: nginx:alpine
+    volumes:
+      - type: volume
+        source: mydata
+        target: /data
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./static
+        target: /opt/app/static
+
+  db:
+    image: postgres:latest
+    volumes:
+      - "/var/run/postgres/postgres.sock:/var/run/postgres/postgres.sock"
+      - "dbdata:/var/lib/postgresql/data"
+
 volumes:
-  - /lib
-  - /var
+  mydata:
+  dbdata:
 ```
 
+Compose 的数据卷指定路径可以是相对路径，使用 . 或者 .. 来指定相对目录。
 
-logs：日志输出信息
+数据卷的格式可以是下面多种形式：
+
+```yml
+volumes:
+  # 只是指定一个路径，Docker 会自动在创建一个数据卷（这个路径是容器内部的）。
+  - /var/lib/mysql
+
+  # 使用绝对路径挂载数据卷
+  - /opt/data:/var/lib/mysql
+
+  # 以 Compose 配置文件为中心的相对路径作为数据卷挂载到容器。
+  - ./cache:/tmp/cache
+
+  # 使用用户的相对路径（~/ 表示的目录是 /home/<用户目录>/ 或者 /root/）。
+  - ~/configs:/etc/configs/:ro
+
+  # 已经存在的命名的数据卷。
+  - datavolume:/var/lib/mysql
 ```
---no-color          单色输出，不显示其他颜.
--f, --follow        跟踪日志输出，就是可以实时查看日志
--t, --timestamps    显示时间戳
---tail              从日志的结尾显示，--tail=200
+
+如果你不使用宿主机的路径，可以指定一个 volume_driver
+```yml
+volume_driver: mydriver
 ```
+
+1. SHORT 语法
+可以选择在主机（HOST:CONTAINER）或访问模式（HOST:CONTAINER:ro）上指定路径。
+
+可以在主机上挂载相对路径，该路径相对于正在使用的 Compose 配置文件的目录进行扩展。相对路径应始终以 . 或 .. 开头
+```yml
+volumes:
+  # Just specify a path and let the Engine create a volume
+  - /var/lib/mysql
+
+  # Specify an absolute path mapping
+  - /opt/data:/var/lib/mysql
+
+  # Path on the host, relative to the Compose file
+  - ./cache:/tmp/cache
+
+  # User-relative path
+  - ~/configs:/etc/configs/:ro
+
+  # Named volume
+  - datavolume:/var/lib/mysql
+```
+2. LONG 语法
+LONG 语法有些附加字段
+```yml
+type：安装类型，可以为 volume、bind 或 tmpfs
+source：安装源，主机上用于绑定安装的路径或定义在顶级 volumes密钥中卷的名称 ,不适用于 tmpfs 类型安装。
+target：卷安装在容器中的路径
+read_only：标志将卷设置为只读
+bind：配置额外的绑定选项
+propagation：用于绑定的传播模式
+volume：配置额外的音量选项
+nocopy：创建卷时禁止从容器复制数据的标志
+tmpfs：配置额外的 tmpfs 选项
+size：tmpfs 的大小，以字节为单位
+version: "3.2"
+services:
+  web:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - type: volume
+        source: mydata
+        target: /data
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./static
+        target: /opt/app/static
+
+networks:
+  webnet:
+
+volumes:
+  mydata:
+```
+
+**volumes_from**
+从其它容器或者服务挂载数据卷，可选的参数是 :ro 或 :rw，前者表示容器只读，后者表示容器对数据卷是可读可写的（默认情况为可读可写的）。
+```yml
+volumes_from:
+  - service_name
+  - service_name:ro
+  - container:container_name
+  - container:container_name:rw
+```
+**用于服务、群集以及堆栈文件的卷**
+
+在使用服务，群集和 docker-stack.yml 文件时，请记住支持服务的任务（容器）可以部署在群集中的任何节点上，并且每次更新服务时都可能是不同的节点。
+
+在缺少指定源的命名卷的情况下，Docker 为支持服务的每个任务创建一个匿名卷。关联的容器被移除后，匿名卷不会保留。
+
+如果希望数据持久存在，请使用可识别多主机的命名卷和卷驱动程序，以便可以从任何节点访问数据。或者，对该服务设置约束，以便将其任务部署在具有该卷的节点上。
+
+下面一个例子，Docker Labs 中 votingapp 示例的 docker-stack.yml文件中定义了一个称为 db 的服务。它被配置为一个命名卷来保存群体上的数据， 并且仅限于在节点上运行。下面是来自该文件的部分内容：db postgres manager
+```yml
+version: "3"
+services:
+  db:
+    image: postgres:9.4
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - backend
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+```
+**restart**
+默认值为 no ，即在任何情况下都不会重新启动容器；当值为 always 时，容器总是重新启动；当值为 on-failure 时，当出现 on-failure 报错容器退出时，容器重新启动。
+```yml
+restart: "no"
+restart: always
+restart: on-failure
+restart: unless-stopped
+```
+
+**其他选项**
+关于标签：cpu_shares、cpu_quota、 cpuse、domainname、hostname、 ipc、 mac_address、privileged、 read_only、 shm_size、stdin_open、tty、 user、 working_dir
+
+上面这些都是一个单值的标签，类似于使用 docker run 的效果
+```yml
+cpu_shares: 73
+cpu_quota: 50000
+cpuset: 0,1
+
+user: postgresql
+working_dir: /code
+
+domainname: foo.com
+hostname: foo
+ipc: host
+mac_address: 02:42:ac:11:65:43
+
+privileged: true
+
+
+read_only: true
+shm_size: 64M
+stdin_open: true
+tty: true
+```
+
+**持续时间**
+某些配置选项如 check 的子选项interval以及timeout 的设置格式
+```yml
+2.5s
+10s
+1m30s
+2h32m
+5h34m56s
+```
+支持的单位有 us、ms、s、m 以及 h
+
+**指定字节值**
+某些选项如 bulid 的子选项 shm_size
+```yml
+2b
+1024kb
+2048k
+300m
+1gb
+```
+支持的单位是 b，k，m 以及 g，或 kb， mb 和 gb。目前不支持十进制值
+
+**extends**
+这个标签可以扩展另一个服务，扩展内容可以是来自在当前文件，也可以是来自其他文件，相同服务的情况下，后来者会有选择地覆盖原有配置
+```yml
+extends:
+  file: common.yml
+  service: webapp
+```
+用户可以在任何地方使用这个标签，只要标签内容包含 file 和 service 两个值就可以了。file 的值可以是相对或者绝对路径，如果不指定 file 的值，那么 Compose 会读取当前 YML 文件的信息。
+
+
+
 
 ### 1.8.10. Docker Compose 其它
+<a href="#menu" style="float:right">目录</a>
+
 更新容器
 
 当服务的配置发生更改时，可使用 docker-compose up 命令更新配置
@@ -1816,6 +3760,8 @@ services:
 这样 Web 服务就可以使用 db 或 database 作为 hostname 访问 db 服务了
 
 ### 1.8.11. Compose 原理
+<a href="#menu" style="float:right">目录</a>
+
 
 **project**
 通过 docker compose 管理的一个项目被抽象称为一个 project，它是由一组关联的应用容器组成的一个完整的业务单元。简单点说就是一个 docker-compose.yml 文件定义一个 project。
