@@ -9555,7 +9555,11 @@ public class TestController {
 3.如果应用中两者共同存在，则@ControllerAdvice方式处理控制器抛出的异常，类ErrorController方式未进入控制器的异常。
 4.@ControllerAdvice方式可以定义多个拦截方法，拦截不同的异常类，并且可以获取抛出的异常信息，自由度更大。
 
+#### 配置HTTPS
 
+##### 生成证书
+
+##### 
 
 
 ### 1.7.14. 其他一些问题

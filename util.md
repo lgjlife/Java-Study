@@ -20,8 +20,12 @@
         - [1.2.10. 其他](#1210-其他)
     - [1.3. Git](#13-git)
         - [1.3.1. 基本概念](#131-基本概念)
-        - [1.3.2. 常用命令](#132-常用命令)
-        - [1.3.3. 远程仓库版本回退](#133-远程仓库版本回退)
+        - [1.3.2. 分支的概念](#132-分支的概念)
+            - [1.3.2.1. 常用分支说明](#1321-常用分支说明)
+        - [1.3.3. 常用命令](#133-常用命令)
+        - [1.3.4. 远程仓库版本回退](#134-远程仓库版本回退)
+        - [1.3.5. Git开发流程](#135-git开发流程)
+            - [1.3.5.1. 开发流程](#1351-开发流程)
     - [1.4. Maven](#14-maven)
         - [1.4.1. 基本概念](#141-基本概念)
         - [1.4.2. 基本命令](#142-基本命令)
@@ -33,79 +37,81 @@
             - [1.5.2.1. Ubuntu下安装](#1521-ubuntu下安装)
     - [1.6. Jenkins](#16-jenkins)
     - [1.7. Docker](#17-docker)
-        - [1.7.1. 基本概念](#171-基本概念)
-        - [1.7.2. docker的8个使用场景](#172-docker的8个使用场景)
-        - [1.7.3. Docker 安装](#173-docker-安装)
-        - [1.7.4. 常用指令](#174-常用指令)
-        - [1.7.5. 镜像](#175-镜像)
-            - [1.7.5.1. 基本概念](#1751-基本概念)
-            - [1.7.5.2. 本地镜像的管理](#1752-本地镜像的管理)
-            - [1.7.5.3. Docker Hub 简介](#1753-docker-hub-简介)
-        - [1.7.6. 容器](#176-容器)
-            - [1.7.6.1. 容器的管理操作](#1761-容器的管理操作)
-            - [1.7.6.2. 容器内部信息的获取](#1762-容器内部信息的获取)
-            - [1.7.6.3. 容器的启动过程](#1763-容器的启动过程)
-        - [1.7.7. Docker File](#177-docker-file)
-            - [1.7.7.1. Docker File中的命令](#1771-docker-file中的命令)
-            - [1.7.7.2. docker build 说明](#1772-docker-build-说明)
-        - [1.7.8. 容器网络](#178-容器网络)
-            - [1.7.8.1. 基本原理](#1781-基本原理)
-            - [1.7.8.2. docker网络模式](#1782-docker网络模式)
-            - [1.7.8.3. 自定义网路](#1783-自定义网路)
-            - [1.7.8.4. 容器之间的通信](#1784-容器之间的通信)
-            - [1.7.8.5. 容器与外部通信](#1785-容器与外部通信)
-            - [1.7.8.6. 容器间通信](#1786-容器间通信)
-        - [1.7.9. 数据卷](#179-数据卷)
-            - [1.7.9.1. 基本概念](#1791-基本概念)
-            - [1.7.9.2. 数据卷操作](#1792-数据卷操作)
-            - [1.7.9.3. 共享数据卷](#1793-共享数据卷)
-        - [1.7.10. 案例](#1710-案例)
-            - [1.7.10.1. docker 安装Mysqk主从复制](#17101-docker-安装mysqk主从复制)
-            - [1.7.10.2. docker 安装mycat](#17102-docker-安装mycat)
-    - [1.8. Docker Compose](#18-docker-compose)
-        - [1.8.1. 编排和部署](#181-编排和部署)
-        - [1.8.2. 多容器的问题](#182-多容器的问题)
-        - [1.8.3. Docker Compose 概述与安装](#183-docker-compose-概述与安装)
-        - [1.8.4. 安装 Docker Compose](#184-安装-docker-compose)
-        - [1.8.5. 基本使用](#185-基本使用)
-        - [1.8.6. 快速入门](#186-快速入门)
-        - [1.8.7. 工程、服务、容器](#187-工程服务容器)
-        - [1.8.8. Docker Compose 常用命令与配置](#188-docker-compose-常用命令与配置)
-        - [1.8.9. docker-compose.yml 属性](#189-docker-composeyml-属性)
-            - [1.8.9.1. 基本例子](#1891-基本例子)
-            - [1.8.9.2. 配置选项](#1892-配置选项)
-        - [1.8.10. Docker Compose 其它](#1810-docker-compose-其它)
-        - [1.8.11. Compose 原理](#1811-compose-原理)
-    - [1.9. VIM](#19-vim)
-        - [1.9.1. 命令模式](#191-命令模式)
-        - [1.9.2. 常用命令](#192-常用命令)
-    - [1.10. NMON监控工具](#110-nmon监控工具)
-    - [1.11. 正则表达式](#111-正则表达式)
-    - [1.12. curl命令](#112-curl命令)
-    - [1.13. 常见时区缩写](#113-常见时区缩写)
-    - [1.14. 日志](#114-日志)
-        - [1.14.1. SLF4J](#1141-slf4j)
-            - [1.14.1.1. 基本介绍](#11411-基本介绍)
-            - [1.14.1.2. 依赖](#11412-依赖)
-            - [1.14.1.3. slf4j绑定log4j2日志系统启动分析](#11413-slf4j绑定log4j2日志系统启动分析)
-            - [1.14.1.4. slf4j绑定logback日志系统启动分析](#11414-slf4j绑定logback日志系统启动分析)
-            - [1.14.1.5. 总结](#11415-总结)
-        - [1.14.2. LOG4J2](#1142-log4j2)
-            - [1.14.2.1. 基本特性](#11421-基本特性)
-            - [1.14.2.2. 配置文件优先级](#11422-配置文件优先级)
-            - [1.14.2.3. 配置文件](#11423-配置文件)
-            - [1.14.2.4. 执行流程](#11424-执行流程)
-            - [1.14.2.5. 同步日志和异步日志](#11425-同步日志和异步日志)
-                - [1.14.2.5.1. AsyncAppender](#114251-asyncappender)
-                - [1.14.2.5.2. AsyncLogger](#114252-asynclogger)
-        - [1.14.3. LOGBACK](#1143-logback)
-    - [1.15. IDEA](#115-idea)
-        - [1.15.1. 常用快捷键](#1151-常用快捷键)
-        - [1.15.2. 常用插件](#1152-常用插件)
-    - [1.16. 面试考察](#116-面试考察)
-        - [1.16.1. 技术广度的考察](#1161-技术广度的考察)
-        - [1.16.2. 底层技术的考察](#1162-底层技术的考察)
-        - [1.16.3. 技术深度的考察](#1163-技术深度的考察)
+        - [1.7.1. Docker基础](#171-docker基础)
+            - [1.7.1.1. 基本概念](#1711-基本概念)
+            - [1.7.1.2. 命名](#1712-命名)
+            - [1.7.1.3. docker的8个使用场景](#1713-docker的8个使用场景)
+            - [1.7.1.4. Docker 安装](#1714-docker-安装)
+            - [1.7.1.5. 常用指令](#1715-常用指令)
+        - [1.7.2. 镜像](#172-镜像)
+            - [1.7.2.1. 基本概念](#1721-基本概念)
+            - [1.7.2.2. 本地镜像的管理](#1722-本地镜像的管理)
+            - [1.7.2.3. Docker Hub 简介](#1723-docker-hub-简介)
+        - [1.7.3. 容器](#173-容器)
+            - [1.7.3.1. 容器的管理操作](#1731-容器的管理操作)
+            - [1.7.3.2. 容器内部信息的获取](#1732-容器内部信息的获取)
+            - [1.7.3.3. 容器的启动过程](#1733-容器的启动过程)
+        - [1.7.4. Docker File](#174-docker-file)
+            - [1.7.4.1. Docker File中的命令](#1741-docker-file中的命令)
+            - [1.7.4.2. docker build 说明](#1742-docker-build-说明)
+        - [1.7.5. 容器网络](#175-容器网络)
+            - [1.7.5.1. 基本原理](#1751-基本原理)
+            - [1.7.5.2. docker网络模式](#1752-docker网络模式)
+            - [1.7.5.3. 自定义网路](#1753-自定义网路)
+            - [1.7.5.4. 容器之间的通信](#1754-容器之间的通信)
+            - [1.7.5.5. 容器与外部通信](#1755-容器与外部通信)
+            - [1.7.5.6. 容器间通信](#1756-容器间通信)
+        - [1.7.6. 数据卷](#176-数据卷)
+            - [1.7.6.1. 基本概念](#1761-基本概念)
+            - [1.7.6.2. 数据卷操作](#1762-数据卷操作)
+            - [1.7.6.3. 共享数据卷](#1763-共享数据卷)
+        - [1.7.7. 案例](#177-案例)
+            - [1.7.7.1. docker 安装Mysqk主从复制](#1771-docker-安装mysqk主从复制)
+            - [1.7.7.2. docker 安装mycat](#1772-docker-安装mycat)
+        - [1.7.8. Docker Compose](#178-docker-compose)
+            - [1.7.8.1. 编排和部署](#1781-编排和部署)
+            - [1.7.8.2. 多容器的问题](#1782-多容器的问题)
+            - [1.7.8.3. Docker Compose 概述与安装](#1783-docker-compose-概述与安装)
+            - [1.7.8.4. 安装 Docker Compose](#1784-安装-docker-compose)
+            - [1.7.8.5. 基本使用](#1785-基本使用)
+            - [1.7.8.6. 快速入门](#1786-快速入门)
+                - [1.7.8.6.1. 工程、服务、容器](#17861-工程服务容器)
+                - [1.7.8.6.2. Docker Compose 常用命令与配置](#17862-docker-compose-常用命令与配置)
+                - [1.7.8.6.3. docker-compose.yml 属性](#17863-docker-composeyml-属性)
+                    - [1.7.8.6.3.1. 基本例子](#178631-基本例子)
+                    - [1.7.8.6.3.2. 配置选项](#178632-配置选项)
+            - [1.7.8.7. Docker Compose 其它](#1787-docker-compose-其它)
+                - [1.7.8.7.1. Compose 原理](#17871-compose-原理)
+    - [1.8. VIM](#18-vim)
+        - [1.8.1. 命令模式](#181-命令模式)
+        - [1.8.2. 常用命令](#182-常用命令)
+    - [1.9. NMON监控工具](#19-nmon监控工具)
+    - [1.10. 正则表达式](#110-正则表达式)
+    - [1.11. curl命令](#111-curl命令)
+    - [1.12. 常见时区缩写](#112-常见时区缩写)
+    - [1.13. 日志](#113-日志)
+        - [1.13.1. SLF4J](#1131-slf4j)
+            - [1.13.1.1. 基本介绍](#11311-基本介绍)
+            - [1.13.1.2. 依赖](#11312-依赖)
+            - [1.13.1.3. slf4j绑定log4j2日志系统启动分析](#11313-slf4j绑定log4j2日志系统启动分析)
+            - [1.13.1.4. slf4j绑定logback日志系统启动分析](#11314-slf4j绑定logback日志系统启动分析)
+            - [1.13.1.5. 总结](#11315-总结)
+        - [1.13.2. LOG4J2](#1132-log4j2)
+            - [1.13.2.1. 基本特性](#11321-基本特性)
+            - [1.13.2.2. 配置文件优先级](#11322-配置文件优先级)
+            - [1.13.2.3. 配置文件](#11323-配置文件)
+            - [1.13.2.4. 执行流程](#11324-执行流程)
+            - [1.13.2.5. 同步日志和异步日志](#11325-同步日志和异步日志)
+                - [1.13.2.5.1. AsyncAppender](#113251-asyncappender)
+                - [1.13.2.5.2. AsyncLogger](#113252-asynclogger)
+        - [1.13.3. LOGBACK](#1133-logback)
+    - [1.14. IDEA](#114-idea)
+        - [1.14.1. 常用快捷键](#1141-常用快捷键)
+        - [1.14.2. 常用插件](#1142-常用插件)
+    - [1.15. 面试考察](#115-面试考察)
+        - [1.15.1. 技术广度的考察](#1151-技术广度的考察)
+        - [1.15.2. 底层技术的考察](#1152-底层技术的考察)
+        - [1.15.3. 技术深度的考察](#1153-技术深度的考察)
 
 <!-- /TOC -->
 
@@ -200,8 +206,60 @@ dia
 ![](http://img5.imgtn.bdimg.com/it/u=4071081808,3892000553&fm=26&gp=0.jpg)
 * 分支相当于给当前的文件创建一个副本，在副本上进行修改，可以创建无数个分支进行同步开发，开发完成后再进行合并操作。
 
+### 1.3.2. 分支的概念
 
-### 1.3.2. 常用命令
+**分支的概念**
+在介绍两种方法之前，我们需要先了解一下分支的概念： 
+分支是用来标记特定代码的提交，每一个分支通过SHA1sum值来标识，所以对分支的操作是轻量级的，你改变的仅仅是SHA1sum值。
+
+如下图所示，当前有2个分支，A,C,E属于master分支，而A,B，D,F属于dev分支。
+
+```
+A----C----E（master）
+ \
+  B---D---F(dev)
+```
+它们的head指针分别指向E和F，对上述做如下操作：
+```
+git checkout master  //选择or切换到master分支
+git merge dev        //将dev分支合并到当前分支(master)中
+```
+合并完成后：
+```
+A---C---E---G(master)
+ \         /
+  B---D---F（dev）
+```
+现在ABCDEFG属于master，G是一次合并后的结果，是将E和Ｆ的代码合并后的结果，可能会出现冲突。而ABDF依然属于dev分支。可以继续在dev的分支上进行开发:
+
+```
+A---C---E---G---H(master)
+ \         /
+  B---D---F---I（dev）
+```
+
+#### 1.3.2.1. 常用分支说明
+
+* Master
+    * master永远都是发布版本的最新代码。
+    * master永远都是通过合并分支来改变，不允许提交代码。
+    * master发布完需要添加标签，标签为当前的版本号。
+    * 这样做的好处是为了更清楚的找到每个版本对应的代码，如果以后想做热修复可以直接将对应版本号的标签分支出来修改。
+* Vx.x.x_Develop
+    * 有新版本需要开发，从Master上建分支并且修改代码的VersionName和VersionCode提交
+    * 不允许在develop分支上直接修改代码进行提交，develop只能通过合并module和hot_fix分支进行改变，这样才能解决动态发布。
+* Vx.x.x_Release
+    * 这个分支是和Develop分支一样都从Master上建分支并且修改代码的VersionName和VersionCode提交
+    * 这个分支的作用主要是解决动态发布。什么是动态发布，举个栗子：假如并行开发两个功能模块moduleA、moduleB，在测试完成准备发布同时，由于公司层面或者一些其他原因导致moduleB不能上线，只单独上线moduleA。
+    * 这样我们将moduleA分支合并到Vx.x.x_Release分支，由于代码的修改只在各自的module分支上进行修改，所以合并之后的Vx.x.x_Release+moduleA就是经过测试可以发布代码，经过简单的回归测试就可以进行发布了，发布之后将Vx.x.x_Release合并到master上并且添加当前发布版本号的标签。
+* Vx.x.x_Hot_Fix
+    * hot_fix是用来做线上版本热修复的分支，一般都是从master分支出来的。假如要修改V1.7.0的bug，就从master标签为V1.7.0拉出来hot_fix分支，进行修改代码、测试，发布补丁包之后将hot_fix合并到master和develop上，保持master和develop是最新的代码，最后删除hot_fix分支。
+* Vx.x.x_ModuleX
+    * 根据功能进行分支moduleA、moduleB、moduleC等等，如果存在develop分支那么就在它上分支出来，如果develop不存在那么就在master上拉出分支。在开发测试阶段任何对代码的修改都需要在各自的module上进行，修改完成在合并到develop上进行测试，当版本发布了删除对应的module分支。
+
+不允许在develop上进行修改代码提交，更禁止在master上对代码进行修改提交。develop只允许通过合并module和hot_fix分支进行修改，master只允许通过合并发布之后的develop和发布之后的hot_fix分支进行修改。
+
+### 1.3.3. 常用命令
 * 查看版本
     * git --version
 * 配置
@@ -264,6 +322,14 @@ dia
         * dev 开发分支，比如说加新功能
         * fix 修复Bug分支
         * 每一次和master合并分支前，应当使用git pull 拉取远端仓库最新的代码，避免在push时出现冲突。
+    * git branch //查看本地所有分支 
+    * git branch -r //查看远程所有分支
+    * git branch -a //查看本地和远程的所有分支
+    * git branch branchname //新建分支
+    * git branch -d branchname//删除本地分支
+    * git branch -d -r branchname //删除远程分支，删除后还需推送到服务器
+    * git push origin:branchname  //删除后推送至服务器
+    * git branch -m oldbranch newbranc //重命名本地分支
     * 显示所有分支
         * git branch  带*的是当前的分支
         * git branch -a 显示远程分支和本地分支
@@ -278,9 +344,6 @@ dia
         * --no-ff：不使用fast-forward方式合并，保留分支的commit历史
         * --squash：使用squash方式合并，把多次分支commit历史压缩为一次
 
-
-    * 删除分支
-        * git branch -d fea-A
 * 更改提交
     * git reset --hard  HEAD^ 恢复到上一次提交
     * git reset --hard  HEAD^^^^^ 恢复到前5次提交
@@ -329,8 +392,32 @@ dia
         * target 忽略target 下的所有文件
     * 如果之前已经提交过，必须先执行如下清空缓存,否则远端的文件还是会存在。须在当前的工作目录执行。
         * git rm -r --cached .
+* git clone和git pull的区别
+    * 需不需要本地文件夹是仓库 
+        * git clone是将整个工程复制下来所以，不需要本地是仓库（没有.git文件夹）
+        * git pull需要先初始化本地文件夹文一个仓库
 
-### 1.3.3. 远程仓库版本回退
+* git fetch 用法
+    * git fetch 命令：git fetch <远程主机名> //这个命令将某个远程主机的更新全部取回本地
+    * 如果只想取回特定分支的更新，可以指定分支名：
+        * git fetch <远程主机名> <分支名> //注意之间有空格
+    * 最常见的命令如取回origin 主机的master 分支：
+        * git fetch origin master
+    * 取回更新后，会返回一个FETCH_HEAD ，指的是某个branch在服务器上的最新状态，我们可以在本地通过它查看刚取回的更新信息：
+        * git log -p FETCH_HEAD
+* git pull 用法
+    * 前面提到，git pull 的过程可以理解为：
+        * git fetch origin master //从远程主机的master分支拉取最新内容 
+        * git merge FETCH_HEAD    //将拉取下来的最新内容合并到当前所在的分支中
+    * 即将远程主机的某个分支的更新取回，并与本地指定的分支合并，完整格式可表示为：
+    * git pull <远程主机名> <远程分支名>:<本地分支名>
+    * 如果远程分支是与当前分支合并，则冒号后面的部分可以省略：
+        * git pull origin next
+* git fetch & pull详解
+    * git fetch是将远程主机的最新内容拉到本地，用户在检查了以后决定是否合并到工作本机分支中。
+    * 而git pull 则是将远程主机的最新内容拉下来后直接合并，即：git pull = git fetch + git merge，这样可能会产生冲突，需要手动解决。
+
+### 1.3.4. 远程仓库版本回退
 <a href="#menu" style="float:right">目录</a>
 
 有两种方法：git reset 和 git revert
@@ -404,6 +491,16 @@ revert 是撤销一次提交，所以后面的 commit id 是你需要回滚到�
 git revert 命令的好处就是不会丢掉别人的提交，即使你撤销后覆盖了别人的提交，他更新代码后，可以在本地用 reset 向前回滚，找到自己的代码，然后拉一下分支，再回来合并上去就可以找回被你覆盖的提交了。
 
 六. 如果错的太远，revert 又要解决大面积冲突，可以从错误提交的前一次拉取一份代码放到其他目录，然后将 master 的代码全部删除，把那份新的代码放上去，然后提交。
+
+### 1.3.5. Git开发流程
+
+#### 1.3.5.1. 开发流程
+
+* 创建仓库 git init ,并上传到github
+* 开发者新加入项目时克隆远端仓库到本地git clone
+* 创建一个自己的分支
+* 本地在自己的分支上进行修改,并时刻在自己的分支上提交代码,防止意外情况代码丢失
+* 自己的代码全部开发完成之后,切换到主分支,
 
 ## 1.4. Maven
 <a href="#menu" style="float:right">目录</a>
@@ -749,7 +846,9 @@ OS:           Linux 4.15.0-46-generic amd64
 ## 1.7. Docker
 <a href="#menu" style="float:right">目录</a>
 
-### 1.7.1. 基本概念
+### 1.7.1. Docker基础
+
+#### 1.7.1.1. 基本概念
 
 * Docker： 可以让开发者打包它们的应用和依赖包到一个可移植的容器中，然后将其发布到任何流行该的Linux机器上。利用docker,可以实现软件一次配置，出处运行。
 * DockerHub:存储DOCKER镜像远程仓库，类似GitHub,用户可以进行对镜像进行存储，分享，管理。
@@ -810,7 +909,18 @@ Docker作为一款优秀的容器集成软件，和传统的容器虚拟化工�
 * 必须是64位的机器上运行仅支持(X86_64和AMD64),不支持32位
 * 系统的Linux内核必须是3.8及以上版本的,内核支持Device Mapper,AUFS,VFS,btrfs等存储格式
 * 内核必须支持cgoups和命名空间
-### 1.7.2. docker的8个使用场景
+
+#### 1.7.1.2. 命名
+
+Namespace/Repository:Tag
+
+* Namespace：镜像的命名空间，用于区别构建镜像的组织或个人，所以我们在构建自己的镜像时，可以将自己的名字或代号放在命名空间里 。
+* Repository：镜像的档案名称，通常采用这个镜像中所包含的应用程序或者微服务的名字作为镜像的档案名称。
+* Tag：镜像的标签，类似于 Git 中的 Tag，我们习惯采用镜像的 Tag 来区别镜像的版本，所以镜像的 Tag 通常采用镜像所包含的应用程序或者微服务的版本来制定。
+
+每个镜像都有一个独立的 Image ID。镜像的 ID 是长度为 64 位的十六进制字符串，通过它也可以区分不同的镜像
+
+#### 1.7.1.3. docker的8个使用场景
 <a href="#menu" style="float:right">目录</a>
 
 * 简化配置
@@ -840,7 +950,7 @@ Docker作为一款优秀的容器集成软件，和传统的容器虚拟化工�
 
 
 
-### 1.7.3. Docker 安装
+#### 1.7.1.4. Docker 安装
 <a href="#menu" style="float:right">目录</a>
 
 * 文档地址 https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-from-a-package
@@ -944,7 +1054,7 @@ Server:
 WARNING: No swap limit support
 ```
             
-### 1.7.4. 常用指令
+#### 1.7.1.5. 常用指令
 <a href="#menu" style="float:right">目录</a>
 
 * 安装
@@ -958,10 +1068,10 @@ WARNING: No swap limit support
 * 查看正在运行的容器: docker ps -a
 * 查看容器信息: docker inspect 容器名称/ID
 
-### 1.7.5. 镜像
+### 1.7.2. 镜像
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.7.5.1. 基本概念
+#### 1.7.2.1. 基本概念
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -982,6 +1092,9 @@ WARNING: No swap limit support
     * 可读写(容器)
 * 镜像的本质是磁盘上一系列文件的集合。创建新的镜像是在原有的镜像文件上进行增删改，镜像之间并不孤立，而是上层依赖下层。
 * 镜像的写时复制机制
+    * 概念
+        * 在一些编程语言中，写时复制是指在复制某个数组或对象时，复制的过程并不是马上发生，而是先进行一些标记动作，只有需要对复制的数组或对象进行修改时，才会真正复制出这个变量的副本。 Docker 镜像的写时复制机制与之相似。
+        * 通过镜像在 Docker 中运行容器时，并不是马上就把镜像的所有内容复制到沙盒环境下，只是直接把沙盒环境建立在镜像的基础上。容器运行的沙盒环境其实就是镜像之上的一层新的可读写的镜像层，原有的镜像以只读的方式被衔接在新镜像层的下方。也就是说，容器的启动并不需要任何复制，也不需要单独开辟硬盘空间，只有容器中的程序对文件进行修改时，才会将原有镜像中这个需要被修改的文件复制到沙盒环境的镜像层中。
     * 流程
         * 创建一个容器时，实际上是在该镜像上创建一个空的可读写文件系统层级。可以将这个容器当成一个临时镜像。
         * 原镜像的内容都是以只读方式挂载进来的，容器会读取镜像的内容。
@@ -989,7 +1102,7 @@ WARNING: No swap limit support
     * 好处
         * Docker 的写时复制机制既保证了原有镜像不会受到容器运行的影响，又通过消除容器启动时复制镜像到沙盒环境的过程，大幅提升了容器的启动速度。 
 
-#### 1.7.5.2. 本地镜像的管理
+#### 1.7.2.2. 本地镜像的管理
 <a href="#menu" style="float:right">目录</a>
 
 * 查看本地镜像
@@ -1065,7 +1178,7 @@ Options:
         * docker load -i redis.tar
         * docker load < redis.tar
 
-#### 1.7.5.3. Docker Hub 简介
+#### 1.7.2.3. Docker Hub 简介
 
 Docker提供了部署在互联网服务器上的镜像仓库。而Docker Hub就是由Docker官方提供的镜像仓库.镜像仓库分为本地镜像仓库和远程镜像仓库。本地镜像仓库主要支持我们对镜像的操作并为容器的运行提供镜像，远程镜像仓库更多地用于对镜像的分发
 
@@ -1078,10 +1191,10 @@ docker login -u <username> -p <password> <server>
 在最后还可以给出需要连接的镜像仓库服务器的地址 。如果没有给出镜像仓库服务器的地址，会采用 Docker Daemon 中的默认值 .
 
 
-### 1.7.6. 容器
+### 1.7.3. 容器
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.7.6.1. 容器的管理操作
+#### 1.7.3.1. 容器的管理操作
 * 创建容器
     * docker create image-name
         * 创建的容器处于停止状态
@@ -1359,7 +1472,7 @@ Options:
 虽然容器的导入和镜像的导入都是导入到主机的本地镜像库中，但两者还是有区别的，因为容器的导出文件与镜像的导出文件在结构上是有差异的。容器的导出文件着重记录容器导出时容器内的状况，包括容器中所有的文件：而镜像的导出文件，除了记录所有镜像层的文件，还保持着镜像原有的元数据信息。所以，在使用空间上镜像的导出文件一般会比容器的导出文件大一些。
 
 
-#### 1.7.6.2. 容器内部信息的获取
+#### 1.7.3.2. 容器内部信息的获取
 <a href="#menu" style="float:right">目录</a>
 
 * 查看容器日志
@@ -1438,7 +1551,7 @@ CONTAINER ID  NAME   CPU %  MEM USAGE / LIMIT     MEM %  NET I/O      BLOCK I/O 
 * 容器内执行命令
     * docker exec -it container_name /bin/bash 执行时确保容器处于运行状态
 
-#### 1.7.6.3. 容器的启动过程
+#### 1.7.3.3. 容器的启动过程
 <a href="#menu" style="float:right">目录</a>
 
 * 创建容器时， Docker会先检查本地镜像库中是否有指定用于创建容器的镜像，如果没有在本地镜像库中找到镜像， Docker 会先从远程仓库中查找井下载到本地
@@ -1446,10 +1559,10 @@ CONTAINER ID  NAME   CPU %  MEM USAGE / LIMIT     MEM %  NET I/O      BLOCK I/O 
 * Docker 会配置容器的网络，连接到宿主机中专用的网桥上，并为容器分配网络地址。
 * 当我们启动已经创建好的容器时，所指定的应用程序会被运行，且容器会绑定到这个程序的启动进程上。当容器所绑定的进程结束时，容器也会随之停止
     
-### 1.7.7. Docker File
+### 1.7.4. Docker File
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.7.7.1. Docker File中的命令
+#### 1.7.4.1. Docker File中的命令
 
 **FROM**
 * 功能为指定基础镜像，并且必须是第一条指令。
@@ -1506,7 +1619,7 @@ CMD [ "echo", "$HOME" ]
 
 不要把RUN和CMD搞混了。
 RUN是构件容器时就运行的命令以及提交运行结果
-CMD是容器启动时执行的命令，在构件时并不运行，构件时紧紧指定了这个命令到底是个什么样子
+CMD是容器启动时执行的命令，在构件时并不运行，构件时仅仅指定了这个命令到底是个什么样子
 
 **LABEL**
 
@@ -1714,7 +1827,7 @@ CMD curl -f http://localhost/ || exit 1
 
 
 
-#### 1.7.7.2. docker build 说明 
+#### 1.7.4.2. docker build 说明 
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -1792,11 +1905,11 @@ OPTIONS说明：
 
 <a href="#menu" style="float:right">目录</a>
 
-### 1.7.8. 容器网络
+### 1.7.5. 容器网络
 <a href="#menu" style="float:right">目录</a>
 
 
-#### 1.7.8.1. 基本原理
+#### 1.7.5.1. 基本原理
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -1846,7 +1959,7 @@ Iptables 是 Linux 中用于管理网络过滤的程序，能够根据指定的�
 ![网络结构](https://github.com/lgjlife/Java-Study/blob/master/pic/util/docker/network-struct.png?raw=true)
 
 
-#### 1.7.8.2. docker网络模式
+#### 1.7.5.2. docker网络模式
 <a href="#menu" style="float:right">目录</a>
 
 安装Docker时，它会自动创建三个网络，bridge（创建容器默认连接到此网络，也就是在不使用--network参数时）、 none 、host。还有以后一种自定义模式，自定义模式有三种：bridge、overlay、macvlan。
@@ -1912,7 +2025,7 @@ host 网络直接使用宿主机的网络环境。容器如果绑定在 host 网
     * 查看 docker inspect redis7205 |grep IPAddress
     * docker inspect --format '{{.NetworkSettings.IPAddress}}' mysqlslaver
 
-#### 1.7.8.3. 自定义网路
+#### 1.7.5.3. 自定义网路
 <a href="#menu" style="float:right">目录</a>
 
 如果没有为容器选定网络，则 Docker 会将新创建的容器连接到 bridge 默认网络上 。这样在一个网络中的容器，就有了互相进行访问的可能性，这在某些情况下并不是我们所期望的 。 有时，对于由数个容器所组成的一个小型模块，我们希望这些容器只能相互访问，而不能访问其他容器， 1 也不能被其他容器访问。此时，就需要为这几个容器单独分配网络，让它们连接到一个独立的网络中，从而隔绝其他网络中的容器对这几个容器的连接。
@@ -1970,7 +2083,7 @@ Options:
 |docker network rm|删除一个或多个网络
 
 
-#### 1.7.8.4. 容器之间的通信
+#### 1.7.5.4. 容器之间的通信
 <a href="#menu" style="float:right">目录</a>
 
 容器之间可通过IP，DockerDNSServer和joined容器三种方式通信。
@@ -2009,7 +2122,7 @@ joined 容器非常适合以下场景：
 
 希望监控其他容器的网络流量，比如运行在独立容器中的网络监控程序。
 
-#### 1.7.8.5. 容器与外部通信
+#### 1.7.5.5. 容器与外部通信
 <a href="#menu" style="float:right">目录</a>
 
 在默认情况下，容器位于Docker管理的dockerO网桥中，这个网桥搭建在宿主机的一张虚拟网卡上，不与宿主机的其他网络挂钩。也就是说，容器所在的网络环境其实是隔绝在宿主机内的，宿主机外的计算机和程序是无法发觉和发现容器网络的存在的，也无法连接到容器上。
@@ -2074,7 +2187,7 @@ DNAT       tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:3521 to:17
     * 查看容器所有信息，包括端口映射
         * docker inspect name|id 
         
-#### 1.7.8.6. 容器间通信
+#### 1.7.5.6. 容器间通信
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -2122,12 +2235,15 @@ ff02::2	ip6-allrouters
 172.17.0.3	e100b11eef79
 
 ```
+被连接容器的容器皿前 12 位及容器名称都会被解析到被连接容器的IP上。
 
-### 1.7.9. 数据卷
+
+
+### 1.7.6. 数据卷
 <a href="#menu" style="float:right">目录</a>
 
 
-#### 1.7.9.1. 基本概念
+#### 1.7.6.1. 基本概念
 <a href="#menu" style="float:right">目录</a>
 
 容器内的文件环境，是由联合文件系统提供的一个临时层，虽然能够让程序随意操作其中的文件，但所有的读写都是在北］；盒环境中进行的。当容器停止运行并被删除时，这个临时记录着文件修改的层就会被一同丢弃。即使我们能够通过提交镜像的方式保存容器中文件的修改，但利用这种方式实现文件的持久化不但操作过于烦琐，也不便于进行自动化管理，仍然达不到我们想要的效果。更何况通过镜像的方式保存文件，只解决了文件的输出问题，并没有解决文件输入的问题。
@@ -2169,7 +2285,7 @@ ff02::2	ip6-allrouters
 
 使用挂载宿主机目录或文件成为数据卷的方式，可以非常方便地在容器内部与外部之间共享文件。特别是将配置、代码类可能需要临时修改的文件，通过主机目录挂载的方式放置到容器中时，修改结果会马上体现到容器里，让修改文件变得更加简单。
 
-#### 1.7.9.2. 数据卷操作
+#### 1.7.6.2. 数据卷操作
 <a href="#menu" style="float:right">目录</a>
 
 * 创建数据卷
@@ -2274,7 +2390,7 @@ Commands:
 
 ```
 
-#### 1.7.9.3. 共享数据卷
+#### 1.7.6.3. 共享数据卷
 <a href="#menu" style="float:right">目录</a>
 
 若要更好地在容器之间共享数据卷，可以使用数据卷容器来实现。通过数据卷容器，我们可以更轻松地将数据卷进行归类和汇总，也能更好地管理容器与数据卷之间的关系，并且可以更加合理地控制数据卷的生命周期。
@@ -2295,13 +2411,13 @@ Commands:
     * 容器bbb 将共享容器aaa的数据卷
     * 无论是声明数据卷的容器还是后续引用该数据卷的容器，容器的停止和删除都不会导致数据卷本身删除。如果需要将数据卷删除，那么需要删除所有它依赖的容器，并且在删除最后一个依赖的容器时加入-v标识。docker rm -v name|id
 
-### 1.7.10. 案例
+### 1.7.7. 案例
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.7.10.1. docker 安装Mysqk主从复制
+#### 1.7.7.1. docker 安装Mysqk主从复制
 * https://www.cnblogs.com/songwenjie/p/9371422.html
 
-#### 1.7.10.2. docker 安装mycat
+#### 1.7.7.2. docker 安装mycat
 
 
 * 安装openjdk:8镜像
@@ -2311,10 +2427,10 @@ Commands:
     * http://dl.mycat.io/1.6.7.1/
 * 
 
-## 1.8. Docker Compose
+### 1.7.8. Docker Compose
 <a href="#menu" style="float:right">目录</a>
 
-### 1.8.1. 编排和部署
+#### 1.7.8.1. 编排和部署
 
 **编排(orchestration)**
 编排指根据被部署的对象之间的耦合关系，以及被部署对象对环境的依赖，制定部署流程中各个动作的执行顺序，部署过程所需要的依赖文件和被部署文件的存储位置和获取方式，以及如何验证部署成功。这些信息都会在编排工具中以指定的格式(比如配置文件或特定的代码)来要求运维人员定义并保存起来，从而保证这个流程能够随时在全新的环境中可靠有序地重现出来。
@@ -2324,7 +2440,7 @@ Commands:
 
 所以说，编排是一个指挥家，他的大脑里存储了整个乐曲此起彼伏的演奏流程，对于每一个小节每一段音乐的演奏方式都了然于胸。而部署就是整个乐队，他们严格按照指挥家的意图用乐器来完成乐谱的执行。最终，两者通过协作就能把每一位演奏者独立的演奏通过组合、重叠、衔接来形成高品位的交响乐。这也是 docker compose 要完成的使命。
 
-### 1.8.2. 多容器的问题
+#### 1.7.8.2. 多容器的问题
 
 * 要从Dockerfile build image 或者去dockerhub拉取image
 * 要创建多个container
@@ -2332,12 +2448,12 @@ Commands:
 
 Docker Compose 通过文本的方式，把要处理的容器按照顺序执行，如果是多容器也就是通过一条命令就搞定了
 
-### 1.8.3. Docker Compose 概述与安装
+#### 1.7.8.3. Docker Compose 概述与安装
 
 * 使用 Docker 的时候，定义 Dockerfile 文件，然后使用 docker build、docker run 等命令操作容器。然而微服务架构的应用系统一般包含若干个微服务，每个微服务一般都会部署多个实例，如果每个微服务都要手动启停，那么效率之低，维护量之大可想而知
 * 使用 Docker Compose 可以轻松、高效的管理容器，它是一个用于定义和运行多容器 Docker 的应用程序工具
 
-### 1.8.4. 安装 Docker Compose
+#### 1.7.8.4. 安装 Docker Compose
 
 安装 Docker Compose 可以通过下面命令自动下载适应版本的 Compose，并为安装脚本添加执行权限
 ```
@@ -2352,9 +2468,12 @@ sudo apt install docker-compose
 查看安装是否成功
 ```
 docker-compose -v
+
+docker-compose version 1.8.0, build unknown
+
 ```
 
-### 1.8.5. 基本使用
+#### 1.7.8.5. 基本使用
 
 * Compose 的使用方式非常简单，基本上就是下面的三板斧：
     * 定义 Dockerfile
@@ -2374,7 +2493,7 @@ Compose 是一个用户定义和运行多个容器的 Docker 应用程序。在 
 * 在 docker-compose.yml 中定义组成应用程序的服务，以便它们可以在隔离的环境中一起运行。
 * 最后，运行dcoker-compose up，Compose 将启动并运行整个应用程序。
 
-### 1.8.6. 快速入门
+#### 1.7.8.6. 快速入门
 
 打包项目，获得 jar 包 docker-demo-0.0.1-SNAPSHOT.jar
 ```
@@ -2409,12 +2528,12 @@ docker-compose up -d  // 后台启动并运行容器
 
 访问 http://localhost:9000/hello 即可访问微服务接口
 
-### 1.8.7. 工程、服务、容器
+##### 1.7.8.6.1. 工程、服务、容器
 
 * Docker Compose 将所管理的容器分为三层，分别是工程（project）、服务（service）、容器（container）
 * Docker Compose 运行目录下的所有文件（docker-compose.yml）组成一个工程,一个工程包含多个服务，每个服务中定义了容器运行的镜像、参数、依赖，一个服务可包括多个容器实例
 
-### 1.8.8. Docker Compose 常用命令与配置
+##### 1.7.8.6.2. Docker Compose 常用命令与配置
 
 ps：列出所有运行容器
 ```
@@ -2456,7 +2575,7 @@ docker-compose kill eureka
 ```
 pull：下载服务镜像
 
-scale：设置指定服务运气容器的个数，以 service=num 形式指定
+scale：设置指定服务运行容器的个数，以 service=num 形式指定
 ```
 docker-compose scale user=3 movie=3
 ```
@@ -2467,7 +2586,7 @@ run：在一个服务上执行一个命令
 docker-compose run web bash
 ```
 
-### 1.8.9. docker-compose.yml 属性
+##### 1.7.8.6.3. docker-compose.yml 属性
 
 
 * version：指定 docker-compose.yml 文件的写法格式
@@ -2476,7 +2595,7 @@ docker-compose run web bash
     * service的启动类似docker run，我们可以给其指定network和volme，所以可以给service指定network和volume的引用
 * build：配置构建时，Compose 会利用它自动构建镜像，该值可以是一个路径，也可以是一个对象，用于指定 Dockerfile 参数
 
-#### 1.8.9.1. 基本例子
+###### 1.7.8.6.3.1. 基本例子
 
 ```yml
 #docker-Compse的版本
@@ -2514,7 +2633,7 @@ networks:
     driver: bridge
 ```
 
-#### 1.8.9.2. 配置选项
+###### 1.7.8.6.3.2. 配置选项
 <a href="#menu" style="float:right">目录</a>
 
 **bulid**
@@ -3737,7 +3856,7 @@ extends:
 
 
 
-### 1.8.10. Docker Compose 其它
+#### 1.7.8.7. Docker Compose 其它
 <a href="#menu" style="float:right">目录</a>
 
 更新容器
@@ -3759,7 +3878,7 @@ services:
 
 这样 Web 服务就可以使用 db 或 database 作为 hostname 访问 db 服务了
 
-### 1.8.11. Compose 原理
+##### 1.7.8.7.1. Compose 原理
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -3786,7 +3905,7 @@ compose 的调用流程
 **最后**，contaier 模块会调用 docker-py 客户端来执行向 docker daemon 发起创建容器的 POST 请求。
 
 
-## 1.9. VIM
+## 1.8. VIM
 <a href="#menu" style="float:right">目录</a>
 
 * 安装
@@ -3799,7 +3918,7 @@ compose 的调用流程
 * 支持鼠标操作
     * 输入命令 set mouse=a
 
-### 1.9.1. 命令模式
+### 1.8.1. 命令模式
 
 
 基本上 vi/vim 共分为三种模式，分别是命令模式（Command mode），输入模式（Insert mode）和底线命令模式（Last line mode）。 这三种模式的作用分别是：
@@ -3845,7 +3964,7 @@ compose 的调用流程
 
 
 
-### 1.9.2. 常用命令
+### 1.8.2. 常用命令
 
 ![](https://img2018.cnblogs.com/blog/685007/201902/685007-20190219103545499-1516663381.png)
 ![](https://img2018.cnblogs.com/blog/685007/201902/685007-20190219103431877-1441653557.png)
@@ -3959,7 +4078,7 @@ compose 的调用流程
 举例来说，要删除 50 行，则是用 『50dd』 对吧！ 数字加在动作之前，如我要向下移动20 行呢？那就是『20j』或者是『20↓』即可。
 
 
-## 1.10. NMON监控工具
+## 1.9. NMON监控工具
 
 <a href="#menu" style="float:right">目录</a>
 
@@ -3979,7 +4098,7 @@ compose 的调用流程
 
 ```
 
-## 1.11. 正则表达式
+## 1.10. 正则表达式
 正则表达式(regular expression)描述了一种字符串匹配的模式（pattern），可以用来检查一个串是否含有某种子串、将匹配的子串替换或者从某个串中取出符合某个条件的子串等。
 
 **非打印字符**
@@ -4146,7 +4265,7 @@ compose 的调用流程
 ```
 
 
-## 1.12. curl命令
+## 1.11. curl命令
 <a href="#menu" style="float:right">目录</a>
 
 curl 是一种命令行工具，作用是发出网络请求，然后获取数据，显示在"标准输出"（stdout）上面。它支持多种协议，下面列举其常用功能。
@@ -4466,7 +4585,7 @@ Options: (H) means HTTP/HTTPS only, (F) means FTP only
  -q                 If used as the first parameter disables .curlrc
 ```
 
-## 1.13. 常见时区缩写
+## 1.12. 常见时区缩写
 <a href="#menu" style="float:right">目录</a>
 
 IDLE +12:00 国际日期变更线，东边 
@@ -4523,11 +4642,11 @@ NT -11:00 州时间（Nome Time）
 IDLW -12:00 国际日期变更线，西边
 
 
-## 1.14. 日志 
+## 1.13. 日志 
 
-### 1.14.1. SLF4J
+### 1.13.1. SLF4J
 
-#### 1.14.1.1. 基本介绍 
+#### 1.13.1.1. 基本介绍 
 <a href="#menu" style="float:right">目录</a>
 
 ![](https://images0.cnblogs.com/blog/449064/201412/071507136869713.jpg)
@@ -4551,7 +4670,7 @@ slf4j是门面模式的典型应用.门面模式，其核心为外部与一个�
 使用日志接口便于更换为其他日志框架
 log4j、logback、log4j2都是一种日志具体实现框架，所以既可以单独使用也可以结合slf4j一起搭配使用。
 
-#### 1.14.1.2. 依赖
+#### 1.13.1.2. 依赖
 
 SpringBoot默认使用logback,spring-boot-starter中已经包含日志的依赖
 ```xml
@@ -4579,7 +4698,7 @@ SpringBoot默认使用logback,spring-boot-starter中已经包含日志的依赖
 </dependency>
 ```
 
-#### 1.14.1.3. slf4j绑定log4j2日志系统启动分析
+#### 1.13.1.3. slf4j绑定log4j2日志系统启动分析
 <a href="#menu" style="float:right">目录</a>
 
 ```java
@@ -4844,7 +4963,7 @@ AbstractConfiguration.png
 ![AbstractConfiguration](https://github.com/lgjlife/Java-Study/blob/master/pic/util/log/AbstractConfiguration.png?raw=true)
 
 
-#### 1.14.1.4. slf4j绑定logback日志系统启动分析
+#### 1.13.1.4. slf4j绑定logback日志系统启动分析
 <a href="#menu" style="float:right">目录</a>
 
 再回到getILoggerFactory()方法
@@ -5031,7 +5150,7 @@ public class LoggerContext extends ContextBase implements ILoggerFactory, LifeCy
     
 }
 ```
-#### 1.14.1.5. 总结 
+#### 1.13.1.5. 总结 
 <a href="#menu" style="float:right">目录</a>
 
 1. 先搜索类路径下StaticLoggerBinder的实现类,由日志实现库提供
@@ -5042,11 +5161,11 @@ public class LoggerContext extends ContextBase implements ILoggerFactory, LifeCy
 6. 生成LogEvent对象,这个对象包括,日志时间,级别,内容,线程等信息
 7. 循环执行logger对应的appender
 
-### 1.14.2. LOG4J2
+### 1.13.2. LOG4J2
 
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.14.2.1. 基本特性
+#### 1.13.2.1. 基本特性
 <a href="#menu" style="float:right">目录</a>
 
 * Log4j2旨在用作审计日志框架。 Log4j 1.x和Logback都会在重新配置时丢失事件。 Log4j2不会。在Logback中，Appender中的异常永远不会对应用程序可见。在Log4j中，可以将Appender配置为允许异常渗透到应用程序。
@@ -5066,7 +5185,7 @@ public class LoggerContext extends ContextBase implements ILoggerFactory, LifeCy
 
 ![](http://logging.apache.org/log4j/2.x/images/Log4jClasses.jpg)
 
-#### 1.14.2.2. 配置文件优先级
+#### 1.13.2.2. 配置文件优先级
 <a href="#menu" style="float:right">目录</a>
 
 * Log4j will inspect the "log4j.configurationFile" system property and, if set, will attempt to load the configuration using the ConfigurationFactory that matches the file extension.
@@ -5080,7 +5199,7 @@ public class LoggerContext extends ContextBase implements ILoggerFactory, LifeCy
 * If a JSON file cannot be located the XML ConfigurationFactory will try to locate log4j2.xml on the classpath.
 * If no configuration file could be located the DefaultConfiguration will be used. This will cause logging output to go to the console.
 
-#### 1.14.2.3. 配置文件
+#### 1.13.2.3. 配置文件
 <a href="#menu" style="float:right">目录</a>
 
 ```xml
@@ -5301,7 +5420,7 @@ public class LoggerContext extends ContextBase implements ILoggerFactory, LifeCy
 
 [更多配置参考官网文档：http://logging.apache.org/log4j/2.x/manual/layouts.html](http://logging.apache.org/log4j/2.x/manual/layouts.html)
 
-#### 1.14.2.4. 执行流程
+#### 1.13.2.4. 执行流程
 
 * Log4j2中日志输出的详细过程如下：
     * 1.首先使用全局Filter对日志事件进行过滤。
@@ -5329,7 +5448,7 @@ public class LoggerContext extends ContextBase implements ILoggerFactory, LifeCy
     * 使用OutputStream，将日志输出到文件。
         * 将日志字符串序列化为字节数组，使用字节流OutoutStream将日志输出到文件中。如果配置了immediateFlush为true，打开app.log就可观察到输出的日志了
 
-#### 1.14.2.5. 同步日志和异步日志
+#### 1.13.2.5. 同步日志和异步日志
 <a href="#menu" style="float:right">目录</a>
 
 所谓同步日志，即当输出日志时，必须等待日志输出语句执行完毕后，才能执行后面的业务逻辑语句。
@@ -5349,7 +5468,7 @@ Log4j2中的异步日志实现方式有AsyncAppender和AsyncLogger两种。
 |Async Logger	|异步打印日志，采用了高性能并发框架Disruptor，创建一个线程用于处理日志输出。
 
 
-##### 1.14.2.5.1. AsyncAppender
+##### 1.13.2.5.1. AsyncAppender
 
 ```XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -5390,7 +5509,7 @@ AsyncAppender的常用参数
 
 每个Async Appender，内部维护了一个ArrayBlockingQueue，并将创建一个线程用于输出日志事件，如果配置了多个AppenderRef，将分别使用对应的Appender进行日志输出。
 
-##### 1.14.2.5.2. AsyncLogger
+##### 1.13.2.5.2. AsyncLogger
 
 Log4j2中的AsyncLogger的内部使用了Disruptor框架。
 
@@ -5490,12 +5609,12 @@ Disruptor框架内部核心数据结构为RingBuffer，其为无锁环形队列
 ![吞吐量比较图](http://logging.apache.org/log4j/2.x/images/async-throughput-comparison.png)
 
 
-### 1.14.3. LOGBACK
+### 1.13.3. LOGBACK
 <a href="#menu" style="float:right">目录</a>
 
-## 1.15. IDEA 
+## 1.14. IDEA 
 
-### 1.15.1. 常用快捷键
+### 1.14.1. 常用快捷键
 <a href="#menu" style="float:right">目录</a>
 
 ```
@@ -5567,7 +5686,7 @@ Ctrl+Y，删除当前行
 
 
 Shift+Enter，向下插入新行
-psvm/sout，main/System.out.println(); Ctrl+J，查看更多
+psvm/sout，main/System.out.println(); Ctrl+J���查看更多
 Ctrl+Shift+F，全局查找
 Ctrl+F，查找/Shift+F3，向上查找/F3，向下查找
 Ctrl+Shift+S，高级搜索
@@ -5636,7 +5755,7 @@ Ctrl+F7，在文件中查找用法
 Ctrl+Shift+F7，在文件中高亮显示用法
 ```
 
-### 1.15.2. 常用插件
+### 1.14.2. 常用插件
 <a href="#menu" style="float:right">目录</a>
 
 **Maven Helper**
@@ -5695,10 +5814,10 @@ K8s工具
 
 
 
-## 1.16. 面试考察
+## 1.15. 面试考察
 <a href="#menu" style="float:right">目录</a>
 
-### 1.16.1. 技术广度的考察
+### 1.15.1. 技术广度的考察
 <a href="#menu" style="float:right">目录</a>
 
 首先考察候选人技术面的完整性，因为工作中是需要具备一定的技术视野的，不能说光知道消息中间件，但是分布式缓存却一无所知。
@@ -5719,7 +5838,7 @@ K8s工具
 而是说你工作几年以后，应该有一定的技术广度，开阔的技术视野。
 
 
-### 1.16.2. 底层技术的考察
+### 1.15.2. 底层技术的考察
 <a href="#menu" style="float:right">目录</a>
 
 现在很多互联网大厂都会有基本功的考察，举个例子，Java虚拟机的核心原理、内存模型、垃圾回收、线上FullGC卡顿性能优化、线上OOM内存溢出问题你处理。
@@ -5735,7 +5854,7 @@ Netty背后的IO、网络相关的知识。
 而且很多时候，解决线上系统的生产故障，都需要这些技术。因此，底层技术的掌握是一个优秀工程师必须具备的素养。
 
 
-### 1.16.3. 技术深度的考察
+### 1.15.3. 技术深度的考察
 <a href="#menu" style="float:right">目录</a>
 
 此外，我们一定会深入考察候选人平时工作中熟悉的以及常用的一些技术。
