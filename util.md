@@ -30,7 +30,16 @@
         - [1.4.1. 基本概念](#141-基本概念)
         - [1.4.2. 基本命令](#142-基本命令)
         - [1.4.3. Maven中的dependency详解](#143-maven中的dependency详解)
-        - [1.4.4. Maven依赖冲突的产生原因和解决方式](#144-maven依赖冲突的产生原因和解决方式)
+        - [1.4.4. Maven中pom文件详解](#144-maven中pom文件详解)
+            - [1.4.4.1. 基础信息](#1441-基础信息)
+            - [1.4.4.2. 构建设置](#1442-构建设置)
+            - [1.4.4.3. 更多项目信息](#1443-更多项目信息)
+            - [1.4.4.4. 环境设置](#1444-环境设置)
+        - [1.4.5. Maven依赖冲突的产生原因和解决方式](#145-maven依赖冲突的产生原因和解决方式)
+        - [1.4.6. maven搭建父子项目](#146-maven搭建父子项目)
+            - [1.4.6.1. 创建父项目](#1461-创建父项目)
+            - [1.4.6.2. 创建子项目](#1462-创建子项目)
+            - [1.4.6.3. 说明](#1463-说明)
     - [1.5. Gradle](#15-gradle)
         - [1.5.1. 基本介绍](#151-基本介绍)
         - [1.5.2. 安装](#152-安装)
@@ -105,13 +114,54 @@
                 - [1.13.2.5.1. AsyncAppender](#113251-asyncappender)
                 - [1.13.2.5.2. AsyncLogger](#113252-asynclogger)
         - [1.13.3. LOGBACK](#1133-logback)
-    - [1.14. IDEA](#114-idea)
-        - [1.14.1. 常用快捷键](#1141-常用快捷键)
-        - [1.14.2. 常用插件](#1142-常用插件)
-    - [1.15. 面试考察](#115-面试考察)
-        - [1.15.1. 技术广度的考察](#1151-技术广度的考察)
-        - [1.15.2. 底层技术的考察](#1152-底层技术的考察)
-        - [1.15.3. 技术深度的考察](#1153-技术深度的考察)
+    - [1.14. Markdown语法](#114-markdown语法)
+        - [1.14.1. 标题](#1141-标题)
+        - [1.14.2. 列表](#1142-列表)
+        - [1.14.3. 插入图片和链接](#1143-插入图片和链接)
+        - [1.14.4. 粗体和斜体](#1144-粗体和斜体)
+        - [1.14.5. 代码引用](#1145-代码引用)
+        - [1.14.6. 表格](#1146-表格)
+        - [1.14.7. 数学公式](#1147-数学公式)
+        - [1.14.8. 插入UML图](#1148-插入uml图)
+        - [1.14.9. 插入甘特图](#1149-插入甘特图)
+        - [1.14.10. 其他](#11410-其他)
+        - [1.14.11. 注脚](#11411-注脚)
+    - [1.15. IDEA](#115-idea)
+        - [1.15.1. 常用快捷键](#1151-常用快捷键)
+        - [1.15.2. 常用插件](#1152-常用插件)
+    - [1.16. npm工具](#116-npm工具)
+        - [1.16.1. 基本概念](#1161-基本概念)
+        - [package.json](#packagejson)
+        - [npm 常用工具](#npm-常用工具)
+        - [1.16.2. NPM仓库](#1162-npm仓库)
+        - [1.16.3. 包格式](#1163-包格式)
+        - [1.16.4. 使用 npm 命令安装模块](#1164-使用-npm-命令安装模块)
+        - [1.16.5. 全局安装与本地安装](#1165-全局安装与本地安装)
+        - [1.16.6. 查看安装信息](#1166-查看安装信息)
+        - [1.16.7. 卸载模块](#1167-卸载模块)
+        - [1.16.8. 更新模块](#1168-更新模块)
+        - [1.16.9. 搜索模块](#1169-搜索模块)
+        - [1.16.10. 使用淘宝 NPM 镜像](#11610-使用淘宝-npm-镜像)
+    - [1.17. Java 服务的线上应急、和技术攻关](#117-java-服务的线上应急和技术攻关)
+        - [1.17.1. 线上应急的目标、 原则和方法](#1171-线上应急的目标-原则和方法)
+            - [1.17.1.1. 应急目标](#11711-应急目标)
+            - [1.17.1.2. 应急原则](#11712-应急原则)
+            - [1.17.1.3. 线上应急的方法和流程](#11713-线上应急的方法和流程)
+    - [1.18. 软件开发](#118-软件开发)
+        - [1.18.1. 常用的４种开发方式](#1181-常用的４种开发方式)
+            - [1.18.1.1. 瀑布式开发](#11811-瀑布式开发)
+            - [1.18.1.2. 迭代式开发](#11812-迭代式开发)
+            - [1.18.1.3. 螺旋式开发](#11813-螺旋式开发)
+            - [1.18.1.4. 敏捷软件开发](#11814-敏捷软件开发)
+            - [1.18.1.5. 敏捷开发 2.0](#11815-敏捷开发-20)
+            - [1.18.1.6. 总结](#11816-总结)
+    - [1.19. 面试考察](#119-面试考察)
+        - [1.19.1. 技术广度的考察](#1191-技术广度的考察)
+        - [1.19.2. 底层技术的考察](#1192-底层技术的考察)
+        - [1.19.3. 技术深度的考察](#1193-技术深度的考察)
+    - [1.20. 墨菲定律与康威定律](#120-墨菲定律与康威定律)
+        - [1.20.1. 墨菲定律](#1201-墨菲定律)
+        - [1.20.2. 康威定律](#1202-康威定律)
 
 <!-- /TOC -->
 
@@ -546,13 +596,57 @@ groupId、artifactId、version共同组成一个jar包的唯一标识.
     * properties是用来定义一些配置属性的，例如project.build.sourceEncoding（项目构建源码编码方式），可以设置为UTF-8，防止中文乱码，也可定义相关构建版本号，便于日后统一升级。
 * build
     * build表示与构建相关的配置，比如build下有finalName，表示的就是最终构建之后的名称。
+* classifier
+    * 定义构件输出的附属构件
+    * 不能直接定义一个 Maven 项目的 classifier，因为附属构件不是由 Maven 项目构建的时候直接默认生成的，而是由附加的其他插件生成的。
 
-Maven的目录结构：
+一个完整的坐标信息，由 groupId、artifactId、version、packaging、classifier 组成.groupId、artifactId 和 version 是必需的，packaging 是可选的，默认是 jar，而 classifier 是不能直接定义的.
+
+
+* maven中的三种工程：
+    * 1.pom工程：用在父级工程或聚合工程中。用来做jar包的版本控制。
+    * 2.war工程：将会打包成war，发布在服务器上的工程。如网站或服务。
+    * 3.jar工程：将会打包成jar用作jar包使用。
+
+**Maven的目录结构：**
+
+```
+- root
+    - src
+        - main
+            - java
+            - resource
+        - test 
+            - java
+    - target
+        - classes
+        - xxx.jar
+    - pom.xml
+```
 * main目录下是项目的主要代码，test目录下存放测试相关的代码
 * 编译输出后的代码会放在target目录下
 * src/main/java下存放Java代码，src/main/resources下存放配置文件
 * 这里没有webapp，Web项目会有webapp目录，webapp下存放Web应用相关代码
 * pom.xml是Maven项目的配置文件
+
+
+**POM关系**
+POM有3个很重要的关系：依赖、继承、合成。
+
+* 依赖关系
+```xml
+<dependencies></dependencies>
+```
+* 继承
+```xml
+<parent></parent>
+```
+* 合成
+```xml
+<modules> 
+  <module><module>  
+</modules>  
+```
 
 ### 1.4.2. 基本命令
 <a href="#menu" style="float:right">目录</a>
@@ -582,6 +676,7 @@ Maven的目录结构：
     </exclusions>
 </dependency>
 ```
+
 
 ### 1.4.3. Maven中的dependency详解
 <a href="#menu" style="float:right">目录</a>
@@ -710,7 +805,439 @@ a->b->x(2.0)
 **可选依赖**
 假设有 a->b，b->x和 b->y的 optional值都是true，那么a对于x和y的依赖不会被传递，如果a想要使用x或y的包，那么需要在a中重新进行依赖
 
-### 1.4.4. Maven依赖冲突的产生原因和解决方式
+### 1.4.4. Maven中pom文件详解
+
+ pom作为项目对象模型。通过xml表示maven项目，使用pom.xml来实现。主要描述了项目：包括配置文件；开发者需要遵循的规则，缺陷管理系统，组织和licenses，项目的url，项目的依赖性，以及其他所有的项目相关因素。
+
+```xml
+<project>
+  <modelVersion>4.0.0</modelVersion>
+<!--maven2.0必须是这样写，现在是maven2唯一支持的版本-->
+  <!-- 基础设置 -->
+  <groupId>...</groupId>
+  <artifactId>...</artifactId>
+  <version>...</version>
+  <packaging>...</packaging>
+  <name>...</name>
+  <url>...</url>
+  <dependencies>...</dependencies>
+  <parent>...</parent>
+  <dependencyManagement>...</dependencyManagement>
+  <modules>...</modules>
+  <properties>...</properties>
+ 
+  <!--构建设置 -->
+  <build>...</build>
+  <reporting>...</reporting>
+ 
+  <!-- 更多项目信息 -->
+  <name>...</name>
+  <description>...</description>
+  <url>...</url>
+  <inceptionYear>...</inceptionYear>
+  <licenses>...</licenses>
+  <organization>...</organization>
+  <developers>...</developers>
+  <contributors>...</contributors>
+ 
+  <!-- 环境设置-->
+  <issueManagement>...</issueManagement>
+  <ciManagement>...</ciManagement>
+  <mailingLists>...</mailingLists> 
+  <scm>...</scm>
+  <prerequisites>...</prerequisites>
+  <repositories>...</repositories>
+  <pluginRepositories>...</pluginRepositories>
+  <distributionManagement>...</distributionManagement>
+  <profiles>...</profiles>
+</project>
+
+```
+
+
+#### 1.4.4.1. 基础信息
+
+* groupId:项目或者组织的唯一标志，并且配置时生成路径也是由此生成，如org.myproject.mojo生成的相对路径为：/org/myproject/mojo
+* artifactId:项目的通用名称
+* version:项目的版本
+* packaging:打包机制，如pom,jar,maven-plugin,ejb,war,ear,rar,par
+* name:用户描述项目的名称，无关紧要的东西，可选
+* url:应该是只是写明开发团队的网站，无关紧要，可选
+* classifer:分类
+
+其中groupId,artifactId,version,packaging这四项组成了项目的唯一坐标。一般情况下，前面三项就可以组成项目的唯一坐标了。
+
+POM关系：主要为依赖，继承，合成
+
+依赖关系：
+```xml
+<dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.0</version>
+      <type>jar</type>
+      <scope>test</scope>
+      <optional>true</optional>
+    </dependency>
+ 
+    <dependency>
+        <groupId>com.alibaba.china.shared</groupId>
+        <artifactId>alibaba.apollo.webx</artifactId>
+        <version>2.5.0</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>org.slf4j.slf4j-api</artifactId>
+            <groupId>com.alibaba.external</groupId>
+          </exclusion>
+          ....
+        </exclusions>
+    <dependency>
+......
+</dependencies>
+```
+其中groupId, artifactId, version这三个组合标示依赖的具体工程，而且这个依赖工程必需是maven中心包管理范围内的，如果碰上非开源包，maven支持不了这个包，那么则有三种方法处理：
+
+* 本地安装这个插件install plugin
+例如：mvn install:intall-file -Dfile=non-maven-proj.jar -DgroupId=som.group -DartifactId=non-maven-proj -Dversion=1
+* 创建自己的repositories并且部署这个包，使用类似上面的deploy:deploy-file命令，
+* 设置scope为system,并且指定系统路径
+
+**dependency里属性介绍：**
+* type：默认为jar类型，常用的类型有：jar,ejb-client,test-jar...,可设置plugins中的extensions值为true后再增加新的类型，
+* scope：是用来指定当前包的依赖范围，maven的依赖范围
+* optional:设置指依赖是否可选，默认为false,即子项目默认都继承，为true,则子项目必需显示的引入，与dependencyManagement里定义的依赖类似 。
+* exclusions：如果X需要A,A包含B依赖，那么X可以声明不要B依赖，只要在exclusions中声明exclusion.
+* exclusion:是将B从依赖树中删除，如上配置，alibaba.apollo.webx不想使用com.alibaba.external  ,但是alibaba.apollo.webx是集成了com.alibaba.external,所以就需要排除掉.
+
+如果一个工程是parent或者aggregation（即mutil-module的）的，那么必须在packing赋值为pom,child工程从parent继承的包括：dependencies,developers,contributors,plugin lists,reports lists,plugin execution with matching ids,plugin configuration
+
+子项目中需要定义继承的父pom,parent的使用方法如下：
+```xml
+<parent> 
+    <groupId>org.codehaus.mojo</groupId> 
+    <artifactId>my-parent</artifactId> 
+    <version>2.0</version> 
+    <relativePath>../my-parent</relativePath> 
+</parent>
+```
+relativePath是可选的,用于定义父pom的位置,默认值为../pom.xml.其查找顺序：relativePath元素中的地址–本地仓库–远程仓库.设定一个空值将始终从仓库中获取，不从本地路径获取。
+如
+```xml
+<relativePath/>
+```
+
+dependencyManagement：是用于帮助管理chidren的dependencies的。例如如果parent使用dependencyManagement定义了一个dependencyon junit:junit4.0,那么它的children就可以只引用 groupId和artifactId,而version就可以通过parent来设置，这样的好处就是可以集中管理依赖的详情
+
+modules:对于多模块的project,outer-module没有必需考虑inner-module的dependencies,当列出modules的时候，modules的顺序是不重要的，因为maven会自动根据依赖关系来拓扑排序，
+```xml
+<modules>
+    <module>taobao-user</module>
+    <module>taobao-pic</module>
+</modules>
+```
+
+properties:是为pom定义一些常量，在pom中的其它地方可以直接引用。
+```xml
+<properties>
+      <file.encoding>UTF-8</file_encoding>
+      <Java.source.version>1.5</java_source_version>
+      <java.target.version>1.5</java_target_version>
+</properties>
+```
+使用方式 如下 ：${file.encoding}
+
+
+#### 1.4.4.2. 构建设置
+
+* defaultGoal:默认的目标，必须跟命令行上的参数相同，如：jar:jar,或者与时期parse相同,例如install
+* directory:指定build target目标的目录，默认为$(basedir}/target,即项目根目录下的target
+* finalName:指定去掉后缀的工程名字，例如：默认为${artifactId}-${version}
+* filters:用于定义指定filter属性的位置，例如filter元素赋值filters/filter1.properties,那么这个文件里面就可以定义name=value对，这个name=value对的值就可以在工程pom中通过${name}引用，默认的filter目录是${basedir}/src/main/fiters/
+
+**resources:描述工程中资源的位置**
+```xml
+<resource> 
+    <targetPath>META-INF/plexus</targetPath> 
+    <filtering>false</filtering> 
+    <directory>${basedir}/src/main/plexus</directory> 
+    <includes> 
+        <include>configuration.xml</include> 
+    </includes> 
+    <excludes> 
+        <exclude>**/*.properties</exclude> 
+    </excludes> 
+</resource>
+```
+* targetPath:指定build资源到哪个目录，默认是base directory
+* filtering:指定是否将filter文件(即上面说的filters里定义的*.property文件)的变量值在这个resource文件有效,例如上面就指定那些变量值在configuration文件无效。
+* directory:指定属性文件的目录，build的过程需要找到它，并且将其放到targetPath下，默认的directory是${basedir}/src/main/resources
+* includes:指定包含文件的patterns,符合样式并且在directory目录下的文件将会包含进project的资源文件。
+* excludes:指定不包含在内的patterns,如果inclues与excludes有冲突，那么excludes胜利，那些符合冲突的样式的文件是不会包含进来的。
+* testResources:这个模块包含测试资源元素，其内容定义与resources类似，不同的一点是默认的测试资源路径是${basedir}/src/test/resources,测试资源是不部署的。
+
+**plugins配置**
+```xml
+<plugin> 
+    <groupId>org.apache.maven.plugins</groupId> 
+    <artifactId>maven-jar-plugin</artifactId> 
+    <version>2.0</version> 
+    <extensions>false</extensions> 
+    <inherited>true</inherited> 
+    <configuration> 
+        <classifier>test</classifier> 
+    </configuration> 
+    <dependencies>...</dependencies> 
+    <executions>...</executions> 
+</plugin>
+```
+* extensions:true or false, 决定是否要load这个plugin的extensions，默认为true.
+* inherited:是否让子pom继承，ture or false 默认为true.
+* configuration:通常用于私有不开源的plugin,不能够详细了解plugin的内部工作原理，但使plugin满足的properties
+* dependencies:与pom基础的dependencies的结构和功能都相同，只是plugin的dependencies用于plugin,而pom的denpendencies用于项目本身。在plugin的dependencies主要用于改变plugin原来的dependencies，例如排除一些用不到的dependency或者修改dependency的版本等，详细请看pom的denpendencies.
+* executions:plugin也有很多个目标，每个目标具有不同的配置，executions就是设定plugin的目标
+
+```xml
+<execution> 
+    <id>echodir</id> 
+    <goals> 
+        <goal>run</goal> 
+    </goals> 
+    <phase>verify</phase> 
+    <inherited>false</inherited> 
+    <configuration> 
+        <tasks> 
+        <echo>Build Dir: ${project.build.directory}</echo> 
+        </tasks> 
+    </configuration> 
+</execution> 
+```
+* id:标识符
+* goals:里面列出一系列的goals元素，例如上面的run goal
+* phase:声明goals执行的时期，例如：verify
+* inherited:是否传递execution到子pom里。
+* configuration:设置execution下列表的goals的设置，而不是plugin所有的goals的设置
+
+
+**pluginManagement配置：**
+pluginManagement的作用类似于denpendencyManagement,只是denpendencyManagement是用于管理项目jar包依赖，pluginManagement是用于管理plugin。与pom build里的plugins区别是，这里的plugin是列出来，然后让子pom来决定是否引用。
+
+```xml
+<pluginManagement> 
+    <plugins> 
+    <plugin> 
+        <groupId>org.apache.maven.plugins</groupId> 
+        <artifactId>maven-jar-plugin</artifactId> 
+        <version>2.2</version> 
+        <executions> 
+        <execution> 
+            <id>pre-process-classes</id> 
+            <phase>compile</phase> 
+            <goals> 
+            <goal>jar</goal> 
+            </goals> 
+            <configuration> 
+            <classifier>pre-process</classifier> 
+            </configuration> 
+        </execution> 
+        </executions> 
+    </plugin> 
+    </plugins> 
+</pluginManagement> 
+```
+子pom引用方法： 
+在pom的build里的plugins引用： 
+```xml
+<plugins> 
+    <plugin> 
+    <groupId>org.apache.maven.plugins</groupId> 
+    <artifactId>maven-jar-plugin</artifactId> 
+    </plugin> 
+</plugins>
+```
+
+**build里的directories:**
+```xml
+<sourceDirectory>${basedir}/src/main/java</sourceDirectory> 
+<scriptSourceDirectory>${basedir}/src/main/scripts</scriptSourceDirectory> 
+<testSourceDirectory>${basedir}/src/test/java</testSourceDirectory> 
+<outputDirectory>${basedir}/target/classes</outputDirectory> 
+<testOutputDirectory>${basedir}/target/test-classes</testOutputDirectory>
+
+```
+
+**build 里面的Extensions：**
+它们是一系列build过程中要使用的产品，他们会包含在running bulid‘s classpath里面。他们可以开启extensions，也可以通过提供条件来激活plugins。简单来讲，extensions是在build过程被激活的产品 
+```xml
+<extensions> 
+    <extension> 
+    <groupId>org.apache.maven.wagon</groupId> 
+    <artifactId>wagon-ftp</artifactId> 
+    <version>1.0-alpha-3</version> 
+    </extension> 
+</extensions> 
+```
+
+#### 1.4.4.3. 更多项目信息
+
+* name:项目除了artifactId外，可以定义多个名称
+* description: 项目描述
+* url: 项目url
+* inceptionYear:创始年份
+
+licenses
+```xml
+<licenses>
+  <license>
+    <name>Apache 2</name>
+    <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    <distribution>repo</distribution>
+    <comments>A business-friendly OSS license</comments>
+  </license>
+</licenses>
+```
+
+配置组织信息:
+```xml
+<organization>
+    <name>Codehaus Mojo</name>
+    <url>http://mojo.codehaus.org</url>
+</organization>
+```
+
+
+#### 1.4.4.4. 环境设置
+
+**issueManagement**
+
+issueManagement:bug跟踪管理系统,定义defect tracking system缺陷跟踪系统，比如有（bugzilla,testtrack,clearquest等）.
+
+例如:
+```xml
+<issueManagement> 
+    <system>Bugzilla</system> 
+    <url>http://127.0.0.1/bugzilla/</url> 
+</issueManagement> 
+```
+
+**Repositories**
+
+仓库：Repositories：pom里面的仓库与setting.xml里的仓库功能是一样的。主要的区别在于，pom里的仓库是个性化的。比如一家大公司里的setting文件是公用 的，所有项目都用一个setting文件，但各个子项目却会引用不同的第三方库，所以就需要在pom里设置自己需要的仓库地址。
+
+repositories：要成为maven2的repository artifact，必须具有pom文件在$BASE_REPO/groupId/artifactId/version/artifactId-version.pom .
+BASE_REPO可以是本地，也可以是远程的。repository元素就是声明那些去查找的repositories .
+默认的central Maven repository在http://repo1.maven.org/maven2/
+```xml
+<repositories> 
+    <repository> 
+      <releases> 
+        <enabled>false</enabled> 
+        <updatePolicy>always</updatePolicy> 
+        <checksumPolicy>warn</checksumPolicy> 
+      </releases> 
+      <snapshots> 
+        <enabled>true</enabled> 
+        <updatePolicy>never</updatePolicy> 
+        <checksumPolicy>fail</checksumPolicy> 
+      </snapshots> 
+      <id>codehausSnapshots</id> 
+      <name>Codehaus Snapshots</name> 
+      <url>http://snapshots.maven.codehaus.org/maven2</url> 
+      <layout>default</layout> 
+    </repository> 
+</repositories> 
+```
+* release和snapshots：是artifact的两种policies，pom可以选择那种政策有效。 
+* enable：本别指定两种类型是否可用，true or false 
+* updatePolicy:说明更新发生的频率always 或者 never 或者 daily（默认的）或者 interval:X（X是分钟数） 
+* checksumPolicy：当Maven的部署文件到仓库中，它也部署了相应的校验和文件。您可以选择忽略，失败，或缺少或不正确的校验和警告。
+* layout：maven1.x与maven2有不同的layout，所以可以声明为default或者是legacy（遗留方式maven1.x）。
+
+ 
+
+**插件仓库：**
+pluginRepositories：与Repositories具有类似的结构，只是Repositories是dependencies的home，而这个是plugins 的home。
+
+ 
+
+**分发管理:**
+distributionManagement :管理distribution和supporting files。 
+* downloadUrl：是其他项目为了抓取本项目的pom’s artifact而指定的url，就是说告诉pom upload的地址也就是别人可以下载的地址。 
+* status：这里的状态不要受到我们的设置，maven会自动设置project的状态，有效的值：none：没有声明状态，pom默认的；converted：本project是管理员从原先的maven版本convert到maven2的；partner：以前叫做synched，意思是与partner repository已经进行了同步；deployed：至今为止最经常的状态，意思是制品是从maven2 instance部署的，人工在命令行deploy的就会得到这个；verified：本制品已经经过验证，也就是已经定下来了最终版。 
+* repository：声明deploy过程中current project会如何变成repository，说明部署到repository的信息。 
+```xml
+<repository> 
+    <uniqueVersion>false</uniqueVersion> 
+    <id>corp1</id> 
+    <name>Corporate Repository</name> 
+    <url>scp://repo1/maven2</url> 
+    <layout>default</layout> 
+</repository> 
+<snapshotRepository> 
+    <uniqueVersion>true</uniqueVersion> 
+    <id>propSnap</id> 
+    <name>Propellors Snapshots</name> 
+    <url>sftp://propellers.Net/maven</url> 
+    <layout>legacy</layout> 
+</snapshotRepository> 
+```
+* id, name:：唯一性的id，和可读性的name 
+* uniqueVersion：指定是否产生一个唯一性的version number还是使用address里的其中version部分。true or false 
+* url：说明location和transport protocol 
+* layout：default或者legacy
+ 
+**profiles**
+profiles:pom4.0的一个新特性就是具有根据environment来修改设置的能力
+
+它包含可选的activation（profile的触发器）和一系列的changes。例如test过程可能会指向不同的数据库（相对最终的deployment）或者不同的dependencies或者不同的repositories，并且是根据不同的JDK来改变的。那么结构如下： 
+```xml
+<profiles> 
+<profile> 
+    <id>test</id> 
+    <activation>...</activation> 
+    <build>...</build> 
+    <modules>...</modules> 
+    <repositories>...</repositories> 
+    <pluginRepositories>...</pluginRepositories> 
+    <dependencies>...</dependencies> 
+    <reporting>...</reporting> 
+    <dependencyManagement>...</dependencyManagement> 
+    <distributionManagement>...</distributionManagement> 
+</profile> 
+</profiles> 
+```
+
+Activation： 
+触发这个profile的条件配置如下例：（只需要其中一个成立就可以激活profile，如果第一个条件满足了，那么后面就不会在进行匹配。
+```xml 
+<profile> 
+    <id>test</id> 
+    <activation> 
+    <activeByDefault>false</activeByDefault> 
+    <jdk>1.5</jdk> 
+    <os> 
+        <name>Windows XP</name> 
+        <family>Windows</family> 
+        <arch>x86</arch> 
+        <version>5.1.2600</version> 
+    </os> 
+    <property> 
+        <name>mavenVersion</name> 
+        <value>2.0.3</value> 
+    </property> 
+    <file> 
+        <exists>${basedir}/file2.properties</exists> 
+        <missing>${basedir}/file1.properties</missing> 
+    </file> 
+    </activation> 
+```
+激活profile的方法有多个：setting文件的activeProfile元素明确指定激活的profile的ID，在命令行上明确激活Profile用-P flag 参数 .查看某个build会激活的profile列表可以用：mvn help:active-profiles 
+
+
+
+
+
+### 1.4.5. Maven依赖冲突的产生原因和解决方式
 <a href="#menu" style="float:right">目录</a>
 
 **依赖冲突产生的原因：**
@@ -761,6 +1288,133 @@ mvn dependency:tree
 [INFO] |  |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:9.0.16:compile
 
 ```
+
+### 1.4.6. maven搭建父子项目
+
+* 父工程
+    * 父工程又称为父控制器，只是一个简单的工程，不能单独运行。作用是将子模块跟子工程聚合在一起。父控制器中的pom.xml配置，在子模块跟子工程中都可以被继承。
+* 子工程
+    * 项目中创建的具有业务逻辑并且可以单独部署的的子模块称为子工程，一个项目中不同的子工程通过在pom.xml中添加同一个父工程而整合在一起。
+* 子模块
+    * 提取出了一些子工程中通用的模块，做成jar包。当子工程需要使用的时候只要在pom.xml中添加依赖就好了
+
+#### 1.4.6.1. 创建父项目
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.taobao</groupId>
+    <artifactId>parent</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>taobao-user</module>
+        <module>taobao-pic</module>
+    </modules>
+
+    <properties>
+        <fastjson-ver>1.2.56</fastjson-ver>
+    </properties>
+
+    <dependencyManagement>
+
+        <dependencies>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.56</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
+```
+
+#### 1.4.6.2. 创建子项目
+
+分别创建两个子项目
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>parent</artifactId>
+        <groupId>com.taobao</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>taobao-pic</artifactId>
+</project>
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>parent</artifactId>
+        <groupId>com.taobao</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>taobao-user</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+    </dependencies>
+</project>
+```
+
+#### 1.4.6.3. 说明
+
+上面分别创建了一个父项目com.taobao.parent和两个子项目com.taobao.user,com.taobao.pic
+
+当创建子项目之后.父项目的pom文件中便会自动添加以下内容.
+```xml
+<modules>
+    <module>taobao-user</module>
+    <module>taobao-pic</module>
+</modules>
+```
+
+在我们项目顶层的POM文件中，我们会看到dependencyManagement元素。通过它元素来管理jar包的版本，让子项目中引用一个依赖而不用显示的列出版本号。Maven会沿着父子层次向上走，直到找到一个拥有dependencyManagement元素的项目，然后它就会使用在这个dependencyManagement元素中指定的版本号。
+
+父pom中指定fastjson包的版本
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.56</version>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+
+子pom文件直接引入,无需定义版本号
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>fastjson</artifactId>
+    </dependency>
+</dependencies>
+```
+
+综上所述,使用父子工程主要是为了方便jar包的版本管理, 子模块需要引jar不需要加版本信息，但是需要特殊版本时也要引入特殊版本，重点提一下在parent中用dependencyManagement这个标签的原因，如果子模块依赖的jar包没有版本信息就从父工程的dependencyManagement这个标签去找对应的版本。
+
 ## 1.5. Gradle
 <a href="#menu" style="float:right">目录</a>
 
@@ -854,7 +1508,11 @@ OS:           Linux 4.15.0-46-generic amd64
 * DockerHub:存储DOCKER镜像远程仓库，类似GitHub,用户可以进行对镜像进行存储，分享，管理。
 * Docker是一种容器，容器是一种轻量级的虚拟技术，和容器相对应的是更为重量级的虚拟技术是虚拟机,它几乎没有任何额外开销,首先你在享有Docker带来的虚拟化能力的时候无需担心它带来的额外开销。其次，相比于虚拟机，你可以在同一台机器上创建更多数量的容器。
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/docker/docker1.png?raw=true)
+```
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/docker/docker2.png?raw=true)
+```
+![](pic/docker/docker2.png)
+
 * Docker也可以被称为轻量级虚拟化技术,与传统的VM相比,更轻量,启动速度更快,单台硬件上可以同时跑成百上千个容器.
 
 Docker是一个典型的C/S结构的程序，其主要功能都集成在DockerDaemon中。可以把DockerDaemon理解为Docker的Server端，保证了容器技术的实现。在DockerDaemon的外层，包裹着一层RESTAPI，这些接口由DockerDaemon提供，井可以使用它们对DockerDaemon进行操作。这些能够操作Docker服务的API，称为Docker API.Docker软件不仅包含了DockerDaemon服务端，还打包进了DockerCLI客户端程序。DockerCLI将DockerRESTAPI中的操作中继到命令行中的命令，这就是使用Docker所输入的命令了。当我们启动Docker服务时，其实启动的是DockerDaemon，而当我们使用Docker命令进行操作时，其实是控制DockerCLI通过DockerRESTAPI发送控制命令到DockerDaemon。
@@ -954,6 +1612,7 @@ Namespace/Repository:Tag
 <a href="#menu" style="float:right">目录</a>
 
 * 文档地址 https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-from-a-package
+
 ```bash
 # 查看可以安装的版本
 lgj@lgj-Lenovo-G470:~/Downloads$ apt-cache madison docker-ce
@@ -1697,9 +2356,11 @@ COPY的src只能是本地文件，其他用法一致
 第二种就是写shel
 第一种就是可执行文件加参数
 与CMD比较说明（这俩命令太像了，而且还可以配合使用）：
+
 1. 相同点：
 只能写一条，如果写了多条，那么只有最后一条生效
 容器启动时才运行，运行时机相同
+
 2. 不同点：
 ENTRYPOINT不会被运行的command覆盖，而CMD则会被覆盖
 如果我们在Dockerfile种同时写了ENTRYPOINT和CMD，并且CMD指令不是一个完整的可执行命令，那么CMD指定的内容将会作为ENTRYPOINT的参数
@@ -4163,7 +4824,7 @@ compose 的调用流程
 |---|---|
 |^|	匹配输入字符串开始的位置。如果设置了 RegExp 对象的 Multiline 属性，^ 还会与 \n 或 \r 之后的位置匹配。
 |$|	匹配输入字符串结尾的位置。如果设置了 RegExp 对象的 Multiline 属性，$ 还会与 \n 或 \r 之前的位置匹配。
-|\b|	匹配一个单词边界，即字与空格间的位置。
+|\b|	匹配��个单词边界，即字与空格间的位置。
 |\B|	非单词边界匹配。
 
 * 注意：不能将限定符与定位符一起使用。由于在紧靠换行或者单词边界的前面或后面不能有一个以上位置，因此不允许诸如 ^* 之类的表达式。
@@ -5536,7 +6197,7 @@ Disruptor框架内部核心数据结构为RingBuffer，其为无锁环形队列
 * 单线程每秒能够处理600万订单，Disruptor为什么这么快？
     * a.lock-free-使用了CAS来实现线程安全
         * ArrayBlockingQueue使用锁实现并发控制，当get或put时，当前访问线程将上锁，当多生产者、多消费者的大量并发情形下，由于锁竞争、线程切换等，会有性能损失。
-        * Disruptor通过CAS实现多生产者、多消费者对RingBuffer的并发访问。CAS相当于乐观锁，其性能优于Lock的性能。
+        * Disruptor通过CAS实现多生产者、多消费者对RingBuffer的并发访问。CAS相当于乐观锁，其性能优于Lock的性��。
     * b.使用缓存行填充解决伪共享问题
         * 计算机体系结构中，内存的访问速度远远低于CPU的运行速度，在内存和CPU之间，加入Cache，CPU首先访问Cache中的数据，CaChe未命中，才访问内存中的数据。
         * 伪共享：Cache是以缓存行（cache line）为单位存储的，当多个线程修改互相独立的变量时，如果这些变量共享同一个缓存行，就会无意中影响彼此的性能。
@@ -5612,9 +6273,205 @@ Disruptor框架内部核心数据结构为RingBuffer，其为无锁环形队列
 ### 1.13.3. LOGBACK
 <a href="#menu" style="float:right">目录</a>
 
-## 1.14. IDEA 
 
-### 1.14.1. 常用快捷键
+
+## 1.14. Markdown语法
+<a href="#menu" style="float:right">目录</a>
+
+### 1.14.1. 标题
+
+```
+# 一级标题
+## 二级标题
+### 三级标题
+#### 四级标题
+##### 五级标题
+###### 六级标题 
+```
+"#" 和标题之间有一个空格
+
+### 1.14.2. 列表
+
+方式1:
+
+使用"-"
+
+```
+- 1
+    - 2
+```
+- 1
+    - 2
+
+方式2:
+
+使用"*"
+
+```
+* 1
+    * 2
+```
+* 1
+    * 2
+
+方式3:
+使用数字
+
+1. 内容1
+2. 内容2
+
+
+### 1.14.3. 插入图片和链接
+
+```
+
+[链接说明](链接地址)
+![图片说明,图片地址不正确时会显示](图片地址)
+```
+
+### 1.14.4. 粗体和斜体
+
+Markdown 的粗体和斜体也非常简单，用两个 * 包含一段文本就是粗体的语法，用一个 * 包含一段文本就是斜的语法。
+
+### 1.14.5. 代码引用
+
+需要引用代码时，如果引用的语句只有一段，不分行，可以用 ` 将语句包起来。如果引用的语句为多行，可以将```置于这段代码的首行和末行。
+
+可以在```后面添加语言 
+
+
+### 1.14.6. 表格
+
+```
+
+| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
+
+```
+第二行的的冒号":"指明对齐方式
+
+
+
+
+### 1.14.7. 数学公式
+
+公式之间需要通过两个'$'包裹起来
+
+
+
+|公式|markdown|公式|markdown|公式|markdown|
+|---|---|---|---|---|---|
+|$\frac{7x+5}{1+y^2}$|\frac{7x+5}{1+y^2}|$z=z_l$|$z=z_l|$\cdots$|\cdots|
+|$\frac{d}{dx}e^{ax}=ae^{ax}\quad\sum_{i=1}^{n}{(X_i-\overline{X})^2}$|\frac{d}{dx}e^{ax}=ae^{ax}\quad\sum_{i=1}^{n}{(X_i-\overline{X})^2}
+|$\sqrt{2},\sqrt[n]{3}$|\sqrt{2},\sqrt[n]{3}|$\vec{a}\cdot\vec{b}$|\vec{a}\cdot\vec{b}|
+|$\int ^2_3 x^2 {\rm d}x$|\int ^2_3 x^2 {\rm d}x|$\sum \frac{1}{i^2}$|\sum \frac{1}{i^2}|
+|$A$|A|$\alpha$|\alpha|$B$|B|
+|$\beta$|\beta|$\Gamma$|\Gamma|$\gamma$|\gamma
+|$\varepsilon$|\varepsilon|$Z$|Z|$\zeta$|\zeta
+|$\eta$|\eta|$\Theta$|\Theta|$\theta$|\theta
+|$\iota$|\iota|$\kappa$|\kappa|$\Lambda$|\Lambda
+|$\lambda$|\lambda|$\mu$|\mu|$\nu$|\nu
+|$\Xi$|\Xi|$\xi$|\xi|$\omicron$|\omicron
+|$\Pi$|\Pi|$\pi$|\pi|$\rho$|\rho
+|$\Sigma$|\Sigma|$\sigma$|\sigma|
+|$\omega$|\omega|$\Omega$|\Omega|$\psi$|\psi|
+|$\chi$|\chi|$\varphi$|\varphi|$\phi$|\phi|
+|$\upsilon$|\upsilon|$\tau$|\tau|$\Psi$|\Psi|
+|$X$|X|$\phi$|phi|$\Upsilon$|\Upsilon
+|$T$|T|$\sin$|\sin|$\lg7$|\lg7|
+|$\log_2 10$|\log_2 10|$\ln15$|\ln15|$\pm$|\pm|
+|$\times$|\times|$\div$|\div|$\sum$|\sum
+|$\neq$|\neq|$\prod$|\prod|$\leq$|\leq
+|$\geq$|\geq
+
+
+
+
+
+
+
+### 1.14.8. 插入UML图
+---------------------------
+[参考文档](https://mermaidjs.github.io/#/sequenceDiagram)
+
+```
+mermaid
+sequenceDiagram
+
+张三 ->> 李四: 你好！李四, 最近怎么样?
+李四-->>王五: 你最近怎么样，王五？
+李四--x 张三: 我很好，谢谢!
+李四-x 王五: 我很好，谢谢!
+Note right of 王五: 李四想了很长时间, 文字太长了<br/>不适合放在一行.
+
+李四-->>张三: 打量着王五...
+张三->>王五: 很好... 王五, 你怎么样?
+```
+
+
+```mermaid
+sequenceDiagram
+
+张三 ->> 李四: 你好！李四, 最近怎么样?
+李四-->>王五: 你最近怎么样，王五？
+李四--x 张三: 我很好，谢谢!
+李四-x 王五: 我很好，谢谢!
+Note right of 王五: 李四想了很长时间, 文字太长了<br/>不适合放在一行.
+
+李四-->>张三: 打量着王五...
+张三->>王五: 很好... 王五, 你怎么样?
+```
+### 1.14.9. 插入甘特图
+---------------------------
+[参考文档](https://mermaidjs.github.io/#/gantt)
+
+
+```
+mermaid
+gantt
+        dateFormat  YYYY-MM-DD
+        title Adding GANTT diagram functionality to mermaid
+        section 现有任务
+        已完成               :done,    des1, 2014-01-06,2014-01-08
+        进行中               :active,  des2, 2014-01-09, 3d
+        计划中               :         des3, after des2, 5d
+```
+
+```mermaid
+gantt
+        dateFormat  YYYY-MM-DD
+        title Adding GANTT diagram functionality to mermaid
+        section 现有任务
+        已完成               :done,    des1, 2014-01-06,2014-01-08
+        进行中               :active,  des2, 2014-01-09, 3d
+        计划中               :         des3, after des2, 5d
+```
+
+### 1.14.10. 其他
+
+
+```
+- [ ] 计划任务
+- [x] 完成任务
+```
+
+- [ ] 计划任务
+- [x] 完成任务
+
+### 1.14.11. 注脚
+
+一个具有注脚的文本。[^1]
+
+[^1]: 注脚的解释
+
+
+
+## 1.15. IDEA 
+
+### 1.15.1. 常用快捷键
 <a href="#menu" style="float:right">目录</a>
 
 ```
@@ -5755,7 +6612,7 @@ Ctrl+F7，在文件中查找用法
 Ctrl+Shift+F7，在文件中高亮显示用法
 ```
 
-### 1.14.2. 常用插件
+### 1.15.2. 常用插件
 <a href="#menu" style="float:right">目录</a>
 
 **Maven Helper**
@@ -5808,16 +6665,326 @@ K8s工具
 **Translation**
 中英文翻译工具：
 
-
-
-
-
-
-
-## 1.15. 面试考察
+## 1.16. npm工具
 <a href="#menu" style="float:right">目录</a>
 
-### 1.15.1. 技术广度的考察
+### 1.16.1. 基本概念
+
+ＮPM 是 JavaScript 的一个包管理工具，最初是为 NodeJS 来设计使用的，现在也广泛的被使用在各种 JavaScript 项目上
+
+NPM一般是随同NodeJS一起安装，常见的使用场景有以下几种：
+* 允许用户从NPM服务器下载别人编写的第三方包到本地使用。
+* 允许用户从NPM服务器下载并安装别人编写的命令行程序到本地使用。
+* 允许用户将自己编写的包或命令行程序上传到NPM服务器供别人使用。
+
+由于新版的nodejs已经集成了npm，所以之前npm也一并安装好了。同样可以通过输入 "npm -v" 来测试是否成功安装。命令如下，出现版本提示表示安装成功:
+
+```
+$ npm -v
+2.3.0
+```
+如果你安装的是旧版本的 npm，可以很容易得通过 npm 命令来升级，命令如下：
+```
+$ sudo npm install npm -g
+```
+
+### package.json
+
+package.json 位于模块的目录下，用于定义包的属性。接下来让我们来看下 express 包的 package.json 文件，位于 node_modules/express/package.json 内容：
+```json
+{
+  "name": "express",
+  "description": "Fast, unopinionated, minimalist web framework",
+  "version": "4.13.3",
+  "author": {
+    "name": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca"
+  },
+  "contributors": [
+    {
+      "name": "Aaron Heck
+```
+
+Package.json 属性说明
+* name - 包名。
+* version - 包的版本号。
+* description - 包的描述。
+* homepage - 包的官网 url 。
+* author - 包的作者姓名。
+* contributors - 包的其他贡献者姓名。
+* dependencies - 依赖包列表。如果依赖包没有安装，npm 会自动将依赖包安装在 node_module 目录下。
+* repository - 包代码存放的地方的类型，可以是 git 或 svn，git 可在 Github 上。
+* main - main 字段指定了程序的主入口文件，require('moduleName') 就会加载这个文件。这个字段的默认值是模块根目录下面的 index.js。
+* keywords - 关键字
+
+### npm 常用工具
+
+```
+更新全局包：
+npm update <name> -g
+
+更新生产环境依赖包：
+npm update <name> --save
+
+更新开发环境依赖包：
+npm update <name> --save-dev
+npm install <name>安装nodejs的依赖包
+
+例如npm install express 就会默认安装express的最新版本，也可以通过在后面加版本号的方式安装指定版本，如npm install express@3.0.6
+
+npm install <name> -g  将包安装到全局环境中
+
+但是代码中，直接通过require()的方式是没有办法调用全局安装的包的。全局的安装是供命令行使用的，就好像全局安装了vmarket后，就可以在命令行中直接运行vm命令
+
+npm install <name> --save  安装的同时，将信息写入package.json中
+
+项目路径中如果有package.json文件时，直接使用npm install方法就可以根据dependencies配置安装所有的依赖包
+
+这样代码提交到github时，就不用提交node_modules这个文件夹了。
+
+npm init  会引导你创建一个package.json文件，包括名称、版本、作者这些信息等
+
+npm remove <name>移除
+
+npm update <name>更新
+
+npm ls 列出当前安装的了所有包
+
+npm root 查看当前包的安装路径
+
+npm root -g  查看全局的包的安装路径
+
+npm help  帮助，如果要单独查看install命令的帮助，可以使用的npm help install
+```
+
+
+### 1.16.2. NPM仓库
+
+NPM仓库是一个公共的 JavaScript 包的数据库，我们可以在这个仓库中找到想要的第三方依赖包，也可以把自己写的一些js包发布到上面供其他人使用。
+
+### 1.16.3. 包格式
+
+```
+1） 包含package.json文件的文件夹
+2） 包含1）的压缩包
+3） 解析为2）的URL
+4）在npm仓库中发布的带有<name>@<version>的3）的
+5） 在npm仓库中发布的带有<name>@<tag>指向1）的
+6） 解析为1）的git地址
+```
+
+### 1.16.4. 使用 npm 命令安装模块
+npm 安装 Node.js 模块语法格式如下：
+```
+$ npm install <Module Name>
+```
+以下实例，我们使用 npm 命令安装常用的 Node.js web框架模块 express:
+```
+$ npm install express
+```
+安装好之后，express 包就放在了工程目录下的 node_modules 目录中，因此在代码中只需要通过 require('express') 的方式就好，无需指定第三方包路径。
+```
+var express = require('express');
+```
+
+### 1.16.5. 全局安装与本地安装
+npm 的包安装分为本地安装（local）、全局安装（global）两种，从敲的命令行来看，差别只是有没有-g而已，比如
+```
+npm install express      # 本地安装
+npm install express -g   # 全局安装
+```
+如果出现以下错误：
+
+npm err! Error: connect ECONNREFUSED 127.0.0.1:8087 
+解决办法为：
+```
+$ npm config set proxy null
+```
+**本地安装**
+
+1. 将安装包放在 ./node_modules 下（运行 npm 命令时所在的目录），如果没有 node_modules 目录，会在当前执行 npm 命令的目录下生成 node_modules 目录。
+2. 可以通过 require() 来引入本地安装的包。
+
+**全局安装**
+
+1. 将安装包放在 /usr/local 下或者你 node 的安装目录。
+2. 可以直接在命令行里使用。
+如果你希望具备两者功能，则需要在两个地方安装它或使用 npm link。
+
+接下来我们使用全局方式安装 express
+```
+$ npm install express -g
+```
+
+### 1.16.6. 查看安装信息
+
+```
+你可以使用以下命令来查看所有全局安装的模块：
+npm list -g
+
+如果要查看某个模块的版本号，可以使用命令如下：
+$ npm list grunt
+```
+
+### 1.16.7. 卸载模块
+我们可以使用以下命令来卸载 Node.js 模块。
+```
+$ npm uninstall express
+```
+
+卸载后，你可以到 /node_modules/ 目录下查看包是否还存在，或者使用以下命令查看：
+```
+$ npm ls
+```
+
+### 1.16.8. 更新模块
+我们可以使用以下命令更新模块：
+```
+$ npm update express
+```
+### 1.16.9. 搜索模块
+使用以下来搜索模块：
+```
+$ npm search express
+```
+
+### 1.16.10. 使用淘宝 NPM 镜像
+
+大家都知道国内直接使用 npm 的官方镜像是非常慢的，这里推荐使用淘宝 NPM 镜像。
+
+淘宝 NPM 镜像是一个完整 npmjs.org 镜像，你可以用此代替官方版本(只读)，同步频率目前为 10分钟 一次以保证尽量与官方服务同步。
+
+你可以使用淘宝定制的 cnpm (gzip 压缩支持) 命令行工具代替默认的 npm:
+```
+$ npm install -g cnpm --registry=https://registry.npm.taobao.org
+```
+这样就可以使用 cnpm 命令来安装模块了：
+```
+$ cnpm install [name]
+```
+
+**安装cnpm**
+
+(1)输入以下命令
+```
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+```
+(2)输入cnpm -v输入是否正常，这里肯定会出错。
+```
+cnpm -v
+```
+
+
+## 1.17. Java 服务的线上应急、和技术攻关
+<a href="#menu" style="float:right">目录</a>
+
+### 1.17.1. 线上应急的目标、 原则和方法
+<a href="#menu" style="float:right">目录</a>
+
+
+#### 1.17.1.1. 应急目标
+
+在生产环境发生故障时快速恢复服务，避免或减少故障造成的损失，避免或减少故障对客户的影响 。
+
+#### 1.17.1.2. 应急原则
+
+* 应第一时间恢复系统而不是彻底解决问题，快速止损。
+* 有明显的资金损失时，要在第一时间升级，快速止损 。
+* 应急指挥要围绕目标，快速启动应急过程和快速决策止损方案。
+* 当前应急责任人如果在短时间内不能解决问题，则必须进行升级处理。
+* 应急过程中在不影响用户体验的前提下，要保留部分现场和数据。
+
+#### 1.17.1.3. 线上应急的方法和流程
+
+线上应急一般分为 6 个阶段：发现问题、定位问题、解决问题、消除影响、回顾问题、避免措施。
+
+**发现问题**
+
+发现问题时通常通过自动化的监控和报警系统来实现.
+
+通常我们会对系统层面、应用层面和数据库层面进行监控。
+对系统层面的监控包括对系统的 CPU 利用率、系统负载、内存使用情况、网络 I/O 负载、磁盘负载、 I/O 等待、交换区的使用、线程数及打开的文件句柄数等进行监控 ， 一旦超出阔值，就需要报警。
+对应用层面的监控包括对服务接口的响应时间、吞吐量、调用频次、接口成功率及接口的波动率等进行监控。对资源层的监控包括对数据库、缓存和消息队列的监控。我们通常会对数据库的负载、慢SQL、连接数等进行监控；对缓存的连接数、占用内存、吞吐量、响应时间等进行监控；以及对消息队列的响应时间、吞吐量、负载、积压情况等进行监控。
+
+## 1.18. 软件开发
+<a href="#menu" style="float:right">目录</a>
+
+### 1.18.1. 常用的４种开发方式
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.18.1.1. 瀑布式开发 
+
+瀑布式开发是由 WW.Royce 在 1970 年提出的软件开发模型，是一种比较老的计算机软件开发模式， 也是典型的预见性的开发模式。在瀑布式开发中，开发严格遵循预先计划的需求分析、设计、编码、集成、测试、维护的步骤进行，步骤的成果作为衡量进度的方法，例如需求规格、设计文档、测试计划和代码审阅等 。 瀑布式开发最早强调系统开发应有完整的周期，且必须完整地经历每个周期内的每个开发阶段，井系统化地考量分析所涉及的技术、时间与资源投入等 。
+
+瀑布式开发的主要问题是它的严格分级导致自由度降低，项目早期即作出承诺会导致对后期需求的变化难以调整且代价很大，这在需求不明晰并且在项目进行过程中可能有变化的情况下基本上是不可行的 
+
+#### 1.18.1.2. 迭代式开发
+
+法代式开发也被称为迭代增量式开发，是一种与传统的瀑布式开发相反的软件开发过程，它弥补了传统开发方式的一些弱点，有更高的成功率。在迭代式开发中，整个开发工作被组织为一系列短小的、固定长度的小项目，每次选代都包括需求分析、设计、实现与测试。采用迭代式开发时， 工作可以在需求被完整地确定之前启动 ， 并在一次选代中完成系统的一部分功能或业务，再通过客户的反馈来细化需求，并开始新一轮的迭代
+
+是代式开发有如下特点:
+* 次只设计和实现产品的一部分。
+* 一步一步地完成 。
+* 每次设计和实现一个阶段，这叫作一个迭代。
+
+
+#### 1.18.1.3. 螺旋式开发
+
+螺旋式开发是由巴利 · 玻姆 CBa町 Boehm ）在 1988 年正式发表的软件系统开发模型，它兼顾 了快速原型的法代特征及瀑布模型的系统化和严格监控，其最大的特点是引入了其他模型不具备的风险分析，使软件在无法排除重大风险时有机会停止，以减少损失 。 同时，在每个法代阶段构建原型是螺旋模型用来减少风险的方法 。 螺旋模型更适合大型的昂贵的系统级的软件开发 ， 一开始应用的规模很小，当项目被定义得更好、更稳定时逐渐展开。其核心在于不需要在刚开始时就把所有事情都定义清楚，可以先定义最重要的功能去实现它，然后听取客户的意见，再进入下一个阶段，如此不断循环、重复，直到得到满意的产品。螺旋模型在很大程度上是一种风险驱动的方法体系，因为在每个阶段及经常发生的循环之前，都必须先进行风险评估。
+
+它具有如下特点
+* 制定计划：确定软件目标，选定实施方案，弄清楚项目开发的限制条件 。
+* 风险分析 ： 分析、评估所选方案，考虑如何识别和消除风险 。
+* 实施工程：实施软件开发和验证。
+* 客户评估：评价开发工作，提出修正建议，制定下一步计划。
+
+#### 1.18.1.4. 敏捷软件开发
+
+敏捷软件开发又被称为敏捷开发，是一种从 1990 年开始逐渐引起人们的广泛关注的新型软件开发方式，具有应对快速变化的需求的软件开发能力。它的具体名称、理念、过程、 术语都不尽相同，相对于非敏捷开发，更强调程序员团队与业务专家之间的紧密协作及面对面沟通，比单纯通过书面文档沟通更有效，能更频繁地交付新的软件版本，使自我组织、自我约束的团队能够更好地适应需求的变化，也更注重软件开发过程中人的作用 。
+
+敏捷软件开发有如下特点。
+* 首要任务是尽早地、持续地交付可评价的软件，以使客户满意。
+* 乐于接受需求变更，即使在开发后期也是如此 。敏捷软件开发能够驾驭需求的变化，从而为客户赢得竞争优势 。
+* 频繁交付可使用的软件，交付的间隔越短越好，可以从几个月缩减到几个星期。
+* 在整个项目开发期间，业务人员和开发人员必须朝夕 工作在一起。
+* 围绕那些有推动力的人们来构建项目，给予他们所需的环境和支持，并且相信他们能够把工作做好。
+* 开发团队及在开发团队内部进行最快速、有效的传递信息的方法是面对面交谈。
+* 可使用的软件是进度的主要衡量指标。
+* 提倡可持续发展。出资人、开发人员及使用者应该共同维持稳定的开发速度。
+* 为了增强敏捷能力，应持续关注技术上的杰出成果和良好的设计。
+* 简洁，最小化那些没有必要投入的工作量是至关重要的。
+* 最好的架构、需求和设计都源于自我组织的团队。
+* 团队定期反思如何变得更有战斗力，然后相应地转变井调整其行为。
+
+#### 1.18.1.5. 敏捷开发 2.0 
+
+敏捷开发 2.0 是相对于敏捷开发而言的，敏捷开发意味着让我们全面拥抱需求的变化， 但是对于瞬息万变的市场反馈还远远不足以应对，因此为了更加快速地发现问题和得到市场的快速反馈，引入了持续集成（ Continuous Integration, CI ）和持续交付（ Continuous Deliv巳ry, CD ),来更加高效地进行敏捷开发，即敏捷开发 2.0 。
+
+* 持续集成 ： 是一种软件开发实践，要求团队成员经常集成其工作，每个人至少每天集成一次会导致每天有多个集成 。 集成是通过自动化的构建进行验证的，这些构建运行回归测试，以尽快检测集成中的错误。团队慢慢会发现，这种方法有利于集成问题的大幅减少，更快地实现有凝聚力的软件开发方式 。
+* 持续交付：是在持续集成的基础上，将集成后的代码部署到更贴近真实的运行环境的预生产环境中。比如，我们完成单元测试后，可以把代码部署到连接数据库的 Staging 环境中进行测试。如果代码没有任何问题，则可以继续部署到生产环境中 。
+* 持续部署：是持续交付的更高级阶段，即所有通过了自动化测试的改动都自动地部署到生产环境中。大多数公司如果没有受制度的约束或其他条件的影响，则都应该以持续部署为目标 。 在很多业务场景里， 一种业务需要等待其他功能完成了才能上线， 这使得持续部署不可能实现。虽然可以使用功能转换解决很多这样的问题，但并不是每次都会这样 。 所以，持续部署是否适合某个公司是基于该公司的业务需求的，而不是技术限制
+
+而持续集成和持续交付又涉及软件开发的各个方面，它不仅是项目构架上的决策，也需要考虑如何测试、如何配置不同的环境变量和应对异常等 。 所 以在一开始我们就要考虑好程序的架构、自动化测试、祸合关系、打包部署和容错机制等 。 通过持续集成和持续交付可以不断提升团队在软件开发环节中的各方面能力 。
+
+DevOps 不能只 关注开发及运维 ，还应该关注产品、开发、测试、运维 ， 甚至对客户的需求也要有了解。而敏捷开发 2.0 要求将大而全的项目拆分成小的相对独立的服务 ， 从一开始就不仅仅只关注自动化部署，还要关注整个项目是否具备自动化的、可快速扩展的、完善的容错机制，以及零岩机和便捷的监控管理。为了实现敏捷开发 2.0 ， 我们需要采用持续部署 、 微服务和容器这三种技术方案。
+* 持续部署：能够持续自动反馈应用程序的提交状态，减少错误等 ； 同时为产品的交付提供了质量保证，能快速投入市场。
+* 微服务：使技术选型、构架系统更自由：开发更快速、周期更短 ： 服务更容易扩展 。
+* 容器 ： 使部署成百上千的微服务更加容易，系统更加稳定。
+
+#### 1.18.1.6. 总结
+
+瀑布式开发：在从需求到设计、从设计到编码、从编码到测试、从测试到提交的每个开发阶段都要做到最好，特别是在前期阶段设计得越完美，提交后的损失就越少。然而现在的系统很复杂且多变，所以很难在现实中应用瀑布式开发。
+
+* 迭代式开发：不要求每个阶段的任务都做到最好，可以容忍一些不足，先不去完善它，将主要功能先搭建起来，以最短的时间及最少的损失完成一个不完美的成果直至提交，然后通过客户或用户的反馈信息，在这个不完美的成果上逐步进行完善。
+* 螺旋开发：在很大程度上是一种风险驱动的方法体系，因为在每个阶段及经常发生的循环之前，都必须先进行风险评估。
+* 敏捷开发：和迭代式开发相比，两者都强调在较短的开发周期内提交软件，但是，敏捷开发的周期可能更短且更强调队伍中的高度协作。敏捷方法有时被误认为是无计划性和纪律性的方法，实际上更确切的说法是敏捷方法强调适应性而非预见性，适应性的方法主要用于快速适应需求的变化。当项 目的需求有变化时，团队能够迅速应对新的需求 。
+
+
+
+## 1.19. 面试考察
+<a href="#menu" style="float:right">目录</a>
+
+### 1.19.1. 技术广度的考察
 <a href="#menu" style="float:right">目录</a>
 
 首先考察候选人技术面的完整性，因为工作中是需要具备一定的技术视野的，不能说光知道消息中间件，但是分布式缓存却一无所知。
@@ -5838,7 +7005,7 @@ K8s工具
 而是说你工作几年以后，应该有一定的技术广度，开阔的技术视野。
 
 
-### 1.15.2. 底层技术的考察
+### 1.19.2. 底层技术的考察
 <a href="#menu" style="float:right">目录</a>
 
 现在很多互联网大厂都会有基本功的考察，举个例子，Java虚拟机的核心原理、内存模型、垃圾回收、线上FullGC卡顿性能优化、线上OOM内存溢出问题你处理。
@@ -5854,7 +7021,7 @@ Netty背后的IO、网络相关的知识。
 而且很多时候，解决线上系统的生产故障，都需要这些技术。因此，底层技术的掌握是一个优秀工程师必须具备的素养。
 
 
-### 1.15.3. 技术深度的考察
+### 1.19.3. 技术深度的考察
 <a href="#menu" style="float:right">目录</a>
 
 此外，我们一定会深入考察候选人平时工作中熟悉的以及常用的一些技术。
@@ -5892,3 +7059,20 @@ Netty背后的IO、网络相关的知识。
 你未来学新东西有多快，线上系统出了故障你能否快速定位和解决，你能否基于对技术的深刻理解为公司的项目设计和开发出复杂而且优秀的架构出来，这都取决于技术深度。
 
 你只有真正了解了面试官的选拔标准，考察范围，才能更好的进行针对性的准备，成为行走的“offer收割机”
+
+## 1.20. 墨菲定律与康威定律
+<a href="#menu" style="float:right">目录</a>
+
+### 1.20.1. 墨菲定律
+
+* 任何事情都没有表面看起来那么简单
+* 所有的事都会比你预计的时间长
+* 可能出错的事总会出错
+* 如果你担心某种事情发生，那么它就有可能发生
+
+### 1.20.2. 康威定律
+
+* 系统架构是公司组织架构的反映
+* 应该按照业务闭环进行系统拆分／组织架构划分，实现闭环／高内聚／低耦合，减少沟通成本
+* 如果沟通出现问题，那么就应该老率进行系统和组织架构的调整
+* 在合适的时机进行系统拆分，不要一开始就把系统／服务拆的非常细．虽然闭环，但是每个人维护的系统多，维护成本高．

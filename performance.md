@@ -9,16 +9,33 @@
             - [1.1.1.1. 自顶向下](#1111-自顶向下)
             - [1.1.1.2. 自底向上](#1112-自底向上)
     - [1.2. 操作系统性能监控](#12-操作系统性能监控)
-        - [1.2.1. 定义](#121-定义)
+        - [1.2.1. 概述](#121-概述)
+            - [1.2.1.1. 性能问题](#1211-性能问题)
+            - [1.2.1.2. CPU消耗分析](#1212-cpu消耗分析)
+            - [1.2.1.3. 文件IO消耗分析](#1213-文件io消耗分析)
+            - [程序执行慢的原因](#程序执行慢的原因)
+            - [1.2.1.4. 工具选择](#1214-工具选择)
         - [1.2.2. Linux系统监控常用命令](#122-linux系统监控常用命令)
-            - [1.2.2.1. 评价参数](#1221-评价参数)
-            - [1.2.2.2. 显示系统总体资源使用情况工具TOP](#1222-显示系统总体资源使用情况工具top)
+            - [1.2.2.1. 必不可少的基础命令和工真](#1221-必不可少的基础命令和工真)
+                - [1.2.2.1.1. grep](#12211-grep)
+            - [1.2.2.2. 显示系统总体资源使用情况工具top](#1222-显示系统总体资源使用情况工具top)
             - [1.2.2.3. 监控内存和CPU工具vmstat](#1223-监控内存和cpu工具vmstat)
             - [1.2.2.4. 监控IO工具iostat](#1224-监控io工具iostat)
             - [1.2.2.5. 多功能诊断器pidstat](#1225-多功能诊断器pidstat)
             - [1.2.2.6. 查看网络接口信息的命令ifconfig](#1226-查看网络接口信息的命令ifconfig)
             - [1.2.2.7. 网络流量统计实用工具nicstat](#1227-网络流量统计实用工具nicstat)
-            - [1.2.2.8. 监控TCP/IP网络netstat](#1228-监控tcpip网络netstat)
+            - [1.2.2.8. 查看网络信息和网络监控命令](#1228-查看网络信息和网络监控命令)
+                - [1.2.2.8.1. ifconfig](#12281-ifconfig)
+                - [1.2.2.8.2. ping](#12282-ping)
+                - [1.2.2.8.3. telnet](#12283-telnet)
+                - [1.2.2.8.4. mtr](#12284-mtr)
+                - [1.2.2.8.5. nslookup](#12285-nslookup)
+                - [1.2.2.8.6. sar](#12286-sar)
+                - [1.2.2.8.7. netstat](#12287-netstat)
+                - [1.2.2.8.8. iptraf](#12288-iptraf)
+                - [1.2.2.8.9. tcpdump](#12289-tcpdump)
+                - [1.2.2.8.10. nmap](#122810-nmap)
+                - [1.2.2.8.11. ethtool](#122811-ethtool)
             - [1.2.2.9. 查看磁盘空间du&df](#1229-查看磁盘空间dudf)
     - [1.3. IDEA安装hsdis查看JIT编译的汇编代码](#13-idea安装hsdis查看jit编译的汇编代码)
     - [1.4. 使用JMH做Benchmark基准测试](#14-使用jmh做benchmark基准测试)
@@ -233,7 +250,7 @@
 ## 1.2. 操作系统性能监控
 <a href="#menu" style="float:right">目录</a>
 
-### 1.2.1. 定义
+### 1.2.1. 概述
 <a href="#menu" style="float:right">目录</a>
 
 改善性能涉及3种不同的活动：性能监控、性能分析以及性能调优。
@@ -241,12 +258,91 @@
 * **性能分析**是一种以侵入式方式收集运行性能数据的活动，它会影响应用的吞吐量或响应性。性能分析是对性能监控或是对干系人所报问题的回应，关注的范围通常比性能监控更集中。性能分析很少在生产环境中进行，通常是在质量评估、测试或开发环境中，常常是性能监控之后的行动。
 * **性能调优**是一种为改善应用响应性或吞吐量而更改参数、源代码、或属性配置的活动。性能调优通常是在性能监控或性能分析之后进行。
 
+#### 1.2.1.1. 性能问题
 
-### 1.2.2. Linux系统监控常用命令
+通常我们所说的性能问题，不外乎就是CPU/Memory/IO/Network这四个方面，这四个方面每个都有各自独特之处，同时也都是相互关联的。
 
-<a href="#menu" style="float:right">目录</a>
+**CPU**
 
-#### 1.2.2.1. 评价参数
+关于CPU，有下面一些经验可供参考：
+* Run Queue: 每个run queue最好不要超过3个threads在等待，转换到load, 就是load的值最好不要超过3倍的cpu核数，1倍核数是比较理想的状态，2-3倍是比较饱和的状态，再高就会影响系统正常运行了。
+* CPU Utilization: 推荐的比例是 us 60-70%, sy 30-35%, id 0-5%, 简单可以记us:sy=70:30, 这个是比较合适的比例，如果sy超过30，就会影响系统的正常运行
+* Context Switch: 上下文切换跟cpu利用率是直接相关的，如果cpu利用率符合上面说的比例，那么比较高的context switch是可以接受的
+
+**Memory**
+
+1. Memory Pages: Linux系统中内存是以页(Page)为基本来存取的，默认的页大小是4096Bytes, Linux下内存页可以分为下面几种类型:
+* Unreclaimable – locked, kernel, reserved pages
+* Swappable – anonymous memory pages
+* Syncable – pages backed by a disk file
+* Discardable – static pages, discarded pages
+
+2. kswapd: kswapd是用来保证系统有足够多的free memory的Linux daemon。它监控了内核的pages_high和pages_low这两个值，如果free memory的值低于pages_low, 它就会开始扫描内存并尝试free一些内存页，每次32个页，它会重复这个过程，一直到free memory的值达到pages_high这个值。kswapd在free内存页时，主要有下面几种情况：
+* 如果内存页没有被修改，它会直接放到free list
+* 如果内存页被修改了，而且该内存页是Syncable的，把该内存页的内容写回磁盘，然后把该内存页放到free list
+* 如果内存页被修改了，页且该内存页是Swappable(Anonymous)的，把该内存页写入到swap device, 然后把该内存页放到free list
+
+3. pdflush: pdflush是用来把内存页同步到对应的磁盘文件的Linux daemon. 比如说，一个文件在内存中被修改了，那么pdflush会把它写到磁盘上。当内存页中有10%的dirty页的话，pdflush就开始向文件系统同步这些dirty页。这个阈值可以通过vm.dirty_background_ratio这个内核参数来配置，缺省是10%.
+
+关于memory, 有下面一些经验之谈:
+* 比较低的free memory大小，表明系统有效地使用了内存；除非是在大量、持续的写swap device
+* 如果系统在持续读、写swap device, 表明系统内存不够了
+
+**IO**
+
+1. Page fault: 当应用程序要访问的数据不在正在使用的memory中的时候，就会发生page fault, 具体有下面两种类型的page faults:
+* Minor(MnPF): 数据在物理内存中，但在Fault发生的时候，还没在MMU(Memory Management Unit)登记，此时发生的Fault为Minor Page Fault.
+* Major(MPF): 数据不在物理内存中，需要从磁盘加载，此时发生的Fault为Major Page Fault.
+
+2. File Buffer Cache: 它是系统发生IO时，系统与磁盘之间的Cache, 主要目的就是最大化MnPF, 最小化MPF。前文中vmstat/top的截图中，buff对应的就是它的大小。
+
+3. Page Type: 前文中从回收的角度对memory page进行了分类，从IO的角度可以分为下面几类:
+* Read Pages:系统从磁盘加载的只读的Page, 这些Page会一直在内存中驻留，一直到系统内存紧张，内核才会将这些Page加入到free list,另做它用
+* Dirty Pages:系统从磁盘加载的Page, 并且做了修改。这些Page会被pdflush同步到磁盘。当系统内存紧张时，kswapd会将这些Page写入到磁盘
+* Anonymous Pages: 不属于某个进程的Page, 不能同步到磁盘。当系统内存紧张时，kswapd会将其swap到swap device, 以此来释放内存
+
+4. 磁盘IOPS计算：
+IOPS = 1000 / {((1 / (RPM / 60)) * 1000 / 2)[rotation] + 3[seek] + 2[latency]}
+
+解释一下上面的公式:
+* rotation: 磁盘旋转时间，1/(RPM/60)是每转一圈所用的秒，*1000是转化为毫秒，/2是平均情况下，需要转半圈
+* seek: 寻道时间，3ms
+* latency: 数据传输时间，2ms
+* 最后用1000/(rotation + seek + latency)就是磁盘的IOPS，正常用的10000RPM的磁盘，算下来约是125 IOPS
+
+关于IO，有下面一些经验之谈:
+* iowait正常情况下应该是0，如果持续非0的话，就说明对应的io设备overloaded了
+* 根据你的磁盘转数，计算它所能承受的IOPS，以此来判断当前的iops是否正常
+* 顺序读和随机读有一定的差异，这个也是要考虑的因素
+* 如果要监控磁盘的话，可以考虑监控持续一段时间的iowait和svctm, 如果这两个值持续比较大的话，对应的磁盘设备很大可能有问题
+* 监控swap和file system分区，确认虚拟内存和fs IO之间没有竞争
+
+**Network**
+
+带宽: 当下比较常用的带宽用100Mbps, 1000Mbps, 10000Mbps，分别对应于我们平时提的百兆网、千兆网和万兆网。通常，我们在说带宽的时候，单位用的是bit, 但是在实际应用的时候，我们用的单位大多是Byte, 因此，上述三种网对应的Byte带宽分别约是12.5MBps, 125MBps, 1250MBps
+
+#### 1.2.1.2. CPU消耗分析
+
+在Ｌinux中，CPU主要用于中断，内核以及用户进程的任务处理，优先级为中断>内核>用户进程．
+
+1. 内核调度的优先级：在Linux系统中，内核scheduler调度资源包括两种：threads(Process是由threads组成)和interrupt，这些被调度的资源是有特定的优先级的，以下从高到底：
+* Interrupts: Interrupt被设备用来通知内核相关的事件，优先级是最高的
+* Kernel(System) Processes：所有的系统进程都是以仅次于Interrupt的优先级被调度的
+* User Processes: 所有的应用程序都是run在用户态空间，以最低的优先级被内核调度
+ 
+2. 上下文切换(Context Switch): 线程在运行过程中，CPU时间片用完，或者是被更高优先级的的资源抢占了CPU，该线程都会被放到一个等待队列，等待下一次被调度，这样的一次过程称为一次上下文切换。另外，在用户程序调用系统调用(System call)的时候，也会发生上下文切换(这个也有叫Mode Switch的, 确实跟前面两种情况有所区别)。
+
+3. 运行队列(Run Queue)和负载(Load):
+* Run Queue: 在Linux系统中，每个CPU维护着一个run queue, 里面放着等待被执行的threads, run queue越大，在里面的线程等的时间越长
+* Load: Linux系统提供了1/5/15分钱的load, load是的值指的是当前running的threads数加上run queue中等待被执行的threads数
+
+4. CPU利用率(Utilization):
+* User Time(us): CPU在用户空间运行线程所花的时间的百分比
+* System Time(sy): CPU执行内核线程和中断(interrupt)所花的时间的百分比
+* Wait IO(wa): 所有进程因为等待IO完成而被阻塞，导致CPU idle所花的时间的百分比
+* Idle(id): CPU完全idle的时间的百分比
+
+**评价参数**
 
 * CPU utilization：最直观最重要的就是CPU的使用率。如果长期超过80%，则表明CPU遇到了瓶颈；
 * User time: 用户进程使用的CPU；该数值越高越好，表明越多的CPU用在了用户实际的工作上；
@@ -256,7 +352,47 @@
 * Load average: 在特定时间间隔内运行队列中(在CPU上运行或者等待运行多少进程)的平均进程数；在Linux中，进程分为三种状态:一种是阻塞的进程blocked process，一种是可运行的进程runnableprocess，另外就是正在运行的进程runningprocess。当进程阻塞时，进程会等待I/O设备的数据或者系统调用。进程可运行状态时，它处在一个运行队列run queue中，与其他可运行进程争夺CPU时间。 系统的load是指正在运行running one和准备好运行runnableone的进程的总数。比如现在系统有2个正在运行的进程，3个可运行进程，那么系统的load就是5，load average就是一定时间内的load数量均值；
 * Context Switch: 上下文切换。
 
-#### 1.2.2.2. 显示系统总体资源使用情况工具TOP
+#### 1.2.1.3. 文件IO消耗分析
+
+Ｌinux在操作文件时，将数据放入文件缓冲区，直到内存不够或者系统要释放内存给用户进程使用，因此在查看Linux内存状况时经常会发现可用的(free)的物理内存不多，但是cached用了很多，这是Ｌinux提升文件io的一种方式．如果物理空闲内存够用，只有在写文件和第一次读取文件时会产生真正的文件io．
+
+
+#### 程序执行慢的原因
+
+* 锁竞争激烈
+* 未充分使用硬件资源
+* 数据量的增长
+
+
+
+#### 1.2.1.4. 工具选择
+* cpu消耗分析
+    * top
+    * pidstat
+* 文件io消耗分析
+    * pidstat
+    * iostat
+* 网络io消耗分析
+    * sar
+* 内存消耗分析
+    * vmstat
+    * sar
+    * top
+    * pidstat 
+
+### 1.2.2. Linux系统监控常用命令
+
+<a href="#menu" style="float:right">目录</a>
+
+
+
+#### 1.2.2.1. 必不可少的基础命令和工真
+
+##### 1.2.2.1.1. grep
+
+
+
+#### 1.2.2.2. 显示系统总体资源使用情况工具top
 
 ```
 lgj@lgj-Lenovo-G470:~$ top
@@ -267,7 +403,7 @@ Tasks: 287 total,   1 running, 237 sleeping,   0 stopped,   0 zombie
 KiB Mem : 10174540 total,   465444 free,  6383888 used,  3325208 buff/cache
 KiB Swap:  2097148 total,  2097148 free,        0 used.  3206432 avail Mem 
 
-  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND                                                                        2003 lgj       20   0 3518024 236512  77784 S  10.9  2.3  19:57.87 gnome-shell                                                                    1762 lgj       20   0  629204 153588 104216 S  10.6  1.5  20:23.80 Xorg                                                                           8520 lgj       20   0  670000  44544  31016 S   5.0  0.4   0:11.43 gnome-terminal-                                                                3829 lgj       20   0 1628536 148496  96356 S   3.0  1.5  14:15.51 code                                                                           1063 root      20   0    4552    760    696 S   1.0  0.0   1:13.36 acpid                                                                          15936 lgj       20   0 2674372 284760  88684 S   1.0  2.8  11:35.65 FoxitReader 
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND                                                         2003 lgj       20   0 3518024 236512  77784 S  10.9  2.3  19:57.87 gnome-shell                                                    1762 lgj       20   0  629204 153588 104216 S  10.6  1.5  20:23.80 Xorg                                                           8520 lgj       20   0  670000  44544  31016 S   5.0  0.4   0:11.43 gnome-terminal-                                                3829 lgj       20   0 1628536 148496  96356 S   3.0  1.5  14:15.51 code                                                           1063 root      20   0    4552    760    696 S   1.0  0.0   1:13.36 acpid                                                          15936 lgj       20   0 2674372 284760  88684 S   1.0  2.8  11:35.65 FoxitReader 
 ```
 **第一行：**
 ```
@@ -289,6 +425,24 @@ Tasks: 287 total,   1 running, 237 sleeping,   0 stopped,   0 zombie
 ```
 这一行提供了关于CPU使用率的最重要的信息，分别表示 users time, system time, nice time, idle time, wait time, hard interrupte time, soft interrupted time, steal time; 其中最终要的是：users time, system time, wait time ,idle time 等等。nice time 表示用于调准进程nice level所花的时间。
 
+* us:用户进程处理所占的百分比
+* sy:内核线程处理所占的百分比
+* ni:被nice命令改变优先级的任务所占的百分比
+* id:cpu的空闲时间所占的百分比
+* wa:执行过程中等待IO所占的百分比
+* hi:硬件中断所占的百分比
+* si:软件中断所占的百分比
+
+对于计算机是多核cpu，上面显示的是多个cpu所占百分比的总和，因此会出现超过100%的情况．
+
+要想看到每个cpu的情况，按"1"即可
+```
+%Cpu0  :  5.2 us,  6.8 sy,  0.0 ni, 80.6 id,  7.4 wa,  0.0 hi,  0.0 si,  0.0 st
+%Cpu1  :  6.3 us,  5.7 sy,  0.0 ni, 88.1 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+%Cpu2  :  7.0 us,  5.4 sy,  0.0 ni, 87.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+%Cpu3  :  4.9 us,  3.6 sy,  0.0 ni, 91.5 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+
+```
 **第四行：**
 
 ```
@@ -316,7 +470,7 @@ KiB Swap:  2097148 total,  2097148 free,        0 used.  3206432 avail Mem
 * %TIME+: 进程运行时间；
 * COMMAND: 进程运行命令；
 
-上面的 top 命令默认是以 进程为单位来显示的，我们也可以以线程为单位来显示： top -H
+上面的 top 命令默认是以 进程为单位来显示的，我们也可以以线程为单位来显示： top -H,也可以在显示时按下＂shift+h＂进行切换，切换后则为线程pid．
 
 如果仅仅想查看 CPU 的 load average，使用uptime命令就行了：
 ```
@@ -324,6 +478,96 @@ lgj@lgj-Lenovo-G470:~$ uptime
  15:48:51 up 1 day,  5:32,  1 user,  load average: 0.70, 0.89, 0.90
 ```
 
+当cpu消耗严重时，主要体现在us,sy,wa,或hi的变高，wa值是io等待造成的，hi值变高主要为硬件中断造成的，例如网卡接收数据频繁的情况．
+
+对于java应用，cpu消耗严重主要体现在us,sy值上．
+
+**us**
+
+当us值过高时，表示运行的应用消耗了大部分的cpu。在这种情况下，对于java应用而言，最重要的是找到具体消耗cpu的线程所执行的代码，可以采用如下方法。
+* 首先通过linux命令top命令查看us过高的pid值
+* 通过top -Hp pid查看该pid进程下的线程的cpu消耗状况，得到具体pid值
+* 将pid值转化为16进制，这个转化后的值对应nid值的线程
+* 通过jstack pid | grep -C 20 “16进制的值” 命令查看运行程序的线程信息
+
+
+该线程就是消耗cpu的线程，在采样时须多执行几次上述的过程，以确保找到真实的消耗cpu的线程。
+
+java应用造成us过高的原因主要是线程一直处于可运行的状态Runnable，通常是这些线程在执行无阻塞、循环、正则或纯粹的计算等动作造成。 另外一个可能会造成us过高的原因是频繁的gc。如每次请求都需要分配较多内存，当访问量高时就导致不断的进行gc，系统响应速度下降， 进而造成堆积的请求更多，消耗的内存严重不足，最严重的时候会导致系统不断进行FullGC，对于频繁的gc需要通过分析jvm内存的消耗来查找原因。
+
+```java
+//代码,线程代码为空循环，将会产生很大的cpu消耗
+public class SimpleThread {
+
+    public static void main(String args[]){
+        MyThread thread  = new MyThread("test thread");
+        thread.start();
+    }
+}
+class MyThread extends Thread{
+    public MyThread(String name) {
+        super(name);
+    }
+    @Override
+    public void run() {
+        while(true){   }
+    }
+}
+
+//查询进程pid为19184
+lgj@lgj-Lenovo-G470:~$ jps
+19184 SimpleThread
+19495 Jps
+18873 RemoteMavenServer
+16894 Main
+
+//查询进程中线程的信息，可以看到其消耗cpu最高的为19204，其16进制为0x4b04
+lgj@lgj-Lenovo-G470:~$ top -Hp 19184
+
+top - 17:25:06 up 16:48,  1 user,  load average: 2.45, 2.33, 2.07
+Threads:  18 total,   1 running,  17 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  4.5 us,  1.1 sy,  0.0 ni, 93.8 id,  0.6 wa,  0.0 hi,  0.1 si,  0.0 st
+KiB Mem : 10174540 total,   198812 free,  7171736 used,  2803992 buff/cache
+KiB Swap:  2097148 total,  2095856 free,     1292 used.  2075680 avail Mem 
+
+PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND                                                                                                                                  
+19204 lgj       20   0 5182764  30664  17324 R 93.3  0.3   8:18.17 java                                                                                                                                     
+19184 lgj       20   0 5182764  30664  17324 S  0.0  0.3   0:00.00 java  
+
+//查询该线程的运行信息
+lgj@lgj-Lenovo-G470:~$ jstack 19184 | grep -A 5 'nid=0x4b04'
+"test thread" #10 prio=5 os_prio=0 tid=0x00007f37ec2c5000 nid=0x4b04 runnable [0x00007f37d928c000]
+   java.lang.Thread.State: RUNNABLE
+	at com.code.base.thread.MyThread.run(SimpleThread.java:24)
+```
+从上面可以看出，主要是SimpleThread.java的MyThread线程消耗了cpu，但是不能确定消耗cpu的是哪行的代码，需要根据实际代码进行分析．
+
+**sy**
+
+当sy值过高时，表示linux花费了更多的时间在进行线程切换。java应用造成这种现象的主要原因是启动的线程比较多， 且这些线程多处于不断的阻塞（例如锁等待，io等待）和执行状态的变化过程中，这就导致了操作系统要不断的切换执行的线程， 产生大量的上下文切换。在这种情况下，对java应用而言，最重要的是找出不断切换状态的原因， 可采用的方法为通过kill -3 pid 或jstack -l pid的方法dump出java应用程序的线程信息，查看线程的状态信息以及锁信息， 找出等待状态或锁竞争过多的线程。
+
+```
+lgj@lgj-Lenovo-G470:~$ jstack -l 16894 | grep -A 5 "on object monitor"
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	at java.lang.Object.wait(Object.java:502)
+	at java.lang.UNIXProcess.waitFor(UNIXProcess.java:395)
+	- locked <0x00000000b107f008> (a java.lang.UNIXProcess)
+	at com.intellij.execution.process.ProcessWaitFor$1$1.run(ProcessWaitFor.java:52)
+--
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
+	- locked <0x00000000bc295c50> (a java.lang.ref.ReferenceQueue$Lock)
+	at sun.rmi.transport.DGCClient$EndpointEntry$RenewCleanThread.run(DGCClient.java:553)
+	at java.lang.Thread.run(Thread.java:745)
+--
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	at sun.misc.GC$Daemon.run(GC.java:117)
+	- locked <0x00000000bc295cb0> (a sun.misc.GC$LatencyLock)
+
+```
 #### 1.2.2.3. 监控内存和CPU工具vmstat
 
 **vmstat**
@@ -336,6 +580,7 @@ procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
  0  0      0 2600524 206892 2439504    0    0     0    91  485 1380  2  1 97  0  0
 
 ```
+
 
 ```
 FIELD DESCRIPTION FOR VM MODE
@@ -350,8 +595,8 @@ FIELD DESCRIPTION FOR VM MODE
        inact: the amount of inactive memory. (-a option)
        active: the amount of active memory. (-a option)
    Swap
-       si: Amount of memory swapped in from disk (/s).
-       so: Amount of memory swapped to disk (/s).
+       si: Amount of memory swapped in from disk (/s).每秒从硬盘读入到内存的数据量
+       so: Amount of memory swapped to disk (/s)，每秒从内存写入硬盘的数据量
    IO
        bi: Blocks received from a block device (blocks/s).
        bo: Blocks sent to a block device (blocks/s).
@@ -370,32 +615,69 @@ FIELD DESCRIPTION FOR VM MODE
 另外提供了关于中断和上下文切换的信息。System 中的in，表示每秒的中断数，cs表示每秒的上下文切换数；
 其它的字段是关于内存和磁盘的。
 
+swpd值过高通常是由于物理内存不够用了，os将物理内存中的一部分数据转为存入硬盘上进行存储，以腾出空间给当前的运行的进程使用．在目前运行的程序变化后，即从硬盘中将数据读取到内存，以便恢复程序的运行，这个过程就会产生swap IO.因此看swap的消耗情况主要关注的是swap  io的状况，如果swap io发生较为频繁，那么会严重影响系统的性能．
+
+由于Java是单进程应用，因此只要JVM内存设置不是过大，是不会操作到swap区域．物理内存消耗过多主要是jvm内存参数设置过大，创建的Java线程过多或通过Direct ByteBuffer往物理内存中放置了过多的对象造成．
+
+
+
 #### 1.2.2.4. 监控IO工具iostat 
 
 ```
-lgj@lgj-Lenovo-G470:~$ iostat
-Linux 4.15.0-46-generic (lgj-Lenovo-G470) 	09/08/19 	_x86_64_	(4 CPU)
+iostat   
+Linux 4.15.0-46-generic (lgj-Lenovo-G470) 	12/27/19 	_x86_64_	(4 CPU)
 
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
-           4.21    0.01    1.50    0.37    0.00   93.91
+          12.05    0.01    0.93    0.54    0.00   86.46
 
 Device             tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
-loop0             0.00         0.00         0.00        330          0
-loop1             0.00         0.00         0.00         46          0
-loop2             0.00         0.01         0.00        663          0
+loop0             0.00         0.01         0.00        534          0
+loop1             0.00         0.00         0.00        329          0
+loop2             0.12         0.13         0.00      11727          0
+loop3             0.01         0.01         0.00        823          0
+loop4             0.00         0.02         0.00       1438          0
+
+#查看所有信息
+$ iostat -x
+Linux 4.15.0-46-generic (lgj-Lenovo-G470) 	12/27/19 	_x86_64_	(4 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+          12.02    0.01    0.93    0.54    0.00   86.50
+
+Device  r/s     w/s     rkB/s     wkB/s   rrqm/s   wrqm/s  %rrqm  %wrqm r_await w_await aqu-sz rareq-sz wareq-sz  svctm  %util
+loop0   0.00    0.00      0.01      0.00     0.00     0.00   0.00   0.00    5.69    0.00   0.00     2.23     0.00   0.00   0.00
+loop1   0.00    0.00      0.00      0.00     0.00     0.00   0.00   0.00   55.24    0.00   0.00     8.89     0.00   7.46   0.00
+loop2   0.12    0.00      0.13      0.00     0.00     0.00   0.00   0.00   15.65    0.00   0.00     1.09     0.00   0.51   0.01
 
 ```
-tps：设备每秒的传输次数
-kB_read/s：每秒从设备读取的数据量
-kB_wrtn/s：每秒从设备写入的数据量
-kB_read：读取的总数据量
-kB_wrtn：写入的总数据量
+* Device：设备卷标名或者分区名
+* tps：设备每秒的传输次数
+* kB_read/s：每秒从设备读取的数据量
+* kB_wrtn/s：每秒从设备写入的数据量
+* kB_read：读取的总数据量
+* kB_wrtn：写入的总数据量
+* r/s：每秒读的请求数
+* w/s:每秒写的请求数
+* r_await/w_await：　平均每次ＩＯ操作的等待时间
+* aqu-sz:等待请求队列的平均长度
+* svctm：平均每次设备的执行IO操作的时间
+* %util：一秒之中有百分之几用于ＩＯ操作
+
+在使用iostat查看IO消耗的情况时，首先要关注%iowai所占的百分比，如果占比较大，就需要关注io的消耗情况了．
+
+当文件IO消耗过高时，对于Java应用最重要的是找出io消耗高的代码．先通过pidstat直接找到文件io操作多的线程，再通过jstack找到对应的代码．
+
+Java应用造成文件io消耗严重的主要原因是多个线程需要进行大量内容的写入的动作．或者磁盘设备本身的处理速度慢．或文件系统慢．或操作的文件本身已经很大造成．
+
+
 
 #### 1.2.2.5. 多功能诊断器pidstat  
 
+iostat只能查看整个系统的文件IO消耗情况．pidstat 可以只查看进程的文件IO消耗情况．
 pidstat是进程分析的终极利器，利用它可以分析进程(包括进程中所有每个线程)的各种信息：
 cpu使用(默认就是cpu， -u 也是cpu),  内存使用(-r 包括page fault)，IO情况(-d)，进程切换(-w)，pidstat 可以使用 -p xxx 指定进程pid，单独分析一个进程及其所有线程；也可以是所有进程 -p ALL，或者是所有活动进程(默认是所有活动进程)：
 默认是所有活动进程的 CPU信息：
+
 ```
 lgj@lgj-Lenovo-G470:~$ pidstat  
 Linux 4.15.0-46-generic (lgj-Lenovo-G470) 	09/08/19 	_x86_64_	(4 CPU)
@@ -410,6 +692,7 @@ Linux 4.15.0-46-generic (lgj-Lenovo-G470) 	09/08/19 	_x86_64_	(4 CPU)
 15:53:18        0        15    0.00    0.00    0.00    0.00    0.00     1  migration/1
 
 ```
+可以通过pidstat　-d -t -p [pid] 1 100,查看线程的io的消耗情况．1和100分别为间隔时间和次数．
 
 #### 1.2.2.6. 查看网络接口信息的命令ifconfig
 <a href="#menu" style="float:right">目录</a>
@@ -549,8 +832,149 @@ OutDG : 每秒传输的UDP数据报(UDP Datagrams)
 InErr : 接收到的因包含错误而不能被处理的数据包
 OutErr :因错误而不能成功传输的数据包.
 
-#### 1.2.2.8. 监控TCP/IP网络netstat
+#### 1.2.2.8. 查看网络信息和网络监控命令 
 <a href="#menu" style="float:right">目录</a>
+
+##### 1.2.2.8.1. ifconfig
+该命令用于查看机器挂载的网卡情况 。
+```bash
+# 查看所有网卡信息
+ifconfig -a 
+# 查看特定网卡信息
+ifconfig ethO
+```
+输出
+```
+ethO    Link encap：以太网硬件地址 08: 00: 27: 2 £: 70 : b6
+        inet 地址： 192.168.1.102 广播： 192.168 . 1.255 掩码： 255.255 . 255.0
+        inet6 地址： fe80:: aOO: 27 ff: fe 2 f : 70b6 /6 4 Scope: Link
+        UP BROADCAST RUNNING MULTICAST MTU: 1500 跃点数： 1
+        接收数据包 ： 14392 错误：。丢弃： 0 过载 ： 0 帧数：。
+        发送数据包 ： 8665 错误：。丢弃： 0 过载 ： 0 载波：。
+        碰撞： 0 发送队列长度： 1000
+        接收字节： 15021524 (1 5.0 MB) 发送字节： 858553 (858 . 5 KB)
+```
+##### 1.2.2.8.2. ping
+
+ping 命令是用于检测网络故障的常用命令 ，可以用来测试一 台主机到另外一台主机的网络是否连通。
+使用方式：
+```
+ping www.baidu.com
+
+ping 127.0.0.1 
+```
+##### 1.2.2.8.3. telnet
+
+telnet 是 TCP/IP 协议族的一员，是网络远程登录服务的标准协议，帮助用户在本地计算机上连接远程主机。
+使用方式 ：
+```
+telnet IP PORT
+```
+
+##### 1.2.2.8.4. mtr
+m仕命令是 Linux 系统中的网络连通性测试工具，也可以用来检测丢包率。
+使用方式 ：
+mtr -r sina.com
+命令输出 ：
+```
+$ mtr -r www.baidu.com
+Start: 2019-12-20T01:30:53+0800
+HOST: lgj-Lenovo-G470             Loss%   Snt   Last   Avg  Best  Wrst StDev
+  1.|-- promote.cache-dns.local    0.0%    10    7.0   4.5   0.7  18.5   5.5
+  2.|-- 115.174.70.1               0.0%    10    3.9   5.9   3.3  12.8   3.5
+  3.|-- 10.144.14.242              0.0%    10   13.2   6.0   2.4  13.5   4.5
+  4.|-- 14.197.177.41              0.0%    10    4.6   9.3   3.9  28.4   8.1
+  5.|-- 14.197.225.117             0.0%    10   13.6  13.0   5.5  42.7  10.9
+  6.|-- 14.197.197.253             0.0%    10   53.8  47.6  42.7  54.9   4.6
+  7.|-- 14.197.219.206             0.0%    10   43.2  44.6  42.4  52.0   3.2
+  8.|-- 168.160.254.222            0.0%    10   48.3  46.7  43.3  50.8   2.6
+  9.|-- 182.61.252.218             0.0%    10   46.3  47.5  43.2  58.2   4.5
+ 10.|-- ???                       100.0    10    0.0   0.0   0.0   0.0   0.0
+ 11.|-- ???                       100.0    10    0.0   0.0   0.0   0.0   0.0
+ 12.|-- ???                       100.0    10    0.0   0.0   0.0   0.0   0.0
+ 13.|-- ???                       100.0    10    0.0   0.0   0.0   0.0   0.0
+ 14.|-- 182.61.200.6               0.0%    10   66.5  49.9  44.0  66.5   7.7
+```
+其中的第 2 列为丢包率，可以用来判断网络中两台机器的连通质量。
+
+##### 1.2.2.8.5. nslookup
+
+这是一款检测网络中 DNS 服务器能否正确解析域名的工具命令，并且可以输出 
+
+```
+$ nslookup www.baidu.com
+Server:		127.0.0.53
+Address:	127.0.0.53#53
+
+Non-authoritative answer:
+www.baidu.com	canonical name = www.a.shifen.com.
+Name:	www.a.shifen.com
+Address: 182.61.200.6
+Name:	www.a.shifen.com
+Address: 182.61.200.7
+
+```
+
+##### 1.2.2.8.6. sar
+
+sar 是一个多功能的监控工具，使用简单，不需要管理员权限，可以输出每秒的网卡存取速度，适合线上排查问题时使用。
+使用方式：
+```
+sar -n DEV 1 1
+```
+```
+$ sar -n DEV 1 1
+Linux 4.15.0-46-generic (lgj-Lenovo-G470) 	12/20/19 	_x86_64_	(4 CPU)
+
+01:37:55        IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+01:37:56           lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+01:37:56     wlp8s0b1      0.00      1.00      0.00      0.09      0.00      0.00      0.00      0.00
+01:37:56      docker0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+01:37:56    br-4b7cc08aeb43      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+01:37:56       enp7s0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+01:37:56    br-c92fe5a4f7e1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+Average:        IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+Average:           lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+Average:     wlp8s0b1      0.00      1.00      0.00      0.09      0.00      0.00      0.00      0.00
+Average:      docker0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+Average:    br-4b7cc08aeb43      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+Average:       enp7s0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+Average:    br-c92fe5a4f7e1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+```
+从输出中可以看到网卡的读写速度和流量，在应急过程中可以用来判断服务器是否上量。
+* -A：所有报告的总和。
+* -u: CPU 利用率 。
+* -v：进程、 I 节点、文件和锁表状态。
+* -d：硬盘的使用报告。
+* -r: 没有使用的内存页面和硬盘块。
+* -g ： 串口 1/0 的情况。
+* -b：缓冲区的使用情况。
+* -a：文件的读写情况 。
+* -c：系统的调用情况。
+* -R：进程的活动情况 。
+* -y：终端设备的活动情况。
+* -w：系统的交换活动。
+
+通过sar -r　查看内存的消耗情况．
+```
+sar -r 2 5
+Linux 4.15.0-46-generic (lgj-Lenovo-G470) 	12/27/19 	_x86_64_	(4 CPU)
+
+02:17:23    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+02:17:25       660228   1405196   9514312     93.51    409296   1220868  16877352    137.53   7523728   1558744       620
+02:17:27       659576   1404552   9514964     93.52    409304   1220948  16877352    137.53   7524368   1558808       652
+02:17:29       659608   1404584   9514932     93.52    409304   1220948  16877352    137.53   7524468   1558808       664
+02:17:31       659484   1404460   9515056     93.52    409304   1220952  16877352    137.53   7524656   1558812       488
+02:17:33       657376   1402352   9517164     93.54    409304   1223228  16877352    137.53   7524620   1560976       488
+Average:       659254   1404229   9515286     93.52    409302   1221389  16877352    137.53   7524368   1559230       582
+```
+sar和vmstat的共同弱点是不能分析单个进程所占用的内存量．可以通过top或者pidstat查看进程所消耗的内存量．但是to得到的java的运行内存和之外占用的物理内存的总和．
+
+##### 1.2.2.8.7. netstat
+
+此命令显示网络连接、端口信息等，另外一个命令 SS 与 netstat 命令类似， 不再单独介绍。
 
 **基本使用**
 ```
@@ -627,6 +1051,51 @@ tcp        0      0 localhost:51188         localhost:46561         ESTABLISHED
 tcp        0      1 bogon:52244             tsa03s02-in-f14.1:https SYN_SENT   
 tcp        0      1 bogon:52232             tsa03s02-in-f14.1:https SYN_SENT   
 tcp        0      1 bogon:52230             tsa03s02-in-f14.1:https SYN_SENT 
+```
+
+```bash
+#根据进程查找踹口
+ps -elf I grep 进程
+#根据进程 D 查找进程开启的端口 ：
+netstat -nap I grep 2862
+#查找使用端口的进程号
+netstat -nap I grep 8080
+#根据进程 ID 查找进程的详细信息
+ps -elf | grep 2862
+```
+##### 1.2.2.8.8. iptraf
+
+iptraf 是一个实时监控网络流量的交互式的彩色文本屏幕界面。它监控的数据比较全面，可以输出 TCP 连接、网络接口 、 协议、端口 、 网络包大小等信息，但是耗费的系统资源比较多，且需要管理员权限。
+
+##### 1.2.2.8.9. tcpdump
+tcpdump 是网络状况分析和跟踪工具，是可以用来抓包的实用命令，使用前需要对 TCP/IP有所熟悉，因为过滤使用的信息都是 TCP/IP 格式 。
+显示来源 IP 或者目的四为 192.168.1.102 的网络通信：
+```
+sudo tcpdump -i ethO host 192.168.1.102
+```
+显示去往 102.168 .1.102 的所有 FTP 会话信息：
+```
+sudo tcpdump -i ethl ’ dst 192 . 168.1.102 and (port 21 or 20 ) ’
+```
+显示去往 102.168 . 1.102 的所有 HTTP 会话信息 ：
+```
+sudo tcpdump -ni ethO ’ dst 192.168.1.102 and tcp and port 8080 ’
+```
+##### 1.2.2.8.10. nmap
+
+扫描某一主机打开的端口及端口提供的服务信息 ，通常用于查看本机有哪些端口对外提供服务，或者确定服务器有哪些端口对外开放。
+使用方式 ：
+```
+nmap -v -A localhost
+```
+##### 1.2.2.8.11. ethtool
+
+ethtool 用于查看网卡 的配置情况。
+
+使用方式 ：
+
+```
+ethtool 网卡名称
 ```
 
 #### 1.2.2.9. 查看磁盘空间du&df
@@ -1022,7 +1491,7 @@ Warmup 是指在实际进行 Benchmark 前先进行预热的行为。
 
 **JRE**(JavaRuntimeEnvironment，Java运行环境)，也就是Java平台。所有的Java 程序都要在JRE下才能运行。普通用户只需要运行已开发好的java程序，安装JRE即可。
 
-**JDK**(Java Development Kit)是程序开发者用来来编译、调试java程序用的开发工具包。JDK的工具也是Java程序，也需要JRE才能运行。为了保持JDK的独立性和完整性，在JDK的安装过程中，JRE也是 安装的一部分。所以，在JDK的安装目录下有一个名为jre的目录，用于存放JRE文件。
+**JDK**(Java Development Kit)是程序开发者用来来编译、调试java程序用的开发工具包。JDK的工具也是Java程序，也需要JRE才能运行。为了保持JDK的独立性和��整性，在JDK的安装过程中，JRE也是 安装的一部分。所以，在JDK的安装目录下有一个名为jre的目录，用于存放JRE文件。
 
 **JVM**(JavaVirtualMachine，Java虚拟机)是JRE的一部分。它是一个虚构出来的计算机，是通过在实际的计算机上仿真模拟各种计算机功能来实现的。JVM有自己完善的硬件架构，如处理器、堆栈、寄存器等，还具有相应的指令系统。Java语言最重要的特点就是跨平台运行。使用JVM就是为了支持与操作系统无关，实现跨平台。
 
@@ -2354,6 +2823,26 @@ java -Xmx3550m -Xms3550m -Xmn2g –Xss128k
 
 #### 1.5.15.1. JDK命令行工具
 <a href="#menu" style="float:right">目录</a>
+
+
+| 场 景 |命 令|
+|---|---|
+|没有源码的 Jar包出 了问题、破解别人的代码、新上线的代码不符合预期 |jad
+|线上出问题，无法增加日志、无法线上调试，需要实现切面功能| btrace
+|内存不足、 OutOfMemoryError |Jmap
+|内存不足、 OutO伽lemoryE盯or、 GC 频繁、服务超时、出现长尾 II向应现象| jstat
+|服务超时、钱程卡死、线程死锁、服务器负载高 |jstack
+|查看或者修改 Java 进程的环境变量和 Java 虚拟机变量 |jinfo
+|使用 JN（开发 Java 本地程序库| javah
+|查找 Java 进程 ID |JPS
+|分析 jmap 产生的 Java 堆的快照 |jhat
+|QA 环境无法重现，需要在准生产线上远程调试 |jdb
+|与 jstat 相同，是 jstat 的服务器版本，但是可以在线下用客户端连接，可线下操作 |jstatd
+|简单的有界面的内存分析工具，是 JDK 自带的，已被 JvisualVM 取代 |JConsole
+|全面的有界面的内存分析工具，功能丰富， JDK 自带 |JVisualVM
+|专业的 Java 进程性能分析和跟踪工具 |JMAT
+|商业化的 Java 进程性能分析和跟踪工具 |JProfile
+
 
 ##### 1.5.15.1.1. javap
 * 反编译工具,可用来查看java编译器生成的字节码
@@ -3992,7 +4481,7 @@ protected Class<?> findClass(String name) throws ClassNotFoundException {
 #### 1.5.19.5. 全盘负责与双亲委托机制
 <a href="#menu" style="float:right">目录</a>
 
-Java装载类使用“全盘负责委托机制”。“全盘负责”是指当一个ClassLoder装载一个类时，除非显示的使用另外一个ClassLoder，该类所依赖及引用的类也由这个ClassLoder载入；“委托机制”是指先委托父类装载器寻找目标类，只有在找不到的情况下才从自己的类路径中查找并装载目标类。这一点是从安全方面考虑的，试想如果一个人写了一个恶意的基础类（如java.lang.String）并加载到JVM将会引起严重的后果，但有了全盘负责制，java.lang.String永远是由根装载器来装载，避免以上情况发生 除了JVM默认的三个ClassLoder以外，第三方可以编写自己的类装载器，以实现一些特殊的需求。类文件被装载解析后，在JVM中都有一个对应的java.lang.Class对象，提供了类结构信息的描述。数组，枚举及基本数据类型，甚至void都拥有对应的Class对象。Class类没有public的构造方法，Class对象是在装载类时由JVM通过调用类装载器中的defineClass()方法自动构造的。
+Java装载类使用“全盘负责委托机制”。“全盘负责”是指当一个ClassLoder装载一个类时，除非显示的使��另外一个ClassLoder，该类所依赖及引用的类也由这个ClassLoder载入；“委托机制”是指先委托父类装载器寻找目标类，只有在找不到的情况下才从自己的类路径中查找并装载目标类。这一点是从安全方面考虑的，试想如果一个人写了一个恶意的基础类（如java.lang.String）并加载到JVM将会引起严重的后果，但有了全盘负责制，java.lang.String永远是由根装载器来装载，避免以上情况发生 除了JVM默认的三个ClassLoder以外，第三方可以编写自己的类装载器，以实现一些特殊的需求。类文件被装载解析后，在JVM中都有一个对应的java.lang.Class对象，提供了类结构信息的描述。数组，枚举及基本数据类型，甚至void都拥有对应的Class对象。Class类没有public的构造方法，Class对象是在装载类时由JVM通过调用类装载器中的defineClass()方法自动构造的。
 
 
 全盘负责”是指当一个ClassLoader装载一个类时，除非显示地使用另一个ClassLoader，则该类所依赖及引用的类也由这个CladdLoader载入。
@@ -5077,7 +5566,7 @@ ClassReader用来读取原有的字节码，ClassWriter用于写入字节码，C
 ##### 1.5.20.4.3. 为什么选择 ASM
 <a href="#menu" style="float:right">目录</a>
 
-最直接的改造 Java 类的方法莫过于直接改写 class 文件。Java 规范详细说明了 class 文件的格式，直接编辑字节码确实可以改变 Java 类的行为。直到今天，还有一些 Java 高手们使用最原始的工具，如 UltraEdit 这样的编辑器对 class 文件动手术。是的，这是最直接的方法，但是要求使用者对 Java class 文件的格式了熟于心：小心地推算出想改造的函数相对文件首部的偏移量，同时重新计算 class 文件的校验码以通过 Java 虚拟机的安全机制。
+最直接的改造 Java 类的方法莫过于直接改写 class 文件。Java 规范详细说明了 class 文件的格式，直接编辑字节码确实可以改变 Java 类的行为。直到今天，还有一些 Java 高手们使用最原始的工具，如 UltraEdit 这样的编辑器对 class 文件动手术。是的，这是最直接的方法，但是要求使用者对 Java class 文件的格式了熟于��：小心地推算出想改造的函数相对文件首部的偏移量，同时重新计算 class 文件的校验码以通过 Java 虚拟机的安全机制。
 
 Java 5 中提供的 Instrument 包也可以提供类似的功能：启动时往 Java 虚拟机中挂上一个用户定义的 hook 程序，可以在装入特定类的时候改变特定类的字节码，从而改变该类的行为。但是其缺点也是明显的：
 * Instrument 包是在整个虚拟机上挂了一个钩子程序，每次装入一个新类的时候，都必须执行一遍这段程序，即使这个类不需要改变。

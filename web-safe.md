@@ -13,7 +13,7 @@
         - [1.2.4. 文件上传漏洞](#124-文件上传漏洞)
         - [1.2.5. DOS攻击](#125-dos攻击)
     - [1.3. 常见的安全算法](#13-常见的安全算法)
-        - [1.3.1. 数字摘要](#131-数字摘要)
+        - [1.3.1. 数字摘要(单向散列)](#131-数字摘要单向散列)
         - [1.3.2. 对称加密算法](#132-对称加密算法)
         - [1.3.3. 非对称加密算法](#133-非对称加密算法)
         - [1.3.4. 数字签名](#134-数字签名)
@@ -148,9 +148,11 @@ public Greeting greeting(@RequestParam(required=false, defaultValue="World") Str
 5、Alice的恶意脚本可以在Bob的电脑上执行Bob所持有的权限下的命令。
 
 举个列子：
+```
 http://localhost:8080/helloController/search?name=<script>alert("hey!")</script>
 http://localhost:8080/helloController/search?name=<img src='w.123' onerror='alert("hey!")'>
 http://localhost:8080/helloController/search?name=<a onclick='alert("hey!")'>点我</a>
+```
 
 服务端代码片段，只做了一个简单的字符串连接就返回给客户端。
 ![](https://images2018.cnblogs.com/blog/976001/201808/976001-20180811173613221-1624378045.png)
@@ -466,7 +468,7 @@ UDP DNS Query Flood攻击采用的方法是向被攻击的服务器发送大量�
 ## 1.3. 常见的安全算法
 <a href="#menu" style="float:right">目录</a>
 
-### 1.3.1. 数字摘要
+### 1.3.1. 数字摘要(单向散列)
 <a href="#menu" style="float:right">目录</a>
 
 对数据(文件字节流/消息字节流)进行类似的HASH算法之后获取到的固定长度的值(摘要)，如果原数据被修改，校验时的摘要将无法进行匹配。

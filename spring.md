@@ -1197,7 +1197,7 @@ AbstractBeanDefinition定义了一系列描述Bean画像的属性，同时实现
 	/** Package-visible field that indicates MergedBeanDefinitionPostProcessor having been applied. */
 	boolean postProcessed = false;
  
-	//在生成代理的时候会使用，表明是否已经生成代理
+	//在生成代理的时候会使用，表明���否已经生成代理
 	/** Package-visible field that indicates a before-instantiation post-processor having kicked in. */
 	@Nullable
 	volatile Boolean beforeInstantiationResolved;
@@ -3004,6 +3004,13 @@ Spring中，通过动态代理和动态字节码技术实现了AOP.
 * Spring AOP
     * 通过代理的方式向目标类织入增强代码
 
+
+* AOP的实现方式
+    * 对Ｊava字节码进行重新编译，将切面插入字节码的某些点和面上，可以使用cglib
+    * 定制类加载器，在类加载时对字节码进行补充，在字节码插入切面，增加了除业务逻辑外的功能，jvm自身提供的Java Agent机制就是在加载类的字节码时，通过增加切面来实现ＡＯＰ
+    * jvm本身提供了动态代理组件，可以通过它实现任意对象的代理模式，在代理的过程中可以插入切面的逻辑，可以使用Java的API Proxy.newInstance()和Ｉnvocation来实现
+    
+
 #### 1.1.8.2. 切点函数
 <a href="#menu" style="float:right">目录</a>
 
@@ -3670,7 +3677,7 @@ MySQL数据库的四种事务隔离级别
     * 编程式事务：通过编程代码在业务逻辑时需要时自行实现，粒度更小。
 
 **事务的基本原理**
-Spring事务的本质其实就是数据库对事务的支持，没有数据库的事务支持，spring是无法提供事务功能的。对于纯JDBC操作数据库，想要用到事务，可以按照以下步骤进行：
+Spring事务的本质其实就是数据库对事务的支��，没有数据库的事务支持，spring是无法提供事务功能的。对于纯JDBC操作数据库，想要用到事务，可以按照以下步骤进行：
 
 * 获取连接 Connection con = DriverManager.getConnection()
 * 开启事务con.setAutoCommit(true/false);
@@ -6605,7 +6612,7 @@ public @interface Controller {
 @Resource和@Autowired都是做bean的注入时使用，其实@Resource并不是Spring的注解，它的包是javax.annotation.Resource，需要导入，但是Spring支持该注解的注入。
 
 1、共同点
-两者都可以写在字段和setter方法上。两者如果都写在字段上，那么就不需要再写setter方法。
+两者都可以写在字段和setter方法上。两者如果都写在字段上，那么就不需要再写setter方法���
 2、不同
 （1）@Autowired
 @Autowired为Spring提供的注解，需要导入包org.springframework.beans.factory.annotation.Autowired;只按照byType注入。
@@ -9570,7 +9577,7 @@ Spring Boot有一个开发工具（DevTools）模块，它有助于提高开发�
 
 开发人员可以重新加载Spring Boot上的更改，而无需重新启动服务器。这将消除每次手动部署更改的需要。Spring Boot在发布它的第一个版本时没有这个功能。
 
-这是开发人员最需要的功能。DevTools模块完全满足开发人员的需求。该模块将在生产环境中被禁用。它还提供H2数据库控制台以更好地测试应用程序。
+这是开发人员最需要的功能。DevTools模块完全��足开发人员的需求。该模块将在生产环境中被禁用。它还提供H2数据库控制台以更好地测试应用程序。
 ```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -11086,7 +11093,7 @@ BaseLoadBalancer 类是ribbon 负载均衡器的基础实现类，在该类中�
 DynamicServerListLoadBalancer 类继承于 BaseLoadBalancer 类， 它是对基础负载均衡器的扩展。 在该负载均衡器中， 实现了服务实例清单在运行期的动态更新能力；同时， 它还具备了对服务实例清单的过滤功能， 也就是说， 我们可以通过过滤器来选择性地获取一批服务实例清单
 
 **ZoneAwareloadBalancer**
-ZoneAwareLoadBalancer 负载均衡器是对 DynamicServerListLoadBalancer的扩展。在 DynamicServerLis七LoadBalancer 中， 我们可以看到它并没有重写选择具体服务实例的 chooseServer 函数， 所以它依然会采用在 BaseLoadBalancer 中实现的算法。 使用 RoundRobinRule 规则， 以线性轮询的方式来选择调用的服务实例， 该算法实现简单并没有区域 (Zone) 的概念， 所以它会把所有实例视为一个 Zone下的节点来看待， 这样就会周期性地产生跨区域 (Zone) 访问的情况， 由于跨区域会产生更高的延迟，这些实例主要以防止区域性故障实现高可用为目的而不能作为常规访问的实例， 所以在多区域部署的清况下会有一定的性能问题， 而该负载均衡器则 可以避免这样的问题.
+ZoneAwareLoadBalancer 负载均衡器是对 DynamicServerListLoadBalancer的扩展。在 DynamicServerLis七LoadBalancer 中， 我们可以看到它并没有重写选择具体服务实例的 chooseServer 函数， 所以它依然会采用在 BaseLoadBalancer 中实现的算法。 使用 RoundRobinRule 规则， 以线性轮询的方式来选择调用的服务实例， 该算法实现简单并没有区域 (Zone) 的概念， 所以它会把所有实例视为一个 Zone下的节点来看待， 这样就会周期性地产生跨区域 (Zone) 访问的情况， 由于跨区域会产生更��的延迟，这些实例主要以防止区域性故障实现高可用为目的而不能作为常规访问的实例， 所以在多区域部署的清况下会有一定的性能问题， 而该负载均衡器则 可以避免这样的问题.
 
 ##### 1.8.3.2.3. 负载均衡策略
 <a href="#menu" style="float:right">目录</a>
