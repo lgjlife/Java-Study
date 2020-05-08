@@ -44,53 +44,60 @@
         - [1.5.1. 基本介绍](#151-基本介绍)
         - [1.5.2. 安装](#152-安装)
             - [1.5.2.1. Ubuntu下安装](#1521-ubuntu下安装)
-    - [1.6. Jenkins](#16-jenkins)
     - [1.7. Docker](#17-docker)
         - [1.7.1. Docker基础](#171-docker基础)
-            - [1.7.1.1. 基本概念](#1711-基本概念)
-            - [1.7.1.2. 命名](#1712-命名)
-            - [1.7.1.3. docker的8个使用场景](#1713-docker的8个使用场景)
-            - [1.7.1.4. Docker 安装](#1714-docker-安装)
-            - [1.7.1.5. 常用指令](#1715-常用指令)
-        - [1.7.2. 镜像](#172-镜像)
-            - [1.7.2.1. 基本概念](#1721-基本概念)
-            - [1.7.2.2. 本地镜像的管理](#1722-本地镜像的管理)
-            - [1.7.2.3. Docker Hub 简介](#1723-docker-hub-简介)
-        - [1.7.3. 容器](#173-容器)
-            - [1.7.3.1. 容器的管理操作](#1731-容器的管理操作)
-            - [1.7.3.2. 容器内部信息的获取](#1732-容器内部信息的获取)
-            - [1.7.3.3. 容器的启动过程](#1733-容器的启动过程)
+            - [1.7.1.1. 容器和传统虚拟机的差异](#1711-容器和传统虚拟机的差异)
+            - [1.7.1.2. 容器技术的优点](#1712-容器技术的优点)
+            - [1.7.1.3. 基本概念](#1713-基本概念)
+            - [1.7.1.4. Docker引擎](#1714-docker引擎)
+            - [1.7.1.5. 命名](#1715-命名)
+            - [1.7.1.6. docker的8个使用场景](#1716-docker的8个使用场景)
+            - [1.7.1.7. Docker 安装](#1717-docker-安装)
+            - [1.7.1.8. 常用指令](#1718-常用指令)
+        - [1.7.2. docker 核心原理](#172-docker-核心原理)
+            - [1.7.2.1. 内核知识](#1721-内核知识)
+            - [1.7.2.2. 架构概览](#1722-架构概览)
+            - [1.7.2.3. client和daemon](#1723-client和daemon)
+        - [1.7.3. 镜像](#173-镜像)
+            - [1.7.3.1. 基本概念](#1731-基本概念)
+            - [1.7.3.2. 本地镜像的管理](#1732-本地镜像的管理)
+            - [1.7.3.3. Docker Hub 简介](#1733-docker-hub-简介)
         - [1.7.4. Docker File](#174-docker-file)
             - [1.7.4.1. Docker File中的命令](#1741-docker-file中的命令)
             - [1.7.4.2. docker build 说明](#1742-docker-build-说明)
-        - [1.7.5. 容器网络](#175-容器网络)
-            - [1.7.5.1. 基本原理](#1751-基本原理)
-            - [1.7.5.2. docker网络模式](#1752-docker网络模式)
-            - [1.7.5.3. 自定义网路](#1753-自定义网路)
-            - [1.7.5.4. 容器之间的通信](#1754-容器之间的通信)
-            - [1.7.5.5. 容器与外部通信](#1755-容器与外部通信)
-            - [1.7.5.6. 容器间通信](#1756-容器间通信)
-        - [1.7.6. 数据卷](#176-数据卷)
-            - [1.7.6.1. 基本概念](#1761-基本概念)
-            - [1.7.6.2. 数据卷操作](#1762-数据卷操作)
-            - [1.7.6.3. 共享数据卷](#1763-共享数据卷)
-        - [1.7.7. 案例](#177-案例)
-            - [1.7.7.1. docker 安装Mysqk主从复制](#1771-docker-安装mysqk主从复制)
-            - [1.7.7.2. docker 安装mycat](#1772-docker-安装mycat)
-        - [1.7.8. Docker Compose](#178-docker-compose)
-            - [1.7.8.1. 编排和部署](#1781-编排和部署)
-            - [1.7.8.2. 多容器的问题](#1782-多容器的问题)
-            - [1.7.8.3. Docker Compose 概述与安装](#1783-docker-compose-概述与安装)
-            - [1.7.8.4. 安装 Docker Compose](#1784-安装-docker-compose)
-            - [1.7.8.5. 基本使用](#1785-基本使用)
-            - [1.7.8.6. 快速入门](#1786-快速入门)
-                - [1.7.8.6.1. 工程、服务、容器](#17861-工程服务容器)
-                - [1.7.8.6.2. Docker Compose 常用命令与配置](#17862-docker-compose-常用命令与配置)
-                - [1.7.8.6.3. docker-compose.yml 属性](#17863-docker-composeyml-属性)
-                    - [1.7.8.6.3.1. 基本例子](#178631-基本例子)
-                    - [1.7.8.6.3.2. 配置选项](#178632-配置选项)
-            - [1.7.8.7. Docker Compose 其它](#1787-docker-compose-其它)
-                - [1.7.8.7.1. Compose 原理](#17871-compose-原理)
+        - [1.7.5. 容器](#175-容器)
+            - [1.7.5.1. 容器的管理操作](#1751-容器的管理操作)
+            - [1.7.5.2. 容器内部信息的获取](#1752-容器内部信息的获取)
+            - [1.7.5.3. 容器的启动过程](#1753-容器的启动过程)
+        - [1.7.6. 容器网络](#176-容器网络)
+            - [1.7.6.1. 基本原理](#1761-基本原理)
+            - [1.7.6.2. docker网络模式](#1762-docker网络模式)
+            - [1.7.6.3. 自定义网路](#1763-自定义网路)
+            - [1.7.6.4. 容器之间的通信](#1764-容器之间的通信)
+            - [1.7.6.5. 容器与外部通信](#1765-容器与外部通信)
+            - [1.7.6.6. 容器间通信](#1766-容器间通信)
+        - [1.7.7. 数据卷](#177-数据卷)
+            - [1.7.7.1. 基本概念](#1771-基本概念)
+            - [1.7.7.2. 数据卷操作](#1772-数据卷操作)
+            - [1.7.7.3. 共享数据卷](#1773-共享数据卷)
+        - [1.7.8. 案例](#178-案例)
+            - [1.7.8.1. docker 安装Mysqk主从复制](#1781-docker-安装mysqk主从复制)
+            - [1.7.8.2. docker 安装mycat](#1782-docker-安装mycat)
+        - [1.7.9. Docker Compose](#179-docker-compose)
+            - [1.7.9.1. 编排和部署](#1791-编排和部署)
+            - [1.7.9.2. 多容器的问题](#1792-多容器的问题)
+            - [1.7.9.3. Docker Compose 概述与安装](#1793-docker-compose-概述与安装)
+            - [1.7.9.4. 安装 Docker Compose](#1794-安装-docker-compose)
+            - [1.7.9.5. 基本使用](#1795-基本使用)
+            - [1.7.9.6. 快速入门](#1796-快速入门)
+                - [1.7.9.6.1. 工程、服务、容器](#17961-工程服务容器)
+                - [1.7.9.6.2. Docker Compose 常用命令与配置](#17962-docker-compose-常用命令与配置)
+                - [1.7.9.6.3. docker-compose.yml 属性](#17963-docker-composeyml-属性)
+                    - [1.7.9.6.3.1. 基本例子](#179631-基本例子)
+                    - [1.7.9.6.3.2. 配置选项](#179632-配置选项)
+            - [1.7.9.7. Docker Compose 其它](#1797-docker-compose-其它)
+                - [1.7.9.7.1. Compose 原理](#17971-compose-原理)
+    - [1.6. Jenkins](#16-jenkins)
     - [1.8. VIM](#18-vim)
         - [1.8.1. 命令模式](#181-命令模式)
         - [1.8.2. 常用命令](#182-常用命令)
@@ -131,17 +138,17 @@
         - [1.15.2. 常用插件](#1152-常用插件)
     - [1.16. npm工具](#116-npm工具)
         - [1.16.1. 基本概念](#1161-基本概念)
-        - [package.json](#packagejson)
-        - [npm 常用工具](#npm-常用工具)
-        - [1.16.2. NPM仓库](#1162-npm仓库)
-        - [1.16.3. 包格式](#1163-包格式)
-        - [1.16.4. 使用 npm 命令安装模块](#1164-使用-npm-命令安装模块)
-        - [1.16.5. 全局安装与本地安装](#1165-全局安装与本地安装)
-        - [1.16.6. 查看安装信息](#1166-查看安装信息)
-        - [1.16.7. 卸载模块](#1167-卸载模块)
-        - [1.16.8. 更新模块](#1168-更新模块)
-        - [1.16.9. 搜索模块](#1169-搜索模块)
-        - [1.16.10. 使用淘宝 NPM 镜像](#11610-使用淘宝-npm-镜像)
+        - [1.16.2. package.json](#1162-packagejson)
+        - [1.16.3. npm 常用工具](#1163-npm-常用工具)
+        - [1.16.4. NPM仓库](#1164-npm仓库)
+        - [1.16.5. 包格式](#1165-包格式)
+        - [1.16.6. 使用 npm 命令安装模块](#1166-使用-npm-命令安装模块)
+        - [1.16.7. 全局安装与本地安装](#1167-全局安装与本地安装)
+        - [1.16.8. 查看安装信息](#1168-查看安装信息)
+        - [1.16.9. 卸载模块](#1169-卸载模块)
+        - [1.16.10. 更新模块](#11610-更新模块)
+        - [1.16.11. 搜索模块](#11611-搜索模块)
+        - [1.16.12. 使用淘宝 NPM 镜像](#11612-使用淘宝-npm-镜像)
     - [1.17. Java 服务的线上应急、和技术攻关](#117-java-服务的线上应急和技术攻关)
         - [1.17.1. 线上应急的目标、 原则和方法](#1171-线上应急的目标-原则和方法)
             - [1.17.1.1. 应急目标](#11711-应急目标)
@@ -1493,16 +1500,44 @@ OS:           Linux 4.15.0-46-generic amd64
 
 
 
-
-## 1.6. Jenkins
-<a href="#menu" style="float:right">目录</a>
-
 ## 1.7. Docker
 <a href="#menu" style="float:right">目录</a>
 
 ### 1.7.1. Docker基础
 
-#### 1.7.1.1. 基本概念
+#### 1.7.1.1. 容器和传统虚拟机的差异
+
+Docker 和传统虚拟化方式有一些不同之处，传统虚拟机技术是虚拟出 套硬件后，在其上运行一个完整的操作系统，在该系统上再运行所需应用进程；而容器内的应用进程直接运行于宿主的内核，容器内没有自己的内核，并且也没有进行硬件虚拟。 因此，容器要比传统虚拟机更为轻便
+
+![容器和传统虚拟机的差异](pic/docker/docker-comp-virtual.png)
+
+|特性 |容器器 |虚拟机|
+|---|---|---|
+|启动 |秒级 |分钟级
+|硬盘使用 |一般为 MB |一般为 GB
+|性能 |接近原生 |弱于
+|系统支持量 |单机支持上千个容器 |一般几十个
+
+
+#### 1.7.1.2. 容器技术的优点
+
+* 更高效地利用系统资源
+    * 容器不需要进行硬件虚拟及运行完整操作系统等额外开销，且 Docker 对系统资源的利用率更高。 无论是应用执行、文件存储，还是在减少内存损耗方面 ， 都要比传统虚拟机技术更高效。 因此，相比传统的虚拟机技术，一个相同配置的主机，往往可以运行更多数量的应用 。
+* 更快速的启动时间
+    * 传统的虚拟机技术启动应用服务往往需要数分钟，而 Docker 容器应用，由于直接运行于宿主内核，无须启动完整的操作系统，因此可以达到秒级甚至毫秒级的启动时间，大大节约了开发 、 测试 、 部署的时间 。
+* 一致的运行环境
+    * 在开发过程中，一个常见的问题是环境一致性问题。 由于开发环境 、 测试环境 、 生产环境不一致，导致有些 Bug 未在开发过程中被发现。 而 Docker 的镜像提供了除内核外完整的运行时环境，确保了应用运行环境的一致性。
+* 持续交付和部署
+    * 对开发和运维人员来说，最希望的就是一次创建或配置可以在任意地方正常运行。使用 Docker 可以通过定制应用镜像来实现持续集戚、持续交付和部署。 开发人员可以通过Dockerfile来进行镜像构建，并结合持续集成（ Continuous Integration ） 系统进行集成测试，而运维人员则可以直接在生产环境中快速部署该镜像，甚至结合持续部署（ Continuous Delivery/Deployment ）系统进行自动部署。
+    * 别外，使用 Dockerfile 可使镜像构建透明化，不仅方便开发团队理解应用运行环境，而且也方便运维团队理解应用运行所需的条件，更好地帮助人们在生产环境中部署该镜像 。
+* 更轻松地迁移
+    由于 Docker 确保了执行环境的一致性，因此使得应用的迁移更加容易。 Docker 可以在很多平台上运行，无论是在物理机、虚拟机、 公有云、私有云，还是在便携式计算机中，其运行结果是一致的 。 因此用户可以很轻易地将在一个平台上运行的应用迁移到另 个平台上，而不用担心运行环境的变化导致应用无法正常运行的情况。
+* 更轻松地维护和扩展
+    * Docker 使用的分层存储及镜像的技术，使得应用重复部分的复用更为容易，也使得应用的维护和更新更加简单，还使得基于基础镜像进一步扩展镜像变得非常简单。 此外，Docker 团队同各个开源项目团队一起维护了一大批高质量的官方镜像，既可以直接在生产环境使用，又可以作为基础进一步定制，大大降低了应用服务的镜像制作成本。
+* 应用镜像仓库
+    * 镜像仓库提供了镜像发布，版本管理的功能
+
+#### 1.7.1.3. 基本概念
 
 * Docker： 可以让开发者打包它们的应用和依赖包到一个可移植的容器中，然后将其发布到任何流行该的Linux机器上。利用docker,可以实现软件一次配置，出处运行。
 * DockerHub:存储DOCKER镜像远程仓库，类似GitHub,用户可以进行对镜像进行存储，分享，管理。
@@ -1529,31 +1564,12 @@ Docker作为一款优秀的容器集成软件，和传统的容器虚拟化工�
 
 * 发布流程
     * 开发工程师开发,提交代码到代码服务器(github等)
-    * Jenkins之类的拉取代码
+    * Jenkins拉取代码
     * 构建Docker镜像,并进行测试
     * 自动集成测试通过以后,就可以将之前构建的镜像推送到私有Register
     * 运维使用新版的Docker镜像进行部署
 
-* Docker组件
-    * 客户端
-        * 用于向Docker服务器发出请求命令,比如运行容器等操作
-        * 客户端和服务器可以运行在同一主机上,客户端也可以连接到远端的Docker服务器
-    * 服务器
-        * Docker的守护进行,管理Docker相关模块
-        * 也可称为守护进程
-    * 镜像Image
-        * 只读的静态模板，保存容器需要的环境和应用的执行代码，可以把镜像看成容器的带代码。
-        * 当代码运行起来就成了容器
-        * 镜像采用分层机制，每个镜像都是只读的
-        * 可以将写数据的层通过联合文件附加到原有的镜像之上，这种增量式修改使得镜像非常容易存储，传输和更新。
-    * 容器 container
-        * 是一个运行时环境，是镜像的运行状态
-        * 容器是可读写的
-        * 可以在容器中运行多个服务
-    * 仓库 Registry
-        * 用于存放镜像
-        * 可以从仓库中拉取镜像，向仓库传送镜像
-        * 可以创建私有和公有的仓库  
+
 
 * Docker特点
     * 隔离性
@@ -1568,7 +1584,39 @@ Docker作为一款优秀的容器集成软件，和传统的容器虚拟化工�
 * 系统的Linux内核必须是3.8及以上版本的,内核支持Device Mapper,AUFS,VFS,btrfs等存储格式
 * 内核必须支持cgoups和命名空间
 
-#### 1.7.1.2. 命名
+#### 1.7.1.4. Docker引擎
+
+![Docker引擎](pic/docker/docker-structor.png)
+
+* 服务器 （ Docker Daemon )
+    * 后台运行的是 Docker Daemon 进程。 Daemon 进程用于管理 Docker 对象，包括镜像(Images ）、容器（ Containers ）、网络 （ Networks ）和数据卷（ Data Volumes ）。
+* REST 接口
+    * 该接口是同 Daemon 交互的 API接口 。
+* 客户端（ Docker Client)
+    * 客户端使用 REST AP！接口同 Docker Daemon 进行访问 。
+
+* Docker组件
+    * 客户端
+        * 用于向Docker服务器发出请求命令,比如运行容器等操作
+        * 客户端和服务器可以运行在同一主机上,客户端也可以连接到远端的Docker服务器
+    * 服务器
+        * Docker的守护进行,管理Docker相关模块
+        * 也可称为守护进程
+    * 镜像Image
+        * 只读的静态模板，保存容器需要的环境和应用的执行代码，可以把镜像看成容器的代码。
+        * 当代码运行起来就成了容器
+        * 镜像采用分层机制，每个镜像都是只读的
+        * 可以将写数据的层通过联合文件附加到原有的镜像之上，这种增量式修改使得镜像非常容易存储，传输和更新。
+    * 容器 container
+        * 是一个运行时环境，是镜像的运行实例
+        * 容器是可读写的
+        * 可以在容器中运行多个服务
+    * 仓库 Registry
+        * 用于存放镜像
+        * 可以从仓库中拉取镜像，向仓库传送镜像
+        * 可以创建私有和公有的仓库  
+        
+#### 1.7.1.5. 命名
 
 Namespace/Repository:Tag
 
@@ -1578,7 +1626,7 @@ Namespace/Repository:Tag
 
 每个镜像都有一个独立的 Image ID。镜像的 ID 是长度为 64 位的十六进制字符串，通过它也可以区分不同的镜像
 
-#### 1.7.1.3. docker的8个使用场景
+#### 1.7.1.6. docker的8个使用场景
 <a href="#menu" style="float:right">目录</a>
 
 * 简化配置
@@ -1608,7 +1656,7 @@ Namespace/Repository:Tag
 
 
 
-#### 1.7.1.4. Docker 安装
+#### 1.7.1.7. Docker 安装
 <a href="#menu" style="float:right">目录</a>
 
 * 文档地址 https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-from-a-package
@@ -1713,7 +1761,7 @@ Server:
 WARNING: No swap limit support
 ```
             
-#### 1.7.1.5. 常用指令
+#### 1.7.1.8. 常用指令
 <a href="#menu" style="float:right">目录</a>
 
 * 安装
@@ -1724,13 +1772,51 @@ WARNING: No swap limit support
 * 查看支持的指令： docker
 * 查看本地镜像：docker images
 * 查看安装的容器: docker ps -a
-* 查看正在运行的容器: docker ps -a
+* 查看正在运行的容器: docker ps 
 * 查看容器信息: docker inspect 容器名称/ID
 
-### 1.7.2. 镜像
+|子命令分类|子命令|
+|---|---|
+|环境信息|info，version|
+|容器生命周期管理|create,exec,kill,pause,restart,rm,run,start,stop,unpause|
+|镜像仓库命令|login,logout,pull,push,search|
+|镜像管理|build,images,import,rmi,save,tag,commit|
+|容器运维操作|attach,export,inspect,port,ps,rename,stats,top,wait,cp,diff,update|
+|容器资源管理|volumn,network|
+|系统日志信息|event,history,logs|
+
+
+![](pic/docker/docker-command.png)
+
+### 1.7.2. docker 核心原理
+
+#### 1.7.2.1. 内核知识
+
+docker 容器本质上是宿主主机上的进程．docker通过namespace实现了资源隔离．通过cgroups实现了资源限制．通过写时复制机制实现高效的文件操作
+Linux内核实现namespace的目的是实现轻量级虚拟化(容器)服务．在同一个namespace下的进程可以感知彼此的变化，而对外界的进程一无所知．
+
+namespace的六项隔离
+|namespace|系统调用参数|隔离内容|
+|---|---|---|
+|UTS|CLONE_NEWUTS|主机名和域名
+|IPC|CLONE_NEWIPC|信号量，消息队列和共享内存
+|PID|CLONE_NEWPID|进程编号
+|network|CLONE_NEWNET|网络
+|Mount|CLONE_NESW|挂载点
+|User|CLONE_NEWUSER|用户和用户组
+
+
+
+
+
+#### 1.7.2.2. 架构概览
+
+#### 1.7.2.3. client和daemon
+
+### 1.7.3. 镜像
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.7.2.1. 基本概念
+#### 1.7.3.1. 基本概念
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -1740,7 +1826,7 @@ WARNING: No swap limit support
     * Namespace/Repository:Tag
     * Namespace:镜像的命名空间，用于区别构建镜像的组织或个人，所以我们在构建自己的镜像时，可以将自己的名字或代号放在命名空间里 
     * Repository:镜像的档案名称，通常采用这个镜像中所包含的应用程序或者微服务的名字作为镜像的档案名称。
-    * Tag:镜像的标签，类似于 Git 中的 Tag，我们习惯采用镜像的 Tag 来区别镜像．的版本，所以镜像的 Tag 通常采用镜像所包含的应用程序或者微服务的版本来制定。
+    * Tag:镜像的标签，类似于 Git 中的 Tag，我们习惯采用镜像的 Tag 来区别镜像的版本，所以镜像的 Tag 通常采用镜像所包含的应用程序或者微服务的版本来制定。
     * 除了可以通过 Namespace 、 Repository 、 Tag 组成的字符串来识别镜像，每个镜像都有一个独立的 Image ID。镜像的 ID 是长度为 64 位的十六进制字符串
     
 * Docker镜像的系统结构(由上而下)
@@ -1761,11 +1847,23 @@ WARNING: No swap limit support
     * 好处
         * Docker 的写时复制机制既保证了原有镜像不会受到容器运行的影响，又通过消除容器启动时复制镜像到沙盒环境的过程，大幅提升了容器的启动速度。 
 
-#### 1.7.2.2. 本地镜像的管理
+镜像是容器的基础，每次执行 docker run的时候都会指定哪个镜像作为容器运行的基础。镜像是多层存储，每一层是在前一层的基础上进行的修改；容器同样也是多层存储，是在以镜像为基础层，并在其基础上加一层作为容器运行时的存储层。 
+
+当运行一个容器的时候（如果不使用卷的话），做的任何文件修改都会被记录于容器存储层里。 而 Docker 提供了一个 docker commit 命令，可以将容器的存储层保存下来成为镜像。 在原有镜像的基础上，再叠加上容器的存储层，构成新的镜像，以后运行这个新镜像的时候，就会拥有原有容器最后的文件变化
+
+慎用 docker commit . 使用 docker commit 命令虽然可以比较直观地帮助理解镜像分层存储的概念 ，但是实际环境中并不会这样使用 ．因为当修改容器内容之后，比如修改文件，安装软件包，编译构建等，就会有大量的无关内容被添加进来，如果没有清理，将造成新创建的镜像臃肿
+
+使用docker commit意味着所有对镜像的操作都是黑箱操作,除了制作镜像的人才知道做了什么操作．因此构建镜像应当使用dockerfile．
+
+
+#### 1.7.3.2. 本地镜像的管理
 <a href="#menu" style="float:right">目录</a>
 
 * 查看本地镜像
-    * docker images
+    * docker images　列出所有的镜像(不包括虚悬镜像)
+        * docker images -a: 列出所有的镜像
+        * docker images ubuntu ，列出指定名称镜像
+        * docker images ubuntu:18.04　列出指定镜像
     * 显示参数说明
         * REPOSITORY
             * 镜像仓库
@@ -1779,10 +1877,25 @@ WARNING: No swap limit support
             * 镜像所占用的虚拟大小，包括所有共享文件的大小
     * 镜像的完整标识
         * 仓库：TAG
+```
+REPOSITORY            TAG                 IMAGE ID            CREATED             SIZE
+nginx                 latest              6678c7c2e56c        2 months ago        127MB
+dockercompose_jdk-1   latest              33e52c041a84        5 months ago        488MB
+dockercompose_jdk-2   latest              33e52c041a84        5 months ago        488MB
+<none>                <none>              c6df48a614a6        9 months ago        574MB
+
+```
+
+docker images 列表中的镜像体积总和并非是所有镜像的实际硬盘消耗。 由于 Docker 镜像是多层存储结构，并且可以继承 、 复用，因此不同的镜像可能会因为使用相同的基础镜像，从而拥有共同的层。 由于 Docker 使用 Union FS,相同的层只需要保存一份即可，因此实际镜像硬盘占用空间很可能要比这个列表镜像大小的总和要小得多 。
+
+**虚悬镜像**：在上面的镜像列表中还可以看到一个特殊的镜像，这个镜像既没有仓库名，也没有标签，均为＂＜none＞ ” 。这个镜像原本是有镜像名和标签的，比如原来为“mongo:3.2”，随着官方镜像维护，发布了新版本后，重新执行“docker pull mongo:3.2”命令时，mongo:3.2＂这个镜像名被转移到了新下载的镜像上，而旧的镜像上的这个名称则被取消，从而成为了“＜none>”这个标签的镜像。 除了 docker pull 可能导致这种情况， docker build 也同样可以导致这种现象。 由于新旧镜像同名，旧镜像名称被取消，因而出现仓库名 、 标签均为“＜none>”的镜像。 这类无标签镜像也被称为虚悬镜像 （ dangling image ）.虚悬镜像已经没有作用，可以随意删除．
+
+
+
 
 * 下载镜像
     * docker run 时，如果本地没有，则从仓库下载
-    * docker search 搜索dockerhub镜像
+    * docker search 搜索镜像，先查找本地库，再查找docker hub
         * 显示信息说明
             * mame
                 * 镜像名称,由命名空间和仓库名称组成
@@ -1794,8 +1907,12 @@ WARNING: No swap limit support
                 * 是否为官方镜像
             * automated
                 * 是否使用了自动构建
-    * 拉取镜像到本地
-        * docker pull ubuntu:18
+    * 拉取镜像到本地: docker pull ［options］ [Docker Registry 地址］〈仓库名〉：〈标签〉
+        * 从docker hub 拉取 
+            * 下载最近的版本: docker pull ubuntu
+            * 指定版本: docker pull ubuntu:18
+        * 从私有库拉取
+            * docker pull 192.168.200.11:5000/ubuntu/1.04.3.tar:latest
 * 推送docker镜像到dockerhub
 ```
 lgj@lgj-Lenovo-G470:~$ docker push --help
@@ -1837,7 +1954,7 @@ Options:
         * docker load -i redis.tar
         * docker load < redis.tar
 
-#### 1.7.2.3. Docker Hub 简介
+#### 1.7.3.3. Docker Hub 简介
 
 Docker提供了部署在互联网服务器上的镜像仓库。而Docker Hub就是由Docker官方提供的镜像仓库.镜像仓库分为本地镜像仓库和远程镜像仓库。本地镜像仓库主要支持我们对镜像的操作并为容器的运行提供镜像，远程镜像仓库更多地用于对镜像的分发
 
@@ -1850,14 +1967,453 @@ docker login -u <username> -p <password> <server>
 在最后还可以给出需要连接的镜像仓库服务器的地址 。如果没有给出镜像仓库服务器的地址，会采用 Docker Daemon 中的默认值 .
 
 
-### 1.7.3. 容器
+
+
+### 1.7.4. Docker File
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.7.3.1. 容器的管理操作
+#### 1.7.4.1. Docker File中的命令
+
+**FROM**
+* 功能为指定基础镜像，并且必须是第一条指令。
+* 如果不以任何镜像为基础，那么写法为：FROM scratch。
+* 同时意味着接下来所写的指令将作为镜像的第一层开始
+
+* 语法：
+    * FROM image
+    * FROM image:tag
+    * FROM image:digest 
+    * 三种写法，其中tag和digest 是可选项，如果没有选择，那么默认值为latest
+
+**RUN**
+* 功能为运行指定的命令
+* RUN命令有两种格式
+    * RUN command
+    * RUN ["executable", "param1", "param2"]
+
+第一种后边直接跟shell命令
+在linux操作系统上默认 /bin/sh -c
+在windows操作系统上默认 cmd /S /C
+第二种是类似于函数调用。
+可将executable理解成为可执行文件，后面就是两个参数。
+
+两种写法比对：
+RUN /bin/bash -c 'source $HOME/.bashrc; echo $HOME
+RUN ["/bin/bash", "-c", "echo hello"]
+注意：多行命令不要写多个RUN，原因是Dockerfile中每一个指令都会建立一层.
+多少个RUN就构建了多少层镜像，会造成镜像的臃肿、多层，不仅仅增加了构件部署的时间，还容易出错。
+RUN书写时的换行符是\
+多条命令:
+RUN apt-get update && \
+    apt install vim
+
+
+**RUN & CMD**
+
+不要把RUN和CMD搞混了。
+RUN是构建容器时就运行的命令以及提交运行结果
+CMD是容器启动时执行的命令，在构建时并不运行，构建时仅仅指定了这个命令到底是个什么样子
+
+**LABEL**
+
+功能是为镜像指定标签
+* 语法：
+    * LABEL key=value key=value key=value ...
+ 一个Dockerfile种可以有多个LABEL，如下：
+LABEL "com.example.vendor"="ACME Incorporated"
+LABEL com.example.label-with-value="foo"
+LABEL version="1.0"
+LABEL description="This text illustrates \
+that label-values can span multiple lines."
+ 但是并不建议这样写，最好就写成一行，如太长需要换行的话则使用\符号
+
+如下：
+
+LABEL multi.label1="value1" \
+multi.label2="value2" \
+other="value3"
+ 
+说明：LABEL会继承基础镜像种的LABEL，如遇到key相同，则值覆盖
+
+**MAINTAINER**
+指定作者
+* 语法：
+    * MAINTAINER name
+
+**EXPOSE**
+
+EXPOSE　9001　9002　....
+
+功能为暴漏容器运行时的监听端口给外部
+但是EXPOSE并不会使容器访问主机的端口
+如果想使得容器与主机的端口有映射关系，必须在容器启动的时候加上 -P参数
+
+用户要将 EXPOSE 和在运行时使用的－p ＜宿主端口〉：〈容器端口〉区分开来。 “－p”可映射宿主端口和容器端口，换句话说，就是将容器的对应端口服务公开给外界访问，而EXPOSE 仅仅是声明容器打算使用什么端口而已，并不会自动在宿主进行端口映射。
+
+**ENV**
+
+功能为设置环境变量
+语法有两种
+1. ENV key value
+2. ENV key=value ...
+两者的区别就是第一种是一次设置一个，第二种是一次设置多个
+
+取值使用　$key取值
+
+**ADD**
+一个复制命令，把文件复制到景象中。
+如果把虚拟机与容器想象成两台linux服务器的话，那么这个命令就类似于scp，只是scp需要加用户名和密码的权限验证，而ADD不用。
+语法如下：
+
+1. ADD src... dest
+2. ADD ["src",... "dest"]
+
+dest路径的填写可以是容器内的绝对路径，也可以是相对于工作目录的相对路径
+src可以是一个本地文件或者是一个本地压缩文件，还可以是一个url
+如果把src写成一个url，那么ADD就类似于wget命令
+
+如以下写法都是可以的：
+ADD test relativeDir/ 
+ADD test /relativeDir
+ADD http://example.com/foobar /
+尽量不要把scr写成一个文件夹，如果src是一个文件夹了，复制整个目录的内容,包括文件系统元数据
+
+＜源路径>，可以是一个 URL ，这种情况下， Docker 引擎会试图去下载这个链接的文件并放到〈 目标路径〉去。 下载后的文件权限自动设置为 600 ，如果这并不是想要的权限，那么还需要增加额外的一层 RUN 进行权限调整。 另外，如果下载的是个压缩包，那么需要解压缩，此时也一样需要额外的一层 RUN 指令进行解压缩。所以不如直接使用 RUN指令 ， 然后使用 wget 或者 curl 工具下载，处理权限，解压缩，然后清理无用文件更合理。因此 ， 这个功能其实并不实用，而且不推荐使用 。如果〈源路径＞为一个 tar 压缩文件，且压缩格式为 gzip 、 bzip2 及汩的情况下，那么ADD 指令将会自动解压缩这个压缩文件至IJ ＜ 目标路径＞。最适合使用 ADD 的场合，就是所提及的需要自动解压缩的场合。因此在 COPY 和 ADD 指令中选择的时候，可以遵循这样的原则，所有的文件复制均使用 COPY 指令，仅在需要自动解压缩的场合使用 ADD 指令。
+
+**COPY**
+
+指令将从构建上下文目录中＜源路径＞的文件／目录复制到新的一层镜像内的〈目标路径〉位置
+
+语法如下：
+1. COPY src... dest
+2. COPY ["src",... "dest"]
+与ADD的区别
+COPY的src只能是本地文件，其他用法一致
+
+〈源路径〉可以是多个，甚至可以是通配符',其通配符规则要满足 Go 的filepath.Match规则：
+```
+'*'                                  匹配0或多个非/的字符
+'?'                                  匹配1个非/的字符
+'[' [ '^' ] { character-range } ']'  字符组（必须非空）(支持三种格式[abc],[^abc],[a-c])
+c                                    匹配字符c（c != '*', '?', '\\', '['）
+'\\' c                               匹配字符c(可上面c的区别是 可以支持字符 * ? \\ [的匹配)
+
+```
+〈目标路径〉可以是容器内的绝对路径，也可以是相对于工作目录的相对路径 （工作目录可以用 WORKDIR 指令来指定）。 目标路径不需要事先创建，如果目录不存在，那么会在复制文件前先行创建缺失目录。
+此外，还需要注意一点，使用 COPY 指令，源文件的各种无数据都会保留 。 比如读 、写、执行权限，文件变更时间等。 这个特性对于镜像定制很有用 。 特别是构建相关文件都在使用 Git 进行管理的时候
+
+**CMD**
+* 功能为容器启动时要运行的命令
+* 语法有三种写法
+    * CMD ["command","param1","param2"]
+    * CMD ["param1","param2"] ,(在指定了 ENTRYPOINT 指令后，用 CMD指定具体的参数。)
+    * CMD command param1 param2
+
+第三种比较好理解了，就时shell这种执行方式和写法
+第一种和第二种其实都是可执行文件加上参数的形式
+
+举例说明两种写法：
+第一种写法:CMD [ "echo", "$HOME" ],
+第三种写法在执行时会转换，CMD echo $HOME 转换成　CMD [ "sh", "-c", "echo $HOME" 
+
+补充细节：这里边包括参数的一定要用双引号，就是",不能是单引号。千万不能写成单引号。
+原因是参数传递后，docker解析的是一个JSON array
+
+提到CMD ，就不得不提容器中的应用在前台执行和后台执行的问题。 这是初学者常出现的一个混淆。
+Docker 不是虚拟机，容器中的应用都应该在前台执行，而不是像虚拟机、物理机那样，用叩start/systemd 去启动后台服务，容器内没有后台服务的概念。
+一些初学者写：CMD service nginx start
+
+然后发现容器执行后就立即退出了，甚至在容器内使用 systemctl 命令，结果却发现根本执行不了 。 这就是因为没有搞明白前台、后台的概念，没有区分容器和虚拟机的差异，依旧在以传统虚拟机的角度去理解容器。对于容器而言，其启动程序就是容器应用进程，容器就是为了主进程而存在的 。 主进程退出，容器就失去了存在的意义，从而退出，其他辅助进程不是它需要关心的东西。
+而使用 service nginx start 命令，则是希望用upstart来以后台守护进程的形式启动 nginx服务。
+
+ CMD service nginx start 会被理解为 CMD [”sh”,”-c”,”service nginx　start＂］，因此主进程实际上是 sh 。 那么当 service nginx start命令结束后， sh 也就结束了 。作为主进程退出了，自然就会令容器退出 。
+
+正确的做法是直接执行 nginx 可执行文件，并且要求以前台形式运行。 比如：CMD ["nginx","-g","daemon off;"]
+
+
+**ENTRYPOINT**
+功能是启动时的默认命令
+语法如下：
+1. ENTRYPOINT ["可执行文件", "param1", "param2"]
+2. ENTRYPOINT command param1 param2
+
+如果从上到下看到这里的话，那么你应该对这两种语法很熟悉啦。
+第一种就是可执行文件加参数
+第二种就是写shell
+
+与CMD比较说明（这俩命令太像了，而且还可以配合使用）：
+
+1. 相同点：
+只能写一条，如果写了多条，那么只有最后一条生效
+容器启动时才运行，运行时机相同
+
+2. 不同点：
+ENTRYPOINT不会被运行的command覆盖，而CMD则会被覆盖
+如果我们在Dockerfile种同时写了ENTRYPOINT和CMD，并且CMD指令不是一个完整的可执行命令，那么CMD指定的内容将会作为ENTRYPOINT的参数
+
+如下：
+FROM ubuntu
+ENTRYPOINT ["top", "-b"]
+CMD ["-c"]
+如果我们在Dockerfile种同时写了ENTRYPOINT和CMD，并且CMD是一个完整的指令，那么它们两个会互相覆盖，谁在最后谁生效
+
+如下：
+```
+FROM ubuntu
+ENTRYPOINT ["top", "-b"]
+CMD ls -al
+```
+那么将执行ls -al ,top -b不会执行。
+
+ENTRYPOINT特殊应用场景：
+docker run container-name xxx，如果dockerfile内部使用的是CMD,则这里的xxx会替换CMD定义的命令．而ENTRYPOINT就不存在这个问题．
+
+```
+FROM ubuntu
+ENTRYPOINT ls -l
+```
+docker run container-name -a ,最终启动时执行的命令是　ls -a -l
+
+```
+FROM ubuntu
+CMD ls -l
+```
+docker run container-name -a ,-a　替换了　ls -l,最终启动时执行的命令是-a,将会报错
+
+
+
+**VOLUME**
+可实现挂载功能，可以将内地文件夹或者其他容器种得文件夹挂在到这个容器种
+语法为：
+```
+VOLUME ["路径1"，＂路径2＂...]
+VOLUME 路径
+```
+说明：
+["/data"]可以是一个JsonArray ，也可以是多个值。所以如下几种写法都是正确的
+
+VOLUME ["/var/log/"]
+VOLUME /var/log
+VOLUME /var/log /var/db
+一般的使用场景为需要持久化存储数据时
+
+容器使用的是AUFS，这种文件系统不能持久化数据，当容器关闭后，所有的更改都会丢失。
+
+所以当数据需要持久化时用这个命令。
+
+
+容器运行时应该尽量保持容器存储层不发生写操作，数据库类需要保存动态数据的应用，其数据库文件应该保存于卷 （ Volume ）中 ，后面会进一步介绍 Docker 卷的概念。 为了防止运行时用户忘记将动态文件所保存的目录挂载为卷，在 Dockerfile 中，可以事先指定某些目录挂载为匿名卷，这样在运行时如果用户不指定挂载，其应用也可以正常运行，不会向容器存储层写入大量数据。
+
+VOLUME /data
+
+这里的“／data”目录就会在运行时自动挂载为匿名卷，任何向“／data”中写入的信息都不会记录进窑器存储层，从而保证了容器存储层的无状态化。 
+当然，运行时可以覆盖这个挂载设置。 比如：docker run -d -v mydata:/data xxxx
+在这行命令中就将 mydata 这个卷挂载到了“／data”这个位置， 替代了 Dockerfile 中定义的匿名卷的挂载配置。
+
+
+**USER**
+设置启动容器的用户，可以是用户名或UID，所以，只有下面的两种写法是正确的
+```
+USER daemo
+USER UID
+```
+
+注意：如果设置了容器以daemon用户去运行，那么RUN, CMD 和 ENTRYPOINT 都会以这个用户去运行
+
+和 WORKDIR 一样 ， USER 只是帮助开发者切换到指定用户而已，这个用户必须是事先建立好的，否则无法切换。
+
+
+**WORKDIR**
+语法：
+WORKDIR /path/to/workdir
+
+设置工作目录，对RUN,CMD,ENTRYPOINT,COPY,ADD生效。如果不存在则会创建，也可以设置多次。
+相当于创建一个目录并进入该目录，后续上述指令的执行就在该目录下执行
+
+如：
+```
+WORKDIR /a
+WORKDIR b
+WORKDIR c
+RUN pwd
+```
+
+pwd执行的结果是/a/b/c
+
+WORKDIR也可以解析环境变量
+如：
+```
+ENV DIRPATH /path
+WORKDIR $DIRPATH/$DIRNAME
+RUN pwd
+```
+
+pwd的执行结果是/path/$DIRNAME
+
+**ARG**
+语法：
+ARG name[default value]
+设置变量命令，ARG命令定义了一个变量，在docker build创建镜像的时候，使用 --build-arg varname=value来指定参数
+
+如果用户在build镜像时指定了一个参数没有定义在Dockerfile种，那么将有一个Warning
+
+提示如下：
+
+[Warning] One or more build-args [foo] were not consumed.
+    
+
+我们可以定义一个或多个参数，如下：
+```
+FROM busybox
+ARG user1
+ARG buildno
+```
+也可以给参数一个默认值：
+```
+FROM busybox
+ARG user1=someuser
+ARG buildno=1
+```
+
+如果我们给了ARG定义的参数默认值，那么当build镜像时没有指定参数值，将会使用这个默认值
+
+ARG 和 ENV 一样，都是设置环境变量。 所不同的是， ARG 所设置的是构建环境的环境变量 ，在将来容器运行时是不会存在这些环境变量的 。 但是不要因此就使用 ARG 保存密码之类的信息，因为 docker history 还是可以看到所有值的 。
+
+
+
+**ONBUILD**
+
+语法：
+ONBUILD [INSTRUCTION]
+这个命令只对当前镜像的子镜像生效。
+比如当前镜像为A，在Dockerfile种添加：
+ONBUILD RUN ls -al
+这个 ls -al 命令不会在A镜像构建或启动的时候执行
+此时有一个镜像B是基于A镜像构建的，那么这个ls -al 命令会在B镜像构建的时候被执行。
+
+**STOPSIGNAL**
+
+语法：
+STOPSIGNAL signal
+STOPSIGNAL命令是的作用是当容器推出时给系统发送什么样的指令
+
+**HEALTHCHECK**
+容器健康状况检查命令
+
+语法有两种：
+1. HEALTHCHECK [OPTIONS] CMD command
+2. HEALTHCHECK NONE
+第一个的功能是在容器内部运行一个命令来检查容器的健康状况
+第二个的功能是在基础镜像中取消健康检查命令
+[OPTIONS]的选项支持以下三中选项：
+    --interval=DURATION 两次检查默认的时间间隔为30秒
+    --timeout=DURATION 健康检查命令运行超时时长，默认30秒
+    --retries=N 当连续失败指定次数后，则容器被认为是不健康的，状态为unhealthy，默认次数是3
+
+注意：
+HEALTHCHECK命令只能出现一次，如果出现了多次，只有最后一个生效。
+CMD后边的命令的返回值决定了本次健康检查是否成功，具体的返回值如下：
+0: success - 表示容器是健康的
+1: unhealthy - 表示容器已经不能工作了
+2: reserved - 保留值
+例子：
+HEALTHCHECK --interval=5m --timeout=3s \
+CMD curl -f http://localhost/ || exit 1
+健康检查命令是：curl -f http://localhost/ || exit 
+两次检查的间隔时间是5秒
+命令超时时间为3秒    
+
+
+
+#### 1.7.4.2. docker build 说明 
+<a href="#menu" style="float:right">目录</a>
+
+docker build　用于使用dockerfile构建镜像
+
+```
+
+lgj@lgj-Lenovo-G470:~$ docker build --help
+
+Usage:	docker build [OPTIONS] PATH|URL|-
+
+Build an image from a Dockerfile
+
+Options:
+      --add-host list           Add a custom host-to-IP mapping (host:ip)
+      --build-arg list          Set build-time variables
+      --cache-from strings      Images to consider as cache sources
+      --cgroup-parent string    Optional parent cgroup for the container
+      --compress                Compress the build context using gzip
+      --cpu-period int          Limit the CPU CFS (Completely Fair Scheduler) period
+      --cpu-quota int           Limit the CPU CFS (Completely Fair Scheduler) quota
+  -c, --cpu-shares int          CPU shares (relative weight)
+      --cpuset-cpus string      CPUs in which to allow execution (0-3, 0,1)
+      --cpuset-mems string      MEMs in which to allow execution (0-3, 0,1)
+      --disable-content-trust   Skip image verification (default true)
+  -f, --file string             Name of the Dockerfile (Default is 'PATH/Dockerfile')
+      --force-rm                Always remove intermediate containers
+      --iidfile string          Write the image ID to the file
+      --isolation string        Container isolation technology
+      --label list              Set metadata for an image
+  -m, --memory bytes            Memory limit
+      --memory-swap bytes       Swap limit equal to memory plus swap: '-1' to enable unlimited swap
+      --network string          Set the networking mode for the RUN instructions during build (default "default")
+      --no-cache                Do not use cache when building the image
+      --pull                    Always attempt to pull a newer version of the image
+  -q, --quiet                   Suppress the build output and print image ID on success
+      --rm                      Remove intermediate containers after a successful build (default true)
+      --security-opt strings    Security options
+      --shm-size bytes          Size of /dev/shm
+  -t, --tag list                Name and optionally a tag in the 'name:tag' format
+      --target string           Set the target build stage to build.
+      --ulimit ulimit           Ulimit options (default [])
+
+```
+```
+OPTIONS说明：
+
+--build-arg=[] :设置镜像创建时的变量；
+--cpu-shares :设置 cpu 使用权重；
+--cpu-period :限制 CPU CFS周期；
+--cpu-quota :限制 CPU CFS配额；
+--cpuset-cpus :指定使用的CPU id；
+--cpuset-mems :指定使用的内存 id；
+--disable-content-trust :忽略校验，默认开启；
+-f :指定要使用的Dockerfile路径；
+--force-rm :设置镜像过程中删除中间容器；
+--isolation :使用容器隔离技术；
+--label=[] :设置镜像使用的元数据；
+-m :设置内存最大值；
+--memory-swap :设置Swap的最大值为内存+swap，"-1"表示不限swap；
+--no-cache :创建镜像的过程不使用缓存；
+--pull :尝试去更新镜像的新版本；
+--quiet, -q :安静模式，成功后只输出镜像 ID；
+--rm :设置镜像成功后删除中间容器；
+--shm-size :设置/dev/shm的大小，默认值是64M；
+--ulimit :Ulimit配置。
+--tag, -t: 镜像的名字及标签，通常 name:tag 或者 name 格式；可以在一次构建中为一个镜像设置多个标签。
+--network: 默认 default。在构建期间设置RUN指令的网络模式
+```
+* 例子
+    * 使用当前目录的 Dockerfile 创建镜像，标签为 runoob/ubuntu:v1。
+        * docker build -t runoob/ubuntu:v1 . 
+    * 使用URL github.com/creack/docker-firefox 的 Dockerfile 创建镜像。
+        * docker build github.com/creack/docker-firefox
+    * 也可以通过 -f Dockerfile 文件的位置：
+        * docker build -f /path/to/a/Dockerfile .
+
+<a href="#menu" style="float:right">目录</a>
+
+
+
+### 1.7.5. 容器
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.7.5.1. 容器的管理操作
 * 创建容器
     * docker create image-name
         * 创建的容器处于停止状态
-    * docker run image-name
+    * docker run image-name [COMMAND(命令)] [ARGS....(命令参数)]
         * 创建并运行容器
 
 * 容器标识符
@@ -1871,9 +2427,9 @@ dpcker run - i -t --name=xxxx ubuntu /bin/bash
 常用
 -i:打开容器的标准输入
 -t:为容器建立一个命令行终端
---name:设置容器名称
---ip:设置容器ip
--p:开放的端口
+--name:设置容器名称，没有则随机生成
+--ip:设置容器ip , -v [host-dir]:[container-dir]:[rw|ro]
+-p:开放的端口,　-p hostPort:containerPort
 -d：以后台方式运行，不显示控制台
 ```bash
 Usage:	docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
@@ -2081,7 +2637,10 @@ sudo aa-remove-unknown
 * 在容器中执行命令(exec)
     * docker exec web ps
     * 后台执行,添加- d参数
-   
+* 进入容器
+    * docker attach docker_name
+
+
 * 创建本地镜像
     * 基于容器创建
         * docker commit -m="xxxx" --author="xxx"  containName|id  xxx/xxx:1.0
@@ -2103,6 +2662,7 @@ Options:
 **容器的导入／导出**
 
 包括 Docker 在内的虚拟化技术，进行快速迁移是重要的目标之一，前面的章节中谈到了镜像的迁移，在某些场合下也需要对容器进行迁移。我们了解了将容器提交成镜像的方法，结合导入／导出容器的命令，可以实现将容器转换成镜像，再通过镜像运行成容器完成迁移。不过这种方式过于烦琐，还要浪费时间去处理生成的这些无用镜像。好在Docker 也为容器提供了导入／导出的方法，通过容器的导入／导出命令，让我们可以轻松地完成对容器的迁移。
+
 不论容器是否处于运行的状态，都可以使用 docker export 命令将容器保存到一个压缩文件中。
 * 导出:docker export -o web.tar d68d9aaf5d05
 ```
@@ -2116,7 +2676,8 @@ Options:
   -o, --output string   Write to a file, instead of STDOUT
 
 ```
-* 导出:docker import web.tar 
+
+* 导入:docker import web.tar 
 ```
 Usage:	docker import [OPTIONS] file|URL|- [REPOSITORY[:TAG]]
 
@@ -2131,7 +2692,7 @@ Options:
 虽然容器的导入和镜像的导入都是导入到主机的本地镜像库中，但两者还是有区别的，因为容器的导出文件与镜像的导出文件在结构上是有差异的。容器的导出文件着重记录容器导出时容器内的状况，包括容器中所有的文件：而镜像的导出文件，除了记录所有镜像层的文件，还保持着镜像原有的元数据信息。所以，在使用空间上镜像的导出文件一般会比容器的导出文件大一些。
 
 
-#### 1.7.3.2. 容器内部信息的获取
+#### 1.7.5.2. 容器内部信息的获取
 <a href="#menu" style="float:right">目录</a>
 
 * 查看容器日志
@@ -2207,374 +2768,38 @@ CONTAINER ID  NAME   CPU %  MEM USAGE / LIMIT     MEM %  NET I/O      BLOCK I/O 
         * Config：容器配置。
         * NetworkSettings ：网络配置
         
+* docker attach container-name 
+连接正在运行的容器，观察容器的运行情况，或与容器的主进程进行交互
+
 * 容器内执行命令
     * docker exec -it container_name /bin/bash 执行时确保容器处于运行状态
 
-#### 1.7.3.3. 容器的启动过程
+**events,history,logs**
+* docker events
+    * 打印实时的系统事件
+* docker history image-name
+    * 镜像的历史版本信息
+* docker logs container-name
+    * 容器中进程的执行日志
+
+#### 1.7.5.3. 容器的启动过程
 <a href="#menu" style="float:right">目录</a>
 
 * 创建容器时， Docker会先检查本地镜像库中是否有指定用于创建容器的镜像，如果没有在本地镜像库中找到镜像， Docker 会先从远程仓库中查找井下载到本地
 * Docker 会创建容器的实例，将镜像以只读的方式挂载在为容器分配的文件系统上,并在只读镜像层的外侧，创建一个读写的层 。
 * Docker 会配置容器的网络，连接到宿主机中专用的网桥上，并为容器分配网络地址。
 * 当我们启动已经创建好的容器时，所指定的应用程序会被运行，且容器会绑定到这个程序的启动进程上。当容器所绑定的进程结束时，容器也会随之停止
-    
-### 1.7.4. Docker File
-<a href="#menu" style="float:right">目录</a>
-
-#### 1.7.4.1. Docker File中的命令
-
-**FROM**
-* 功能为指定基础镜像，并且必须是第一条指令。
-* 如果不以任何镜像为基础，那么写法为：FROM scratch。
-* 同时意味着接下来所写的指令将作为镜像的第一层开始
-
-* 语法：
-    * FROM image
-    * FROM image:tag
-    * FROM image:digest 
-    * 三种写法，其中tag和digest 是可选项，如果没有选择，那么默认值为latest
-
-**RUN**
-* 功能为运行指定的命令
-* RUN命令有两种格式
-    * RUN command
-    * RUN ["executable", "param1", "param2"]
-
-第一种后边直接跟shell命令
-在linux操作系统上默认 /bin/sh -c
-在windows操作系统上默认 cmd /S /C
-第二种是类似于函数调用。
-可将executable理解成为可执行文件，后面就是两个参数。
-
-两种写法比对：
-RUN /bin/bash -c 'source $HOME/.bashrc; echo $HOME
-RUN ["/bin/bash", "-c", "echo hello"]
-注意：多行命令不要写多个RUN，原因是Dockerfile中每一个指令都会建立一层.
-多少个RUN就构建了多少层镜像，会造成镜像的臃肿、多层，不仅仅增加了构件部署的时间，还容易出错。
-RUN书写时的换行符是\
-多条命令:
-RUN apt-get update && \
-    apt install vim
 
 
-**CMD**
-* 功能为容器启动时要运行的命令
-* 语法有三种写法
-    * CMD ["executable","param1","param2"]
-    * CMD ["param1","param2"]
-    * CMD command param1 param2
-
-第三种比较好理解了，就时shell这种执行方式和写法
-第一种和第二种其实都是可执行文件加上参数的形式
-
-举例说明两种写法：
-CMD [ "sh", "-c", "echo $HOME" 
-CMD [ "echo", "$HOME" ]
-补充细节：这里边包括参数的一定要用双引号，就是",不能是单引号。千万不能写成单引号。
-原因是参数传递后，docker解析的是一个JSON array
-
-
-**RUN & CMD**
-
-不要把RUN和CMD搞混了。
-RUN是构件容器时就运行的命令以及提交运行结果
-CMD是容器启动时执行的命令，在构件时并不运行，构件时仅仅指定了这个命令到底是个什么样子
-
-**LABEL**
-
-功能是为镜像指定标签
-* 语法：
-    * LABEL key=value key=value key=value ...
- 一个Dockerfile种可以有多个LABEL，如下：
-LABEL "com.example.vendor"="ACME Incorporated"
-LABEL com.example.label-with-value="foo"
-LABEL version="1.0"
-LABEL description="This text illustrates \
-that label-values can span multiple lines."
- 但是并不建议这样写，最好就写成一行，如太长需要换行的话则使用\符号
-
-如下：
-
-LABEL multi.label1="value1" \
-multi.label2="value2" \
-other="value3"
- 
-说明：LABEL会继承基础镜像种的LABEL，如遇到key相同，则值覆盖
-
-**MAINTAINER**
-指定作者
-* 语法：
-    * MAINTAINER name
-
-**EXPOSE**
-
-功能为暴漏容器运行时的监听端口给外部
-但是EXPOSE并不会使容器访问主机的端口
-如果想使得容器与主机的端口有映射关系，必须在容器启动的时候加上 -P参数
-
-**ENV**
-
-功能为设置环境变量
-语法有两种
-1. ENV key value
-2. ENV key=value ...
-两者的区别就是第一种是一次设置一个，第二种是一次设置多个
-
-**ADD**
-一个复制命令，把文件复制到景象中。
-如果把虚拟机与容器想象成两台linux服务器的话，那么这个命令就类似于scp，只是scp需要加用户名和密码的权限验证，而ADD不用。
-语法如下：
-
-1. ADD src... dest
-2. ADD ["src",... "dest"]
-
-dest路径的填写可以是容器内的绝对路径，也可以是相对于工作目录的相对路径
-src可以是一个本地文件或者是一个本地压缩文件，还可以是一个url
-如果把src写成一个url，那么ADD就类似于wget命令
-
-如以下写法都是可以的：
-ADD test relativeDir/ 
-ADD test /relativeDir
-ADD http://example.com/foobar /
-尽量不要把scr写成一个文件夹，如果src是一个文件夹了，复制整个目录的内容,包括文件系统元数据
-
-**COPY**
-看这个名字就知道，又是一个复制命令
-语法如下：
-1. COPY src... dest
-2. COPY ["src",... "dest"]
-与ADD的区别
-COPY的src只能是本地文件，其他用法一致
-
-**ENTRYPOINT**
-功能是启动时的默认命令
-语法如下：
-1. ENTRYPOINT ["executable", "param1", "param2"]
-2. ENTRYPOINT command param1 param2
-
-如果从上到下看到这里的话，那么你应该对这两种语法很熟悉啦。
-第二种就是写shel
-第一种就是可执行文件加参数
-与CMD比较说明（这俩命令太像了，而且还可以配合使用）：
-
-1. 相同点：
-只能写一条，如果写了多条，那么只有最后一条生效
-容器启动时才运行，运行时机相同
-
-2. 不同点：
-ENTRYPOINT不会被运行的command覆盖，而CMD则会被覆盖
-如果我们在Dockerfile种同时写了ENTRYPOINT和CMD，并且CMD指令不是一个完整的可执行命令，那么CMD指定的内容将会作为ENTRYPOINT的参数
-
-如下：
-FROM ubuntu
-ENTRYPOINT ["top", "-b"]
-CMD ["-c"]
-如果我们在Dockerfile种同时写了ENTRYPOINT和CMD，并且CMD是一个完整的指令，那么它们两个会互相覆盖，谁在最后谁生效
-
-如下：
-FROM ubuntu
-ENTRYPOINT ["top", "-b"]
-CMD ls -al
-那么将执行ls -al ,top -b不会执行。
-
-**VOLUME**
-可实现挂载功能，可以将内地文件夹或者其他容器种得文件夹挂在到这个容器种
-语法为：
-VOLUME ["/data"]
-说明：
-["/data"]可以是一个JsonArray ，也可以是多个值。所以如下几种写法都是正确的
-
-VOLUME ["/var/log/"]
-VOLUME /var/log
-VOLUME /var/log /var/db
-一般的使用场景为需要持久化存储数据时
-
-容器使用的是AUFS，这种文件系统不能持久化数据，当容器关闭后，所有的更改都会丢失。
-
-所以当数据需要持久化时用这个命令。
-
-**USER**
-设置启动容器的用户，可以是用户名或UID，所以，只有下面的两种写法是正确的
-USER daemo
-USER UID
-注意：如果设置了容器以daemon用户去运行，那么RUN, CMD 和 ENTRYPOINT 都会以这个用户去运行
-
-**WORKDIR**
-语法：
-WORKDIR /path/to/workdir
-
-设置工作目录，对RUN,CMD,ENTRYPOINT,COPY,ADD生效。如果不存在则会创建，也可以设置多次。
-如：
-WORKDIR /a
-WORKDIR b
-WORKDIR c
-RUN pwd
-pwd执行的结果是/a/b/c
-
-WORKDIR也可以解析环境变量
-如：
-ENV DIRPATH /path
-WORKDIR $DIRPATH/$DIRNAME
-RUN pwd
-pwd的执行结果是/path/$DIRNAME
-
-**ARG**
-语法：
-ARG name[default value]
-设置变量命令，ARG命令定义了一个变量，在docker build创建镜像的时候，使用 --build-arg varname=value来指定参数
-
-如果用户在build镜像时指定了一个参数没有定义在Dockerfile种，那么将有一个Warning
-
-提示如下：
-
-[Warning] One or more build-args [foo] were not consumed.
-    
-
-我们可以定义一个或多个参数，如下：
-
-FROM busybox
-ARG user1
-ARG buildno
-...
-也可以给参数一个默认值：
-
-FROM busybox
-ARG user1=someuser
-ARG buildno=1
-...
-如果我们给了ARG定义的参数默认值，那么当build镜像时没有指定参数值，将会使用这个默认值
-
-**ONBUILD**
-
-语法：
-ONBUILD [INSTRUCTION]
-这个命令只对当前镜像的子镜像生效。
-比如当前镜像为A，在Dockerfile种添加：
-ONBUILD RUN ls -al
-这个 ls -al 命令不会在A镜像构建或启动的时候执行
-此时有一个镜像B是基于A镜像构建的，那么这个ls -al 命令会在B镜像构建的时候被执行。
-
-**STOPSIGNAL**
-
-语法：
-STOPSIGNAL signal
-STOPSIGNAL命令是的作用是当容器推出时给系统发送什么样的指令
-
-**HEALTHCHECK**
-容器健康状况检查命令
-
-语法有两种：
-1. HEALTHCHECK [OPTIONS] CMD command
-2. HEALTHCHECK NONE
-第一个的功能是在容器内部运行一个命令来检查容器的健康状况
-第二个的功能是在基础镜像中取消健康检查命令
-[OPTIONS]的选项支持以下三中选项：
-    --interval=DURATION 两次检查默认的时间间隔为30秒
-    --timeout=DURATION 健康检查命令运行超时时长，默认30秒
-    --retries=N 当连续失败指定次数后，则容器被认为是不健康的，状态为unhealthy，默认次数是3
-
-注意：
-HEALTHCHECK命令只能出现一次，如果出现了多次，只有最后一个生效。
-CMD后边的命令的返回值决定了本次健康检查是否成功，具体的返回值如下：
-0: success - 表示容器是健康的
-1: unhealthy - 表示容器已经不能工作了
-2: reserved - 保留值
-例子：
-HEALTHCHECK --interval=5m --timeout=3s \
-CMD curl -f http://localhost/ || exit 1
-健康检查命令是：curl -f http://localhost/ || exit 
-两次检查的间隔时间是5秒
-命令超时时间为3秒    
-
-
-
-#### 1.7.4.2. docker build 说明 
+### 1.7.6. 容器网络
 <a href="#menu" style="float:right">目录</a>
 
 
-```
-
-lgj@lgj-Lenovo-G470:~$ docker build --help
-
-Usage:	docker build [OPTIONS] PATH|URL|-
-
-Build an image from a Dockerfile
-
-Options:
-      --add-host list           Add a custom host-to-IP mapping (host:ip)
-      --build-arg list          Set build-time variables
-      --cache-from strings      Images to consider as cache sources
-      --cgroup-parent string    Optional parent cgroup for the container
-      --compress                Compress the build context using gzip
-      --cpu-period int          Limit the CPU CFS (Completely Fair Scheduler) period
-      --cpu-quota int           Limit the CPU CFS (Completely Fair Scheduler) quota
-  -c, --cpu-shares int          CPU shares (relative weight)
-      --cpuset-cpus string      CPUs in which to allow execution (0-3, 0,1)
-      --cpuset-mems string      MEMs in which to allow execution (0-3, 0,1)
-      --disable-content-trust   Skip image verification (default true)
-  -f, --file string             Name of the Dockerfile (Default is 'PATH/Dockerfile')
-      --force-rm                Always remove intermediate containers
-      --iidfile string          Write the image ID to the file
-      --isolation string        Container isolation technology
-      --label list              Set metadata for an image
-  -m, --memory bytes            Memory limit
-      --memory-swap bytes       Swap limit equal to memory plus swap: '-1' to enable unlimited swap
-      --network string          Set the networking mode for the RUN instructions during build (default "default")
-      --no-cache                Do not use cache when building the image
-      --pull                    Always attempt to pull a newer version of the image
-  -q, --quiet                   Suppress the build output and print image ID on success
-      --rm                      Remove intermediate containers after a successful build (default true)
-      --security-opt strings    Security options
-      --shm-size bytes          Size of /dev/shm
-  -t, --tag list                Name and optionally a tag in the 'name:tag' format
-      --target string           Set the target build stage to build.
-      --ulimit ulimit           Ulimit options (default [])
-
-```
-```
-OPTIONS说明：
-
---build-arg=[] :设置镜像创建时的变量；
---cpu-shares :设置 cpu 使用权重；
---cpu-period :限制 CPU CFS周期；
---cpu-quota :限制 CPU CFS配额；
---cpuset-cpus :指定使用的CPU id；
---cpuset-mems :指定使用的内存 id；
---disable-content-trust :忽略校验，默认开启；
--f :指定要使用的Dockerfile路径；
---force-rm :设置镜像过程中删除中间容器；
---isolation :使用容器隔离技术；
---label=[] :设置镜像使用的元数据；
--m :设置内存最大值；
---memory-swap :设置Swap的最大值为内存+swap，"-1"表示不限swap；
---no-cache :创建镜像的过程不使用缓存；
---pull :尝试去更新镜像的新版本；
---quiet, -q :安静模式，成功后只输出镜像 ID；
---rm :设置镜像成功后删除中间容器；
---shm-size :设置/dev/shm的大小，默认值是64M；
---ulimit :Ulimit配置。
---tag, -t: 镜像的名字及标签，通常 name:tag 或者 name 格式；可以在一次构建中为一个镜像设置多个标签。
---network: 默认 default。在构建期间设置RUN指令的网络模式
-```
-* 例子
-    * 使用当前目录的 Dockerfile 创建镜像，标签为 runoob/ubuntu:v1。
-        * docker build -t runoob/ubuntu:v1 . 
-    * 使用URL github.com/creack/docker-firefox 的 Dockerfile 创建镜像。
-        * docker build github.com/creack/docker-firefox
-    * 也可以通过 -f Dockerfile 文件的位置：
-        * docker build -f /path/to/a/Dockerfile .
-
-<a href="#menu" style="float:right">目录</a>
-
-### 1.7.5. 容器网络
+#### 1.7.6.1. 基本原理
 <a href="#menu" style="float:right">目录</a>
 
 
-#### 1.7.5.1. 基本原理
-<a href="#menu" style="float:right">目录</a>
-
-
-容器技术的特点就是隔离性，网络作为计算机重要的资源之一，自然也在容器隔离的范围之内。 Docker 通过 Network Namespace 的方式，为每一个容器建立了独立的网络，形成了完全与宿主机隔离的环境。 Network Namespace 与我们之前谈到的用于隔离应用运行环境的 Namespace 技术相似，是用来隔离应用运行的网络环境的。它能让应用运行所在的网络环境完全虚拟出来，并能提供独立的网络设备、 E 协议栈、 IP 路由表、防火墙、／proc/net 目录、 Isys!class/net 目录、端口套接字等的支持。运行在 Network Namespace下的应用，就如同拥有了单独的网络硬件和单独的网络配置。
+容器技术的特点就是隔离性，网络作为计算机重要的资源之一，自然也在容器隔离的范围之内。 Docker 通过 Network Namespace 的方式，为每一个容器建立了独立的网络，形成了完全与宿主机隔离的环境。 Network Namespace 与我们之前谈到的用于隔离应用运行环境的 Namespace 技术相似，是用来隔离应用运行的网络环境的。它能让应用运行所在的网络环境完全虚拟出来，并能提供独立的网络设备、协议栈、 IP 路由表、防火墙、／proc/net 目录、 Isys!class/net 目录、端口套接字等的支持。运行在 Network Namespace下的应用，就如同拥有了单独的网络硬件和单独的网络配置。
 
 默认情况下， Docker 启动时会在宿主机上架设一个名为 dockerO 的虚拟网络，用来连接宿主机与容器。既然容器的网络是以独立隔离的形式存在的，那么 Docker 又是如何利用 dockerO 来实现容器与宿主机，乃至外界网络之间的相互通信的呢？
 
@@ -2620,7 +2845,7 @@ Iptables 是 Linux 中用于管理网络过滤的程序，能够根据指定的�
 ![网络结构](https://github.com/lgjlife/Java-Study/blob/master/pic/util/docker/network-struct.png?raw=true)
 
 
-#### 1.7.5.2. docker网络模式
+#### 1.7.6.2. docker网络模式
 <a href="#menu" style="float:right">目录</a>
 
 安装Docker时，它会自动创建三个网络，bridge（创建容器默认连接到此网络，也就是在不使用--network参数时）、 none 、host。还有以后一种自定义模式，自定义模式有三种：bridge、overlay、macvlan。
@@ -2686,7 +2911,7 @@ host 网络直接使用宿主机的网络环境。容器如果绑定在 host 网
     * 查看 docker inspect redis7205 |grep IPAddress
     * docker inspect --format '{{.NetworkSettings.IPAddress}}' mysqlslaver
 
-#### 1.7.5.3. 自定义网路
+#### 1.7.6.3. 自定义网路
 <a href="#menu" style="float:right">目录</a>
 
 如果没有为容器选定网络，则 Docker 会将新创建的容器连接到 bridge 默认网络上 。这样在一个网络中的容器，就有了互相进行访问的可能性，这在某些情况下并不是我们所期望的 。 有时，对于由数个容器所组成的一个小型模块，我们希望这些容器只能相互访问，而不能访问其他容器， 1 也不能被其他容器访问。此时，就需要为这几个容器单独分配网络，让它们连接到一个独立的网络中，从而隔绝其他网络中的容器对这几个容器的连接。
@@ -2744,7 +2969,7 @@ Options:
 |docker network rm|删除一个或多个网络
 
 
-#### 1.7.5.4. 容器之间的通信
+#### 1.7.6.4. 容器之间的通信
 <a href="#menu" style="float:right">目录</a>
 
 容器之间可通过IP，DockerDNSServer和joined容器三种方式通信。
@@ -2783,7 +3008,7 @@ joined 容器非常适合以下场景：
 
 希望监控其他容器的网络流量，比如运行在独立容器中的网络监控程序。
 
-#### 1.7.5.5. 容器与外部通信
+#### 1.7.6.5. 容器与外部通信
 <a href="#menu" style="float:right">目录</a>
 
 在默认情况下，容器位于Docker管理的dockerO网桥中，这个网桥搭建在宿主机的一张虚拟网卡上，不与宿主机的其他网络挂钩。也就是说，容器所在的网络环境其实是隔绝在宿主机内的，宿主机外的计算机和程序是无法发觉和发现容器网络的存在的，也无法连接到容器上。
@@ -2848,7 +3073,7 @@ DNAT       tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:3521 to:17
     * 查看容器所有信息，包括端口映射
         * docker inspect name|id 
         
-#### 1.7.5.6. 容器间通信
+#### 1.7.6.6. 容器间通信
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -2900,14 +3125,14 @@ ff02::2	ip6-allrouters
 
 
 
-### 1.7.6. 数据卷
+### 1.7.7. 数据卷
 <a href="#menu" style="float:right">目录</a>
 
 
-#### 1.7.6.1. 基本概念
+#### 1.7.7.1. 基本概念
 <a href="#menu" style="float:right">目录</a>
 
-容器内的文件环境，是由联合文件系统提供的一个临时层，虽然能够让程序随意操作其中的文件，但所有的读写都是在北］；盒环境中进行的。当容器停止运行并被删除时，这个临时记录着文件修改的层就会被一同丢弃。即使我们能够通过提交镜像的方式保存容器中文件的修改，但利用这种方式实现文件的持久化不但操作过于烦琐，也不便于进行自动化管理，仍然达不到我们想要的效果。更何况通过镜像的方式保存文件，只解决了文件的输出问题，并没有解决文件输入的问题。
+容器内的文件环境，是由联合文件系统提供的一个临时层，虽然能够让程序随意操作其中的文件，但所有的读写都是在黑盒环境中进行的。当容器停止运行并被删除时，这个临时记录着文件修改的层就会被一同丢弃。即使我们能够通过提交镜像的方式保存容器中文件的修改，但利用这种方式实现文件的持久化不但操作过于烦琐，也不便于进行自动化管理，仍然达不到我们想要的效果。更何况通过镜像的方式保存文件，只解决了文件的输出问题，并没有解决文件输入的问题。
 
 为了达到从外界获取文件以及持久化存储文件的目的， Docker 提出了数据卷（ Data Volume ）的概念。简而言之，数据卷就是一个挂载在容器内文件系统中的文件或目录。在容器中，数据卷和其他的文件或目录看起来别无二致，但是因为数据卷是从外界挂载在容器中的，所以它可以脱离容器的生命周期而独立存在。正是由于数据卷的生命周期并不等同于容器的生命周期，在容器退出乃至删除之后，数据卷仍不会受到影响，会依然存在于 Docker 之中 。所以，如果通过数据卷保存文件，那么这些文件就不会因为容器的终结而消失。
 
@@ -2926,6 +3151,19 @@ ff02::2	ip6-allrouters
     * 因为文件的操作不是在沙盒环境中进行的，而是直接作用于宿主机内真实的硬盘 IO 中，所以我们对数据卷中数据的操作会马上产生效果，并且操作速度也要比对临时层中数据的操作来得快。
     * 数据卷不依赖于容器，它的生命周期也不受容器的控制，所以，我们能够安全地存储文件到数据卷中 。 也正是因为数据卷独立于容器之外，所以多个容器可以共享同一个数据卷。通过数据卷，我们就可以实现在容器之间进行文件数据的共享了。
     * 数据卷为容器提供了持续稳定的存储空间，数据卷中文件的更新，也不会影响到使用它的容器
+
+
+**数据卷**
+数据卷（ Data Volumes ）是一个可供一个或多个容器使用的特殊目录，它绕过UFS,
+可以提供很多如下有用的特性。
+① 数据卷可以在容器之间共享和重用 。
+② 对数据卷的修改会立马生效。
+③ 对数据卷的更新，不会影响镜像。
+④ 数据卷默认会一直存在，即使容器被删除。
+数据卷的使用，类似于 Linux 下对目录或文件进行 mount 操作，镜像中被指定为挂载点的目录中的文件会被隐藏掉，能显示的是挂载的数据卷。
+
+**数据卷容器**
+数据卷容器（ Data Volume Containers ）涉及容器间共享的持久化、序列化的数据。 数据卷容器，其实就是一个正常的容器，专门用来提供数据卷供其他容器挂载的
 
 数据卷其实就是放置在数据主机内的一个特殊目录，只是 Docker将其封装在容器中进行展示。通过 Docker 的封装，程序在容器中就无法判断数据卷到底从何处挂载，也觉察不出数据卷与其他文件或目录有任何区别，它们甚至不知道容器中哪些目录是数据卷，哪些又不是。正是 Docker 为数据卷设计的良好的封装性，使迁移过程结束后，程序不会因为数据卷在本地环境中的改变，而不能正常运
 行 。
@@ -2946,7 +3184,7 @@ ff02::2	ip6-allrouters
 
 使用挂载宿主机目录或文件成为数据卷的方式，可以非常方便地在容器内部与外部之间共享文件。特别是将配置、代码类可能需要临时修改的文件，通过主机目录挂载的方式放置到容器中时，修改结果会马上体现到容器里，让修改文件变得更加简单。
 
-#### 1.7.6.2. 数据卷操作
+#### 1.7.7.2. 数据卷操作
 <a href="#menu" style="float:right">目录</a>
 
 * 创建数据卷
@@ -2982,7 +3220,7 @@ ff02::2	ip6-allrouters
     
     * 主机上的数据卷位置为/var/lib/docker/volumes
 
-
+数据卷默认的权限是读写，可以通过如下方式改变, -v  /aaa:rw|wo|ro
 
 指定两个数据卷:
 docker run -it  --name vim-1.3 -v ~/aname -v ~/aname1  -v /xx/xx.text:/xx/xx.text -v /aa:/bb openjdk-vim:8 /bin/bash
@@ -3051,7 +3289,7 @@ Commands:
 
 ```
 
-#### 1.7.6.3. 共享数据卷
+#### 1.7.7.3. 共享数据卷
 <a href="#menu" style="float:right">目录</a>
 
 若要更好地在容器之间共享数据卷，可以使用数据卷容器来实现。通过数据卷容器，我们可以更轻松地将数据卷进行归类和汇总，也能更好地管理容器与数据卷之间的关系，并且可以更加合理地控制数据卷的生命周期。
@@ -3071,14 +3309,33 @@ Commands:
     * docker run --volumes-from=aaa(数据卷容器的名字)   --name=bbb(本容器名字)    xxxx(其他参数)
     * 容器bbb 将共享容器aaa的数据卷
     * 无论是声明数据卷的容器还是后续引用该数据卷的容器，容器的停止和删除都不会导致数据卷本身删除。如果需要将数据卷删除，那么需要删除所有它依赖的容器，并且在删除最后一个依赖的容器时加入-v标识。docker rm -v name|id
+    * 可以使用多个--volumes-from实现挂载多个数据卷容器
 
-### 1.7.7. 案例
+```
+＃创建数据卷容器volumn-container
+docker run -it --name volumn-container -v /aaa openjdk-vim:8  /bin/bash
+#可以看到容器已经创建了挂载的目录aaa
+root@9aaa3f1c7161:/# ls -l
+total 72
+drwxr-xr-x   2 root root 4096 May  6 01:06 aaa
+
+#创建普通容器container-1
+docker run --volumes-from=volumn-container -it --name container-1  openjdk-vim:8  /bin/bash
+
+＃可以看到container-1中自动创建了目录aaa，只要这两个容器对目录aaa的任何操作都会反映到其他容器
+root@97a3791361b8:/# ls -l
+total 72
+drwxr-xr-x   2 root root 4096 May  6 01:07 aaa
+
+```
+
+### 1.7.8. 案例
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.7.7.1. docker 安装Mysqk主从复制
+#### 1.7.8.1. docker 安装Mysqk主从复制
 * https://www.cnblogs.com/songwenjie/p/9371422.html
 
-#### 1.7.7.2. docker 安装mycat
+#### 1.7.8.2. docker 安装mycat
 
 
 * 安装openjdk:8镜像
@@ -3088,10 +3345,10 @@ Commands:
     * http://dl.mycat.io/1.6.7.1/
 * 
 
-### 1.7.8. Docker Compose
+### 1.7.9. Docker Compose
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.7.8.1. 编排和部署
+#### 1.7.9.1. 编排和部署
 
 **编排(orchestration)**
 编排指根据被部署的对象之间的耦合关系，以及被部署对象对环境的依赖，制定部署流程中各个动作的执行顺序，部署过程所需要的依赖文件和被部署文件的存储位置和获取方式，以及如何验证部署成功。这些信息都会在编排工具中以指定的格式(比如配置文件或特定的代码)来要求运维人员定义并保存起来，从而保证这个流程能够随时在全新的环境中可靠有序地重现出来。
@@ -3101,7 +3358,7 @@ Commands:
 
 所以说，编排是一个指挥家，他的大脑里存储了整个乐曲此起彼伏的演奏流程，对于每一个小节每一段音乐的演奏方式都了然于胸。而部署就是整个乐队，他们严格按照指挥家的意图用乐器来完成乐谱的执行。最终，两者通过协作就能把每一位演奏者独立的演奏通过组合、重叠、衔接来形成高品位的交响乐。这也是 docker compose 要完成的使命。
 
-#### 1.7.8.2. 多容器的问题
+#### 1.7.9.2. 多容器的问题
 
 * 要从Dockerfile build image 或者去dockerhub拉取image
 * 要创建多个container
@@ -3109,12 +3366,12 @@ Commands:
 
 Docker Compose 通过文本的方式，把要处理的容器按照顺序执行，如果是多容器也就是通过一条命令就搞定了
 
-#### 1.7.8.3. Docker Compose 概述与安装
+#### 1.7.9.3. Docker Compose 概述与安装
 
 * 使用 Docker 的时候，定义 Dockerfile 文件，然后使用 docker build、docker run 等命令操作容器。然而微服务架构的应用系统一般包含若干个微服务，每个微服务一般都会部署多个实例，如果每个微服务都要手动启停，那么效率之低，维护量之大可想而知
 * 使用 Docker Compose 可以轻松、高效的管理容器，它是一个用于定义和运行多容器 Docker 的应用程序工具
 
-#### 1.7.8.4. 安装 Docker Compose
+#### 1.7.9.4. 安装 Docker Compose
 
 安装 Docker Compose 可以通过下面命令自动下载适应版本的 Compose，并为安装脚本添加执行权限
 ```
@@ -3134,7 +3391,7 @@ docker-compose version 1.8.0, build unknown
 
 ```
 
-#### 1.7.8.5. 基本使用
+#### 1.7.9.5. 基本使用
 
 * Compose 的使用方式非常简单，基本上就是下面的三板斧：
     * 定义 Dockerfile
@@ -3154,7 +3411,7 @@ Compose 是一个用户定义和运行多个容器的 Docker 应用程序。在 
 * 在 docker-compose.yml 中定义组成应用程序的服务，以便它们可以在隔离的环境中一起运行。
 * 最后，运行dcoker-compose up，Compose 将启动并运行整个应用程序。
 
-#### 1.7.8.6. 快速入门
+#### 1.7.9.6. 快速入门
 
 打包项目，获得 jar 包 docker-demo-0.0.1-SNAPSHOT.jar
 ```
@@ -3189,12 +3446,12 @@ docker-compose up -d  // 后台启动并运行容器
 
 访问 http://localhost:9000/hello 即可访问微服务接口
 
-##### 1.7.8.6.1. 工程、服务、容器
+##### 1.7.9.6.1. 工程、服务、容器
 
 * Docker Compose 将所管理的容器分为三层，分别是工程（project）、服务（service）、容器（container）
 * Docker Compose 运行目录下的所有文件（docker-compose.yml）组成一个工程,一个工程包含多个服务，每个服务中定义了容器运行的镜像、参数、依赖，一个服务可包括多个容器实例
 
-##### 1.7.8.6.2. Docker Compose 常用命令与配置
+##### 1.7.9.6.2. Docker Compose 常用命令与配置
 
 ps：列出所有运行容器
 ```
@@ -3247,7 +3504,7 @@ run：在一个服务上执行一个命令
 docker-compose run web bash
 ```
 
-##### 1.7.8.6.3. docker-compose.yml 属性
+##### 1.7.9.6.3. docker-compose.yml 属性
 
 
 * version：指定 docker-compose.yml 文件的写法格式
@@ -3256,7 +3513,7 @@ docker-compose run web bash
     * service的启动类似docker run，我们可以给其指定network和volme，所以可以给service指定network和volume的引用
 * build：配置构建时，Compose 会利用它自动构建镜像，该值可以是一个路径，也可以是一个对象，用于指定 Dockerfile 参数
 
-###### 1.7.8.6.3.1. 基本例子
+###### 1.7.9.6.3.1. 基本例子
 
 ```yml
 #docker-Compse的版本
@@ -3294,7 +3551,7 @@ networks:
     driver: bridge
 ```
 
-###### 1.7.8.6.3.2. 配置选项
+###### 1.7.9.6.3.2. 配置选项
 <a href="#menu" style="float:right">目录</a>
 
 **bulid**
@@ -4517,7 +4774,7 @@ extends:
 
 
 
-#### 1.7.8.7. Docker Compose 其它
+#### 1.7.9.7. Docker Compose 其它
 <a href="#menu" style="float:right">目录</a>
 
 更新容器
@@ -4539,7 +4796,7 @@ services:
 
 这样 Web 服务就可以使用 db 或 database 作为 hostname 访问 db 服务了
 
-##### 1.7.8.7.1. Compose 原理
+##### 1.7.9.7.1. Compose 原理
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -4564,6 +4821,15 @@ compose 的调用流程
 **接下来**，启动容器的方法也很简洁，这个方法中完成了一个 docker 容器启动所需的主要参数的封装，并在 container 模块执行启动。
 
 **最后**，contaier 模块会调用 docker-py 客户端来执行向 docker daemon 发起创建容器的 POST 请求。
+
+## 1.6. Jenkins
+<a href="#menu" style="float:right">目录</a>
+
+Jenkins 是一个开源软件项目，旨在提供一个开放易用的软件平台，使软件的持续集
+成变成可能。 Jenkins 是基于 Java 开发的一种持续集成工具，用于监控持续重复的工作，
+功能如下。
+① 持续的软件版本发布／测试项目 。
+② 监控外部调用执行的工作。
 
 
 ## 1.8. VIM
@@ -6165,7 +6431,8 @@ AsyncAppender的常用参数
 |blocking|	boolean|	默认为true。如果为true，appender将一直等待直到queue中有空闲；如果为false，当队列满的时候，日志事件将被丢弃。(如果配置了error appender，要丢弃的日志事件将由error appender处理)
 |bufferSize|	integer|	队列中可存储的日志事件的最大数量，默认为128。(源码中为128，Log4j2官网为1024，官网信息有误)
 
-![](https://img2018.cnblogs.com/blog/676975/201908/676975-20190827212857292-1887643935.png)
+
+![](pic/util/log/AsyncAppender.png)
 
 
 每个Async Appender，内部维护了一个ArrayBlockingQueue，并将创建一个线程用于输出日志事件，如果配置了多个AppenderRef，将分别使用对应的Appender进行日志输出。
@@ -6688,7 +6955,7 @@ $ npm -v
 $ sudo npm install npm -g
 ```
 
-### package.json
+### 1.16.2. package.json
 
 package.json 位于模块的目录下，用于定义包的属性。接下来让我们来看下 express 包的 package.json 文件，位于 node_modules/express/package.json 内容：
 ```json
@@ -6717,7 +6984,7 @@ Package.json 属性说明
 * main - main 字段指定了程序的主入口文件，require('moduleName') 就会加载这个文件。这个字段的默认值是模块根目录下面的 index.js。
 * keywords - 关键字
 
-### npm 常用工具
+### 1.16.3. npm 常用工具
 
 ```
 更新全局包：
@@ -6758,11 +7025,11 @@ npm help  帮助，如果要单独查看install命令的帮助，可以使用的
 ```
 
 
-### 1.16.2. NPM仓库
+### 1.16.4. NPM仓库
 
 NPM仓库是一个公共的 JavaScript 包的数据库，我们可以在这个仓库中找到想要的第三方依赖包，也可以把自己写的一些js包发布到上面供其他人使用。
 
-### 1.16.3. 包格式
+### 1.16.5. 包格式
 
 ```
 1） 包含package.json文件的文件夹
@@ -6773,7 +7040,7 @@ NPM仓库是一个公共的 JavaScript 包的数据库，我们可以在这个�
 6） 解析为1）的git地址
 ```
 
-### 1.16.4. 使用 npm 命令安装模块
+### 1.16.6. 使用 npm 命令安装模块
 npm 安装 Node.js 模块语法格式如下：
 ```
 $ npm install <Module Name>
@@ -6787,7 +7054,7 @@ $ npm install express
 var express = require('express');
 ```
 
-### 1.16.5. 全局安装与本地安装
+### 1.16.7. 全局安装与本地安装
 npm 的包安装分为本地安装（local）、全局安装（global）两种，从敲的命令行来看，差别只是有没有-g而已，比如
 ```
 npm install express      # 本地安装
@@ -6816,7 +7083,7 @@ $ npm config set proxy null
 $ npm install express -g
 ```
 
-### 1.16.6. 查看安装信息
+### 1.16.8. 查看安装信息
 
 ```
 你可以使用以下命令来查看所有全局安装的模块：
@@ -6826,7 +7093,7 @@ npm list -g
 $ npm list grunt
 ```
 
-### 1.16.7. 卸载模块
+### 1.16.9. 卸载模块
 我们可以使用以下命令来卸载 Node.js 模块。
 ```
 $ npm uninstall express
@@ -6837,18 +7104,18 @@ $ npm uninstall express
 $ npm ls
 ```
 
-### 1.16.8. 更新模块
+### 1.16.10. 更新模块
 我们可以使用以下命令更新模块：
 ```
 $ npm update express
 ```
-### 1.16.9. 搜索模块
+### 1.16.11. 搜索模块
 使用以下来搜索模块：
 ```
 $ npm search express
 ```
 
-### 1.16.10. 使用淘宝 NPM 镜像
+### 1.16.12. 使用淘宝 NPM 镜像
 
 大家都知道国内直接使用 npm 的官方镜像是非常慢的，这里推荐使用淘宝 NPM 镜像。
 

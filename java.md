@@ -1,22 +1,40 @@
 
 
 <span id="menu"></span>
-
 <!-- TOC -->
 
 - [1. Java与面向对象](#1-java与面向对象)
     - [1.1. Java基础](#11-java基础)
-        - [1.1.1. 数据类型](#111-数据类型)
-            - [1.1.1.1. Integer 缓存对象](#1111-integer-缓存对象)
-            - [1.1.1.2. 数组](#1112-数组)
-            - [1.1.1.3. String](#1113-string)
-    - [1.2. 面向对象](#12-面向对象)
-        - [1.2.1. 三大特性](#121-三大特性)
-            - [1.2.1.1. 权限修饰符](#1211-权限修饰符)
-            - [1.2.1.2. 接口和抽象类](#1212-接口和抽象类)
-            - [1.2.1.3. 建议](#1213-建议)
-            - [1.2.1.4. 内部类](#1214-内部类)
-            - [1.2.1.5. 枚举类](#1215-枚举类)
+        - [1.1.1. 基础问题](#111-基础问题)
+        - [1.1.2. 数据类型](#112-数据类型)
+            - [1.1.2.1. 数值类型之间的转换](#1121-数值类型之间的转换)
+            - [1.1.2.2. 整型](#1122-整型)
+                - [1.1.2.2.1. 缓存对象实现](#11221-缓存对象实现)
+            - [1.1.2.3. char](#1123-char)
+            - [1.1.2.4. 数组](#1124-数组)
+            - [1.1.2.5. String](#1125-string)
+        - [1.1.3. 运算符](#113-运算符)
+        - [1.1.4. 流程控制](#114-流程控制)
+            - [1.1.4.1. switch－case](#1141-switchcase)
+            - [1.1.4.2. for-each](#1142-for-each)
+    - [1.2. 对象与类](#12-对象与类)
+        - [1.2.1. 面向过程和面向对象](#121-面向过程和面向对象)
+        - [1.2.2. 面向对象三大特性](#122-面向对象三大特性)
+        - [1.2.3. 权限修饰符](#123-权限修饰符)
+        - [1.2.4. 继承与Ｏbject类](#124-继承与ｏbject类)
+        - [1.2.5. 重载与重写](#125-重载与重写)
+        - [1.2.6. 动态绑定](#126-动态绑定)
+        - [1.2.7. 构造器](#127-构造器)
+        - [1.2.8. 初始化问题](#128-初始化问题)
+        - [1.2.9. 包的导入和声明](#129-包的导入和声明)
+        - [1.2.10. 常用关键字作用](#1210-常用关键字作用)
+        - [1.2.11. 文档注释](#1211-文档注释)
+        - [1.2.12. 接口和抽象类](#1212-接口和抽象类)
+            - [1.2.12.1. 区别](#12121-区别)
+            - [1.2.12.2. 接口与回调](#12122-接口与回调)
+            - [1.2.12.3. 建议](#12123-建议)
+        - [1.2.13. 内部类](#1213-内部类)
+        - [1.2.14. 枚举类](#1214-枚举类)
     - [1.3. 泛型](#13-泛型)
         - [1.3.1. 概述](#131-概述)
     - [1.4. 集合](#14-集合)
@@ -109,12 +127,114 @@
 <!-- /TOC -->
 
 
+
 # 1. Java与面向对象
 
 ## 1.1. Java基础
 <a href="#menu" style="float:right">目录</a>
 
-### 1.1.1. 数据类型
+### 1.1.1. 基础问题
+
+**JDK、JRE、JVM三者间的联系与区别**
+* JDK(Java SE Development Kit)，Java标准开发包，它提供了编译、运行Java程序所需的各种工具和资源，包括Java编译器、Java运行时环境，以及常用的Java类库等。
+* RE( Java Runtime Environment) 、Java运行环境，用于解释执行Java的字节码文件。普通用户而只需要安装 JRE（Java Runtime Environment）来运行 Java 程序。而程序开发者必须安装JDK来编译、调试程序。
+* JVM(Java Virtual Mechinal)，Java虚拟机，是JRE的一部分。它是整个java实现跨平台的最核心的部分，负责解释执行字节码文件，是可运行java字节码文件的虚拟计算机。所有平台的上的JVM向编译器提供相同的接口，而编译器只需要面向虚拟机，生成虚拟机能识别的代码，然后由虚拟机来解释执行。当使用Java编译器编译Java程序时，生成的是与平台无关的字节码，这些字节码只面向JVM。不同平台的JVM都是不同的，但它们都提供了相同的接口。JVM是Java程序跨平台的关键部分，只要为不同平台实现了相应的虚拟机，编译后的Java字节码就可以在该平台上运行。
+
+* 区别与联系
+    * JDK 用于开发，JRE 用于运行java程序 ；如果只是运行Java程序，可以只安装JRE，无序安装JDK。
+    * JDk包含JRE，JDK 和 JRE 中都包含 JVM。
+    * JVM 是 java 编程语言的核心并且具有平台独立性
+
+**环境变量path和classpath的作用**
+* PATH环境变量。
+    * 作用是指定命令搜索路径，在i命令行下面执行命令如javac编译java程序时，它会到PATH变量所指定的路径中查找看是否能找到相应的命令程序。需要把jdk安装目录下的bin目录增加到现有的PATH变量中，bin目录中包含经可执行文件javac/java/javadoc等待，设置PATH变量后，就可以在任何目录下执行javac/java等工具了。
+* CLASSPATH环境变量。
+    * 作用是指定类搜索路径，要使用已经编写好的类，前提当然是能够找到它们了，JVM就是通过CLASSPTH来寻找类的。需要把jdk安装目录下的lib子目录中的dt.jar和tools.jar设置到CLASSPATH中，当然，当前目录“.”也必须加入到该变量中。新版的软件，classpath没有什么用了，因为在安装的时候已经选了JDK而且可以添加 
+* JAVA_HOME环境变量。
+    * 它指向jdk的安装目录，Eclipse/NetBeans/Tomcat等软件就是通过搜索JAVA_HOME变量来找到并使用安装好的jdk。
+
+
+**Java如何实现可移植性**
+由于不同的平台并没有限制int类型的长度，只是规定short　int <= int <= long 
+
+不同位数的机器上有差别的主要是指针的长度，因为可以寻址的空间有区别； 
+int的长度则依赖于编译器。
+
+|类型	|16位平台	|32位平台|	64位平台|
+|---|---|---|---|
+|char	|1|	1	|1
+|short|	2	|2	|2
+|short int	|2	|2	|2
+|int	|2	|4	|4|
+|unsigned int	|2|	4	|4
+|float|	4	|4|	4
+|long|	4|	4	|8
+|long |long	|8|	8	|8
+|unsigned long|	4	|4	|8
+|double|	8	|8	|8
+|指针	|2	|4	|8
+ 
+ 而java中数据类型的长度是固定的，为了实现跨平台特性，是通过虚拟机来实现的．我们编写的Java源码，编译后会生成一种 .class 文件，称为字节码文件．Java虚拟机JVM就是负责将字节码文件翻译成特定平台下的机器码然后运行。也就是说，只要在不同平台上安装对应的JVM，就可以运行字节码文件，运行我们编写的Java程序。跨平台的是Java程序，不是JVM。JVM是用C/C++开发的,不同平台下需要安装不同版本的JVM
+
+**java 中jdk/bin & jre/bin 目录下面的工具说明**
+
+* jre/bin目录下面工具说明 
+    * javac：Java编译器，将Java源代码换成字节代 
+    * java：Java解释器，直接从类文件执行Java应用程序代码 
+    * appletviewer(小程序浏览器)：一种执行HTML文件上的Java小程序类的Java浏览器 
+    * javadoc：根据Java源代码及其说明语句生成的HTML文档 
+    * jdb：Java调试器，可以逐行地执行程序、设置断点和检查变量 
+    * javah：产生可以调用Java过程的C过程，或建立能被Java程序调用的C过程的头文件 
+    * Javap：Java反汇编器，显示编译类文件中的可访问功能和数据，同时显示字节代码含义 
+    * jar：多用途的存档及压缩工具，是个java应用程序，可将多个文件合并为单个JAR归档文件。 
+    * htmlConverter——命令转换工具。 
+    * native2ascii——将含有不是Unicode或Latinl字符的的文件转换为Unicode编码字符的文件。 
+    * serialver——返回serialverUID。语法：serialver [show] 命令选项show是用来显示一个简单的界面。输入完整的类名按Enter键或"显示"按钮，可显示serialverUID。 
+
+* jdk\bin目录下工具说明 
+    * appletviewer.exe(小程序浏览器)：一种执行HTML文件上的Java小程序类的Java浏览器 
+    * apt.exe：SolarisTM 操作系统和 Linux上用于处理注释的工具 
+    * extcheck.exe：检测目标 jar 文件与当前安装方式扩展 jar 文件间的版本冲突。 
+    * HtmlConverter.exe:Java(TM) 插件 HTML 转换器是一种实用程序，可用于将任一包含小程序的 HTML 页面,转换为使用 Java(TM)插件的格式。 
+    * idlj.exe：对idl文件进行解析，生成所需的java文件 
+    * jar：多用途的存档及压缩工具，是个java应用程序，可将多个文件合并为单个JAR归档文件。 
+    * jarsigner：为 Java 归档 (JAR) 文件产生签名，并校验已签名的 JAR 文件的签名 
+    * java：Java解释器，直接从类文件执行Java应用程序代码 
+    * javac：Java编译器，将Java源代码换成字节代 
+    * javadoc：根据Java源代码及其说明语句生成的HTML文档 
+    * javah：产生可以调用Java过程的C过程，或建立能被Java程序调用的C过程的头文件 
+    * Javap：Java反汇编器，显示编译类文件中的可访问功能和数据，同时显示字节代码含义 
+    * java-rmi: 
+    * javaw:与java类似，没有控制台信息 
+    * javaws:用于启动和控制Web上的java是程序 
+    * JConsole:是一个基于JMX的GUI工具，用于连接正在运行的JVM，不过此JVM需要使用可管理的模式启动。 
+    * jdb:用于调试java程序的工具 
+    * jhat：是一个Java堆复制浏览器。这个工具分析Java堆复制文件（例如，由上面的"jmap -dump"所产生的）。Jhat启动一个允许堆中的对象在web浏览器中进行分析的web服务器。这个工具并不是想用于应用系统中而是用于"离线"分 析。"jhat工具是平台独立的"，其意思是，它可以被用来观察在任何平台上所产生的堆复制。例如，我们有可能在Linux系统上使用jhat来观察一个 在Solaris OS上所产生的堆复制。 
+    * jinfo：打印一个给定的Java进程或核心文件或一个远程调试服务器的Java配置信息。配置信息包括Java系统属性和JVM命令行标志 
+    * jps：相当于Solaris进程工具ps。不象"pgrep java"或"ps -ef grep java"，jps并不使用应用程序名来查找JVM实例。因此，它查找所有的Java应用程序，包括即使没有使用java执行体的那种（例如，定制的启动 器）。另外，jps仅查找当前用户的Java进程，而不是当前系统中的所有进程。 
+    * jrunscript：一个JS解释器 
+    * jstack：等价于Solaris的pstack工具。jstack打印所有的Java线程的堆栈跟踪信息（可选地包括本机帧信息） 
+    * jstat ：显示一个测量（instrumented）Java HotSpot虚拟机的性能统计信息 
+    * jstatd是一个Java远程方法调用 (RMI)服务器应用程序-它监控测量Java HotSpot虚拟机的创建和终止并且提供一个接口来允许远程监控工具依附到运行于本地主机的JVM 
+    * Keytool：是安全钥匙与证书的管理工具，它管理一个存储了私有钥匙和验证相应公共钥匙的与它们相关联的X.509 证书链的keystore 
+    * kint,klist,ktab:实现Kerberos用到的一些工具 
+    * native2ascii：用于转换字符或者文件的编码格式 
+    * orbd：用于实现corba接口（分布式应用） 
+    * pack200：对jar文件进行高效的压缩 
+    * packager: 将Jar文件包装成其他格式的文件 
+    * policytool：java中的策略管理 
+    * rmic：为远程调用编译生成远程调用时所需的文件 
+    * rmid：用于启动激活系统守护进程，以便远程对象可以在JVM中注册和激活 
+    * rmiregistry：启动一个远程对象注册表中指定的端口 
+    * schemagen: 
+    * serialver：用于返回一个类的serialverUID 
+    * servertools：为程序员提供了一个命令行接口，用于注册，取消注册，启动，关闭一个服务 
+    * tnameserv： 
+    * unpack200：对pack200进行压缩的jar文件进行解压 
+    * wsgen：是一个命令行功能用来生成合适的JAX-WS。它读取WebService的终端类文件，同时生成所有用于WebService发布的源代码文件和经过编译过的二进制类文件。它还随意生成WSDL和符合规范的HelloServer类WebService。wsgen从资源文件生成一个完整的操作列表是合法的。 
+    * wsimport：这个工具依据wsdl文件生成相应的类文件，然后用这些类文件，就可以像调用本地的类一样调用WebService提供的方法了 
+
+### 1.1.2. 数据类型
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -127,62 +247,86 @@
 |char|charater|2||数值，'',Unicode '\u0061'|
 |float|Float|4||3.45f|
 |double|Double|8||
+|boolean| Boolean|true/false|
 包装类主要用于集合数据，判断非空的场景。局部变量一般使用基本类型。对象属性一般使用包装器类型。
 装箱就是基本类型转换为包装类型。valueOf方法。
 拆箱就是包装类型转换为基本类型。intValue方法。
 
-* 自动类型转换
-   * char-->int
-   * byte-->short-->int
-   * int-->long--float--double
-   * 整数类型默认为int,浮点类型默认为float
-   * 左边类型赋值给右边类型会自动转换，反之需要强制转换，强制转换可能会出现溢出，导致数据丢失。比如将int(1000)转换为byte.多出来的比特位将会强制截断。
-   * 任何类型和字符串类型相加，都会自动转换为字符串类型
-   * byte,char,short类型之间相互运算将会自动提升为int类型，这是系统避免计算溢出。
+Java中的变量在使用前必须进行初始化，类属性由于在类加载时已经进行初始化，因此不需要进行显示初始化，方法内的局部变量必须进行显示初始化
 
-#### 1.1.1.1. Integer 缓存对象
+
+#### 1.1.2.1. 数值类型之间的转换
+
+小一级的类型可以自动转换成大一级的类型，反过来需要强制转换
+
+![类型转换](pic/java/type-change.png)
+
+* 实线表示自动转换时不会造成数据丢失，虚线则可能会出现数据丢失问题。
+* 任何类型和字符串类型相加，都会自动转换为字符串类型
+* 如果两个操作数有一个是double,另一个就会自动转化成double再进行操作
+* 如果两个操作数有一个是float,另一个就会自动转化成float再进行操作
+* 如果两个操作数有一个是long,另一个就会自动转化成long再进行操作
+* 否则两个操作数都会转化为int再进行操作
+　
+
+#### 1.1.2.2. 整型
+
+如果long无法表示需要的范围，可以使用BigInteger类来实现大数的操作．
+
+##### 1.1.2.2.1. 缓存对象实现
 <a href="#menu" style="float:right">目录</a>
 
-缓存范围为[-128,127]，超过则创建新的对象
+
+整形包括byte,short,int,long.每个包装类都会缓存　［-128,127］范围的数据．
+
+
+每一个整型包装器类内部都有一个静态内部类，ＸxxxCache.
+
+当Integer data1 = 123;时，实际上调用的是给类的valueOf方法．如果值范围为[-128,127],则会使用缓存的对象，超过则创建新的对象
+```java
+public static Integer valueOf(int i) {
+    if (i >= IntegerCache.low && i <= IntegerCache.high)
+        return IntegerCache.cache[i + (-IntegerCache.low)];
+    return new Integer(i);
+}
+
+```
+缓存的初始化放在静态块中，首次调用时会进行初始化
 ```java
  private static class IntegerCache {
-        static final int low = -128;
-        static final int high;
-        static final Integer cache[];
+    static final int low = -128;
+    static final int high;
+    static final Integer cache[];
 
-        static {
-            // high value may be configured by property
-            int h = 127;
-            String integerCacheHighPropValue =
-                sun.misc.VM.getSavedProperty("java.lang.Integer.IntegerCache.high");
-            if (integerCacheHighPropValue != null) {
-                try {
-                    int i = parseInt(integerCacheHighPropValue);
-                    i = Math.max(i, 127);
-                    // Maximum array size is Integer.MAX_VALUE
-                    h = Math.min(i, Integer.MAX_VALUE - (-low) -1);
-                } catch( NumberFormatException nfe) {
-                    // If the property cannot be parsed into an int, ignore it.
-                }
+    static {
+        // high value may be configured by property
+        int h = 127;
+        String integerCacheHighPropValue =
+            sun.misc.VM.getSavedProperty("java.lang.Integer.IntegerCache.high");
+        if (integerCacheHighPropValue != null) {
+            try {
+                int i = parseInt(integerCacheHighPropValue);
+                i = Math.max(i, 127);
+                // Maximum array size is Integer.MAX_VALUE
+                h = Math.min(i, Integer.MAX_VALUE - (-low) -1);
+            } catch( NumberFormatException nfe) {
+                // If the property cannot be parsed into an int, ignore it.
             }
-            high = h;
-
-            cache = new Integer[(high - low) + 1];
-            int j = low;
-            for(int k = 0; k < cache.length; k++)
-                cache[k] = new Integer(j++);
-
-            // range [-128, 127] must be interned (JLS7 5.1.7)
-            assert IntegerCache.high >= 127;
         }
+        high = h;
 
-        private IntegerCache() {}
+        cache = new Integer[(high - low) + 1];
+        int j = low;
+        for(int k = 0; k < cache.length; k++)
+            cache[k] = new Integer(j++);
+
+        // range [-128, 127] must be interned (JLS7 5.1.7)
+        assert IntegerCache.high >= 127;
     }
-    public static Integer valueOf(int i) {
-        if (i >= IntegerCache.low && i <= IntegerCache.high)
-            return IntegerCache.cache[i + (-IntegerCache.low)];
-        return new Integer(i);
-    }
+
+    private IntegerCache() {}
+}
+    
 ```
 示例：
 ```java
@@ -205,13 +349,31 @@ public static void main(String args[]){
 
     }
 //输出
+//使用的是同一个缓存对象
 a1==a2?  true
+//超出缓存的范围，是不同的对象
 b1==b2?  false
+//创建的都是新对象
 c1==c2?  false
 ```
 
+#### 1.1.2.3. char
 
-#### 1.1.1.2. 数组
+char 用来表示单个字符
+
+```java
+//常规定义
+char data = 'a';
+//使用十进制
+char data = 64;
+//使用Unocode （０－ffff）
+char data = \u1234;
+```
+
+#### 1.1.2.4. 数组
+
+
+
 初始化
 ```java
 /创建数组，需要定义长度
@@ -228,8 +390,14 @@ int[][] arr2 =  {{1,2},{1,2}};
 ```
 数组工具类java.util.Arrays。提供排序,复制，比较，初始化等功能。
 
-#### 1.1.1.3. String 
+#### 1.1.2.5. String 
 <a href="#menu" style="float:right">目录</a>
+
+String 内部使用数组来存储字符串的值
+```java
+private final char value[];
+```
+
 
 ```java
 public static void main(String args[]){
@@ -272,27 +440,175 @@ String a = new String("1243");
 * 由于String变量相加时，会创建新的对象。因此效率较低。
 使用StringBuilder和StringBuffer，StringBuffer在一些方法上加上了Synchronized同步锁，一般不使用。
 
+这两个类的父类都是AbstractStringBuilder．其apend的实现原理是使用数组复制
+```java
+public AbstractStringBuilder append(String str) {
+    if (str == null)
+        return appendNull();
+    int len = str.length();
+    ensureCapacityInternal(count + len);
+    str.getChars(0, len, value, count);
+    count += len;
+    return this;
+}
+private void ensureCapacityInternal(int minimumCapacity) {
+        // overflow-conscious code
+    if (minimumCapacity - value.length > 0) {
+        value = Arrays.copyOf(value,
+                newCapacity(minimumCapacity));
+    }
+}
+```
+
 * String.intern()方法获得在常量池中的字符串引用，如果常量池中没有该常量字符串，该方法会将该字符串加入常量池。但并不表示任何字符串调用intern()都返回同样的引用，因为可能中间发生过垃圾回收被回收掉了。
 
+String 重写了hashcode方法
+```JAVA
+public int hashCode() {
+    int h = hash;
+    if (h == 0 && value.length > 0) {
+        char val[] = value;
 
-## 1.2. 面向对象
+        for (int i = 0; i < value.length; i++) {
+            h = 31 * h + val[i];
+        }
+        hash = h;
+    }
+    return h;
+}
+```
+equals方法会去比较字符串序列是否相同
+```java
+public boolean equals(Object anObject) {
+    if (this == anObject) {
+        return true;
+    }
+    if (anObject instanceof String) {
+        String anotherString = (String)anObject;
+        int n = value.length;
+        if (n == anotherString.value.length) {
+            char v1[] = value;
+            char v2[] = anotherString.value;
+            int i = 0;
+            while (n-- != 0) {
+                if (v1[i] != v2[i])
+                    return false;
+                i++;
+            }
+            return true;
+        }
+    }
+    return false;
+}
+```
+
+### 1.1.3. 运算符
+
+Java中使用<<,>>>,>>,来实现位移，>>>将用０填充高位．>>使用符号位填充高位 
+
+### 1.1.4. 流程控制
+
+#### 1.1.4.1. switch－case
+case 的标签可以是char,byte,short,int以及它们的包装器．还有枚举常量，字符串字面量
+
+#### 1.1.4.2. for-each 
+
+对于集合可以使用for-each来进行遍历
+```java
+//遍历数组
+int arr[]={1,2,3}
+for(int data:arr){
+
+}
+//
+List<Integer> lists = new ArrayList<>();
+for (Integer list:lists){
+            
+}
+//
+Map<Integer,Integer>  maps = new HashMap<>();
+for(Map.Entry entry:maps.entrySet()){
+
+}
+
+```
+
+## 1.2. 对象与类
 <a href="#menu" style="float:right">目录</a>
 
-### 1.2.1. 三大特性
+### 1.2.1. 面向过程和面向对象
+
+**面向过程**
+
+面向过程是通过分析将解决问题的过程步骤化，然后使用一个个方法去实现．使用的时候依次调用．
+
+**面向对象**
+
+面向对象程序设计(OOP),Java是完全面向对象的．
+
+面向对象是的程序是由对象组成，每个对象包含对用户公开的方法和隐藏的方法．面向对象就是构成问题事务分解成各个对象，建立对象的目的不是为了完成一个步骤，而是为了描叙某个事物在整个解决问题的步骤中的行为。
+
+虽然本质上的问题的解决都是不断地调用方法来实现．但是对于面向对象，当前对象不能满足要求时，可以通过替换对象来实现内部逻辑处理的修改．也就是不同的对象可以有不同的实现逻辑，即使他们的父类类型一样．从这方面来讲，面向对象可维护性和可扩展性更加好．更加适用于大规模的问题．
+
+**总结**
+* 面向过程：
+    * 优点：性能比面向对象高，因为类调用时需要实例化，开销比较大，比较消耗资源;比如单片机、嵌入式开发、 Linux/Unix等一般采用面向过程开发，性能是最重要的因素。 
+    * 缺点：没有面向对象易维护、易复用、易扩展
+* 面向对象：
+    * 优点：易维护、易复用、易扩展，由于面向对象有封装、继承、多态性的特性，可以设计出低耦合的系统，使系统 更加灵活、更加易于维护 
+    * 缺点：性能比面向过程低
+
+
+**类与对象**
+
+类是创建对象的模板，对象是类的实例．
+
+对象有三个特性:
+* 对象的行为:对象具备的方法或者操作
+* 对象的状态:当执行对象的方法时，对象如何响应
+* 对象的标识:如何辨别具有相同行为与状态的不同对象
+
+**类之间的关系**
+* 依赖 uses-a,比如作为方法的参数
+* 聚合　has-a，作为类的属性
+* 继承　is-a，继承类或者实现接口
+
+
+
+
+
+### 1.2.2. 面向对象三大特性
 <a href="#menu" style="float:right">目录</a>
 
 * 继承
-通过继承可以实现代码的复用。
+    * 继承是类与类的一种关系，是一种“is a”的关系。比如“狗”继承“动物”，这里动物类是狗类的父类或者基类，狗类是动物类的子类或者派生类
+    * 子类拥有父类的所有属性和方法（除了private修饰的属性不能拥有）从而实现了实现代码的复用；　
 * 封装
-将一些属性和方法隐藏起来，只提供公共的接口。我觉得这里应该是为了安全性，比如如果对某些属性赋值，要经过一定的内部计算，如果直接调用属性赋值，肯定会出现问题。
+    * 概念：将类的某些信息隐藏在类内部，不允许外部程序直接访问，而是通过该类提供的方法来实现对隐藏信息的操作和访问。
+    * 好处：
+        * 只能通过规定的方法访问数据。
+        * 隐藏类的实例细节，方便修改和实现。　
+
 * 多态 
-同一种类型的对象，调用同一个方法，其呈现的效果不一样。
+    * 多态就是对象的多种形态。同一种类型的对象，调用同一个方法，其呈现的效果不一样。
+    * java里的多态主要表现在两个方面：
+        * 引用多态　　　
+            * 父类的引用可以指向本类的对象；
+            * 父类的引用可以指向子类的对象；
+        * 方法多态,根据上述创建的两个对象：本类对象和子类对象，同样都是父类的引用，当我们指向不同的对象时，它们调用的方法也是多态的。
+            * 创建本类对象时，调用的方法为本类方法；
+            * 创建子类对象时，调用的方法为子类重写的方法或者继承的方法；
+    * 使用多态的时候要注意：如果我们在子类中编写一个独有的方法（没有继承父类的方法），此时就不能通过父类的引用创建的子类对象来调用该方法！
+
 Java有两种类型，编译时类型(由声明的类型决定)，运行时类型(由实际赋给这个变量的对象类型决定)。当运行时类型不一样的时候，就会出现多态。
+
+```java
+//Animal是编译时类型，Ｄog是运行时类型
+Animal aanimal = new Dog();
+```
 * 向上转型: 子类对象赋给父类变量。自动转换。只能调用父类拥有的方法。
 * 向下转型: 父类对象赋给子类变量，需要强制转换。可以调用子类拥有的方法。
 
-**构造器**
-默认有一个无参构造器，如果实现了其他有参构造器，无参构造器便不存在。
 
 ```java
 class Base{
@@ -317,7 +633,172 @@ public static void main(String args[]){
 
     }
 ```
-**初始化问题**
+
+### 1.2.3. 权限修饰符
+<a href="#menu" style="float:right">目录</a>
+
+* private 本类可见
+* default 同一个包/子包可见
+* protect 子类可见
+* public 所有可见
+
+### 1.2.4. 继承与Ｏbject类
+
+Java的继承使用extends关键字，每个类只能继承一个类，不能像c++一样多继承．但可以有多级继承．子类通过继承可以获得父类非私有的属性和方法．从而实现代码复用．Java中每一个类都默认继承Ｏbject类．
+
+```java
+//通过super调用父类构造器
+super(1,2,3);
+//通过super调用父类方法，可以省略super
+super.parentFunc();
+```
+
+Object是所有类的父类，任何类都默认继承Object。Object类到底实现了哪些方法？
+
+**clone方法**
+保护方法，实现对象的浅复制，只有实现了Cloneable接口才可以调用该方法，否则抛出CloneNotSupportedException异常。
+
+**getClass方法**
+final方法，获得运行时类型。
+
+**toString方法**
+该方法用得比较多，一般子类都有覆盖。
+
+**finalize方法**
+该方法用于释放资源。因为无法确定该方法什么时候被调用，很少使用。在失去强引用之后，被垃圾回收之前，这个方法会被调用，但是何时调用不确定．实际中不应该使用这个方法．
+
+**equals方法**
+```java
+public boolean equals(Object obj) {
+    return (this == obj);
+}
+```
+该方法是非常重要的一个方法。一般equals和==是不一样的，但是在Object中两者是一样的。子类一般都要重写这个方法。
+
+==是判断两个变量或实例是不是指向同一个内存空间，equals是判断两个变量或实例所指向的内存空间的值是不是相同 
+Ｓtring重写了这个方法，比较的是字符串序列是否相同．
+集合也重写了这个方法，比较其中的元素是否相等
+
+* equals方法特性
+    * 自反性: 对于任何非空引用x,x.equals(x)返回true
+    * 对称性: 对于任何x,y. x.equals(y) 和y.equals(x)一定相同
+    * 传递性: x.equals(y) == true,y.equals(z) == true 则x.equals(z) == true
+    * 一致性: 如果x,y没有变化，反复调用，结果都是一致的
+    * 对于任意非空的对象x,x.equals(null) 一定等于false
+
+
+**hashCode方法**
+```JAVA
+public native int hashCode();
+```
+返回对象的内存地址经过处理后的结构，由于每个对象的内存地址都不一样，所以哈希码也不一样。
+该方法用于哈希查找，重写了equals方法一般都要重写hashCode方法。这个方法在一些具有哈希功能的Collection中用到。
+
+一般必须满足obj1.equals(obj2)==true。可以推出obj1.hash- Code()==obj2.hashCode()，但是hashCode相等不一定就满足equals。不过为了提高效率，应该尽量使上面两个条件接近等价。
+
+**wait方法**
+wait方法就是使当前线程等待该对象的锁，当前线程必须是该对象的拥有者，也就是具有该对象的锁。wait()方法一直等待，直到获得锁或者被中断。wait(long timeout)设定一个超时间隔，如果在规定时间内没有获得锁就返回。
+
+调用该方法后当前线程进入睡眠状态，直到以下事件发生。
+
+（1）其他线程调用了该对象的notify方法。
+
+（2）其他线程调用了该对象的notifyAll方法。
+
+（3）其他线程调用了interrupt中断该线程。
+
+（4）时间间隔到了。
+
+此时该线程就可以被调度了，如果是被中断的话就抛出一个InterruptedException异常。
+
+**notify方法**
+该方法唤醒在该对象上等待的某个线程。
+
+**notifyAll方法**
+该方法唤醒在该对象上等待的所有线程。
+
+
+将一个子类的引用赋给一个超类的变量，编译器是允许的．但将一个超类的引用赋给一个子类变量．必须进行强制类型转换．在将超类转换成子类之前，应当使用instanceof进行检测．
+```java
+
+B b2 = new C();
+result = b2 instanceof A;
+
+```
+instanceof是Java中的二元运算符，左边是对象，右边是类；当对象是右边类或子类所创建对象时，返回true；否则，返回false。
+
+类的实例包含本身的实例，以及所有直接或间接子类的实例.instanceof左边显式声明的类型与右边操作元必须是同种类或存在继承关系(或者接口的实现)，也就是说需要位于同一个继承树，否则会编译错误
+
+### 1.2.5. 重载与重写
+
+
+**重载overload和重写overwride**
+重写发生在父子类之间，重写改变方法的功能。两同两小一大。
+* 方法名称，行参列表必须一样
+* 返回值类型和抛出异常要么和原来一样，要么是子类。
+* 访问权限应该比原来的大或者一样
+* 重写方法应当加上@Overwride注解，防止出错
+
+重载发生在本类中,规范如下
+* 就是在类中可以创建多个方法，它们具有相同的名字，但具有不同的参数和不同的定义。调用方法时通过传递给它们的不同参数个数和参数类型来决定具体使用哪个方法,
+* 方法名称相同
+* 行参列表不同（类型，顺序，个数），一般应当减少这种情况出现func(List)和func(ArrayList).会造成困扰。
+* 与返回值，权限，异常定义无关
+
+### 1.2.6. 动态绑定
+
+假设调用x.f(param)
+* 编译器查看对象的声明类型和方法名(因为存在方法名相同，但是参数列表不一致的方法)，获得所有可能的方法列表
+* 编译器查看调用方法时提供的参数类型．如果参数类型完全匹配，就选择这个方法．这个过程称为重载解析．如果编译器没有找到与参数类型匹配的方法，或者发现经过类型转换（子类转换成父类）后有多个方法匹配，则会报告错误．至此，编译器已经获得需要调用的方法名字和参数类型
+
+```java
+class Test{
+
+    public void f1(Parent parent){
+
+        System.out.println("1");
+    }
+
+    public void f1(Child child){
+        System.out.println("2");
+    }
+
+}
+
+//此时方法２最匹配，被选中，如果没有方法2，会进行类型转换，然后选择方法１
+test.f1(new Child());
+
+
+```
+* 如果是private方法，static方法，final方法或者构造器．那么编译器将可以准确知道应该调用哪个方法．这种称为**静态绑定**．与此对应的是，调用的方法依赖于对象的运行时类型．并在运行时实现动态绑定．
+* 当程序运行时，并且采用动态绑定调用方法时，虚拟机一定调用与x所引用对象的实际类型最合适的那个类的方法．也就是先在运行时类型的方法里寻找，如果有则调用，如果没有，则去其超类里面寻找．
+
+每次调用方法都要去搜索，时间开销大，因此虚拟机预先为每一个类创建了一个方法表．其中列出了所有方法的签名和实际调用的方法．在真正调用的时候，虚拟机查找这个表就可以了．
+
+在早期的Java中，为了避免动态绑定带来的系统开销，会使用final来实现静态绑定．如果一个方法很短，且没有被覆盖，编译器会对它进行优化处理，比如e.getName() 优化成e.name.也就是內联(inlining)．但是现在虚拟机的即时编译器比原来的静态编译器优秀很多，会根据运行情况进行动态优化．这个编译器可以准确的知道类之间的继承关系．如果某个方法很简短并被频繁的调用且没有被覆盖重写，就会被这个即时编译器进行内联处理．
+
+### 1.2.7. 构造器
+
+* 构造器特点
+    * 构造器必须与类同名
+    * 构造器没有参数返回值 
+    * 构造器参数可以有无参或者多个参数
+    * 每个类可以有多个构造器
+    * 如果没有自定义构造器，类会默认实现无参构造器,如果实现了其他有参构造器，无参构造器便不存在。
+    * 构造器总是会伴随new操作一起调用
+
+**创建对象的多种方式**
+* 用new关键字创建.会调用构造器
+* 利用反射，调用Class类的或者是Constructor类的newInstance（）方法.会调用构造器
+* 用反序列化，调用ObjectInputStream类的readObject（）方法，不会调用构造器
+* 调用对象的clone方法，不会调用构造器
+
+
+
+### 1.2.8. 初始化问题
+
+类中的{}块是普通初始化块，普通初始化块会在创建对象时调用．static {}是静态初始化块．静态初始化块会在类加载时调用．
+
 ```java
    public static void main(String args[]){
         Sub base = new Sub();
@@ -363,26 +844,143 @@ class Sub extends Base{
 子类构造器
 ```
 
+### 1.2.9. 包的导入和声明
 
+**包的导入**
 
-**创建对象的多种方式**
-* 用new关键字创建.会调用构造器
-* 利用反射，调用Class类的或者是Constructor类的newInstance（）方法.会调用构造器
-* 用反序列化，调用ObjectInputStream类的readObject（）方法，不会调用构造器
-* 调用对象的clone方法，不会调用构造器
+```java
 
+//导入java.util包下的所有类
+improt java.util.*;
 
+//导入java.util包下的Date类
+improt java.util.Date;
 
+//静态导入静态方法和属性
+improt aa.bb.staticfunc;
+improt aa.bb.staticval;
 
+//非法
+improt java.*;
+improt java.*.*;
 
-#### 1.2.1.1. 权限修饰符
-<a href="#menu" style="float:right">目录</a>
-* private 本类可见
-* default 同一个包/子包可见
-* protect 子类可见
-* public 所有可见
+```
 
-#### 1.2.1.2. 接口和抽象类
+**包的声明**
+
+```java
+//声明当前类的包名｀｀
+package aa.bb.cc;
+```
+
+如果没有声明包，这个源文件中的类就被放置在一个默认包(default package)
+
+编译器在编译源文件不会检查包名和目录是否对应，如果它不依赖其他包，也会编译成功，但是执行时会出现错误，因为找不到该类．因此包名和目录必须一致．
+
+### 1.2.10. 常用关键字作用
+
+**this**
+
+this指代当前对象
+
+**super**
+super指代父类(继承的类)
+
+**final**
+
+* 修饰变量:  表示该属性或者局部变量只能被赋值一次．可以先定义再赋值．
+* 修饰方法:  表示该方法不能被重写，但子类可以继承该方法
+* 修饰类: 表示该类不能被继承
+
+**static作用**
+* 声明静态方法
+* 声明静态属性
+* 声明静态内部类
+* 和improt配合引入静态方法或者静态公有属性
+* 修饰main方法,标明这是启动方法．
+
+### 1.2.11. 文档注释
+
+JDK包含一个很有用的工具:javadoc，可以由源文件生成一个HTML文档．其将会抽取以下信息:
+* 包
+* 公有类和接口
+* 公有的和受保护的构造器和方法
+* 公有的和受保护的域
+
+**类注释**
+
+```java
+
+/**
+
+*/
+public class Dog{
+
+}
+```
+
+**方法注释**
+```java
+
+/**
+* @param
+* @return
+* @throws
+*/
+
+public int func(){}
+```
+**域注释**
+
+```java
+/**
+
+*/
+public int a;
+```
+
+**通用注释**
+```java
+@author 作者姓名
+@version　版本
+@since　标明何时产生 @since ver-1.0
+@deprecates 用在类，方法，属性上标识不推荐使用
+添加超链接
+@see　
+@link
+
+@see com.aa.bb#func()
+@see <a href=""></a>
+@see "Core Java 1"
+ 
+{@link Constants#LONGLIVE}  就是告诉你 LONGLIVE参数在哪里 上图这个就是在Constants类的LONGLIVE对象
+
+```
+
+文本
+```java
+用于强调
+<em></em>
+
+代码
+<code></code>
+
+着重强调
+<strong></strong>
+
+图片
+<img src=""/>
+```
+
+**导出文档**
+执行前必须切换到源文件目录．
+```java
+jacadoc -d saveDri 　packageName...
+```
+
+### 1.2.12. 接口和抽象类
+
+#### 1.2.12.1. 区别
 **接口**
 * interface定义，implements 实现
 * 接口方法默认为public abstract 
@@ -390,42 +988,44 @@ class Sub extends Base{
 * 接口可以有自己的实现方法，JDK8提供了default关键字支持
 * 接口可以没有方法
 * 接口可以实现接口
+* 一个类可以实现多个接口，但是只能继承一个类
 
 
 **抽象类**
 * abstract定义，extends 继承
 * 抽象类可以有和普通类一样的属性和方法定义
-* 抽象类必须至少有一个抽象方法
 * 抽象方法必须使用abstract修饰
 * 抽象方法不能是私有的，否则不能被子类实现
+* 抽象类不能被实例化
 
 **如何选择:**
-一般接口定义行为，抽象类实现多个接口，聚合行为，并定义子类的公共实现方法。
+一般接口定义行为，抽象类实现多个接口，并定义子类的公共实现方法。
 尽量不要有多个层级的实现类，减少代码修改的难度，一般使用装饰器模式解决类功能扩展问题。
 
-**重载overload和重写overwride**
-重写发生在父子类之间，重写改变方法的功能。两同两小一大。
-* 方法名称，行参列表必须一样
-* 返回值类型和抛出异常要么和原来一样，要么是子类。
-* 访问权限应该比原来的大或者一样
+#### 1.2.12.2. 接口与回调
 
-重载发生在本类中,规范如下
-* 方法名称相同
-* 行参列表不同（类型，顺序，个数），一般应当减少这种情况出现func(List)和func(ArrayList).会造成困扰。
-* 与返回值，权限，异常定义无关
+```java
 
-**final**
-* 修饰属性，标识该属性赋值之后不能再被赋值，可以用在局部变量中。
-* 修饰类，标识该类不能被继承,比如String类
-* 修饰方法，标识该类不能被重写
+public interface Listen{
+    void callback(TYPE param);
+}
 
-**static**
-* 修饰属性和方法和内部类，标识是类属性和方法，如果公有，可直接通过类名访问
-* static块不能有对象元素
-* 修饰初始化块，类加载时会先被调用
-* 与import配合，引入static元素(属性和方法)
+public func(Listen listen){
 
-#### 1.2.1.3. 建议
+    //do somethings
+
+    listen.callback();
+}
+xxx.func(new Listen{
+
+    public void callback(TYPE param){
+        //do sth
+    }
+})
+```
+
+
+#### 1.2.12.3. 建议
 * 考虑使用静态工厂方法代替构造器
     * 如果类的实例化参数较复杂，应当通过工厂方法向用户提供简单明了的实例化方法
 * 参数较多时使用构建器
@@ -454,11 +1054,12 @@ class Sub extends Base{
     * 在应用程序的执行期间，只要对象的equals方法的比较操作所用到的信息没有被修改，那么多次调用hashCode获得的整数是一致的
     
 
-#### 1.2.1.4. 内部类
+### 1.2.13. 内部类
 内部类分为普通内部类，静态内部类，局部内部类，匿名内部类。
 
 **普通内部类和静态内部类**
-* 普通内部类可以直接使用外部类属性
+｀
+* 普通内部类可以直接访问外部类属性，即使是私有的属性
 * 外部类使用普通内部类属性必须先常见内部类对象
 * 访问权限如之前所定义的
 * 创建普通内部类对象必须先创建外部类对象，内部类对象是依存外部类对象存在的
@@ -484,7 +1085,7 @@ public class Outer {
         public static int   c;
         public int d;
         void func(){
-            b =1;
+            c =1;
         }
     }
     
@@ -530,9 +1131,11 @@ func(new Handle{
 
 });
 ```
-#### 1.2.1.5. 枚举类
+### 1.2.14. 枚举类
 ```java
-public enum BlogReturnCode implements  ReturnCode{
+
+public enum  Size{SMALL,MEDIUM,LARGE}
+public enum BlogReturnCode{
     //空参数 0
     ERROR_PARAM(0,"输入参数无效"),
     //代码
