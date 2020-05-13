@@ -1,4 +1,140 @@
 
+<span id="menu"></span>
+
+<!-- TOC -->
+
+- [1. Java与面向对象](#1-java与面向对象)
+    - [1.1. Java基础](#11-java基础)
+        - [1.1.1. 基础问题](#111-基础问题)
+        - [1.1.2. 关键字](#112-关键字)
+        - [1.1.3. 数据类型](#113-数据类型)
+            - [1.1.3.1. 数值类型之间的转换](#1131-数值类型之间的转换)
+            - [1.1.3.2. 整型](#1132-整型)
+                - [1.1.3.2.1. 缓存对象实现](#11321-缓存对象实现)
+            - [1.1.3.3. char](#1133-char)
+            - [1.1.3.4. 数组](#1134-数组)
+            - [1.1.3.5. String](#1135-string)
+        - [1.1.4. 运算符](#114-运算符)
+        - [1.1.5. 流程控制](#115-流程控制)
+            - [1.1.5.1. switch－case](#1151-switchcase)
+            - [1.1.5.2. for-each](#1152-for-each)
+    - [1.2. 对象与类](#12-对象与类)
+        - [1.2.1. 面向过程和面向对象](#121-面向过程和面向对象)
+        - [1.2.2. 面向对象三大特性](#122-面向对象三大特性)
+        - [1.2.3. 权限修饰符](#123-权限修饰符)
+        - [1.2.4. 继承与Ｏbject类](#124-继承与ｏbject类)
+        - [1.2.5. 重载与重写](#125-重载与重写)
+        - [1.2.6. 动态绑定](#126-动态绑定)
+        - [1.2.7. 构造器](#127-构造器)
+        - [1.2.8. 初始化问题](#128-初始化问题)
+        - [1.2.9. 包的导入和声明](#129-包的导入和声明)
+        - [1.2.10. 常用关键字作用](#1210-常用关键字作用)
+        - [1.2.11. 文档注释](#1211-文档注释)
+        - [1.2.12. 接口和抽象类](#1212-接口和抽象类)
+            - [1.2.12.1. 区别](#12121-区别)
+            - [1.2.12.2. 接口与回调](#12122-接口与回调)
+            - [1.2.12.3. 建议](#12123-建议)
+        - [1.2.13. 内部类](#1213-内部类)
+        - [1.2.14. 枚举类](#1214-枚举类)
+    - [1.3. 泛型](#13-泛型)
+        - [1.3.1. 概述](#131-概述)
+    - [1.4. 集合](#14-集合)
+        - [1.4.1. Collections与Arrays 工具类](#141-collections与arrays-工具类)
+        - [1.4.2. Comparator 和 Comparable 比较](#142-comparator-和-comparable-比较)
+        - [1.4.3. 迭代器](#143-迭代器)
+        - [1.4.4. 基本集合源码分析](#144-基本集合源码分析)
+            - [1.4.4.1. ArrayList](#1441-arraylist)
+            - [1.4.4.2. Linklist](#1442-linklist)
+            - [1.4.4.3. Vector](#1443-vector)
+            - [1.4.4.4. Stack](#1444-stack)
+            - [1.4.4.5. HashSet](#1445-hashset)
+            - [1.4.4.6. TreeSet](#1446-treeset)
+            - [1.4.4.7. HashMap](#1447-hashmap)
+            - [1.4.4.8. TreeMap](#1448-treemap)
+    - [1.5. 异常](#15-异常)
+    - [1.6. 注解](#16-注解)
+    - [1.7. IO](#17-io)
+        - [1.7.1. File](#171-file)
+            - [1.7.1.1. IO流](#1711-io流)
+            - [1.7.1.2. 序列化](#1712-序列化)
+        - [1.7.2. NIO](#172-nio)
+            - [1.7.2.1. 内存映射](#1721-内存映射)
+    - [1.8. Javac编译原理](#18-javac编译原理)
+        - [1.8.1. Javac编译器的基本结构](#181-javac编译器的基本结构)
+        - [1.8.2. Javac的工作原理分析](#182-javac的工作原理分析)
+    - [1.9. 类加载和反射](#19-类加载和反射)
+        - [1.9.1. Class文件结构](#191-class文件结构)
+            - [1.9.1.1. JVM指令集简介](#1911-jvm指令集简介)
+            - [1.9.1.2. class文件头的表示形式](#1912-class文件头的表示形式)
+            - [1.9.1.3. 常量池](#1913-常量池)
+            - [1.9.1.4. 类信息](#1914-类信息)
+            - [1.9.1.5. Fields和Method定义](#1915-fields和method定义)
+            - [1.9.1.6. 类属性描述](#1916-类属性描述)
+            - [1.9.1.7. Javap生成的class文件结构](#1917-javap生成的class文件结构)
+        - [1.9.2. 反射](#192-反射)
+    - [1.10. JDBC](#110-jdbc)
+    - [1.11. 函数式编程](#111-函数式编程)
+    - [1.12. Java 8 的新特性：](#112-java-8-的新特性)
+        - [1.12.1. Java 8 Lambda 表达式](#1121-java-8-lambda-表达式)
+        - [1.12.2. Java 8 函数式接口](#1122-java-8-函数式接口)
+        - [1.12.3. 默认方法](#1123-默认方法)
+        - [1.12.4. Optional 类](#1124-optional-类)
+        - [1.12.5. Stream](#1125-stream)
+        - [1.12.6. Java 8 日期时间 API](#1126-java-8-日期时间-api)
+        - [1.12.7. Java8 Base64](#1127-java8-base64)
+    - [1.13. Java-SPI机制](#113-java-spi机制)
+        - [1.13.1. Java--SPI机制](#1131-java--spi机制)
+        - [1.13.2. 使用场景](#1132-使用场景)
+            - [1.13.2.1. 实现方式](#11321-实现方式)
+        - [1.13.3. spi使用](#1133-spi使用)
+        - [1.13.4. 原理解析](#1134-原理解析)
+        - [1.13.5. 总结](#1135-总结)
+    - [1.14. 常用类源码说明](#114-常用类源码说明)
+    - [1.15. JDK版本变化](#115-jdk版本变化)
+    - [1.16. 设计模式](#116-设计模式)
+        - [1.16.1. 设计原则](#1161-设计原则)
+        - [1.16.2. UML图](#1162-uml图)
+            - [1.16.2.1. 用例图](#11621-用例图)
+            - [1.16.2.2. 类图](#11622-类图)
+            - [1.16.2.3. 组件图](#11623-组件图)
+            - [1.16.2.4. 部署图](#11624-部署图)
+            - [1.16.2.5. 顺序图](#11625-顺序图)
+            - [1.16.2.6. 活动图](#11626-活动图)
+            - [1.16.2.7. 状态机图](#11627-状态机图)
+        - [1.16.3. 单例模式](#1163-单例模式)
+            - [1.16.3.1. 基本概念](#11631-基本概念)
+            - [1.16.3.2. 实现](#11632-实现)
+        - [1.16.4. 工厂方法模式](#1164-工厂方法模式)
+        - [1.16.5. 抽象工厂模式](#1165-抽象工厂模式)
+        - [1.16.6. 模板方法模式](#1166-模板方法模式)
+        - [1.16.7. 建造者模式](#1167-建造者模式)
+        - [1.16.8. 代理模式](#1168-代理模式)
+        - [1.16.9. 原型模式](#1169-原型模式)
+        - [1.16.10. 中介者模式](#11610-中介者模式)
+        - [1.16.11. 命令模式](#11611-命令模式)
+        - [1.16.12. 责任链模式](#11612-责任链模式)
+        - [1.16.13. 装饰模式](#11613-装饰模式)
+        - [1.16.14. 策略模式](#11614-策略模式)
+        - [1.16.15. 适配器模式](#11615-适配器模式)
+        - [1.16.16. 迭代器模式](#11616-迭代器模式)
+        - [1.16.17. 组合模式](#11617-组合模式)
+        - [1.16.18. 观察者模式](#11618-观察者模式)
+        - [1.16.19. 门面模式](#11619-门面模式)
+        - [1.16.20. 备忘录模式](#11620-备忘录模式)
+        - [1.16.21. 访问者模式](#11621-访问者模式)
+        - [1.16.22. 状态模式](#11622-状态模式)
+        - [1.16.23. 解释器模式](#11623-解释器模式)
+        - [1.16.24. 享元模式](#11624-享元模式)
+        - [1.16.25. 桥梁模式](#11625-桥梁模式)
+
+<!-- /TOC -->
+
+
+
+
+"/algorithm.pdf"
+
+
 
 <span id="menu"></span>
 <!-- TOC -->
@@ -91,12 +227,6 @@
     - [1.15. JDK版本变化](#115-jdk版本变化)
     - [1.16. 设计模式](#116-设计模式)
         - [1.16.1. 设计原则](#1161-设计原则)
-            - [1.16.1.1. 单一职责原则](#11611-单一职责原则)
-            - [1.16.1.2. 里氏替换原则](#11612-里氏替换原则)
-            - [1.16.1.3. 依赖倒置原则](#11613-依赖倒置原则)
-            - [1.16.1.4. 接口隔离原则](#11614-接口隔离原则)
-            - [1.16.1.5. 迪米特法则](#11615-迪米特法则)
-            - [1.16.1.6. 开闭原则](#11616-开闭原则)
         - [1.16.2. UML图](#1162-uml图)
         - [1.16.3. 单例模式](#1163-单例模式)
             - [1.16.3.1. 基本概念](#11631-基本概念)
@@ -234,7 +364,32 @@ int的长度则依赖于编译器。
     * wsgen：是一个命令行功能用来生成合适的JAX-WS。它读取WebService的终端类文件，同时生成所有用于WebService发布的源代码文件和经过编译过的二进制类文件。它还随意生成WSDL和符合规范的HelloServer类WebService。wsgen从资源文件生成一个完整的操作列表是合法的。 
     * wsimport：这个工具依据wsdl文件生成相应的类文件，然后用这些类文件，就可以像调用本地的类一样调用WebService提供的方法了 
 
-### 1.1.2. 数据类型
+
+**垃圾回收机制**
+
+传统的c/c++等编程语言，需要程序员显示申请和回收．存在的问题是可能会忘记回收．导致可使用内存越来越少．从而导致内存泄漏，程序崩溃．同时，如果错误回收不该回收的内存，也会导致出现问题
+
+Java的垃圾回收都是虚拟机在后台自动进行的．虚拟机会负责回收不再使用的内存，这种机制称为垃圾回收(Garbage Collection,GC).虚拟机一般在cpu空闲的时候或者内存不足时回收．程序员无法精确控制垃圾回收的时间和顺序．
+
+### 1.1.2. 关键字
+<a href="#menu" style="float:right">目录</a>
+
+java关键字共53个（其中包含两个保留字const，goto）
+
+||||||||
+|---|---|---|---|---|---|---|
+|abstract|assert|boolean|break|byte|case|catch|
+|char|class|const|continue|default|do|double|
+|else|enum|extends|final|finally|float|for|
+|goto|if|implements|import|instanceof|int|interface|
+|long|native|new|package|private|protected|public|
+|return|strictfp|short|static|super|switch|synchronized|
+|this|throw|throws|transient|try|void|volatile|
+|while|true|false|null||||
+			
+strictfp:用来声明FP_strict（单精度或双精度浮点数）表达式遵循IEEE 754算术规范 [1] 
+			
+### 1.1.3. 数据类型
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -248,14 +403,59 @@ int的长度则依赖于编译器。
 |float|Float|4||3.45f|
 |double|Double|8||
 |boolean| Boolean|true/false|
+
+**注意点**
+* Long类型数值后面后面需要添加l或者Ｌ，123Ｌ
+* char类型可以是单引号字符（＇a＇），转义字符(\r)，数值(12)，Unicode（\u0012）
+
+
+**浮点数**
+* 浮点数表示方式    
+    * 常规表示：1.23
+    * 科学计数法表示: 5.12e2(512*100),5.12E2
+    * 如果是float类型，需要在数值后添加f
+
+Java还提供了三个特殊的浮点数值．Float或者Ｄouble类里面定义．所有正无穷大相等(6.0/0.0 == 5.0/0.0)，负无穷大相等，NaN不互相等
+```java
+//正无穷大
+public static final float POSITIVE_INFINITY = 1.0f / 0.0f;
+//负无穷大
+public static final float NEGATIVE_INFINITY = -1.0f / 0.0f;
+//非数值
+public static final float NaN = 0.0f / 0.0f;
+```
+
 包装类主要用于集合数据，判断非空的场景。局部变量一般使用基本类型。对象属性一般使用包装器类型。
-装箱就是基本类型转换为包装类型。valueOf方法。
-拆箱就是包装类型转换为基本类型。intValue方法。
+
 
 Java中的变量在使用前必须进行初始化，类属性由于在类加载时已经进行初始化，因此不需要进行显示初始化，方法内的局部变量必须进行显示初始化
 
+**装箱拆箱实现**
 
-#### 1.1.2.1. 数值类型之间的转换
+装箱就是基本类型转换为包装类型。valueOf方法。
+拆箱就是包装类型转换为基本类型。intValue方法。
+
+```java
+public static void main(String args[]){
+
+    Integer data = 123;
+    int num = data;
+}
+```
+使用javap -c　className 命令查看类文件反编译结果,可以看到使用了valueOf和intValue来实现了装箱和拆箱．
+```
+public static void main(java.lang.String[]);
+    Code:
+       0: bipush        123
+       2: invokestatic  #2                  // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+       5: astore_1
+       6: aload_1
+       7: invokevirtual #3                  // Method java/lang/Integer.intValue:()I
+      10: istore_2
+      11: return
+
+```
+#### 1.1.3.1. 数值类型之间的转换
 
 小一级的类型可以自动转换成大一级的类型，反过来需要强制转换
 
@@ -269,11 +469,11 @@ Java中的变量在使用前必须进行初始化，类属性由于在类加载�
 * 否则两个操作数都会转化为int再进行操作
 　
 
-#### 1.1.2.2. 整型
+#### 1.1.3.2. 整型
 
 如果long无法表示需要的范围，可以使用BigInteger类来实现大数的操作．
 
-##### 1.1.2.2.1. 缓存对象实现
+##### 1.1.3.2.1. 缓存对象实现
 <a href="#menu" style="float:right">目录</a>
 
 
@@ -357,7 +557,7 @@ b1==b2?  false
 c1==c2?  false
 ```
 
-#### 1.1.2.3. char
+#### 1.1.3.3. char
 
 char 用来表示单个字符
 
@@ -370,27 +570,56 @@ char data = 64;
 char data = \u1234;
 ```
 
-#### 1.1.2.4. 数组
-
-
+#### 1.1.3.4. 数组
 
 初始化
 ```java
 /创建数组，需要定义长度
-int arr = new int[5];
+int[] arr = new int[5];
 //创建数组，顺便初始化，长度为元素的数量
-int arr = new int[]{1,2,3};
+int[] arr = new int[]{1,2,3};
 //简化方式
-int arr = {1,2,4};
+int[] arr = {1,2,4};
+//指定大小
+int[2] arr = {1},//其他未初始化的初始值为0
 
 //二维数组
 int[][] arr = new int[1][2];
 int[][] arr1 = new int[][]{{1,2},{1,2}};
 int[][] arr2 =  {{1,2},{1,2}};
-```
-数组工具类java.util.Arrays。提供排序,复制，比较，初始化等功能。
 
-#### 1.1.2.5. String 
+//for-each循环访问数组
+for(int data:arr){}
+for(int[] datas:arr){
+    for(int data:datas){}
+}
+
+```
+int[] arr　或者int　arr[] 都可以
+
+数组工具类java.util.Arrays。提供排序,复制，比较，初始化等功能。其中排序方法binarySearch采用二分法查询
+```java
+private static int binarySearch0(int[] a, int fromIndex, int toIndex,
+                                     int key) {
+    int low = fromIndex;
+    int high = toIndex - 1;
+
+    while (low <= high) {
+        int mid = (low + high) >>> 1;
+        int midVal = a[mid];
+
+        if (midVal < key)
+            low = mid + 1;
+        else if (midVal > key)
+            high = mid - 1;
+        else
+            return mid; // key found
+    }
+    return -(low + 1);  // key not found.
+}
+```
+
+#### 1.1.3.5. String 
 <a href="#menu" style="float:right">目录</a>
 
 String 内部使用数组来存储字符串的值
@@ -502,16 +731,16 @@ public boolean equals(Object anObject) {
 }
 ```
 
-### 1.1.3. 运算符
+### 1.1.4. 运算符
 
 Java中使用<<,>>>,>>,来实现位移，>>>将用０填充高位．>>使用符号位填充高位 
 
-### 1.1.4. 流程控制
+### 1.1.5. 流程控制
 
-#### 1.1.4.1. switch－case
+#### 1.1.5.1. switch－case
 case 的标签可以是char,byte,short,int以及它们的包装器．还有枚举常量，字符串字面量
 
-#### 1.1.4.2. for-each 
+#### 1.1.5.2. for-each 
 
 对于集合可以使用for-each来进行遍历
 ```java
@@ -561,7 +790,7 @@ for(Map.Entry entry:maps.entrySet()){
 
 **类与对象**
 
-类是创建对象的模板，对象是类的实例．
+在Java语言中，除了8个基本数据类型值之外，一切都是对象．具有相同或者相似性质的一组对象的抽象就是类．类是对一类事物的描述，是抽象，概念上的定义．对象是类的实例．也就是对象的抽象是类，类的具体化就是对象．
 
 对象有三个特性:
 * 对象的行为:对象具备的方法或者操作
@@ -1055,18 +1284,43 @@ xxx.func(new Listen{
     
 
 ### 1.2.13. 内部类
+
 内部类分为普通内部类，静态内部类，局部内部类，匿名内部类。
 
 **普通内部类和静态内部类**
 ｀
-* 普通内部类可以直接访问外部类属性，即使是私有的属性
-* 外部类使用普通内部类属性必须先常见内部类对象
+* 内部类可以直接访问外部类属性，即使是私有的属性
+* 外部类使用普通内部类属性必须先创建内部类对象
 * 访问权限如之前所定义的
 * 创建普通内部类对象必须先创建外部类对象，内部类对象是依存外部类对象存在的
 * 创建静态内部类对象不需要创建外部类对象
 * 静态内部类符合static规范，只能调用外部类static元素
 * 外部类可以访问静态内部类的静态成员，使用类名来访问。
 
+```java
+public class SimpleThread {
+
+    public static void main(String args[]){
+
+        //外部的类创建　内部类对象
+        Out.In in = new Out().new In();
+        //创建静态内部类对象
+        Out.StaticIn staticIn = new Out.StaticIn();
+    }
+}
+
+class Out{
+    //普通内部类
+    class In{    }
+    //静态内部类
+    static class StaticIn{   }
+    void test(){
+        In in = new In();
+        StaticIn staticIn = new StaticIn();
+    }
+}
+
+```
 ```java
 public class Outer {
 
@@ -1131,6 +1385,8 @@ func(new Handle{
 
 });
 ```
+
+
 ### 1.2.14. 枚举类
 ```java
 
@@ -1669,7 +1925,7 @@ Integer i = (Integer) lsa[1].get(0); // OK
 ## 1.4. 集合
 <a href="#menu" style="float:right">目录</a>
 
-![](http://images2015.cnblogs.com/blog/745114/201603/745114-20160314011243365-185967687.png)
+![集合继承体系](pic/java/集合继承体系.png)
 
 ### 1.4.1. Collections与Arrays 工具类
 <a href="#menu" style="float:right">目录</a>
@@ -1902,31 +2158,148 @@ public interface Comparator<T> {
     * 而Comparator是比较器；我们若需要控制某个类的次序，可以建立一个“该类的比较器”来进行排序。
     * 我们不难发现：Comparable相当于“内部比较器”，而Comparator相当于“外部比较器”。
 
-### 1.4.3. 基本集合源码分析
+### 1.4.3. 迭代器
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.4.3.1. ArrayList
+Java中还提供了一个Iterable接口，Iterable接口实现后的功能是‘返回’一个迭代器，我们常用的实现了该接口的子接口有:Collection<E>、List<E>、Set<E>等。该接口的iterator()方法返回一个标准的Iterator实现。实现Iterable接口允许对象成为Foreach语句的目标。就可以通过foreach语句来遍历你的底层序列。迭代器迭代完成，如果想重新迭代，必须重新获取新的迭代器．
 
-#### 1.4.3.2. Linklist
+Iterable接口包含一个能产生Iterator对象的方法，并且Iterable被foreach用来在序列中移动。因此如果创建了实现Iterable接口的类，都可以将它用于foreach中。
 
-#### 1.4.3.3. Vector
+```java
+public interface Iterator<E> {
+    boolean hasNext();
+    E next();
+    default void remove() {
+        throw new UnsupportedOperationException("remove");
+    }
 
-#### 1.4.3.4. Stack
+    default void forEachRemaining(Consumer<? super E> action) {
+        Objects.requireNonNull(action);
+        while (hasNext())
+            action.accept(next());
+    }
+}
+```
 
-#### 1.4.3.5. HashSet
+迭代器使用
+```java
+ //使用迭代器遍历ArrayList集合
+Iterator<String> listIt = list.iterator();
+while(listIt.hasNext()){
+ System.out.println(listIt.next());
+}
+//使用迭代器遍历Set集合
+Iterator<String> setIt = set.iterator();
+ while(setIt.hasNext()){
+   System.out.println(listIt.next());
+}
+//for-each,实际上也是转换成迭代器方式
+for (String string : list) {
+    System.out.println(string);
+}
 
-#### 1.4.3.6. TreeSet
+```
 
-#### 1.4.3.7. HashMap
+在使用Iterator的时候禁止对所遍历的容器进行改变其大小结构的操作。例如: 在使用Iterator进行迭代时，如果对集合进行了add、remove操作就会出现ConcurrentModificationException异常。
 
-#### 1.4.3.8. TreeMap
+这里有一个全局变量modCount，每当元素数量改变的时候，这个值就会变化．在获取迭代器时，会初始化expectedModCount．每次迭代的时候就会检测初始值expectedModCount和当前的modCount是否一致，不一致说明集合参数数量被改变．会抛出ConcurrentModificationException异常．基于此，这些集合类不适合在并发环境下使用．
+
+快速失败机制产生的条件:当多个线程对Collection进行操作时，若其中某一个线程通过Iterator遍历集合时，该集合的内容被其他线程所改变，则会抛出ConcurrentModificationException异常。
+```java
+private class Itr implements Iterator<E> {
+        int cursor;       // index of next element to return
+        int lastRet = -1; // index of last element returned; -1 if no such
+        int expectedModCount = modCount;
+
+        Itr() {}
+
+        public boolean hasNext() {
+            return cursor != size;
+        }
+
+        @SuppressWarnings("unchecked")
+        public E next() {
+            checkForComodification();
+            int i = cursor;
+            if (i >= size)
+                throw new NoSuchElementException();
+            Object[] elementData = ArrayList.this.elementData;
+            if (i >= elementData.length)
+                throw new ConcurrentModificationException();
+            cursor = i + 1;
+            return (E) elementData[lastRet = i];
+        }
+
+        public void remove() {
+            if (lastRet < 0)
+                throw new IllegalStateException();
+            checkForComodification();
+
+            try {
+                ArrayList.this.remove(lastRet);
+                cursor = lastRet;
+                lastRet = -1;
+                expectedModCount = modCount;
+            } catch (IndexOutOfBoundsException ex) {
+                throw new ConcurrentModificationException();
+            }
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public void forEachRemaining(Consumer<? super E> consumer) {
+            Objects.requireNonNull(consumer);
+            final int size = ArrayList.this.size;
+            int i = cursor;
+            if (i >= size) {
+                return;
+            }
+            final Object[] elementData = ArrayList.this.elementData;
+            if (i >= elementData.length) {
+                throw new ConcurrentModificationException();
+            }
+            while (i != size && modCount == expectedModCount) {
+                consumer.accept((E) elementData[i++]);
+            }
+            // update once at end of iteration to reduce heap write traffic
+            cursor = i;
+            lastRet = i - 1;
+            checkForComodification();
+        }
+
+        final void checkForComodification() {
+            if (modCount != expectedModCount)
+                throw new ConcurrentModificationException();
+        }
+    }
+```
+
+
+### 1.4.4. 基本集合源码分析
+<a href="#menu" style="float:right">目录</a>
+
+#### 1.4.4.1. ArrayList
+
+#### 1.4.4.2. Linklist
+
+#### 1.4.4.3. Vector
+
+#### 1.4.4.4. Stack
+
+#### 1.4.4.5. HashSet
+
+#### 1.4.4.6. TreeSet
+
+#### 1.4.4.7. HashMap
+
+#### 1.4.4.8. TreeMap
 
 
 
 ## 1.5. 异常
 <a href="#menu" style="float:right">目录</a>
 
-![](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564945249663&di=9c6ee8dcda7a4b1e21c970cef177ec3f&imgtype=jpg&src=http%3A%2F%2Fimg4.imgtn.bdimg.com%2Fit%2Fu%3D1403341014%2C2801110274%26fm%3D214%26gp%3D0.jpg)
+![异常体系](pic/java/异常体系.jpeg)
 
 * Error是无法处理的异常，比如OutOfMemoryError，一般发生这种异常，JVM会选择终止程序。因此我们编写程序时不需要关心这类异常。
 * Exception，也就是我们经常见到的一些异常情况，比如NullPointerException、IndexOutOfBoundsException，这些异常是我们可以处理的异常。
@@ -1935,6 +2308,8 @@ public interface Comparator<T> {
 运行异常类对应于编译错误，它是指Java程序在运行时产生的由解释器引发的各种异常。运行异常可能出现在任何地方，且出现频率很高，因此为了避免巨大的系统资源开销，编译器不对异常进行检查。所以Java语言中的运行异常不一定被捕获。出现运行错误往往表示代码有错误，如：算数异常（如被0除）、下标异常（如数组越界）等。
 
 非运行异常时Non_RuntimeException类及其子类的实例，又称为可检测异常。Java编译器利用分析方法或构造方法中可能产生的结果来检测Java程序中是否含有检测异常的处理程序，对于每个可能的可检测异常，方法或构造方法的throws子句必须列出该异常对应的类。在Java的标准包java.lang java.util 和 java.net 中定义的异常都是非运行异常。
+
+如果检测型异常被捕获，其后面的代码会继续执行
 
 * try-catch-finally语句
     * try块：负责捕获异常，一旦try中发现异常，程序的控制权将被移交给catch块中的异常处理程序。
@@ -1958,7 +2333,7 @@ finally{
 
 ```
 * **总结：**
-    * 不管有木有出现异常或者try和catch中有返回值return，finally块中代码都会执行；
+    * 不管有没有出现异常或者try和catch中有返回值return，finally块中代码都会执行；
     * finally中最好不要包含return，否则程序会提前退出，返回会覆盖try或catch中保存的返回值。
     * e.printStackTrace()可以输出异常信息。
     * return值为-1为抛出异常的习惯写法。
@@ -2114,8 +2489,24 @@ public static void main(java.lang.String[]);
 2. 如果出现异常，catch中会复制一份finally的指令，执行完后跳转到27: return结束方法。
 
 
+**异常处理规则**
 
+* 成功的异常处理
+    * 使程序代码混乱最小化
+    * 捕捉并保留诊断信息
+    * 通知合适的人员
+    * 采用合适的方式结束异常活动
 
+* 过度使用异常
+    * 使用异常处理普通错误
+    * 使用异常来实现流程控制
+
+* 异常捕获后的处理
+    * 处理异常，比如返回错误码给调用者
+    * 重新抛出异常，让上层处理
+    * 当前方法不检测异常，而是在方法定义声明抛出异常
+
+    
 ## 1.6. 注解
 <a href="#menu" style="float:right">目录</a>
 
@@ -4039,25 +4430,60 @@ try {
 ### 1.16.1. 设计原则
 <a href="#menu" style="float:right">目录</a>
 
-#### 1.16.1.1. 单一职责原则
+**单一职责原则**
 * 每个类只负责单一的功能，避免出现复杂臃肿的类。造成维护困难。
-#### 1.16.1.2. 里氏替换原则
+**里氏替换原则**
 * 父类出现的地方子类也可以出现。方便实现类替换，减少代码修改。
-#### 1.16.1.3. 依赖倒置原则
+**依赖倒置原则**
 * 高层模块不应该依赖细节，而应该依赖其抽象
 * 也就是说定义类属性时，使用接口或者抽象类来定义，而不是实现类。
-#### 1.16.1.4. 接口隔离原则
+**接口隔离原则**
 * 创建单一的接口，不要创建臃肿的接口。每个接口应该只是负责单一的功能，避免增加新抽象方法时，造成较多的实现类页需要修改。
-#### 1.16.1.5. 迪米特法则
+**迪米特法则**
 * 一个类应当降低对其他类的依赖,避免其他类修改时，使用类也要进行修改。
-#### 1.16.1.6. 开闭原则
+**开闭原则**
 * 对修改关闭，对扩展开放
 * 当需要增加新功能时，应当避免修改原类的代码，应当通过一些设计模式来进行功能扩展。比如装饰模式，这样可以达到对其他使用类的影响。
 * 以上的原则都是施行指南，开闭原则是最终目标。
 
 ### 1.16.2. UML图
+<a href="#menu" style="float:right">目录</a>
 
-![](https://github.com/lgjlife/Java-Study/blob/master/pic/designerPattern/uml.png?raw=true)
+UML（Unified Modeling Language）是一种统一建模语言，为面向对象开发系统的产品进行说明、可视化、和编制文档的一种标准语言。下面将对UML的九种图+包图的基本概念进行介绍以及各个图的使用场景。
+
+#### 1.16.2.1. 用例图
+
+用例图用于描述系统提供的系列功能，而每个用例代表系统的一个功能模块．用例图的主要目的是帮助开发团队以一种可视化的方式理解系统的需求功能，用例图对系统的实现不作任何说明．仅仅是系统功能的描述．
+
+#### 1.16.2.2. 类图
+
+用户根据用例图抽象成类，描述类的内部结构和类与类之间的关系，是一种静态结构图。 在UML类图中，常见的有以下几种关系: 泛化（Generalization）,  实现（Realization），关联（Association)，聚合（Aggregation），组合(Composition)，依赖(Dependency)。
+
+![UML图](pic/designerPattern/uml.png)
+
+#### 1.16.2.3. 组件图
+
+对于现代大型应用程序来说，通常会有多个模块，在Java中，可复用的组件通常打包成一个Jar或者war等文件．组件图提供系统的物理视图，它的用途是显示系统中的软件对其他软件组件的依赖关系．
+
+
+#### 1.16.2.4. 部署图
+
+部署图用于描述软件系统如何部署到硬件环境中．它的用途是显示软件系统不同的组件将在何处物理地运行．以及它们将如何彼此通信．
+
+
+#### 1.16.2.5. 顺序图
+
+顺序图显示具体用例的详细流程，并且显示了流程中不同对象之间的调用关系，同时还可以很详细地显示对不同对象的不同调用．顺序图描述了对象之间的交互(顺序图和通信图都被称为交互图)．重点在于描述消息及其时间顺序．
+
+顺序图有两个维度．垂直维度以发生的时间顺序显示消息/调用的序列．水平维度显示消息被发送到的对象实例．顺序图描述了一个功能的实现时的类之间的调用顺序
+
+#### 1.16.2.6. 活动图
+
+
+
+#### 1.16.2.7. 状态机图
+
+表示某个类所处的不同状态和该类的的状态转换信息．例子如线程状态的变化
 
 ### 1.16.3. 单例模式
 <a href="#menu" style="float:right">目录</a>
