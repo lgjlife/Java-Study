@@ -706,7 +706,7 @@ aof-rewrite-incremental-fsync yes
 ## 1.2. 常用数据结构
 
 命令执行流程
-![命令执行流程](https://github.com/lgjlife/Java-Study/blob/master/pic/redis/do-cmd.png?raw=true)
+![命令执行流程](pic/redis/do-cmd.png)
 
 ### 1.2.1. redis-cli和redis-server
 
@@ -2689,7 +2689,7 @@ Redis 提供了多种不同级别的持久化方式：
 * 你甚至可以关闭持久化功能，让数据只在服务器运行时存在。
 
 
-![命令执行流程](https://github.com/lgjlife/Java-Study/blob/master/pic/redis/startup-with-rdbaof.png?raw=true)
+![命令执行流程](pic/redis/startup-with-rdbaof.png)
 
 
 ### 1.4.2. RDB持久化
@@ -3585,7 +3585,7 @@ Redis Sentinel通过三个定时监控任务完成对各个节点发现和监控
     * s1（sentinel-1） 最先完成了客观下线， 它会向s2（sentinel-2） 和s3（sentinel-3） 发送sentinel is-master-down-by-addr命令， s2和s3同意选其为领导者。
     * s1此时已经拿到2张投票， 满足了大于等于max（ quorum，num（ sentinels） /2+1） =2的条件， 所以此时s1成为领导者。
 
-![哨兵模式master选择](https://github.com/lgjlife/Java-Study/blob/master/pic/redis/sentinel-master-select.png?raw=true)
+![哨兵模式master选择](pic/redis/sentinel-master-select.png)
 
 由于每个Sentinel节点只有一票， 所以当s2向s1和s3索要投票时， 只能获取一票， 而s3由于最后完成主观下线， 当s3向s1和s2索要投票时一票都得不到。
 实际上Redis Sentinel实现会更简单一些， 因为一旦有一个Sentinel节点获得了max（ quorum， num（ sentinels） /2+1） 的票数， 其他Sentinel节点再去确认已经没有意义了， 因为每个Sentinel节点只有一票， 如果读者有兴趣的话， 可以修改sentinel.c源码， 在Sentinel的执行命令列表中添加monitor命令：

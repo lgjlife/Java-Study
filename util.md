@@ -1,4 +1,3 @@
-
 <span id="menu"></span>
 
 <!-- TOC -->
@@ -44,60 +43,60 @@
         - [1.5.1. 基本介绍](#151-基本介绍)
         - [1.5.2. 安装](#152-安装)
             - [1.5.2.1. Ubuntu下安装](#1521-ubuntu下安装)
-    - [1.7. Docker](#17-docker)
-        - [1.7.1. Docker基础](#171-docker基础)
-            - [1.7.1.1. 容器和传统虚拟机的差异](#1711-容器和传统虚拟机的差异)
-            - [1.7.1.2. 容器技术的优点](#1712-容器技术的优点)
-            - [1.7.1.3. 基本概念](#1713-基本概念)
-            - [1.7.1.4. Docker引擎](#1714-docker引擎)
-            - [1.7.1.5. 命名](#1715-命名)
-            - [1.7.1.6. docker的8个使用场景](#1716-docker的8个使用场景)
-            - [1.7.1.7. Docker 安装](#1717-docker-安装)
-            - [1.7.1.8. 常用指令](#1718-常用指令)
-        - [1.7.2. docker 核心原理](#172-docker-核心原理)
-            - [1.7.2.1. 内核知识](#1721-内核知识)
-            - [1.7.2.2. 架构概览](#1722-架构概览)
-            - [1.7.2.3. client和daemon](#1723-client和daemon)
-        - [1.7.3. 镜像](#173-镜像)
-            - [1.7.3.1. 基本概念](#1731-基本概念)
-            - [1.7.3.2. 本地镜像的管理](#1732-本地镜像的管理)
-            - [1.7.3.3. Docker Hub 简介](#1733-docker-hub-简介)
-        - [1.7.4. Docker File](#174-docker-file)
-            - [1.7.4.1. Docker File中的命令](#1741-docker-file中的命令)
-            - [1.7.4.2. docker build 说明](#1742-docker-build-说明)
-        - [1.7.5. 容器](#175-容器)
-            - [1.7.5.1. 容器的管理操作](#1751-容器的管理操作)
-            - [1.7.5.2. 容器内部信息的获取](#1752-容器内部信息的获取)
-            - [1.7.5.3. 容器的启动过程](#1753-容器的启动过程)
-        - [1.7.6. 容器网络](#176-容器网络)
-            - [1.7.6.1. 基本原理](#1761-基本原理)
-            - [1.7.6.2. docker网络模式](#1762-docker网络模式)
-            - [1.7.6.3. 自定义网路](#1763-自定义网路)
-            - [1.7.6.4. 容器之间的通信](#1764-容器之间的通信)
-            - [1.7.6.5. 容器与外部通信](#1765-容器与外部通信)
-            - [1.7.6.6. 容器间通信](#1766-容器间通信)
-        - [1.7.7. 数据卷](#177-数据卷)
-            - [1.7.7.1. 基本概念](#1771-基本概念)
-            - [1.7.7.2. 数据卷操作](#1772-数据卷操作)
-            - [1.7.7.3. 共享数据卷](#1773-共享数据卷)
-        - [1.7.8. 案例](#178-案例)
-            - [1.7.8.1. docker 安装Mysqk主从复制](#1781-docker-安装mysqk主从复制)
-            - [1.7.8.2. docker 安装mycat](#1782-docker-安装mycat)
-        - [1.7.9. Docker Compose](#179-docker-compose)
-            - [1.7.9.1. 编排和部署](#1791-编排和部署)
-            - [1.7.9.2. 多容器的问题](#1792-多容器的问题)
-            - [1.7.9.3. Docker Compose 概述与安装](#1793-docker-compose-概述与安装)
-            - [1.7.9.4. 安装 Docker Compose](#1794-安装-docker-compose)
-            - [1.7.9.5. 基本使用](#1795-基本使用)
-            - [1.7.9.6. 快速入门](#1796-快速入门)
-                - [1.7.9.6.1. 工程、服务、容器](#17961-工程服务容器)
-                - [1.7.9.6.2. Docker Compose 常用命令与配置](#17962-docker-compose-常用命令与配置)
-                - [1.7.9.6.3. docker-compose.yml 属性](#17963-docker-composeyml-属性)
-                    - [1.7.9.6.3.1. 基本例子](#179631-基本例子)
-                    - [1.7.9.6.3.2. 配置选项](#179632-配置选项)
-            - [1.7.9.7. Docker Compose 其它](#1797-docker-compose-其它)
-                - [1.7.9.7.1. Compose 原理](#17971-compose-原理)
-    - [1.6. Jenkins](#16-jenkins)
+    - [1.6. Docker](#16-docker)
+        - [1.6.1. Docker基础](#161-docker基础)
+            - [1.6.1.1. 容器和传统虚拟机的差异](#1611-容器和传统虚拟机的差异)
+            - [1.6.1.2. 容器技术的优点](#1612-容器技术的优点)
+            - [1.6.1.3. 基本概念](#1613-基本概念)
+            - [1.6.1.4. Docker引擎](#1614-docker引擎)
+            - [1.6.1.5. 命名](#1615-命名)
+            - [1.6.1.6. docker的8个使用场景](#1616-docker的8个使用场景)
+            - [1.6.1.7. Docker 安装](#1617-docker-安装)
+            - [1.6.1.8. 常用指令](#1618-常用指令)
+        - [1.6.2. docker 核心原理](#162-docker-核心原理)
+            - [1.6.2.1. 内核知识](#1621-内核知识)
+            - [1.6.2.2. 架构概览](#1622-架构概览)
+            - [1.6.2.3. client和daemon](#1623-client和daemon)
+        - [1.6.3. 镜像](#163-镜像)
+            - [1.6.3.1. 基本概念](#1631-基本概念)
+            - [1.6.3.2. 本地镜像的管理](#1632-本地镜像的管理)
+            - [1.6.3.3. Docker Hub 简介](#1633-docker-hub-简介)
+        - [1.6.4. Docker File](#164-docker-file)
+            - [1.6.4.1. Docker File中的命令](#1641-docker-file中的命令)
+            - [1.6.4.2. docker build 说明](#1642-docker-build-说明)
+        - [1.6.5. 容器](#165-容器)
+            - [1.6.5.1. 容器的管理操作](#1651-容器的管理操作)
+            - [1.6.5.2. 容器内部信息的获取](#1652-容器内部信息的获取)
+            - [1.6.5.3. 容器的启动过程](#1653-容器的启动过程)
+        - [1.6.6. 容器网络](#166-容器网络)
+            - [1.6.6.1. 基本原理](#1661-基本原理)
+            - [1.6.6.2. docker网络模式](#1662-docker网络模式)
+            - [1.6.6.3. 自定义网路](#1663-自定义网路)
+            - [1.6.6.4. 容器之间的通信](#1664-容器之间的通信)
+            - [1.6.6.5. 容器与外部通信](#1665-容器与外部通信)
+            - [1.6.6.6. 容器间通信](#1666-容器间通信)
+        - [1.6.7. 数据卷](#167-数据卷)
+            - [1.6.7.1. 基本概念](#1671-基本概念)
+            - [1.6.7.2. 数据卷操作](#1672-数据卷操作)
+            - [1.6.7.3. 共享数据卷](#1673-共享数据卷)
+        - [1.6.8. 案例](#168-案例)
+            - [1.6.8.1. docker 安装Mysqk主从复制](#1681-docker-安装mysqk主从复制)
+            - [1.6.8.2. docker 安装mycat](#1682-docker-安装mycat)
+        - [1.6.9. Docker Compose](#169-docker-compose)
+            - [1.6.9.1. 编排和部署](#1691-编排和部署)
+            - [1.6.9.2. 多容器的问题](#1692-多容器的问题)
+            - [1.6.9.3. Docker Compose 概述与安装](#1693-docker-compose-概述与安装)
+            - [1.6.9.4. 安装 Docker Compose](#1694-安装-docker-compose)
+            - [1.6.9.5. 基本使用](#1695-基本使用)
+            - [1.6.9.6. 快速入门](#1696-快速入门)
+                - [1.6.9.6.1. 工程、服务、容器](#16961-工程服务容器)
+                - [1.6.9.6.2. Docker Compose 常用命令与配置](#16962-docker-compose-常用命令与配置)
+                - [1.6.9.6.3. docker-compose.yml 属性](#16963-docker-composeyml-属性)
+                    - [1.6.9.6.3.1. 基本例子](#169631-基本例子)
+                    - [1.6.9.6.3.2. 配置选项](#169632-配置选项)
+            - [1.6.9.7. Docker Compose 其它](#1697-docker-compose-其它)
+                - [1.6.9.7.1. Compose 原理](#16971-compose-原理)
+    - [1.7. Jenkins](#17-jenkins)
     - [1.8. VIM](#18-vim)
         - [1.8.1. 命令模式](#181-命令模式)
         - [1.8.2. 常用命令](#182-常用命令)
@@ -136,46 +135,57 @@
     - [1.15. IDEA](#115-idea)
         - [1.15.1. 常用快捷键](#1151-常用快捷键)
         - [1.15.2. 常用插件](#1152-常用插件)
-    - [1.16. npm工具](#116-npm工具)
-        - [1.16.1. 基本概念](#1161-基本概念)
-        - [1.16.2. package.json](#1162-packagejson)
-        - [1.16.3. npm 常用工具](#1163-npm-常用工具)
-        - [1.16.4. NPM仓库](#1164-npm仓库)
-        - [1.16.5. 包格式](#1165-包格式)
-        - [1.16.6. 使用 npm 命令安装模块](#1166-使用-npm-命令安装模块)
-        - [1.16.7. 全局安装与本地安装](#1167-全局安装与本地安装)
-        - [1.16.8. 查看安装信息](#1168-查看安装信息)
-        - [1.16.9. 卸载模块](#1169-卸载模块)
-        - [1.16.10. 更新模块](#11610-更新模块)
-        - [1.16.11. 搜索模块](#11611-搜索模块)
-        - [1.16.12. 使用淘宝 NPM 镜像](#11612-使用淘宝-npm-镜像)
-    - [1.17. Java 服务的线上应急、和技术攻关](#117-java-服务的线上应急和技术攻关)
-        - [1.17.1. 线上应急的目标、 原则和方法](#1171-线上应急的目标-原则和方法)
-            - [1.17.1.1. 应急目标](#11711-应急目标)
-            - [1.17.1.2. 应急原则](#11712-应急原则)
-            - [1.17.1.3. 线上应急的方法和流程](#11713-线上应急的方法和流程)
-    - [1.18. 软件开发](#118-软件开发)
-        - [1.18.1. 常用的４种开发方式](#1181-常用的４种开发方式)
-            - [1.18.1.1. 瀑布式开发](#11811-瀑布式开发)
-            - [1.18.1.2. 迭代式开发](#11812-迭代式开发)
-            - [1.18.1.3. 螺旋式开发](#11813-螺旋式开发)
-            - [1.18.1.4. 敏捷软件开发](#11814-敏捷软件开发)
-            - [1.18.1.5. 敏捷开发 2.0](#11815-敏捷开发-20)
-            - [1.18.1.6. 总结](#11816-总结)
-    - [1.19. 面试考察](#119-面试考察)
-        - [1.19.1. 技术广度的考察](#1191-技术广度的考察)
-        - [1.19.2. 底层技术的考察](#1192-底层技术的考察)
-        - [1.19.3. 技术深度的考察](#1193-技术深度的考察)
-    - [1.20. 墨菲定律与康威定律](#120-墨菲定律与康威定律)
-        - [1.20.1. 墨菲定律](#1201-墨菲定律)
-        - [1.20.2. 康威定律](#1202-康威定律)
+    - [1.16. 接口测试工具](#116-接口测试工具)
+        - [1.16.1. jmeter](#1161-jmeter)
+        - [1.16.2. Postman](#1162-postman)
+            - [1.16.2.1. 安装运行](#11621-安装运行)
+            - [1.16.2.2. 基础功能介绍](#11622-基础功能介绍)
+            - [1.16.2.3. 请求区域介绍](#11623-请求区域介绍)
+            - [1.16.2.4. 接口集导入和导出](#11624-接口集导入和导出)
+            - [1.16.2.5. 环境变量](#11625-环境变量)
+            - [1.16.2.6. 将返回值的某个数据设置为环境变量](#11626-将返回值的某个数据设置为环境变量)
+            - [1.16.2.7. 其他的常用tests方法](#11627-其他的常用tests方法)
+            - [1.16.2.8. 使用postman进行接口自动化测试](#11628-使用postman进行接口自动化测试)
+    - [1.17. npm工具](#117-npm工具)
+        - [1.17.1. 基本概念](#1171-基本概念)
+        - [1.17.2. package.json](#1172-packagejson)
+        - [1.17.3. npm 常用工具](#1173-npm-常用工具)
+        - [1.17.4. NPM仓库](#1174-npm仓库)
+        - [1.17.5. 包格式](#1175-包格式)
+        - [1.17.6. 使用 npm 命令安装模块](#1176-使用-npm-命令安装模块)
+        - [1.17.7. 全局安装与本地安装](#1177-全局安装与本地安装)
+        - [1.17.8. 查看安装信息](#1178-查看安装信息)
+        - [1.17.9. 卸载模块](#1179-卸载模块)
+        - [1.17.10. 更新模块](#11710-更新模块)
+        - [1.17.11. 搜索模块](#11711-搜索模块)
+        - [1.17.12. 使用淘宝 NPM 镜像](#11712-使用淘宝-npm-镜像)
+    - [1.18. Java 服务的线上应急、和技术攻关](#118-java-服务的线上应急和技术攻关)
+        - [1.18.1. 线上应急的目标、 原则和方法](#1181-线上应急的目标-原则和方法)
+            - [1.18.1.1. 应急目标](#11811-应急目标)
+            - [1.18.1.2. 应急原则](#11812-应急原则)
+            - [1.18.1.3. 线上应急的方法和流程](#11813-线上应急的方法和流程)
+    - [1.19. 软件开发](#119-软件开发)
+        - [1.19.1. 常用的４种开发方式](#1191-常用的４种开发方式)
+            - [1.19.1.1. 瀑布式开发](#11911-瀑布式开发)
+            - [1.19.1.2. 迭代式开发](#11912-迭代式开发)
+            - [1.19.1.3. 螺旋式开发](#11913-螺旋式开发)
+            - [1.19.1.4. 敏捷软件开发](#11914-敏捷软件开发)
+            - [1.19.1.5. 敏捷开发 2.0](#11915-敏捷开发-20)
+            - [1.19.1.6. 总结](#11916-总结)
+    - [1.20. 面试考察](#120-面试考察)
+        - [1.20.1. 技术广度的考察](#1201-技术广度的考察)
+        - [1.20.2. 底层技术的考察](#1202-底层技术的考察)
+        - [1.20.3. 技术深度的考察](#1203-技术深度的考察)
+    - [1.21. 墨菲定律与康威定律](#121-墨菲定律与康威定律)
+        - [1.21.1. 墨菲定律](#1211-墨菲定律)
+        - [1.21.2. 康威定律](#1212-康威定律)
 
 <!-- /TOC -->
 
 # 1. 基础工具
 
 ## 1.1. 技术社区
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 * [博客园](https://www.cnblogs.com/)
@@ -248,7 +258,7 @@ dia
 
 
 ## 1.3. Git
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.3.1. 基本概念
@@ -475,7 +485,7 @@ A---C---E---G---H(master)
     * 而git pull 则是将远程主机的最新内容拉下来后直接合并，即：git pull = git fetch + git merge，这样可能会产生冲突，需要手动解决。
 
 ### 1.3.4. 远程仓库版本回退
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 有两种方法：git reset 和 git revert
 
@@ -560,10 +570,10 @@ git revert 命令的好处就是不会丢掉别人的提交，即使你撤销后
 * 自己的代码全部开发完成之后,切换到主分支,
 
 ## 1.4. Maven
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.4.1. 基本概念
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 Maven主要做了两件事：
 * 统一开发规范与工具
@@ -656,7 +666,7 @@ POM有3个很重要的关系：依赖、继承、合成。
 ```
 
 ### 1.4.2. 基本命令
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * mvn compile 编译源代码
 * mvn test-compile 编译测试代码
@@ -686,7 +696,7 @@ POM有3个很重要的关系：依赖、继承、合成。
 
 
 ### 1.4.3. Maven中的dependency详解
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ```xml
  <dependencies>
@@ -1245,7 +1255,7 @@ Activation：
 
 
 ### 1.4.5. Maven依赖冲突的产生原因和解决方式
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **依赖冲突产生的原因：**
 * 如果项目的依赖A和依赖B同时引入了依赖C。
@@ -1423,10 +1433,10 @@ mvn dependency:tree
 综上所述,使用父子工程主要是为了方便jar包的版本管理, 子模块需要引jar不需要加版本信息，但是需要特殊版本时也要引入特殊版本，重点提一下在parent中用dependencyManagement这个标签的原因，如果子模块依赖的jar包没有版本信息就从父工程的dependencyManagement这个标签去找对应的版本。
 
 ## 1.5. Gradle
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.5.1. 基本介绍
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 Gradle 是一种构建工具，它抛弃了基于XML的构建脚本，取而代之的是采用一种基于Groovy（现在也支持 Kotlin）的内部领域特定语言
 
@@ -1439,10 +1449,10 @@ Gradle 是一种构建工具，它抛弃了基于XML的构建脚本，取而代�
 
 
 ### 1.5.2. 安装
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.5.2.1. Ubuntu下安装
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 下载地址[http://services.gradle.org/distributions/](http://services.gradle.org/distributions/)
 
@@ -1500,12 +1510,12 @@ OS:           Linux 4.15.0-46-generic amd64
 
 
 
-## 1.7. Docker
-<a href="#menu" style="float:right">目录</a>
+## 1.6. Docker
+<a href="#menu" >目录</a>
 
-### 1.7.1. Docker基础
+### 1.6.1. Docker基础
 
-#### 1.7.1.1. 容器和传统虚拟机的差异
+#### 1.6.1.1. 容器和传统虚拟机的差异
 
 Docker 和传统虚拟化方式有一些不同之处，传统虚拟机技术是虚拟出 套硬件后，在其上运行一个完整的操作系统，在该系统上再运行所需应用进程；而容器内的应用进程直接运行于宿主的内核，容器内没有自己的内核，并且也没有进行硬件虚拟。 因此，容器要比传统虚拟机更为轻便
 
@@ -1519,7 +1529,7 @@ Docker 和传统虚拟化方式有一些不同之处，传统虚拟机技术是�
 |系统支持量 |单机支持上千个容器 |一般几十个
 
 
-#### 1.7.1.2. 容器技术的优点
+#### 1.6.1.2. 容器技术的优点
 
 * 更高效地利用系统资源
     * 容器不需要进行硬件虚拟及运行完整操作系统等额外开销，且 Docker 对系统资源的利用率更高。 无论是应用执行、文件存储，还是在减少内存损耗方面 ， 都要比传统虚拟机技术更高效。 因此，相比传统的虚拟机技术，一个相同配置的主机，往往可以运行更多数量的应用 。
@@ -1537,7 +1547,7 @@ Docker 和传统虚拟化方式有一些不同之处，传统虚拟机技术是�
 * 应用镜像仓库
     * 镜像仓库提供了镜像发布，版本管理的功能
 
-#### 1.7.1.3. 基本概念
+#### 1.6.1.3. 基本概念
 
 * Docker： 可以让开发者打包它们的应用和依赖包到一个可移植的容器中，然后将其发布到任何流行该的Linux机器上。利用docker,可以实现软件一次配置，出处运行。
 * DockerHub:存储DOCKER镜像远程仓库，类似GitHub,用户可以进行对镜像进行存储，分享，管理。
@@ -1584,7 +1594,7 @@ Docker作为一款优秀的容器集成软件，和传统的容器虚拟化工�
 * 系统的Linux内核必须是3.8及以上版本的,内核支持Device Mapper,AUFS,VFS,btrfs等存储格式
 * 内核必须支持cgoups和命名空间
 
-#### 1.7.1.4. Docker引擎
+#### 1.6.1.4. Docker引擎
 
 ![Docker引擎](pic/docker/docker-structor.png)
 
@@ -1616,7 +1626,7 @@ Docker作为一款优秀的容器集成软件，和传统的容器虚拟化工�
         * 可以从仓库中拉取镜像，向仓库传送镜像
         * 可以创建私有和公有的仓库  
         
-#### 1.7.1.5. 命名
+#### 1.6.1.5. 命名
 
 Namespace/Repository:Tag
 
@@ -1626,8 +1636,8 @@ Namespace/Repository:Tag
 
 每个镜像都有一个独立的 Image ID。镜像的 ID 是长度为 64 位的十六进制字符串，通过它也可以区分不同的镜像
 
-#### 1.7.1.6. docker的8个使用场景
-<a href="#menu" style="float:right">目录</a>
+#### 1.6.1.6. docker的8个使用场景
+<a href="#menu" >目录</a>
 
 * 简化配置
     * 虚拟机的最大好处是能在你的硬件设施上运行各种配置不一样的平台(软件, 系统), Docker在降低额外开销的情况下提供了同样的功能. 它能让你将运行环境和配置放在代码汇总然后部署, 同一个Docker的配置可以在不同的环境环境中使用, 这样就降低了硬件要求和应用环境之间耦合度.
@@ -1656,8 +1666,8 @@ Namespace/Repository:Tag
 
 
 
-#### 1.7.1.7. Docker 安装
-<a href="#menu" style="float:right">目录</a>
+#### 1.6.1.7. Docker 安装
+<a href="#menu" >目录</a>
 
 * 文档地址 https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-from-a-package
 
@@ -1761,8 +1771,8 @@ Server:
 WARNING: No swap limit support
 ```
             
-#### 1.7.1.8. 常用指令
-<a href="#menu" style="float:right">目录</a>
+#### 1.6.1.8. 常用指令
+<a href="#menu" >目录</a>
 
 * 安装
    * 安装 sudo snap install docker
@@ -1788,9 +1798,9 @@ WARNING: No swap limit support
 
 ![](pic/docker/docker-command.png)
 
-### 1.7.2. docker 核心原理
+### 1.6.2. docker 核心原理
 
-#### 1.7.2.1. 内核知识
+#### 1.6.2.1. 内核知识
 
 docker 容器本质上是宿主主机上的进程．docker通过namespace实现了资源隔离．通过cgroups实现了资源限制．通过写时复制机制实现高效的文件操作
 Linux内核实现namespace的目的是实现轻量级虚拟化(容器)服务．在同一个namespace下的进程可以感知彼此的变化，而对外界的进程一无所知．
@@ -1809,15 +1819,15 @@ namespace的六项隔离
 
 
 
-#### 1.7.2.2. 架构概览
+#### 1.6.2.2. 架构概览
 
-#### 1.7.2.3. client和daemon
+#### 1.6.2.3. client和daemon
 
-### 1.7.3. 镜像
-<a href="#menu" style="float:right">目录</a>
+### 1.6.3. 镜像
+<a href="#menu" >目录</a>
 
-#### 1.7.3.1. 基本概念
-<a href="#menu" style="float:right">目录</a>
+#### 1.6.3.1. 基本概念
+<a href="#menu" >目录</a>
 
 
 * 镜像是一个包含程序运行必要依赖环境和代码的只读文件，采用分层的文件系统，将每一次改变以读写层的形式增加到原来的只读文件上
@@ -1856,8 +1866,8 @@ namespace的六项隔离
 使用docker commit意味着所有对镜像的操作都是黑箱操作,除了制作镜像的人才知道做了什么操作．因此构建镜像应当使用dockerfile．
 
 
-#### 1.7.3.2. 本地镜像的管理
-<a href="#menu" style="float:right">目录</a>
+#### 1.6.3.2. 本地镜像的管理
+<a href="#menu" >目录</a>
 
 * 查看本地镜像
     * docker images　列出所有的镜像(不包括虚悬镜像)
@@ -1954,7 +1964,7 @@ Options:
         * docker load -i redis.tar
         * docker load < redis.tar
 
-#### 1.7.3.3. Docker Hub 简介
+#### 1.6.3.3. Docker Hub 简介
 
 Docker提供了部署在互联网服务器上的镜像仓库。而Docker Hub就是由Docker官方提供的镜像仓库.镜像仓库分为本地镜像仓库和远程镜像仓库。本地镜像仓库主要支持我们对镜像的操作并为容器的运行提供镜像，远程镜像仓库更多地用于对镜像的分发
 
@@ -1969,10 +1979,10 @@ docker login -u <username> -p <password> <server>
 
 
 
-### 1.7.4. Docker File
-<a href="#menu" style="float:right">目录</a>
+### 1.6.4. Docker File
+<a href="#menu" >目录</a>
 
-#### 1.7.4.1. Docker File中的命令
+#### 1.6.4.1. Docker File中的命令
 
 **FROM**
 * 功能为指定基础镜像，并且必须是第一条指令。
@@ -2325,8 +2335,8 @@ CMD curl -f http://localhost/ || exit 1
 
 
 
-#### 1.7.4.2. docker build 说明 
-<a href="#menu" style="float:right">目录</a>
+#### 1.6.4.2. docker build 说明 
+<a href="#menu" >目录</a>
 
 docker build　用于使用dockerfile构建镜像
 
@@ -2402,14 +2412,14 @@ OPTIONS说明：
     * 也可以通过 -f Dockerfile 文件的位置：
         * docker build -f /path/to/a/Dockerfile .
 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 
-### 1.7.5. 容器
-<a href="#menu" style="float:right">目录</a>
+### 1.6.5. 容器
+<a href="#menu" >目录</a>
 
-#### 1.7.5.1. 容器的管理操作
+#### 1.6.5.1. 容器的管理操作
 * 创建容器
     * docker create image-name
         * 创建的容器处于停止状态
@@ -2692,8 +2702,8 @@ Options:
 虽然容器的导入和镜像的导入都是导入到主机的本地镜像库中，但两者还是有区别的，因为容器的导出文件与镜像的导出文件在结构上是有差异的。容器的导出文件着重记录容器导出时容器内的状况，包括容器中所有的文件：而镜像的导出文件，除了记录所有镜像层的文件，还保持着镜像原有的元数据信息。所以，在使用空间上镜像的导出文件一般会比容器的导出文件大一些。
 
 
-#### 1.7.5.2. 容器内部信息的获取
-<a href="#menu" style="float:right">目录</a>
+#### 1.6.5.2. 容器内部信息的获取
+<a href="#menu" >目录</a>
 
 * 查看容器日志
     * docker logs -f --tail=5 name|id
@@ -2782,8 +2792,8 @@ CONTAINER ID  NAME   CPU %  MEM USAGE / LIMIT     MEM %  NET I/O      BLOCK I/O 
 * docker logs container-name
     * 容器中进程的执行日志
 
-#### 1.7.5.3. 容器的启动过程
-<a href="#menu" style="float:right">目录</a>
+#### 1.6.5.3. 容器的启动过程
+<a href="#menu" >目录</a>
 
 * 创建容器时， Docker会先检查本地镜像库中是否有指定用于创建容器的镜像，如果没有在本地镜像库中找到镜像， Docker 会先从远程仓库中查找井下载到本地
 * Docker 会创建容器的实例，将镜像以只读的方式挂载在为容器分配的文件系统上,并在只读镜像层的外侧，创建一个读写的层 。
@@ -2791,12 +2801,12 @@ CONTAINER ID  NAME   CPU %  MEM USAGE / LIMIT     MEM %  NET I/O      BLOCK I/O 
 * 当我们启动已经创建好的容器时，所指定的应用程序会被运行，且容器会绑定到这个程序的启动进程上。当容器所绑定的进程结束时，容器也会随之停止
 
 
-### 1.7.6. 容器网络
-<a href="#menu" style="float:right">目录</a>
+### 1.6.6. 容器网络
+<a href="#menu" >目录</a>
 
 
-#### 1.7.6.1. 基本原理
-<a href="#menu" style="float:right">目录</a>
+#### 1.6.6.1. 基本原理
+<a href="#menu" >目录</a>
 
 
 容器技术的特点就是隔离性，网络作为计算机重要的资源之一，自然也在容器隔离的范围之内。 Docker 通过 Network Namespace 的方式，为每一个容器建立了独立的网络，形成了完全与宿主机隔离的环境。 Network Namespace 与我们之前谈到的用于隔离应用运行环境的 Namespace 技术相似，是用来隔离应用运行的网络环境的。它能让应用运行所在的网络环境完全虚拟出来，并能提供独立的网络设备、协议栈、 IP 路由表、防火墙、／proc/net 目录、 Isys!class/net 目录、端口套接字等的支持。运行在 Network Namespace下的应用，就如同拥有了单独的网络硬件和单独的网络配置。
@@ -2845,8 +2855,8 @@ Iptables 是 Linux 中用于管理网络过滤的程序，能够根据指定的�
 ![网络结构](https://github.com/lgjlife/Java-Study/blob/master/pic/util/docker/network-struct.png?raw=true)
 
 
-#### 1.7.6.2. docker网络模式
-<a href="#menu" style="float:right">目录</a>
+#### 1.6.6.2. docker网络模式
+<a href="#menu" >目录</a>
 
 安装Docker时，它会自动创建三个网络，bridge（创建容器默认连接到此网络，也就是在不使用--network参数时）、 none 、host。还有以后一种自定义模式，自定义模式有三种：bridge、overlay、macvlan。
 * host：容器将不会虚拟出自己的网卡，配置自己的IP等，而是使用宿主机的IP和端口。
@@ -2911,8 +2921,8 @@ host 网络直接使用宿主机的网络环境。容器如果绑定在 host 网
     * 查看 docker inspect redis7205 |grep IPAddress
     * docker inspect --format '{{.NetworkSettings.IPAddress}}' mysqlslaver
 
-#### 1.7.6.3. 自定义网路
-<a href="#menu" style="float:right">目录</a>
+#### 1.6.6.3. 自定义网路
+<a href="#menu" >目录</a>
 
 如果没有为容器选定网络，则 Docker 会将新创建的容器连接到 bridge 默认网络上 。这样在一个网络中的容器，就有了互相进行访问的可能性，这在某些情况下并不是我们所期望的 。 有时，对于由数个容器所组成的一个小型模块，我们希望这些容器只能相互访问，而不能访问其他容器， 1 也不能被其他容器访问。此时，就需要为这几个容器单独分配网络，让它们连接到一个独立的网络中，从而隔绝其他网络中的容器对这几个容器的连接。
 
@@ -2969,8 +2979,8 @@ Options:
 |docker network rm|删除一个或多个网络
 
 
-#### 1.7.6.4. 容器之间的通信
-<a href="#menu" style="float:right">目录</a>
+#### 1.6.6.4. 容器之间的通信
+<a href="#menu" >目录</a>
 
 容器之间可通过IP，DockerDNSServer和joined容器三种方式通信。
 
@@ -3008,8 +3018,8 @@ joined 容器非常适合以下场景：
 
 希望监控其他容器的网络流量，比如运行在独立容器中的网络监控程序。
 
-#### 1.7.6.5. 容器与外部通信
-<a href="#menu" style="float:right">目录</a>
+#### 1.6.6.5. 容器与外部通信
+<a href="#menu" >目录</a>
 
 在默认情况下，容器位于Docker管理的dockerO网桥中，这个网桥搭建在宿主机的一张虚拟网卡上，不与宿主机的其他网络挂钩。也就是说，容器所在的网络环境其实是隔绝在宿主机内的，宿主机外的计算机和程序是无法发觉和发现容器网络的存在的，也无法连接到容器上。
 数据从容器网络传输到dockerO或其他宿主机上的虚拟网卡后，会被转发到其他的宿主机网卡上。如果这些网卡能够访问外部网络，那么容器自然也就拥有了访问外部网络的权利。
@@ -3073,8 +3083,8 @@ DNAT       tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:3521 to:17
     * 查看容器所有信息，包括端口映射
         * docker inspect name|id 
         
-#### 1.7.6.6. 容器间通信
-<a href="#menu" style="float:right">目录</a>
+#### 1.6.6.6. 容器间通信
+<a href="#menu" >目录</a>
 
 
 ```yml
@@ -3125,12 +3135,12 @@ ff02::2	ip6-allrouters
 
 
 
-### 1.7.7. 数据卷
-<a href="#menu" style="float:right">目录</a>
+### 1.6.7. 数据卷
+<a href="#menu" >目录</a>
 
 
-#### 1.7.7.1. 基本概念
-<a href="#menu" style="float:right">目录</a>
+#### 1.6.7.1. 基本概念
+<a href="#menu" >目录</a>
 
 容器内的文件环境，是由联合文件系统提供的一个临时层，虽然能够让程序随意操作其中的文件，但所有的读写都是在黑盒环境中进行的。当容器停止运行并被删除时，这个临时记录着文件修改的层就会被一同丢弃。即使我们能够通过提交镜像的方式保存容器中文件的修改，但利用这种方式实现文件的持久化不但操作过于烦琐，也不便于进行自动化管理，仍然达不到我们想要的效果。更何况通过镜像的方式保存文件，只解决了文件的输出问题，并没有解决文件输入的问题。
 
@@ -3184,8 +3194,8 @@ ff02::2	ip6-allrouters
 
 使用挂载宿主机目录或文件成为数据卷的方式，可以非常方便地在容器内部与外部之间共享文件。特别是将配置、代码类可能需要临时修改的文件，通过主机目录挂载的方式放置到容器中时，修改结果会马上体现到容器里，让修改文件变得更加简单。
 
-#### 1.7.7.2. 数据卷操作
-<a href="#menu" style="float:right">目录</a>
+#### 1.6.7.2. 数据卷操作
+<a href="#menu" >目录</a>
 
 * 创建数据卷
     * 创建数据卷
@@ -3289,8 +3299,8 @@ Commands:
 
 ```
 
-#### 1.7.7.3. 共享数据卷
-<a href="#menu" style="float:right">目录</a>
+#### 1.6.7.3. 共享数据卷
+<a href="#menu" >目录</a>
 
 若要更好地在容器之间共享数据卷，可以使用数据卷容器来实现。通过数据卷容器，我们可以更轻松地将数据卷进行归类和汇总，也能更好地管理容器与数据卷之间的关系，并且可以更加合理地控制数据卷的生命周期。
 
@@ -3329,13 +3339,13 @@ drwxr-xr-x   2 root root 4096 May  6 01:07 aaa
 
 ```
 
-### 1.7.8. 案例
-<a href="#menu" style="float:right">目录</a>
+### 1.6.8. 案例
+<a href="#menu" >目录</a>
 
-#### 1.7.8.1. docker 安装Mysqk主从复制
+#### 1.6.8.1. docker 安装Mysqk主从复制
 * https://www.cnblogs.com/songwenjie/p/9371422.html
 
-#### 1.7.8.2. docker 安装mycat
+#### 1.6.8.2. docker 安装mycat
 
 
 * 安装openjdk:8镜像
@@ -3345,10 +3355,10 @@ drwxr-xr-x   2 root root 4096 May  6 01:07 aaa
     * http://dl.mycat.io/1.6.7.1/
 * 
 
-### 1.7.9. Docker Compose
-<a href="#menu" style="float:right">目录</a>
+### 1.6.9. Docker Compose
+<a href="#menu" >目录</a>
 
-#### 1.7.9.1. 编排和部署
+#### 1.6.9.1. 编排和部署
 
 **编排(orchestration)**
 编排指根据被部署的对象之间的耦合关系，以及被部署对象对环境的依赖，制定部署流程中各个动作的执行顺序，部署过程所需要的依赖文件和被部署文件的存储位置和获取方式，以及如何验证部署成功。这些信息都会在编排工具中以指定的格式(比如配置文件或特定的代码)来要求运维人员定义并保存起来，从而保证这个流程能够随时在全新的环境中可靠有序地重现出来。
@@ -3358,7 +3368,7 @@ drwxr-xr-x   2 root root 4096 May  6 01:07 aaa
 
 所以说，编排是一个指挥家，他的大脑里存储了整个乐曲此起彼伏的演奏流程，对于每一个小节每一段音乐的演奏方式都了然于胸。而部署就是整个乐队，他们严格按照指挥家的意图用乐器来完成乐谱的执行。最终，两者通过协作就能把每一位演奏者独立的演奏通过组合、重叠、衔接来形成高品位的交响乐。这也是 docker compose 要完成的使命。
 
-#### 1.7.9.2. 多容器的问题
+#### 1.6.9.2. 多容器的问题
 
 * 要从Dockerfile build image 或者去dockerhub拉取image
 * 要创建多个container
@@ -3366,12 +3376,12 @@ drwxr-xr-x   2 root root 4096 May  6 01:07 aaa
 
 Docker Compose 通过文本的方式，把要处理的容器按照顺序执行，如果是多容器也就是通过一条命令就搞定了
 
-#### 1.7.9.3. Docker Compose 概述与安装
+#### 1.6.9.3. Docker Compose 概述与安装
 
 * 使用 Docker 的时候，定义 Dockerfile 文件，然后使用 docker build、docker run 等命令操作容器。然而微服务架构的应用系统一般包含若干个微服务，每个微服务一般都会部署多个实例，如果每个微服务都要手动启停，那么效率之低，维护量之大可想而知
 * 使用 Docker Compose 可以轻松、高效的管理容器，它是一个用于定义和运行多容器 Docker 的应用程序工具
 
-#### 1.7.9.4. 安装 Docker Compose
+#### 1.6.9.4. 安装 Docker Compose
 
 安装 Docker Compose 可以通过下面命令自动下载适应版本的 Compose，并为安装脚本添加执行权限
 ```
@@ -3391,7 +3401,7 @@ docker-compose version 1.8.0, build unknown
 
 ```
 
-#### 1.7.9.5. 基本使用
+#### 1.6.9.5. 基本使用
 
 * Compose 的使用方式非常简单，基本上就是下面的三板斧：
     * 定义 Dockerfile
@@ -3411,7 +3421,7 @@ Compose 是一个用户定义和运行多个容器的 Docker 应用程序。在 
 * 在 docker-compose.yml 中定义组成应用程序的服务，以便它们可以在隔离的环境中一起运行。
 * 最后，运行dcoker-compose up，Compose 将启动并运行整个应用程序。
 
-#### 1.7.9.6. 快速入门
+#### 1.6.9.6. 快速入门
 
 打包项目，获得 jar 包 docker-demo-0.0.1-SNAPSHOT.jar
 ```
@@ -3446,12 +3456,12 @@ docker-compose up -d  // 后台启动并运行容器
 
 访问 http://localhost:9000/hello 即可访问微服务接口
 
-##### 1.7.9.6.1. 工程、服务、容器
+##### 1.6.9.6.1. 工程、服务、容器
 
 * Docker Compose 将所管理的容器分为三层，分别是工程（project）、服务（service）、容器（container）
 * Docker Compose 运行目录下的所有文件（docker-compose.yml）组成一个工程,一个工程包含多个服务，每个服务中定义了容器运行的镜像、参数、依赖，一个服务可包括多个容器实例
 
-##### 1.7.9.6.2. Docker Compose 常用命令与配置
+##### 1.6.9.6.2. Docker Compose 常用命令与配置
 
 ps：列出所有运行容器
 ```
@@ -3504,7 +3514,7 @@ run：在一个服务上执行一个命令
 docker-compose run web bash
 ```
 
-##### 1.7.9.6.3. docker-compose.yml 属性
+##### 1.6.9.6.3. docker-compose.yml 属性
 
 
 * version：指定 docker-compose.yml 文件的写法格式
@@ -3513,7 +3523,7 @@ docker-compose run web bash
     * service的启动类似docker run，我们可以给其指定network和volme，所以可以给service指定network和volume的引用
 * build：配置构建时，Compose 会利用它自动构建镜像，该值可以是一个路径，也可以是一个对象，用于指定 Dockerfile 参数
 
-###### 1.7.9.6.3.1. 基本例子
+###### 1.6.9.6.3.1. 基本例子
 
 ```yml
 #docker-Compse的版本
@@ -3551,8 +3561,8 @@ networks:
     driver: bridge
 ```
 
-###### 1.7.9.6.3.2. 配置选项
-<a href="#menu" style="float:right">目录</a>
+###### 1.6.9.6.3.2. 配置选项
+<a href="#menu" >目录</a>
 
 **bulid**
 服务除了可以基于指定的镜像，还可以基于一份 Dockerfile，在使用 up 启动之时执行构建任务，这个构建标签就是 build，它可以指定 Dockerfile 所在文件夹的路径。Compose 将会利用它自动构建这个镜像，然后使用这个镜像启动服务容器
@@ -4774,8 +4784,8 @@ extends:
 
 
 
-#### 1.7.9.7. Docker Compose 其它
-<a href="#menu" style="float:right">目录</a>
+#### 1.6.9.7. Docker Compose 其它
+<a href="#menu" >目录</a>
 
 更新容器
 
@@ -4796,8 +4806,8 @@ services:
 
 这样 Web 服务就可以使用 db 或 database 作为 hostname 访问 db 服务了
 
-##### 1.7.9.7.1. Compose 原理
-<a href="#menu" style="float:right">目录</a>
+##### 1.6.9.7.1. Compose 原理
+<a href="#menu" >目录</a>
 
 
 **project**
@@ -4822,8 +4832,8 @@ compose 的调用流程
 
 **最后**，contaier 模块会调用 docker-py 客户端来执行向 docker daemon 发起创建容器的 POST 请求。
 
-## 1.6. Jenkins
-<a href="#menu" style="float:right">目录</a>
+## 1.7. Jenkins
+<a href="#menu" >目录</a>
 
 Jenkins 是一个开源软件项目，旨在提供一个开放易用的软件平台，使软件的持续集
 成变成可能。 Jenkins 是基于 Java 开发的一种持续集成工具，用于监控持续重复的工作，
@@ -4833,7 +4843,7 @@ Jenkins 是一个开源软件项目，旨在提供一个开放易用的软件平
 
 
 ## 1.8. VIM
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 安装
     * apt-get update && apt install vim
@@ -5007,7 +5017,7 @@ Jenkins 是一个开源软件项目，旨在提供一个开放易用的软件平
 
 ## 1.9. NMON监控工具
 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 安装
     * sudo apt -install nmon
@@ -5193,7 +5203,7 @@ Jenkins 是一个开源软件项目，旨在提供一个开放易用的软件平
 
 
 ## 1.11. curl命令
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 curl 是一种命令行工具，作用是发出网络请求，然后获取数据，显示在"标准输出"（stdout）上面。它支持多种协议，下面列举其常用功能。
 
@@ -5513,7 +5523,7 @@ Options: (H) means HTTP/HTTPS only, (F) means FTP only
 ```
 
 ## 1.12. 常见时区缩写
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 IDLE +12:00 国际日期变更线，东边 
 NZDT +13:00 新西兰夏时制 
@@ -5574,7 +5584,7 @@ IDLW -12:00 国际日期变更线，西边
 ### 1.13.1. SLF4J
 
 #### 1.13.1.1. 基本介绍 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ![](https://images0.cnblogs.com/blog/449064/201412/071507136869713.jpg)
 
@@ -5626,7 +5636,7 @@ SpringBoot默认使用logback,spring-boot-starter中已经包含日志的依赖
 ```
 
 #### 1.13.1.3. slf4j绑定log4j2日志系统启动分析
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ```java
 public class LogUtil {
@@ -5891,7 +5901,7 @@ AbstractConfiguration.png
 
 
 #### 1.13.1.4. slf4j绑定logback日志系统启动分析
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 再回到getILoggerFactory()方法
 
@@ -6078,7 +6088,7 @@ public class LoggerContext extends ContextBase implements ILoggerFactory, LifeCy
 }
 ```
 #### 1.13.1.5. 总结 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 1. 先搜索类路径下StaticLoggerBinder的实现类,由日志实现库提供
 2. 获取日志库对应的ILoggerFactory,ILoggerFactory用于创建Logger
@@ -6090,10 +6100,10 @@ public class LoggerContext extends ContextBase implements ILoggerFactory, LifeCy
 
 ### 1.13.2. LOG4J2
 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.13.2.1. 基本特性
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * Log4j2旨在用作审计日志框架。 Log4j 1.x和Logback都会在重新配置时丢失事件。 Log4j2不会。在Logback中，Appender中的异常永远不会对应用程序可见。在Log4j中，可以将Appender配置为允许异常渗透到应用程序。
 * Log4j2包含基于LMAX Disruptor库的下一代异步记录器。在多线程场景中，异步记录器的吞吐量比Log4j 1.x和Logback高10倍，延迟低几个数量级。
@@ -6113,7 +6123,7 @@ public class LoggerContext extends ContextBase implements ILoggerFactory, LifeCy
 ![](http://logging.apache.org/log4j/2.x/images/Log4jClasses.jpg)
 
 #### 1.13.2.2. 配置文件优先级
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * Log4j will inspect the "log4j.configurationFile" system property and, if set, will attempt to load the configuration using the ConfigurationFactory that matches the file extension.
 * If no system property is set the properties ConfigurationFactory will look for log4j2-test.properties in the classpath.
@@ -6127,7 +6137,7 @@ public class LoggerContext extends ContextBase implements ILoggerFactory, LifeCy
 * If no configuration file could be located the DefaultConfiguration will be used. This will cause logging output to go to the console.
 
 #### 1.13.2.3. 配置文件
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -6376,7 +6386,7 @@ public class LoggerContext extends ContextBase implements ILoggerFactory, LifeCy
         * 将日志字符串序列化为字节数组，使用字节流OutoutStream将日志输出到文件中。如果配置了immediateFlush为true，打开app.log就可观察到输出的日志了
 
 #### 1.13.2.5. 同步日志和异步日志
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 所谓同步日志，即当输出日志时，必须等待日志输出语句执行完毕后，才能执行后面的业务逻辑语句。
 
@@ -6538,12 +6548,12 @@ Disruptor框架内部核心数据结构为RingBuffer，其为无锁环形队列
 
 
 ### 1.13.3. LOGBACK
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 
 ## 1.14. Markdown语法
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.14.1. 标题
 
@@ -6739,7 +6749,7 @@ gantt
 ## 1.15. IDEA 
 
 ### 1.15.1. 常用快捷键
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ```
 Ctrl+Shift + Enter，语句完成
@@ -6880,7 +6890,7 @@ Ctrl+Shift+F7，在文件中高亮显示用法
 ```
 
 ### 1.15.2. 常用插件
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **Maven Helper**
 
@@ -6932,10 +6942,172 @@ K8s工具
 **Translation**
 中英文翻译工具：
 
-## 1.16. npm工具
-<a href="#menu" style="float:right">目录</a>
+## 1.16. 接口测试工具
+<a href="#menu" >目录</a>
 
-### 1.16.1. 基本概念
+### 1.16.1. jmeter
+<a href="#menu" >目录</a>
+
+### 1.16.2. Postman
+<a href="#menu" >目录</a>
+
+
+#### 1.16.2.1. 安装运行
+
+Postman是一款功能强大的网页调试与发送网页HTTP请求的Chrome插件
+
+下载地址:https://www.postman.com/downloads/
+
+解压之后,移动到某个目录.
+
+修改/etc/profile,添加Postman的环境变量
+```bash
+export PATH=$PATH:Postman所在目录
+```
+然后执行以下命令使修改生效:source /etc/profile
+
+运行Postman: Postman
+
+
+
+#### 1.16.2.2. 基础功能介绍
+
+![基础功能](pic/util/postman/基础功能.webp)
+
+collection在postman里面相当于一个文件夹，可以把同一个项目的请求放在一个Collection里方便管理和分享，Collection里面也可以再建文件夹。
+
+#### 1.16.2.3. 请求区域介绍
+
+![请求区域介绍](pic/util/postman/请求区域介绍.webp)
+
+* Authorization：身份验证，主要用来填写用户名密码，以及一些验签字段,postman有一个helpers可以帮助我们简化一些重复和复杂的任务。当前的一套helpers可以帮助你解决一些authentication protocols的问题。；
+* Headers：请求的头部信息
+* Body：post请求时必须要带的参数，里面放一些key-value键值对
+* Pre-requerst Script:可以让你在 请求之前自定义请求数据，这个运行在请求之前，语法使用JavaScript语句。
+* tests：tests标签功能比较强大，通常用来写测试，它是运行在请求之后。支持JavaScript语法。postman每次执行request的时候，会执行tests。测试结果会在tests的tab上面显示一个通过的数量以及对错情况。这个后面会进行详解，它也可以用来设计用例，比如要测试返回结果是否含有某一字符串
+* form-data：,它将表单数据处理为一条消息，以标签为单元，用分隔符分开。既可以单独上传键值对，也可以直接上传文件（当上传字段是文件时，会有Content-Type来说明文件类型,但该文件不会作为历史保存，只能在每次需要发送请求的时候，重新添加文件。）；post请求里较常用的一种
+* x-www-form-urlencoded：对应信息头-application/x-www-from-urlencoded，会将表单内的数据转换为键值对；
+* raw：可以上传任意类型的文本，比如text、json、xml等,所有填写的text都会随着请求发送；
+* binary：对应信息头-Content-Type:application/octet-stream，只能上传二进制文件，且没有键值对，一次只能上传一个文件, 也不能保存历史，每次选择文件，提交；
+
+#### 1.16.2.4. 接口集导入和导出
+
+提供了import和export工具对接口集导入和导出
+
+#### 1.16.2.5. 环境变量
+
+* Global---全局
+* Enviroment --- 环境变量
+* Local --- 局部
+* Data ---- 数据
+优先级从高到底	Data ---- > Local ---- > Enviroment ---- > Global
+
+![环境设置](pic/util/postman/环境设置.webp)
+
+#### 1.16.2.6. 将返回值的某个数据设置为环境变量
+
+在某些时候，我们需要获取到一个变量，并保存下来，因为在后面我们会使用到。比如token，sign等信息
+
+这时候就需要用到tests区域了，使用其强大的js语法
+
+下面是一个简单的将返回值的某个数据设置为环境变量或者全局变量的介绍：
+
+
+
+定义一个xxx，获取body中返回的所有参数,并转化为JSON格式	var xxx = JSON.parse(responseBody);
+
+//把json字符串转化为对象。parse()会进行json格式的检查是一个安全的函数， 如：检查json中某个数组元素的个数(这里检测programs的长度)
+
+var data = JSON.parse(responseBody);tests["program's lenght"] = data.programs.length === 5;
+
+将返回中的值设置为一个环境变量, pm.environment.set("key",xxx.data.value);或者postman.setEnvironmentVariable("key", "value");
+
+将返回中的值设置为一个全局变量，pm.globals.set("key",xxx.data.value);或者postman.setGlobalVariable("key", "value");
+
+//注意：Global后面不能加S，value值一定要指定到某个具体节点
+
+
+在设置过变量后，调用变量的时候，在postman里也比较方便，直接使用{{变量名}}就可以了
+
+#### 1.16.2.7. 其他的常用tests方法
+
+测试response Headers中的某个元素是否存在	tests["元素Content-Type是否存在"] = postman.getResponseHeader("Content-Type");
+
+定义一个xxx，获取headers值	var xxx = postman.getResponseHeader("key");
+
+将Headers中的值设置为一个环境变量 postman.setEnvironmentVariable("key",xxx);或者pm.environment.set("key",xxx);
+
+检查response的code值是否为200	tests["Status code is 200"] = responseCode.code === 200;
+
+tests["Status code is 200"]是指为这个断言起个名称叫”Status code is 200”，这个名称可以自行修改。
+
+responseCode.code === 200中的responseCode是内置对象，responseCode对象中有个属性是code，是指HTTP状态码的code，判断code是否为200.
+
+综合起来，这句代码的意思是：名称为”Status code is 200”的断言中，判断responseCode对象的code属性值（HTTP状态码）是否为200。
+
+
+
+检查response的body中是否包含字符串	tests["Body matches string"] = responseBody.has("type");
+
+//	tests["Body matches string"]中的tests是一个内置对象，
+
+tests["Body matches string"]是指为这个断言起个名称叫”Body matches string”，这个名称可以自行修改。
+
+这句代码的意思是：名称为”Body matches string”的断言中判断响应正文中是否包含：type这个字段。type无论是key或者value，只要匹配就可以。多个类型可用“，”分割。
+
+
+
+检查Response Body是否等于字符串	tests["测试点"] = responseBody === "Response Body返回的内容";
+
+//这个可以用在接口返回内容为纯字符串时，直接检查整个返回结果的正确性
+
+
+
+检查Response time 是否小于200ms	tests["Response time 小于200毫秒"] = responseTime < 200;
+
+
+
+检查Response time 是否大于200ms	tests["Response time 大于200毫秒"] = responseTime > 200;
+
+
+
+postman.setNextRequest('Request 4')
+
+//	postman.setNextRequest()是一个带有一个参数的函数，它是接下来要运行的请求的名称或ID。往往用来跳转至某个接口，只在运行该集合时有用，单独运行无效
+
+
+
+ var jsonObject = xml2Json(responseBody);
+
+//转换XML body为JSON对象
+
+
+
+设置一个随机数变量	pm.globals.set("type",parseInt(4*Math.random())+1);
+
+//针对不同类型的课程类型，设置一个1到4的随机整数，字段名是type,parselnt 是强制转换为整数
+
+校验接口返回是否有数据	tests["获取第一个结果"] = xxx.content.jieguo[0];
+
+//我的程序设置的是如果当前没有数据，则只返回content[]，所以这句断言可以校验，如果content里还有数据，则视为返回不为空
+
+#### 1.16.2.8. 使用postman进行接口自动化测试
+
+首先，既然是自动化测试，那么我们肯定需要工具 (Postman) 或者代码能帮我们直接判断结果是否符合预期。那么在接口测试上，大体就两个思路：
+* 判断请求返回的 code 是否符合预期
+* 判断请求返回的内容中是否包含预期的内容（关键字）。
+
+* 步骤
+    * 在tests中添加tests代码,比如: tests["Status code is 200"] = responseCode.code === 100;填写完成必须保存Save
+    * 点击接口右侧工具RUN进入测试页面,再点击运行即可
+
+![接口自动化设置](pic/util/postman/接口自动化设置.webp)
+![接口自动化测试](pic/util/postman/测试.png)
+
+## 1.17. npm工具
+<a href="#menu" >目录</a>
+
+### 1.17.1. 基本概念
 
 ＮPM 是 JavaScript 的一个包管理工具，最初是为 NodeJS 来设计使用的，现在也广泛的被使用在各种 JavaScript 项目上
 
@@ -6955,7 +7127,7 @@ $ npm -v
 $ sudo npm install npm -g
 ```
 
-### 1.16.2. package.json
+### 1.17.2. package.json
 
 package.json 位于模块的目录下，用于定义包的属性。接下来让我们来看下 express 包的 package.json 文件，位于 node_modules/express/package.json 内容：
 ```json
@@ -6984,7 +7156,7 @@ Package.json 属性说明
 * main - main 字段指定了程序的主入口文件，require('moduleName') 就会加载这个文件。这个字段的默认值是模块根目录下面的 index.js。
 * keywords - 关键字
 
-### 1.16.3. npm 常用工具
+### 1.17.3. npm 常用工具
 
 ```
 更新全局包：
@@ -7025,11 +7197,11 @@ npm help  帮助，如果要单独查看install命令的帮助，可以使用的
 ```
 
 
-### 1.16.4. NPM仓库
+### 1.17.4. NPM仓库
 
 NPM仓库是一个公共的 JavaScript 包的数据库，我们可以在这个仓库中找到想要的第三方依赖包，也可以把自己写的一些js包发布到上面供其他人使用。
 
-### 1.16.5. 包格式
+### 1.17.5. 包格式
 
 ```
 1） 包含package.json文件的文件夹
@@ -7040,7 +7212,7 @@ NPM仓库是一个公共的 JavaScript 包的数据库，我们可以在这个�
 6） 解析为1）的git地址
 ```
 
-### 1.16.6. 使用 npm 命令安装模块
+### 1.17.6. 使用 npm 命令安装模块
 npm 安装 Node.js 模块语法格式如下：
 ```
 $ npm install <Module Name>
@@ -7054,7 +7226,7 @@ $ npm install express
 var express = require('express');
 ```
 
-### 1.16.7. 全局安装与本地安装
+### 1.17.7. 全局安装与本地安装
 npm 的包安装分为本地安装（local）、全局安装（global）两种，从敲的命令行来看，差别只是有没有-g而已，比如
 ```
 npm install express      # 本地安装
@@ -7083,7 +7255,7 @@ $ npm config set proxy null
 $ npm install express -g
 ```
 
-### 1.16.8. 查看安装信息
+### 1.17.8. 查看安装信息
 
 ```
 你可以使用以下命令来查看所有全局安装的模块：
@@ -7093,7 +7265,7 @@ npm list -g
 $ npm list grunt
 ```
 
-### 1.16.9. 卸载模块
+### 1.17.9. 卸载模块
 我们可以使用以下命令来卸载 Node.js 模块。
 ```
 $ npm uninstall express
@@ -7104,18 +7276,18 @@ $ npm uninstall express
 $ npm ls
 ```
 
-### 1.16.10. 更新模块
+### 1.17.10. 更新模块
 我们可以使用以下命令更新模块：
 ```
 $ npm update express
 ```
-### 1.16.11. 搜索模块
+### 1.17.11. 搜索模块
 使用以下来搜索模块：
 ```
 $ npm search express
 ```
 
-### 1.16.12. 使用淘宝 NPM 镜像
+### 1.17.12. 使用淘宝 NPM 镜像
 
 大家都知道国内直接使用 npm 的官方镜像是非常慢的，这里推荐使用淘宝 NPM 镜像。
 
@@ -7142,18 +7314,18 @@ cnpm -v
 ```
 
 
-## 1.17. Java 服务的线上应急、和技术攻关
-<a href="#menu" style="float:right">目录</a>
+## 1.18. Java 服务的线上应急、和技术攻关
+<a href="#menu" >目录</a>
 
-### 1.17.1. 线上应急的目标、 原则和方法
-<a href="#menu" style="float:right">目录</a>
+### 1.18.1. 线上应急的目标、 原则和方法
+<a href="#menu" >目录</a>
 
 
-#### 1.17.1.1. 应急目标
+#### 1.18.1.1. 应急目标
 
 在生产环境发生故障时快速恢复服务，避免或减少故障造成的损失，避免或减少故障对客户的影响 。
 
-#### 1.17.1.2. 应急原则
+#### 1.18.1.2. 应急原则
 
 * 应第一时间恢复系统而不是彻底解决问题，快速止损。
 * 有明显的资金损失时，要在第一时间升级，快速止损 。
@@ -7161,7 +7333,7 @@ cnpm -v
 * 当前应急责任人如果在短时间内不能解决问题，则必须进行升级处理。
 * 应急过程中在不影响用户体验的前提下，要保留部分现场和数据。
 
-#### 1.17.1.3. 线上应急的方法和流程
+#### 1.18.1.3. 线上应急的方法和流程
 
 线上应急一般分为 6 个阶段：发现问题、定位问题、解决问题、消除影响、回顾问题、避免措施。
 
@@ -7173,19 +7345,19 @@ cnpm -v
 对系统层面的监控包括对系统的 CPU 利用率、系统负载、内存使用情况、网络 I/O 负载、磁盘负载、 I/O 等待、交换区的使用、线程数及打开的文件句柄数等进行监控 ， 一旦超出阔值，就需要报警。
 对应用层面的监控包括对服务接口的响应时间、吞吐量、调用频次、接口成功率及接口的波动率等进行监控。对资源层的监控包括对数据库、缓存和消息队列的监控。我们通常会对数据库的负载、慢SQL、连接数等进行监控；对缓存的连接数、占用内存、吞吐量、响应时间等进行监控；以及对消息队列的响应时间、吞吐量、负载、积压情况等进行监控。
 
-## 1.18. 软件开发
-<a href="#menu" style="float:right">目录</a>
+## 1.19. 软件开发
+<a href="#menu" >目录</a>
 
-### 1.18.1. 常用的４种开发方式
-<a href="#menu" style="float:right">目录</a>
+### 1.19.1. 常用的４种开发方式
+<a href="#menu" >目录</a>
 
-#### 1.18.1.1. 瀑布式开发 
+#### 1.19.1.1. 瀑布式开发 
 
 瀑布式开发是由 WW.Royce 在 1970 年提出的软件开发模型，是一种比较老的计算机软件开发模式， 也是典型的预见性的开发模式。在瀑布式开发中，开发严格遵循预先计划的需求分析、设计、编码、集成、测试、维护的步骤进行，步骤的成果作为衡量进度的方法，例如需求规格、设计文档、测试计划和代码审阅等 。 瀑布式开发最早强调系统开发应有完整的周期，且必须完整地经历每个周期内的每个开发阶段，井系统化地考量分析所涉及的技术、时间与资源投入等 。
 
 瀑布式开发的主要问题是它的严格分级导致自由度降低，项目早期即作出承诺会导致对后期需求的变化难以调整且代价很大，这在需求不明晰并且在项目进行过程中可能有变化的情况下基本上是不可行的 
 
-#### 1.18.1.2. 迭代式开发
+#### 1.19.1.2. 迭代式开发
 
 法代式开发也被称为迭代增量式开发，是一种与传统的瀑布式开发相反的软件开发过程，它弥补了传统开发方式的一些弱点，有更高的成功率。在迭代式开发中，整个开发工作被组织为一系列短小的、固定长度的小项目，每次选代都包括需求分析、设计、实现与测试。采用迭代式开发时， 工作可以在需求被完整地确定之前启动 ， 并在一次选代中完成系统的一部分功能或业务，再通过客户的反馈来细化需求，并开始新一轮的迭代
 
@@ -7195,7 +7367,7 @@ cnpm -v
 * 每次设计和实现一个阶段，这叫作一个迭代。
 
 
-#### 1.18.1.3. 螺旋式开发
+#### 1.19.1.3. 螺旋式开发
 
 螺旋式开发是由巴利 · 玻姆 CBa町 Boehm ）在 1988 年正式发表的软件系统开发模型，它兼顾 了快速原型的法代特征及瀑布模型的系统化和严格监控，其最大的特点是引入了其他模型不具备的风险分析，使软件在无法排除重大风险时有机会停止，以减少损失 。 同时，在每个法代阶段构建原型是螺旋模型用来减少风险的方法 。 螺旋模型更适合大型的昂贵的系统级的软件开发 ， 一开始应用的规模很小，当项目被定义得更好、更稳定时逐渐展开。其核心在于不需要在刚开始时就把所有事情都定义清楚，可以先定义最重要的功能去实现它，然后听取客户的意见，再进入下一个阶段，如此不断循环、重复，直到得到满意的产品。螺旋模型在很大程度上是一种风险驱动的方法体系，因为在每个阶段及经常发生的循环之前，都必须先进行风险评估。
 
@@ -7205,7 +7377,7 @@ cnpm -v
 * 实施工程：实施软件开发和验证。
 * 客户评估：评价开发工作，提出修正建议，制定下一步计划。
 
-#### 1.18.1.4. 敏捷软件开发
+#### 1.19.1.4. 敏捷软件开发
 
 敏捷软件开发又被称为敏捷开发，是一种从 1990 年开始逐渐引起人们的广泛关注的新型软件开发方式，具有应对快速变化的需求的软件开发能力。它的具体名称、理念、过程、 术语都不尽相同，相对于非敏捷开发，更强调程序员团队与业务专家之间的紧密协作及面对面沟通，比单纯通过书面文档沟通更有效，能更频繁地交付新的软件版本，使自我组织、自我约束的团队能够更好地适应需求的变化，也更注重软件开发过程中人的作用 。
 
@@ -7223,7 +7395,7 @@ cnpm -v
 * 最好的架构、需求和设计都源于自我组织的团队。
 * 团队定期反思如何变得更有战斗力，然后相应地转变井调整其行为。
 
-#### 1.18.1.5. 敏捷开发 2.0 
+#### 1.19.1.5. 敏捷开发 2.0 
 
 敏捷开发 2.0 是相对于敏捷开发而言的，敏捷开发意味着让我们全面拥抱需求的变化， 但是对于瞬息万变的市场反馈还远远不足以应对，因此为了更加快速地发现问题和得到市场的快速反馈，引入了持续集成（ Continuous Integration, CI ）和持续交付（ Continuous Deliv巳ry, CD ),来更加高效地进行敏捷开发，即敏捷开发 2.0 。
 
@@ -7238,7 +7410,7 @@ DevOps 不能只 关注开发及运维 ，还应该关注产品、开发、测�
 * 微服务：使技术选型、构架系统更自由：开发更快速、周期更短 ： 服务更容易扩展 。
 * 容器 ： 使部署成百上千的微服务更加容易，系统更加稳定。
 
-#### 1.18.1.6. 总结
+#### 1.19.1.6. 总结
 
 瀑布式开发：在从需求到设计、从设计到编码、从编码到测试、从测试到提交的每个开发阶段都要做到最好，特别是在前期阶段设计得越完美，提交后的损失就越少。然而现在的系统很复杂且多变，所以很难在现实中应用瀑布式开发。
 
@@ -7248,11 +7420,11 @@ DevOps 不能只 关注开发及运维 ，还应该关注产品、开发、测�
 
 
 
-## 1.19. 面试考察
-<a href="#menu" style="float:right">目录</a>
+## 1.20. 面试考察
+<a href="#menu" >目录</a>
 
-### 1.19.1. 技术广度的考察
-<a href="#menu" style="float:right">目录</a>
+### 1.20.1. 技术广度的考察
+<a href="#menu" >目录</a>
 
 首先考察候选人技术面的完整性，因为工作中是需要具备一定的技术视野的，不能说光知道消息中间件，但是分布式缓存却一无所知。
 
@@ -7272,8 +7444,8 @@ DevOps 不能只 关注开发及运维 ，还应该关注产品、开发、测�
 而是说你工作几年以后，应该有一定的技术广度，开阔的技术视野。
 
 
-### 1.19.2. 底层技术的考察
-<a href="#menu" style="float:right">目录</a>
+### 1.20.2. 底层技术的考察
+<a href="#menu" >目录</a>
 
 现在很多互联网大厂都会有基本功的考察，举个例子，Java虚拟机的核心原理、内存模型、垃圾回收、线上FullGC卡顿性能优化、线上OOM内存溢出问题你处理。
 
@@ -7288,8 +7460,8 @@ Netty背后的IO、网络相关的知识。
 而且很多时候，解决线上系统的生产故障，都需要这些技术。因此，底层技术的掌握是一个优秀工程师必须具备的素养。
 
 
-### 1.19.3. 技术深度的考察
-<a href="#menu" style="float:right">目录</a>
+### 1.20.3. 技术深度的考察
+<a href="#menu" >目录</a>
 
 此外，我们一定会深入考察候选人平时工作中熟悉的以及常用的一些技术。
 
@@ -7327,17 +7499,17 @@ Netty背后的IO、网络相关的知识。
 
 你只有真正了解了面试官的选拔标准，考察范围，才能更好的进行针对性的准备，成为行走的“offer收割机”
 
-## 1.20. 墨菲定律与康威定律
-<a href="#menu" style="float:right">目录</a>
+## 1.21. 墨菲定律与康威定律
+<a href="#menu" >目录</a>
 
-### 1.20.1. 墨菲定律
+### 1.21.1. 墨菲定律
 
 * 任何事情都没有表面看起来那么简单
 * 所有的事都会比你预计的时间长
 * 可能出错的事总会出错
 * 如果你担心某种事情发生，那么它就有可能发生
 
-### 1.20.2. 康威定律
+### 1.21.2. 康威定律
 
 * 系统架构是公司组织架构的反映
 * 应该按照业务闭环进行系统拆分／组织架构划分，实现闭环／高内聚／低耦合，减少沟通成本
