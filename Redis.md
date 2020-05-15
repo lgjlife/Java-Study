@@ -74,7 +74,7 @@
             - [1.4.7.1. fork操作](#1471-fork操作)
             - [1.4.7.2. 子进程开销监控和优化](#1472-子进程开销监控和优化)
     - [1.5. 集群](#15-集群)
-        - [1.5.1. 复制](#151-复制)
+        - [1.5.1. 复制Replication](#151-复制replication)
             - [1.5.1.1. cap原理](#1511-cap原理)
             - [1.5.1.2. 配置](#1512-配置)
             - [1.5.1.3. 原理](#1513-原理)
@@ -89,7 +89,7 @@
                 - [1.5.1.10.2. 主从配置不一致](#151102-主从配置不一致)
                 - [1.5.1.10.3. 规避全量复制](#151103-规避全量复制)
                 - [1.5.1.10.4. 规避复制风暴](#151104-规避复制风暴)
-        - [1.5.2. 哨兵](#152-哨兵)
+        - [1.5.2. 哨兵Sentinel](#152-哨兵sentinel)
             - [1.5.2.1. 什么是哨兵](#1521-什么是哨兵)
             - [1.5.2.2. 基本操作](#1522-基本操作)
             - [1.5.2.3. 配置 Sentinel](#1523-配置-sentinel)
@@ -105,7 +105,7 @@
                 - [1.5.2.10.3. 领导者Sentinel节点选举](#152103-领导者sentinel节点选举)
                 - [1.5.2.10.4. 故障转移](#152104-故障转移)
             - [1.5.2.11. 哨兵的部署](#15211-哨兵的部署)
-        - [1.5.3. 集群](#153-集群)
+        - [1.5.3. 集群Cluster](#153-集群cluster)
             - [1.5.3.1. 集群简介](#1531-集群简介)
             - [1.5.3.2. 集群数据分布](#1532-集群数据分布)
                 - [1.5.3.2.1. 分布规则](#15321-分布规则)
@@ -221,12 +221,14 @@
 <!-- /TOC -->
 
 # 1. Redis(Remote Dictionary Server)
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ## 1.1. 简介
 
-Redis是速度非常快的非关系型数据库。
+Redis（Remote Dictionary Server）是一个开源的（BSD许可）使用ANSI C语言编写的，内存中的数据结构存储系统(key-value)，它可以用作数据库、缓存和消息中间件，它使用字典结构存储数据，它支持多种类型的数据结构，如 字符串（strings） ， 散列（hashes） ， 列表（lists） ， 集合（sets） ， 有序集合（sorted sets） ， bitmaps， hyperloglogs 和地理空
+间（geospatial） 索引半径查询。 Redis 内置了 复制（replication） ， LUA脚本（Lua scripting） ， LRU驱动事件（LRU eviction） ， 事务（transactions） 和不同级别的 磁盘持久化（persistence） ， 并通过 Redis哨兵（Sentinel） 和自动 分区（Cluster） 提供高可用性（high availability）
+
 
 ### 1.1.1. 特性
 * 速度快
@@ -250,7 +252,7 @@ Redis是速度非常快的非关系型数据库。
 
 * 版本号
     * 非稳定版本使用奇数，2.7、2.9
-    * 稳定版本使用偶数，2.8、2.9
+    * 稳定版本使用偶数，2.8、3.0
 
 ### 1.1.2. 应用场景
 
@@ -291,6 +293,18 @@ Redis是速度非常快的非关系型数据库。
 * 灾难恢复–memcache挂掉后，数据不可恢复; redis数据丢失后可以通过aof恢复 
 * Redis支持数据的备份，即master-slave模式的数据备份。
 
+* 性能上：
+    * Redis只使用单核，而Memcached可以使用多核，所以平均每一个核上Redis在存储小数据时比Memcached性能更高。而在100k以上的数据中，Memcached性能要高于Redis。
+* 内存空间和数据量大小：
+    * Memcached可以修改最大内存，采用LRU算法。 Memcached单个key-value大小有限，一个value最大只支持1MB，而Redis最大支持512MB
+* 操作便利上：
+    * Memcached数据结构单一，而Redis支持更加丰富的数据类型，在服务器端直接对数据进行丰富的操作,这样可以减少网络IO次数和数据体积。
+* 可靠性上：
+    * MemCached不支持数据持久化，断电或重启后数据消失。 Redis支持数据持久化和数据恢复和集群，允许单点故障。
+* 应用场景：
+    * Memcached：动态系统中减轻数据库负载，提升性能；做缓存，适合多读少写，大数据量的情况（如人人网大量查询用户信息、好友信息、文章信息等）。
+    * Redis：适用于对读写效率要求都很高，数据处理业务复杂和对安全性要求较高的系统（如新浪微博的计数和微博发布部分系统，对数据安全性、读写要求都很高）
+    
 有持久化需求或者对数据结构和处理有高级要求的应用，选择redis，其他简单的key/value存储，选择memcache。
 
 **性能上：** 
@@ -320,7 +334,7 @@ Memcached性能更高。而在100k以上的数据中，Memcached性能要高于R
 4. 新版本（3.0）的Redis是指集群分布式，也就是说集群本身均衡客户端请求，各个节点可以交流，可拓展行、可维护性更强大。
 
 ### 1.1.5. 常用配置说明
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ```
 ################################## INCLUDES ###################################
@@ -600,7 +614,7 @@ aof-rewrite-incremental-fsync yes
 ```
 
 ### 1.1.6. 常见面试题
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 1、什么是Redis？
 
@@ -739,7 +753,7 @@ aof-rewrite-incremental-fsync yes
 
 
 ### 1.2.2. 种基本数据类型
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 |类型|结构存储的值|
@@ -753,7 +767,7 @@ aof-rewrite-incremental-fsync yes
 
 
 ### 1.2.3. 字符串
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * SET
     * SET key value [EX seconds] [PX milliseconds] [NX|XX]
@@ -843,7 +857,7 @@ aof-rewrite-incremental-fsync yes
     * STRLEN key
     * 返回 key 所储存的字符串值的长度。
 ### 1.2.4. 列表
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * BLPOP
     * BLPOP key [key ...] timeout
@@ -915,7 +929,7 @@ aof-rewrite-incremental-fsync yes
 
     
 ### 1.2.5. 散列
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * HDEL
     * HDEL key field [field ...]
@@ -964,7 +978,7 @@ aof-rewrite-incremental-fsync yes
 
 
 ### 1.2.6. 集合
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * SADD
     * SADD key member [member ...]
@@ -1037,7 +1051,7 @@ redis> SDIFF peter's_movies joe's_movies
 
 
 ### 1.2.7. 有序集合
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * ZADD
     * ZADD key score member [[score member] [score member] ...]
@@ -1146,7 +1160,7 @@ redis> ZRANGEBYSCORE salary (5000 400000            # 显示工资大于 5000 �
 
 
 ### 1.2.8. 事务
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 * DISCARD
@@ -1167,7 +1181,7 @@ redis> ZRANGEBYSCORE salary (5000 400000            # 显示工资大于 5000 �
     * 监视一个(或多个) key ，如果在事务执行之前这个(或这些) key 被其他命令所改动，那么事务将被打断。
 
 ### 1.2.9. 键
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * DEL
     * DEL key [key ...]
@@ -1271,7 +1285,7 @@ KEYS h[ae]llo 匹配 hello 和 hallo ，但不匹配 hillo 。
         * zset (有序集)
         * hash (哈希表)
 #### 1.2.9.1. SCAN
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * SCAN cursor [MATCH pattern] [COUNT count]
 
@@ -1447,7 +1461,7 @@ redis 127.0.0.1:6379> scan 176 MATCH *11* COUNT 1000
 
 
 #### 1.2.9.2. SORT
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * SORT key [BY pattern] [LIMIT offset count] [GET pattern [GET pattern ...]] [ASC | DESC] [ALPHA] [STORE destination]
 返回或保存给定列表、集合、有序集合 key 中经过排序的元素。
@@ -1810,7 +1824,7 @@ redis 127.0.0.1:6379> LRANGE sorted-numbers 0 -1
 
 
 ### 1.2.10. 连接
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * AUTH
     * AUTH password
@@ -1836,7 +1850,7 @@ redis 127.0.0.1:6379> LRANGE sorted-numbers 0 -1
 
     
 ### 1.2.11. Server（服务器）
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * BGREWRITEAOF
     * 执行一个 AOF文件 重写操作。重写会创建一个当前 AOF 文件的体积优化版本。
@@ -2137,11 +2151,11 @@ redis> SLOWLOG LEN
     * 返回当前服务器时间。
 
 ## 1.3. 数据结构和对象实现原理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.3.1. 简单动态字符串
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * C语言中的字符串是以空字符'\0'结尾的字符序列
 * Redis没有使用C语言的传统的字符串，而是使用SDS(Simple Dynamic String)简单动态字符串,SDS具有'\0'结尾的字符数组
@@ -2189,7 +2203,7 @@ struct __attribute__ ((__packed__)) sdshdr64 {
         
 
 ### 1.3.2. 链表
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 链表数据结构，可以看到Redis是一个双向链表结构。
 ```c
@@ -2224,7 +2238,7 @@ typedef struct list {
 
 
 ### 1.3.3. 字典
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 字典，又称符号表(symbol table),关联数组(associative array)或映射(map)，是一种用于保存键值对(key-value)的抽象数据结构。
 * Redis底层就是在字典数据结构之上实现的
@@ -2280,7 +2294,7 @@ typedef struct dict {
 ```
 #### 1.3.3.1. Rehash
 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 随着操作的不断进行，哈希表的键值对数量不断增多或者减少，为了让哈希表的负载因子维持在一个合理的范围内，需要对字典表进行重新扩展或者收缩
 
@@ -2305,7 +2319,7 @@ typedef struct dict {
 
 
 #### 1.3.3.2. 渐进式Hash
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 rehash需要将ht[0]的键值rehash到ht[1],但这个过程并不是一次性完成，而是分多次渐进式完成。比如说几千万个键值对，很难在一瞬间完成rehash,庞大的计算会导致服务器在一段时间内停止服务。
 
@@ -2323,7 +2337,7 @@ rehash需要将ht[0]的键值rehash到ht[1],但这个过程并不是一次性完
 
 
 ### 1.3.4. 跳跃表
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 跳跃表是一种有序的数据结构，通过在每个节点中维持多个指向其他节点的指针，从而达到快速访问节点的目的。
 * 跳跃表支持平均O(logN),最坏O(n)复杂度的节点查找，还可以通过顺序性操作来处理节点
@@ -2348,11 +2362,11 @@ rehash需要将ht[0]的键值rehash到ht[1],但这个过程并不是一次性完
 
 
 ### 1.3.5. 整数集合
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.3.6. 压缩列表
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 压缩列表是列表键和哈希键的底层实现之一，当一个列表键只包含**少量的列表项**,并且每个列表项要么就是小整数值，要么就是长度比较短的字符串，Redis就会使用压缩列表来做 列表键的底层实现。
 
@@ -2367,7 +2381,7 @@ Redis对于每种数据结构、无论是列表、哈希表还是有序集合，
 
 
 ### 1.3.7. 对象
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 前面章节介绍了Redis所有的主要数结构，但是Redis并没有使用这些数据结构来实现键值对数据库。而是基于这些数据结构创建不同的对象。
 * 字符串对象，列表对象，哈希对象，集合对象，无序集合对象。
@@ -2379,7 +2393,7 @@ Redis对于每种数据结构、无论是列表、哈希表还是有序集合，
 * Redis的对象还带有访问时间记录信息，该记录用于 计算数据库键的空转时长，在服务器启用maxmemory功能的情况下，空转时长较大的键可能会优先被删除。
 
 #### 1.3.7.1. 对象类型和编码
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **对象结构题定义**
 
@@ -2496,30 +2510,30 @@ redis> OBJECT ENCODING numbers
 其他类型的对象也会通过使用多种不同的编码来进行类似的优化。
 
 #### 1.3.7.2. 字符串对象
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 #### 1.3.7.3. 列表对象
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 #### 1.3.7.4. 哈希对象
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 #### 1.3.7.5. 集合对象 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 #### 1.3.7.6. 有序集合对象
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 #### 1.3.7.7. 类型检查和命令多态
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.7.8. 内存回收
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 因为 C 语言并不具备自动的内存回收功能， 所以 Redis 在自己的对象系统中构建了一个引用计数（reference counting）技术实现的内存回收机制， 通过这一机制， 程序可以通过跟踪对象的引用计数信息， 在适当的时候自动释放对象并进行内存回收。
 
 每个对象的引用计数信息由 redisObject 结构的 refcount 属性记录：
@@ -2567,7 +2581,7 @@ decrRefCount(s)
 其他不同类型的对象也会经历类似的过程。
 
 #### 1.3.7.9. 对象共享
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 除了用于实现引用计数内存回收机制之外， 对象的引用计数属性还带有对象共享的作用。
 
@@ -2634,7 +2648,7 @@ redis> OBJECT REFCOUNT B
 
 
 #### 1.3.7.10. 对象空转时长
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 除了前面介绍过的 type 、 encoding 、 ptr 和 refcount 四个属性之外， redisObject 结构包含的最后一个属性为 lru 属性， 该属性记录了对象最后一次被命令程序访问的时间：
 
@@ -2693,7 +2707,7 @@ Redis 提供了多种不同级别的持久化方式：
 
 
 ### 1.4.2. RDB持久化
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.4.2.1. 快照条件
 
@@ -2763,7 +2777,7 @@ FLUSHALL会清除数据库中的所有数据，只要自动快照的条件不为
 
 ### 1.4.3. AOF持久化(append-only file)
 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 #### 1.4.3.1. 基本实现
@@ -2846,12 +2860,14 @@ auto-aof-rewrite-min-size : 允许重写的最小文件大小，只有超过并�
 
 
 ### 1.4.4. RDB和AOF选择
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
-如果你非常关心你的数据， 但仍然可以承受数分钟以内的数据丢失， 那么你可以只使用 RDB 持久化。
-
-有很多用户都只使用 AOF 持久化， 但我们并不推荐这种方式： 因为定时生成 RDB 快照（snapshot）非常便于进行数据库备份， 并且 RDB 恢复数据集的速度也要比 AOF 恢复的速度要快， 除此之外， 使用 RDB 还可以避免之前提到的 AOF 程序的 bug 。
-
+* RDB
+    * 优点： RDB 是一个非常紧凑的文件，它保存了 Redis 在某个时间点上的数据集。这种文件非常适合用于进行备份。
+    * 缺点：如果你需要尽量避免在服务器故障时丢失数据，那么 RDB 不适合你。 虽然 Redis 允许你设置不同的保存点（save point）来控制保存 RDB 文件的频率， 但是， 因为RDB 文件需要保存整个数据集的状态，所以它并不是一个轻松的操作。因此你可能会至少 5 分钟才保存一次 RDB 文件。 在这种情况下， 一旦发生故障停机， 你就可能会丢失好几分钟的数据。
+* AOF
+    * 优点：使用 AOF 持久化会让 Redis 变得非常耐久：你可以设置不同的 fsync 策略，比如无 fsync ，每秒钟一次 fsync ，或者每次执行写入命令时 fsync 。 AOF 的默认策略为每秒钟 fsync 一次，在这种配置下， Redis 仍然可以保持良好的性能，并且就算发生故障停机，也最多只会丢失一秒钟的数据（ fsync 会在后台线程执行，所以主线程可以继续努力地处理命令请求）。
+    * 缺点：对于相同的数据集来说， AOF 文件的体积通常要大于 RDB 文件的体积。根据所使用的 fsync 策略， AOF 的速度可能会慢于 RDB 。
 
 ### 1.4.5. 验证快照文件和AOF文件
 
@@ -2951,22 +2967,28 @@ AOF重写时， Redis日志输出容如下：
 * 对于单机配置多个Redis实例的情况， 可以配置不同实例分盘存储AOF文件， 分摊硬盘写入压力。
 
 ## 1.5. 集群
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 
-### 1.5.1. 复制
-<a href="#menu" style="float:right">目录</a>
+### 1.5.1. 复制Replication
+<a href="#menu" >目录</a>
 
 * Redis 使用异步复制。 从 Redis 2.8 开始， 从服务器会以每秒一次的频率向主服务器报告复制流（replication stream）的处理进度。
 * 一个主服务器（MASTER）可以有多个从服务器(SLAVE)。
-* 不仅主服务器可以有从服务器， 从服务器也可以有自己的从服务器， 多个从服务器之间可以构成一个图状结构。
+* 不仅主服务器可以有从服务器， 从服务器也可以有自己的从服务器， 多个从服务器之间可以构成一个树状结构。
 * 复制功能不会阻塞主服务器： 即使有一个或多个从服务器正在进行初次同步， 主服务器也可以继续处理命令请求。
+* 只有主数据库可以执行写请求,从数据库只能执行读请求
 * 复制功能也不会阻塞从服务器： 只要在 redis.conf 文件中进行了相应的设置， 即使从服务器正在进行初次同步， 服务器也可以使用旧版本的数据集来处理命令查询。
 * 不过， 在从服务器删除旧版本数据集并载入新版本数据集的那段时间内， 连接请求会被阻塞。
 * 你还可以配置从服务器， 让它在与主服务器之间的连接断开时， 向客户端发送一个错误。
-* 复制功能可以单纯地用于数据冗余（data redundancy）， 也可以通过让多个从服务器处理只读命令请求来提升扩展性（scalability）： 比如说， 繁重的 SORT 命令可以交给附属节点去运行。
+* 复制功能可以单纯地用于数据冗余（data redundancy），也可以通过让多个从服务器处理只读命令请求来提升扩展性（scalability）： 比如说，繁重的SORT命令可以交给附属节点去运行。
 * 可以通过复制功能来让主服务器免于执行持久化操作： 只要关闭主服务器的持久化功能， 然后由从服务器去执行持久化操作即可。
+
+* 主从复制问题
+    * Master下线,无法执行写请求
+    * 当主数据库出现问题,无法自动执行Failover操作
+    
 
 #### 1.5.1.1. cap原理
 CAP 原理就好比分布式领域的牛顿定律，它是分布式存储的理论基石。自打 CAP 的论文发表之后，分布式存储中间件犹如雨后春笋般一个一个涌现出来。理解这个原理其实很简单，本节我们首先对这个原理进行一些简单的讲解。
@@ -2986,7 +3008,7 @@ Redis 保证「 最终一致性」，从节点会努力追赶主节点，最终�
 
 
 #### 1.5.1.2. 配置
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 参与复制的Redis实例划分为主节点（master） 和从节点（slave） 。 默认情况下， Redis都是主节点。 每个从节点只能有一个主节点， 而主节点可以同时具有多个从节点。 复制的数据流是单向的， 只能由主节点复制到从节点。 配置复制的方式有以下三种：
@@ -3082,7 +3104,7 @@ min-slaves-max-lag <number of seconds>
 ```
 
 #### 1.5.1.3. 原理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 无论是初次连接还是重新连接， 当建立一个从服务器时， 从服务器都将向主服务器发送一个 SYNC 命令。
 
 接到 SYNC 命令的主服务器将开始执行 BGSAVE ， 并在保存操作执行期间， 将所有新执行的写入命令都保存到一个缓冲区里面。
@@ -3124,7 +3146,7 @@ Redis的复制拓扑结构可以支持单层或多层复制关系， 根据拓�
 
 
 #### 1.5.1.6. 数据库崩溃处理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 为了提高性能，主数据库禁止持久化，从数据库持久化
 
@@ -3142,7 +3164,7 @@ Redis的复制拓扑结构可以支持单层或多层复制关系， 根据拓�
 
 
 #### 1.5.1.7. 无硬盘复制
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 使用RDB方式执行复制的问题
 * 即使数据库禁用RDB快照(没有save相关的配置)，但是在执行复制时仍然会生成RDB文件，数据库重启时将会从该rdb文件恢复数据，由于rdb文件生成时间的不确定性，因此可能会产生丢失数据
@@ -3157,7 +3179,7 @@ repl-diskless-sync yes
 
 
 #### 1.5.1.8. 增量复制
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 上述的方式每次进行复制都要进行一次rdb文件生成并且全部传输给从服务器，即使两次之间间隔只是增加很少的数据。
 
@@ -3221,7 +3243,7 @@ repl-diskless-sync yes
 * 主节点收到 replconf 信息后，判断从节点超时时间，如果超过 repl-timeout 60 秒，则判断节点下线。
 
 #### 1.5.1.10. 开发与运维中的问题
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ##### 1.5.1.10.1. 读写分离
@@ -3278,26 +3300,26 @@ Redis复制数据的延迟由于异步复制特性是无法避免的， 延迟�
 * 应该把主节点尽量分散在多台机器上， 避免在单台机器上部署过多的主节点。
 * 当主节点所在机器故障后提供故障转移机制， 避免机器恢复后进行密集的全量复制
 
-### 1.5.2. 哨兵
-<a href="#menu" style="float:right">目录</a>
+### 1.5.2. 哨兵Sentinel
+<a href="#menu" >目录</a>
 
 上面主从复制当出现主数据崩溃时，需要手动去处理，无法实现自动化。
 哨兵模式可以解决
 
 #### 1.5.2.1. 什么是哨兵
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 1. 监控主数据库和从数据库是否正常运行。
 2. 主数据库出现故障时自动将从数据库转换为主数据库
 3. 哨兵是一个独立的进程，一个主从复制结构可以有多个哨兵，提高可用性。哨兵之间也可以互相监控。
-![](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1566910534119&di=bdc4f5b7487d94f55840b9cfa2a499d9&imgtype=0&src=http%3A%2F%2Fwww.th7.cn%2Fd%2Ffile%2Fp%2F2015%2F12%2F30%2F2660bccb766407e2aa79b11c47e72afe.jpg)
+![哨兵模式](pic/redis/哨兵模式.png)
 
 
 Redis 的 Sentinel 系统用于管理多个 Redis 服务器（instance）， 该系统执行以下三个任务：
 
-监控（Monitoring）： Sentinel 会不断地检查你的主服务器和从服务器是否运作正常。
-提醒（Notification）： 当被监控的某个 Redis 服务器出现问题时， Sentinel 可以通过 API 向管理员或者其他应用程序发送通知。
-自动故障迁移（Automatic failover）： 当一个主服务器不能正常工作时， Sentinel 会开始一次自动故障迁移操作， 它会将失效主服务器的其中一个从服务器升级为新的主服务器， 并让失效主服务器的其他从服务器改为复制新的主服务器； 当客户端试图连接失效的主服务器时， 集群也会向客户端返回新主服务器的地址， 使得集群可以使用新主服务器代替失效服务器。
+* 监控（Monitoring）： Sentinel 会不断地检查你的主服务器和从服务器是否运作正常。
+* 提醒（Notification）： 当被监控的某个 Redis 服务器出现问题时， Sentinel 可以通过 API 向管理员或者其他应用程序发送通知。
+* 自动故障迁移（Automatic failover）： 当一个主服务器不能正常工作时， Sentinel 会开始一次自动故障迁移操作， 它会将失效主服务器的其中一个从服务器升级为新的主服务器， 并让失效主服务器的其他从服务器改为复制新的主服务器； 当客户端试图连接失效的主服务器时， 集群也会向客户端返回新主服务器的地址， 使得集群可以使用新主服务器代替失效服务器。
 Redis Sentinel 是一个分布式系统， 你可以在一个架构中运行多个 Sentinel 进程（progress）， 这些进程使用流言协议（gossip protocols)来接收关于主服务器是否下线的信息， 并使用投票协议（agreement protocols）来决定是否执行自动故障迁移， 以及选择哪个从服务器作为新的主服务器。
 
 虽然 Redis Sentinel 释出为一个单独的可执行文件 redis-sentinel ， 但实际上它只是一个运行在特殊模式下的 Redis 服务器， 你可以在启动一个普通 Redis 服务器时通过给定 --sentinel 选项来启动 Redis Sentinel 。
@@ -3305,7 +3327,7 @@ Redis Sentinel 是一个分布式系统， 你可以在一个架构中运行多�
 
 
 #### 1.5.2.2. 基本操作
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **哨兵配置**
 
@@ -3313,10 +3335,13 @@ Redis Sentinel 是一个分布式系统， 你可以在一个架构中运行多�
 sentinel monitor master-name ip_host port quorum
 sentinel monitor mymaster 127.0.0.1 6379 1
 
+sentinel monitor mymaster 127.0.0.1 6379 1
+sentinel down-after-milliseconds mymaster 60000
+sentinel failover-timeout mymaster 180000
+sentinel parallel-syncs mymaster 1
+
 ```
-mymaster表示要监控的主数据库的名字，可以自定义，由大小写字母，数字，".-_"组成。
-后边为主数据库的地址
-最后的quorum表示最低通过的票数 。也就是执行故障恢复操作前至少有几个哨兵节点同意。
+mymaster表示要监控的主数据库的名字，可以自定义，由大小写字母，数字，".-_"组成。后边为主数据库的地址.最后的quorum表示最低通过的票数 。也就是执行故障恢复操作前至少有几个哨兵节点同意。
 
 配置哨兵时，只需要配置主数据库即可，会自动从主数据库中读取到其所有的从数据库地址等信息。
 
@@ -3530,7 +3555,7 @@ TILT 模式是一种特殊的保护模式： 当 Sentinel 发现系统有些不�
 
 
 #### 1.5.2.10. 实现原理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ##### 1.5.2.10.1. 三个定时监控
 
@@ -3604,15 +3629,22 @@ Redis Sentinel通过三个定时监控任务完成对各个节点发现和监控
 注， 当其恢复后命令它去复制新的主节点
 
 #### 1.5.2.11. 哨兵的部署
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
-### 1.5.3. 集群
-<a href="#menu" style="float:right">目录</a>
+### 1.5.3. 集群Cluster
+<a href="#menu" >目录</a>
 
 #### 1.5.3.1. 集群简介
 
 Redis 集群是一个可以在多个 Redis 节点之间进行数据共享的设施（installation）。
+
+Redis提供的分布式数据库方案， 集群通过分片来进行数据共享， 并提供复制和故障转移功能。 一个Redis集群通常由多个节点（node） 组成， 在刚开始的时候， 每个节点都是相互独立的， 它们都处于一个只包含自己的集群当中， 要组建一个真正可工作的集群， 必须将这些独立的节点连接起来， 构成一个包含多个节点的集群。
+* 3.0 version 支持
+* Redis集群无中心节点
+* 由多个Redis服务器组成的分布式网络服务集群
+* 每个Redis服务器被称为节点Node,节点之间会相互通信（ gossip） 协议，两两相连。
+
 
 Redis 集群不支持那些需要同时处理多个键的 Redis 命令， 因为执行这些命令需要在多个 Redis 节点之间移动数据， 并且在高负载的情况下， 这些命令将降低 Redis 集群的性能， 并导致不可预测的行为。
 
@@ -3622,8 +3654,10 @@ Redis 集群提供了以下两个好处：
 * 将数据自动切分（split）到多个节点的能力。
 * 当集群中的一部分节点失效或者无法进行通讯时， 仍然可以继续处理命令请求的能力。
 
+![集群](pic/redis/集群.png)
+
 #### 1.5.3.2. 集群数据分布
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 分布式数据库首先要解决把整个数据集按照分区规则映射到多个节点的问题， 即把数据集划分到多个节点上， 每个节点负责整体数据的一个子集，从而降低每个节点的请求量，达到负载均衡的效果。
 
@@ -3691,7 +3725,7 @@ Redis 集群使用数据分片（sharding）而非一致性哈希（consistency 
 不过如果节点 B 和 B1 都下线的话， Redis 集群还是会停止运作。
 
 #### 1.5.3.5. Redis 集群的一致性保证（guarantee）
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 Redis 集群不保证数据的强一致性（strong consistency）： 在特定条件下， Redis 集群可能会丢失已经被执行过的写命令。
 
@@ -3719,7 +3753,7 @@ Redis 集群另外一种可能会丢失命令的情况是， 集群出现网络�
 * 对于少数一方， 如果一个主节点未能在节点超时时间所设定的时限内重新联系上集群， 那么它将停止处理写命令， 并向客户端报告错误。
 
 #### 1.5.3.6. 节点通信
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ##### 1.5.3.6.1. 通信流程
 
@@ -3795,7 +3829,7 @@ union clusterMsgData {
 
 
 #### 1.5.3.7. 集群伸缩
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ##### 1.5.3.7.1. 伸缩原理
 
@@ -3816,7 +3850,7 @@ union clusterMsgData {
 
 
 #### 1.5.3.8. 请求路由
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ##### 1.5.3.8.1. 请求重定向
 
@@ -3834,7 +3868,7 @@ union clusterMsgData {
 
 
 #### 1.5.3.9. 故障转移
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ##### 1.5.3.9.1. 故障发现
 
@@ -3941,7 +3975,7 @@ typedef struct clusterNodeFailReport {
 
 
 #### 1.5.3.10. 集群运维
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ##### 1.5.3.10.1. 集群完整性
 
@@ -3962,7 +3996,7 @@ typedef struct clusterNodeFailReport {
 ##### 1.5.3.10.7. 数据迁移
 
 ## 1.6. 事务
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.6.1. 概述
 
@@ -3987,7 +4021,7 @@ exec
 
 
 ### 1.6.2. 错误处理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 导致命令执行错误的场景
     * 语法错误。
@@ -4003,7 +4037,7 @@ exec
 
 
 ### 1.6.3. WATCH命令介绍
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * WATCH key [key ...]
     * 监视一个(或多个) key ，如果在事务执行之前这个(或这些) key 被其他命令所改动，那么事务将被打断。
@@ -4017,7 +4051,7 @@ WATCH必须在事务开始之前执行 。
 watch可以实现乐观锁。
 
 ### 1.6.4. 优化
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 上面的 Redis 事务在发送每个指令到事务缓存队列时都要经过一次网络读写，当一个事务内部的指令较多时，需要的网络 IO 时间也会线性增长。所以通常 Redis 的客户端在执行事务时都会结合 pipeline 一起使用，这样可以将多次 IO 操作压缩为单次 IO 操作。比如我们在使用 Python 的 Redis 客户端时执行事务时是要强制使用 pipeline 的。
 
@@ -4030,10 +4064,10 @@ values = pipe.execute()
 ```
 
 ## 1.7. 过期时间与内存优化
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.7.1. 常用命令
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 常用命令的有
 ```
@@ -4060,7 +4094,7 @@ EXPIRE/PEXPIRE只能对String类型的设置过期时间，无法对其他类型
 
 
 ### 1.7.2. 实现访问频率
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * **方式1，实现单位时间的访问限制**
 
@@ -4113,7 +4147,7 @@ else{
 ```
 
 ### 1.7.3. 键的过期策略
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 |淘汰键策略|说明|
 |---|---|
@@ -4190,10 +4224,10 @@ else{
 
 
 ### 1.7.4. 内存优化
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.7.4.1. 内存消耗
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 有些内存消耗是必不可少的， 而有些可以通过参数调整和合理使用来规避内存浪费。 内存消耗可以分为进程自身消耗和子进程消耗。
 
@@ -4308,7 +4342,7 @@ Redis默认的内存分配器采用jemalloc， 可选的分配器还有： glibc
 * 排查当前系统是否支持并开启THP， 如果开启建议关闭， 防止copy-onwrite期间内存过度消耗。
 
 #### 1.7.4.2. 内存管理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ##### 1.7.4.2.1. 设置内存上限
 
@@ -4329,7 +4363,7 @@ Redis的内存上限可以通过config set maxmemory进行动态修改， 即修
 ##### 1.7.4.2.3. 内存回收策略
 
 #### 1.7.4.3. 内存优化
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ##### 1.7.4.3.1. redisObject对象
 
@@ -4423,7 +4457,7 @@ Pipeline虽然好用， 但是每次Pipeline组装的命令个数不能没有节
 ## 1.9. Redis 安全
 
 ### 1.9.1. 指令安全
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 Redis 有一些非常危险的指令，这些指令会对 Redis 的稳定以及数据安全造成非常严重的影响。比如 keys 指令会导致 Redis 卡顿， flushdb 和 flushall 会让 Redis 的所有数据全部清空。如何避免人为操作失误导致这些灾难性的后果也是运维人员特别需要注意的风险点之一。
 Redis 在配置文件中提供了 rename-command 指令用于将某些危险的指令修改成特别的名称，用来避免人为误操作。比如在配置文件的 security 块增加下面的内容:
@@ -4437,7 +4471,7 @@ rename-command flushall ""
 ```
 
 ### 1.9.2. 端口安全
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 Redis 默认会监听 *:6379，如果当前的服务器主机有外网地址， Redis 的服务将会直接暴露在公网上，任何一个初级黑客使用适当的工具对 IP 地址进行端口扫描就可以探测出来。
 
@@ -4455,14 +4489,14 @@ masterauth yoursecurepasswordhereplease
 ```
 
 ### 1.9.3. Lua脚本安全
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 开发者必须禁止 Lua 脚本由用户输入的内容 (UGC) 生成，这可能会被黑客利用以植入恶意的攻击代码来得到 Redis 的主机权限。
 同时，我们应该让 Redis 以普通用户的身份启动，这样即使存在恶意代码黑客也无法拿到 root 权限。
 
 
 ### 1.9.4. SSL代理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 Redis 并不支持 SSL 链接，意味着客户端和服务器之间交互的数据不应该直接暴露在公网上传输，否则会有被窃听的风险。如果必须要用在公网上，可以考虑使用 SSL 代理。
 SSL 代理比较常见的有 ssh，不过 Redis 官方推荐使用 spiped 工具，可能是因为spiped 的功能相对比较单一，使用也比较简单，易于理解。下面这张图是使用 spiped 对 ssh通道进行二次加密 (因为 ssh 通道也可能存在 bug)
@@ -4474,7 +4508,7 @@ SSL 代理比较常见的有 ssh，不过 Redis 官方推荐使用 spiped 工具
 
 
 ### 1.10.1. PubSub 缺点
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 PubSub 的生产者传递过来一个消息， Redis 会直接找到相应的消费者传递过去。如果一个消费者都没有，那么消息直接丢弃。如果开始有三个消费者，一个消费者突然挂掉了，生产者会继续发送消息，另外两个消费者可以持续收到消息。但是挂掉的消费者重新连上的时候，这断连期间生产者发送的消息，对于这个消费者来说就是彻底丢失了。
 如果 Redis 停机重启， PubSub 的消息是不会持久化的，毕竟 Redis 宕机就相当于一个消费者都没有，所有的消息直接被丢弃。
@@ -4484,7 +4518,7 @@ PubSub 的生产者传递过来一个消息， Redis 会直接找到相应的消
 
 
 ## 1.11. LUA脚本
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.11.1. LUA语法
 
@@ -4777,7 +4811,7 @@ end
 ```
 
 ### 1.11.2. Redis使用LUA
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.11.2.1. 常用命令
 * **EVAL**
@@ -5041,10 +5075,10 @@ public class TestLuaFile {
 }
 ```
 ## 1.12. 客户端
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.12.1. 通信协议
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 Redis的通信协议首先是以行来划分，每行以\r\n(换行符)行结束。每一行都有一个消息头，消息头共分为5种分别如下:
 (+) 表示一个正确的状态信息，具体信息是当前行+后面的字符。
@@ -5066,10 +5100,10 @@ $6 #第三行长度为6
 ```
 
 ### 1.12.2. 客户端管理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.12.2.1. Redis 的info 命令
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * server : 一般 Redis 服务器信息，包含以下域：
     * redis_version : Redis 服务器版本
@@ -5118,7 +5152,7 @@ $6 #第三行长度为6
 * keyspace : 数据库相关的统计信息
 
 #### 1.12.2.2. 客户端API
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **client list**
 * 127.0.0.1:6379> client list
@@ -5229,10 +5263,10 @@ typedef struct redisClient {
 #### 1.12.2.4. 客户端统计片段
 
 ### 1.12.3. 客户端常见异常
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.12.4. 客户端案例分析
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 #### 1.12.4.1. Redis 内存陡增
@@ -5255,7 +5289,7 @@ typedef struct redisClient {
 
 
 ## 1.13. 线程模型
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.13.1. 相关概念
@@ -5293,7 +5327,7 @@ Nginx 和 Node 的事件处理原理和 Redis 也是类似的
 
 
 ### 1.13.2. 阻塞问题
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 Redis是典型的单线程架构， 所有的读写操作都是在一条主线程中完成的。 当Redis用于高并发场景时， 这条线程就变成了它的生命线。 如果出现阻塞， 哪怕是很短时间， 对于我们的应用来说都是噩梦。 导致阻塞问题的场景大致分为内在原因和外在原因：
 * 内在原因包括： 不合理地使用API或数据结构、 CPU饱和、 持久化阻塞等。
@@ -5446,7 +5480,7 @@ Redis用于大量分布式节点访问且生命周期比较短的场景时， �
 
 
 ## 1.14. 慢查询日志
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 慢查询日志用于记录执行时间超过阈值的命令
 * 参数配置
@@ -5491,13 +5525,13 @@ config rewrite
     * 由于慢查询日志是一个先进先出的队列， 也就是说如果慢查询比较多的情况下， 可能会丢失部分慢查询命令， 为了防止这种情况发生， 可以定期执行slow get命令将慢查询日志持久化到其他存储中（例如MySQL） ， 然后可以制作可视化界面进行查询， 第13章介绍的Redis私有云CacheCloud提供了这样的功能， 好的工具可以让问题排查事半功倍
     
 ## 1.15. 监视器
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ## 1.16. Redis使用注意事项
 
 ### 1.16.1. Linux 配置优化
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ```
@@ -5526,7 +5560,7 @@ sysctl vm.overcommit_memory=1
 
 ```
 ### 1.16.2. flushall/flushdb误操作
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 * flushdb用于清除当前数据库的数据
@@ -5570,10 +5604,10 @@ Redis从节点同步了主节点的flush命令， 所以从节点的数据也是
 * 重启Redis主节点服务器， 恢复数据。
 
 ### 1.16.3. 安全的redis
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.16.4. bigkey处理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 bigkey是指key对应的value所占的内存空间比较大.例如一个字符串类型的value可以最大存到512MB
 * 字符串类型： 体现在单个value值很大， 一般认为超过10KB就是bigkey， 但这个值和具体的OPS相关。
@@ -5617,7 +5651,7 @@ serializedlength不代表真实的字节大小， 它返回对象使用RDB编码
 
 
 ### 1.16.5. 热点key
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 * 热点key:访问频率高的key
@@ -5655,7 +5689,7 @@ serializedlength不代表真实的字节大小， 它返回对象使用RDB编码
 ## 1.17. 关于redis性能问题分析和优化
 
 ### 1.17.1. 如何查看Redis性能
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 info命令输出的数据可以分为10个分类，分别是：
 server,clients,memory,persistence,stats,replication,cpu,commandstats,cluster,keyspace
@@ -5663,7 +5697,7 @@ server,clients,memory,persistence,stats,replication,cpu,commandstats,cluster,key
 为了快速定位并解决性能问题，这里选择5个关键性的数据指标，它包含了大多数人在使用Redis上会经常碰到的性能问题
 
 ### 1.17.2. 内存
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 上图中used_memory 字段数据表示的是：由Redis分配器分配的内存总量，以字节（byte）为单位。 其中used_memory_human和used_memory是一样的，以G为单位显示
 
@@ -5723,7 +5757,7 @@ no-enviction：禁止淘汰数据。
 通过设置maxmemory为系统可用内存的45%或95%(取决于持久化策略)和设置“maxmemory-policy”为“volatile-ttl”或“allkeys-lru”(取决于过期设置)，可以比较准确的限制Redis最大内存使用率，在绝大多数场景下使用这2种方式可确保Redis不会进行内存交换。倘若你担心由于限制了内存使用率导致丢失数据的话，可以设置noneviction值禁止淘汰数据。
 
 ### 1.17.3. 命令处理数
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 在info信息里的total_commands_processed字段显示了Redis服务处理命令的总数，其命令来自一个或多个Redis客户端
 
@@ -5778,7 +5812,7 @@ hget -> hmget
 * 避免操作大集合的慢命令：如果命令处理频率过低导致延迟时间增加，这可能是因为使用了高时间复杂度的命令操作导致，这意味着每个命令从集合中获取数据的时间增大。 所以减少使用高时间复杂的命令，能显著的提高的Redis的性能。
 
 ### 1.17.4. 延迟时间
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 Redis的延迟数据是无法从info信息中获取的。可以用 Redis-cli工具加 --latency参数运行，如:
 
 ```
@@ -5886,7 +5920,7 @@ Redis默认允许客户端连接的最大数量是10000。若是看到连接数�
 **5. 性能数据指标**:分析解决Redis性能问题，通常需要把延迟时间的数据变化与其他性能指标的变化相关联起来。命令处理总数下降的发生可能是由慢命令阻塞了整个系统，但如果命令处理总数的增加，同时内存使用率也增加，那么就可能是由于内存交换引起的性能问题。对于这种性能指标相关联的分析，需要从历史数据上来观察到数据指标的重要变化，此外还可以观察到单个性能指标相关联的所有其他性能指标信息。这些数据可以在Redis上收集，周期性的调用内容为Redis info的脚本，然后分析输出的信息，记录到日志文件中。当延迟发生变化时，用日志文件配合其他数据指标，把数据串联起来排查定位问题。
 
 ### 1.17.5. 内存碎片率
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 info信息中的mem_fragmentation_ratio给出了内存碎片率的数据指标，它是由操系统分配的内存除以Redis分配的内存得出：
 ```
@@ -5930,7 +5964,7 @@ mem_allocator:jemalloc-3.6.0
 **3.修改内存分配器：**Redis支持glibc’s malloc、jemalloc11、tcmalloc几种不同的内存分配器，每个分配器在内存分配和碎片上都有不同的实现。不建议普通管理员修改Redis默认内存分配器，因为这需要完全理解这几种内存分配器的差异，也要重新编译Redis。这个方法更多的是让其了解Redis内存分配器所做的工作，当然也是改善内存碎片问题的一种办法。
 
 ### 1.17.6. 回收key
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 info信息中的evicted_keys字段显示的是，因为maxmemory限制导致key被回收删除的数量。回收key的情况只会发生在设置maxmemory值后，不设置会发生内存交换。 当Redis由于内存压力需要回收一个key时，Redis首先考虑的不是回收最旧的数据，而是在最近最少使用的key或即将过期的key中随机选择一个key，从数据集中删除。
 
