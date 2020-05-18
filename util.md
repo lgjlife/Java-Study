@@ -6898,6 +6898,8 @@ Ctrl+Shift+F7，在文件中高亮显示用法
 
 此插件可用来方便显示maven的依赖树，在没有此插件时，如果想看maven的依赖树需要输入命令行： mvn dependency:tree  才可查看依赖。如果想看是否有依赖包冲突的话也需要输入命令行等等的操作。而如果安装Maven Helper插件就可免去命令行困扰。通过界面即可操作完成
 
+**GenerateAllSetter**
+GenerateAllSetter可以一键将对象属性都 set 出来.在方法中的对象使用快捷键：Alt+Enter
 
 **Lombok Plugin**
 Lombok必须安装该插件才能使用

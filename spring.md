@@ -149,205 +149,213 @@
     - [6.5. 过滤器](#65-过滤器)
         - [6.5.1. 过滤器和拦截器的区别：](#651-过滤器和拦截器的区别)
         - [6.5.2. 拦截器（Interceptor）和过滤器（Filter）的一些用途](#652-拦截器interceptor和过滤器filter的一些用途)
-- [7. SpringBoot](#7-springboot)
-    - [7.1. 基本概念](#71-基本概念)
-    - [7.2. 基本使用](#72-基本使用)
-    - [7.3. Spring Boot 环境下创建Bean](#73-spring-boot-环境下创建bean)
-        - [7.3.1. 方式1:使用@Component等注解：](#731-方式1使用component等注解)
-        - [7.3.2. 方式2:使用@Bean注解](#732-方式2使用bean注解)
-        - [7.3.3. 方式3:使用@Import注解](#733-方式3使用import注解)
-        - [7.3.4. 方式4:使用ImportSelector接口](#734-方式4使用importselector接口)
-        - [7.3.5. 方式5:手动注册到容器](#735-方式5手动注册到容器)
-    - [7.4. 使用不同的WEB容器](#74-使用不同的web容器)
-    - [7.5. 配置文件](#75-配置文件)
-        - [7.5.1. bootstrap.yml与application.yml区别](#751-bootstrapyml与applicationyml区别)
-        - [7.5.2. 多环境配置](#752-多环境配置)
-            - [7.5.2.1. 配置文件](#7521-配置文件)
-            - [7.5.2.2. 多环境配置](#7522-多环境配置)
-        - [7.5.3. 注解ConfigurationProperties注入yml配置文件中的数据](#753-注解configurationproperties注入yml配置文件中的数据)
-        - [7.5.4. 使用随机数](#754-使用随机数)
-        - [7.5.5. 从命令行指定参数](#755-从命令行指定参数)
-        - [7.5.6. 配置日志](#756-配置日志)
-    - [7.6. 启动类 @SpringBootApplication 注解](#76-启动类-springbootapplication-注解)
-        - [7.6.1. @Inherited 注解](#761-inherited-注解)
-        - [7.6.2. @SpringBootConfiguration](#762-springbootconfiguration)
-        - [7.6.3. @EnableAutoConfiguration](#763-enableautoconfiguration)
-        - [7.6.4. @ComponentScan](#764-componentscan)
-    - [7.7. Spring Boot Starter](#77-spring-boot-starter)
-        - [7.7.1. 常用的Starter](#771-常用的starter)
-        - [7.7.2. 创建自己的Starter](#772-创建自己的starter)
-        - [7.7.3. Starter原理](#773-starter原理)
-    - [7.8. Actuator 的端点](#78-actuator-的端点)
-        - [7.8.1. 揭秘 Actuator 的端点](#781-揭秘-actuator-的端点)
-        - [7.8.2. 自定义监控](#782-自定义监控)
-    - [7.9. Spring Boot 项目发布](#79-spring-boot-项目发布)
-    - [7.10. Maven打包](#710-maven打包)
-    - [7.11. Spring Boot原理分析](#711-spring-boot原理分析)
-        - [7.11.1. 启动流程分析](#7111-启动流程分析)
-            - [7.11.1.1. 创建SpringApplication对象](#71111-创建springapplication对象)
-            - [7.11.1.2. 执行Run方法](#71112-执行run方法)
-    - [7.12. 种保护 Spring Boot 应用的绝佳方法](#712-种保护-spring-boot-应用的绝佳方法)
-        - [7.12.1. 在生产中使用HTTPS](#7121-在生产中使用https)
-        - [7.12.2. 使用Snyk检查你的依赖关系](#7122-使用snyk检查你的依赖关系)
-        - [7.12.3. 升级到最新版本](#7123-升级到最新版本)
-        - [7.12.4. 启用CSRF保护](#7124-启用csrf保护)
-        - [7.12.5. 使用内容安全策略防止XSS攻击](#7125-使用内容安全策略防止xss攻击)
-        - [7.12.6. 使用OpenID Connect进行身份验证](#7126-使用openid-connect进行身份验证)
-        - [7.12.7. 管理密码？使用密码哈希！](#7127-管理密码使用密码哈希)
-        - [7.12.8. 安全地存储秘密](#7128-安全地存储秘密)
-        - [7.12.9. 使用OWASP的ZAP测试您的应用程序](#7129-使用owasp的zap测试您的应用程序)
-        - [7.12.10. 让你的安全团队进行代码审查](#71210-让你的安全团队进行代码审查)
-    - [7.13. 项目实践](#713-项目实践)
-        - [7.13.1. 访问数据库](#7131-访问数据库)
-        - [7.13.2. 跨域配置](#7132-跨域配置)
-        - [7.13.3. 全局异常处理](#7133-全局异常处理)
-    - [7.14. 其他一些问题](#714-其他一些问题)
-        - [7.14.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？](#7141-如何在-spring-boot-启动的时候运行一些特定的代码)
-        - [7.14.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？](#7142-如何重新加载spring-boot上的更改而无需重新启动服务器)
-        - [7.14.3. Spring Boot 有哪几种读取配置的方式？](#7143-spring-boot-有哪几种读取配置的方式)
-- [8. SpringCloud](#8-springcloud)
-    - [8.1. 基础知识](#81-基础知识)
-        - [8.1.1. 微服务概念](#811-微服务概念)
-        - [8.1.2. SpringCloud子项目](#812-springcloud子项目)
-        - [8.1.3. 版本说明](#813-版本说明)
-    - [8.2. 服务治理Eureka](#82-服务治理eureka)
-        - [8.2.1. 基本使用](#821-基本使用)
-        - [8.2.2. 高可用注册中心](#822-高可用注册中心)
-        - [8.2.3. 原理说明](#823-原理说明)
-            - [8.2.3.1. 基础模块说明](#8231-基础模块说明)
-            - [8.2.3.2. Region,Zone](#8232-regionzone)
-            - [8.2.3.3. 源码分析](#8233-源码分析)
-                - [8.2.3.3.1. EnableDiscoveryClient注解说明](#82331-enablediscoveryclient注解说明)
-                - [8.2.3.3.2. 服务注册](#82332-服务注册)
-                - [8.2.3.3.3. 服务续约](#82333-服务续约)
-        - [8.2.4. 更多配置说明](#824-更多配置说明)
-            - [8.2.4.1. 服务注册类配置](#8241-服务注册类配置)
-            - [8.2.4.2. 服务实例类配置](#8242-服务实例类配置)
-    - [8.3. 负载均衡Ribbon](#83-负载均衡ribbon)
-        - [8.3.1. 基本使用](#831-基本使用)
-        - [8.3.2. 原理说明](#832-原理说明)
-            - [8.3.2.1. 源码分析](#8321-源码分析)
-            - [8.3.2.2. 负载均衡器](#8322-负载均衡器)
-            - [8.3.2.3. 负载均衡策略](#8323-负载均衡策略)
-            - [8.3.2.4. 配置详解](#8324-配置详解)
-        - [8.3.3. ribbon配置](#833-ribbon配置)
-            - [8.3.3.1. 配置参数说明](#8331-配置参数说明)
-            - [8.3.3.2. 重试机制](#8332-重试机制)
-    - [8.4. 声明式服务调用feign](#84-声明式服务调用feign)
-        - [8.4.1. 使用案例](#841-使用案例)
-        - [8.4.2. 实现原理](#842-实现原理)
-            - [8.4.2.1. 配置类](#8421-配置类)
-            - [8.4.2.2. 启动注解说明](#8422-启动注解说明)
-            - [8.4.2.3. 调用实现原理](#8423-调用实现原理)
-            - [8.4.2.4. 总结](#8424-总结)
-    - [8.5. 服务容错保护 Hystrix](#85-服务容错保护-hystrix)
-        - [8.5.1. Ribbon中使用Hystrix](#851-ribbon中使用hystrix)
-        - [8.5.2. Feign中使用Hystrix](#852-feign中使用hystrix)
-        - [8.5.3. Hystrix详解](#853-hystrix详解)
-            - [8.5.3.1. 背景](#8531-背景)
-            - [8.5.3.2. 基本认识](#8532-基本认识)
-            - [8.5.3.3. hystrix适用场景](#8533-hystrix适用场景)
-            - [8.5.3.4. 注解说明](#8534-注解说明)
-            - [8.5.3.5. 如何使用](#8535-如何使用)
-                - [8.5.3.5.1. 基本的实例](#85351-基本的实例)
-                - [8.5.3.5.2. 同步执行](#85352-同步执行)
-                - [8.5.3.5.3. 异步执行](#85353-异步执行)
-                - [8.5.3.5.4. Reactive Execution](#85354-reactive-execution)
-                - [8.5.3.5.5. Reactive Commands](#85355-reactive-commands)
-                - [8.5.3.5.6. Fallback](#85356-fallback)
-                - [8.5.3.5.7. Error Propagation](#85357-error-propagation)
-                - [8.5.3.5.8. Command Name](#85358-command-name)
-                - [8.5.3.5.9. Command Group](#85359-command-group)
-                - [8.5.3.5.10. Command Thread-Pool](#853510-command-thread-pool)
-                - [8.5.3.5.11. Request Cache](#853511-request-cache)
-                - [8.5.3.5.12. Request Collapsing](#853512-request-collapsing)
-                - [8.5.3.5.13. Request Context Setup](#853513-request-context-setup)
-                - [8.5.3.5.14. Common Patterns](#853514-common-patterns)
-                - [8.5.3.5.15. Fail Silent](#853515-fail-silent)
-                - [8.5.3.5.16. Fallback: Static](#853516-fallback-static)
-                - [8.5.3.5.17. Fallback: Stubbed](#853517-fallback-stubbed)
-                - [8.5.3.5.18. Fallback: Cache via Network](#853518-fallback-cache-via-network)
-                - [8.5.3.5.19. Primary + Secondary with Fallback](#853519-primary--secondary-with-fallback)
-                - [8.5.3.5.20. Client Doesn't Perform Network Access](#853520-client-doesnt-perform-network-access)
-                - [8.5.3.5.21. Get-Set-Get with Request Cache Invalidation](#853521-get-set-get-with-request-cache-invalidation)
-                - [8.5.3.5.22. Get-Set-Get with Request Cache Invalidation](#853522-get-set-get-with-request-cache-invalidation)
-            - [8.5.3.6. 工作原理](#8536-工作原理)
-        - [8.5.4. Spring Cloud 中使用Hystrix原理](#854-spring-cloud-中使用hystrix原理)
-        - [8.5.5. Hystrix监控](#855-hystrix监控)
-    - [8.6. API网关服务](#86-api网关服务)
-        - [8.6.1. zuul](#861-zuul)
-        - [8.6.2. GateWay](#862-gateway)
-    - [8.7. 分布式配置中心Config](#87-分布式配置中心config)
-        - [8.7.1. 基本使用](#871-基本使用)
-            - [8.7.1.1. 配置中心](#8711-配置中心)
-            - [8.7.1.2. bootstrap.yml与application.yml区别](#8712-bootstrapyml与applicationyml区别)
-            - [8.7.1.3. 客户端配置](#8713-客户端配置)
-            - [8.7.1.4. 刷新配置](#8714-刷新配置)
-        - [8.7.2. 原理说明](#872-原理说明)
-        - [8.7.3. 更多使用方式](#873-更多使用方式)
-    - [8.8. 消息总线bus](#88-消息总线bus)
-        - [8.8.1. 消息代理](#881-消息代理)
-    - [8.9. 消息驱动的微服务Stream](#89-消息驱动的微服务stream)
-    - [8.10. 分布式服务跟踪Sleuth](#810-分布式服务跟踪sleuth)
-        - [8.10.1. 基本使用](#8101-基本使用)
-        - [8.10.2. 跟踪原理](#8102-跟踪原理)
-            - [8.10.2.1. 基本实现原理](#81021-基本实现原理)
-            - [8.10.2.2. 支持的组件](#81022-支持的组件)
-            - [8.10.2.3. 一些基本概念](#81023-一些基本概念)
-            - [8.10.2.4. zipkin](#81024-zipkin)
-            - [8.10.2.5. 调用过程](#81025-调用过程)
-- [9. 单元测试](#9-单元测试)
-    - [9.1. Junit](#91-junit)
-        - [9.1.1. 概述](#911-概述)
-        - [9.1.2. JUnit 中的重要的 API](#912-junit-中的重要的-api)
-        - [9.1.3. 常用注解](#913-常用注解)
-        - [9.1.4. 套件测试](#914-套件测试)
-    - [9.2. TestNG测试](#92-testng测试)
-        - [9.2.1. 概述](#921-概述)
-        - [9.2.2. JUnit 4 Vs TestNG比较](#922-junit-4-vs-testng比较)
-        - [9.2.3. 注解说明](#923-注解说明)
-        - [9.2.4. 测试案例](#924-测试案例)
-            - [9.2.4.1. 基本例子](#9241-基本例子)
-            - [9.2.4.2. 预期异常测试](#9242-预期异常测试)
-            - [9.2.4.3. 忽略测试](#9243-忽略测试)
-            - [9.2.4.4. 超时测试](#9244-超时测试)
-            - [9.2.4.5. 分组测试](#9245-分组测试)
-    - [9.3. Mockito](#93-mockito)
-        - [9.3.1. 介绍](#931-介绍)
-        - [9.3.2. Mockito说明](#932-mockito说明)
-        - [9.3.3. 例子](#933-例子)
-            - [9.3.3.1. 基本的例子](#9331-基本的例子)
-            - [9.3.3.2. 验证行为](#9332-验证行为)
-            - [9.3.3.3. 模拟我们所期望的结果](#9333-模拟我们所期望的结果)
-            - [9.3.3.4. RETURNS_SMART_NULLS和RETURNS_DEEP_STUBS](#9334-returns_smart_nulls和returns_deep_stubs)
-            - [9.3.3.5. 模拟方法体抛出异常](#9335-模拟方法体抛出异常)
-            - [9.3.3.6. 使用注解来快速模拟](#9336-使用注解来快速模拟)
-            - [9.3.3.7. 参数匹配](#9337-参数匹配)
-            - [9.3.3.8. 自定义参数匹配](#9338-自定义参数匹配)
-            - [9.3.3.9. 捕获参数来进一步断言](#9339-捕获参数来进一步断言)
-            - [9.3.3.10. 使用方法预期回调接口生成期望值（Answer结构）](#93310-使用方法预期回调接口生成期望值answer结构)
-            - [9.3.3.11. 修改对未预设的调用返回默认期望](#93311-修改对未预设的调用返回默认期望)
-            - [9.3.3.12. 用spy监控真实对象](#93312-用spy监控真实对象)
-            - [9.3.3.13. 真实的部分mock](#93313-真实的部分mock)
-            - [9.3.3.14. 重置mock](#93314-重置mock)
-            - [9.3.3.15. 验证确切的调用次数](#93315-验证确切的调用次数)
-            - [9.3.3.16. 连续调用](#93316-连续调用)
-            - [9.3.3.17. 验证执行顺序](#93317-验证执行顺序)
-            - [9.3.3.18. 确保模拟对象上无互动发生](#93318-确保模拟对象上无互动发生)
-            - [9.3.3.19. 找出冗余的互动(即未被验证到的)](#93319-找出冗余的互动即未被验证到的)
-        - [9.3.4. Mockito如何实现Mock[3]](#934-mockito如何实现mock3)
-    - [9.4. 控制层测试](#94-控制层测试)
-        - [9.4.1. 基本使用](#941-基本使用)
-        - [9.4.2. 相关类说明](#942-相关类说明)
-            - [9.4.2.1. MockMvcBuilder/MockMvcBuilders](#9421-mockmvcbuildermockmvcbuilders)
-            - [9.4.2.2. MockMvc](#9422-mockmvc)
-            - [9.4.2.3. RequestBuilder/MockMvcRequestBuilders](#9423-requestbuildermockmvcrequestbuilders)
-            - [9.4.2.4. ResultActions](#9424-resultactions)
-            - [9.4.2.5. ResultMatcher/MockMvcResultMatchers](#9425-resultmatchermockmvcresultmatchers)
-            - [9.4.2.6. ResultHandler/MockMvcResultHandlers](#9426-resulthandlermockmvcresulthandlers)
-            - [9.4.2.7. MvcResult](#9427-mvcresult)
-    - [9.5. 服务层测试](#95-服务层测试)
-    - [9.6. DAO层测试](#96-dao层测试)
+- [7. Webflux](#7-webflux)
+    - [7.1. 概述](#71-概述)
+        - [7.1.1. SpringMVC与SpringWebFlux](#711-springmvc与springwebflux)
+        - [7.1.2. Reactive Spring Web](#712-reactive-spring-web)
+    - [7.2. 基本例子](#72-基本例子)
+    - [7.3. Mono常用方法说明](#73-mono常用方法说明)
+- [8. SpringBoot](#8-springboot)
+    - [8.1. 基本概念](#81-基本概念)
+    - [8.2. 基本使用](#82-基本使用)
+    - [8.3. Spring Boot 环境下创建Bean](#83-spring-boot-环境下创建bean)
+        - [8.3.1. 方式1:使用@Component等注解：](#831-方式1使用component等注解)
+        - [8.3.2. 方式2:使用@Bean注解](#832-方式2使用bean注解)
+        - [8.3.3. 方式3:使用@Import注解](#833-方式3使用import注解)
+        - [8.3.4. 方式4:使用ImportSelector接口](#834-方式4使用importselector接口)
+        - [8.3.5. 方式5:手动注册到容器](#835-方式5手动注册到容器)
+    - [8.4. 使用不同的WEB容器](#84-使用不同的web容器)
+    - [8.5. 配置文件](#85-配置文件)
+        - [8.5.1. bootstrap.yml与application.yml区别](#851-bootstrapyml与applicationyml区别)
+        - [8.5.2. 多环境配置](#852-多环境配置)
+            - [8.5.2.1. 配置文件](#8521-配置文件)
+            - [8.5.2.2. 多环境配置](#8522-多环境配置)
+        - [8.5.3. 注解ConfigurationProperties注入yml配置文件中的数据](#853-注解configurationproperties注入yml配置文件中的数据)
+        - [8.5.4. 使用随机数](#854-使用随机数)
+        - [8.5.5. 从命令行指定参数](#855-从命令行指定参数)
+        - [8.5.6. 配置日志](#856-配置日志)
+    - [8.6. 启动类 @SpringBootApplication 注解](#86-启动类-springbootapplication-注解)
+        - [8.6.1. @Inherited 注解](#861-inherited-注解)
+        - [8.6.2. @SpringBootConfiguration](#862-springbootconfiguration)
+        - [8.6.3. @EnableAutoConfiguration](#863-enableautoconfiguration)
+        - [8.6.4. @ComponentScan](#864-componentscan)
+    - [8.7. 条件化注解](#87-条件化注解)
+    - [8.8. Spring Boot Starter](#88-spring-boot-starter)
+        - [8.8.1. 常用的Starter](#881-常用的starter)
+        - [8.8.2. 创建自己的Starter](#882-创建自己的starter)
+        - [8.8.3. Starter原理](#883-starter原理)
+    - [8.9. Actuator 的端点](#89-actuator-的端点)
+        - [8.9.1. 揭秘 Actuator 的端点](#891-揭秘-actuator-的端点)
+        - [8.9.2. 自定义监控](#892-自定义监控)
+    - [8.10. Spring Boot 项目发布](#810-spring-boot-项目发布)
+    - [8.11. Maven打包](#811-maven打包)
+    - [8.12. Spring Boot原理分析](#812-spring-boot原理分析)
+        - [8.12.1. 启动流程分析](#8121-启动流程分析)
+            - [8.12.1.1. 创建SpringApplication对象](#81211-创建springapplication对象)
+            - [8.12.1.2. 执行Run方法](#81212-执行run方法)
+    - [8.13. 种保护 Spring Boot 应用的绝佳方法](#813-种保护-spring-boot-应用的绝佳方法)
+        - [8.13.1. 在生产中使用HTTPS](#8131-在生产中使用https)
+        - [8.13.2. 使用Snyk检查你的依赖关系](#8132-使用snyk检查你的依赖关系)
+        - [8.13.3. 升级到最新版本](#8133-升级到最新版本)
+        - [8.13.4. 启用CSRF保护](#8134-启用csrf保护)
+        - [8.13.5. 使用内容安全策略防止XSS攻击](#8135-使用内容安全策略防止xss攻击)
+        - [8.13.6. 使用OpenID Connect进行身份验证](#8136-使用openid-connect进行身份验证)
+        - [8.13.7. 管理密码？使用密码哈希！](#8137-管理密码使用密码哈希)
+        - [8.13.8. 安全地存储秘密](#8138-安全地存储秘密)
+        - [8.13.9. 使用OWASP的ZAP测试您的应用程序](#8139-使用owasp的zap测试您的应用程序)
+        - [8.13.10. 让你的安全团队进行代码审查](#81310-让你的安全团队进行代码审查)
+    - [8.14. 项目实践](#814-项目实践)
+        - [8.14.1. 访问数据库](#8141-访问数据库)
+        - [8.14.2. 跨域配置](#8142-跨域配置)
+        - [8.14.3. 全局异常处理](#8143-全局异常处理)
+    - [8.15. 其他一些问题](#815-其他一些问题)
+        - [8.15.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？](#8151-如何在-spring-boot-启动的时候运行一些特定的代码)
+        - [8.15.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？](#8152-如何重新加载spring-boot上的更改而无需重新启动服务器)
+        - [8.15.3. Spring Boot 有哪几种读取配置的方式？](#8153-spring-boot-有哪几种读取配置的方式)
+- [9. SpringCloud](#9-springcloud)
+    - [9.1. 基础知识](#91-基础知识)
+        - [9.1.1. 微服务概念](#911-微服务概念)
+        - [9.1.2. SpringCloud子项目](#912-springcloud子项目)
+        - [9.1.3. 版本说明](#913-版本说明)
+    - [9.2. 服务治理Eureka](#92-服务治理eureka)
+        - [9.2.1. 基本使用](#921-基本使用)
+        - [9.2.2. 高可用注册中心](#922-高可用注册中心)
+        - [9.2.3. 原理说明](#923-原理说明)
+            - [9.2.3.1. 基础模块说明](#9231-基础模块说明)
+            - [9.2.3.2. Region,Zone](#9232-regionzone)
+            - [9.2.3.3. 源码分析](#9233-源码分析)
+                - [9.2.3.3.1. EnableDiscoveryClient注解说明](#92331-enablediscoveryclient注解说明)
+                - [9.2.3.3.2. 服务注册](#92332-服务注册)
+                - [9.2.3.3.3. 服务续约](#92333-服务续约)
+        - [9.2.4. 更多配置说明](#924-更多配置说明)
+            - [9.2.4.1. 服务注册类配置](#9241-服务注册类配置)
+            - [9.2.4.2. 服务实例类配置](#9242-服务实例类配置)
+    - [9.3. 负载均衡Ribbon](#93-负载均衡ribbon)
+        - [9.3.1. 基本使用](#931-基本使用)
+        - [9.3.2. 原理说明](#932-原理说明)
+            - [9.3.2.1. 源码分析](#9321-源码分析)
+            - [9.3.2.2. 负载均衡器](#9322-负载均衡器)
+            - [9.3.2.3. 负载均衡策略](#9323-负载均衡策略)
+            - [9.3.2.4. 配置详解](#9324-配置详解)
+        - [9.3.3. ribbon配置](#933-ribbon配置)
+            - [9.3.3.1. 配置参数说明](#9331-配置参数说明)
+            - [9.3.3.2. 重试机制](#9332-重试机制)
+    - [9.4. 声明式服务调用feign](#94-声明式服务调用feign)
+        - [9.4.1. 使用案例](#941-使用案例)
+        - [9.4.2. 实现原理](#942-实现原理)
+            - [9.4.2.1. 配置类](#9421-配置类)
+            - [9.4.2.2. 启动注解说明](#9422-启动注解说明)
+            - [9.4.2.3. 调用实现原理](#9423-调用实现原理)
+            - [9.4.2.4. 总结](#9424-总结)
+    - [9.5. 服务容错保护 Hystrix](#95-服务容错保护-hystrix)
+        - [9.5.1. Ribbon中使用Hystrix](#951-ribbon中使用hystrix)
+        - [9.5.2. Feign中使用Hystrix](#952-feign中使用hystrix)
+        - [9.5.3. Hystrix详解](#953-hystrix详解)
+            - [9.5.3.1. 背景](#9531-背景)
+            - [9.5.3.2. 基本认识](#9532-基本认识)
+            - [9.5.3.3. hystrix适用场景](#9533-hystrix适用场景)
+            - [9.5.3.4. 注解说明](#9534-注解说明)
+            - [9.5.3.5. 如何使用](#9535-如何使用)
+                - [9.5.3.5.1. 基本的实例](#95351-基本的实例)
+                - [9.5.3.5.2. 同步执行](#95352-同步执行)
+                - [9.5.3.5.3. 异步执行](#95353-异步执行)
+                - [9.5.3.5.4. Reactive Execution](#95354-reactive-execution)
+                - [9.5.3.5.5. Reactive Commands](#95355-reactive-commands)
+                - [9.5.3.5.6. Fallback](#95356-fallback)
+                - [9.5.3.5.7. Error Propagation](#95357-error-propagation)
+                - [9.5.3.5.8. Command Name](#95358-command-name)
+                - [9.5.3.5.9. Command Group](#95359-command-group)
+                - [9.5.3.5.10. Command Thread-Pool](#953510-command-thread-pool)
+                - [9.5.3.5.11. Request Cache](#953511-request-cache)
+                - [9.5.3.5.12. Request Collapsing](#953512-request-collapsing)
+                - [9.5.3.5.13. Request Context Setup](#953513-request-context-setup)
+                - [9.5.3.5.14. Common Patterns](#953514-common-patterns)
+                - [9.5.3.5.15. Fail Silent](#953515-fail-silent)
+                - [9.5.3.5.16. Fallback: Static](#953516-fallback-static)
+                - [9.5.3.5.17. Fallback: Stubbed](#953517-fallback-stubbed)
+                - [9.5.3.5.18. Fallback: Cache via Network](#953518-fallback-cache-via-network)
+                - [9.5.3.5.19. Primary + Secondary with Fallback](#953519-primary--secondary-with-fallback)
+                - [9.5.3.5.20. Client Doesn't Perform Network Access](#953520-client-doesnt-perform-network-access)
+                - [9.5.3.5.21. Get-Set-Get with Request Cache Invalidation](#953521-get-set-get-with-request-cache-invalidation)
+                - [9.5.3.5.22. Get-Set-Get with Request Cache Invalidation](#953522-get-set-get-with-request-cache-invalidation)
+            - [9.5.3.6. 工作原理](#9536-工作原理)
+        - [9.5.4. Spring Cloud 中使用Hystrix原理](#954-spring-cloud-中使用hystrix原理)
+        - [9.5.5. Hystrix监控](#955-hystrix监控)
+    - [9.6. API网关服务](#96-api网关服务)
+        - [9.6.1. zuul](#961-zuul)
+        - [9.6.2. GateWay](#962-gateway)
+    - [9.7. 分布式配置中心Config](#97-分布式配置中心config)
+        - [9.7.1. 基本使用](#971-基本使用)
+            - [9.7.1.1. 配置中心](#9711-配置中心)
+            - [9.7.1.2. bootstrap.yml与application.yml区别](#9712-bootstrapyml与applicationyml区别)
+            - [9.7.1.3. 客户端配置](#9713-客户端配置)
+            - [9.7.1.4. 刷新配置](#9714-刷新配置)
+        - [9.7.2. 原理说明](#972-原理说明)
+        - [9.7.3. 更多使用方式](#973-更多使用方式)
+    - [9.8. 消息总线bus](#98-消息总线bus)
+        - [9.8.1. 消息代理](#981-消息代理)
+    - [9.9. 消息驱动的微服务Stream](#99-消息驱动的微服务stream)
+    - [9.10. 分布式服务跟踪Sleuth](#910-分布式服务跟踪sleuth)
+        - [9.10.1. 基本使用](#9101-基本使用)
+        - [9.10.2. 跟踪原理](#9102-跟踪原理)
+            - [9.10.2.1. 基本实现原理](#91021-基本实现原理)
+            - [9.10.2.2. 支持的组件](#91022-支持的组件)
+            - [9.10.2.3. 一些基本概念](#91023-一些基本概念)
+            - [9.10.2.4. zipkin](#91024-zipkin)
+            - [9.10.2.5. 调用过程](#91025-调用过程)
+- [10. 单元测试](#10-单元测试)
+    - [10.1. Junit](#101-junit)
+        - [10.1.1. 概述](#1011-概述)
+        - [10.1.2. JUnit 中的重要的 API](#1012-junit-中的重要的-api)
+        - [10.1.3. 常用注解](#1013-常用注解)
+        - [10.1.4. 套件测试](#1014-套件测试)
+    - [10.2. TestNG测试](#102-testng测试)
+        - [10.2.1. 概述](#1021-概述)
+        - [10.2.2. JUnit 4 Vs TestNG比较](#1022-junit-4-vs-testng比较)
+        - [10.2.3. 注解说明](#1023-注解说明)
+        - [10.2.4. 测试案例](#1024-测试案例)
+            - [10.2.4.1. 基本例子](#10241-基本例子)
+            - [10.2.4.2. 预期异常测试](#10242-预期异常测试)
+            - [10.2.4.3. 忽略测试](#10243-忽略测试)
+            - [10.2.4.4. 超时测试](#10244-超时测试)
+            - [10.2.4.5. 分组测试](#10245-分组测试)
+    - [10.3. Mockito](#103-mockito)
+        - [10.3.1. 介绍](#1031-介绍)
+        - [10.3.2. Mockito说明](#1032-mockito说明)
+        - [10.3.3. 例子](#1033-例子)
+            - [10.3.3.1. 基本的例子](#10331-基本的例子)
+            - [10.3.3.2. 验证行为](#10332-验证行为)
+            - [10.3.3.3. 模拟我们所期望的结果](#10333-模拟我们所期望的结果)
+            - [10.3.3.4. RETURNS_SMART_NULLS和RETURNS_DEEP_STUBS](#10334-returns_smart_nulls和returns_deep_stubs)
+            - [10.3.3.5. 模拟方法体抛出异常](#10335-模拟方法体抛出异常)
+            - [10.3.3.6. 使用注解来快速模拟](#10336-使用注解来快速模拟)
+            - [10.3.3.7. 参数匹配](#10337-参数匹配)
+            - [10.3.3.8. 自定义参数匹配](#10338-自定义参数匹配)
+            - [10.3.3.9. 捕获参数来进一步断言](#10339-捕获参数来进一步断言)
+            - [10.3.3.10. 使用方法预期回调接口生成期望值（Answer结构）](#103310-使用方法预期回调接口生成期望值answer结构)
+            - [10.3.3.11. 修改对未预设的调用返回默认期望](#103311-修改对未预设的调用返回默认期望)
+            - [10.3.3.12. 用spy监控真实对象](#103312-用spy监控真实对象)
+            - [10.3.3.13. 真实的部分mock](#103313-真实的部分mock)
+            - [10.3.3.14. 重置mock](#103314-重置mock)
+            - [10.3.3.15. 验证确切的调用次数](#103315-验证确切的调用次数)
+            - [10.3.3.16. 连续调用](#103316-连续调用)
+            - [10.3.3.17. 验证执行顺序](#103317-验证执行顺序)
+            - [10.3.3.18. 确保模拟对象上无互动发生](#103318-确保模拟对象上无互动发生)
+            - [10.3.3.19. 找出冗余的互动(即未被验证到的)](#103319-找出冗余的互动即未被验证到的)
+        - [10.3.4. Mockito如何实现Mock[3]](#1034-mockito如何实现mock3)
+    - [10.4. 控制层测试](#104-控制层测试)
+        - [10.4.1. 基本使用](#1041-基本使用)
+        - [10.4.2. 相关类说明](#1042-相关类说明)
+            - [10.4.2.1. MockMvcBuilder/MockMvcBuilders](#10421-mockmvcbuildermockmvcbuilders)
+            - [10.4.2.2. MockMvc](#10422-mockmvc)
+            - [10.4.2.3. RequestBuilder/MockMvcRequestBuilders](#10423-requestbuildermockmvcrequestbuilders)
+            - [10.4.2.4. ResultActions](#10424-resultactions)
+            - [10.4.2.5. ResultMatcher/MockMvcResultMatchers](#10425-resultmatchermockmvcresultmatchers)
+            - [10.4.2.6. ResultHandler/MockMvcResultHandlers](#10426-resulthandlermockmvcresulthandlers)
+            - [10.4.2.7. MvcResult](#10427-mvcresult)
+        - [10.4.3. 测试运行中的应用程序](#1043-测试运行中的应用程序)
+    - [10.5. 服务层测试](#105-服务层测试)
+    - [10.6. DAO层测试](#106-dao层测试)
 
 <!-- /TOC -->
 
@@ -7567,11 +7575,79 @@ public class ProjectConfig {
     * 压缩响应内容,比如让下载的内容更小 Compress the response stream
     根据地方不同修改响应内容 Localization-Targeting the request and response to a particular locale.
 
-
-# 7. SpringBoot
+# 7. Webflux
 <a href="#menu" >目录</a>
 
-## 7.1. 基本概念
+SpringWebflux是SpringFramework5.0添加的新功能
+
+## 7.1. 概述
+<a href="#menu" >目录</a>
+
+传统的web mvc 和struct都是基于Servlet API与Servlet容器基础之上运行的.servlet就版本都是同步阻塞型,也就是一个线程处理一个请求.直到servlet 3.1开始才支持异步非阻塞.而WebFlux是一个典型非阻塞异步的框架，它的核心是基于Reactor的相关API实现的。相对于传统的web框架来说，它可以运行在诸如Netty，Undertow及支持Servlet3.1的容器上，因此它的运行环境的可选择行要比传统web框架多的多。
+
+webflux主要在如下两方面体现出独有的优势：
+* 非阻塞式
+    * 其实在servlet3.1提供了非阻塞的API，WebFlux提供了一种比其更完美的解决方案。使用非阻塞的方式可以利用较小的线程或硬件资源来处理并发进而提高其可伸缩性
+* 函数式编程端点
+    * 老生常谈的编程方式了，Spring5必须让你使用java8，那么函数式编程就是java8重要的特点之一，而WebFlux支持函数式编程来定义路由端点处理请求。
+                            
+### 7.1.1. SpringMVC与SpringWebFlux
+
+它们都可以用注解式编程模型，都可以运行在tomcat，jetty，undertow等servlet容器当中。但是SpringMVC采用命令式编程方式，代码一句一句的执行，这样更有利于理解与调试，而WebFlux则是基于异步响应式编程，对于初次接触的码农们来说会不习惯。对于这两种框架官方给出的建议是：
+* 如果原先使用用SpringMVC好好的话，则没必要迁移。因为命令式编程是编写、理解和调试代码的最简单方法。因为老项目的类库与代码都是基于阻塞式的。
+* 如果你的团队打算使用非阻塞式web框架，WebFlux确实是一个可考虑的技术路线，而且它支持类似于SpringMvc的Annotation的方式实现编程模式，也可以在微服务架构中让WebMvc与WebFlux共用Controller，切换使用的成本相当小
+* 在SpringMVC项目里如果需要调用远程服务的话，你不妨考虑一下使用WebClient，而且方法的返回值可以考虑使用Reactive Type类型的，当每个调用的延迟时间越长，或者调用之间的相互依赖程度越高，其好处就越大
+* SpringWebFlux并不是让你的程序运行的更快(相对于SpringMVC来说)，而是在有限的资源下提高系统的伸缩性，因此当你对响应式编程非常熟练的情况下并将其应用于新的系统中，还是值得考虑的，否则还是老老实实的使用WebMVC吧
+
+### 7.1.2. Reactive Spring Web
+
+在这里定义了最基本的服务端接口：HttpHandler和WebHandler
+
+**HttpHandler**
+HttpHandler定义了最基本的处理Http请求行为，这个接口主要作用是处理Http请求并将结果做出响应，下面这个表格是说明了Server API的使用方式及何种方式进行响应式流支持的：
+
+|Server name	|Server API used	|Reactive Streams support|
+|---|---|---|
+|Netty|Netty API|Reactor Netty
+|Undertow|Undertow API|spring-web: Undertow to Reactive Streams bridge
+|Tomcat|Servlet 3.1 non-blocking I/O; Tomcat API to read and write ByteBuffers vs byte[]|spring-web: Servlet 3.1 non-blocking I/O to Reactive Streams bridge
+|Jetty|Servlet 3.1 non-blocking I/O; Jetty API to write ByteBuffers vs byte[]|spring-web: Servlet 3.1 non-blocking I/O to Reactive Streams bridge
+|Servlet 3.1 container|Servlet 3.1 non-blocking I/O|spring-web: Servlet 3.1 non-blocking I/O to Reactive Streams bridge
+
+**WebHandler**
+　WebHandler定义了Web请求必要一些处理行为，大家不妨想想看：WebFlux已经脱离了Servlet API，那么使用WebFlux时遇到会话机制怎么办，想要对请求过滤处理怎么办或者想要处理静态资源怎么办等等，那么WebHandler就是做这个事情的。其实在HttpHandler的基本实现类通过适配器模式及装饰模式也间接的实现了WebHandler接口：
+![WebHandler](pic/spring/webflux/WebHandler.png)
+
+* WebHandler常见的实现类：
+    * WebHandlerDecorator：WebHandler的装饰器，利用装饰模式实现相关功能的扩展
+    * HttpWebHandlerAdapter: 进行Http请求处理，同时也是HttpHandler的实现类
+    * FilteringWebHandler：通过WebFilter进行过滤处理的类，类似于Servlet中的Filter
+    * ExceptionHandlingWebHandler: 针对于异常的处理类
+    * ResourceWebHandler：用于静态资源请求的处理类
+    * DispatcherHandler：请求的总控制器，类似于WebMVC中的DispatcherServlet
+
+    
+## 7.2. 基本例子
+<a href="#menu" >目录</a>
+
+## 7.3. Mono常用方法说明
+<a href="#menu" >目录</a>
+
+
+
+**依赖引入**
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-webflux</artifactId>
+</dependency>
+```
+
+
+# 8. SpringBoot
+<a href="#menu" >目录</a>
+
+## 8.1. 基本概念
 
 Spring Boot 是 Spring 开源组织下的子项目，是 Spring 组件一站式解决方案，主要是简化了使用 Spring 的难度，简省了繁重的配置，提供了各种启动器，开发者能快速上手.其设计理念是
 
@@ -7589,7 +7665,7 @@ Spring Boot 优点非常多，如：
 * 不再需要xml配置文件
 
 
-## 7.2. 基本使用
+## 8.2. 基本使用
 <a href="#menu" >目录</a>
 
 maven配置文件
@@ -7621,10 +7697,10 @@ maven配置文件
 
 使用以上任何一种方式配置时,引入官方的starter包无需指定版本
 
-## 7.3. Spring Boot 环境下创建Bean
+## 8.3. Spring Boot 环境下创建Bean
 <a href="#menu" >目录</a>
 
-### 7.3.1. 方式1:使用@Component等注解：
+### 8.3.1. 方式1:使用@Component等注解：
 
 使用@Component,@Service,@Controler,@Repository注解
 
@@ -7659,8 +7735,8 @@ public class MicroblogBlogApplication {
 ```
  
 
-### 7.3.2. 方式2:使用@Bean注解
-使用@Bean注解,这种方式用在Spring Boot 应用中。
+### 8.3.2. 方式2:使用@Bean注解
+
 
 @Configuration 标识这是一个Spring Boot 配置类，其将会扫描该类中是否存在@Bean 注解的方法，比如如下代码，将会创建User对象并放入容器中。
 
@@ -7738,7 +7814,7 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.log.config.Us
 
  
 
-### 7.3.3. 方式3:使用@Import注解
+### 8.3.3. 方式3:使用@Import注解
 使用注解@Import,也会创建对象并注入容器中
 
 ```java
@@ -7749,7 +7825,7 @@ public class MicroblogUserWebApplication {
     }
 }
 ```
-### 7.3.4. 方式4:使用ImportSelector接口
+### 8.3.4. 方式4:使用ImportSelector接口
 
 使用ImportSelector或者ImportBeanDefinitionRegistrar接口，配合@Import实现。
 
@@ -7927,7 +8003,7 @@ public class ImportDemoApplication {
 
  
 
-### 7.3.5. 方式5:手动注册到容器
+### 8.3.5. 方式5:手动注册到容器
 
 手动注入Bean容器，有些场景下需要代码动态注入，以上方式都不适用。这时就需要创建 对象手动注入。
 
@@ -7974,7 +8050,7 @@ Location location =  context.getBean(Location.class);
 location.run();
 ```
 
-## 7.4. 使用不同的WEB容器
+## 8.4. 使用不同的WEB容器
 
 undertow,jetty和tomcat可以说是javaweb项目当下最火的三款服务器，tomcat是apache下的一款重量级的服务器，不用多说历史悠久，经得起实践的考验。然而：当下微服务兴起，spring boot ，spring cloud 越来越热的情况下，选择一款轻量级而性能优越的服务器是必要的选择。spring boot 完美集成了tomcat，jetty和undertow.
 
@@ -8102,7 +8178,7 @@ server.jetty.selectors=  Number of selector threads to use
 
 ```
 
-## 7.5. 配置文件
+## 8.5. 配置文件
 <a href="#menu" >目录</a>
 
 Spring支持两种类型的配置文件,后缀名分别为properties和yml.
@@ -8118,7 +8194,7 @@ server:
 ```
 可以看到yml类型的格式结构更加清晰
 
-### 7.5.1. bootstrap.yml与application.yml区别
+### 8.5.1. bootstrap.yml与application.yml区别
 <a href="#menu" >目录</a>
 
 说明：其实yml和properties文件是一样的原理，主要是说明application和bootstrap的加载顺序。且一个项目上要么yml或者properties，二选一的存在
@@ -8144,13 +8220,36 @@ bootstrap 配置文件有以下几个应用场景。
 为何需要把 config server 的信息放在 bootstrap.yml 里？
 当使用Spring Cloud的时候，配置信息一般是从config server加载的，为了取得配置信息（比如密码等），你需要一些提早的或引导配置。因此，把 config server 信息放在 bootstrap.yml，用来加载真正需要的配置信息。
 
-### 7.5.2. 多环境配置
+
+Spring Boot应用程序有多种设置途径。 Spring Boot能从多种属性源获得属性，包括如下几处。
+* 命令行参数:java -jar xxx.jar --spring.main.show-banner=false
+* java:comp/env里的JNDI属性
+* JVM系统属性
+* 操作系统环境变量: export spring_main_show_banner=false
+* 随机生成的带random.*前缀的属性（在设置其他属性时，可以引用它们，比如${random.long}）
+* 应用程序以外的application.properties或者appliaction.yml文件
+* 打包在应用程序内的application.properties或者appliaction.yml文件
+* 通过@PropertySource标注的属性源
+* 默认属性
+这个列表按照优先级排序，也就是说，任何在高优先级属性源里设置的属性都会覆盖低优先级的相同属性。
+
+
+application.properties和application.yml文件能放在以下四个位置。
+* 外置，在相对于应用程序运行目录的/config子目录里。
+* 外置，在应用程序运行的目录里。
+* 内置，在config包内。
+* 内置，在Classpath根目录。
+同样，这个列表按照优先级排序。也就是说， /config子目录里的application.properties会覆盖应用程序Classpath里的application.properties中的相同属性。
+此外，如果你在同一优先级位置同时有application.properties和application.yml，那么application.yml里的属性会覆盖application.properties里的属性。
+
+
+### 8.5.2. 多环境配置
 <a href="#menu" >目录</a>
 
 软件开发中经常有开发环境、测试环境、预发布环境、生产环境，而且一般这些环境配置会各不相同，手动改配置麻烦且容易出错，如何管理不同环境的配置参数呢？spring-boot + maven可以解决不同环境独立配置不同参数的问题。
 
 
-#### 7.5.2.1. 配置文件
+#### 8.5.2.1. 配置文件
 <a href="#menu" >目录</a>
 
 **方式1:使用多个配置文件**
@@ -8195,7 +8294,7 @@ server:
 
 ```
 
-#### 7.5.2.2. 多环境配置
+#### 8.5.2.2. 多环境配置
 <a href="#menu" >目录</a>
 
 **方式1:application.yml配置**
@@ -8229,8 +8328,23 @@ public @interface Profile {
     String[] value();
 }
 ```
+以下只有环境变量为product时才会创建(spring.profiles.active="product")
+```java
+@Log
+@Configuration
+@Profile("product")
+public class DemoConfig {
+    @Bean
+    public User user(){
+        log.info("创建User对象");
+        return new User();
 
-### 7.5.3. 注解ConfigurationProperties注入yml配置文件中的数据
+    }
+}
+```
+
+
+### 8.5.3. 注解ConfigurationProperties注入yml配置文件中的数据
 <a href="#menu" >目录</a>
 
 在使用SpringBoot开发中需要将一些配置参数放在yml文件中定义，再通过Java类来引入这些配置参数
@@ -8419,7 +8533,7 @@ properties =
 　　　])
 ```
 
-### 7.5.4. 使用随机数
+### 8.5.4. 使用随机数
 
 <a href="#menu" >目录</a>
 
@@ -8433,13 +8547,13 @@ properties =
 |${random.int(10)}	|取得10以内的随机数
 |${random.int[10,20]}	|取得10~20的随机数
 
-### 7.5.5. 从命令行指定参数
+### 8.5.5. 从命令行指定参数
 
 ```
 java -jar xx.jar --server.port=8001
 ```
 
-### 7.5.6. 配置日志
+### 8.5.6. 配置日志
 
 默认情况下， Spring Boot会用Logback（ http://logback.qos.ch）来记录日志，并用INFO级别输出到控制台
 
@@ -8479,7 +8593,25 @@ logging.pattern.file=  Appender pattern for output to a file. Supported only wit
 logging.pattern.level=%5p  Appender pattern for log level. Supported only with the default Logbacksetup.
 logging.register-shutdown-hook=false  Register a shutdown hook for the logging system when it is initialized.
 ```
-## 7.6. 启动类 @SpringBootApplication 注解 
+
+```yml
+logging:
+    level:
+        root: WARN
+        org:
+            springframework:
+                security: DEBUG
+
+logging:
+    level:
+        root: WARN
+        org.springframework.security: DEBUG
+
+#如果你还是想要完全掌控日志配置，但是又不想用logback.xml作为Logback配置的名字，可以通过logging.config属性指定自定义的名字：
+logging:
+    config: classpath:logging-config.xml
+```
+## 8.6. 启动类 @SpringBootApplication 注解 
 <a href="#menu" >目录</a>
 
 ```java
@@ -8545,15 +8677,16 @@ public @interface SpringBootApplication {
 ```
 
 从上面可以看到@SpringBootApplication是一个组合注解，用于快捷配置启动类。由@SpringBootConfiguration和@EnableAutoConfiguration以及@ComponentScan组合而成.
+@SpringBootApplication开启了Spring的组件扫描和Spring Boot的自动配置功能.实际上， @SpringBootApplication将三个有用的注解组合在了一起。
 
-### 7.6.1. @Inherited 注解
+### 8.6.1. @Inherited 注解
 关于java中元注解Inherited 的使用说明
 
 首先解释下元注解，就是用来中声明注解类型时需要使用到的注解。
 
 Inherited作用是，使用此注解声明出来的自定义注解，在使用此自定义注解时，如果注解在类上面时，子类会自动继承此注解，否则的话，子类不会继承此注解。这里一定要记住，使用Inherited声明出来的注解，只有在类上使用时才会有效，对方法，属性等其他无效。
 
-### 7.6.2. @SpringBootConfiguration
+### 8.6.2. @SpringBootConfiguration
 ```java
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -8570,7 +8703,7 @@ public @interface SpringBootConfiguration {
 
 
 
-### 7.6.3. @EnableAutoConfiguration
+### 8.6.3. @EnableAutoConfiguration
 ```java
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -8602,7 +8735,7 @@ SpringFactoriesLoader属于Spring框架私有的一种扩展方案，其主要�
 
 所以，@EnableAutoConfiguration自动配置的魔法骑士就变成了：从classpath中搜寻所有的META-INF/spring.factories配置文件，并将其中org.springframework.boot.autoconfigure.EnableutoConfiguration对应的配置项通过反射（Java Refletion）实例化为对应的标注了@Configuration的JavaConfig形式的IoC容器配置类，然后汇总为一个并加载到IoC容器。
 
-### 7.6.4. @ComponentScan
+### 8.6.4. @ComponentScan
 ```java
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
@@ -8669,7 +8802,31 @@ public @interface ComponentScan {
 * scopeResolver：用于解决检测到的组件的范围。
 * useDefaultFilters：指示是否自动检测类的注释 
 
-## 7.7. Spring Boot Starter
+## 8.7. 条件化注解
+<a href="#menu" >目录</a>
+
+* @ConditionalOnBean 配置了某个特定Bean
+* @ConditionalOnMissingBean 没有配置特定的Bean
+* @ConditionalOnClass Classpath里有指定的类
+* @ConditionalOnMissingClass Classpath里缺少指定的类
+* @ConditionalOnExpression 给定的Spring Expression Language（ SpEL）表达式计算结果为true
+* @ConditionalOnJava Java的版本匹配特定值或者一个范围值
+* @ConditionalOnJndi 参数中给定的JNDI位置必须存在一个，如果没有给参数，则要有JNDI InitialContext
+* @ConditionalOnProperty 指定的配置属性要有一个明确的值
+* @ConditionalOnResource Classpath里有指定的资源
+* @ConditionalOnWebApplication 这是一个Web应用程序
+* @ConditionalOnNotWebApplication 这不是一个Web应用程序
+
+```java
+
+@Configuration
+@@ConditionalOnClass({xxxx.class,yyyy.class})
+public XxxConfig(){
+    
+}
+```
+
+## 8.8. Spring Boot Starter
 <a href="#menu" >目录</a>
 
 Starter是Spring Boot中的一个非常重要的概念，Starter相当于模块，它能将模块所需的依赖整合起来并对模块内的Bean根据环境（ 条件）进行自动配��。使用者只需要依赖相应功能的Starter，无需做过多的配置和依赖，Spring Boot就能自动扫描并加载相应的模块
@@ -8682,7 +8839,7 @@ Starter是Spring Boot中的一个非常重要的概念，Starter相当于模块�
 例如，在Maven的依赖中加入spring-boot-starter-web就能使项目支持Spring MVC，并且Spring Boot还为我们做了很多默认配置，无需再依赖spring-web、spring-webmvc等相关包及做相关配置就能够立即使用起来
 
 
-### 7.7.1. 常用的Starter
+### 8.8.1. 常用的Starter
 <a href="#menu" >目录</a>
 
 ```
@@ -8694,7 +8851,7 @@ spring-boot-starter-data-jpa
 spring-boot-starter-web
 spring-boot-starter-redis
 ```
-### 7.7.2. 创建自己的Starter
+### 8.8.2. 创建自己的Starter
 <a href="#menu" >目录</a>
 
 * 步骤
@@ -8761,7 +8918,7 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=xx.xx.xx.XxxConfi
 
 
 
-### 7.7.3. Starter原理
+### 8.8.3. Starter原理
 <a href="#menu" >目录</a>
 
 在Spring Boot中有一种非常解耦的扩展机制：Spring Factories。这种扩展机制实际上是仿照Java中的SPI扩展机制来实现的。
@@ -8847,9 +9004,9 @@ com.xxx.interface=com.xxx.classname
 
 
 
-## 7.8. Actuator 的端点
+## 8.9. Actuator 的端点
 
-### 7.8.1. 揭秘 Actuator 的端点
+### 8.9.1. 揭秘 Actuator 的端点
 <a href="#menu" >目录</a>
 
 Spring Boot Actuator的关键特性是在应用程序里提供众多Web端点，通过它们了解应用程序运行时的内部状况。有了Actuator，你可以知道Bean在Spring应用程序上下文里是如何组装在一起的，掌握应用程序可以获取的环境属性信息，获取运行时度量信息的快照
@@ -8941,7 +9098,7 @@ management.endpoints.web.exposure.exclude=  Endpoint IDs that should be excluded
 management.endpoints.web.exposure.include=*
 ```
 
-### 7.8.2. 自定义监控
+### 8.9.2. 自定义监控
 <a href="#menu" >目录</a>
 
 * @Endpoint(id="test") 指定端点的名称,id开头必须是小写,此注解必须
@@ -8970,7 +9127,7 @@ public class MyActuator {
 ```
 
 
-## 7.9. Spring Boot 项目发布
+## 8.10. Spring Boot 项目发布
 <a href="#menu" >目录</a>
 
 
@@ -8986,7 +9143,7 @@ public class MyActuator {
     * 通过Servlet容器启动，如Tomcat、Jetty等(打包成war)。
 
 
-## 7.10. Maven打包
+## 8.11. Maven打包
 
 **打包方式配置**
 
@@ -8997,7 +9154,7 @@ POM 文件中添加打包方式,默认的打包方式是jar
 POM 文件中添加了“org.springframework.boot:spring-boot-maven-plugin”插件。在添加了该插件之后，当运行“mvn package”进行打包时，会打包成一个可以直接运行的 JAR 文件，使用“Java -jar”命令就可以直接运行。这在很大程度上简化了应用的部署，只需要安装了 JRE 就可以运行。
 
 **添加插件**
-在添���了该插件之后，当运行“mvn package”进行打包时，会打包成一个可以直接运行的 JAR 文件，使用“Java -jar”命令就可以直接运行。这在很大程度上简化了应用的部署，只需要安装了 JRE 就可以运行。
+在添加了该插件之后，当运行“mvn package”进行打包时，会打包成一个可以直接运行的 JAR 文件，使用“Java -jar”命令就可以直接运行。这在很大程度上简化了应用的部署，只需要安装了 JRE 就可以运行。
 ```xml
 <build>
     <plugins>
@@ -9052,11 +9209,11 @@ mvn  spring-boot:run -Dspring-boot.run.profiles=xxx
 * 不推荐用war，因为springboot适合前后端分离，打成jar进行部署更合适。
 
 
-## 7.11. Spring Boot原理分析
+## 8.12. Spring Boot原理分析
 <a href="#menu" >目录</a>
 
 
-### 7.11.1. 启动流程分析
+### 8.12.1. 启动流程分析
 <a href="#menu" >目录</a>
 
 1.  如果我们使用的是SpringApplication的静态run方法，那么，这个方法里面首先要创建一个SpringApplication对象实例，然后调用这个创建好的SpringApplication的实例方法。在SpringApplication实例初始化的时候，它会提前做几件事情：
@@ -9067,7 +9224,7 @@ mvn  spring-boot:run -Dspring-boot.run.profiles=xxx
 * 推断并设置main方法的定义类。
 
 
-#### 7.11.1.1. 创建SpringApplication对象
+#### 8.12.1.1. 创建SpringApplication对象
 <a href="#menu" >目录</a>
 
 **main方法启动**
@@ -9117,8 +9274,8 @@ public SpringApplication(ResourceLoader resourceLoader, Class... primarySources)
 
 * **deduceFromClasspath**
 获取应用类型:NONE(非web项目), SERVLET(web mvc 项目),REACTIVE(WebFlux 项目);
-1.如果类路径中含有org.springframework.web.reactive.DispatcherHandler,则为REACTIVE应用
-2.如果含有类javax.servlet.Servlet和org.springframework.web.context.ConfigurableWebApplicationContext,则为SERVLET应用
+1.如果类路径中含有org.springframework.web.reactive.DispatcherHandler,则为REACTIVE应用(引入包:org.springframework.boot:spring-boot-starter-webflux)
+2.如果含有类javax.servlet.Servlet和org.springframework.web.context.ConfigurableWebApplicationContext,则为SERVLET应用(引入包:org.springframework.boot:spring-boot-starter-web)
 3.否则为NONE        
 ```java
 private static final String[] SERVLET_INDICATOR_CLASSES = new String[]{"javax.servlet.Servlet", "org.springframework.web.context.ConfigurableWebApplicationContext"};
@@ -9262,7 +9419,7 @@ private Class<?> deduceMainApplicationClass() {
 ```
 上面看完了构造方法后，已经初始化了一个 SpringApplication 对象，接下来调用其 run 方法
 
-#### 7.11.1.2. 执行Run方法
+#### 8.12.1.2. 执行Run方法
 <a href="#menu" >目录</a>
 
 ```java
@@ -9399,9 +9556,9 @@ public void refresh() throws BeansException, IllegalStateException {
         }
     }
 ```
-## 7.12. 种保护 Spring Boot 应用的绝佳方法
+## 8.13. 种保护 Spring Boot 应用的绝佳方法
 
-### 7.12.1. 在生产中使用HTTPS
+### 8.13.1. 在生产中使用HTTPS
 
 传输层安全性（TLS）是HTTPS的官方名称，你可能听说过它称为SSL（安全套接字层），SSL是已弃用的名称，TLS是一种加密协议，可通过计算机网络提供安全通信。其主要目标是确保计算机应用程序之间的隐私和数据完整性。
 
@@ -9425,7 +9582,7 @@ public  class  WebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter
 ```
 另一个重要的事情是使用HTTP严格传输安全性（HSTS）。HSTS是一种Web安全策略机制，可以保护网站免受协议降级攻击和cookie劫持。服务器使用名为Strict-Transport-Security的响应头字段将HSTS策略传送到浏览器。Spring Security默认发送此标头，以避免在开始时出现不必要的HTTP跃点，点击这里一分钟开启Tomcat https支持。
 
-### 7.12.2. 使用Snyk检查你的依赖关系
+### 8.13.2. 使用Snyk检查你的依赖关系
 你很可能不知道应用程序使用了多少直接依赖项，这通常是正确的，尽管依赖性构成了整个应用程序的大部分。攻击者越来越多地针对开源依赖项，因为它们的重用为恶意黑客提供了许多受害者，确保应用程序的整个依赖关系树中没有已知的漏洞非常重要。
 
 Snyk测试你的应用程序构建包，标记那些已知漏洞的依赖项。它在仪表板在应用程序中使用的软件包中存在的漏洞列表。
@@ -9438,14 +9595,14 @@ Snyk可通过Web UI和CLI获得，因此您可以轻松地将其与CI环境集�
 
 你可以免费使用Snyk进行开源项目或使用有限数量的私有项目。
 
-### 7.12.3. 升级到最新版本
+### 8.13.3. 升级到最新版本
 定期升级应用程序中的依赖项有多种原因。安全性是让您有升级动力的最重要原因之一。该start.spring.io起始页面采用了最新的春季版本的软件包，以及依赖关系，在可能的情况。
 
 基础架构升级通常不如依赖项升级具有破坏性，因为库作者对向后兼容性和版本之间的行为更改的敏感性各不相同。话虽如此，当你在配置中发现安全漏洞时，您有三种选择：升级，修补程序或忽略。
 
 在对应用程序进行必要的更改以使用较新版本之后，就应用程序的整体运行状况而言，升级是最安全的。
 
-### 7.12.4. 启用CSRF保护
+### 8.13.4. 启用CSRF保护
 跨站点请求伪造(Cross-Site Request Forgery )是一种攻击，强制用户在他们当前登录的应用程序中执行不需要的操作。如果用户是普通用户，一个成功攻击可能涉及请求的状态更改，如转移资金或更改其电子邮件地址，如果用户具有提升管理员的权限，则CSRF攻击可能会危及整个应用程序。
 
 Spring Security具有出色的CSRF支持，如果您正在使用Spring MVC的< form:form>标签或Thymeleaf @EnableWebSecurity，默认情况下处于启用状态，CSRF令牌将自动添加为隐藏输入字段。
@@ -9463,7 +9620,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 如果你正在使用Angular，这就是你需要做的。如果您使用的是React，则需要读取XSRF-TOKENcookie并将其作为X-XSRF-TOKEN标题发回。
 
 当请求通过HTTPS发生时，Spring Security会自动加入一个secure标识到XSRF-TOKENcookie 。Spring Security对于CSRF cookie不使用SameSite=strict 的标志，但它在使用Spring Session或WebFlux会话处理时会使用，这对会话cookie有意义，因为它有助于识别用户，但是没有为CSRF cookie提供太多价值，因为CSRF令牌也需要在请求中。点击这里了解CSRF更多详情。
-### 7.12.5. 使用内容安全策略防止XSS攻击
+### 8.13.5. 使用内容安全策略防止XSS攻击
 内容安全策略（CSP）是一个增加的安全层，可帮助缓解XSS（跨站点脚本）和数据注入攻击。要启用它，你需要配置应用程序以返回Content-Security-Policy标题。你还可以在HTML页面中<meta http-equiv="Content-Security-Policy">使用标记。
 
 Spring安全性默认提供了许多安全标头：
@@ -9495,7 +9652,7 @@ CSP是防止XSS攻击的良好防御，请记住，打开CSP能让CDN访问许�
 
 你可以在securityheaders.com测试你的CSP标头是否有用。
 
-### 7.12.6. 使用OpenID Connect进行身份验证
+### 8.13.6. 使用OpenID Connect进行身份验证
 OAuth 2.0是行业标准的授权协议。它使用scope来定义授权用户可以执行的操作的权限。但是，OAuth 2.0不是身份验证协议，并且不提供有关经过身份验证的用户的信息。
 
 OpenID Connect（OIDC）是一个OAuth 2.0扩展，提供用户信息，除了访问令牌之外，它还添加了ID令牌，以及/userinfo可以从中获取其他信息的端点，它还添加了发现功能和动态客户端注册的端点。
@@ -9523,7 +9680,7 @@ spring:
 
 你可以使用像Keycloak这样的开源系统来设置自己的OIDC服务器。如果你不想在生产中维护自己的服务器，可以使用Okta的Developer API。
 
-### 7.12.7. 管理密码？使用密码哈希！
+### 8.13.7. 管理密码？使用密码哈希！
 以纯文本格式存储密码是最糟糕的事情之一。幸运的是，Spring Security默认情况下不允许使用纯文本密码。它还附带了一个加密模块，可用于对称加密，生成密钥和密码散列（也就是密码编码）。
 
 PasswordEncoder 是Spring Security中密码哈希的主要接口，如下所示：
@@ -9543,7 +9700,7 @@ Spring Security提供了几种实现，最受欢迎的是BCryptPasswordEncoder�
 
 Spring Security 5.1（即2018年9月下旬）将附带UserDetailsPasswordService API，允许您升级密码存储。
 
-### 7.12.8. 安全地存储秘密
+### 8.13.8. 安全地存储秘密
 应谨慎处理敏感信息，如密码，访问令牌等，你不能以纯文本形式传递，或者如果将它们保存在本地存储中。由于（GitHub）的历史已经一次又一次证明，开发人员并没有仔细考虑如何存储他们的秘密。
 
 一个好的做法是将保密信息存储在保管库中，该保管库可用于存储，提供对应用程序可能使用的服务的访问权限，甚至生成凭据。HashiCorp的Vault使得存储机密变得很轻松，并提供了许多额外的服务。
@@ -9554,7 +9711,7 @@ Spring Security 5.1（即2018年9月下旬）将附带UserDetailsPasswordService
 String password;
 ```
 
-### 7.12.9. 使用OWASP的ZAP测试您的应用程序
+### 8.13.9. 使用OWASP的ZAP测试您的应用程序
 OWASP ZAP安全工具是针对在运行活动的应用程序进行渗透测试的代理。它是一个受欢迎的（超过4k星）免费的开源项目，托管在GitHub上。
 
 OWASP ZAP用于查找漏洞的两种方法是Spider和Active Scan。
@@ -9563,18 +9720,18 @@ Spider工具以URL种子开头，它将访问并解析每个响应，识别超�
 
 Active Scan工具将根据潜在漏洞列表自动测试你选择的目标。它提供了一个报告，显示Web应用程序可被利用的位置以及有关漏洞的详细信息。
 
-### 7.12.10. 让你的安全团队进行代码审查
+### 8.13.10. 让你的安全团队进行代码审查
 代码评审对任何高性能软件开发团队都至关重要。在Okta，我们所有的生产代码和官方开源项目都需要通过我们的专家安全团队进行分析，你的公司可能没有安全专家，但如果你正在处理敏感数据，也许你应该这样做！
 
-## 7.13. 项目实践
+## 8.14. 项目实践
 <a href="#menu" >目录</a>
 
-### 7.13.1. 访问数据库
+### 8.14.1. 访问数据库
 
 <a href="#menu" >目录</a>
 
 
-### 7.13.2. 跨域配置
+### 8.14.2. 跨域配置
 <a href="#menu" >目录</a>
 
 用于跨域配置
@@ -9636,7 +9793,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 }
 ```
 
-### 7.13.3. 全局异常处理
+### 8.14.3. 全局异常处理
 <a href="#menu" >目录</a>
 
 第一种：使用@ControllerAdvice和@ExceptionHandler注解
@@ -9790,12 +9947,12 @@ public class TestController {
 
 
 
-## 7.14. 其他一些问题
+## 8.15. 其他一些问题
 
-### 7.14.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？
+### 8.15.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？
 可以实现接口 ApplicationRunner 或者 CommandLineRunner，这两个接口实现方式一样，它们都只提供了一个 run 方法
 
-### 7.14.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？
+### 8.15.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？
 这可以使用DEV工具来实现。通过这种依赖关系，您可以节省任何更改，嵌入式tomcat将重新启动。
 
 Spring Boot有一个开发工具（DevTools）模块，它有助于提高开发人员的生产力。Java开发人员面临的一个主要挑战是将文件更改自动部署到服务器并自动重启服务器。
@@ -9812,17 +9969,17 @@ Spring Boot有一个开发工具（DevTools）模块，它有助于提高开发�
 
 ```
 
-### 7.14.3. Spring Boot 有哪几种读取配置的方式？
+### 8.15.3. Spring Boot 有哪几种读取配置的方式？
 Spring Boot 可以通过 @PropertySource,@Value,@Environment, @ConfigurationProperties 来绑定变量，具体请看这篇文章《Spring Boot读取配置的几种方式》。
 
 
-# 8. SpringCloud
+# 9. SpringCloud
 <a href="#menu" >目录</a>
 
-## 8.1. 基础知识
+## 9.1. 基础知识
 <a href="#menu" >目录</a>
 
-### 8.1.1. 微服务概念
+### 9.1.1. 微服务概念
 微服务是系统架构上的一种设计风格， 它的主旨是将一个原本独立的系统拆分成多个小型服务，这些小型服务都在各自独立的进程中运行，服务之间通过基于HTTP的RESTful API进行通信协作。 被拆分成的每一个小型服务都围绕着系统中的某一项或一些耦合度较高的业务功能进行构建， 并且每个服务都维护着自身的数据存储、 业务开发、自动化测试案例以及独立部署机制。 由千有了轻量级的通信协作基础， 所以这些微服务可以使用不同的语言来编写
 
 **微服务主要的优势如下：**
@@ -9855,7 +10012,7 @@ Spring Boot 可以通过 @PropertySource,@Value,@Environment, @ConfigurationProp
 * 轻量级通信原则
 * 微服务粒度，确定好服务边界
 
-### 8.1.2. SpringCloud子项目
+### 9.1.2. SpringCloud子项目
 * SpringCloudConfig: 配置管理工具， 支持使用Git存储 配置内容， 可以使用它实现应用配置的外部化存储， 并支持客户端配置信息刷新、 加密／解密配置内容 等。
 * SpringCloudNetflix: 核心 组件， 对多个Netflix OSS开源套件进行整合。
 * Eureka: 服务治理组件， 包含服务注册中心、 服务注册与发现机制的实现。
@@ -9877,7 +10034,7 @@ Spring Boot 可以通过 @PropertySource,@Value,@Environment, @ConfigurationProp
 * Spring Cloud Starters: Spring Cloud 的基础组件， 它是基于 Spring Boot 风格项目的基础依赖模块。
 * Spring Cloud CLI: 用于在 Groovy 中快速创建 Spring Cloud 应用的 Spring Boot CLI插件。
 
-### 8.1.3. 版本说明
+### 9.1.3. 版本说明
 
 由于 Spring Cloud 不像 Spring 社区其他一些项目那样相对独立， 它是一个拥有诸多子项目的大型综合项目， 可以说是对微服务架构解决方案的综合套件组合， 其包含的各个子项目也都独立进行着内容更新与迭代，各自都维护着自己的发布版本号。因此每一 个Spring Cloud 的版本都会包含多个不同版本的子项目， 为了管理每个版本的子项目清单， 避免Spring Cloud的版本号与其子项目的版本号相混淆，没有采用版本号的方式，而是通过命名的方式。使用单词而不是字母主要是因为:设计的目的是为了更好的管理每个SpringCloud子项目的清单，避免自己的版本号与子项目的版本号混淆.
 
@@ -9926,10 +10083,10 @@ pom文件中指定cloud的版本，便可以不用指定各个子项目依赖的
 * Dalston:1.5.x
 
 
-## 8.2. 服务治理Eureka
+## 9.2. 服务治理Eureka
 <a href="#menu" >目录</a>
 
-### 8.2.1. 基本使用
+### 9.2.1. 基本使用
 
 **注册中心**
 
@@ -10038,7 +10195,7 @@ eureka:
       defaultZone: http://user:123456@localhost:8001/eureka/
 ```
 
-### 8.2.2. 高可用注册中心
+### 9.2.2. 高可用注册中心
 
 * 注册中心可以集群部署，提高高可用
 
@@ -10060,10 +10217,10 @@ eureka:
 ```
 EurekaServer的高可用实际上就是将自己作为服务向其他服务注册中心注册自己， 这样就可以形成一组互相注册的服务注册中心， 以实现服务清单的互相同步， 达到高可用的效果
 
-### 8.2.3. 原理说明
+### 9.2.3. 原理说明
 <a href="#menu" >目录</a>
 
-#### 8.2.3.1. 基础模块说明
+#### 9.2.3.1. 基础模块说明
 <a href="#menu" >目录</a>
 
 **基础架构**
@@ -10114,7 +10271,7 @@ EurekaServer的高可用实际上就是将自己作为服务向其他服务注�
         * eureka.server.enableself-preservation=true,默认使能
 
 
-#### 8.2.3.2. Region,Zone
+#### 9.2.3.2. Region,Zone
 **背景**
 用户量比较大或者用户地理位置分布范围很广的项目，一般都会有多个机房。这个时候如果上线springCloud服务的话，我们希望一个机房内的服务优先调用同一个机房内的服务，当同一个机房的服务不可用的时候，再去调用其它机房的服务，以达到减少延时的作用。
 
@@ -10355,7 +10512,7 @@ eureka.instance.lease-expiration-duration-in-seconds: 90
 
 也就是说，当一个服务异常down掉后，90s之后注册中心才会知道这个服务不可用了。在此期间，依旧会把这个服务当成正常服务。ribbon调用仍会把请求转发到这个服务上。为了避免这段期间出现无法提供服务的情况，要开启ribbon的重试功能，去进行其它服务提供者的重试。
 
-#### 8.2.3.3. 源码分析
+#### 9.2.3.3. 源码分析
 <a href="#menu" >目录</a>
 
 
@@ -10364,7 +10521,7 @@ eureka.instance.lease-expiration-duration-in-seconds: 90
 * 在应用主类中配置了@EnableDiscoveryClient注解。
 * 在app让cation.yml 中用 eureka.client.serviceUrl.defaultZone参数指定了服务注册中心的位置。
 
-##### 8.2.3.3.1. EnableDiscoveryClient注解说明
+##### 9.2.3.3.1. EnableDiscoveryClient注解说明
 <a href="#menu" >目录</a>
 
 ```java
@@ -10417,21 +10574,21 @@ public class EnableDiscoveryClientImportSelector extends SpringFactoryImportSele
 
 ```
 
-##### 8.2.3.3.2. 服务注册
+##### 9.2.3.3.2. 服务注册
 <a href="#menu" >目录</a>
 
 
-##### 8.2.3.3.3. 服务续约
+##### 9.2.3.3.3. 服务续约
 <a href="#menu" >目录</a>
 
 
 
 
-### 8.2.4. 更多配置说明
+### 9.2.4. 更多配置说明
 <a href="#menu" >目录</a>
 
 
-#### 8.2.4.1. 服务注册类配置
+#### 9.2.4.1. 服务注册类配置
 
 关于服务注册类的配置信息， 我们可以通过查看 org.springframework.cloud.netflix.eureka.EurekaClien.ConfigBean 的源码来获得比官方文档中更 为详尽的内容
 
@@ -10643,7 +10800,7 @@ public class EurekaClientConfigBean implements EurekaClientConfig, Ordered {
 |fetchRegistry| 是否从Eureka服务端获取注册信息|true
 
 
-#### 8.2.4.2. 服务实例类配置
+#### 9.2.4.2. 服务实例类配置
 
 关千服务实例类的配置信息， 我们可以通过查看org.springframework.cloud.netflix.eureka.EurekainstanceConfigBean的源码来获取详细内容， 这些配置信息都以eureka.instance为前缀
 
@@ -10833,7 +10990,7 @@ public class EurekaInstanceConfigBean implements CloudEurekaInstanceConfig, Envi
 
 
 
-## 8.3. 负载均衡Ribbon
+## 9.3. 负载均衡Ribbon
 <a href="#menu" >目录</a>
 
 Spring Cloud Ribbon 是一个基于 HTTP 和 TCP 的客户端负载均衡工具，它基于 Netflixribbon 实现。 通过 Spring Cloud 的封装， 可以让我们轻松地将面向服务的 REST 模板请求自动转换成客户端负载均衡的服务调用。 Spring Cloud Ribbon 虽然只是一个工具类框架，它不像服务注册中心、 配置中心、 API 网关那样需要独立部署， 但是它几乎存在于每一个Spring Cloud 构建的微服务和基础设施中。 因为微服务间的调用，API 网关的请求转发等内容实际上都是通过伈bbon 来实现的，包括后续我们将要介绍的 Feign, 它也是基于 Ribbon实现的工具。 所以， 对 Spring Cloud Ribbon 的理解和使用， 对于我们使用 Spring Cloud 来构建微服务非常重要。
@@ -10841,7 +10998,7 @@ Spring Cloud Ribbon 是一个基于 HTTP 和 TCP 的客户端负载均衡工具�
 ribbon底层是基于RestTemplate实现Http请求
 org.springframework.web.client.RestTemplate
 
-### 8.3.1. 基本使用
+### 9.3.1. 基本使用
 <a href="#menu" >目录</a>
 
 **引入依赖**
@@ -10891,10 +11048,10 @@ public class RibbonService {
 
 ```
 
-### 8.3.2. 原理说明
+### 9.3.2. 原理说明
 <a href="#menu" >目录</a>
 
-#### 8.3.2.1. 源码分析
+#### 9.3.2.1. 源码分析
 
 **LoadBalancerAutoConfiguration配置类**
 
@@ -11249,7 +11406,7 @@ public <T> T execute(String serviceId, ServiceInstance serviceInstance, LoadBala
 
 ```
 
-#### 8.3.2.2. 负载均衡器
+#### 9.3.2.2. 负载均衡器
 
 ![负载均衡实现类](pic/spring/springcloud/loadbalance-extends.png)
 
@@ -11320,7 +11477,7 @@ DynamicServerListLoadBalancer 类继承于 BaseLoadBalancer 类， 它是对基�
 **ZoneAwareloadBalancer**
 ZoneAwareLoadBalancer 负载均衡器是对 DynamicServerListLoadBalancer的扩展。在 DynamicServerLis七LoadBalancer 中， 我们可以看到它并没有重写选择具体服务实例的 chooseServer 函数， 所以它依然会采用在 BaseLoadBalancer 中实现的算法。 使用 RoundRobinRule 规则， 以线性轮询的方式来选择调用的服务实例， 该算法实现简单并没有区域 (Zone) 的概念， 所以它会把所有实例视为一个 Zone下的节点来看待， 这样就会周期性地产生跨区域 (Zone) 访问的情况， 由于跨区域会产生更��的延迟，这些实例主要以防止区域性故障实现高可用为目的而不能作为常规访问的实例， 所以在多区域部署的清况下会有一定的性能问题， 而该负载均衡器则 可以避免这样的问题.
 
-#### 8.3.2.3. 负载均衡策略
+#### 9.3.2.3. 负载均衡策略
 <a href="#menu" >目录</a>
 
 * IRule
@@ -11857,7 +12014,7 @@ public class RetryRule extends AbstractLoadBalancerRule {
 
 ```
 
-#### 8.3.2.4. 配置详解 
+#### 9.3.2.4. 配置详解 
 
 **Ribbon相关的配置**
 
@@ -12086,7 +12243,7 @@ public class RibbonConfiguration
 }
 ```
 
-### 8.3.3. ribbon配置
+### 9.3.3. ribbon配置
 <a href="#menu" >目录</a>
 
 
@@ -12094,7 +12251,7 @@ public class RibbonConfiguration
 * 全局配置的方式很简单， 只需使用 ribbon.< key>=< value>格式进行配置即可。其中， < key>代表了 Ribbon 客户端配置的参数 名， < value>则代表了 对应参数的值。 比如， 我们可以像下面这样全局配置Ribbon创建连接的超时时间：ribbon.ConnectTimeout=250.全局配置可以作为默认值进行设置， 当指定客户端配置 了相应key 的值时， 将覆盖全局配置的内容。
 * 指定客户端的配置方式 采用 < client> .ribbon.< key>=< value>的格式进行配置。 其中， < key>和< value>的含义同全局配置相同， 而 < client>代表了客户端的名称， 如上文中我们在＠RibbonClient中指定的名称， 也可以将它理解 为是一个服务名。 为了方便理解这种 配置方式， 我们举一个具体的例子： 假设， 有一个服务消费者通过RestTemplate来访问hello-service 服务的/hello 接口，这时 我 们 会这 样调用 restTemplate.getForEntity("http: //helloservice/hello", String.class) .getBody();。 如果没有服务治理框架的帮助，我们需要为该客户端指定 具体的实例清单，可以指定服务名来做详细的配置，具体如下：hello-service.ribbon.listOfServers=localhost:8001,localhost:8002, localhost:8003对于Ribbon .
 
-#### 8.3.3.1. 配置参数说明
+#### 9.3.3.1. 配置参数说明
 <a href="#menu" >目录</a>
 
 
@@ -12211,7 +12368,7 @@ public abstract class CommonClientConfigKey<T> implements IClientConfigKey<T> {
 
 ```
 
-#### 8.3.3.2. 重试机制
+#### 9.3.3.2. 重试机制
 <a href="#menu" >目录</a>
 
 由于Spring Cloud Eureka实现的服务治理机制强调了CAP原理中的AP, 即可用性与可靠性，它与Zoo Keeper这类强调CP( 一致性、可靠性）的服务治理框架最大的区别就是，Eureka为了实现更高的服务可用性， 牺牲了一定的一致性， 在极端情况下它宁愿接受故障实例也不要丢掉 “ 健康 ” 实例， 比如， 当服务注册中心的网络发生故障断开时， 由于所有的服务实例无法维持续约心跳， 在强调 AP的服务治理中将会把所有服务实例都剔除掉，而Eureka则会因为超过85%的实例丢失心跳而会触发保护机制，注册中心将会保留此时的所有节点， 以实现服务间依然可以进行互相调用的场景， 即使其中有部分故障节点， 但这样做可以继续保障大多数的服务正常消费。
@@ -12237,10 +12394,10 @@ hello-service.ribbon.MaxAutoRetries=l
 根据如上配置， 当访问到故障请求的时候， 它会再尝试访问 一次当前实例（次数由MaxAutoRetries配置）， 如果不行， 就换 一个实例进行访问， 如果还是不行， 再换 一次实例访问（更换次数由MaxAutoRe红iesNextServer配置）， 如果依然不行， 返回失败信息
 
 
-## 8.4. 声明式服务调用feign
+## 9.4. 声明式服务调用feign
 <a href="#menu" >目录</a>
 
-### 8.4.1. 使用案例
+### 9.4.1. 使用案例
 
 引入依赖，因为feign底层是依赖ribbon,因此也要引入该包
 ```xml
@@ -12321,10 +12478,10 @@ public interface DemoFeign {
 }
 ```
 
-### 8.4.2. 实现原理
+### 9.4.2. 实现原理
 <a href="#menu" >目录</a>
 
-#### 8.4.2.1. 配置类
+#### 9.4.2.1. 配置类
 <a href="#menu" >目录</a>
 
 ```java
@@ -12480,7 +12637,7 @@ public class FeignClientsConfiguration {
 
 ```
 
-#### 8.4.2.2. 启动注解说明
+#### 9.4.2.2. 启动注解说明
 <a href="#menu" >目录</a>
 
 feign是一个伪客户端，即它不做任何的请求处理。Feign通过处理注解生成request，从而实现简化HTTP API开发的目的，即开发人员可以使用注解的方式定制request api模板，在发送http request请求之前，feign通过处理注解的方式替换掉request模板中的参数，这种实现方式显得更为直接、可理解。
@@ -12514,7 +12671,7 @@ public @interface FeignClient {
 ```
 
 
-#### 8.4.2.3. 调用实现原理
+#### 9.4.2.3. 调用实现原理
 <a href="#menu" >目录</a>
 
 
@@ -12777,7 +12934,7 @@ final class SynchronousMethodHandler implements MethodHandler {
 
 也就是说Feign的调用,中间生成了RequestTemplate对象,调用RequestTemplate的相关方法后,将会通过ribbon相关类来最终实现负载均衡,发送请求处理响应等操作.所以Feign本质上还是使用ribbon来实现.
 
-#### 8.4.2.4. 总结
+#### 9.4.2.4. 总结
 
 总到来说，Feign的源码实现的过程如下：
 * 首先通过@EnableFeignCleints注解开启FeignCleint
@@ -12789,13 +12946,13 @@ final class SynchronousMethodHandler implements MethodHandler {
 * 最后Client被封装到LoadBalanceClient类，这个类结合类Ribbon做到了负载均衡。
 
 
-## 8.5. 服务容错保护 Hystrix
+## 9.5. 服务容错保护 Hystrix
 <a href="#menu" >目录</a>
 
 
 
 
-### 8.5.1. Ribbon中使用Hystrix
+### 9.5.1. Ribbon中使用Hystrix
 <a href="#menu" >目录</a>
 
 引入依赖
@@ -12846,7 +13003,7 @@ public class RibbonService {
 }
 ```
 
-### 8.5.2. Feign中使用Hystrix
+### 9.5.2. Feign中使用Hystrix
 <a href="#menu" >目录</a>
 
 由 于 Feign 的起步依赖中已经引入了 Hystrix 的依赖，所以在 Feign 中使用 Hystrix 不需要引入任何的依赖 。 只需要在 eureka-feign”client 工程的配置文件 application.yml 中配置开启Hystrix 的功能，配置文件 application.yml 中加以下配置 ：
@@ -12885,10 +13042,10 @@ class DemoFeignHystrix implements DemoFeign{
 
 
 
-### 8.5.3. Hystrix详解
+### 9.5.3. Hystrix详解
 <a href="#menu" >目录</a>
 
-#### 8.5.3.1. 背景
+#### 9.5.3.1. 背景
 <a href="#menu" >目录</a>
 
 分布式系统环境下，服务间类似依赖非常常见，一个业务调用通常依赖多个基础服务。如下图，对于同步调用，当库存服务不可用时，商品服务请求线程被阻塞，当有大批量请求调用库存服务时，最终可能导致整个商品服务资源耗尽，无法继续对外提供服务。并且这种不可用可能沿请求调用链向上传递，这种现象被称为雪崩效应。
@@ -12913,7 +13070,7 @@ class DemoFeignHystrix implements DemoFeign{
 
 
 
-#### 8.5.3.2. 基本认识
+#### 9.5.3.2. 基本认识
 <a href="#menu" >目录</a>
 
 **Hystrix是什么**
@@ -12976,7 +13133,7 @@ Hystrix被设计的目标是：
 
 [官方wiki](https://github.com/Netflix/Hystrix/wiki)
 
-#### 8.5.3.3. hystrix适用场景
+#### 9.5.3.3. hystrix适用场景
 <a href="#menu" >目录</a>
 
 **核心无降级业务**
@@ -12995,7 +13152,7 @@ hystrix可以有丰富的配置，其原理是：在一个窗口时间内针对�
 并不是每一个业务都需要开启hystrix的支持
 在启用hystrix的情况下，对于整个分布式服务集群来讲，并不能完全避免服务雪崩，仅能保证调用方服务在发生网络雪崩发时候自己不被拖死，减少雪崩的影响范围。
 
-#### 8.5.3.4. 注解说明
+#### 9.5.3.4. 注解说明
 <a href="#menu" >目录</a>
 
 通过在方法上添加 @HystrixCommand 注解并配置注解的参数来实现配置，但有的时候一个类里面会有多个 Hystrix 方法，每个方法都是类似配置的话会冗余很多代码，这时候我们可以在类上使用 @DefaultProperties 注解来给整个类的 Hystrix 方法设置一个默认值
@@ -13114,10 +13271,10 @@ Hystrix 的命令属性是由 @HystrixProperty 注解数组构成的，HystrixPr
     * 如果 queue 长度无法存储请求，则会创建新线程执行直到达到 maximumSize 最大线程数，多出核心线程数的线程会在空闲时回收。
 
 
-#### 8.5.3.5. 如何使用
+#### 9.5.3.5. 如何使用
 <a href="#menu" >目录</a>
 
-##### 8.5.3.5.1. 基本的实例
+##### 9.5.3.5.1. 基本的实例
 <a href="#menu" >目录</a>
 
 **引入依赖**
@@ -13590,7 +13747,7 @@ public class ObservableUserServiceTest {
 
 
 
-##### 8.5.3.5.2. 同步执行
+##### 9.5.3.5.2. 同步执行
 <a href="#menu" >目录</a>
 
 HystrixCommand
@@ -13606,7 +13763,7 @@ Observable<String> observable = new CommandHelloWorld("lgj").observe();
 observable.toBlocking().toFuture().get();
 ```
 
-##### 8.5.3.5.3. 异步执行
+##### 9.5.3.5.3. 异步执行
 <a href="#menu" >目录</a>
 
 HystrixCommand
@@ -13623,7 +13780,7 @@ Observable<String> observable = new CommandHelloWorld("lgj").observe();
 observable.toBlocking().toFuture().get();
 ```
 
-##### 8.5.3.5.4. Reactive Execution
+##### 9.5.3.5.4. Reactive Execution
 <a href="#menu" >目录</a>
 
 You can also observe the results of a HystrixCommand as an Observable by using one of the following methods:
@@ -13705,7 +13862,7 @@ Using Java 8 lambdas/closures is more compact; it would look like this:
 ```
 More information about Observable can be found at http://reactivex.io/documentation/observable.html
 
-##### 8.5.3.5.5. Reactive Commands
+##### 9.5.3.5.5. Reactive Commands
 <a href="#menu" >目录</a>
 
 Rather than converting a HystrixCommand into an Observable using the methods described above, you can also create a HystrixObservableCommand that is a specialized version of HystrixCommand meant to wrap Observables. A HystrixObservableCommand is capable of wrapping Observables that emit multiple items, whereas ordinary HystrixCommands, even when converted into Observables, will never emit more than one item.
@@ -13716,7 +13873,7 @@ To obtain an Observable representation of the HystrixObservableCommand, use one 
 
 observe() — returns a “hot” Observable that subscribes to the underlying Observable immediately, though because it is filtered through a ReplaySubject you are not in danger of losing any items that it emits before you have a chance to subscribe to the resulting Observable
 toObservable() — returns a “cold” Observable that won’t subscribe to the underlying Observable until you subscribe to the resulting Observable
-##### 8.5.3.5.6. Fallback
+##### 9.5.3.5.6. Fallback
 <a href="#menu" >目录</a>
 
 
@@ -13766,7 +13923,7 @@ Internally, Hystrix uses the RxJava onErrorResumeNext operator to seamlessly tra
 Sequence Diagram
 @adrianb11 has kindly provided a sequence diagram demonstrating how a timeout then fallback works.
 
-##### 8.5.3.5.7. Error Propagation
+##### 9.5.3.5.7. Error Propagation
 <a href="#menu" >目录</a>
 
 All exceptions thrown from the run() method except for HystrixBadRequestException count as failures and trigger getFallback() and circuit-breaker logic.
@@ -13784,7 +13941,7 @@ SHORT_CIRCUITED	HystrixRuntimeException	j.l.RuntimeException	YES
 THREAD_POOL_REJECTED	HystrixRuntimeException	j.u.c.RejectedExecutionException	YES
 SEMAPHORE_REJECTED	HystrixRuntimeException	j.l.RuntimeException	YES
 BAD_REQUEST	HystrixBadRequestException	underlying exception (user-controlled)	NO
-##### 8.5.3.5.8. Command Name
+##### 9.5.3.5.8. Command Name
 <a href="#menu" >目录</a>
 
 A command name is, by default, derived from the class name:
@@ -13812,7 +13969,7 @@ To save a Setter allocation per command allocation, you may also cache the Sette
 HystrixCommandKey is an interface and can be implemented as an enum or regular class, but it also has the helper Factory class to construct and intern instances such as:
 
 HystrixCommandKey.Factory.asKey("HelloWorld")
-##### 8.5.3.5.9. Command Group
+##### 9.5.3.5.9. Command Group
 <a href="#menu" >目录</a>
 
 Hystrix uses the command group key to group together commands such as for reporting, alerting, dashboards, or team/library ownership.
@@ -13822,7 +13979,7 @@ By default Hystrix uses this to define the command thread-pool unless a separate
 HystrixCommandGroupKey is an interface and can be implemented as an enum or regular class, but it also has the helper Factory class to construct and intern instances such as:
 
 HystrixCommandGroupKey.Factory.asKey("ExampleGroup")
-##### 8.5.3.5.10. Command Thread-Pool
+##### 9.5.3.5.10. Command Thread-Pool
 <a href="#menu" >目录</a>
 
 The thread-pool key represents a HystrixThreadPool for monitoring, metrics publishing, caching, and other such uses. A HystrixCommand is associated with a single HystrixThreadPool as retrieved by the HystrixThreadPoolKey injected into it, or it defaults to one created using the HystrixCommandGroupKey it is created with.
@@ -13851,7 +14008,7 @@ If command A becomes latent and saturates its thread-pool it should not prevent 
 
 Thus, we logically want these commands grouped together but want them isolated differently and would use HystrixThreadPoolKey to give each of them a different thread-pool.
 
-##### 8.5.3.5.11. Request Cache
+##### 9.5.3.5.11. Request Cache
 <a href="#menu" >目录</a>
 
 You enable request caching by implementing the getCacheKey() method on a HystrixCommand or HystrixObservableCommand object as follows:
@@ -13931,7 +14088,7 @@ public void testWithCacheHits() {
     }
 }
 ```
-##### 8.5.3.5.12. Request Collapsing
+##### 9.5.3.5.12. Request Collapsing
 <a href="#menu" >目录</a>
 
 Request collapsing enables multiple requests to be batched into a single HystrixCommand instance execution.
@@ -14024,7 +14181,7 @@ public void testCollapser() throws Exception {
     }
 }
 ```
-##### 8.5.3.5.13. Request Context Setup
+##### 9.5.3.5.13. Request Context Setup
 <a href="#menu" >目录</a>
 
 To use request-scoped features (request caching, request collapsing, request log) you must manage the HystrixRequestContext lifecycle (or implement an alternative HystrixConcurrencyStrategy).
@@ -14062,7 +14219,7 @@ You could enable the filter for all incoming traffic by adding a section to the 
       <url-pattern>/*</url-pattern>
    </filter-mapping>
 ```
-##### 8.5.3.5.14. Common Patterns
+##### 9.5.3.5.14. Common Patterns
 <a href="#menu" >目录</a>
 
 In the following sections are common uses and patterns of use for HystrixCommand and HystrixObservableCommand.
@@ -14118,7 +14275,7 @@ The equivalent Fail-Fast solution for a HystrixObservableCommand would involve o
         }
     }
 ```
-##### 8.5.3.5.15. Fail Silent
+##### 9.5.3.5.15. Fail Silent
 ]<a href="#menu" >目录</a>
 
 Failing silently is the equivalent of returning an empty response or removing functionality. It can be done by returning null, an empty Map, empty List, or other such responses.
@@ -14181,7 +14338,7 @@ The equivalent Fail-Silently solution for a HystrixObservableCommand would invol
         return Observable.empty();
     }
 ```
-##### 8.5.3.5.16. Fallback: Static
+##### 9.5.3.5.16. Fallback: Static
 <a href="#menu" >目录</a>
 
 Fallbacks can return default values statically embedded in code. This doesn’t cause the feature or service to be removed in the way that “fail silent” often does, but instead causes default behavior to occur.
@@ -14201,7 +14358,7 @@ The equivalent Static solution for a HystrixObservableCommand would involve over
         return Observable.just( true );
     }
 ```
-##### 8.5.3.5.17. Fallback: Stubbed
+##### 9.5.3.5.17. Fallback: Stubbed
 <a href="#menu" >目录</a>
 
 You typically use a stubbed fallback when your command returns a compound object containing multiple fields, some of which can be determined from other request state while other fields are set to default values.
@@ -14320,7 +14477,7 @@ protected Observable<Integer> resumeWithFallback() {
     }
 }
 ```
-##### 8.5.3.5.18. Fallback: Cache via Network
+##### 9.5.3.5.18. Fallback: Cache via Network
 <a href="#menu" >目录</a>
 
 
@@ -14389,7 +14546,7 @@ public class CommandWithFallbackViaNetwork extends HystrixCommand<String> {
 }
 ```
 
-##### 8.5.3.5.19. Primary + Secondary with Fallback
+##### 9.5.3.5.19. Primary + Secondary with Fallback
 <a href="#menu" >目录</a>
 
 Some systems have dual-mode behavior — primary and secondary, or primary and failover.
@@ -14522,7 +14679,7 @@ public class CommandFacadeWithPrimarySecondary extends HystrixCommand<String> {
 }
 ```
 
-##### 8.5.3.5.20. Client Doesn't Perform Network Access
+##### 9.5.3.5.20. Client Doesn't Perform Network Access
 <a href="#menu" >目录</a>
 
 When you wrap behavior that does not perform network access, but where latency is a concern or the threading overhead is unacceptable, you can set the executionIsolationStrategy property to ExecutionIsolationStrategy.SEMAPHORE and Hystrix will use semaphore isolation instead.
@@ -14550,7 +14707,7 @@ public class CommandUsingSemaphoreIsolation extends HystrixCommand<String> {
 }
 ```
 
-##### 8.5.3.5.21. Get-Set-Get with Request Cache Invalidation
+##### 9.5.3.5.21. Get-Set-Get with Request Cache Invalidation
 <a href="#menu" >目录</a>
 
 If you are implementing a Get-Set-Get use case where the Get receives enough traffic that request caching is desired but sometimes a Set occurs on another command that should invalidate the cache within the same request, you can invalidate the cache by calling HystrixRequestCache.clear().
@@ -14644,7 +14801,7 @@ public void getGetSetGet() {
 }
 }
 ```
-##### 8.5.3.5.22. Get-Set-Get with Request Cache Invalidation
+##### 9.5.3.5.22. Get-Set-Get with Request Cache Invalidation
 <a href="#menu" >目录</a>
 
 Migrating a Library to Hystrix
@@ -14662,35 +14819,35 @@ After migrating, users of a library will be able to access the HystrixCommands d
 
 
 
-#### 8.5.3.6. 工作原理
+#### 9.5.3.6. 工作原理
 <a href="#menu" >目录</a>
 
 
 
 
-### 8.5.4. Spring Cloud 中使用Hystrix原理
+### 9.5.4. Spring Cloud 中使用Hystrix原理
 <a href="#menu" >目录</a>
 
-### 8.5.5. Hystrix监控
+### 9.5.5. Hystrix监控
 
 
-## 8.6. API网关服务
+## 9.6. API网关服务
 <a href="#menu" >目录</a>
 
-### 8.6.1. zuul
+### 9.6.1. zuul
 <a href="#menu" >目录</a>
 
-### 8.6.2. GateWay
+### 9.6.2. GateWay
 <a href="#menu" >目录</a>
 
 
 
-## 8.7. 分布式配置中心Config
+## 9.7. 分布式配置中心Config
 <a href="#menu" >目录</a>
 
-### 8.7.1. 基本使用
+### 9.7.1. 基本使用
 
-#### 8.7.1.1. 配置中心
+#### 9.7.1.1. 配置中心
 
 **引入依赖**
 ```xml
@@ -14792,7 +14949,7 @@ server:
   port: 8004
 ```
 
-#### 8.7.1.2. bootstrap.yml与application.yml区别
+#### 9.7.1.2. bootstrap.yml与application.yml区别
 说明：其实yml和properties文件是一样的原理，主要是说明application和bootstrap的加载顺序。且一个项目上要么yml或者properties，二选一的存在
 
 **执行顺序**
@@ -14916,7 +15073,7 @@ org.springframework.cloud.bootstrap.BootstrapConfiguration=sample.custom.CustomP
 那么，”customProperty“的PropertySource将会被包含到应用。
 
 
-#### 8.7.1.3. 客户端配置
+#### 9.7.1.3. 客户端配置
 
 **引入依赖**
 
@@ -14987,7 +15144,7 @@ public class ConfigController {
 }
 ```
 
-#### 8.7.1.4. 刷新配置
+#### 9.7.1.4. 刷新配置
 有一种场景需要更改配置而不需要重启服务。
 
 * 客户端需要进行相关的配置
@@ -15015,13 +15172,13 @@ curl -X POST http://localhost:8004/actuator/refresh
 ```
 
 
-### 8.7.2. 原理说明
+### 9.7.2. 原理说明
 <a href="#menu" >目录</a>
 
-### 8.7.3. 更多使用方式
+### 9.7.3. 更多使用方式
 <a href="#menu" >目录</a>
 
-## 8.8. 消息总线bus
+## 9.8. 消息总线bus
 <a href="#menu" >目录</a>
 
 Spring Cloud Bus是用轻量的消息代理将分布式的节点连接起来,可以用于广播配置文件的更改或者服务的监控管理。一个关键的思想就是,消息总线可以为微服务做监控,也可以实现应用程序之间相互通信。 Spring Cloud Bus可选的消息代理线线泡括RabbitMQ、 AMQP和Kaka等。
@@ -15038,7 +15195,7 @@ Spring Cloud Bus是用轻量的消息代理将分布式的节点连接起来,可
 4. 其它客户端接收到通知，请求Server端获取最新配置
 5. 全部客户端均获取到最新的配置
 
-### 8.8.1. 消息代理
+### 9.8.1. 消息代理
 消息代理 (Message Broker) 是一种消息验证、 传输、 路由的架构模式。 它在应用程序之间起到通信调度并最小化应用之间的依赖的作用， 使得应用程序可以高效地解耦通信过程。 消息代理是一个中间件产品， 它的核心是一个消息的路由程序， 用来实现接收和分发消息， 并根据设定好的消息处理流来转发给正确的应用。 它包括独立的通信和消息传递协议， 能够实现组织内部和组织间的网络通信。 设计代理的目的就是为了能够从应用程序中传入消息， 并执行一些特别的操作， 下面这些是在企业应用中， 我们经常需要使用消息代理的场景：
 * 将消息路由到一个或多个目的地
 * 消息转化为其他的表现方式。
@@ -15049,13 +15206,13 @@ Spring Cloud Bus是用轻量的消息代理将分布式的节点连接起来,可
 
 当前版本的Spring Cloud Bus仅支待两款中间件产品： RabbitMQ和Kafka
 
-## 8.9. 消息驱动的微服务Stream
+## 9.9. 消息驱动的微服务Stream
 <a href="#menu" >目录</a>
 
-## 8.10. 分布式服务跟踪Sleuth
+## 9.10. 分布式服务跟踪Sleuth
 <a href="#menu" >目录</a>
 
-### 8.10.1. 基本使用 
+### 9.10.1. 基本使用 
 
 pom配置
 ```xml
@@ -15108,11 +15265,11 @@ spring:
 上面四个值中的**TraceID**和**SpanID**是Spring Cloud Sleuth实现分布式服务跟踪的核心。 在一次服务请求链路的调用过程中， 会保待并传递同一个**Trace ID**, 从而将整个分布于不同微服务进程中的请求跟踪 信息串联起来。 以上面输出内容为例， trace-1 和trace-2同属于一个前端服务请求来源，所以它们的TraceID是相同的，处于同一条请求链路中
 
 
-### 8.10.2. 跟踪原理
+### 9.10.2. 跟踪原理
 
 这里只讲feign和Sleuth的实现原理，其他方式基本原理上差不多。
 
-#### 8.10.2.1. 基本实现原理
+#### 9.10.2.1. 基本实现原理
 
 在了解其实现原理之前需要思考的问题是，假如消费者使用的Feign声明式服务调用，sleuth是如何接入的，是如何生成各种ID插入请求的？
 
@@ -15175,7 +15332,7 @@ main(){
 ```
 ----
 
-#### 8.10.2.2. 支持的组件
+#### 9.10.2.2. 支持的组件
 Spring Cloud Sleuth可以追踪10种类型的组件，async、Hystrix，messaging，websocket，rxjava，scheduling，web（Spring MVC Controller，Servlet），webclient（Spring RestTemplate）、Feign、Zuul。下面是常用的八种类型。
 
 ![Sleuth支持的组件](pic/spring/springcloud/sleuth-instructment.png)
@@ -15206,7 +15363,7 @@ TraceFeignAspect AOP里面的逻辑是，有地方想获取Client实例，就拦
 原理是zuul的Filter机制，ZuulFilter 
 实现了三个TracePreZuulFilter、TracePostZuulFilter两个Filter。
 
-#### 8.10.2.3. 一些基本概念
+#### 9.10.2.3. 一些基本概念
 
 * 为了实现请求跟踪， 当请求发送到分布式系统的入口端点时， 只需要服务跟踪框架为该请求创建一个唯一的跟踪标识， 同时在分布式系统内部流转的时候， 框架始终保待传递 该唯一标识， 直到返回给请求方为止， 这个唯一 标识就是前文中提到的TraceID。 通过TraceID 的记录， 我们就能将所有请求过程的日志关联起来。
 * 为了统计各处理单元的时间延迟， 当请求到达各个服务组件时， 或是处理逻辑到达某个状态时， 也通过一个唯一标识来标记它的开始、 具体过程以及结束， 该标识就是前文中提到的SpanID。 对于每个Span来说， 它必须有开始和结束 两个节点， 通过记录开始 Span和结束Span的时间戳，就能统计出该Span的时间延迟，除了时间戳记录之外， 它还可以包含一些其他元数据， 比如事件名称、 请求信息等
@@ -15235,7 +15392,7 @@ public final class B3Propagation<K> implements Propagation<K> {
 }
 ```
 
-#### 8.10.2.4. zipkin
+#### 9.10.2.4. zipkin
 Zipkin是Twitter的一个开源项目，我们可以使用它来收集各个服务器上请求链路的跟踪数据，并通过它提供的API接口来辅助查询跟踪数据以分布式系统的监控程序，通过UI组件帮助我们及时发现系统中出现的延迟升高问题以及系统性能瓶颈根源。
 **基本概念**
 下面展示Zipkin的基础架构，它主要由4个核心组件构成
@@ -15279,7 +15436,7 @@ Instrumented Client 和Instrumented Server，是指分布式架构中使用了Tr
 这种方式通过spring cloud streaming将追踪信息发送到zipkin。spring cloud streaming目前只支持kafka和rabbitmq。Zipkin Collector从消息中间件中读取数据并存储：
 ![](https://img-blog.csdn.net/20181010191040623?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3pobGxhbnNlemhpbGlhbg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
-#### 8.10.2.5. 调用过程
+#### 9.10.2.5. 调用过程
 
 ![Sleuth支持的组件](pic/spring/springcloud/sleuth-request.png)
 
@@ -15333,13 +15490,13 @@ public void inject(TraceContext traceContext, C carrier) {
 
 
 
-# 9. 单元测试
+# 10. 单元测试
 <a href="#menu" >目录</a>
 
-## 9.1. Junit
+## 10.1. Junit
 <a href="#menu" >目录</a>
 
-### 9.1.1. 概述
+### 10.1.1. 概述
 <a href="#menu" >目录</a>
 
 所谓单元测试是测试应用程序的功能是否能够按需要正常运行，并且确保是在开发人员的水平上，单元测试生成图片。单元测试是一个对单一实体（类或方法）的测试。单元测试是每个软件公司提高产品质量、满足客户需求的重要环节。
@@ -15380,7 +15537,7 @@ JUnit 促进了“先测试后编码”的理念，强调建立测试数据的�
 * 每一项需求至少需要两个单元测试用例：一个正检验，一个负检验。如果一个需求有子需求，每一个子需求必须至少有正检验和负检验两个测试用例。
 
 
-### 9.1.2. JUnit 中的重要的 API
+### 10.1.2. JUnit 中的重要的 API
 <a href="#menu" >目录</a>
 
 JUnit 中的最重要的程序包是 junit.framework 它包含了所有的核心类。一些重要的类列示如下：
@@ -15463,7 +15620,7 @@ JUnit 中的最重要的程序包是 junit.framework 它包含了所有的核心
     * static Test warning(String message)
         * 返回会失败的测试并且记录警告信息。
 
-### 9.1.3. 常用注解
+### 10.1.3. 常用注解
 <a href="#menu" >目录</a>
 
 **@Test**
@@ -15499,7 +15656,7 @@ JUnit执行结果中会报告被忽略的测试数
 即使在@BeforeClass注解方法中抛出了异常，所有的@AfterClass注解方法依然会被执行
 父类中的@AfterClass注解方法会在子类@AfterClass注解方法执行后被执行
 
-### 9.1.4. 套件测试
+### 10.1.4. 套件测试
 <a href="#menu" >目录</a>
 
 ```java
@@ -15533,11 +15690,11 @@ public class TestRunner {
 }  
 ```
 
-## 9.2. TestNG测试
+## 10.2. TestNG测试
 <a href="#menu" >目录</a>
 
 
-### 9.2.1. 概述
+### 10.2.1. 概述
 <a href="#menu" >目录</a>
 
 **JUnit缺点：**
@@ -15579,7 +15736,7 @@ TestNG(Next Generation)是一个测试框架，它受到JUnit和NUnit的启发�
 </dependency>
 
 ```
-### 9.2.2. JUnit 4 Vs TestNG比较
+### 10.2.2. JUnit 4 Vs TestNG比较
 
 | 特点 | JUnit 4| TestNG
 |---|---|---|
@@ -15605,7 +15762,7 @@ JUnit4和TestNG之间的主要注释差异是：
 
 
 
-### 9.2.3. 注解说明
+### 10.2.3. 注解说明
 <a href="#menu" >目录</a>
 
 TestNG支持多种注解，可以进行各种组合，如下进行简单的说明
@@ -15627,9 +15784,9 @@ TestNG支持多种注解，可以进行各种组合，如下进行简单的说�
 |@Parameters|	描述如何将参数传递给@Test方法
 |@Test	|将类或方法标记为测试的一部分，此标记若放在类上，则该类所有公共方法都将被作为测试方法
 
-### 9.2.4. 测试案例
+### 10.2.4. 测试案例
 
-#### 9.2.4.1. 基本例子
+#### 10.2.4.1. 基本例子
 <a href="#menu" >目录</a>
 
 ```java
@@ -15662,7 +15819,7 @@ Total tests run: 1, Failures: 0, Skips: 0
 Process finished with exit code 0
 ```
 
-#### 9.2.4.2. 预期异常测试
+#### 10.2.4.2. 预期异常测试
 <a href="#menu" >目录</a>
 
 必须抛出ArithmeticException,否则测试失败
@@ -15675,20 +15832,20 @@ public void divisionWithException() {
 
 ```
 
-#### 9.2.4.3. 忽略测试
+#### 10.2.4.3. 忽略测试
 <a href="#menu" >目录</a>
 
 通过enabled控制
 ```
 @Test(enabled = false)
 ```
-#### 9.2.4.4. 超时测试
+#### 10.2.4.4. 超时测试
 <a href="#menu" >目录</a>
 
 ```java
  @Test(timeOut = 5000)
 ```
-#### 9.2.4.5. 分组测试 
+#### 10.2.4.5. 分组测试 
 <a href="#menu" >目录</a>
 
 这里有两个分组,group1-test和group2-test,只有这两个分组都执行成功了,group()方法才会执行,因为它使用dependsOnGroups依赖这两个分组.
@@ -15714,11 +15871,11 @@ public void group() {
 }
 ```
 
-## 9.3. Mockito  
+## 10.3. Mockito  
 <a href="#menu" >目录</a>
 
 
-### 9.3.1. 介绍
+### 10.3.1. 介绍
 <a href="#menu" >目录</a>
 
 **Mockito是什么？**
@@ -15769,7 +15926,7 @@ API文档：http://docs.mockito.googlecode.com/hg/org/mockito/Mockito.html
 </dependency>
 ```
 
-### 9.3.2. Mockito说明
+### 10.3.2. Mockito说明
 
 在使用过程中,都是使用Mockito类的相关静态方法来操作
 ```java
@@ -15996,11 +16153,11 @@ public class Mockito extends ArgumentMatchers {
 
 ```
 
-### 9.3.3. 例子 
+### 10.3.3. 例子 
 <a href="#menu" >目录</a>
 
 
-#### 9.3.3.1. 基本的例子 
+#### 10.3.3.1. 基本的例子 
 <a href="#menu" >目录</a>
 
 这里需要测试UserDemoService类的代码
@@ -16094,7 +16251,7 @@ name = aaa, return:[UserDemo(id=1000, name=aaa, age=105)]
 name = bbb, return:[UserDemo(id=1000, name=bbb, age=105)]
 ```
 
-#### 9.3.3.2. 验证行为
+#### 10.3.3.2. 验证行为
 <a href="#menu" >目录</a>
 
 ```java
@@ -16110,7 +16267,7 @@ public void verify_behaviour(){
     verify(mock).clear();
 }
 ```
-#### 9.3.3.3. 模拟我们所期望的结果
+#### 10.3.3.3. 模拟我们所期望的结果
 <a href="#menu" >目录</a>
 
 ```java
@@ -16136,7 +16293,7 @@ public void verify_behaviour(){
         outputStream.close();
     }
 ```
-#### 9.3.3.4. RETURNS_SMART_NULLS和RETURNS_DEEP_STUBS
+#### 10.3.3.4. RETURNS_SMART_NULLS和RETURNS_DEEP_STUBS
 <a href="#menu" >目录</a>
 
 RETURNS_SMART_NULLS实现了Answer接口的对象，它是创建mock对象时的一个可选参数，mock(Class,Answer)。
@@ -16202,7 +16359,7 @@ RETURNS_DEEP_STUBS参数程序会自动进行mock所需的对象，方法deepstu
         }
     }
 ```
-#### 9.3.3.5. 模拟方法体抛出异常
+#### 10.3.3.5. 模拟方法体抛出异常
 <a href="#menu" >目录</a>
 
 ```java
@@ -16214,7 +16371,7 @@ RETURNS_DEEP_STUBS参数程序会自动进行mock所需的对象，方法deepstu
     }
 ```
 
-#### 9.3.3.6. 使用注解来快速模拟 
+#### 10.3.3.6. 使用注解来快速模拟 
 <a href="#menu" >目录</a>
 
 在上面的测试中我们在每个测试方法里都mock了一个List对象，为了避免重复的mock，是测试类更具有可读性，我们可以使用下面的注解方式来快速模拟对象：
@@ -16263,7 +16420,7 @@ public class MockitoExample2 {
     }
 }
 ```
-#### 9.3.3.7. 参数匹配
+#### 10.3.3.7. 参数匹配
 <a href="#menu" >目录</a>
 
 ```java
@@ -16314,7 +16471,7 @@ public void all_arguments_provided_by_matchers(){
     //verify(comparator).compare(anyString(),"hello");
 }
 ```
-#### 9.3.3.8. 自定义参数匹配
+#### 10.3.3.8. 自定义参数匹配
 <a href="#menu" >目录</a>
 
 ```java
@@ -16339,7 +16496,7 @@ class IsListofTwoElements extends ArgumentMatcher<List>
     }
 }
 ```
-#### 9.3.3.9. 捕获参数来进一步断言
+#### 10.3.3.9. 捕获参数来进一步断言
 <a href="#menu" >目录</a>
 
 较复杂的参数匹配器会降低代码的可读性，有些地方使用参数捕获器更加合适。
@@ -16391,7 +16548,7 @@ class PersonService{
     }
 }
 ```
-#### 9.3.3.10. 使用方法预期回调接口生成期望值（Answer结构）
+#### 10.3.3.10. 使用方法预期回调接口生成期望值（Answer结构）
 <a href="#menu" >目录</a>
 
 ```java
@@ -16427,7 +16584,7 @@ public void answer_with_callback(){
     assertEquals("hello world:999",mockList.get(999));
 }
 ```
-#### 9.3.3.11. 修改对未预设的调用返回默认期望
+#### 10.3.3.11. 修改对未预设的调用返回默认期望
 <a href="#menu" >目录</a>
 
 ```java
@@ -16446,7 +16603,7 @@ public void unstubbed_invocations(){
     assertEquals(999,mock.size());
 }
 ```
-#### 9.3.3.12. 用spy监控真实对象 
+#### 10.3.3.12. 用spy监控真实对象 
 <a href="#menu" >目录</a>
 
 Mock不是真实的对象，它只是用类型的class创建了一个虚拟对象，并可以设置对象行为
@@ -16476,7 +16633,7 @@ public void spy_on_real_objects(){
     spy.get(2);
 }
 ```
-#### 9.3.3.13. 真实的部分mock
+#### 10.3.3.13. 真实的部分mock
 <a href="#menu" >目录</a>
 
 ```java
@@ -16498,7 +16655,7 @@ class A{
     }
 }
 ```
-#### 9.3.3.14. 重置mock
+#### 10.3.3.14. 重置mock
 <a href="#menu" >目录</a>
 
 ```java
@@ -16513,7 +16670,7 @@ public void reset_mock(){
     assertEquals(0,list.size());
 }
 ```
-#### 9.3.3.15. 验证确切的调用次数
+#### 10.3.3.15. 验证确切的调用次数
 <a href="#menu" >目录</a>
 
 ```java
@@ -16543,7 +16700,7 @@ public void verifying_number_of_invocations(){
     verify(list,atMost(3)).add(3);
 }
 ```
-#### 9.3.3.16. 连续调用
+#### 10.3.3.16. 连续调用
 <a href="#menu" >目录</a>
 
 ```java
@@ -16562,7 +16719,7 @@ public void consecutive_calls(){
     mockList.get(1);
 }
 ```
-#### 9.3.3.17. 验证执行顺序
+#### 10.3.3.17. 验证执行顺序
 <a href="#menu" >目录</a>
 
 ```java
@@ -16583,7 +16740,7 @@ public void verification_in_order(){
     inOrder.verify(list2).add("world");
 }
 ```
-#### 9.3.3.18. 确保模拟对象上无互动发生
+#### 10.3.3.18. 确保模拟对象上无互动发生
 <a href="#menu" >目录</a>
 
 ```java
@@ -16599,7 +16756,7 @@ public void verify_interaction(){
     verifyZeroInteractions(list2,list3);
 }
 ```
-#### 9.3.3.19. 找出冗余的互动(即未被验证到的)
+#### 10.3.3.19. 找出冗余的互动(即未被验证到的)
 <a href="#menu" >目录</a>
 
 ```java
@@ -16620,7 +16777,7 @@ public void find_redundant_interaction(){
     verifyNoMoreInteractions(list2);
 }
 ```
-### 9.3.4. Mockito如何实现Mock[3]
+### 10.3.4. Mockito如何实现Mock[3]
 <a href="#menu" >目录</a>
 
 Mockito并不是创建一个真实的对象，而是模拟这个对象，他用简单的when(mock.method(params)).thenRetrun(result)语句设置mock对象的行为，如下语句：
@@ -16630,7 +16787,7 @@ Mockito.when(mockedList.get(0)).thenReturn("first");
 在Mock对象的时候，创建一个proxy对象，保存被调用的方法名（get），以及调用时候传递的参数（0），然后在调用thenReturn方法时再把“first”保存起来，这样，就有了构建一个stub方法所需的所有信息，构建一个stub。当get方法被调用的时候，实际上调用的是之前保存的proxy对象的get方法，返回之前保存的数据。
 
 
-## 9.4. 控制层测试
+## 10.4. 控制层测试
 <a href="#menu" >目录</a>
 
 主要思路是：使用MockMvc发起请求，然后执行相应的代码，在执行的过程中使用Mockito的mock模拟底层数据的返回，最后结果验证。
@@ -16642,7 +16799,7 @@ MockMvc相关[官方地址官方指南:https://spring.io/guides/gs/testing-web/]
 [文档地址:https://spring.io/guides/gs/testing-web/](https://spring.io/guides/gs/testing-web/)
 
 
-### 9.4.1. 基本使用
+### 10.4.1. 基本使用
 <a href="#menu" >目录</a>
 
 **首先需要增加相应的依赖：**
@@ -16656,14 +16813,30 @@ MockMvc相关[官方地址官方指南:https://spring.io/guides/gs/testing-web/]
 ```
 需要在测试类中增加如下注解：
 
+方式1:
 ```java
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class MockXXXTest {
+
+    //配置MockMvc
+    @Autowired
+    protected MockMvc mockMvc;
+
+    @Test
+    public void homePage() throws Exception {
+    mockMvc.perform(MockMvcRequestBuilders.get("/readingList"))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.view().name("readingList"))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("books"))
+        .andExpect(MockMvcResultMatchers.model().attribute("books",
+        Matchers.is(Matchers.empty())));
+    }
   
 }
 ```
+
 注解的大概使用是（想知道详细的可自行去网上找一下）：
 @RunWith(SpringRunner.class)，就是指用SpringRunner来运行，其中
 SpringJUnit4ClassRunner 和 SpringRunner 区别是什么？
@@ -16675,18 +16848,56 @@ SpringRunner is an alias for the SpringJUnit4ClassRunner
 
 @AutoConfigureMockMvc是用于自动配置MockMvc
 
+
+方式2:
+```java
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = ReadingListApplication.class)
+@WebAppConfiguration
+public class MockMvcWebTests {
+    @Autowired
+    private WebApplicationContext webContext;
+    private MockMvc mockMvc;
+   
+    @Before
+    public void setupMockMvc() {
+        mockMvc = MockMvcBuilders
+        .webAppContextSetup(webContext)
+        .build();
+    }
+
+    @Test
+    public void homePage() throws Exception {
+    mockMvc.perform(MockMvcRequestBuilders.get("/readingList"))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.view().name("readingList"))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("books"))
+        .andExpect(MockMvcResultMatchers.model().attribute("books",
+        Matchers.is(Matchers.empty())));
+    }
+
+}
+```
+@WebAppConfiguration注解声明，由SpringJUnit4ClassRunner创建的应用程序上下文应该是一个WebApplicationContext（相对于基本的非WebApplicationContext）。setupMockMvc()方法上添加了JUnit的@Before注解，表明它应该在测试方法之前执行。它将WebApplicationContext注入webAppContextSetup()方法，然后调用build()产生了一
+个MockMvc实例，该实例赋给了一个实例变量，供测试方法使用。
+
+
 **接着需要使用@MockBean模拟相应对象**
 这里的主要作用是：使用mock对象代替原来spring的bean，然后模拟底层数据的返回，而不是调用原本真正的实现。
 
 注：与@MockBean 对应的还有@SpyBean（有兴趣可以去找一下相关的内容）。 @SpyBean与 @Spy 的关系类似于 @MockBean 与 @Mock 的关系。和 @MockBean 不同的是，它不会生成一个 Bean 的替代品装配到类中，而是会监听一个真正的 Bean 中某些特定的方法，并在调用这些方法时给出指定的反馈。
 
 首先增加 @MockBean 注解
+
+```java
 public class MockXXXTest {
     @MockBean
     private XXXDao xxxtDao;
  
 
 }
+```
+
 SpringBoot 中, @MockBean 会将mock的bean替换掉 SpringBoot 管理的原生bean，从而达到mock的效果。
 
 mock:在软件开发的世界之外, "mock"一词是指模仿或者效仿. 因此可以将“mock”理解为一个替身，替代者. 在软件开发中提及"mock"，通常理解为模拟对象或者Fake
@@ -16770,7 +16981,7 @@ public class MockXXXTest {
 
 
  
-### 9.4.2. 相关类说明
+### 10.4.2. 相关类说明
 <a href="#menu" >目录</a>
 
 Spring mvc测试框架提供了测试MVC需要的API，主要包括Servlet/JSP Mock、MockMvcBuilder、MockMvc、RequestBuilder、ResultMatcher、ResultHandler、MvcResult等。另外提供了几个静态工厂方法便于测试：MockMvcBuilders、MockMvcRequestBuilders、MockMvcResultMatchers、MockMvcResultHandlers。在使用时请使用静态方法导入方便测试，如：
@@ -16782,7 +16993,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;  
 ```
 
-#### 9.4.2.1. MockMvcBuilder/MockMvcBuilders
+#### 10.4.2.1. MockMvcBuilder/MockMvcBuilders
 <a href="#menu" >目录</a>
 
 MockMvcBuilder是用来构造MockMvc的构造器，其主要有两个实现：StandaloneMockMvcBuilder和DefaultMockMvcBuilder，分别对应之前的两种测试方式。对于我们来说直接使用静态工厂MockMvcBuilders创建即可：
@@ -16874,7 +17085,7 @@ StandaloneMockMvcBuilder继承了DefaultMockMvcBuilder，又提供了如下API�
 
 因为StandaloneMockMvcBuilder不会加载Spring MVC配置文件，因此就不会注册我们需要的一些组件，因此就提供了如上API用于注册我们需要的相应组件。
 
-#### 9.4.2.2. MockMvc
+#### 10.4.2.2. MockMvc
 <a href="#menu" >目录</a>
 
 使用之前的MockMvcBuilder.build()得到构建好的MockMvc；这个是mvc测试的核心API，对于该API的使用方式如下：
@@ -16897,7 +17108,7 @@ MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/user/1"))
 
   
 
-#### 9.4.2.3. RequestBuilder/MockMvcRequestBuilders
+#### 10.4.2.3. RequestBuilder/MockMvcRequestBuilders
 <a href="#menu" >目录</a>
 
 从名字可以看出，RequestBuilder用来构建请求的，其提供了一个方法buildRequest(ServletContext servletContext)用于构建MockHttpServletRequest；其主要有两个子类MockHttpServletRequestBuilder和MockMultipartHttpServletRequestBuilder（如文件上传使用），即用来Mock客户端请求需要的所有数据。
@@ -16937,7 +17148,7 @@ MockMultipartHttpServletRequestBuilder继承自MockHttpServletRequestBuilder，�
 
  
 
-#### 9.4.2.4. ResultActions
+#### 10.4.2.4. ResultActions
 <a href="#menu" >目录</a>
 
 调用MockMvc.perform(RequestBuilder requestBuilder)后将得到ResultActions，通过ResultActions完成如下三件事：
@@ -16947,7 +17158,7 @@ MockMultipartHttpServletRequestBuilder继承自MockHttpServletRequestBuilder，�
 
  
 
-#### 9.4.2.5. ResultMatcher/MockMvcResultMatchers
+#### 10.4.2.5. ResultMatcher/MockMvcResultMatchers
 <a href="#menu" >目录</a>
 
 ResultMatcher用来匹配执行完请求后的结果验证，其就一个match(MvcResult result)断言方法，如果匹配失败将抛出相应的异常；spring mvc测试框架提供了很多***ResultMatchers来满足测试需求。注意这些***ResultMatchers并不是ResultMatcher的子类，而是返回ResultMatcher实例的。Spring mvc测试框架为了测试方便提供了MockMvcResultMatchers静态工厂方法方便操作；具体的API如下：
@@ -16970,13 +17181,13 @@ ResultMatcher用来匹配执行完请求后的结果验证，其就一个match(M
 
 得到相应的***ResultMatchers后，接着再调用其相应的API得到ResultMatcher，如ModelResultMatchers.attributeExists(final String... names)判断Model属性是否存在。具体请查看相应的API。再次就不一一列举了。
 
-#### 9.4.2.6. ResultHandler/MockMvcResultHandlers
+#### 10.4.2.6. ResultHandler/MockMvcResultHandlers
 <a href="#menu" >目录</a>
 
 ResultHandler用于对处理的结果进行相应处理的，比如输出整个请求/响应等信息方便调试，Spring mvc测试框架提供了MockMvcResultHandlers静态工厂方法，该工厂提供了ResultHandler print()返回一个输出MvcResult详细信息到控制台的ResultHandler实现。
 
 
-#### 9.4.2.7. MvcResult
+#### 10.4.2.7. MvcResult
 <a href="#menu" >目录</a>
 
 即执行完控制器后得到的整个结果，并不仅仅是返回值，其包含了测试时需要的所有信息，如：
@@ -16989,11 +17200,95 @@ ResultHandler用于对处理的结果进行相应处理的，比如输出整个�
 * FlashMap getFlashMap()：得到FlashMap；
 * Object getAsyncResult()/Object getAsyncResult(long timeout)：得到异步执行的结果；
 
-
-## 9.5. 服务层测试
+### 10.4.3. 测试运行中的应用程序
 <a href="#menu" >目录</a>
 
-## 9.6. DAO层测试
+在真实的服务器里启动应用程序，用真实的Web浏览器访问它，这样比使用模拟的测试引擎更能展现应用程序在用户端的行为。但是，用真实的Web浏览器在真实的服务器上运行测试会很麻烦。虽然构建时的插件能把应用程序部署到Tomcat或者Jetty里，但它们配置起来多有不便。而且测试这么多，几乎不可能隔离运行，也很难不启动构建工具
+
+
+使用@WebIntegrationTest在服务器里启动应用程序。
+```java
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes=ReadingListApplication.class)
+@WebIntegrationTest
+public class SimpleWebTest {
+    @Test(expected=HttpClientErrorException.class)
+    public void pageNotFound() {
+        try {
+            RestTemplate rest = new RestTemplate();
+            rest.getForObject("http://localhost:8080/bogusPage", String.class);
+            fail("Should result in HTTP 404");
+        } catch (HttpClientErrorException e) {
+            assertEquals(HttpStatus.NOT_FOUND, e.getStatusCode());
+            throw e;
+        }
+    }
+}
+
+```
+
+**用随机端口启动服务器**
+
+让Spring Boot在随机选择的端口上启动服务器很方便。一种办法是将server.port属性设置为0，让Spring Boot选择一个随机的可用端口。 @WebIntegrationTest的value属性接受一个String数组，数组中的每项都是键值对，形如name=value，用来设置测试中使用的属性。要设置server.port，你可以这样做：@WebIntegrationTest(value={"server.port=0"})
+另外，因为只要设置一个属性，所以还能有更简单的形式：@WebIntegrationTest("server.port=0")
+
+通过value属性来设置属性通常还算方便。但@WebIntegrationTest还提供了一个randomPort属性，更明确地表示让服务器在随机端口上启动。你可以将randomPort设置为true，启用随机端口：
+@WebIntegrationTest(randomPort=true)
+
+既然我们在随机端口上启动了服务器，就需要在发起Web请求时确保使用正确的端口。此时的getForObject()方法在URL里硬编码了8080端口。如果端口是随机选择的，那在构造请求时又该怎么确定正确的端口呢？
+
+首先，我们需要以实例变量的形式注入选中的端口。为了方便， Spring Boot将local.server.port的值设置为了选中的端口。我们只需使用Spring的@Value注解将其注入即可：
+```java
+@Value("${local.server.port}")
+private int port;
+```
+
+有了端口之后，只需对getForObject()稍作修改，使用这个port就好了：rest.getForObject("http://localhost:{port}/bogusPage", String.class, port);这里我们在URL里把硬编码的8080改为{port}占位符。在getForObject()调用里把port属性作为最后一个参数传入，就能确保该占位符被替换为注入port的值了。
+
+
+
+
+
+## 10.5. 服务层测试
+<a href="#menu" >目录</a>
+
+```java
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(
+classes=AddressBookConfiguration.class)
+public class AddressServiceTests {
+    @Autowired
+    private AddressService addressService;
+    @Test
+    public void testService() {
+        Address address = addressService.findByLastName("Sheman");
+        assertEquals("P", address.getFirstName());
+    }
+}
+
+```
+
+AddressServiceTests上加注了@RunWith和@ContextConfiguration注解。@RunWith的参数是SpringJUnit4ClassRunner.class，开启了Spring集成测试支持。@ContextConfiguration指定了如何加载应用程序上下文。此处我们让它加载AddressBookConfiguration里配置的Spring应用程序上下文
+
+虽然@ContextConfiguration在加载Spring应用程序上下文的过程中做了很多事情，但它没能加载完整的Spring Boot。 Spring Boot应用程序最终是由SpringApplication加载的。它可
+以显式加载，在这里也可以使用SpringBootServletInitializer。 SpringApplication不仅加载应用程序上下文，还会开启日志、加载外部属性（ application.properties或application.yml），以及其他Spring Boot特性。用@ContextConfiguration则得不到这些特性。要在集成测试里获得这些特性，可以把@ContextConfiguration替换为Spring Boot的
+@SpringApplicationConfiguration：
+
+@SpringApplicationConfiguration的用法和@ContextConfiguration大致相同，但也有不同的地方， @SpringApplicationConfiguration加载Spring应用程序上下文的方式同
+SpringApplication相同，处理方式和生产应用程序中的情况相同。这包括加载外部属性和Spring Boot日志。为Spring Boot应用程序编写测试时应该用SpringApplicationConfiguration代替@ContextConfiguration。
+
+
+```java
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(
+classes=AddressBookConfiguration.class)
+public class AddressServiceTests {
+
+}
+```
+
+
+## 10.6. DAO层测试
 <a href="#menu" >目录</a>
 
 
