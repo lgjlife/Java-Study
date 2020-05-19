@@ -116,14 +116,19 @@
         - [1.11.5. 其它工具集](#1115-其它工具集)
 - [2. Spring 表达式语言](#2-spring-表达式语言)
 - [3. Spring Cache](#3-spring-cache)
-    - [3.1. 几个重要概念&缓存注解](#31-几个重要概念缓存注解)
-    - [3.2. 缓存管理器](#32-缓存管理器)
-        - [3.2.1. SimpleCacheManager](#321-simplecachemanager)
-        - [3.2.2. NoOpCacheManager](#322-noopcachemanager)
-        - [3.2.3. ConcurrentMapCacheManager](#323-concurrentmapcachemanager)
-        - [3.2.4. CompositeCacheManager](#324-compositecachemanager)
-    - [3.3. SpEL上下文数据](#33-spel上下文数据)
-    - [3.4. 基本使用](#34-基本使用)
+    - [3.1. Cache 的组件和概念](#31-cache-的组件和概念)
+    - [3.2. 几个重要概念&缓存注解](#32-几个重要概念缓存注解)
+    - [3.3. 集成 Spring Cache](#33-集成-spring-cache)
+    - [3.4. 缓存管理器](#34-缓存管理器)
+        - [3.4.1. SimpleCacheManager](#341-simplecachemanager)
+        - [3.4.2. NoOpCacheManager](#342-noopcachemanager)
+        - [3.4.3. ConcurrentMapCacheManager](#343-concurrentmapcachemanager)
+        - [3.4.4. CompositeCacheManager](#344-compositecachemanager)
+    - [3.5. SpEL上下文数据](#35-spel上下文数据)
+    - [3.6. 基本使用](#36-基本使用)
+    - [3.7. 使用Redis Cache](#37-使用redis-cache)
+    - [3.8. 实现Redis二级缓存](#38-实现redis二级缓存)
+        - [实现 TwolevelCacheManager](#实现-twolevelcachemanager)
 - [4. Spring Boot Admin](#4-spring-boot-admin)
     - [4.1. 基础认识](#41-基础认识)
     - [4.2. 使用实例](#42-使用实例)
@@ -149,6 +154,7 @@
     - [6.5. 过滤器](#65-过滤器)
         - [6.5.1. 过滤器和拦截器的区别：](#651-过滤器和拦截器的区别)
         - [6.5.2. 拦截器（Interceptor）和过滤器（Filter）的一些用途](#652-拦截器interceptor和过滤器filter的一些用途)
+    - [6.6. WebDataBinder](#66-webdatabinder)
 - [7. Webflux](#7-webflux)
     - [7.1. 概述](#71-概述)
         - [7.1.1. SpringMVC与SpringWebFlux](#711-springmvc与springwebflux)
@@ -158,60 +164,65 @@
 - [8. SpringBoot](#8-springboot)
     - [8.1. 基本概念](#81-基本概念)
     - [8.2. 基本使用](#82-基本使用)
-    - [8.3. Spring Boot 环境下创建Bean](#83-spring-boot-环境下创建bean)
-        - [8.3.1. 方式1:使用@Component等注解：](#831-方式1使用component等注解)
-        - [8.3.2. 方式2:使用@Bean注解](#832-方式2使用bean注解)
-        - [8.3.3. 方式3:使用@Import注解](#833-方式3使用import注解)
-        - [8.3.4. 方式4:使用ImportSelector接口](#834-方式4使用importselector接口)
-        - [8.3.5. 方式5:手动注册到容器](#835-方式5手动注册到容器)
-    - [8.4. 使用不同的WEB容器](#84-使用不同的web容器)
-    - [8.5. 配置文件](#85-配置文件)
-        - [8.5.1. bootstrap.yml与application.yml区别](#851-bootstrapyml与applicationyml区别)
-        - [8.5.2. 多环境配置](#852-多环境配置)
-            - [8.5.2.1. 配置文件](#8521-配置文件)
-            - [8.5.2.2. 多环境配置](#8522-多环境配置)
-        - [8.5.3. 注解ConfigurationProperties注入yml配置文件中的数据](#853-注解configurationproperties注入yml配置文件中的数据)
-        - [8.5.4. 使用随机数](#854-使用随机数)
-        - [8.5.5. 从命令行指定参数](#855-从命令行指定参数)
-        - [8.5.6. 配置日志](#856-配置日志)
-    - [8.6. 启动类 @SpringBootApplication 注解](#86-启动类-springbootapplication-注解)
-        - [8.6.1. @Inherited 注解](#861-inherited-注解)
-        - [8.6.2. @SpringBootConfiguration](#862-springbootconfiguration)
-        - [8.6.3. @EnableAutoConfiguration](#863-enableautoconfiguration)
-        - [8.6.4. @ComponentScan](#864-componentscan)
-    - [8.7. 条件化注解](#87-条件化注解)
-    - [8.8. Spring Boot Starter](#88-spring-boot-starter)
-        - [8.8.1. 常用的Starter](#881-常用的starter)
-        - [8.8.2. 创建自己的Starter](#882-创建自己的starter)
-        - [8.8.3. Starter原理](#883-starter原理)
-    - [8.9. Actuator 的端点](#89-actuator-的端点)
-        - [8.9.1. 揭秘 Actuator 的端点](#891-揭秘-actuator-的端点)
-        - [8.9.2. 自定义监控](#892-自定义监控)
-    - [8.10. Spring Boot 项目发布](#810-spring-boot-项目发布)
-    - [8.11. Maven打包](#811-maven打包)
-    - [8.12. Spring Boot原理分析](#812-spring-boot原理分析)
-        - [8.12.1. 启动流程分析](#8121-启动流程分析)
-            - [8.12.1.1. 创建SpringApplication对象](#81211-创建springapplication对象)
-            - [8.12.1.2. 执行Run方法](#81212-执行run方法)
-    - [8.13. 种保护 Spring Boot 应用的绝佳方法](#813-种保护-spring-boot-应用的绝佳方法)
-        - [8.13.1. 在生产中使用HTTPS](#8131-在生产中使用https)
-        - [8.13.2. 使用Snyk检查你的依赖关系](#8132-使用snyk检查你的依赖关系)
-        - [8.13.3. 升级到最新版本](#8133-升级到最新版本)
-        - [8.13.4. 启用CSRF保护](#8134-启用csrf保护)
-        - [8.13.5. 使用内容安全策略防止XSS攻击](#8135-使用内容安全策略防止xss攻击)
-        - [8.13.6. 使用OpenID Connect进行身份验证](#8136-使用openid-connect进行身份验证)
-        - [8.13.7. 管理密码？使用密码哈希！](#8137-管理密码使用密码哈希)
-        - [8.13.8. 安全地存储秘密](#8138-安全地存储秘密)
-        - [8.13.9. 使用OWASP的ZAP测试您的应用程序](#8139-使用owasp的zap测试您的应用程序)
-        - [8.13.10. 让你的安全团队进行代码审查](#81310-让你的安全团队进行代码审查)
-    - [8.14. 项目实践](#814-项目实践)
-        - [8.14.1. 访问数据库](#8141-访问数据库)
-        - [8.14.2. 跨域配置](#8142-跨域配置)
-        - [8.14.3. 全局异常处理](#8143-全局异常处理)
-    - [8.15. 其他一些问题](#815-其他一些问题)
-        - [8.15.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？](#8151-如何在-spring-boot-启动的时候运行一些特定的代码)
-        - [8.15.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？](#8152-如何重新加载spring-boot上的更改而无需重新启动服务器)
-        - [8.15.3. Spring Boot 有哪几种读取配置的方式？](#8153-spring-boot-有哪几种读取配置的方式)
+    - [8.3. SpringBoot DevTools 的用途是什么？](#83-springboot-devtools-的用途是什么)
+    - [8.4. Spring Boot 环境下创建Bean](#84-spring-boot-环境下创建bean)
+        - [8.4.1. 方式1:使用@Component等注解：](#841-方式1使用component等注解)
+        - [8.4.2. 方式2:使用@Bean注解](#842-方式2使用bean注解)
+        - [8.4.3. 方式3:使用@Import注解](#843-方式3使用import注解)
+        - [8.4.4. 方式4:使用ImportSelector接口](#844-方式4使用importselector接口)
+        - [8.4.5. 方式5:手动注册到容器](#845-方式5手动注册到容器)
+    - [8.5. 使用不同的WEB容器](#85-使用不同的web容器)
+    - [8.6. 配置文件](#86-配置文件)
+        - [8.6.1. bootstrap.yml与application.yml区别](#861-bootstrapyml与applicationyml区别)
+        - [8.6.2. 多环境配置](#862-多环境配置)
+            - [8.6.2.1. 配置文件](#8621-配置文件)
+            - [8.6.2.2. 多环境配置](#8622-多环境配置)
+        - [8.6.3. 注解ConfigurationProperties注入yml配置文件中的数据](#863-注解configurationproperties注入yml配置文件中的数据)
+            - [8.6.3.1. Spring 宽松绑定规则 (relaxed binding)](#8631-spring-宽松绑定规则-relaxed-binding)
+            - [8.6.3.2. 基本使用](#8632-基本使用)
+            - [8.6.3.3. 带验证的配置](#8633-带验证的配置)
+            - [8.6.3.4. @ConfigurationProperties vs. @Value](#8634-configurationproperties-vs-value)
+        - [8.6.4. 使用随机数](#864-使用随机数)
+        - [8.6.5. 从命令行指定参数](#865-从命令行指定参数)
+        - [8.6.6. 配置日志](#866-配置日志)
+    - [8.7. 启动类 @SpringBootApplication 注解](#87-启动类-springbootapplication-注解)
+        - [8.7.1. @Inherited 注解](#871-inherited-注解)
+        - [8.7.2. @SpringBootConfiguration](#872-springbootconfiguration)
+        - [8.7.3. @EnableAutoConfiguration](#873-enableautoconfiguration)
+        - [8.7.4. @ComponentScan](#874-componentscan)
+    - [8.8. 条件化注解](#88-条件化注解)
+    - [8.9. Spring Boot Starter](#89-spring-boot-starter)
+        - [8.9.1. 常用的Starter](#891-常用的starter)
+        - [8.9.2. 创建自己的Starter](#892-创建自己的starter)
+        - [8.9.3. Starter原理](#893-starter原理)
+    - [8.10. Actuator 的端点](#810-actuator-的端点)
+        - [8.10.1. 揭秘 Actuator 的端点](#8101-揭秘-actuator-的端点)
+        - [8.10.2. 自定义监控](#8102-自定义监控)
+    - [8.11. Spring Boot 项目发布](#811-spring-boot-项目发布)
+    - [8.12. Maven打包](#812-maven打包)
+    - [8.13. Spring Boot原理分析](#813-spring-boot原理分析)
+        - [8.13.1. 启动流程分析](#8131-启动流程分析)
+            - [8.13.1.1. 创建SpringApplication对象](#81311-创建springapplication对象)
+            - [8.13.1.2. 执行Run方法](#81312-执行run方法)
+    - [8.14. 种保护 Spring Boot 应用的绝佳方法](#814-种保护-spring-boot-应用的绝佳方法)
+        - [8.14.1. 在生产中使用HTTPS](#8141-在生产中使用https)
+        - [8.14.2. 使用Snyk检查你的依赖关系](#8142-使用snyk检查你的依赖关系)
+        - [8.14.3. 升级到最新版本](#8143-升级到最新版本)
+        - [8.14.4. 启用CSRF保护](#8144-启用csrf保护)
+        - [8.14.5. 使用内容安全策略防止XSS攻击](#8145-使用内容安全策略防止xss攻击)
+        - [8.14.6. 使用OpenID Connect进行身份验证](#8146-使用openid-connect进行身份验证)
+        - [8.14.7. 管理密码？使用密码哈希！](#8147-管理密码使用密码哈希)
+        - [8.14.8. 安全地存储秘密](#8148-安全地存储秘密)
+        - [8.14.9. 使用OWASP的ZAP测试您的应用程序](#8149-使用owasp的zap测试您的应用程序)
+        - [8.14.10. 让你的安全团队进行代码审查](#81410-让你的安全团队进行代码审查)
+    - [8.15. 项目实践](#815-项目实践)
+        - [8.15.1. 访问数据库](#8151-访问数据库)
+        - [8.15.2. 跨域配置](#8152-跨域配置)
+        - [8.15.3. 全局异常处理](#8153-全局异常处理)
+    - [8.16. 其他一些问题](#816-其他一些问题)
+        - [8.16.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？](#8161-如何在-spring-boot-启动的时候运行一些特定的代码)
+        - [8.16.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？](#8162-如何重新加载spring-boot上的更改而无需重新启动服务器)
+        - [8.16.3. Spring Boot 有哪几种读取配置的方式？](#8163-spring-boot-有哪几种读取配置的方式)
 - [9. SpringCloud](#9-springcloud)
     - [9.1. 基础知识](#91-基础知识)
         - [9.1.1. 微服务概念](#911-微服务概念)
@@ -345,6 +356,10 @@
         - [10.3.4. Mockito如何实现Mock[3]](#1034-mockito如何实现mock3)
     - [10.4. 控制层测试](#104-控制层测试)
         - [10.4.1. 基本使用](#1041-基本使用)
+            - [10.4.1.1. 依赖](#10411-依赖)
+            - [10.4.1.2. 基本使用](#10412-基本使用)
+            - [10.4.1.3. 比较 MVC 的返回结果](#10413-比较-mvc-的返回结果)
+            - [10.4.1.4. 完整例子](#10414-完整例子)
         - [10.4.2. 相关类说明](#1042-相关类说明)
             - [10.4.2.1. MockMvcBuilder/MockMvcBuilders](#10421-mockmvcbuildermockmvcbuilders)
             - [10.4.2.2. MockMvc](#10422-mockmvc)
@@ -356,6 +371,7 @@
         - [10.4.3. 测试运行中的应用程序](#1043-测试运行中的应用程序)
     - [10.5. 服务层测试](#105-服务层测试)
     - [10.6. DAO层测试](#106-dao层测试)
+    - [10.7. SpringBoot实现单元测试时回滚事务](#107-springboot实现单元测试时回滚事务)
 
 <!-- /TOC -->
 
@@ -562,7 +578,7 @@ Singleton （单例,一个Spring容器中只有一个bean实例，默认模式�
 
 @RequestBody 允许request的参数在request体中，而不是在直接连接在地址后面。（放在参数前）
 
-@PathVariable 用于接收路径参数，比如@RequestMapping(“/hello/{name}”)申明的路径，将注解放在参数中前，即可获取该值，通常作为Restful的接口实现方法。
+@PathVariable 用于接收路径参数，比如@RequestMapping(“/hello/{name}")申明的路径，将注解放在参数中前，即可获取该值，通常作为Restful的接口实现方法。
 
 @RestController 该注解为一个组合注解，相当于@Controller和@ResponseBody的组合，注解在类上，意味着，该Controller的所有方法都默认加上了@ResponseBody。
 
@@ -716,7 +732,7 @@ Context模块构建于核心模块之上,扩展了BeanFactory的功能,添加了
 
 
 **IoC是什么**
-　　Ioc—Inversion of Control，即“控制反转”，不是什么技术，而是一种设计思想。在Java开发中，Ioc意味着将你设计好的对象交给容器控制，而不是传统的在你的对象内部直接控制。如何理解好Ioc呢？理解好Ioc的关键是要明确“谁控制谁，控制什么，为何是反转（有反转就应该有正转了），哪些方面反转了”，那我们来深入分析一下：
+　　Ioc—Inversion of Control，即“控制反转"，不是什么技术，而是一种设计思想。在Java开发中，Ioc意味着将你设计好的对象交给容器控制，而不是传统的在你的对象内部直接控制。如何理解好Ioc呢？理解好Ioc的关键是要明确“谁控制谁，控制什么，为何是反转（有反转就应该有正转了），哪些方面反转了"，那我们来深入分析一下：
 * 谁控制谁，控制什么：传统Java SE程序设计，我们直接在对象内部通过new进行创建对象，是程序主动去创建依赖对象；而IoC是有专门一个容器来创建这些对象，即由Ioc容器来控制对 象的创建；谁控制谁？当然是IoC 容器控制了对象；控制什么？那就是主要控制了外部资源获取（不只是对象包括比如文件等）。
 * 为何是反转，哪些方面反转了：有反转就有正转，传统应用程序是由我们自己在对象中主动控制去直接获取依赖对象，也就是正转；而反转则是由容器来帮忙创建及注入依赖对象；为何是反转？因为由容器帮我们查找及注入依赖对象，对象只是被动的接受依赖对象，所以是反转；哪些方面反转了？依赖对象的获取被反转了。
 
@@ -726,21 +742,21 @@ Context模块构建于核心模块之上,扩展了BeanFactory的功能,添加了
 
 **IoC能做什么**
 　　IoC 不是一种技术，只是一种思想，一个重要的面向对象编程的法则，它能指导我们如何设计出松耦合、更优良的程序。传统应用程序都是由我们在类内部主动创建依赖对象，从而导致类与类之间高耦合，难于测试；有了IoC容器后，把创建和查找依赖对象的控制权交给了容器，由容器进行注入组合对象，所以对象与对象之间是 松散耦合，这样也方便测试，利于功能复用，更重要的是使得程序的整个体系结构变得非常灵活。
-其实IoC对编程带来的最大改变不是从代码上，而是从思想上，发生了“主从换位”的变化。应用程序原本是老大，要获取什么资源都是主动出击，但是在IoC/DI思想中，应用程序就变成被动的了，被动的等待IoC容器来创建并注入它所需要的资源了。
+其实IoC对编程带来的最大改变不是从代码上，而是从思想上，发生了“主从换位"的变化。应用程序原本是老大，要获取什么资源都是主动出击，但是在IoC/DI思想中，应用程序就变成被动的了，被动的等待IoC容器来创建并注入它所需要的资源了。
 
-IoC很好的体现了面向对象设计法则之一—— 好莱坞法则：“别找我们，我们找你”；即由IoC容器帮对象找相应的依赖对象并注入，而不是由对象主动去找。
+IoC很好的体现了面向对象设计法则之一—— 好莱坞法则：“别找我们，我们找你"；即由IoC容器帮对象找相应的依赖对象并注入，而不是由对象主动去找。
 
 
 **IoC和DI**
-　　DI—Dependency Injection，即“依赖注入”：组件之间依赖关系由容器在运行期决定，形象的说，即由容器动态的将某个依赖关系注入到组件之中。依赖注入的目的并非为软件系统带来更多功能，而是为了提升组件重用的频率，并为系统搭建一个灵活、可扩展的平台。通过依赖注入机制，我们只需要通过简单的配置，而无需任何代码就可指定目标需要的资源，完成自身的业务逻辑，而不需要关心具体的资源来自何处，由谁实现。
+　　DI—Dependency Injection，即“依赖注入"：组件之间依赖关系由容器在运行期决定，形象的说，即由容器动态的将某个依赖关系注入到组件之中。依赖注入的目的并非为软件系统带来更多功能，而是为了提升组件重用的频率，并为系统搭建一个灵活、可扩展的平台。通过依赖注入机制，我们只需要通过简单的配置，而无需任何代码就可指定目标需要的资源，完成自身的业务逻辑，而不需要关心具体的资源来自何处，由谁实现。
 
-理解DI的关键是：“谁依赖谁，为什么需要依赖，谁注入谁，注入了什么”，那我们来深入分析一下：
+理解DI的关键是：“谁依赖谁，为什么需要依赖，谁注入谁，注入了什么"，那我们来深入分析一下：
 * 谁依赖于谁：当然是应用程序依赖于IoC容器；
 * 为什么需要依赖：应用程序需要IoC容器来提供对象需要的外部资源；
 * 谁注入谁：很明显是IoC容器注入应用程序某个对象，应用程序依赖的对象；
 * 注入了什么：就是注入某个对象所需要的外部资源（包括对象、资源、常量数据）。
 
-IoC和DI由什么关系呢？其实它们是同一个概念的不同角度描述，由于控制反转概念比较含糊（可能只是理解为容器控制对象这一个层面，很难让人想到谁来维护对象关系），所以2004年大师级人物Martin Fowler又给出了一个新的名字：“依赖注入”，相对IoC 而言，“依赖注入”明确描述了“被注入对象依赖IoC容器配置依赖对象”。
+IoC和DI由什么关系呢？其实它们是同一个概念的不同角度描述，由于控制反转概念比较含糊（可能只是理解为容器控制对象这一个层面，很难让人想到谁来维护对象关系），所以2004年大师级人物Martin Fowler又给出了一个新的名字：“依赖注入"，相对IoC 而言，“依赖注入"明确描述了“被注入对象依赖IoC容器配置依赖对象"。
 
 
 **IoC(控制反转)**
@@ -2944,7 +2960,7 @@ Bean的完整生命周期经历了各种方法调用，这些方法可以划分�
 * Bean级生命周期接口方法
     * 这个包括了BeanNameAware、BeanFactoryAware、InitializingBean和DiposableBean这些接口的方法,这些方法由Bean类直接实现
 * 容器级生命周期接口方法
-    * 这个包括了InstantiationAwareBeanPostProcessor 和 BeanPostProcessor 这两个接口实现，一般称它们的实现类为“后处理器”。
+    * 这个包括了InstantiationAwareBeanPostProcessor 和 BeanPostProcessor 这两个接口实现，一般称它们的实现类为“后处理器"。
     * 当Spring容器创建任何Bean的时候,这些后处理器都会发生作用,这些后处理器的影响是全局性的
     * 用户可以通过合理地编写后处理器,让其仅对感兴趣的Bean进行加工处理
 * 工厂后处理器接口方法
@@ -3850,7 +3866,7 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
     * 不可重复读和脏读的区别是，脏读是某一事务读取了另一个事务未提交的脏数据，而不可重复读则是读取了前一事务提交的数据。
     * 在某些情况下，不可重复读并不是问题，比如我们多次查询某个数据当然以最后查询得到的结果为主。但在另一些情况下就有可能发生问题，例如对于同一个数据A和B依次查询就可能不同，A和B就可能打起来了……
 * 虚读(幻读)
-    * 幻读是事务非独立执行时发生的一种现象。例如事务T1对一个表中所有的行的某个数据项做了从“1”修改为“2”的操作，这时事务T2又对这个表中插入了一行数据项，而这个数据项的数值还是为“1”并且提交给数据库。而操作事务T1的用户如果再查看刚刚修改的数据，会发现还有一行没有修改，其实这行是从事务T2中添加的，就好像产生幻觉一样，这就是发生了幻读。
+    * 幻读是事务非独立执行时发生的一种现象。例如事务T1对一个表中所有的行的某个数据项做了从“1"修改为“2"的操作，这时事务T2又对这个表中插入了一行数据项，而这个数据项的数值还是为“1"并且提交给数据库。而操作事务T1的用户如果再查看刚刚修改的数据，会发现还有一行没有修改，其实这行是从事务T2中添加的，就好像产生幻觉一样，这就是发生了幻读。
     * 幻读和不可重复读都是读取了另一条已经提交的事务（这点就脏读不同），所不同的是不可重复读查询的都是同一个数据项，而幻读针对的是一批数据整体（比如数据的个数）。
 
 SQL标准定义了4类隔离级别，包括了一些具体规则，用来限定事务内外的哪些改变是可见的，哪些是不可见的。低级别的隔离级一般支持更高的并发处理，并拥有更低的系统开销。
@@ -3861,7 +3877,7 @@ MySQL数据库的四种事务隔离级别
     * 这是大多数数据库系统的默认隔离级别（但不是MySQL默认的）。它满足了隔离的简单定义：一个事务只能看见已经提交事务所做的改变。这种隔离级别 也支持所谓的不可重复读（Nonrepeatable Read），因为同一事务的其他实例在该实例处理其间可能会有新的commit，所以同一select可能返回不同结果；
 * Repeatable Read（可重读）
     * 这是MySQL的默认事务隔离级别，它确保同一事务的多个实例在并发读取数据时，会看到同样的数据行。不过理论上，这会导致另一个棘手的问题：幻读 （Phantom Read）。
-    * 简单的说，幻读指当用户读取某一范围的数据行时，另一个事务又在该范围内插入了新行，当用户再读取该范围的数据行时，会发现有新的“幻影” 行。
+    * 简单的说，幻读指当用户读取某一范围的数据行时，另一个事务又在该范围内插入了新行，当用户再读取该范围的数据行时，会发现有新的“幻影" 行。
     * InnoDB和Falcon存储引擎通过多版本并发控制（MVCC，Multiversion Concurrency Control）机制解决了该问题
 * Serializable（可串行化） 
     * 这是最高的隔离级别，它通过强制事务排序，使之不可能相互冲突，从而解决幻读问题。简言之，它是在每个读的数据行上加上共享锁。在这个级别，可能导致大量的超时现象和锁竞争。
@@ -4015,7 +4031,7 @@ Spring 2.0 之后， 由于可以通过aop/tx命名空间声明事务，因此�
         <property name="username" value="root" />  
         <property name="password" value="christmas258@" />  
     </>  
-    <!--配置一个JdbcTemplate实例，并将这个“共享的”，“安全的”实例注入到不同的DAO类中去 -->  
+    <!--配置一个JdbcTemplate实例，并将这个“共享的"，“安全的"实例注入到不同的DAO类中去 -->  
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">  
         <property name="dataSource" ref="dataSource" />  
     </bean>  
@@ -4080,7 +4096,7 @@ Spring 2.0 之后， 由于可以通过aop/tx命名空间声明事务，因此�
         <property name="username" value="root" />  
         <property name="password" value="christmas258@" />  
     </bean>  
-    <!--配置一个JdbcTemplate实例，并将这个“共享的”，“安全的”实例注入到不同的DAO类中去 -->  
+    <!--配置一个JdbcTemplate实例，并将这个“共享的"，“安全的"实例注入到不同的DAO类中去 -->  
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">  
         <property name="dataSource" ref="dataSource" />  
     </bean>  
@@ -4802,7 +4818,7 @@ public abstract class TransactionSynchronizationManager {
 |currentTransactionIsolationLevel	|事务隔离级别
 |actualTransactionActive|	事务激活状态
 
-TransactionSynchronizationManager 将 Dao、Service 类中影响线程安全的所有 “ 状态 ” 都统一抽取到该类中，并用 ThreadLocal 进行封装，这样一来， Dao （基于模板类或资源获取工具类创建的 Dao ）和 Service （采用 Spring 事务管理机制）就变成线程安全的对象
+TransactionSynchronizationManager 将 Dao、Service 类中影响线程安全的所有 “ 状态 " 都统一抽取到该类中，并用 ThreadLocal 进行封装，这样一来， Dao （基于模板类或资源获取工具类创建的 Dao ）和 Service （采用 Spring 事务管理机制）就变成线程安全的对象
 
 
 ### 1.10.7. 事务传播行为
@@ -5099,7 +5115,24 @@ SpEL拥有很多特性，包括：
 # 3. Spring Cache
 <a href="#menu" >目录</a>
 
-## 3.1. 几个重要概念&缓存注解
+
+## 3.1. Cache 的组件和概念
+
+* CacheManager ，用来创建、 管理、管理多个命名唯一的 Cache ，如组织机构缓存、菜单项的缓存、菜单树的缓存等 。
+* Cache 类似 Map 那样的 Key-Value 存储结构， Value 部分通常包含了 缓存的对象，通过Key 来取得缓存对象 。缓存工页，存放在缓存里的对象，常常需要实现序列化接口，以支持分布式缓存。
+* Cache 存储方式，缓存组件可以将对象放到内存或其他缓存服务器上 ， Spring Boot提供了一个基于 ConcurrentMap 的缓存，同时也集成了 Red is 、 EhCache 2.x 、 JCache 缓存服务器等。
+* 缓存策略，通常 Cache 还可以有不同的缓存策略，如设置缓存最大的容量，缓存项的过期时间等。
+* 分布式缓存，缓存通常按照缓存数据类型存放在不同缓存服务器上，或者同一类型的缓存按照某种算法、不同 Key 的数据存放在不同的缓存服务器上 。
+* Cache Hit，从 Cache 中取得期望的缓存项，我们通常称之为缓存命中。如果没有命中则称之为 Cache Miss，意味着需要从数据来源处重新取出井放回 Cache 中 。
+* Cache Miss，缓存丢失，根据 Key 没有从缓存中找到对应的缓存项。
+* Cache Evication，缓存清除操作 。
+* Hot Data，热点数据，缓存系统能调整算法或者内部存储方式，使得最有可能频繁访问的数据能被尽快访问到 。
+* On-Heap, Java 分配对象都是在堆内存中，有最快的获取速度。由于虚拟机的垃圾回收管理机制，缓存放入过多的对象会导致垃圾回收时间过长，从而有可能影响性能。
+* 0ff-Heap ，堆外内存，对象存放在虚拟机分配的堆外内存中，因此不受垃圾回 收管理机制的管理，不影响系统性能，但堆外内存的对象要被使用，还要序列化成堆内对象 。很多缓存工具会把不常用的对象放到堆外，把热点数据放到堆内 。
+
+
+
+## 3.2. 几个重要概念&缓存注解
 <a href="#menu" >目录</a>
 
 |名称|	解释|
@@ -5117,14 +5150,39 @@ SpEL拥有很多特性，包括：
 **@Cacheable/@CachePut/@CacheEvict 主要的参数**
 |名称|	解释|
 |---|---|
-|value|	缓存的名称，在 spring 配置文件中定义，必须指定至少一个.例如：@Cacheable(value=”mycache”) 或者@Cacheable(value={”cache1”,”cache2”}
-|key	|缓存的 key，可以为空，如果指定要按照 SpEL 表达式编写，如果不指定，则缺省按照方法的所有参数进行组合.例如：@Cacheable(value=”testcache”,key=”#id”)
-|condition|	缓存的条件，可以为空，使用 SpEL 编写，返回 true 或者 false，只有为 true 才进行缓存/清除缓存.例如：@Cacheable(value=”testcache”,condition=”#userName.length()>2”)
-|unless	|否定缓存。当条件结果为TRUE时，就不会缓存。@Cacheable(value=”testcache”,unless=”#userName.length()>2”)
-|allEntries(@CacheEvict )|	是否清空所有缓存内容，缺省为 false，如果指定为 true,则方法调用后将立即清空所有缓存.例如：@CachEvict(value=”testcache”,allEntries=true)
-|beforeInvocation(@CacheEvict)	|是否在方法执行前就清空，缺省为 false，如果指定为 true，则在方法还没有执行的时候就清空缓存，缺省情况下，如果方法执行抛出异常，则不会清空缓存,例如：@CachEvict(value=”testcache”，beforeInvocation=true)
+|value|	缓存的名称，在 spring 配置文件中定义，必须指定至少一个.例如：@Cacheable(value="mycache") 或者@Cacheable(value={"cache1","cache2"}
+|key	|缓存的 key，可以为空，如果指定要按照 SpEL 表达式编写，如果不指定，则缺省按照方法的所有参数进行组合.例如：@Cacheable(value="testcache",key="#id")
+|condition|	缓存的条件，可以为空，使用 SpEL 编写，返回 true 或者 false，只有为 true 才进行缓存/清除缓存.例如：@Cacheable(value="testcache",condition="#userName.length()>2")
+|unless	|否定缓存。当条件结果为TRUE时，就不会缓存。@Cacheable(value="testcache",unless="#userName.length()>2")
+|allEntries(@CacheEvict )|	是否清空所有缓存内容，缺省为 false，如果指定为 true,则方法调用后将立即清空所有缓存.例如：@CachEvict(value="testcache",allEntries=true)
+|beforeInvocation(@CacheEvict)	|是否在方法执行前就清空，缺省为 false，如果指定为 true，则在方法还没有执行的时候就清空缓存，缺省情况下，如果方法执行抛出异常，则不会清空缓存,例如：@CachEvict(value="testcache"，beforeInvocation=true)
 
-## 3.2. 缓存管理器
+## 3.3. 集成 Spring Cache
+
+```xml
+<dependency>
+    <groupid>org .springframework.boot</groupid>
+    <artifactid>spring-boot-starter-cache</artifactid>
+</dependency>
+```
+如果使用 Spring 自带的内存的缓存管理器，需要在 appliaction.properties 中配置属性 ：spring.cache.type=Simple
+* Simple ，基于 ConcurrentHashMap 实现的缓存，适合单体应用或者开发环境使用 。
+* none，关闭缓存，比如开发阶段为了确保功能正确 ，可以先禁止使用缓存 。
+* redis，使用 Redis 作为缓存，还需要在 porn 中增加 Redis 依赖 。 本章将重点介绍 Redis缓存以及扩展 Redis 实现一二级缓存。
+* Generic ，用户自定义缓存实现，用户需要实现一个 org叩ringframework.cache.CacheManager的实现 。
+* 其他还有 JCache 、 EhCache 2.x, Hazelcast 等
+
+最后，需要使用注解＠EnableCaching 打开缓存功能 。
+```java
+@SpringBootApplication
+@EnableCaching
+public class Chl4Application {
+    public static void main(String[) args) {
+        SpringApplication . run(Chl4Application.class , args) ;
+    }
+}
+```
+## 3.4. 缓存管理器
 <a href="#menu" >目录</a>
 
 CacheManager是SPI,提供了访问缓存名称和缓存对象的方法.同时也实现了幕后的管理,处理缓存和逐出的发生.
@@ -5138,7 +5196,7 @@ public interface CacheManager {
 }
 
 ```
-### 3.2.1. SimpleCacheManager
+### 3.4.1. SimpleCacheManager
 <a href="#menu" >目录</a>
 
 ```java
@@ -5157,7 +5215,7 @@ public class SimpleCacheManager extends AbstractCacheManager {
     }
 }
 ```
-### 3.2.2. NoOpCacheManager
+### 3.4.2. NoOpCacheManager
 <a href="#menu" >目录</a>
 
 
@@ -5190,7 +5248,7 @@ public class NoOpCacheManager implements CacheManager {
 }
 ```
 
-### 3.2.3. ConcurrentMapCacheManager
+### 3.4.3. ConcurrentMapCacheManager
 <a href="#menu" >目录</a>
 
 
@@ -5311,7 +5369,7 @@ public class ConcurrentMapCacheManager implements CacheManager, BeanClassLoaderA
 }
 
 ```
-### 3.2.4. CompositeCacheManager
+### 3.4.4. CompositeCacheManager
 <a href="#menu" >目录</a>
 
 ```java
@@ -5388,7 +5446,7 @@ public class CompositeCacheManager implements CacheManager, InitializingBean {
 }
 
 ```
-## 3.3. SpEL上下文数据
+## 3.5. SpEL上下文数据
 <a href="#menu" >目录</a>
 
 
@@ -5407,9 +5465,10 @@ Spring Cache提供了一些供我们使用的SpEL上下文数据，下表直接�
 
 
 注意：
-1. 当我们要使用root对象的属性作为key时我们也可以将“#root”省略，因为Spring默认使用的就是root对象的属性。 如
+1. 当我们要使用root对象的属性作为key时我们也可以将“#root"省略，因为Spring默认使用的就是root对象的属性。 如
 @Cacheable(key = "targetClass + methodName +#p0")
-2. 使用方法参数时我们可以直接使用“#参数名”或者“#p参数index”。 如：
+
+2. 使用方法参数时我们可以直接使用“#参数名"或者“#p参数index"。 如：
 @Cacheable(value="users", key="#id")
 @Cacheable(value="users", key="#p0")
 
@@ -5424,7 +5483,7 @@ SpEL提供了多种运算符
 |正则表达式	|matches
 |其他类型	|?.，?[…]，![…]，^[…]，$[…]
 
-## 3.4. 基本使用
+## 3.6. 基本使用
 
 **引入依赖**
 ```xml
@@ -5473,6 +5532,8 @@ public List<NewJob> queryAll(User uid) {
 public class BotRelationServiceImpl implements BotRelationService {
     @Override
     @Cacheable(key = "targetClass + methodName +#p0")//此处没写value
+    //@Cacheable(key = "targetClass + methodName +#num")//
+    //@Cacheable(key = "targetClass + methodName +#user.id")/
     public List<BotRelation> findAllLimit(int num) {
         return botRelationRepository.findAllLimit(num);
     }
@@ -5490,6 +5551,7 @@ String cacheResolver() default ""; //或者指定获取解析器
 @CachePut注解的作用 主要针对方法配置，能够根据方法的请求参数对其结果进行缓存，和 @Cacheable 不同的是，它每次都会触发真实方法的调用 。简单来说就是用户更新缓存数据。但需要注意的是该注解的value 和 key 必须与要更新的缓存相同，也就是与@Cacheable 相同。示例：
 
 ```java
+//每次都會調用方法,並將結果進行緩存
 @CachePut(value = "emp", key = "targetClass + #p0")
 public NewJob updata(NewJob job) {
     NewJob newJob = newJobDao.findAllById(job.getId());
@@ -5518,10 +5580,10 @@ String unless() default ""; //条件符合则不缓存
 
 * allEntries	
     * 是否清空所有缓存内容，缺省为 false，如果指定为 true，则方法调用后将立即清空所有缓存	
-    * @CachEvict(value=”testcache”,allEntries=true)
+    * @CachEvict(value="testcache",allEntries=true)
 * beforeInvocation	
     * 是否在方法执行前就清空，缺省为 false，如果指定为 true，则在方法还没有执行的时候就清空缓存，缺省情况下，如果方法执行抛出异常，则不会清空缓存	
-    * @CachEvict(value=”testcache”，beforeInvocation=true)
+    * @CachEvict(value="testcache"，beforeInvocation=true)
 示例：
 ```java
 @Cacheable(value = "emp",key = "#p0.id")
@@ -5576,6 +5638,18 @@ public User save(User user) {
     ....
 }
 ```
+
+## 3.7. 使用Redis Cache
+<a href="#menu" >目录</a>
+
+
+## 3.8. 实现Redis二级缓存
+<a href="#menu" >目录</a>
+
+### 实现 TwolevelCacheManager
+
+
+
 
 # 4. Spring Boot Admin
 <a href="#menu" >目录</a>
@@ -6751,9 +6825,9 @@ public class WebConfig implements WebMvcConfigurer {
 <mvc:annotation-driven enable-matrix-variables="true"/>
 ```
 
-* 在 Matrix Variable 中，多个变量可以使用 “;”（分号）分隔，例如：
+* 在 Matrix Variable 中，多个变量可以使用 “;"（分号）分隔，例如：
     * /books;author=Tom;year=2016
-* 如果一个变量对应多个值，那么可以使用 “,”（逗号）分隔，例如：
+* 如果一个变量对应多个值，那么可以使用 “,"（逗号）分隔，例如：
     * author=smart1,smart2,smart3
 * 或者使用重复的变量名，例如：
     * author=smart1;author=smart2;author=smart3
@@ -6766,7 +6840,7 @@ public void findBookId (@PathVariable String bookId,@MatrixVariable int a){
     ...
 }
 ```
-相应的 bookId 和 a 都会被映射到这个方法中，如果匹配不到，则会报 "bad request”。如果 URI 只是 "/books/11”，则也可以映射到这个方法中，但需要指定空值不报错：@MatrixVariable(required=false）。
+相应的 bookId 和 a 都会被映射到这个方法中，如果匹配不到，则会报 "bad request"。如果 URI 只是 "/books/11"，则也可以映射到这个方法中，但需要指定空值不报错：@MatrixVariable(required=false）。
 
 再来看一个更复杂的例子，以深入理解，代码如下：
 
@@ -6965,9 +7039,9 @@ URI 模板就是在URI 中给定一个变量，然后在映射的时候动态的
 
 代码中我们定义了两个URI 变量，一个是控制器类上的variable1 ，一个是showView 方法上的variable2 ，然后在showView 方法的参数里面使用@PathVariable 标记使用了这两个变量。所以当我们使用/test/hello/showView/2.do 来请求的时候就可以访问到MyController 的showView 方法，这个时候variable1 就被赋予值hello ，variable2 就被赋予值2 ，然后我们在showView 方法参数里面标注了参数variable1 和variable2 是来自访问路径的path 变量，这样方法参数variable1 和variable2 就被分别赋予hello 和2 。方法参数variable1 是定义为String 类型，variable2 是定义为int 类型，像这种简单类型在进行赋值的时候Spring 是会帮我们自动转换的。
 
-   在上面的代码中我们可以看到在标记variable1 为path 变量的时候我们使用的是@PathVariable ，而在标记variable2 的时候使用的是@PathVariable(“variable2”) 。这两者有什么区别呢？第一种情况就默认去URI 模板中找跟参数名相同的变量，但是这种情况只有在使用debug 模式进行编译的时候才可以，而第二种情况是明确规定使用的就是URI 模板中的variable2 变量。当不是使用debug 模式进行编译，或者是所需要使用的变量名跟参数名不相同的时候，就要使用第二种方式明确指出使用的是URI 模板中的哪个变量。
+   在上面的代码中我们可以看到在标记variable1 为path 变量的时候我们使用的是@PathVariable ，而在标记variable2 的时候使用的是@PathVariable(“variable2") 。这两者有什么区别呢？第一种情况就默认去URI 模板中找跟参数名相同的变量，但是这种情况只有在使用debug 模式进行编译的时候才可以，而第二种情况是明确规定使用的就是URI 模板中的variable2 变量。当不是使用debug 模式进行编译，或者是所需要使用的变量名跟参数名不相同的时候，就要使用第二种方式明确指出使用的是URI 模板中的哪个变量。
 
- 除了在请求路径中使用URI 模板，定义变量之外，@RequestMapping 中还支持通配符“* ”。如下面的代码我就可以使用/myTest/whatever/wildcard.do 访问到Controller 的testWildcard 方法。如：
+ 除了在请求路径中使用URI 模板，定义变量之外，@RequestMapping 中还支持通配符“* "。如下面的代码我就可以使用/myTest/whatever/wildcard.do 访问到Controller 的testWildcard 方法。如：
 
 ```
 @Controller
@@ -7030,12 +7104,12 @@ headers 属性的用法和功能与params 属性相似。在上面的代码中�
 （4 ）一个String 字符串。这往往代表的是一个视图名称。这个时候如果需要在渲染视图的过程中需要模型的话就可以给处理器方法一个模型参数，然后在方法体里面往模型中添加值就可以了。
 （5 ）返回值是void 。这种情况一般是我们直接把返回结果写到HttpServletResponse 中了，如果没有写的话，那么Spring 将会利用RequestToViewNameTranslator 来返回一个对应的视图名称。如果视图中需要模型的话，处理方法与返回字符串的情况相同。
 （6 ）如果处理器方法被注解@ResponseBody 标记的话，那么处理器方法的任何返回类型都会通过HttpMessageConverters 转换之后写到HttpServletResponse 中，而不会像上面的那些情况一样当做视图或者模型来处理。
-（7 ）除以上几种情况之外的其他任何返回类型都会被当做模型中的一个属性来处理，而返回的视图还是由RequestToViewNameTranslator 来决定，添加到模型中的属性名称可以在该方法上用@ModelAttribute(“attributeName”) 来定义，否则将使用返回类型的类名称的首字母小写形式来表示。使用@ModelAttribute 标记的方法会在@RequestMapping 标记的方法执行之前执行。
+（7 ）除以上几种情况之外的其他任何返回类型都会被当做模型中的一个属性来处理，而返回的视图还是由RequestToViewNameTranslator 来决定，添加到模型中的属性名称可以在该方法上用@ModelAttribute(“attributeName") 来定义，否则将使用返回类型的类名称的首字母小写形式来表示。使用@ModelAttribute 标记的方法会在@RequestMapping 标记的方法执行之前执行。
 
 4. 使用 @ModelAttribute 和 @SessionAttributes 传递和保存数据
 SpringMVC 支持使用 @ModelAttribute 和 @SessionAttributes 在不同的模型（model）和控制器之间共享数据。 @ModelAttribute 主要有两种使用方式，一种是标注在方法上，一种是标注在 Controller 方法参数上。
 
-当 @ModelAttribute 标记在方法上的时候，该方法将在处理器方法执行之前执行，然后把返回的对象存放在 session 或模型属性中，属性名称可以使用 @ModelAttribute(“attributeName”) 在标记方法的时候指定，若未指定，则使用返回类型的类名称（首字母小写）作为属性名称。关于 @ModelAttribute 标记在方法上时对应的属性是存放在 session 中还是存放在模型中，我们来做一个实验，看下面一段代码。
+当 @ModelAttribute 标记在方法上的时候，该方法将在处理器方法执行之前执行，然后把返回的对象存放在 session 或模型属性中，属性名称可以使用 @ModelAttribute(“attributeName") 在标记方法的时候指定，若未指定，则使用返回类型的类名称（首字母小写）作为属性名称。关于 @ModelAttribute 标记在方法上时对应的属性是存放在 session 中还是存放在模型中，我们来做一个实验，看下面一段代码。
 
 ```java
 @Controller
@@ -7124,7 +7198,7 @@ user2
 intValue
 stringValue
 
-当 @ModelAttribute 标记在处理器方法参数上的时候，表示该参数的值将从模型或者 Session 中取对应名称的属性值，该名称可以通过 @ModelAttribute(“attributeName”) 来指定，若未指定，则使用参数类型的类名称（首字母小写）作为属性名称。
+当 @ModelAttribute 标记在处理器方法参数上的时候，表示该参数的值将从模型或者 Session 中取对应名称的属性值，该名称可以通过 @ModelAttribute(“attributeName") 来指定，若未指定，则使用参数类型的类名称（首字母小写）作为属性名称。
 
 5、@PathVariable和@RequestParam的区别 
 请求路径上有个id的变量值，可以通过@PathVariable来获取  @RequestMapping(value = "/page/{id}", method = RequestMethod.GET)  
@@ -7271,7 +7345,7 @@ public Account addAccount(@RequestParam String number) {
     return accountManager.findAccount(number);  
 } 
 ```
-这种方式实际的效果就是在调用@RequestMapping的方法之前，为request对象的model里put（“account”， Account）。
+这种方式实际的效果就是在调用@RequestMapping的方法之前，为request对象的model里put（“account"， Account）。
 
 用在参数上的@ModelAttribute示例代码：
 ```java
@@ -7575,6 +7649,9 @@ public class ProjectConfig {
     * 压缩响应内容,比如让下载的内容更小 Compress the response stream
     根据地方不同修改响应内容 Localization-Targeting the request and response to a particular locale.
 
+## 6.6. WebDataBinder
+<a href="#menu" >目录</a>
+
 # 7. Webflux
 <a href="#menu" >目录</a>
 
@@ -7697,10 +7774,61 @@ maven配置文件
 
 使用以上任何一种方式配置时,引入官方的starter包无需指定版本
 
-## 8.3. Spring Boot 环境下创建Bean
+**插件**
+
+要创建可执行的jar文件,需要添加maven插件
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+    </plugins>
+</build>
+```
+**启动类**
+```java
+@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+
+```
+
+```bash
+# 打包,生成的jar文件在target文件夹下.
+mvn package
+# 运行
+java -jar xxx.jar
+
+#或者
+mvn spring-boot:run
+```
+## 8.3. SpringBoot DevTools 的用途是什么？
+SpringBoot 开发者工具，或者说 DevTools，是一系列可以让开发过程变得简便的工具。为了引入这些工具，我们只需要在 POM.xml 中添加如下依赖：
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-devtools</artifactId>
+</dependency>
+```
+spring-boot-devtools 模块在生产环境中是默认禁用的，archives 的 repackage 在这个模块中默认也被排除。因此，它不会给我们的生产环境带来任何开销。
+
+通常来说，DevTools 应用属性适合于开发环境。这些属性禁用模板缓存，启用 web 组的调试日志记录等等。最后，我们可以在不设置任何属性的情况下进行合理的开发环境配置。
+
+每当 classpath 上的文件发生更改时，使用 DevTools 的应用程序都会重新启动。这在开发中非常有用，因为它可以为修改提供快速的反馈。因为 Spring Boot再次重启 ，避免了重启 Tomcat Server，也避免了重启己经加载的 Spring 相关类，只重新加载变化的类。所以速度很快，基本上改完代码或者配置，就能立即进行调试 。
+
+重新编译工程: ctrl+shift+f9
+
+
+## 8.4. Spring Boot 环境下创建Bean
 <a href="#menu" >目录</a>
 
-### 8.3.1. 方式1:使用@Component等注解：
+### 8.4.1. 方式1:使用@Component等注解：
 
 使用@Component,@Service,@Controler,@Repository注解
 
@@ -7735,7 +7863,7 @@ public class MicroblogBlogApplication {
 ```
  
 
-### 8.3.2. 方式2:使用@Bean注解
+### 8.4.2. 方式2:使用@Bean注解
 
 
 @Configuration 标识这是一个Spring Boot 配置类，其将会扫描该类中是否存在@Bean 注解的方法，比如如下代码，将会创建User对象并放入容器中。
@@ -7814,7 +7942,7 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.log.config.Us
 
  
 
-### 8.3.3. 方式3:使用@Import注解
+### 8.4.3. 方式3:使用@Import注解
 使用注解@Import,也会创建对象并注入容器中
 
 ```java
@@ -7825,7 +7953,7 @@ public class MicroblogUserWebApplication {
     }
 }
 ```
-### 8.3.4. 方式4:使用ImportSelector接口
+### 8.4.4. 方式4:使用ImportSelector接口
 
 使用ImportSelector或者ImportBeanDefinitionRegistrar接口，配合@Import实现。
 
@@ -8003,7 +8131,7 @@ public class ImportDemoApplication {
 
  
 
-### 8.3.5. 方式5:手动注册到容器
+### 8.4.5. 方式5:手动注册到容器
 
 手动注入Bean容器，有些场景下需要代码动态注入，以上方式都不适用。这时就需要创建 对象手动注入。
 
@@ -8050,7 +8178,7 @@ Location location =  context.getBean(Location.class);
 location.run();
 ```
 
-## 8.4. 使用不同的WEB容器
+## 8.5. 使用不同的WEB容器
 
 undertow,jetty和tomcat可以说是javaweb项目当下最火的三款服务器，tomcat是apache下的一款重量级的服务器，不用多说历史悠久，经得起实践的考验。然而：当下微服务兴起，spring boot ，spring cloud 越来越热的情况下，选择一款轻量级而性能优越的服务器是必要的选择。spring boot 完美集成了tomcat，jetty和undertow.
 
@@ -8178,7 +8306,7 @@ server.jetty.selectors=  Number of selector threads to use
 
 ```
 
-## 8.5. 配置文件
+## 8.6. 配置文件
 <a href="#menu" >目录</a>
 
 Spring支持两种类型的配置文件,后缀名分别为properties和yml.
@@ -8194,7 +8322,7 @@ server:
 ```
 可以看到yml类型的格式结构更加清晰
 
-### 8.5.1. bootstrap.yml与application.yml区别
+### 8.6.1. bootstrap.yml与application.yml区别
 <a href="#menu" >目录</a>
 
 说明：其实yml和properties文件是一样的原理，主要是说明application和bootstrap的加载顺序。且一个项目上要么yml或者properties，二选一的存在
@@ -8235,21 +8363,26 @@ Spring Boot应用程序有多种设置途径。 Spring Boot能从多种属性源
 
 
 application.properties和application.yml文件能放在以下四个位置。
-* 外置，在相对于应用程序运行目录的/config子目录里。
-* 外置，在应用程序运行的目录里。
-* 内置，在config包内。
-* 内置，在Classpath根目录。
+* 外置，在相对于应用程序运行目录的/config子目录里。(file:./config/)
+* 外置，在应用程序运行的目录里。(file:./)
+* 内置，在config包内。(classpath:/config/)
+* 内置，在Classpath根目录。(classpath:/)
 同样，这个列表按照优先级排序。也就是说， /config子目录里的application.properties会覆盖应用程序Classpath里的application.properties中的相同属性。
 此外，如果你在同一优先级位置同时有application.properties和application.yml，那么application.yml里的属性会覆盖application.properties里的属性。
 
+如果配置文件不再上述目录,还可以通过spring.config.name或者spring.config.location指定
+```
+java -jar myproject.jar --spring.config.name=myproject
+java -jar myproject.jar --spring.config.location=classpath:/default.properties,classpath:/override.properties
+```
 
-### 8.5.2. 多环境配置
+### 8.6.2. 多环境配置
 <a href="#menu" >目录</a>
 
 软件开发中经常有开发环境、测试环境、预发布环境、生产环境，而且一般这些环境配置会各不相同，手动改配置麻烦且容易出错，如何管理不同环境的配置参数呢？spring-boot + maven可以解决不同环境独立配置不同参数的问题。
 
 
-#### 8.5.2.1. 配置文件
+#### 8.6.2.1. 配置文件
 <a href="#menu" >目录</a>
 
 **方式1:使用多个配置文件**
@@ -8294,7 +8427,7 @@ server:
 
 ```
 
-#### 8.5.2.2. 多环境配置
+#### 8.6.2.2. 多环境配置
 <a href="#menu" >目录</a>
 
 **方式1:application.yml配置**
@@ -8344,16 +8477,36 @@ public class DemoConfig {
 ```
 
 
-### 8.5.3. 注解ConfigurationProperties注入yml配置文件中的数据
+### 8.6.3. 注解ConfigurationProperties注入yml配置文件中的数据
 <a href="#menu" >目录</a>
 
 在使用SpringBoot开发中需要将一些配置参数放在yml文件中定义，再通过Java类来引入这些配置参数
 
 SpringBoot提供了一些注解来实现这个功能
+* ConfigurationProperties
+* Value
+* EnableConfigurationProperties
 
-ConfigurationProperties
-Value
-EnableConfigurationProperties
+
+@ConfigurationProperties 的基本用法非常简单:我们为每个要捕获的外部属性提供一个带有字段的类。请注意以下几点:
+* 前缀定义了哪些外部属性将绑定到类的字段上
+* 根据 Spring Boot 宽松的绑定规则，类的属性名称必须与外部属性的名称匹配
+* 我们可以简单地用一个值初始化一个字段来定义一个默认值
+* 类本身可以是包私有的
+* 类的字段必须有公共 setter 方法
+
+#### 8.6.3.1. Spring 宽松绑定规则 (relaxed binding)
+
+Spring使用一些宽松的绑定属性规则。因此，以下变体都将绑定到 hostName 属性上:
+```yml
+mail.hostName=127.0.0.1
+mail.hostname=127.0.0.1
+mail.host_name=127.0.0.1
+mail.host-name=127.0.0.1
+mail.HOST_NAME=127.0.0.1
+```
+
+#### 8.6.3.2. 基本使用
 下面提供例子来说明如何引入常规变量，数组，List，Ｍap,引用对象。
 
 **引入pom**
@@ -8400,6 +8553,13 @@ public class AllConfigurationProperties {
     private Map<String, ModuleConfig> modules = new LinkedHashMap();
    //复杂list
     private List<ModuleConfig> modulesList;
+
+    //
+    public static class Security{
+
+        //对应属性: all.security.name
+         private  String name;
+    }
 
 }
 ```
@@ -8450,6 +8610,7 @@ public class OtherProperties {
 **使能配置类**
 ```java
 @Slf4j
+//通过这个注解使能配置类
 @EnableConfigurationProperties(AllConfigurationProperties.class)
 @Configuration
 public class AutoConfiguration {
@@ -8532,8 +8693,29 @@ properties =
 　　　ModuleConfig(name=modules-name-4, version=modules-version-4, owner=modules-owner-4)
 　　　])
 ```
+#### 8.6.3.3. 带验证的配置
 
-### 8.5.4. 使用随机数
+```java
+@ConfigurationProperties(prefix="acme")
+@Validated
+public class AcmeProperties {
+    @NotNull
+    private InetAddress remoteAddress;
+    @Valid
+    private final Security security = new Security();
+    // ... getters and setters
+    public static class Security {
+        @NotEmpty
+        public String username;
+        // ... getters and setters
+    }
+}
+```
+
+#### 8.6.3.4. @ConfigurationProperties vs. @Value
+
+
+### 8.6.4. 使用随机数
 
 <a href="#menu" >目录</a>
 
@@ -8547,13 +8729,13 @@ properties =
 |${random.int(10)}	|取得10以内的随机数
 |${random.int[10,20]}	|取得10~20的随机数
 
-### 8.5.5. 从命令行指定参数
+### 8.6.5. 从命令行指定参数
 
 ```
 java -jar xx.jar --server.port=8001
 ```
 
-### 8.5.6. 配置日志
+### 8.6.6. 配置日志
 
 默认情况下， Spring Boot会用Logback（ http://logback.qos.ch）来记录日志，并用INFO级别输出到控制台
 
@@ -8611,7 +8793,7 @@ logging:
 logging:
     config: classpath:logging-config.xml
 ```
-## 8.6. 启动类 @SpringBootApplication 注解 
+## 8.7. 启动类 @SpringBootApplication 注解 
 <a href="#menu" >目录</a>
 
 ```java
@@ -8679,14 +8861,14 @@ public @interface SpringBootApplication {
 从上面可以看到@SpringBootApplication是一个组合注解，用于快捷配置启动类。由@SpringBootConfiguration和@EnableAutoConfiguration以及@ComponentScan组合而成.
 @SpringBootApplication开启了Spring的组件扫描和Spring Boot的自动配置功能.实际上， @SpringBootApplication将三个有用的注解组合在了一起。
 
-### 8.6.1. @Inherited 注解
+### 8.7.1. @Inherited 注解
 关于java中元注解Inherited 的使用说明
 
 首先解释下元注解，就是用来中声明注解类型时需要使用到的注解。
 
 Inherited作用是，使用此注解声明出来的自定义注解，在使用此自定义注解时，如果注解在类上面时，子类会自动继承此注解，否则的话，子类不会继承此注解。这里一定要记住，使用Inherited声明出来的注解，只有在类上使用时才会有效，对方法，属性等其他无效。
 
-### 8.6.2. @SpringBootConfiguration
+### 8.7.2. @SpringBootConfiguration
 ```java
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -8703,7 +8885,7 @@ public @interface SpringBootConfiguration {
 
 
 
-### 8.6.3. @EnableAutoConfiguration
+### 8.7.3. @EnableAutoConfiguration
 ```java
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -8735,7 +8917,7 @@ SpringFactoriesLoader属于Spring框架私有的一种扩展方案，其主要�
 
 所以，@EnableAutoConfiguration自动配置的魔法骑士就变成了：从classpath中搜寻所有的META-INF/spring.factories配置文件，并将其中org.springframework.boot.autoconfigure.EnableutoConfiguration对应的配置项通过反射（Java Refletion）实例化为对应的标注了@Configuration的JavaConfig形式的IoC容器配置类，然后汇总为一个并加载到IoC容器。
 
-### 8.6.4. @ComponentScan
+### 8.7.4. @ComponentScan
 ```java
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
@@ -8802,7 +8984,7 @@ public @interface ComponentScan {
 * scopeResolver：用于解决检测到的组件的范围。
 * useDefaultFilters：指示是否自动检测类的注释 
 
-## 8.7. 条件化注解
+## 8.8. 条件化注解
 <a href="#menu" >目录</a>
 
 * @ConditionalOnBean 配置了某个特定Bean
@@ -8826,7 +9008,7 @@ public XxxConfig(){
 }
 ```
 
-## 8.8. Spring Boot Starter
+## 8.9. Spring Boot Starter
 <a href="#menu" >目录</a>
 
 Starter是Spring Boot中的一个非常重要的概念，Starter相当于模块，它能将模块所需的依赖整合起来并对模块内的Bean根据环境（ 条件）进行自动配��。使用者只需要依赖相应功能的Starter，无需做过多的配置和依赖，Spring Boot就能自动扫描并加载相应的模块
@@ -8839,7 +9021,7 @@ Starter是Spring Boot中的一个非常重要的概念，Starter相当于模块�
 例如，在Maven的依赖中加入spring-boot-starter-web就能使项目支持Spring MVC，并且Spring Boot还为我们做了很多默认配置，无需再依赖spring-web、spring-webmvc等相关包及做相关配置就能够立即使用起来
 
 
-### 8.8.1. 常用的Starter
+### 8.9.1. 常用的Starter
 <a href="#menu" >目录</a>
 
 ```
@@ -8851,7 +9033,7 @@ spring-boot-starter-data-jpa
 spring-boot-starter-web
 spring-boot-starter-redis
 ```
-### 8.8.2. 创建自己的Starter
+### 8.9.2. 创建自己的Starter
 <a href="#menu" >目录</a>
 
 * 步骤
@@ -8918,7 +9100,7 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=xx.xx.xx.XxxConfi
 
 
 
-### 8.8.3. Starter原理
+### 8.9.3. Starter原理
 <a href="#menu" >目录</a>
 
 在Spring Boot中有一种非常解耦的扩展机制：Spring Factories。这种扩展机制实际上是仿照Java中的SPI扩展机制来实现的。
@@ -9004,9 +9186,9 @@ com.xxx.interface=com.xxx.classname
 
 
 
-## 8.9. Actuator 的端点
+## 8.10. Actuator 的端点
 
-### 8.9.1. 揭秘 Actuator 的端点
+### 8.10.1. 揭秘 Actuator 的端点
 <a href="#menu" >目录</a>
 
 Spring Boot Actuator的关键特性是在应用程序里提供众多Web端点，通过它们了解应用程序运行时的内部状况。有了Actuator，你可以知道Bean在Spring应用程序上下文里是如何组装在一起的，掌握应用程序可以获取的环境属性信息，获取运行时度量信息的快照
@@ -9098,7 +9280,7 @@ management.endpoints.web.exposure.exclude=  Endpoint IDs that should be excluded
 management.endpoints.web.exposure.include=*
 ```
 
-### 8.9.2. 自定义监控
+### 8.10.2. 自定义监控
 <a href="#menu" >目录</a>
 
 * @Endpoint(id="test") 指定端点的名称,id开头必须是小写,此注解必须
@@ -9127,7 +9309,7 @@ public class MyActuator {
 ```
 
 
-## 8.10. Spring Boot 项目发布
+## 8.11. Spring Boot 项目发布
 <a href="#menu" >目录</a>
 
 
@@ -9143,7 +9325,7 @@ public class MyActuator {
     * 通过Servlet容器启动，如Tomcat、Jetty等(打包成war)。
 
 
-## 8.11. Maven打包
+## 8.12. Maven打包
 
 **打包方式配置**
 
@@ -9151,10 +9333,10 @@ POM 文件中添加打包方式,默认的打包方式是jar
 ```xml
 <packaging>jar|pom|war</packaging> 
 ```
-POM 文件中添加了“org.springframework.boot:spring-boot-maven-plugin”插件。在添加了该插件之后，当运行“mvn package”进行打包时，会打包成一个可以直接运行的 JAR 文件，使用“Java -jar”命令就可以直接运行。这在很大程度上简化了应用的部署，只需要安装了 JRE 就可以运行。
+POM 文件中添加了“org.springframework.boot:spring-boot-maven-plugin"插件。在添加了该插件之后，当运行“mvn package"进行打包时，会打包成一个可以直接运行的 JAR 文件，使用“Java -jar"命令就可以直接运行。这在很大程度上简化了应用的部署，只需要安装了 JRE 就可以运行。
 
 **添加插件**
-在添加了该插件之后，当运行“mvn package”进行打包时，会打包成一个可以直接运行的 JAR 文件，使用“Java -jar”命令就可以直接运行。这在很大程度上简化了应用的部署，只需要安装了 JRE 就可以运行。
+在添加了该插件之后，当运行“mvn package"进行打包时，会打包成一个可以直接运行的 JAR 文件，使用“Java -jar"命令就可以直接运行。这在很大程度上简化了应用的部署，只需要安装了 JRE 就可以运行。
 ```xml
 <build>
     <plugins>
@@ -9209,11 +9391,11 @@ mvn  spring-boot:run -Dspring-boot.run.profiles=xxx
 * 不推荐用war，因为springboot适合前后端分离，打成jar进行部署更合适。
 
 
-## 8.12. Spring Boot原理分析
+## 8.13. Spring Boot原理分析
 <a href="#menu" >目录</a>
 
 
-### 8.12.1. 启动流程分析
+### 8.13.1. 启动流程分析
 <a href="#menu" >目录</a>
 
 1.  如果我们使用的是SpringApplication的静态run方法，那么，这个方法里面首先要创建一个SpringApplication对象实例，然后调用这个创建好的SpringApplication的实例方法。在SpringApplication实例初始化的时候，它会提前做几件事情：
@@ -9224,7 +9406,7 @@ mvn  spring-boot:run -Dspring-boot.run.profiles=xxx
 * 推断并设置main方法的定义类。
 
 
-#### 8.12.1.1. 创建SpringApplication对象
+#### 8.13.1.1. 创建SpringApplication对象
 <a href="#menu" >目录</a>
 
 **main方法启动**
@@ -9419,7 +9601,7 @@ private Class<?> deduceMainApplicationClass() {
 ```
 上面看完了构造方法后，已经初始化了一个 SpringApplication 对象，接下来调用其 run 方法
 
-#### 8.12.1.2. 执行Run方法
+#### 8.13.1.2. 执行Run方法
 <a href="#menu" >目录</a>
 
 ```java
@@ -9556,15 +9738,15 @@ public void refresh() throws BeansException, IllegalStateException {
         }
     }
 ```
-## 8.13. 种保护 Spring Boot 应用的绝佳方法
+## 8.14. 种保护 Spring Boot 应用的绝佳方法
 
-### 8.13.1. 在生产中使用HTTPS
+### 8.14.1. 在生产中使用HTTPS
 
 传输层安全性（TLS）是HTTPS的官方名称，你可能听说过它称为SSL（安全套接字层），SSL是已弃用的名称，TLS是一种加密协议，可通过计算机网络提供安全通信。其主要目标是确保计算机应用程序之间的隐私和数据完整性。
 
 过去，TLS / SSL证书很昂贵，而且HTTPS被认为很慢，现在机器变得更快，已经解决了性能问题，Let's Encrypt提供免费的TLS证书,这两项发展改变了游戏，并使TLS成为主流。
 
-截至2018年7月24日，Google Chrome 将HTTP网站标记为“不安全”。虽然这在网络社区引起了相当多的争议。知名安全研究员特洛伊亨特创建了一个为什么不适用HTTPS？跟踪不使用HTTPS的大型网站的网站。
+截至2018年7月24日，Google Chrome 将HTTP网站标记为“不安全"。虽然这在网络社区引起了相当多的争议。知名安全研究员特洛伊亨特创建了一个为什么不适用HTTPS？跟踪不使用HTTPS的大型网站的网站。
 
 Let’s Encrypt TLS证书可以自动化生成和更新，由于他们是免费的，所以没有理由不去做！Spring Boot Secured By Let’s Encrypt的加密是如何做到这一点的有用指南。
 
@@ -9582,7 +9764,7 @@ public  class  WebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter
 ```
 另一个重要的事情是使用HTTP严格传输安全性（HSTS）。HSTS是一种Web安全策略机制，可以保护网站免受协议降级攻击和cookie劫持。服务器使用名为Strict-Transport-Security的响应头字段将HSTS策略传送到浏览器。Spring Security默认发送此标头，以避免在开始时出现不必要的HTTP跃点，点击这里一分钟开启Tomcat https支持。
 
-### 8.13.2. 使用Snyk检查你的依赖关系
+### 8.14.2. 使用Snyk检查你的依赖关系
 你很可能不知道应用程序使用了多少直接依赖项，这通常是正确的，尽管依赖性构成了整个应用程序的大部分。攻击者越来越多地针对开源依赖项，因为它们的重用为恶意黑客提供了许多受害者，确保应用程序的整个依赖关系树中没有已知的漏洞非常重要。
 
 Snyk测试你的应用程序构建包，标记那些已知漏洞的依赖项。它在仪表板在应用程序中使用的软件包中存在的漏洞列表。
@@ -9595,14 +9777,14 @@ Snyk可通过Web UI和CLI获得，因此您可以轻松地将其与CI环境集�
 
 你可以免费使用Snyk进行开源项目或使用有限数量的私有项目。
 
-### 8.13.3. 升级到最新版本
+### 8.14.3. 升级到最新版本
 定期升级应用程序中的依赖项有多种原因。安全性是让您有升级动力的最重要原因之一。该start.spring.io起始页面采用了最新的春季版本的软件包，以及依赖关系，在可能的情况。
 
 基础架构升级通常不如依赖项升级具有破坏性，因为库作者对向后兼容性和版本之间的行为更改的敏感性各不相同。话虽如此，当你在配置中发现安全漏洞时，您有三种选择：升级，修补程序或忽略。
 
 在对应用程序进行必要的更改以使用较新版本之后，就应用程序的整体运行状况而言，升级是最安全的。
 
-### 8.13.4. 启用CSRF保护
+### 8.14.4. 启用CSRF保护
 跨站点请求伪造(Cross-Site Request Forgery )是一种攻击，强制用户在他们当前登录的应用程序中执行不需要的操作。如果用户是普通用户，一个成功攻击可能涉及请求的状态更改，如转移资金或更改其电子邮件地址，如果用户具有提升管理员的权限，则CSRF攻击可能会危及整个应用程序。
 
 Spring Security具有出色的CSRF支持，如果您正在使用Spring MVC的< form:form>标签或Thymeleaf @EnableWebSecurity，默认情况下处于启用状态，CSRF令牌将自动添加为隐藏输入字段。
@@ -9620,7 +9802,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 如果你正在使用Angular，这就是你需要做的。如果您使用的是React，则需要读取XSRF-TOKENcookie并将其作为X-XSRF-TOKEN标题发回。
 
 当请求通过HTTPS发生时，Spring Security会自动加入一个secure标识到XSRF-TOKENcookie 。Spring Security对于CSRF cookie不使用SameSite=strict 的标志，但它在使用Spring Session或WebFlux会话处理时会使用，这对会话cookie有意义，因为它有助于识别用户，但是没有为CSRF cookie提供太多价值，因为CSRF令牌也需要在请求中。点击这里了解CSRF更多详情。
-### 8.13.5. 使用内容安全策略防止XSS攻击
+### 8.14.5. 使用内容安全策略防止XSS攻击
 内容安全策略（CSP）是一个增加的安全层，可帮助缓解XSS（跨站点脚本）和数据注入攻击。要启用它，你需要配置应用程序以返回Content-Security-Policy标题。你还可以在HTML页面中<meta http-equiv="Content-Security-Policy">使用标记。
 
 Spring安全性默认提供了许多安全标头：
@@ -9652,7 +9834,7 @@ CSP是防止XSS攻击的良好防御，请记住，打开CSP能让CDN访问许�
 
 你可以在securityheaders.com测试你的CSP标头是否有用。
 
-### 8.13.6. 使用OpenID Connect进行身份验证
+### 8.14.6. 使用OpenID Connect进行身份验证
 OAuth 2.0是行业标准的授权协议。它使用scope来定义授权用户可以执行的操作的权限。但是，OAuth 2.0不是身份验证协议，并且不提供有关经过身份验证的用户的信息。
 
 OpenID Connect（OIDC）是一个OAuth 2.0扩展，提供用户信息，除了访问令牌之外，它还添加了ID令牌，以及/userinfo可以从中获取其他信息的端点，它还添加了发现功能和动态客户端注册的端点。
@@ -9680,7 +9862,7 @@ spring:
 
 你可以使用像Keycloak这样的开源系统来设置自己的OIDC服务器。如果你不想在生产中维护自己的服务器，可以使用Okta的Developer API。
 
-### 8.13.7. 管理密码？使用密码哈希！
+### 8.14.7. 管理密码？使用密码哈希！
 以纯文本格式存储密码是最糟糕的事情之一。幸运的是，Spring Security默认情况下不允许使用纯文本密码。它还附带了一个加密模块，可用于对称加密，生成密钥和密码散列（也就是密码编码）。
 
 PasswordEncoder 是Spring Security中密码哈希的主要接口，如下所示：
@@ -9700,7 +9882,7 @@ Spring Security提供了几种实现，最受欢迎的是BCryptPasswordEncoder�
 
 Spring Security 5.1（即2018年9月下旬）将附带UserDetailsPasswordService API，允许您升级密码存储。
 
-### 8.13.8. 安全地存储秘密
+### 8.14.8. 安全地存储秘密
 应谨慎处理敏感信息，如密码，访问令牌等，你不能以纯文本形式传递，或者如果将它们保存在本地存储中。由于（GitHub）的历史已经一次又一次证明，开发人员并没有仔细考虑如何存储他们的秘密。
 
 一个好的做法是将保密信息存储在保管库中，该保管库可用于存储，提供对应用程序可能使用的服务的访问权限，甚至生成凭据。HashiCorp的Vault使得存储机密变得很轻松，并提供了许多额外的服务。
@@ -9711,7 +9893,7 @@ Spring Security 5.1（即2018年9月下旬）将附带UserDetailsPasswordService
 String password;
 ```
 
-### 8.13.9. 使用OWASP的ZAP测试您的应用程序
+### 8.14.9. 使用OWASP的ZAP测试您的应用程序
 OWASP ZAP安全工具是针对在运行活动的应用程序进行渗透测试的代理。它是一个受欢迎的（超过4k星）免费的开源项目，托管在GitHub上。
 
 OWASP ZAP用于查找漏洞的两种方法是Spider和Active Scan。
@@ -9720,18 +9902,18 @@ Spider工具以URL种子开头，它将访问并解析每个响应，识别超�
 
 Active Scan工具将根据潜在漏洞列表自动测试你选择的目标。它提供了一个报告，显示Web应用程序可被利用的位置以及有关漏洞的详细信息。
 
-### 8.13.10. 让你的安全团队进行代码审查
+### 8.14.10. 让你的安全团队进行代码审查
 代码评审对任何高性能软件开发团队都至关重要。在Okta，我们所有的生产代码和官方开源项目都需要通过我们的专家安全团队进行分析，你的公司可能没有安全专家，但如果你正在处理敏感数据，也许你应该这样做！
 
-## 8.14. 项目实践
+## 8.15. 项目实践
 <a href="#menu" >目录</a>
 
-### 8.14.1. 访问数据库
+### 8.15.1. 访问数据库
 
 <a href="#menu" >目录</a>
 
 
-### 8.14.2. 跨域配置
+### 8.15.2. 跨域配置
 <a href="#menu" >目录</a>
 
 用于跨域配置
@@ -9793,7 +9975,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 }
 ```
 
-### 8.14.3. 全局异常处理
+### 8.15.3. 全局异常处理
 <a href="#menu" >目录</a>
 
 第一种：使用@ControllerAdvice和@ExceptionHandler注解
@@ -9947,12 +10129,12 @@ public class TestController {
 
 
 
-## 8.15. 其他一些问题
+## 8.16. 其他一些问题
 
-### 8.15.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？
+### 8.16.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？
 可以实现接口 ApplicationRunner 或者 CommandLineRunner，这两个接口实现方式一样，它们都只提供了一个 run 方法
 
-### 8.15.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？
+### 8.16.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？
 这可以使用DEV工具来实现。通过这种依赖关系，您可以节省任何更改，嵌入式tomcat将重新启动。
 
 Spring Boot有一个开发工具（DevTools）模块，它有助于提高开发人员的生产力。Java开发人员面临的一个主要挑战是将文件更改自动部署到服务器并自动重启服务器。
@@ -9969,7 +10151,7 @@ Spring Boot有一个开发工具（DevTools）模块，它有助于提高开发�
 
 ```
 
-### 8.15.3. Spring Boot 有哪几种读取配置的方式？
+### 8.16.3. Spring Boot 有哪几种读取配置的方式？
 Spring Boot 可以通过 @PropertySource,@Value,@Environment, @ConfigurationProperties 来绑定变量，具体请看这篇文章《Spring Boot读取配置的几种方式》。
 
 
@@ -10236,7 +10418,7 @@ EurekaServer的高可用实际上就是将自己作为服务向其他服务注�
 
 * **服务提供者**
     * 服务注册
-        * “服务提供者” 在启动的时候会通过发送REST请求的方式将自己注册到EurekaServer上，同时带上了自身服务的一些元数据信息。
+        * “服务提供者" 在启动的时候会通过发送REST请求的方式将自己注册到EurekaServer上，同时带上了自身服务的一些元数据信息。
         * Eureka Server接收到这个REST请求之后，将元数据信息存储在一个双层结构Map中， 其中第一层的key是服务名， 第二层的key是具体服务的实例名。
         * eureka.client.register-with-eureka=true默认为true。 若设置为false将不会启动注册操作。
         * 元数据
@@ -11494,7 +11676,7 @@ ZoneAwareLoadBalancer 负载均衡器是对 DynamicServerListLoadBalancer的扩�
                 * 一个抽象策略,先过滤清单， 再轮询选择
                 * ZoneAvoidanceRule
                 * AvailabilityFilteringRule
-                    * 该策略继承自上面介绍的抽象策略 Predic红eBasedRule, 所以它也继承了 “先过滤清单，再轮询选择 ”的基本处理逻辑
+                    * 该策略继承自上面介绍的抽象策略 Predic红eBasedRule, 所以它也继承了 “先过滤清单，再轮询选择 "的基本处理逻辑
                     * 过滤故障的节点
         * RoundRobinRule
             * 该策略实现了按照线性轮询的方式依次选择每个服务实例的功能。
@@ -12371,7 +12553,7 @@ public abstract class CommonClientConfigKey<T> implements IClientConfigKey<T> {
 #### 9.3.3.2. 重试机制
 <a href="#menu" >目录</a>
 
-由于Spring Cloud Eureka实现的服务治理机制强调了CAP原理中的AP, 即可用性与可靠性，它与Zoo Keeper这类强调CP( 一致性、可靠性）的服务治理框架最大的区别就是，Eureka为了实现更高的服务可用性， 牺牲了一定的一致性， 在极端情况下它宁愿接受故障实例也不要丢掉 “ 健康 ” 实例， 比如， 当服务注册中心的网络发生故障断开时， 由于所有的服务实例无法维持续约心跳， 在强调 AP的服务治理中将会把所有服务实例都剔除掉，而Eureka则会因为超过85%的实例丢失心跳而会触发保护机制，注册中心将会保留此时的所有节点， 以实现服务间依然可以进行互相调用的场景， 即使其中有部分故障节点， 但这样做可以继续保障大多数的服务正常消费。
+由于Spring Cloud Eureka实现的服务治理机制强调了CAP原理中的AP, 即可用性与可靠性，它与Zoo Keeper这类强调CP( 一致性、可靠性）的服务治理框架最大的区别就是，Eureka为了实现更高的服务可用性， 牺牲了一定的一致性， 在极端情况下它宁愿接受故障实例也不要丢掉 “ 健康 " 实例， 比如， 当服务注册中心的网络发生故障断开时， 由于所有的服务实例无法维持续约心跳， 在强调 AP的服务治理中将会把所有服务实例都剔除掉，而Eureka则会因为超过85%的实例丢失心跳而会触发保护机制，注册中心将会保留此时的所有节点， 以实现服务间依然可以进行互相调用的场景， 即使其中有部分故障节点， 但这样做可以继续保障大多数的服务正常消费。
 
 由于Spring Cloud Eureka在可用性与一致性上的取舍， 不论是由于触发了保护机制还是服务剔除的延迟， 引起服务调用到故障实例的时候， 我们还是希望能够增强对这类问题的容错。 所以， 我们在实现服务调用的时候通常会加入一些重试机制。 在目前我们使用的Brixton版本中， 对于重试机制的实现需要我们自己来扩展完成。 而从CamdenSR2版本开始，Spring Cloud整合了SpringRetry来增强RestTernplate的重试能力， 对于开发者来说只需通过简单的配置， 原来那些通过 RestTemplate 实现的服务访问就会自动根据配置来实现重试策略
 
@@ -13006,7 +13188,7 @@ public class RibbonService {
 ### 9.5.2. Feign中使用Hystrix
 <a href="#menu" >目录</a>
 
-由 于 Feign 的起步依赖中已经引入了 Hystrix 的依赖，所以在 Feign 中使用 Hystrix 不需要引入任何的依赖 。 只需要在 eureka-feign”client 工程的配置文件 application.yml 中配置开启Hystrix 的功能，配置文件 application.yml 中加以下配置 ：
+由 于 Feign 的起步依赖中已经引入了 Hystrix 的依赖，所以在 Feign 中使用 Hystrix 不需要引入任何的依赖 。 只需要在 eureka-feign"client 工程的配置文件 application.yml 中配置开启Hystrix 的功能，配置文件 application.yml 中加以下配置 ：
 
 ```yml
  23. 默认是false
@@ -13399,9 +13581,9 @@ public class CommandHelloWorldTest {
     @Test
     public void testObserve() {
         /**
-         * 返回的是Hot Observable,HotObservable，不论 “事件源” 是否有“订阅者”
-         * 都会在创建后对事件进行发布。所以对于Hot Observable的每一个“订阅者”都有
-         * 可能从“事件源”的中途开始的，并可能只是看到了整个操作的局部过程
+         * 返回的是Hot Observable,HotObservable，不论 “事件源" 是否有“订阅者"
+         * 都会在创建后对事件进行发布。所以对于Hot Observable的每一个“订阅者"都有
+         * 可能从“事件源"的中途开始的，并可能只是看到了整个操作的局部过程
          */
         //blocking
         Observable<String> ho = new CommandHelloWorld("World").observe();
@@ -13437,8 +13619,8 @@ public class CommandHelloWorldTest {
     @Test
     public void testToObservable() {
         /**
-         * Cold Observable在没有 “订阅者” 的时候并不会发布时间，
-         * 而是进行等待，知道有 “订阅者” 之后才发布事件，所以对于
+         * Cold Observable在没有 “订阅者" 的时候并不会发布时间，
+         * 而是进行等待，知道有 “订阅者" 之后才发布事件，所以对于
          * Cold Observable的订阅者，它可以保证从一开始看到整个操作的全部过程。
          */
         Observable<String> co = new CommandHelloWorld("World").toObservable();
@@ -13785,8 +13967,8 @@ observable.toBlocking().toFuture().get();
 
 You can also observe the results of a HystrixCommand as an Observable by using one of the following methods:
 
-observe() — returns a “hot” Observable that executes the command immediately, though because the Observable is filtered through a ReplaySubject you are not in danger of losing any items that it emits before you have a chance to subscribe
-toObservable() — returns a “cold” Observable that won’t execute the command and begin emitting its results until you subscribe to the Observable
+observe() — returns a “hot" Observable that executes the command immediately, though because the Observable is filtered through a ReplaySubject you are not in danger of losing any items that it emits before you have a chance to subscribe
+toObservable() — returns a “cold" Observable that won’t execute the command and begin emitting its results until you subscribe to the Observable
 Observable<String> ho = new CommandHelloWorld("World").observe();
 // or Observable<String> co = new CommandHelloWorld("World").toObservable();
 You then retrieve the value of the command by subscribing to the Observable:
@@ -13871,8 +14053,8 @@ In such a case, instead of overriding the run method with your command logic (as
 
 To obtain an Observable representation of the HystrixObservableCommand, use one of the following two methods:
 
-observe() — returns a “hot” Observable that subscribes to the underlying Observable immediately, though because it is filtered through a ReplaySubject you are not in danger of losing any items that it emits before you have a chance to subscribe to the resulting Observable
-toObservable() — returns a “cold” Observable that won’t subscribe to the underlying Observable until you subscribe to the resulting Observable
+observe() — returns a “hot" Observable that subscribes to the underlying Observable immediately, though because it is filtered through a ReplaySubject you are not in danger of losing any items that it emits before you have a chance to subscribe to the resulting Observable
+toObservable() — returns a “cold" Observable that won’t subscribe to the underlying Observable until you subscribe to the resulting Observable
 ##### 9.5.3.5.6. Fallback
 <a href="#menu" >目录</a>
 
@@ -13996,12 +14178,12 @@ public CommandHelloWorld(String name) {
 HystrixThreadPoolKey is an interface and can be implemented as an enum or regular class, but it also has the helper Factory class to construct and intern instances such as:
 
 HystrixThreadPoolKey.Factory.asKey("HelloWorldPool")
-The reason why you might use HystrixThreadPoolKey instead of just a different HystrixCommandGroupKey is that multiple commands may belong to the same “group” of ownership or logical functionality, but certain commands may need to be isolated from each other.
+The reason why you might use HystrixThreadPoolKey instead of just a different HystrixCommandGroupKey is that multiple commands may belong to the same “group" of ownership or logical functionality, but certain commands may need to be isolated from each other.
 
 Here is a simple example:
 
 two commands used to access Video metadata
-group name is “VideoMetadata”
+group name is “VideoMetadata"
 command A goes against resource #1
 command B goes against resource #2
 If command A becomes latent and saturates its thread-pool it should not prevent command B from executing requests since they each hit different back-end resources.
@@ -14341,7 +14523,7 @@ The equivalent Fail-Silently solution for a HystrixObservableCommand would invol
 ##### 9.5.3.5.16. Fallback: Static
 <a href="#menu" >目录</a>
 
-Fallbacks can return default values statically embedded in code. This doesn’t cause the feature or service to be removed in the way that “fail silent” often does, but instead causes default behavior to occur.
+Fallbacks can return default values statically embedded in code. This doesn’t cause the feature or service to be removed in the way that “fail silent" often does, but instead causes default behavior to occur.
 
 For example, if a command returns a true/false based on user credentials but the command execution fails, it can default to true:
 ```java
@@ -14491,7 +14673,7 @@ It is important to execute the fallback command on a separate thread-pool, other
 
 The following code shows how CommandWithFallbackViaNetwork executes FallbackViaNetwork in its getFallback() method.
 
-Note how if the fallback fails, it also has a fallback which does the “fail silent” approach of returning null.
+Note how if the fallback fails, it also has a fallback which does the “fail silent" approach of returning null.
 
 To configure the FallbackViaNetwork command to run on a different threadpool than the default RemoteServiceX derived from the HystrixCommandGroupKey, it injects HystrixThreadPoolKey.Factory.asKey("RemoteServiceXFallback") into the constructor.
 
@@ -14551,11 +14733,11 @@ public class CommandWithFallbackViaNetwork extends HystrixCommand<String> {
 
 Some systems have dual-mode behavior — primary and secondary, or primary and failover.
 
-Sometimes the secondary or failover is considered a failure state and it is intended only for fallback; in those scenarios it would fit in the same pattern as “Cache via Network” described above.
+Sometimes the secondary or failover is considered a failure state and it is intended only for fallback; in those scenarios it would fit in the same pattern as “Cache via Network" described above.
 
 However, if flipping to the secondary system is common, such as a normal part of rolling out new code (sometimes this is part of how stateful systems handle code pushes) then every time the secondary system is used the primary will be in a failure state, tripping circuit breakers and firing alerts.
 
-This is not the desired behavior, if for no other reason than to avoid the “cry wolf” fatigue that will cause alerts to be ignored when a real issue is occurring.
+This is not the desired behavior, if for no other reason than to avoid the “cry wolf" fatigue that will cause alerts to be ignored when a real issue is occurring.
 
 So in such a case the strategy is instead to treat the switching between primary and secondary as normal, healthy patterns and put a façade in front of them.
 
@@ -14565,7 +14747,7 @@ The primary and secondary HystrixCommand implementations are thread-isolated sin
 
 You do not expose these two commands publicly but you instead hide them behind another HystrixCommand that is semaphore-isolated and that implements the conditional logic as to whether to invoke the primary or secondary command. If both primary and secondary fail then control switches to the fallback of the façade command itself.
 
-The façade HystrixCommand can use semaphore-isolation since all of the work it is doing is going through two other HystrixCommands that are already thread-isolated. It is unnecessary to have yet another layer of threading as long as the run() method of the façade is not doing any other network calls, retry logic, or other “error prone” things.
+The façade HystrixCommand can use semaphore-isolation since all of the work it is doing is going through two other HystrixCommands that are already thread-isolated. It is unnecessary to have yet another layer of threading as long as the run() method of the façade is not doing any other network calls, retry logic, or other “error prone" things.
 ```java
 public class CommandFacadeWithPrimarySecondary extends HystrixCommand<String> {
 
@@ -14805,7 +14987,7 @@ public void getGetSetGet() {
 <a href="#menu" >目录</a>
 
 Migrating a Library to Hystrix
-When you are migrating an existing client library to use Hystrix, you should replace each of the “service methods” with a HystrixCommand.
+When you are migrating an existing client library to use Hystrix, you should replace each of the “service methods" with a HystrixCommand.
 
 The service methods should then forward calls to the HystrixCommand and not have any additional business logic in them.
 
@@ -14983,8 +15165,8 @@ spring:
 * 应用上下文层次结构
 如果你通过`SpringApplication`或者`SpringApplicationBuilder`创建一个`Application Context`,那么会为spring应用的`Application Context`创建父上下文`Bootstrap Context`。在Spring里有个特性，子上下文会继承父类的`property sources` and `profiles` ，所以`main application context` 相对于没有使用Spring Cloud Config，会新增额外的`property sources`。额外的`property sources`有：
 
-“bootstrap” : 如果在Bootstrap Context扫描到PropertySourceLocator并且有属性，则会添加到CompositePropertySource。Spirng Cloud Config就是通过这种方式来添加的属性的，详细看源码ConfigServicePropertySourceLocator`。下面也也有一个例子自定义的例子。
-“applicationConfig: [classpath:bootstrap.yml]” ，（如果有spring.profiles.active=production则例如 applicationConfig: [classpath:/bootstrap.yml]#production）: 如果你使用bootstrap.yml来配置Bootstrap Context，他比application.yml优先级要低。它将添加到子上下文，作为Spring Boot应用程序的一部分。下文有介绍。
+“bootstrap" : 如果在Bootstrap Context扫描到PropertySourceLocator并且有属性，则会添加到CompositePropertySource。Spirng Cloud Config就是通过这种方式来添加的属性的，详细看源码ConfigServicePropertySourceLocator`。下面也也有一个例子自定义的例子。
+“applicationConfig: [classpath:bootstrap.yml]" ，（如果有spring.profiles.active=production则例如 applicationConfig: [classpath:/bootstrap.yml]#production）: 如果你使用bootstrap.yml来配置Bootstrap Context，他比application.yml优先级要低。它将添加到子上下文，作为Spring Boot应用程序的一部分。下文有介绍。
 由于优先级规则，Bootstrap Context不包含从bootstrap.yml来的数据，但是可以用它作为默认设置。
 
 你可以很容易的扩展任何你建立的上下文层次，可以使用它提供的接口，或者使用SpringApplicationBuilder包含的方法（parent()，child()，sibling()）。Bootstrap Context将是最高级别的父类。扩展的每一个Context都有有自己的bootstrap property source（有可能是空的）。扩展的每一个Context都有不同spring.application.name。同一层层次的父子上下文原则上也有一有不同的名称，因此，也会有不同的Config Server配置。子上下文的属性在相同名字的情况下将覆盖父上下文的属性。
@@ -15004,10 +15186,10 @@ if(StringUtils.hasText(configLocation)){
     bootstrapMap.put("spring.config.location", configLocation);
 }
 ```
-bootstrap.yml是由spring.cloud.bootstrap.name（默认:”bootstrap”）或者spring.cloud.bootstrap.location（默认空）。这些属性行为与spring.config.*类似，通过它的Environment来配置引导ApplicationContext。如果有一个激活的profile（来源于spring.profiles.active或者Environment的Api构建），例如bootstrap-development.properties 就是配置了profile为development的配置文件.
+bootstrap.yml是由spring.cloud.bootstrap.name（默认:"bootstrap"）或者spring.cloud.bootstrap.location（默认空）。这些属性行为与spring.config.*类似，通过它的Environment来配置引导ApplicationContext。如果有一个激活的profile（来源于spring.profiles.active或者Environment的Api构建），例如bootstrap-development.properties 就是配置了profile为development的配置文件.
 
 * 覆盖远程属性
-property sources被bootstrap context 添加到应用通常通过远程的方式，比如”Config Server”。默认情况下，本地的配置文件不能覆盖远程配置，但是可以通过启动命令行参数来覆盖远程配置。如果需要本地文件覆盖远程文件，需要在远程配置文件里设置授权 
+property sources被bootstrap context 添加到应用通常通过远程的方式，比如"Config Server"。默认情况下，本地的配置文件不能覆盖远程配置，但是可以通过启动命令行参数来覆盖远程配置。如果需要本地文件覆盖远程文件，需要在远程配置文件里设置授权 
 spring.cloud.config.allowOverride=true（这个配置不能在本地被设置）。一旦设置了这个权限，你可以配置更加细粒度的配置来配置覆盖的方式，
 
 比如： 
@@ -15018,7 +15200,7 @@ spring.cloud.config.allowOverride=true（这个配置不能在本地被设置）
 源文件见PropertySourceBootstrapProperties
 
 * 自定义启动配置
-bootstrap context是依赖/META-INF/spring.factories文件里面的org.springframework.cloud.bootstrap.BootstrapConfiguration条目下面，通过逗号分隔的Spring  @Configuration类来建立的配置。任何main application context需要的自动注入的Bean可以在这里通过这种方式来获取。这也是ApplicationContextInitializer建立@Bean的方式。可以通过@Order来更改初始化序列，默认是”last”。
+bootstrap context是依赖/META-INF/spring.factories文件里面的org.springframework.cloud.bootstrap.BootstrapConfiguration条目下面，通过逗号分隔的Spring  @Configuration类来建立的配置。任何main application context需要的自动注入的Bean可以在这里通过这种方式来获取。这也是ApplicationContextInitializer建立@Bean的方式。可以通过@Order来更改初始化序列，默认是"last"。
 
 ```yml
  24. spring-cloud-context-1.1.1.RELEASE.jar
@@ -15070,7 +15252,7 @@ Environment被ApplicationContext建立，并传入property sources（可能不�
 如果你建立了一个jar包，里面添加了一个META-INF/spring.factories文件：
 
 org.springframework.cloud.bootstrap.BootstrapConfiguration=sample.custom.CustomPropertySourceLocator
-那么，”customProperty“的PropertySource将会被包含到应用。
+那么，"customProperty“的PropertySource将会被包含到应用。
 
 
 #### 9.7.1.3. 客户端配置
@@ -15518,7 +15700,7 @@ public void inject(TraceContext traceContext, C carrier) {
 **什么是 JUnit？**
 JUnit 是一个 Java 编程语言的单元测试框架。JUnit 在测试驱动的开发方面有很重要的发展，是起源于 JUnit 的一个统称为 xUnit 的单元测试框架之一。
 
-JUnit 促进了“先测试后编码”的理念，强调建立测试数据的一段代码，可以先测试，然后再应用。这个方法就好比“测试一点，编码一点，测试一点，编码一点……”，增加了程序员的产量和程序的稳定性，可以减少程序员的压力和花费在排错上的时间。
+JUnit 促进了“先测试后编码"的理念，强调建立测试数据的一段代码，可以先测试，然后再应用。这个方法就好比“测试一点，编码一点，测试一点，编码一点……"，增加了程序员的产量和程序的稳定性，可以减少程序员的压力和花费在排错上的时间。
 
 * 特点：
     * JUnit 是一个开放的资源框架，用于编写和运行测试。
@@ -15628,8 +15810,8 @@ JUnit 中的最重要的程序包是 junit.framework 它包含了所有的核心
 JUnit每次都会创建一个新的测试实例，然后调用@Test注解方法
 任何异常的抛出都会认为测试失败
 @Test注解提供2个参数：
-* “expected”，定义测试方法应该抛出的异常，如果测试方法没有抛出异常或者抛出了一个不同的异常，测试失败
-* “timeout”，如果测试运行时间长于该定义时间，测试失败（单位为毫秒）
+* “expected"，定义测试方法应该抛出的异常，如果测试方法没有抛出异常或者抛出了一个不同的异常，测试失败
+* “timeout"，如果测试运行时间长于该定义时间，测试失败（单位为毫秒）
 
 **@Ignore**
 对包含测试类的类或@Test注解方法使用@Ignore注解将使被注解的类或方法不会被当做测试执行
@@ -15715,7 +15897,7 @@ TestNG消除了大部分的旧框架的限制，使开发人员能够编写更�
 * 支持综合类测试(例如，默认情况下，不用创建一个新的测试每个测试方法的类的实例)
 * 独立的编译时测试代码和运行时配置/数据信息
 * 灵活的运行时配置
-* 主要介绍“测试组”。当编译测试，只要要求TestNG运行所有的“前端”的测试，或“快”，“慢”，“数据库”等
+* 主要介绍“测试组"。当编译测试，只要要求TestNG运行所有的“前端"的测试，或“快"，“慢"，“数据库"等
 * 支持依赖测试方法，并行测试，负载测试，局部故障灵活的插件API支持多线程测试
 
 TestNG(Next Generation)是一个测试框架，它受到JUnit和NUnit的启发，而引入了许多新的创新功能，如依赖测试，分组概念，使测试更强大，更容易做到。 它旨在涵盖所有类别的测试：单元，功能，端到端，集成等
@@ -15756,7 +15938,7 @@ TestNG(Next Generation)是一个测试框架，它受到JUnit和NUnit的启发�
 | 超时测试| @Test(timeout = 1000)| @Test(timeout = 1000)原文出自【易百教程】，商业转载请联系作者获得授权，非商业请保留原文链接：https://www.yiibai.com/testng/junit-vs-testng-comparison.html
 
 JUnit4和TestNG之间的主要注释差异是：
-* 在JUnit 4中，我们必须声明“@BeforeClass”和“@AfterClass”方法作为静态方法。 TestNG在方法声明中更灵活，它没有这个约束。
+* 在JUnit 4中，我们必须声明“@BeforeClass"和“@AfterClass"方法作为静态方法。 TestNG在方法声明中更灵活，它没有这个约束。
 * 3个额外的setUp / tearDown级别：suite和group(@Before / AfterSuite，@Before / After Test，@Before / After Group)。原文出自【易百教程】，商业转载请联系作者获得授权，非商业请保留原文链接：https://www.yiibai.com/testng/junit-vs-testng-comparison.html
 
 
@@ -16306,7 +16488,7 @@ RETURNS_SMART_NULLS实现了Answer接口的对象，它是创建mock对象时的
         List mock = mock(List.class, RETURNS_SMART_NULLS);
         System.out.println(mock.get(0));
         
-        //使用RETURNS_SMART_NULLS参数创建的mock对象，不会抛出NullPointerException异常。另外控制台窗口会提示信息“SmartNull returned by unstubbed get() method on mock”
+        //使用RETURNS_SMART_NULLS参数创建的mock对象，不会抛出NullPointerException异常。另外控制台窗口会提示信息“SmartNull returned by unstubbed get() method on mock"
         System.out.println(mock.toArray().length);
     }
 ```
@@ -16784,7 +16966,7 @@ Mockito并不是创建一个真实的对象，而是模拟这个对象，他用�
 
 // 设置mock对象的行为 － 当调用其get方法获取第0个元素时，返回"first"
 Mockito.when(mockedList.get(0)).thenReturn("first");
-在Mock对象的时候，创建一个proxy对象，保存被调用的方法名（get），以及调用时候传递的参数（0），然后在调用thenReturn方法时再把“first”保存起来，这样，就有了构建一个stub方法所需的所有信息，构建一个stub。当get方法被调用的时候，实际上调用的是之前保存的proxy对象的get方法，返回之前保存的数据。
+在Mock对象的时候，创建一个proxy对象，保存被调用的方法名（get），以及调用时候传递的参数（0），然后在调用thenReturn方法时再把“first"保存起来，这样，就有了构建一个stub方法所需的所有信息，构建一个stub。当get方法被调用的时候，实际上调用的是之前保存的proxy对象的get方法，返回之前保存的数据。
 
 
 ## 10.4. 控制层测试
@@ -16802,6 +16984,8 @@ MockMvc相关[官方地址官方指南:https://spring.io/guides/gs/testing-web/]
 ### 10.4.1. 基本使用
 <a href="#menu" >目录</a>
 
+#### 10.4.1.1. 依赖
+
 **首先需要增加相应的依赖：**
 
 ```xml
@@ -16811,12 +16995,98 @@ MockMvc相关[官方地址官方指南:https://spring.io/guides/gs/testing-web/]
     <scope>test</scope>
 </dependency>
 ```
+将会添加以下类库
+* Junit，标准的单元测试 Java 应用程序 。
+* Spring Test & Spring Boot Test，对 Spring Boot 应用程序的单元测试 。
+* Mockito, Java mocking 框架，用于模拟任何 Spring 管理的 Bean，比如在单元测试中模拟一个第三方系统 Service 接口返回的数据，而不会去真正调用第三方系统 。
+* AssertJ ， 一个流畅的 assertion 库，同时也提供了更多 的期望值与测试返回值的比较方式 。
+* Hamcrest，库的匹配对象（也称为约束或谓词） 。
+* JSONassert，对 JSON 对象或者 JSON 字符串断 言 的库 。
+* JsonPath，提供类似 XPath 那样的符号来获取 JSON 数据片段 。
+
+
+
+#### 10.4.1.2. 基本使用
+```java
+//模拟一个 Get 请求：
+mockMvc.perform(get (" / hotels?foo={foo }","bar"));
+
+//模拟－个 Post 请求：
+mockMvc.perform(p。 st （"／ hotels/{id ｝"， 42) ;
+
+//模拟文件上传：
+mockMvc.perform(multipart("/doc").file("file"，"文件内容".getBytes("UTF-8")));
+
+//模拟提交 message 参数
+mvc.perform(get （"／ user/{id}/{n缸ne ｝"， userid,name).param ("message","hello"));
+//模拟一个 checkbox 提交
+mvc.perform(get ("/user/{id}/{name }", userid,name).param ("job"，"IT"，"ov"）.param( .. . ));
+
+
+//直接使用 MultiValueMap 构造参数
+LinkedMultiValueMap params = new LinkedMultiValueMap () ;
+params.put ("message","hello") ;
+params.put ("job","IT");
+params.put ("job" ,"gov");
+mvc.perforrn(get (" / user/{id)/{narne } ", userId, name) . param (params) ) ;
+//模拟 Session 和 Cookie:
+mvc.perform(get (" / user .html") . sessionAttr(name, value ));
+mvc.perform(get ("/user . html ") . cookie (new Cookie(narne , value))) ;
+
+//设置 HTTP Body 内容，比如提交的 JSON:
+String json = "{"name": "liang"}",
+mvc.perform(get ("/user.html ") .content(json));
+
+//设置 HTTP Header:
+mvc.perform(get ("/user / {id} /{narne } ", userid,name)
+    .contentType ("application/x-www-forrn-urlencoded") // HTTP 提交内容
+    .accept( " application/json "）//期望返回内容
+    .header (header,value）） //设直 HTTP 头
+```
+
+#### 10.4.1.3. 比较 MVC 的返回结果
+
+```java
+rnockMvc.perform(get("/user/l"))
+.andExpect(status().isOk())//期望成功调用，即HTTPStatus为200
+//期望返回内容是application/json
+.andExpect(content().contentType(MediaType.APPLICATIONJSON))
+.andExpect（jsonPath（"$.name"）.value（"Jason"））；//检查返回内容
+
+
+rnockMvc.perform(post("/form")).andExpect(view().name("/success.btl"));
+
+//比较Model:
+mockMvc.perform(post("/form"))
+.andExpect(status().isOk()
+.andExpect(model().size(1))
+.andExpect(model().attributeExists("person")
+//第9章Testing单元测试’I203
+.andExpect(model().attribute("person","xiandadfu"));
+//比较forward或者redirect:
+mockMvc.perform(post("/login"))
+.andExpect(forwardedUrl（"／index.html"））；／／或者
+redirectedUrl("/index.html")
+//比较返回内容，使用content():
+andExpect(content().string("helloworld"));
+//返回内容是XML，并且与xmlCotent一样
+andExpect(content().xml(xmlCotent));
+//返回内容是JSON，并且与jsonContent一样
+andExpect(content().json(jsonContent));
+andExpect(content().bytes(bytes);
+
+```
+
+#### 10.4.1.4. 完整例子
+
+
 需要在测试类中增加如下注解：
 
-方式1:
+**方式1:自动配置MockMvc**
 ```java
 @RunWith(SpringRunner.class)
 @SpringBootTest
+//@AutoConfigureMockMvc是用于自动配置MockMvc
 @AutoConfigureMockMvc
 public class MockXXXTest {
 
@@ -16837,19 +17107,16 @@ public class MockXXXTest {
 }
 ```
 
-注解的大概使用是（想知道详细的可自行去网上找一下）：
-@RunWith(SpringRunner.class)，就是指用SpringRunner来运行，其中
-SpringJUnit4ClassRunner 和 SpringRunner 区别是什么？
-在官方文档中有如下这句话：
+@RunWith 是 JUnit 标准的一个注解，用来告诉 JUnit 单元测试框架不要使用内置的方式进行单元测试，而应使用 RunWith 指明的类来提供单元测试，所有的 Spring 单元测试总是使用SpringRunner.class 。
 
-SpringRunner is an alias for the SpringJUnit4ClassRunner
+@SpringBootTest 用 于 Spring Boot 应用测试，它默认会根据包名逐级往上找， 一直找到Spring Boot 主程序 ，也就是通过类注解是否包含＠SpringBootApplication 来判断是否是主程序 ，并在单元测试的时候启动该类来创建 Spring 上下文环境。
 
-@SpringBootTest是SpringBoot的一个用于测试的注解，通过SpringApplication在测试中创建ApplicationContext。
-
-@AutoConfigureMockMvc是用于自动配置MockMvc
+注意： Spring 单元测试并不会在每个单元测试方法前都启动一个全新的 Spring 上下 文 ，因为这样大耗时 。 Sp「ing 单元测试会缓存上下文环境 ， 以提供给每个单元测试方法 。 如果你的单元测试方法改变了上下文，比如更改了 Bean 定义 ， 你需要在此单元测试方法上加上＠Di 「tiesContext 以提示 Spring 重新加载 Spring 上下文 。
 
 
-方式2:
+
+
+**方式2:手动配置MockMvc**
 ```java
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = ReadingListApplication.class)
@@ -16878,6 +17145,7 @@ public class MockMvcWebTests {
 
 }
 ```
+
 @WebAppConfiguration注解声明，由SpringJUnit4ClassRunner创建的应用程序上下文应该是一个WebApplicationContext（相对于基本的非WebApplicationContext）。setupMockMvc()方法上添加了JUnit的@Before注解，表明它应该在测试方法之前执行。它将WebApplicationContext注入webAppContextSetup()方法，然后调用build()产生了一
 个MockMvc实例，该实例赋给了一个实例变量，供测试方法使用。
 
@@ -16900,7 +17168,7 @@ public class MockXXXTest {
 
 SpringBoot 中, @MockBean 会将mock的bean替换掉 SpringBoot 管理的原生bean，从而达到mock的效果。
 
-mock:在软件开发的世界之外, "mock"一词是指模仿或者效仿. 因此可以将“mock”理解为一个替身，替代者. 在软件开发中提及"mock"，通常理解为模拟对象或者Fake
+mock:在软件开发的世界之外, "mock"一词是指模仿或者效仿. 因此可以将“mock"理解为一个替身，替代者. 在软件开发中提及"mock"，通常理解为模拟对象或者Fake
 
 然后 Stub 打桩
 ```java
@@ -17078,8 +17346,8 @@ StandaloneMockMvcBuilder继承了DefaultMockMvcBuilder，又提供了如下API�
 * setSingleView(View view)：设置单个视图，即视图解析时总是解析到这一个（仅适用于只有一个视图的情况）；
 * setLocaleResolver(LocaleResolver localeResolver)：设置Local解析器；
 * setFlashMapManager(FlashMapManager flashMapManager)：设置FlashMapManager，如存储重定向数据；
-* setUseSuffixPatternMatch(boolean useSuffixPatternMatch)：设置是否是后缀模式匹配，如“/user”是否匹配"/user.*"，默认真即匹配；
-* setUseTrailingSlashPatternMatch(boolean useTrailingSlashPatternMatch)：设置是否自动后缀路径模式匹配，如“/user”是否匹配“/user/”，默认真即匹配；
+* setUseSuffixPatternMatch(boolean useSuffixPatternMatch)：设置是否是后缀模式匹配，如“/user"是否匹配"/user.*"，默认真即匹配；
+* setUseTrailingSlashPatternMatch(boolean useTrailingSlashPatternMatch)：设置是否自动后缀路径模式匹配，如“/user"是否匹配“/user/"，默认真即匹配；
 * addPlaceHolderValue(String name, String value) ：添加request mapping中的占位符替代；
 
 
@@ -17138,8 +17406,8 @@ MockMvcRequestBuilders主要API：
 * MockHttpServletRequestBuilder flashAttr(String name, Object value)/MockHttpServletRequestBuilder flashAttrs(Map<String, Object> flashAttributes)：指定请求的flash信息，比如重定向后的属性信息；
 * MockHttpServletRequestBuilder session(MockHttpSession session) ：指定请求的Session；
 * MockHttpServletRequestBuilder principal(Principal principal) ：指定请求的Principal；
-* MockHttpServletRequestBuilder contextPath(String contextPath) ：指定请求的上下文路径，必须以“/”开头，且不能以“/”结尾；
-* MockHttpServletRequestBuilder pathInfo(String pathInfo) ：请求的路径信息，必须以“/”开头；
+* MockHttpServletRequestBuilder contextPath(String contextPath) ：指定请求的上下文路径，必须以“/"开头，且不能以“/"结尾；
+* MockHttpServletRequestBuilder pathInfo(String pathInfo) ：请求的路径信息，必须以“/"开头；
 * MockHttpServletRequestBuilder secure(boolean secure)：请求是否使用安全通道；
 * MockHttpServletRequestBuilder with(RequestPostProcessor postProcessor)：请求的后处理器，用于自定义一些请求处理的扩展点；
 
@@ -17292,3 +17560,30 @@ public class AddressServiceTests {
 <a href="#menu" >目录</a>
 
 
+## 10.7. SpringBoot实现单元测试时回滚事务
+<a href="#menu" >目录</a>
+
+SpringBoot跑个单元测试只需要在测试类加两个注解就行了。
+
+```java
+@RunWith(SpringRunner.class)
+@SpringBootTest
+```
+
+然而这样的单元测试默认是提交事务的，一般的场景下都是要对事务进行回滚的。要支持回滚，只需要增加一个@Transactional注解即可。
+
+```java
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@Transactional
+```
+单独的@Transactional是回滚事务，在添加@Transactional的情况下如果要提交事务，只需要增加@Rollback(false)：
+
+```java
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@Transactional
+@Rollback(false)
+```
+
+由于@Rollback可以用在方法上，所以一个测试类中，我们可以实现部分测试方法用@Rollback回滚事务，部分测试方法用@Rollback(false)来提交事务。
