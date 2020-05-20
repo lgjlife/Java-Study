@@ -1,6 +1,6 @@
-<mxfile host="localhost" modified="2020-05-20T08:23:59.561Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.45.1 Chrome/78.0.3904.130 Electron/7.2.4 Safari/537.36" etag="SZ_97UnepCNQJkLpAjSv" version="13.0.9">
+<mxfile host="localhost" modified="2020-05-20T11:21:30.862Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.45.1 Chrome/78.0.3904.130 Electron/7.2.4 Safari/537.36" etag="nG_WbzsJe-lLDvt3QGRc" version="13.0.9">
     <diagram id="6hGFLwfOUW9BJ-s0fimq" name="Page-1">
-        <mxGraphModel dx="678" dy="538" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#ffffff" math="0" shadow="0">
+        <mxGraphModel dx="819" dy="451" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#ffffff" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -60,6 +60,42 @@
                 </mxCell>
                 <mxCell id="28" value="简单工厂模式" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontStyle=1;fontSize=26;strokeColor=none;fontColor=#000000;" vertex="1" parent="1">
                     <mxGeometry x="210" y="90" width="170" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="35" value="Client" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=14;fontColor=#000000;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="234" y="440" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" value="" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=14;fontColor=#000000;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="162" y="573" width="270" height="163" as="geometry"/>
+                </mxCell>
+                <mxCell id="37" value="Facade" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=14;fontColor=#000000;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="234" y="539" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="38" value="模块2" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=14;fontColor=#000000;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="307" y="649" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="39" value="模块1" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=14;fontColor=#000000;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="183" y="649" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="41" value="" style="endArrow=open;endFill=1;endSize=12;html=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=14;fontColor=#000000;" edge="1" parent="1">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="287" y="500" as="sourcePoint"/>
+                        <mxPoint x="287" y="538" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="42" value="" style="endArrow=open;endFill=1;endSize=12;html=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=14;fontColor=#000000;" edge="1" parent="1">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="335" y="599.0000000000001" as="sourcePoint"/>
+                        <mxPoint x="335" y="637" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="43" value="" style="endArrow=open;endFill=1;endSize=12;html=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=14;fontColor=#000000;" edge="1" parent="1">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="254" y="605.0000000000001" as="sourcePoint"/>
+                        <mxPoint x="254" y="643" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="44" value="外观模式" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontStyle=1;fontSize=26;strokeColor=none;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="240" y="395" width="114" height="35" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
