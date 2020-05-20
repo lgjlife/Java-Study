@@ -61,8 +61,8 @@ RIP: 0x7f580d108640 Code size: 0x00000290
 [Disassembling for mach=&apos;amd64&apos;]
 [Entry Point]
 [Constants]
-  # {method} {0x00007f580c805000} &apos;hashCode&apos; &apos;()I&apos; in &apos;java/lang/String&apos;
-  #           [sp+0x40]  (sp of caller)
+   {method} {0x00007f580c805000} &apos;hashCode&apos; &apos;()I&apos; in &apos;java/lang/String&apos;
+             [sp+0x40]  (sp of caller)
   0x00007f580d108640: 448b5608            mov       r10d,dword ptr [rsi+8h]
   0x00007f580d108644: 49c1e203            shl       r10,3h
   0x00007f580d108648: 4c3bd0              cmp       r10,rax
@@ -273,10 +273,10 @@ Code:
 RIP: 0x7f580d108c20 Code size: 0x00000550
 [Entry Point]
 [Constants]
-  # {method} {0x00007f580c804618} &apos;equals&apos; &apos;(Ljava/lang/Object;)Z&apos; in &apos;java/lang/String&apos;
-  # this:     rsi:rsi   = &apos;java/lang/String&apos;
-  # parm0:    rdx:rdx   = &apos;java/lang/Object&apos;
-  #           [sp+0x40]  (sp of caller)
+   {method} {0x00007f580c804618} &apos;equals&apos; &apos;(Ljava/lang/Object;)Z&apos; in &apos;java/lang/String&apos;
+   this:     rsi:rsi   = &apos;java/lang/String&apos;
+   parm0:    rdx:rdx   = &apos;java/lang/Object&apos;
+             [sp+0x40]  (sp of caller)
   0x00007f580d108c20: 448b5608            mov       r10d,dword ptr [rsi+8h]
   0x00007f580d108c24: 49c1e203            shl       r10,3h
   0x00007f580d108c28: 4c3bd0              cmp       r10,rax
@@ -675,8 +675,8 @@ Code:
 RIP: 0x7f580d109600 Code size: 0x00000150
 [Entry Point]
 [Constants]
-  # {method} {0x00007f580c800480} &apos;&lt;init&gt;&apos; &apos;()V&apos; in &apos;java/lang/Object&apos;
-  #           [sp+0x40]  (sp of caller)
+   {method} {0x00007f580c800480} &apos;&lt;init&gt;&apos; &apos;()V&apos; in &apos;java/lang/Object&apos;
+             [sp+0x40]  (sp of caller)
   0x00007f580d109600: 448b5608            mov       r10d,dword ptr [rsi+8h]
   0x00007f580d109604: 49c1e203            shl       r10,3h
   0x00007f580d109608: 4c3bd0              cmp       r10,rax
@@ -780,10 +780,10 @@ Code:
 RIP: 0x7f580d109980 Code size: 0x00000268
 [Entry Point]
 [Constants]
-  # {method} {0x00007f580c803db0} &apos;charAt&apos; &apos;(I)C&apos; in &apos;java/lang/String&apos;
-  # this:     rsi:rsi   = &apos;java/lang/String&apos;
-  # parm0:    rdx       = int
-  #           [sp+0x40]  (sp of caller)
+   {method} {0x00007f580c803db0} &apos;charAt&apos; &apos;(I)C&apos; in &apos;java/lang/String&apos;
+   this:     rsi:rsi   = &apos;java/lang/String&apos;
+   parm0:    rdx       = int
+             [sp+0x40]  (sp of caller)
   0x00007f580d109980: 448b5608            mov       r10d,dword ptr [rsi+8h]
   0x00007f580d109984: 49c1e203            shl       r10,3h
   0x00007f580d109988: 4c3bd0              cmp       r10,rax
@@ -1010,10 +1010,10 @@ RIP: 0x7f580d109f00 Code size: 0x00000190
 [Entry Point]
 [Verified Entry Point]
 [Constants]
-  # {method} {0x00007f580c8f67d8} &apos;min&apos; &apos;(II)I&apos; in &apos;java/lang/Math&apos;
-  # parm0:    rsi       = int
-  # parm1:    rdx       = int
-  #           [sp+0x40]  (sp of caller)
+   {method} {0x00007f580c8f67d8} &apos;min&apos; &apos;(II)I&apos; in &apos;java/lang/Math&apos;
+   parm0:    rsi       = int
+   parm1:    rdx       = int
+             [sp+0x40]  (sp of caller)
   0x00007f580d109f00: 89842400c0feff      mov       dword ptr [rsp+0fffffffffffec000h],eax
   0x00007f580d109f07: 55                  push      rbp
   0x00007f580d109f08: 4883ec30            sub       rsp,30h
@@ -1150,13 +1150,13 @@ Decoding compiled method 0x00007f580d10a950:
 Code:
 RIP: 0x7f580d10aac0 Code size: 0x00000208
 [Entry Point]
-  # {method} {0x00007f580c819930} &apos;arraycopy&apos; &apos;(Ljava/lang/Object;ILjava/lang/Object;II)V&apos; in &apos;java/lang/System&apos;
-  # parm0:    rsi:rsi   = &apos;java/lang/Object&apos;
-  # parm1:    rdx       = int
-  # parm2:    rcx:rcx   = &apos;java/lang/Object&apos;
-  # parm3:    r8        = int
-  # parm4:    r9        = int
-  #           [sp+0x60]  (sp of caller)
+   {method} {0x00007f580c819930} &apos;arraycopy&apos; &apos;(Ljava/lang/Object;ILjava/lang/Object;II)V&apos; in &apos;java/lang/System&apos;
+   parm0:    rsi:rsi   = &apos;java/lang/Object&apos;
+   parm1:    rdx       = int
+   parm2:    rcx:rcx   = &apos;java/lang/Object&apos;
+   parm3:    r8        = int
+   parm4:    r9        = int
+             [sp+0x60]  (sp of caller)
   0x00007f580d10aac0: 448b5608            mov       r10d,dword ptr [rsi+8h]
   0x00007f580d10aac4: 49c1e203            shl       r10,3h
   0x00007f580d10aac8: 493bc2              cmp       rax,r10
@@ -1294,8 +1294,8 @@ RIP: 0x7f580d10ae80 Code size: 0x00000170
 
 [Entry Point]
 [Constants]
-  # {method} {0x00007f580c803c60} &apos;length&apos; &apos;()I&apos; in &apos;java/lang/String&apos;
-  #           [sp+0x40]  (sp of caller)
+   {method} {0x00007f580c803c60} &apos;length&apos; &apos;()I&apos; in &apos;java/lang/String&apos;
+             [sp+0x40]  (sp of caller)
   0x00007f580d10ae80: 448b5608            mov       r10d,dword ptr [rsi+8h]
   0x00007f580d10ae84: 49c1e203            shl       r10,3h
   0x00007f580d10ae88: 4c3bd0              cmp       r10,rax
@@ -1437,10 +1437,10 @@ Code:
 RIP: 0x7f580d10b260 Code size: 0x00000478
 [Entry Point]
 [Constants]
-  # {method} {0x00007f580c8754e0} &apos;ensureCapacityInternal&apos; &apos;(I)V&apos; in &apos;java/lang/AbstractStringBuilder&apos;
-  # this:     rsi:rsi   = &apos;java/lang/AbstractStringBuilder&apos;
-  # parm0:    rdx       = int
-  #           [sp+0xb0]  (sp of caller)
+   {method} {0x00007f580c8754e0} &apos;ensureCapacityInternal&apos; &apos;(I)V&apos; in &apos;java/lang/AbstractStringBuilder&apos;
+   this:     rsi:rsi   = &apos;java/lang/AbstractStringBuilder&apos;
+   parm0:    rdx       = int
+             [sp+0xb0]  (sp of caller)
   0x00007f580d10b260: 448b5608            mov       r10d,dword ptr [rsi+8h]
   0x00007f580d10b264: 49c1e203            shl       r10,3h
   0x00007f580d10b268: 4c3bd0              cmp       r10,rax
@@ -1805,11 +1805,11 @@ Code:
 RIP: 0x7f580d10bae0 Code size: 0x00000388
 [Entry Point]
 [Constants]
-  # {method} {0x00007f580c805180} &apos;indexOf&apos; &apos;(II)I&apos; in &apos;java/lang/String&apos;
-  # this:     rsi:rsi   = &apos;java/lang/String&apos;
-  # parm0:    rdx       = int
-  # parm1:    rcx       = int
-  #           [sp+0x40]  (sp of caller)
+   {method} {0x00007f580c805180} &apos;indexOf&apos; &apos;(II)I&apos; in &apos;java/lang/String&apos;
+   this:     rsi:rsi   = &apos;java/lang/String&apos;
+   parm0:    rdx       = int
+   parm1:    rcx       = int
+             [sp+0x40]  (sp of caller)
   0x00007f580d10bae0: 448b5608            mov       r10d,dword ptr [rsi+8h]
   0x00007f580d10bae4: 49c1e203            shl       r10,3h
   0x00007f580d10bae8: 4c3bd0              cmp       r10,rax
@@ -2103,10 +2103,10 @@ Code:
 RIP: 0x7f580d10c2a0 Code size: 0x00000758
 [Entry Point]
 [Constants]
-  # {method} {0x00007f580c875e38} &apos;append&apos; &apos;(Ljava/lang/String;)Ljava/lang/AbstractStringBuilder;&apos; in &apos;java/lang/AbstractStringBuilder&apos;
-  # this:     rsi:rsi   = &apos;java/lang/AbstractStringBuilder&apos;
-  # parm0:    rdx:rdx   = &apos;java/lang/String&apos;
-  #           [sp+0xf0]  (sp of caller)
+   {method} {0x00007f580c875e38} &apos;append&apos; &apos;(Ljava/lang/String;)Ljava/lang/AbstractStringBuilder;&apos; in &apos;java/lang/AbstractStringBuilder&apos;
+   this:     rsi:rsi   = &apos;java/lang/AbstractStringBuilder&apos;
+   parm0:    rdx:rdx   = &apos;java/lang/String&apos;
+             [sp+0xf0]  (sp of caller)
   0x00007f580d10c2a0: 448b5608            mov       r10d,dword ptr [rsi+8h]
   0x00007f580d10c2a4: 49c1e203            shl       r10,3h
   0x00007f580d10c2a8: 4c3bd0              cmp       r10,rax
@@ -2706,13 +2706,13 @@ Code:
 RIP: 0x7f580d10d840 Code size: 0x00000438
 [Entry Point]
 [Constants]
-  # {method} {0x00007f580c804208} &apos;getChars&apos; &apos;(II[CI)V&apos; in &apos;java/lang/String&apos;
-  # this:     rsi:rsi   = &apos;java/lang/String&apos;
-  # parm0:    rdx       = int
-  # parm1:    rcx       = int
-  # parm2:    r8:r8     = &apos;[C&apos;
-  # parm3:    r9        = int
-  #           [sp+0x70]  (sp of caller)
+   {method} {0x00007f580c804208} &apos;getChars&apos; &apos;(II[CI)V&apos; in &apos;java/lang/String&apos;
+   this:     rsi:rsi   = &apos;java/lang/String&apos;
+   parm0:    rdx       = int
+   parm1:    rcx       = int
+   parm2:    r8:r8     = &apos;[C&apos;
+   parm3:    r9        = int
+             [sp+0x70]  (sp of caller)
   0x00007f580d10d840: 448b5608            mov       r10d,dword ptr [rsi+8h]
   0x00007f580d10d844: 49c1e203            shl       r10,3h
   0x00007f580d10d848: 4c3bd0              cmp       r10,rax
@@ -3093,10 +3093,10 @@ RIP: 0x7f580d10e100 Code size: 0x00000190
 [Entry Point]
 [Verified Entry Point]
 [Constants]
-  # {method} {0x00007f580c8f6520} &apos;max&apos; &apos;(II)I&apos; in &apos;java/lang/Math&apos;
-  # parm0:    rsi       = int
-  # parm1:    rdx       = int
-  #           [sp+0x40]  (sp of caller)
+   {method} {0x00007f580c8f6520} &apos;max&apos; &apos;(II)I&apos; in &apos;java/lang/Math&apos;
+   parm0:    rsi       = int
+   parm1:    rdx       = int
+             [sp+0x40]  (sp of caller)
   0x00007f580d10e100: 89842400c0feff      mov       dword ptr [rsp+0fffffffffffec000h],eax
   0x00007f580d10e107: 55                  push      rbp
   0x00007f580d10e108: 4883ec30            sub       rsp,30h
@@ -3233,10 +3233,10 @@ Code:
 RIP: 0x7f580d10e4c0 Code size: 0x00000188
 [Entry Point]
 [Constants]
-  # {method} {0x00007f580c879248} &apos;append&apos; &apos;(Ljava/lang/String;)Ljava/lang/StringBuilder;&apos; in &apos;java/lang/StringBuilder&apos;
-  # this:     rsi:rsi   = &apos;java/lang/StringBuilder&apos;
-  # parm0:    rdx:rdx   = &apos;java/lang/String&apos;
-  #           [sp+0x40]  (sp of caller)
+   {method} {0x00007f580c879248} &apos;append&apos; &apos;(Ljava/lang/String;)Ljava/lang/StringBuilder;&apos; in &apos;java/lang/StringBuilder&apos;
+   this:     rsi:rsi   = &apos;java/lang/StringBuilder&apos;
+   parm0:    rdx:rdx   = &apos;java/lang/String&apos;
+             [sp+0x40]  (sp of caller)
   0x00007f580d10e4c0: 448b5608            mov       r10d,dword ptr [rsi+8h]
   0x00007f580d10e4c4: 49c1e203            shl       r10,3h
   0x00007f580d10e4c8: 4c3bd0              cmp       r10,rax
@@ -3370,8 +3370,8 @@ Code:
 RIP: 0x7f580d10ea60 Code size: 0x00000110
 [Entry Point]
 [Constants]
-  # {method} {0x00007f580c800480} &apos;&lt;init&gt;&apos; &apos;()V&apos; in &apos;java/lang/Object&apos;
-  #           [sp+0x40]  (sp of caller)
+   {method} {0x00007f580c800480} &apos;&lt;init&gt;&apos; &apos;()V&apos; in &apos;java/lang/Object&apos;
+             [sp+0x40]  (sp of caller)
   0x00007f580d10ea60: 448b5608            mov       r10d,dword ptr [rsi+8h]
   0x00007f580d10ea64: 49c1e203            shl       r10,3h
   0x00007f580d10ea68: 4c3bd0              cmp       r10,rax

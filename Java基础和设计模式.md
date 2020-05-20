@@ -1,260 +1,139 @@
-
-<span id="menu"></span>
-
-<!-- TOC -->
-
-- [1. Java与面向对象](#1-java与面向对象)
-    - [1.1. Java基础](#11-java基础)
-        - [1.1.1. 基础问题](#111-基础问题)
-        - [1.1.2. 数据类型](#112-数据类型)
-            - [1.1.2.1. 数值类型之间的转换](#1121-数值类型之间的转换)
-            - [1.1.2.2. 整型](#1122-整型)
-                - [1.1.2.2.1. 缓存对象实现](#11221-缓存对象实现)
-            - [1.1.2.3. char](#1123-char)
-            - [1.1.2.4. 数组](#1124-数组)
-            - [1.1.2.5. String](#1125-string)
-        - [1.1.3. 运算符](#113-运算符)
-        - [1.1.4. 流程控制](#114-流程控制)
-            - [1.1.4.1. switch－case](#1141-switchcase)
-            - [1.1.4.2. for-each](#1142-for-each)
-    - [1.2. 对象与类](#12-对象与类)
-        - [1.2.1. 面向过程和面向对象](#121-面向过程和面向对象)
-        - [1.2.2. 面向对象三大特性](#122-面向对象三大特性)
-        - [1.2.3. 权限修饰符](#123-权限修饰符)
-        - [1.2.4. 继承与Ｏbject类](#124-继承与ｏbject类)
-        - [1.2.5. 重载与重写](#125-重载与重写)
-        - [1.2.6. 动态绑定](#126-动态绑定)
-        - [1.2.7. 构造器](#127-构造器)
-        - [1.2.8. 初始化问题](#128-初始化问题)
-        - [1.2.9. 包的导入和声明](#129-包的导入和声明)
-        - [1.2.10. 常用关键字作用](#1210-常用关键字作用)
-        - [1.2.11. 文档注释](#1211-文档注释)
-        - [1.2.12. 接口和抽象类](#1212-接口和抽象类)
-            - [1.2.12.1. 区别](#12121-区别)
-            - [1.2.12.2. 接口与回调](#12122-接口与回调)
-            - [1.2.12.3. 建议](#12123-建议)
-        - [1.2.13. 内部类](#1213-内部类)
-        - [1.2.14. 枚举类](#1214-枚举类)
-    - [1.3. 泛型](#13-泛型)
-        - [1.3.1. 概述](#131-概述)
-    - [1.4. 集合](#14-集合)
-        - [1.4.1. Collections与Arrays 工具类](#141-collections与arrays-工具类)
-        - [1.4.2. Comparator 和 Comparable 比较](#142-comparator-和-comparable-比较)
-        - [1.4.3. 基本集合源码分析](#143-基本集合源码分析)
-            - [1.4.3.1. ArrayList](#1431-arraylist)
-            - [1.4.3.2. Linklist](#1432-linklist)
-            - [1.4.3.3. Vector](#1433-vector)
-            - [1.4.3.4. Stack](#1434-stack)
-            - [1.4.3.5. HashSet](#1435-hashset)
-            - [1.4.3.6. TreeSet](#1436-treeset)
-            - [1.4.3.7. HashMap](#1437-hashmap)
-            - [1.4.3.8. TreeMap](#1438-treemap)
-    - [1.5. 异常](#15-异常)
-    - [1.6. 注解](#16-注解)
-    - [1.7. IO](#17-io)
-        - [1.7.1. File](#171-file)
-            - [1.7.1.1. IO流](#1711-io流)
-            - [1.7.1.2. 序列化](#1712-序列化)
-        - [1.7.2. NIO](#172-nio)
-            - [1.7.2.1. 内存映射](#1721-内存映射)
-    - [1.8. Javac编译原理](#18-javac编译原理)
-        - [1.8.1. Javac编译器的基本结构](#181-javac编译器的基本结构)
-        - [1.8.2. Javac的工作原理分析](#182-javac的工作原理分析)
-    - [1.9. 类加载和反射](#19-类加载和反射)
-        - [1.9.1. Class文件结构](#191-class文件结构)
-            - [1.9.1.1. JVM指令集简介](#1911-jvm指令集简介)
-            - [1.9.1.2. class文件头的表示形式](#1912-class文件头的表示形式)
-            - [1.9.1.3. 常量池](#1913-常量池)
-            - [1.9.1.4. 类信息](#1914-类信息)
-            - [1.9.1.5. Fields和Method定义](#1915-fields和method定义)
-            - [1.9.1.6. 类属性描述](#1916-类属性描述)
-            - [1.9.1.7. Javap生成的class文件结构](#1917-javap生成的class文件结构)
-        - [1.9.2. 反射](#192-反射)
-    - [1.10. JDBC](#110-jdbc)
-    - [1.11. 函数式编程](#111-函数式编程)
-    - [1.12. Java 8 的新特性：](#112-java-8-的新特性)
-        - [1.12.1. Java 8 Lambda 表达式](#1121-java-8-lambda-表达式)
-        - [1.12.2. Java 8 函数式接口](#1122-java-8-函数式接口)
-        - [1.12.3. 默认方法](#1123-默认方法)
-        - [1.12.4. Optional 类](#1124-optional-类)
-        - [1.12.5. Stream](#1125-stream)
-        - [1.12.6. Java 8 日期时间 API](#1126-java-8-日期时间-api)
-        - [1.12.7. Java8 Base64](#1127-java8-base64)
-    - [1.13. Java-SPI机制](#113-java-spi机制)
-        - [1.13.1. Java--SPI机制](#1131-java--spi机制)
-        - [1.13.2. 使用场景](#1132-使用场景)
-            - [1.13.2.1. 实现方式](#11321-实现方式)
-        - [1.13.3. spi使用](#1133-spi使用)
-        - [1.13.4. 原理解析](#1134-原理解析)
-        - [1.13.5. 总结](#1135-总结)
-    - [1.14. 常用类源码说明](#114-常用类源码说明)
-    - [1.15. JDK版本变化](#115-jdk版本变化)
-    - [1.16. 设计模式](#116-设计模式)
-        - [1.16.1. 设计原则](#1161-设计原则)
-        - [1.16.2. UML图](#1162-uml图)
-        - [1.16.3. 单例模式](#1163-单例模式)
-            - [1.16.3.1. 基本概念](#11631-基本概念)
-            - [1.16.3.2. 实现](#11632-实现)
-        - [1.16.4. 工厂方法模式](#1164-工厂方法模式)
-        - [1.16.5. 抽象工厂模式](#1165-抽象工厂模式)
-        - [1.16.6. 模板方法模式](#1166-模板方法模式)
-        - [1.16.7. 建造者模式](#1167-建造者模式)
-        - [1.16.8. 代理模式](#1168-代理模式)
-        - [1.16.9. 原型模式](#1169-原型模式)
-        - [1.16.10. 中介者模式](#11610-中介者模式)
-        - [1.16.11. 命令模式](#11611-命令模式)
-        - [1.16.12. 责任链模式](#11612-责任链模式)
-        - [1.16.13. 装饰模式](#11613-装饰模式)
-        - [1.16.14. 策略模式](#11614-策略模式)
-        - [1.16.15. 适配器模式](#11615-适配器模式)
-        - [1.16.16. 迭代器模式](#11616-迭代器模式)
-        - [1.16.17. 组合模式](#11617-组合模式)
-        - [1.16.18. 观察者模式](#11618-观察者模式)
-        - [1.16.19. 门面模式](#11619-门面模式)
-        - [1.16.20. 备忘录模式](#11620-备忘录模式)
-        - [1.16.21. 访问者模式](#11621-访问者模式)
-        - [1.16.22. 状态模式](#11622-状态模式)
-        - [1.16.23. 解释器模式](#11623-解释器模式)
-        - [1.16.24. 享元模式](#11624-享元模式)
-        - [1.16.25. 桥梁模式](#11625-桥梁模式)
-
-<!-- /TOC -->
-
-
-
-
-"/algorithm.pdf"
-
-
+<h1>Java基础和设计模式</h1>
 
 <span id="menu"></span>
 <!-- TOC -->
 
-- [1. Java与面向对象](#1-java与面向对象)
-    - [1.1. Java基础](#11-java基础)
-        - [1.1.1. 基础问题](#111-基础问题)
-        - [1.1.2. 数据类型](#112-数据类型)
-            - [1.1.2.1. 数值类型之间的转换](#1121-数值类型之间的转换)
-            - [1.1.2.2. 整型](#1122-整型)
-                - [1.1.2.2.1. 缓存对象实现](#11221-缓存对象实现)
-            - [1.1.2.3. char](#1123-char)
-            - [1.1.2.4. 数组](#1124-数组)
-            - [1.1.2.5. String](#1125-string)
-        - [1.1.3. 运算符](#113-运算符)
-        - [1.1.4. 流程控制](#114-流程控制)
-            - [1.1.4.1. switch－case](#1141-switchcase)
-            - [1.1.4.2. for-each](#1142-for-each)
-    - [1.2. 对象与类](#12-对象与类)
-        - [1.2.1. 面向过程和面向对象](#121-面向过程和面向对象)
-        - [1.2.2. 面向对象三大特性](#122-面向对象三大特性)
-        - [1.2.3. 权限修饰符](#123-权限修饰符)
-        - [1.2.4. 继承与Ｏbject类](#124-继承与ｏbject类)
-        - [1.2.5. 重载与重写](#125-重载与重写)
-        - [1.2.6. 动态绑定](#126-动态绑定)
-        - [1.2.7. 构造器](#127-构造器)
-        - [1.2.8. 初始化问题](#128-初始化问题)
-        - [1.2.9. 包的导入和声明](#129-包的导入和声明)
-        - [1.2.10. 常用关键字作用](#1210-常用关键字作用)
-        - [1.2.11. 文档注释](#1211-文档注释)
-        - [1.2.12. 接口和抽象类](#1212-接口和抽象类)
-            - [1.2.12.1. 区别](#12121-区别)
-            - [1.2.12.2. 接口与回调](#12122-接口与回调)
-            - [1.2.12.3. 建议](#12123-建议)
-        - [1.2.13. 内部类](#1213-内部类)
-        - [1.2.14. 枚举类](#1214-枚举类)
-    - [1.3. 泛型](#13-泛型)
-        - [1.3.1. 概述](#131-概述)
-    - [1.4. 集合](#14-集合)
-        - [1.4.1. Collections与Arrays 工具类](#141-collections与arrays-工具类)
-        - [1.4.2. Comparator 和 Comparable 比较](#142-comparator-和-comparable-比较)
-        - [1.4.3. 基本集合源码分析](#143-基本集合源码分析)
-            - [1.4.3.1. ArrayList](#1431-arraylist)
-            - [1.4.3.2. Linklist](#1432-linklist)
-            - [1.4.3.3. Vector](#1433-vector)
-            - [1.4.3.4. Stack](#1434-stack)
-            - [1.4.3.5. HashSet](#1435-hashset)
-            - [1.4.3.6. TreeSet](#1436-treeset)
-            - [1.4.3.7. HashMap](#1437-hashmap)
-            - [1.4.3.8. TreeMap](#1438-treemap)
-    - [1.5. 异常](#15-异常)
-    - [1.6. 注解](#16-注解)
-    - [1.7. IO](#17-io)
-        - [1.7.1. File](#171-file)
-            - [1.7.1.1. IO流](#1711-io流)
-            - [1.7.1.2. 序列化](#1712-序列化)
-        - [1.7.2. NIO](#172-nio)
-            - [1.7.2.1. 内存映射](#1721-内存映射)
-    - [1.8. Javac编译原理](#18-javac编译原理)
-        - [1.8.1. Javac编译器的基本结构](#181-javac编译器的基本结构)
-        - [1.8.2. Javac的工作原理分析](#182-javac的工作原理分析)
-    - [1.9. 类加载和反射](#19-类加载和反射)
-        - [1.9.1. Class文件结构](#191-class文件结构)
-            - [1.9.1.1. JVM指令集简介](#1911-jvm指令集简介)
-            - [1.9.1.2. class文件头的表示形式](#1912-class文件头的表示形式)
-            - [1.9.1.3. 常量池](#1913-常量池)
-            - [1.9.1.4. 类信息](#1914-类信息)
-            - [1.9.1.5. Fields和Method定义](#1915-fields和method定义)
-            - [1.9.1.6. 类属性描述](#1916-类属性描述)
-            - [1.9.1.7. Javap生成的class文件结构](#1917-javap生成的class文件结构)
-        - [1.9.2. 反射](#192-反射)
-    - [1.10. JDBC](#110-jdbc)
-    - [1.11. 函数式编程](#111-函数式编程)
-    - [1.12. Java 8 的新特性：](#112-java-8-的新特性)
-        - [1.12.1. Java 8 Lambda 表达式](#1121-java-8-lambda-表达式)
-        - [1.12.2. Java 8 函数式接口](#1122-java-8-函数式接口)
-        - [1.12.3. 默认方法](#1123-默认方法)
-        - [1.12.4. Optional 类](#1124-optional-类)
-        - [1.12.5. Stream](#1125-stream)
-        - [1.12.6. Java 8 日期时间 API](#1126-java-8-日期时间-api)
-        - [1.12.7. Java8 Base64](#1127-java8-base64)
-    - [1.13. Java-SPI机制](#113-java-spi机制)
-        - [1.13.1. Java--SPI机制](#1131-java--spi机制)
-        - [1.13.2. 使用场景](#1132-使用场景)
-            - [1.13.2.1. 实现方式](#11321-实现方式)
-        - [1.13.3. spi使用](#1133-spi使用)
-        - [1.13.4. 原理解析](#1134-原理解析)
-        - [1.13.5. 总结](#1135-总结)
-    - [1.14. 常用类源码说明](#114-常用类源码说明)
-    - [1.15. JDK版本变化](#115-jdk版本变化)
-    - [1.16. 设计模式](#116-设计模式)
-        - [1.16.1. 设计原则](#1161-设计原则)
-        - [1.16.2. UML图](#1162-uml图)
-        - [1.16.3. 单例模式](#1163-单例模式)
-            - [1.16.3.1. 基本概念](#11631-基本概念)
-            - [1.16.3.2. 实现](#11632-实现)
-        - [1.16.4. 工厂方法模式](#1164-工厂方法模式)
-        - [1.16.5. 抽象工厂模式](#1165-抽象工厂模式)
-        - [1.16.6. 模板方法模式](#1166-模板方法模式)
-        - [1.16.7. 建造者模式](#1167-建造者模式)
-        - [1.16.8. 代理模式](#1168-代理模式)
-        - [1.16.9. 原型模式](#1169-原型模式)
-        - [1.16.10. 中介者模式](#11610-中介者模式)
-        - [1.16.11. 命令模式](#11611-命令模式)
-        - [1.16.12. 责任链模式](#11612-责任链模式)
-        - [1.16.13. 装饰模式](#11613-装饰模式)
-        - [1.16.14. 策略模式](#11614-策略模式)
-        - [1.16.15. 适配器模式](#11615-适配器模式)
-        - [1.16.16. 迭代器模式](#11616-迭代器模式)
-        - [1.16.17. 组合模式](#11617-组合模式)
-        - [1.16.18. 观察者模式](#11618-观察者模式)
-        - [1.16.19. 门面模式](#11619-门面模式)
-        - [1.16.20. 备忘录模式](#11620-备忘录模式)
-        - [1.16.21. 访问者模式](#11621-访问者模式)
-        - [1.16.22. 状态模式](#11622-状态模式)
-        - [1.16.23. 解释器模式](#11623-解释器模式)
-        - [1.16.24. 享元模式](#11624-享元模式)
-        - [1.16.25. 桥梁模式](#11625-桥梁模式)
+- [1. Java基础](#1-java基础)
+    - [1.1. 基础问题](#11-基础问题)
+    - [1.2. 关键字](#12-关键字)
+    - [1.3. 数据类型](#13-数据类型)
+        - [1.3.1. 数值类型之间的转换](#131-数值类型之间的转换)
+        - [1.3.2. 整型](#132-整型)
+            - [1.3.2.1. 缓存对象实现](#1321-缓存对象实现)
+        - [1.3.3. char](#133-char)
+        - [1.3.4. 数组](#134-数组)
+        - [1.3.5. String](#135-string)
+    - [1.4. 运算符](#14-运算符)
+    - [1.5. 流程控制](#15-流程控制)
+        - [1.5.1. switch－case](#151-switchcase)
+        - [1.5.2. for-each](#152-for-each)
+- [2. 对象与类](#2-对象与类)
+    - [2.1. 面向过程和面向对象](#21-面向过程和面向对象)
+    - [2.2. 面向对象三大特性](#22-面向对象三大特性)
+    - [2.3. 权限修饰符](#23-权限修饰符)
+    - [2.4. 继承与Ｏbject类](#24-继承与ｏbject类)
+    - [2.5. 重载与重写](#25-重载与重写)
+    - [2.6. 动态绑定](#26-动态绑定)
+    - [2.7. 构造器](#27-构造器)
+    - [2.8. 初始化问题](#28-初始化问题)
+    - [2.9. 包的导入和声明](#29-包的导入和声明)
+    - [2.10. 常用关键字作用](#210-常用关键字作用)
+    - [2.11. 文档注释](#211-文档注释)
+    - [2.12. 接口和抽象类](#212-接口和抽象类)
+        - [2.12.1. 区别](#2121-区别)
+        - [2.12.2. 接口与回调](#2122-接口与回调)
+        - [2.12.3. 建议](#2123-建议)
+    - [2.13. 内部类](#213-内部类)
+    - [2.14. 枚举类](#214-枚举类)
+- [3. 泛型](#3-泛型)
+    - [3.1. 概述](#31-概述)
+- [4. 集合](#4-集合)
+    - [4.1. Collections与Arrays 工具类](#41-collections与arrays-工具类)
+    - [4.2. Comparator 和 Comparable 比较](#42-comparator-和-comparable-比较)
+    - [4.3. 迭代器](#43-迭代器)
+    - [4.4. 基本集合源码分析](#44-基本集合源码分析)
+        - [4.4.1. ArrayList](#441-arraylist)
+        - [4.4.2. Linklist](#442-linklist)
+        - [4.4.3. Vector](#443-vector)
+        - [4.4.4. Stack](#444-stack)
+        - [4.4.5. HashSet](#445-hashset)
+        - [4.4.6. TreeSet](#446-treeset)
+        - [4.4.7. HashMap](#447-hashmap)
+        - [4.4.8. TreeMap](#448-treemap)
+- [5. 异常](#5-异常)
+- [6. 注解](#6-注解)
+- [7. IO](#7-io)
+    - [7.1. File](#71-file)
+        - [7.1.1. IO流](#711-io流)
+        - [7.1.2. 序列化](#712-序列化)
+    - [7.2. NIO](#72-nio)
+        - [7.2.1. 内存映射](#721-内存映射)
+- [8. Javac编译原理](#8-javac编译原理)
+    - [8.1. Javac编译器的基本结构](#81-javac编译器的基本结构)
+    - [8.2. Javac的工作原理分析](#82-javac的工作原理分析)
+- [9. 类加载和反射](#9-类加载和反射)
+    - [9.1. Class文件结构](#91-class文件结构)
+        - [9.1.1. JVM指令集简介](#911-jvm指令集简介)
+        - [9.1.2. class文件头的表示形式](#912-class文件头的表示形式)
+        - [9.1.3. 常量池](#913-常量池)
+        - [9.1.4. 类信息](#914-类信息)
+        - [9.1.5. Fields和Method定义](#915-fields和method定义)
+        - [9.1.6. 类属性描述](#916-类属性描述)
+        - [9.1.7. Javap生成的class文件结构](#917-javap生成的class文件结构)
+    - [9.2. 反射](#92-反射)
+- [10. JDBC](#10-jdbc)
+- [11. 函数式编程](#11-函数式编程)
+- [12. Java 8 的新特性：](#12-java-8-的新特性)
+    - [12.1. Java 8 Lambda 表达式](#121-java-8-lambda-表达式)
+    - [12.2. Java 8 函数式接口](#122-java-8-函数式接口)
+    - [12.3. 默认方法](#123-默认方法)
+    - [12.4. Optional 类](#124-optional-类)
+    - [12.5. Stream](#125-stream)
+    - [12.6. Java 8 日期时间 API](#126-java-8-日期时间-api)
+    - [12.7. Java8 Base64](#127-java8-base64)
+- [13. Java-SPI机制](#13-java-spi机制)
+    - [13.1. Java--SPI机制](#131-java--spi机制)
+    - [13.2. 使用场景](#132-使用场景)
+        - [13.2.1. 实现方式](#1321-实现方式)
+    - [13.3. spi使用](#133-spi使用)
+    - [13.4. 原理解析](#134-原理解析)
+    - [13.5. 总结](#135-总结)
+- [14. 常用类源码说明](#14-常用类源码说明)
+- [15. JDK版本变化](#15-jdk版本变化)
+- [16. 设计模式](#16-设计模式)
+    - [16.1. 概述](#161-概述)
+    - [16.2. 设计原则](#162-设计原则)
+    - [16.3. UML图](#163-uml图)
+        - [16.3.1. 用例图](#1631-用例图)
+        - [16.3.2. 类图](#1632-类图)
+        - [16.3.3. 组件图](#1633-组件图)
+        - [16.3.4. 部署图](#1634-部署图)
+        - [16.3.5. 顺序图](#1635-顺序图)
+        - [16.3.6. 活动图](#1636-活动图)
+        - [16.3.7. 状态机图](#1637-状态机图)
+    - [16.4. 单例模式](#164-单例模式)
+        - [16.4.1. 基本概念](#1641-基本概念)
+        - [16.4.2. 实现](#1642-实现)
+    - [16.5. 工厂方法模式](#165-工厂方法模式)
+    - [16.6. 抽象工厂模式](#166-抽象工厂模式)
+    - [16.7. 模板方法模式](#167-模板方法模式)
+    - [16.8. 建造者模式](#168-建造者模式)
+    - [16.9. 代理模式](#169-代理模式)
+    - [16.10. 原型模式](#1610-原型模式)
+    - [16.11. 中介者模式](#1611-中介者模式)
+    - [16.12. 命令模式](#1612-命令模式)
+    - [16.13. 责任链模式](#1613-责任链模式)
+    - [16.14. 装饰模式](#1614-装饰模式)
+    - [16.15. 策略模式](#1615-策略模式)
+    - [16.16. 适配器模式](#1616-适配器模式)
+    - [16.17. 迭代器模式](#1617-迭代器模式)
+    - [16.18. 组合模式](#1618-组合模式)
+    - [16.19. 观察者模式](#1619-观察者模式)
+    - [16.20. 门面模式](#1620-门面模式)
+    - [16.21. 备忘录模式](#1621-备忘录模式)
+    - [16.22. 访问者模式](#1622-访问者模式)
+    - [16.23. 状态模式](#1623-状态模式)
+    - [16.24. 解释器模式](#1624-解释器模式)
+    - [16.25. 享元模式](#1625-享元模式)
+    - [16.26. 桥梁模式](#1626-桥梁模式)
 
 <!-- /TOC -->
 
 
+# 1. Java基础
+<a href="#menu"  >目录</a>
 
-# 1. Java与面向对象
-
-## 1.1. Java基础
-<a href="#menu" style="float:right">目录</a>
-
-### 1.1.1. 基础问题
+## 1.1. 基础问题
 
 **JDK、JRE、JVM三者间的联系与区别**
 * JDK(Java SE Development Kit)，Java标准开发包，它提供了编译、运行Java程序所需的各种工具和资源，包括Java编译器、Java运行时环境，以及常用的Java类库等。
@@ -362,10 +241,26 @@ int的长度则依赖于编译器。
 
 Java的垃圾回收都是虚拟机在后台自动进行的．虚拟机会负责回收不再使用的内存，这种机制称为垃圾回收(Garbage Collection,GC).虚拟机一般在cpu空闲的时候或者内存不足时回收．程序员无法精确控制垃圾回收的时间和顺序．
 
+## 1.2. 关键字
+<a href="#menu"  >目录</a>
 
+java关键字共53个（其中包含两个保留字const，goto）
 
-### 1.1.2. 数据类型
-<a href="#menu" style="float:right">目录</a>
+||||||||
+|---|---|---|---|---|---|---|
+|abstract|assert|boolean|break|byte|case|catch|
+|char|class|const|continue|default|do|double|
+|else|enum|extends|final|finally|float|for|
+|goto|if|implements|import|instanceof|int|interface|
+|long|native|new|package|private|protected|public|
+|return|strictfp|short|static|super|switch|synchronized|
+|this|throw|throws|transient|try|void|volatile|
+|while|true|false|null||||
+			
+strictfp:用来声明FP_strict（单精度或双精度浮点数）表达式遵循IEEE 754算术规范 [1] 
+			
+## 1.3. 数据类型
+<a href="#menu"  >目录</a>
 
 
 |基本数据类型|包装器类型|长度（字节）|范围|类型标识|
@@ -378,14 +273,59 @@ Java的垃圾回收都是虚拟机在后台自动进行的．虚拟机会负责�
 |float|Float|4||3.45f|
 |double|Double|8||
 |boolean| Boolean|true/false|
+
+**注意点**
+* Long类型数值后面后面需要添加l或者Ｌ，123Ｌ
+* char类型可以是单引号字符（＇a＇），转义字符(\r)，数值(12)，Unicode（\u0012）
+
+
+**浮点数**
+* 浮点数表示方式    
+    * 常规表示：1.23
+    * 科学计数法表示: 5.12e2(512*100),5.12E2
+    * 如果是float类型，需要在数值后添加f
+
+Java还提供了三个特殊的浮点数值．Float或者Ｄouble类里面定义．所有正无穷大相等(6.0/0.0 == 5.0/0.0)，负无穷大相等，NaN不互相等
+```java
+//正无穷大
+public static final float POSITIVE_INFINITY = 1.0f / 0.0f;
+//负无穷大
+public static final float NEGATIVE_INFINITY = -1.0f / 0.0f;
+//非数值
+public static final float NaN = 0.0f / 0.0f;
+```
+
 包装类主要用于集合数据，判断非空的场景。局部变量一般使用基本类型。对象属性一般使用包装器类型。
-装箱就是基本类型转换为包装类型。valueOf方法。
-拆箱就是包装类型转换为基本类型。intValue方法。
+
 
 Java中的变量在使用前必须进行初始化，类属性由于在类加载时已经进行初始化，因此不需要进行显示初始化，方法内的局部变量必须进行显示初始化
 
+**装箱拆箱实现**
 
-#### 1.1.2.1. 数值类型之间的转换
+装箱就是基本类型转换为包装类型。valueOf方法。
+拆箱就是包装类型转换为基本类型。intValue方法。
+
+```java
+public static void main(String args[]){
+
+    Integer data = 123;
+    int num = data;
+}
+```
+使用javap -c　className 命令查看类文件反编译结果,可以看到使用了valueOf和intValue来实现了装箱和拆箱．
+```
+public static void main(java.lang.String[]);
+    Code:
+       0: bipush        123
+       2: invokestatic  #2                  // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+       5: astore_1
+       6: aload_1
+       7: invokevirtual #3                  // Method java/lang/Integer.intValue:()I
+      10: istore_2
+      11: return
+
+```
+### 1.3.1. 数值类型之间的转换
 
 小一级的类型可以自动转换成大一级的类型，反过来需要强制转换
 
@@ -399,12 +339,12 @@ Java中的变量在使用前必须进行初始化，类属性由于在类加载�
 * 否则两个操作数都会转化为int再进行操作
 　
 
-#### 1.1.2.2. 整型
+### 1.3.2. 整型
 
 如果long无法表示需要的范围，可以使用BigInteger类来实现大数的操作．
 
-##### 1.1.2.2.1. 缓存对象实现
-<a href="#menu" style="float:right">目录</a>
+#### 1.3.2.1. 缓存对象实现
+<a href="#menu"  >目录</a>
 
 
 整形包括byte,short,int,long.每个包装类都会缓存　［-128,127］范围的数据．
@@ -487,7 +427,7 @@ b1==b2?  false
 c1==c2?  false
 ```
 
-#### 1.1.2.3. char
+### 1.3.3. char
 
 char 用来表示单个字符
 
@@ -500,28 +440,57 @@ char data = 64;
 char data = \u1234;
 ```
 
-#### 1.1.2.4. 数组
-
-
+### 1.3.4. 数组
 
 初始化
 ```java
 /创建数组，需要定义长度
-int arr = new int[5];
+int[] arr = new int[5];
 //创建数组，顺便初始化，长度为元素的数量
-int arr = new int[]{1,2,3};
+int[] arr = new int[]{1,2,3};
 //简化方式
-int arr = {1,2,4};
+int[] arr = {1,2,4};
+//指定大小
+int[2] arr = {1},//其他未初始化的初始值为0
 
 //二维数组
 int[][] arr = new int[1][2];
 int[][] arr1 = new int[][]{{1,2},{1,2}};
 int[][] arr2 =  {{1,2},{1,2}};
-```
-数组工具类java.util.Arrays。提供排序,复制，比较，初始化等功能。
 
-#### 1.1.2.5. String 
-<a href="#menu" style="float:right">目录</a>
+//for-each循环访问数组
+for(int data:arr){}
+for(int[] datas:arr){
+    for(int data:datas){}
+}
+
+```
+int[] arr　或者int　arr[] 都可以
+
+数组工具类java.util.Arrays。提供排序,复制，比较，初始化等功能。其中排序方法binarySearch采用二分法查询
+```java
+private static int binarySearch0(int[] a, int fromIndex, int toIndex,
+                                     int key) {
+    int low = fromIndex;
+    int high = toIndex - 1;
+
+    while (low <= high) {
+        int mid = (low + high) >>> 1;
+        int midVal = a[mid];
+
+        if (midVal < key)
+            low = mid + 1;
+        else if (midVal > key)
+            high = mid - 1;
+        else
+            return mid; // key found
+    }
+    return -(low + 1);  // key not found.
+}
+```
+
+### 1.3.5. String 
+<a href="#menu"  >目录</a>
 
 String 内部使用数组来存储字符串的值
 ```java
@@ -632,16 +601,16 @@ public boolean equals(Object anObject) {
 }
 ```
 
-### 1.1.3. 运算符
+## 1.4. 运算符
 
 Java中使用<<,>>>,>>,来实现位移，>>>将用０填充高位．>>使用符号位填充高位 
 
-### 1.1.4. 流程控制
+## 1.5. 流程控制
 
-#### 1.1.4.1. switch－case
+### 1.5.1. switch－case
 case 的标签可以是char,byte,short,int以及它们的包装器．还有枚举常量，字符串字面量
 
-#### 1.1.4.2. for-each 
+### 1.5.2. for-each 
 
 对于集合可以使用for-each来进行遍历
 ```java
@@ -663,10 +632,10 @@ for(Map.Entry entry:maps.entrySet()){
 
 ```
 
-## 1.2. 对象与类
-<a href="#menu" style="float:right">目录</a>
+# 2. 对象与类
+<a href="#menu"  >目录</a>
 
-### 1.2.1. 面向过程和面向对象
+## 2.1. 面向过程和面向对象
 
 **面向过程**
 
@@ -691,7 +660,7 @@ for(Map.Entry entry:maps.entrySet()){
 
 **类与对象**
 
-类是创建对象的模板，对象是类的实例．
+在Java语言中，除了8个基本数据类型值之外，一切都是对象．具有相同或者相似性质的一组对象的抽象就是类．类是对一类事物的描述，是抽象，概念上的定义．对象是类的实例．也就是对象的抽象是类，类的具体化就是对象．
 
 对象有三个特性:
 * 对象的行为:对象具备的方法或者操作
@@ -707,8 +676,8 @@ for(Map.Entry entry:maps.entrySet()){
 
 
 
-### 1.2.2. 面向对象三大特性
-<a href="#menu" style="float:right">目录</a>
+## 2.2. 面向对象三大特性
+<a href="#menu"  >目录</a>
 
 * 继承
     * 继承是类与类的一种关系，是一种“is a”的关系。比如“狗”继承“动物”，这里动物类是狗类的父类或者基类，狗类是动物类的子类或者派生类
@@ -764,15 +733,15 @@ public static void main(String args[]){
     }
 ```
 
-### 1.2.3. 权限修饰符
-<a href="#menu" style="float:right">目录</a>
+## 2.3. 权限修饰符
+<a href="#menu"  >目录</a>
 
 * private 本类可见
 * default 同一个包/子包可见
 * protect 子类可见
 * public 所有可见
 
-### 1.2.4. 继承与Ｏbject类
+## 2.4. 继承与Ｏbject类
 
 Java的继承使用extends关键字，每个类只能继承一个类，不能像c++一样多继承．但可以有多级继承．子类通过继承可以获得父类非私有的属性和方法．从而实现代码复用．Java中每一个类都默认继承Ｏbject类．
 
@@ -859,7 +828,7 @@ instanceof是Java中的二元运算符，左边是对象，右边是类；当对
 
 类的实例包含本身的实例，以及所有直接或间接子类的实例.instanceof左边显式声明的类型与右边操作元必须是同种类或存在继承关系(或者接口的实现)，也就是说需要位于同一个继承树，否则会编译错误
 
-### 1.2.5. 重载与重写
+## 2.5. 重载与重写
 
 
 **重载overload和重写overwride**
@@ -875,7 +844,7 @@ instanceof是Java中的二元运算符，左边是对象，右边是类；当对
 * 行参列表不同（类型，顺序，个数），一般应当减少这种情况出现func(List)和func(ArrayList).会造成困扰。
 * 与返回值，权限，异常定义无关
 
-### 1.2.6. 动态绑定
+## 2.6. 动态绑定
 
 假设调用x.f(param)
 * 编译器查看对象的声明类型和方法名(因为存在方法名相同，但是参数列表不一致的方法)，获得所有可能的方法列表
@@ -907,7 +876,7 @@ test.f1(new Child());
 
 在早期的Java中，为了避免动态绑定带来的系统开销，会使用final来实现静态绑定．如果一个方法很短，且没有被覆盖，编译器会对它进行优化处理，比如e.getName() 优化成e.name.也就是內联(inlining)．但是现在虚拟机的即时编译器比原来的静态编译器优秀很多，会根据运行情况进行动态优化．这个编译器可以准确的知道类之间的继承关系．如果某个方法很简短并被频繁的调用且没有被覆盖重写，就会被这个即时编译器进行内联处理．
 
-### 1.2.7. 构造器
+## 2.7. 构造器
 
 * 构造器特点
     * 构造器必须与类同名
@@ -925,7 +894,7 @@ test.f1(new Child());
 
 
 
-### 1.2.8. 初始化问题
+## 2.8. 初始化问题
 
 类中的{}块是普通初始化块，普通初始化块会在创建对象时调用．static {}是静态初始化块．静态初始化块会在类加载时调用．
 
@@ -974,7 +943,7 @@ class Sub extends Base{
 子类构造器
 ```
 
-### 1.2.9. 包的导入和声明
+## 2.9. 包的导入和声明
 
 **包的导入**
 
@@ -1007,7 +976,7 @@ package aa.bb.cc;
 
 编译器在编译源文件不会检查包名和目录是否对应，如果它不依赖其他包，也会编译成功，但是执行时会出现错误，因为找不到该类．因此包名和目录必须一致．
 
-### 1.2.10. 常用关键字作用
+## 2.10. 常用关键字作用
 
 **this**
 
@@ -1029,7 +998,7 @@ super指代父类(继承的类)
 * 和improt配合引入静态方法或者静态公有属性
 * 修饰main方法,标明这是启动方法．
 
-### 1.2.11. 文档注释
+## 2.11. 文档注释
 
 JDK包含一个很有用的工具:javadoc，可以由源文件生成一个HTML文档．其将会抽取以下信息:
 * 包
@@ -1108,9 +1077,9 @@ public int a;
 jacadoc -d saveDri 　packageName...
 ```
 
-### 1.2.12. 接口和抽象类
+## 2.12. 接口和抽象类
 
-#### 1.2.12.1. 区别
+### 2.12.1. 区别
 **接口**
 * interface定义，implements 实现
 * 接口方法默认为public abstract 
@@ -1120,6 +1089,9 @@ jacadoc -d saveDri 　packageName...
 * 接口可以实现接口
 * 一个类可以实现多个接口，但是只能继承一个类
 
+通常接口用来定义实现类的外观,也就是实现类的行为定义,用来约束实现类的行为.通过接口进行调用,可以隐藏其具体的实现.也就是外部调用和内部实现是被接口隔离开的.由于调用和实现隔离,那么只要接口不变,内部实现的变化就不会影响到外部应用,从而使系统更加灵活.增加了扩展性和可维护性.
+
+1.8版本中,接口中增加了default方法.使用场景是当产品已经发布,想要扩展接口的功能时,如果直接在接口中增加抽象方法,那么它的所有实现类必须要实现这个方法.如果实现类较多.就会很麻烦.有了default方法,只要在接口中添加这个方法.所有实现类没必要实现这个方法.在需要实现该方法的实现类中添加即可.
 
 **抽象类**
 * abstract定义，extends 继承
@@ -1129,10 +1101,13 @@ jacadoc -d saveDri 　packageName...
 * 抽象类不能被实例化
 
 **如何选择:**
-一般接口定义行为，抽象类实现多个接口，并定义子类的公共实现方法。
-尽量不要有多个层级的实现类，减少代码修改的难度，一般使用装饰器模式解决类功能扩展问题。
+* 尽量选用接口
+* 在既要定义子类的行为,又要为子类提供公共的功能时使用抽象类
+* 一般接口定义行为，抽象类实现多个接口，并定义子类的公共实现方法。
+* 尽量不要有多个层级的实现类，减少代码修改的难度，一般使用装饰器模式解决类功能扩展问题。
 
-#### 1.2.12.2. 接口与回调
+
+### 2.12.2. 接口与回调
 
 ```java
 
@@ -1155,7 +1130,7 @@ xxx.func(new Listen{
 ```
 
 
-#### 1.2.12.3. 建议
+### 2.12.3. 建议
 * 考虑使用静态工厂方法代替构造器
     * 如果类的实例化参数较复杂，应当通过工厂方法向用户提供简单明了的实例化方法
 * 参数较多时使用构建器
@@ -1184,19 +1159,44 @@ xxx.func(new Listen{
     * 在应用程序的执行期间，只要对象的equals方法的比较操作所用到的信息没有被修改，那么多次调用hashCode获得的整数是一致的
     
 
-### 1.2.13. 内部类
+## 2.13. 内部类
+
 内部类分为普通内部类，静态内部类，局部内部类，匿名内部类。
 
 **普通内部类和静态内部类**
 ｀
-* 普通内部类可以直接访问外部类属性，即使是私有的属性
-* 外部类使用普通内部类属性必须先常见内部类对象
+* 内部类可以直接访问外部类属性，即使是私有的属性
+* 外部类使用普通内部类属性必须先创建内部类对象
 * 访问权限如之前所定义的
 * 创建普通内部类对象必须先创建外部类对象，内部类对象是依存外部类对象存在的
 * 创建静态内部类对象不需要创建外部类对象
 * 静态内部类符合static规范，只能调用外部类static元素
 * 外部类可以访问静态内部类的静态成员，使用类名来访问。
 
+```java
+public class SimpleThread {
+
+    public static void main(String args[]){
+
+        //外部的类创建　内部类对象
+        Out.In in = new Out().new In();
+        //创建静态内部类对象
+        Out.StaticIn staticIn = new Out.StaticIn();
+    }
+}
+
+class Out{
+    //普通内部类
+    class In{    }
+    //静态内部类
+    static class StaticIn{   }
+    void test(){
+        In in = new In();
+        StaticIn staticIn = new StaticIn();
+    }
+}
+
+```
 ```java
 public class Outer {
 
@@ -1261,7 +1261,9 @@ func(new Handle{
 
 });
 ```
-### 1.2.14. 枚举类
+
+
+## 2.14. 枚举类
 ```java
 
 public enum  Size{SMALL,MEDIUM,LARGE}
@@ -1289,10 +1291,10 @@ public enum BlogReturnCode{
     }
 }
 ```
-## 1.3. 泛型
-<a href="#menu" style="float:right">目录</a>
+# 3. 泛型
+<a href="#menu"  >目录</a>
 
-### 1.3.1. 概述
+## 3.1. 概述
 泛型在java中有很重要的地位，在面向对象编程及各种设计模式中有非常广泛的应用。
 
 **什么是泛型？为什么要使用泛型？**
@@ -1796,13 +1798,13 @@ Integer i = (Integer) lsa[1].get(0); // OK
 ```
 
 
-## 1.4. 集合
-<a href="#menu" style="float:right">目录</a>
+# 4. 集合
+<a href="#menu"  >目录</a>
 
-![](http://images2015.cnblogs.com/blog/745114/201603/745114-20160314011243365-185967687.png)
+![集合继承体系](pic/java/集合继承体系.png)
 
-### 1.4.1. Collections与Arrays 工具类
-<a href="#menu" style="float:right">目录</a>
+## 4.1. Collections与Arrays 工具类
+<a href="#menu"  >目录</a>
 
 **Collections**
 
@@ -1981,8 +1983,8 @@ public static void fill(int[] a, int fromIndex, int toIndex, int val) {
 * toString 和 deepToString
     * toString 用来打印一维数组的元素，而 deepToString 用来打印多层次嵌套的数组元素。
 
-### 1.4.2. Comparator 和 Comparable 比较
-<a href="#menu" style="float:right">目录</a>
+## 4.2. Comparator 和 Comparable 比较
+<a href="#menu"  >目录</a>
 
 **Comparable 简介**
 Comparable 是排序接口。
@@ -2032,31 +2034,148 @@ public interface Comparator<T> {
     * 而Comparator是比较器；我们若需要控制某个类的次序，可以建立一个“该类的比较器”来进行排序。
     * 我们不难发现：Comparable相当于“内部比较器”，而Comparator相当于“外部比较器”。
 
-### 1.4.3. 基本集合源码分析
-<a href="#menu" style="float:right">目录</a>
+## 4.3. 迭代器
+<a href="#menu"  >目录</a>
 
-#### 1.4.3.1. ArrayList
+Java中还提供了一个Iterable接口，Iterable接口实现后的功能是‘返回’一个迭代器，我们常用的实现了该接口的子接口有:Collection<E>、List<E>、Set<E>等。该接口的iterator()方法返回一个标准的Iterator实现。实现Iterable接口允许对象成为Foreach语句的目标。就可以通过foreach语句来遍历你的底层序列。迭代器迭代完成，如果想重新迭代，必须重新获取新的迭代器．
 
-#### 1.4.3.2. Linklist
+Iterable接口包含一个能产生Iterator对象的方法，并且Iterable被foreach用来在序列中移动。因此如果创建了实现Iterable接口的类，都可以将它用于foreach中。
 
-#### 1.4.3.3. Vector
+```java
+public interface Iterator<E> {
+    boolean hasNext();
+    E next();
+    default void remove() {
+        throw new UnsupportedOperationException("remove");
+    }
 
-#### 1.4.3.4. Stack
+    default void forEachRemaining(Consumer<? super E> action) {
+        Objects.requireNonNull(action);
+        while (hasNext())
+            action.accept(next());
+    }
+}
+```
 
-#### 1.4.3.5. HashSet
+迭代器使用
+```java
+ //使用迭代器遍历ArrayList集合
+Iterator<String> listIt = list.iterator();
+while(listIt.hasNext()){
+ System.out.println(listIt.next());
+}
+//使用迭代器遍历Set集合
+Iterator<String> setIt = set.iterator();
+ while(setIt.hasNext()){
+   System.out.println(listIt.next());
+}
+//for-each,实际上也是转换成迭代器方式
+for (String string : list) {
+    System.out.println(string);
+}
 
-#### 1.4.3.6. TreeSet
+```
 
-#### 1.4.3.7. HashMap
+在使用Iterator的时候禁止对所遍历的容器进行改变其大小结构的操作。例如: 在使用Iterator进行迭代时，如果对集合进行了add、remove操作就会出现ConcurrentModificationException异常。
 
-#### 1.4.3.8. TreeMap
+这里有一个全局变量modCount，每当元素数量改变的时候，这个值就会变化．在获取迭代器时，会初始化expectedModCount．每次迭代的时候就会检测初始值expectedModCount和当前的modCount是否一致，不一致说明集合参数数量被改变．会抛出ConcurrentModificationException异常．基于此，这些集合类不适合在并发环境下使用．
+
+快速失败机制产生的条件:当多个线程对Collection进行操作时，若其中某一个线程通过Iterator遍历集合时，该集合的内容被其他线程所改变，则会抛出ConcurrentModificationException异常。
+```java
+private class Itr implements Iterator<E> {
+        int cursor;       // index of next element to return
+        int lastRet = -1; // index of last element returned; -1 if no such
+        int expectedModCount = modCount;
+
+        Itr() {}
+
+        public boolean hasNext() {
+            return cursor != size;
+        }
+
+        @SuppressWarnings("unchecked")
+        public E next() {
+            checkForComodification();
+            int i = cursor;
+            if (i >= size)
+                throw new NoSuchElementException();
+            Object[] elementData = ArrayList.this.elementData;
+            if (i >= elementData.length)
+                throw new ConcurrentModificationException();
+            cursor = i + 1;
+            return (E) elementData[lastRet = i];
+        }
+
+        public void remove() {
+            if (lastRet < 0)
+                throw new IllegalStateException();
+            checkForComodification();
+
+            try {
+                ArrayList.this.remove(lastRet);
+                cursor = lastRet;
+                lastRet = -1;
+                expectedModCount = modCount;
+            } catch (IndexOutOfBoundsException ex) {
+                throw new ConcurrentModificationException();
+            }
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public void forEachRemaining(Consumer<? super E> consumer) {
+            Objects.requireNonNull(consumer);
+            final int size = ArrayList.this.size;
+            int i = cursor;
+            if (i >= size) {
+                return;
+            }
+            final Object[] elementData = ArrayList.this.elementData;
+            if (i >= elementData.length) {
+                throw new ConcurrentModificationException();
+            }
+            while (i != size && modCount == expectedModCount) {
+                consumer.accept((E) elementData[i++]);
+            }
+            // update once at end of iteration to reduce heap write traffic
+            cursor = i;
+            lastRet = i - 1;
+            checkForComodification();
+        }
+
+        final void checkForComodification() {
+            if (modCount != expectedModCount)
+                throw new ConcurrentModificationException();
+        }
+    }
+```
+
+
+## 4.4. 基本集合源码分析
+<a href="#menu"  >目录</a>
+
+### 4.4.1. ArrayList
+
+### 4.4.2. Linklist
+
+### 4.4.3. Vector
+
+### 4.4.4. Stack
+
+### 4.4.5. HashSet
+
+### 4.4.6. TreeSet
+
+### 4.4.7. HashMap
+
+### 4.4.8. TreeMap
 
 
 
-## 1.5. 异常
-<a href="#menu" style="float:right">目录</a>
+# 5. 异常
+<a href="#menu"  >目录</a>
 
-![](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564945249663&di=9c6ee8dcda7a4b1e21c970cef177ec3f&imgtype=jpg&src=http%3A%2F%2Fimg4.imgtn.bdimg.com%2Fit%2Fu%3D1403341014%2C2801110274%26fm%3D214%26gp%3D0.jpg)
+![异常体系](pic/java/异常体系.jpeg)
 
 * Error是无法处理的异常，比如OutOfMemoryError，一般发生这种异常，JVM会选择终止程序。因此我们编写程序时不需要关心这类异常。
 * Exception，也就是我们经常见到的一些异常情况，比如NullPointerException、IndexOutOfBoundsException，这些异常是我们可以处理的异常。
@@ -2065,6 +2184,8 @@ public interface Comparator<T> {
 运行异常类对应于编译错误，它是指Java程序在运行时产生的由解释器引发的各种异常。运行异常可能出现在任何地方，且出现频率很高，因此为了避免巨大的系统资源开销，编译器不对异常进行检查。所以Java语言中的运行异常不一定被捕获。出现运行错误往往表示代码有错误，如：算数异常（如被0除）、下标异常（如数组越界）等。
 
 非运行异常时Non_RuntimeException类及其子类的实例，又称为可检测异常。Java编译器利用分析方法或构造方法中可能产生的结果来检测Java程序中是否含有检测异常的处理程序，对于每个可能的可检测异常，方法或构造方法的throws子句必须列出该异常对应的类。在Java的标准包java.lang java.util 和 java.net 中定义的异常都是非运行异常。
+
+如果检测型异常被捕获，其后面的代码会继续执行
 
 * try-catch-finally语句
     * try块：负责捕获异常，一旦try中发现异常，程序的控制权将被移交给catch块中的异常处理程序。
@@ -2088,7 +2209,7 @@ finally{
 
 ```
 * **总结：**
-    * 不管有木有出现异常或者try和catch中有返回值return，finally块中代码都会执行；
+    * 不管有没有出现异常或者try和catch中有返回值return，finally块中代码都会执行；
     * finally中最好不要包含return，否则程序会提前退出，返回会覆盖try或catch中保存的返回值。
     * e.printStackTrace()可以输出异常信息。
     * return值为-1为抛出异常的习惯写法。
@@ -2244,10 +2365,26 @@ public static void main(java.lang.String[]);
 2. 如果出现异常，catch中会复制一份finally的指令，执行完后跳转到27: return结束方法。
 
 
+**异常处理规则**
 
+* 成功的异常处理
+    * 使程序代码混乱最小化
+    * 捕捉并保留诊断信息
+    * 通知合适的人员
+    * 采用合适的方式结束异常活动
 
-## 1.6. 注解
-<a href="#menu" style="float:right">目录</a>
+* 过度使用异常
+    * 使用异常处理普通错误
+    * 使用异常来实现流程控制
+
+* 异常捕获后的处理
+    * 处理异常，比如返回错误码给调用者
+    * 重新抛出异常，让上层处理
+    * 当前方法不检测异常，而是在方法定义声明抛出异常
+
+    
+# 6. 注解
+<a href="#menu"  >目录</a>
 
 **概念定义**
 * 注解
@@ -2371,10 +2508,10 @@ public interface AnnotatedElement {
 }
 ```
 
-## 1.7. IO
-<a href="#menu" style="float:right">目录</a>
+# 7. IO
+<a href="#menu"  >目录</a>
 
-### 1.7.1. File
+## 7.1. File
 * File是java.io包下与平台无关的文件和目录操作类。
 * File能改新建，删除和重命名文件和目录。
 * File不能访问文件内容，访问文件内容使用相关的流操作类。
@@ -2476,7 +2613,7 @@ public interface FileFilter {
 public File[] listFiles(FileFilter filter) ;
 public File[] listFiles(FilenameFilter filter)
 ```
-#### 1.7.1.1. IO流
+### 7.1.1. IO流
 
 **流的概念和作用**
 
@@ -2587,7 +2724,7 @@ BufferedInputStream和BufferedOutputStream这两个类分别是FilterInputStream
         * rwd : 除了rw,还要求对文件内容的每个更新都同步写入到底层的存储设备。
 * 如果seek 定位后写入内容，将会覆盖后续内容，如果需要实现插入写，需要先读出后面的内容，写入之后再追加写入读出的内容。
   
-#### 1.7.1.2. 序列化
+### 7.1.2. 序列化
 * 序列化
     * 将对象转化为二进制字节数组，以方便存储到磁盘或者进行网络传输
 * 反序列化
@@ -2672,9 +2809,9 @@ os.writeObject(person);
 
 ```
 
-### 1.7.2. NIO
+## 7.2. NIO
 
-#### 1.7.2.1. 内存映射  
+### 7.2.1. 内存映射  
 
 内存映射的方式是指操作系统将内存中的某一块区域与磁盘中的文件相关联，当访问内存中的一段数据时，转换为访问文件的某一段数据。这种方式的目的同样是减少数据从内核空间缓存到用户空间缓存的数据复制操作，因为这两个空间的数据是共享的。
 
@@ -2928,8 +3065,8 @@ ByteBuffer.allocate 意味着直接在 JVM堆上分配内存，所以受 新生�
 最后一点为 DirectMemory的内存只有在 JVM执行 full gc 的时候才会被回收，那么如果在其上分配过大的内存空间，那么也将出现 OutofMemoryError，即便 JVM 堆中的很多内存处于空闲状态。
 
 
-## 1.8. Javac编译原理
-<a href="#menu" style="float:right">目录</a>
+# 8. Javac编译原理
+<a href="#menu"  >目录</a>
 
 * Javac是一种编译器，将Java源码编译成Java字节码。.Java文件转化成。class文件。
 * 经过以下流程
@@ -2938,40 +3075,40 @@ ByteBuffer.allocate 意味着直接在 JVM堆上分配内存，所以受 新生�
     * 语法分析器
         * 将Token流组建成更加结构化的语法树
     * 语义分析器
-### 1.8.1. Javac编译器的基本结构
-<a href="#menu" style="float:right">目录</a>
+## 8.1. Javac编译器的基本结构
+<a href="#menu"  >目录</a>
 
-### 1.8.2. Javac的工作原理分析
-<a href="#menu" style="float:right">目录</a>
-
-
-## 1.9. 类加载和反射
-<a href="#menu" style="float:right">目录</a>
-
-### 1.9.1. Class文件结构
-<a href="#menu" style="float:right">目录</a>
-
-#### 1.9.1.1. JVM指令集简介
-<a href="#menu" style="float:right">目录</a>
-
-#### 1.9.1.2. class文件头的表示形式
-<a href="#menu" style="float:right">目录</a>
-
-#### 1.9.1.3. 常量池
-<a href="#menu" style="float:right">目录</a>
+## 8.2. Javac的工作原理分析
+<a href="#menu"  >目录</a>
 
 
-#### 1.9.1.4. 类信息
-<a href="#menu" style="float:right">目录</a>
+# 9. 类加载和反射
+<a href="#menu"  >目录</a>
 
-#### 1.9.1.5. Fields和Method定义
-<a href="#menu" style="float:right">目录</a>
+## 9.1. Class文件结构
+<a href="#menu"  >目录</a>
 
-#### 1.9.1.6. 类属性描述
-<a href="#menu" style="float:right">目录</a>
+### 9.1.1. JVM指令集简介
+<a href="#menu"  >目录</a>
 
-#### 1.9.1.7. Javap生成的class文件结构
-<a href="#menu" style="float:right">目录</a>
+### 9.1.2. class文件头的表示形式
+<a href="#menu"  >目录</a>
+
+### 9.1.3. 常量池
+<a href="#menu"  >目录</a>
+
+
+### 9.1.4. 类信息
+<a href="#menu"  >目录</a>
+
+### 9.1.5. Fields和Method定义
+<a href="#menu"  >目录</a>
+
+### 9.1.6. 类属性描述
+<a href="#menu"  >目录</a>
+
+### 9.1.7. Javap生成的class文件结构
+<a href="#menu"  >目录</a>
 
 javap用法
 
@@ -3111,12 +3248,12 @@ public class com.code.base.javap.JavapTest {
 ```
 
  
-### 1.9.2. 反射
-<a href="#menu" style="float:right">目录</a>
+## 9.2. 反射
+<a href="#menu"  >目录</a>
 
 
-## 1.10. JDBC
-<a href="#menu" style="float:right">目录</a>
+# 10. JDBC
+<a href="#menu"  >目录</a>
 
 **数据库驱动**
 这里的驱动的概念和平时听到的那种驱动的概念是一样的，比如平时购买的声卡，网卡直接插到计算机上面是不能用的，必须要安装相应的驱动程序之后才能够使用声卡和网卡，同样道理，我们安装好数据库之后，我们的应用程序也是不能直接使用数据库的，必须要通过相应的数据库驱动程序，通过驱动程序去和数据库打交道，如下所示：
@@ -3240,14 +3377,14 @@ cstmt.registerOutParameter(1, java.sql.Types.TINYINT);
 cstmt.executeUpdate();  
 byte x = cstmt.getByte(1);  
 ```
-## 1.11. 函数式编程
+# 11. 函数式编程
 
 函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。
 
 函数式编程的一个特点就是，允许把函数本身作为参数传入另一个函数，还允许返回一个函数！
-## 1.12. Java 8 的新特性：
+# 12. Java 8 的新特性：
 
-### 1.12.1. Java 8 Lambda 表达式
+## 12.1. Java 8 Lambda 表达式
 Lambda 表达式，也可称为闭包，它是推动 Java 8 发布的最重要新特性。
 Lambda 允许把函数作为一个方法的参数（函数作为参数传递进方法中）。
 使用 Lambda 表达式可以使代码变的更加简洁紧凑。
@@ -3283,7 +3420,7 @@ x -> 2 * x
 * lambda 表达式的局部变量可以不用声明为 final，但是必须不可被后面的代码修改（即隐性的具有 final 的语义）
 * 在Lambda 表达式当中不允许声明一个与外部局部变量同名的参数或者局部变量
 
-### 1.12.2. Java 8 函数式接口
+## 12.2. Java 8 函数式接口
 函数式接口(Functional Interface)就是一个有且仅有一个抽象方法，但是可以有多个非抽象方法的接口。
 
 函数式接口可以被隐式转换为 lambda 表达式。
@@ -3417,8 +3554,8 @@ public class Java8Tester {
    }
 }
 ```
-### 1.12.3. 默认方法
-<a href="#menu" style="float:right">目录</a>
+## 12.3. 默认方法
+<a href="#menu"  >目录</a>
 
 Java 8 新增了接口的默认方法。
 简单说，默认方法就是接口可以有实现方法，而且不需要实现类去实现其方法。
@@ -3436,8 +3573,8 @@ public interface Vehicle {
 默认方法也可以设置为静态。
 ```
 
-### 1.12.4. Optional 类
-<a href="#menu" style="float:right">目录</a>
+## 12.4. Optional 类
+<a href="#menu"  >目录</a>
 
 Optional 类是一个可以为null的容器对象。如果值存在则isPresent()方法会返回true，调用get()方法会返回该对象。
 
@@ -3512,8 +3649,8 @@ public class Java8Tester {
 }
 ```
 
-### 1.12.5. Stream
-<a href="#menu" style="float:right">目录</a>
+## 12.5. Stream
+<a href="#menu"  >目录</a>
 
 Java 8 API添加了一个新的抽象称为流Stream，可以让你以一种声明的方式处理数据。
 
@@ -3812,8 +3949,8 @@ public class Java8Tester {
    }
 }
 ```
-### 1.12.6. Java 8 日期时间 API
-<a href="#menu" style="float:right">目录</a>
+## 12.6. Java 8 日期时间 API
+<a href="#menu"  >目录</a>
 
 Java 8通过发布新的Date-Time API (JSR 310)来进一步加强对日期与时间的处理。
 在旧版的 Java 中，日期时间 API 存在诸多问题，其中有：
@@ -3874,8 +4011,8 @@ public class Java8Tester {
    }
 }
 ```
-### 1.12.7. Java8 Base64
-<a href="#menu" style="float:right">目录</a>
+## 12.7. Java8 Base64
+<a href="#menu"  >目录</a>
 
 在Java 8中，Base64编码已经成为Java类库的标准。
 
@@ -3908,10 +4045,10 @@ MIME：输出隐射到MIME友好格式。输出每行不超过76字符，并且�
 |7|	static Base64.Encoder getUrlEncoder()返回一个 Base64.Encoder ，编码使用 URL 和文件名安全型 base64 编码方案。
 
 
-## 1.13. Java-SPI机制
-<a href="#menu" style="float:right">目录</a>
+# 13. Java-SPI机制
+<a href="#menu"  >目录</a>
 
-### 1.13.1. Java--SPI机制
+## 13.1. Java--SPI机制
 
 SPI全称为Service Provider Interface，是JDK内置的一种服务提供发现机制。简单来说，它就是一种动态替换发现机制。例如：有个接口想在运行时才发现具体的实现类，那么你只需要在程序运行前添加一个实现即可，并把新加的实现描述给JDK即可。此外，在程序的运行过程中，也可以随时对该描述进行修改，完成具体实现的替换。
 
@@ -3930,7 +4067,7 @@ Java提供了很多服务提供者接口（Service Provider Interface，SPI）�
 引导类加载器在加载时是无法找到SPI的实现类的，因为双亲委派模型中规定，引导类加载器BootstrapClassloader无法委派系统类加载器AppClassLoader来加载。这时候，该如何解决此问题？
 线程上下文类加载由此诞生，它的出现也破坏了类加载器的双亲委派模型，使得程序可以进行逆向类加载。
 
-### 1.13.2. 使用场景
+## 13.2. 使用场景
 概括地说，适用于：调用者根据实际使用需要，启用、扩展、或者替换框架的实现策略
 比较常见的例子：
 
@@ -3943,7 +4080,7 @@ Java提供了很多服务提供者接口（Service Provider Interface，SPI）�
 * Dubbo
     * Dubbo中也大量使用SPI的方式实现框架的扩展, 不过它对Java提供的原生SPI做了封装，允许用户扩展实现Filter接口
 
-#### 1.13.2.1. 实现方式
+### 13.2.1. 实现方式
 
 * 标准制定者制定接口
 * 不同厂商编写针对于该接口的实现类，并在jar的“classpath:META-INF/services/全接口名称”文件中指定相应的实现类全类名
@@ -3951,7 +4088,7 @@ Java提供了很多服务提供者接口（Service Provider Interface，SPI）�
 
 
 
-### 1.13.3. spi使用
+## 13.3. spi使用
 首先，通过一张图来看，完成spi的实现，需要哪些操作，需要遵循哪些规范？
 
 ![spi使用](https://upload-images.jianshu.io/upload_images/5621908-679688568081a389.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/860/format/webp)
@@ -4010,7 +4147,7 @@ public class Test {
     }
 }
 ```
-### 1.13.4. 原理解析
+## 13.4. 原理解析
 首先看ServiceLoader类的签名类的成员变量：
 ```java
 public final class ServiceLoader<S> implements Iterable<S>{
@@ -4063,7 +4200,7 @@ try {
 
 
 
-### 1.13.5. 总结
+## 13.5. 总结
 
 * 优点：
     * 使用Java SPI机制的优势是实现解耦，使得第三方服务模块的装配控制的逻辑与调用者的业务代码分离，而不是耦合在一起。应用程序可以根据实际业务情况启用框架扩展或替换框架组件。
@@ -4071,14 +4208,14 @@ try {
     * 虽然ServiceLoader也算是使用的延迟加载，但是基本只能通过遍历全部获取，也就是接口的实现类全部加载并实例化一遍。如果你并不想用某些实现类，它也被加载并实例化了，这就造成了浪费。获取某个实现类的方式不够灵活，只能通过Iterator形式获取，不能根据某个参数来获取对应的实现类。
     * 多个并发多线程使用ServiceLoader类的实例是不安全的。
 
-## 1.14. 常用类源码说明
-<a href="#menu" style="float:right">目录</a>
+# 14. 常用类源码说明
+<a href="#menu"  >目录</a>
 
 
 
 
-## 1.15. JDK版本变化
-<a href="#menu" style="float:right">目录</a>
+# 15. JDK版本变化
+<a href="#menu"  >目录</a>
 
 * JDK5的新特性：
     * 自动拆装箱
@@ -4163,11 +4300,60 @@ try {
 
 
 
-## 1.16. 设计模式
-<a href="#menu" style="float:right">目录</a>
+# 16. 设计模式
+<a href="#menu"  >目录</a>
 
-### 1.16.1. 设计原则
-<a href="#menu" style="float:right">目录</a>
+## 16.1. 概述
+<a href="#menu"  >目录</a>
+
+**设计模式**
+是指在软件开发中,经过验证的,用于解决在特定环境下,重复出现的,**特定问题的解决方案**.
+
+
+**设计模式分类**
+|分类|设计模式|
+|---|---|
+
+
+
+
+* 接口型模式
+    * 适配器类型
+        * 适配类的接口以匹配客户端期待的接口
+    * 外观模型
+        * 为一组类提供一个简单的接口
+    * 合成模型
+        * 为单个对象与复合对象提供统一的接口
+    * 桥接模型
+        * 解除抽象与实现之间的耦合,使得二者能够独立演化
+
+* 职责型模式
+    * 单例模式
+    * 观察者模式
+    * 调停者模式
+    * 代理模式
+    * 职责链模式
+    * 享元模式
+* 构造型模式
+    * 构建者模式
+    * 工厂方法模式
+    * 抽象工厂模式
+    * 原型模式
+    * 备忘录模式
+* 操作型模式
+    * 模板方法模式
+    * 状态模式
+    * 策略模式
+    * 命令模式
+    * 解释器模式 
+* 扩展型模式
+    * 装饰器模式
+    * 迭代器模式
+    * 访问者模式 
+
+
+## 16.2. 设计原则
+<a href="#menu"  >目录</a>
 
 **单一职责原则**
 * 每个类只负责单一的功能，避免出现复杂臃肿的类。造成维护困难。
@@ -4185,14 +4371,49 @@ try {
 * 当需要增加新功能时，应当避免修改原类的代码，应当通过一些设计模式来进行功能扩展。比如装饰模式，这样可以达到对其他使用类的影响。
 * 以上的原则都是施行指南，开闭原则是最终目标。
 
-### 1.16.2. UML图
+## 16.3. UML图
+<a href="#menu"  >目录</a>
+
+UML（Unified Modeling Language）是一种统一建模语言，为面向对象开发系统的产品进行说明、可视化、和编制文档的一种标准语言。下面将对UML的九种图+包图的基本概念进行介绍以及各个图的使用场景。
+
+### 16.3.1. 用例图
+
+用例图用于描述系统提供的系列功能，而每个用例代表系统的一个功能模块．用例图的主要目的是帮助开发团队以一种可视化的方式理解系统的需求功能，用例图对系统的实现不作任何说明．仅仅是系统功能的描述．
+
+### 16.3.2. 类图
+
+用户根据用例图抽象成类，描述类的内部结构和类与类之间的关系，是一种静态结构图。 在UML类图中，常见的有以下几种关系: 泛化（Generalization）,  实现（Realization），关联（Association)，聚合（Aggregation），组合(Composition)，依赖(Dependency)。
 
 ![UML图](pic/designerPattern/uml.png)
 
-### 1.16.3. 单例模式
-<a href="#menu" style="float:right">目录</a>
+### 16.3.3. 组件图
 
-#### 1.16.3.1. 基本概念
+对于现代大型应用程序来说，通常会有多个模块，在Java中，可复用的组件通常打包成一个Jar或者war等文件．组件图提供系统的物理视图，它的用途是显示系统中的软件对其他软件组件的依赖关系．
+
+
+### 16.3.4. 部署图
+
+部署图用于描述软件系统如何部署到硬件环境中．它的用途是显示软件系统不同的组件将在何处物理地运行．以及它们将如何彼此通信．
+
+
+### 16.3.5. 顺序图
+
+顺序图显示具体用例的详细流程，并且显示了流程中不同对象之间的调用关系，同时还可以很详细地显示对不同对象的不同调用．顺序图描述了对象之间的交互(顺序图和通信图都被称为交互图)．重点在于描述消息及其时间顺序．
+
+顺序图有两个维度．垂直维度以发生的时间顺序显示消息/调用的序列．水平维度显示消息被发送到的对象实例．顺序图描述了一个功能的实现时的类之间的调用顺序
+
+### 16.3.6. 活动图
+
+
+
+### 16.3.7. 状态机图
+
+表示某个类所处的不同状态和该类的的状态转换信息．例子如线程状态的变化
+
+## 16.4. 单例模式
+<a href="#menu"  >目录</a>
+
+### 16.4.1. 基本概念
 
 **定义**:确保某一个类只有一个对象实例。
 **衍生**：有限多例，比如对象池技术，使用缓存将创建的对象缓存起来。
@@ -4203,7 +4424,7 @@ try {
 
 **缺点**:
 
-#### 1.16.3.2. 实现
+### 16.4.2. 实现
 单例模式需要注意的关键点是如何避免高并发条件下出现多例的问题。高并发环境下，任何两条语句执行之间都有可能被其他线程所抢占并执行完整的指令。这种情况处理不好，很容易产生出多例。
 还有需要关注的是，一个系统中存在很多类，但是有的类在系统运行的生命周期中是始终没机会创建对象，比如有个偏门的用户操作才会触发某个类创建对象。这种情况下就没必要创建对象，也就是需要延迟创建对象，在使用时才去创建。
 作为单例类，没必要去考虑通过反射会破解单例模式，定义一个类为单例，作为开发者应当遵循这个规范，而不是尝试使用反射来创建多个对象从而破坏这个规定。单例模式只防君子不防小人。
@@ -4341,8 +4562,8 @@ public class Singleton5 implements Serializable {
 }
 ```
 
-### 1.16.4. 工厂方法模式
-<a href="#menu" style="float:right">目录</a>
+## 16.5. 工厂方法模式
+<a href="#menu"  >目录</a>
 工厂模式（Factory Pattern）是 Java 中最常用的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
 
 在工厂模式中，我们在创建对象时不会对客户端暴露创建逻辑，并且是通过使用一个共同的接口来指向新创建的对象。
@@ -4377,8 +4598,8 @@ public class Singleton5 implements Serializable {
     * 作为一种创建类模式，在任何需要生成复杂对象的地方，都可以使用工厂方法模式。有一点需要注意的地方就是复杂对象适合使用工厂模式，而简单对象，特别是只需要通过 new 就可以完成创建的对象，无需使用工厂模式。如果使用工厂模式，就需要引入一个工厂类，会增加系统的复杂度。
 
 
-### 1.16.5. 抽象工厂模式
-<a href="#menu" style="float:right">目录</a>
+## 16.6. 抽象工厂模式
+<a href="#menu"  >目录</a>
 抽象工厂模式（Abstract Factory Pattern）是围绕一个超级工厂创建其他工厂。该超级工厂又称为其他工厂的工厂。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
 
 在抽象工厂模式中，接口是负责创建一个相关对象的工厂，不需要显式指定它们的类。每个生成的工厂都能按照工厂模式提供对象。
@@ -4407,8 +4628,8 @@ public class Singleton5 implements Serializable {
 * 注意事项
     * 产品族难扩展，产品等级易扩展。
 
-### 1.16.6. 模板方法模式
-<a href="#menu" style="float:right">目录</a>
+## 16.7. 模板方法模式
+<a href="#menu"  >目录</a>
 在模板模式（Template Pattern）中，一个抽象类公开定义了执行它的方法的方式/模板。它的子类可以按需要重写方法实现，但调用将以抽象类中定义的方式进行。这种类型的设计模式属于行为型模式。
 
 ![](https://www.runoob.com/wp-content/uploads/2014/08/template_pattern_uml_diagram.jpg)
@@ -4439,8 +4660,8 @@ public class Singleton5 implements Serializable {
 * 注意事项
     * 为防止恶意操作，一般模板方法都加上 final 关键词。
 
-### 1.16.7. 建造者模式
-<a href="#menu" style="float:right">目录</a>
+## 16.8. 建造者模式
+<a href="#menu"  >目录</a>
 建造者模式（Builder Pattern）使用多个简单的对象一步一步构建成一个复杂的对象。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
 
 一个 Builder 类会一步一步构造最终的对象。该 Builder 类是独立于其他对象的。
@@ -4472,8 +4693,8 @@ public class Singleton5 implements Serializable {
 * 注意事项
     * 与工厂模式的区别是：建造者模式更加关注与零件装配的顺序。
     
-### 1.16.8. 代理模式
-<a href="#menu" style="float:right">目录</a>
+## 16.9. 代理模式
+<a href="#menu"  >目录</a>
 
 代理模式（Proxy Pattern）中，一个类代表另一个类的功能。这种类型的设计模式属于结构型模式。
 在代理模式中，我们创建具有现有对象的对象，以便向外界提供功能接口。
@@ -4518,8 +4739,8 @@ public class Singleton5 implements Serializable {
     * 和适配器模式的区别：适配器模式主要改变所考虑对象的接口，而代理模式不能改变所代理类的接口。 
     * 和装饰器模式的区别：装饰器模式为了增强功能，而代理模式是为了加以控制。
 
-### 1.16.9. 原型模式
-<a href="#menu" style="float:right">目录</a>
+## 16.10. 原型模式
+<a href="#menu"  >目录</a>
 原型模式（Prototype Pattern���是用于创建重复的对象，同时又能保证性能。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
 
 这种模式是实现了一个原型接口，该接口用于创建当前对象的克隆。当直接创建对象的代价比较大时，则采用这种模式。例如，一个对象需要在一个高代价的数据库操作之后被创建。我们可以缓存该对象，在下一个请求时返回它的克隆，在需要的时候更新数据库，以此来减少数据库调用。
@@ -4561,8 +4782,8 @@ public class Singleton5 implements Serializable {
 * 注意事项
     * 与通过对一个类进行实例化来构造新对象不同的是，原型模式是通过拷贝一个现有对象生成新对象的。浅拷贝实现 Cloneable，重写，深拷贝是通过实现 Serializable 读取二进制流。
 
-### 1.16.10. 中介者模式
-<a href="#menu" style="float:right">目录</a>
+## 16.11. 中介者模式
+<a href="#menu"  >目录</a>
 中介者模式（Mediator Pattern）是用来降低多个对象和类之间的通信复杂性。这种模式提供了一个中介类，该类通常处理不同类之间的通信，并支持松耦合，使代码易于维护。中介者模式属于行为型模式。
 
 ![](https://www.runoob.com/wp-content/uploads/2014/08/mediator_pattern_uml_diagram.jpg)
@@ -4597,8 +4818,8 @@ public class Singleton5 implements Serializable {
 
 ```
 
-### 1.16.11. 命令模式
-<a href="#menu" style="float:right">目录</a>
+## 16.12. 命令模式
+<a href="#menu"  >目录</a>
 命令模式（Command Pattern）是一种数据驱动的设计模式，它属于行为型模式。请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该命令传给相应的对象，该对象执行命令。
 
 ![](https://www.runoob.com/wp-content/uploads/2014/08/command_pattern_uml_diagram.jpg)
@@ -4698,8 +4919,8 @@ public class CommandPatternDemo {
 }
 
 ```
-### 1.16.12. 责任链模式
-<a href="#menu" style="float:right">目录</a>
+## 16.13. 责任链模式
+<a href="#menu"  >目录</a>
 顾名思义，责任链模式（Chain of Responsibility Pattern）为请求创建了一个接收者对象的链。这种模式给予请求的类型，对请求的发送者和接收者进行解耦。这种类型的设计模式属于行为型模式。
 
 在这种模式中，通常每个接收者都包含对另一个接收者的引用。如果一个对象不能处理该请求，那么它会把相同的请求传给下一个接收者，依此类推。
@@ -4737,8 +4958,8 @@ public class CommandPatternDemo {
 * 注意事项
     * 在 JAVA WEB 中遇到很多应用。
     
-### 1.16.13. 装饰模式
-<a href="#menu" style="float:right">目录</a>
+## 16.14. 装饰模式
+<a href="#menu"  >目录</a>
 装饰器模式（Decorator Pattern）允许向一个现有的对象添加新的功能，同时又不改变其结构。这种类型的设计模式属于结构型模式，它是作为现有的类的一个包装。
 
 这种模式创建了一个装饰类，用来包装原有的类，并在保持类方法签名完整性的前提下，提供了额外的功能。
@@ -4772,8 +4993,8 @@ public class CommandPatternDemo {
 * 注意事项
     * 可代替继承。
 
-### 1.16.14. 策略模式
-<a href="#menu" style="float:right">目录</a>
+## 16.15. 策略模式
+<a href="#menu"  >目录</a>
 在策略模式（Strategy Pattern）中，一个类的行为或其算法可以在运行时更改。这种类型的设计模式属于行为型模式。
 
 在策略模式中，我们创建表示各种策略的对象和一个行为随着策略对象改变而改变的 context 对象。策略对象改变 context 对象的执行算法。
@@ -4858,8 +5079,8 @@ public class StrategyPatternDemo {
 
 ```
 
-### 1.16.15. 适配器模式
-<a href="#menu" style="float:right">目录</a>
+## 16.16. 适配器模式
+<a href="#menu"  >目录</a>
 适配器模式（Adapter Pattern）是作为两个不兼容的接口之间的桥梁。这种类型的设计模式属于结构型模式，它结合了两个独立接口的功能。
 
 这种模式涉及到一个单一的类，该类负责加入独立的或不兼容的接口功能。举个真实的例子，读卡器是作为内存卡和笔记本之间的适配器。您将内存卡插入读卡器，再将读卡器插入笔记本，这样就可以通过笔记本来读取内存卡。
@@ -4986,8 +5207,8 @@ public class AdapterPatternDemo {
 
 ```
 
-### 1.16.16. 迭代器模式
-<a href="#menu" style="float:right">目录</a>
+## 16.17. 迭代器模式
+<a href="#menu"  >目录</a>
 迭代器模式（Iterator Pattern）是 Java 和 .Net 编程环境中非常常用的设计模式。这种模式用于顺序访问集合对象的元素，不需要知道集合对象的底层表示。
 
 迭代器模式属于行为型模式。
@@ -5021,8 +5242,8 @@ public class AdapterPatternDemo {
 * 注意事项
     * 迭代器模式就是分离了集合对象的遍历行为，抽象出一个迭代器类来负责，这样既可以做到不暴露集合的内部结构，又可让外部代码透明地访问集合内部的数据。
 
-### 1.16.17. 组合模式
-<a href="#menu" style="float:right">目录</a>
+## 16.18. 组合模式
+<a href="#menu"  >目录</a>
 组合模式（Composite Pattern），又叫部分整体模式，是用于把一组相似的对象当作一个单一的对象。组合模式依据树形结构来组合对象，用来表示部分以及整体层次。这种类型的设计模式属于结构型模式，它创建了对象组的树形结构。
 
 这种模式创建了一个包含自己对象组的类。该类提供了修改相同对象组的方式。
@@ -5058,8 +5279,8 @@ public class AdapterPatternDemo {
     * 定义时为具体类。
 
 
-### 1.16.18. 观察者模式
-<a href="#menu" style="float:right">目录</a>
+## 16.19. 观察者模式
+<a href="#menu"  >目录</a>
 当对象间存在一对多关系时，则使用观察者模式（Observer Pattern）。比如，当一个对象被修改时，则会自动通知它的依赖对象。观察者模式属于行为型模式。
 
 ![](https://www.runoob.com/wp-content/uploads/2014/08/observer_pattern_uml_diagram.jpg)
@@ -5180,8 +5401,8 @@ public class ObserverPatternDemo {
 
 ```
 
-### 1.16.19. 门面模式
-<a href="#menu" style="float:right">目录</a>
+## 16.20. 门面模式
+<a href="#menu"  >目录</a>
 外观模式（Facade Pattern）隐藏系统的复杂性，并向客户端提供了一个客户端可以访问系统的接口。这种类型的设计模式属于结构型模式，它向现有的系统添加一个接口，来隐藏系统的复杂性。
 
 这种模式涉及到一个单一的类，该类提供了客户端请求的简化方法和对现有系统类方法的委托调用。
@@ -5216,8 +5437,8 @@ public class ObserverPatternDemo {
 * 注意事项
     * 在层次化结构中，可以使用外观模式定义系统中每一层的入口。
 
-### 1.16.20. 备忘录模式
-<a href="#menu" style="float:right">目录</a>
+## 16.21. 备忘录模式
+<a href="#menu"  >目录</a>
 备忘录模式（Memento Pattern）保存一个对象的某个状态，以便在适当的时候恢复对象。备忘录模式属于行为型模式。
 
 ![](https://www.runoob.com/wp-content/uploads/2014/08/memento_pattern_uml_diagram.jpg)
@@ -5315,8 +5536,8 @@ public class MementoPatternDemo {
 ```
 
 
-### 1.16.21. 访问者模式
-<a href="#menu" style="float:right">目录</a>
+## 16.22. 访问者模式
+<a href="#menu"  >目录</a>
 在访问者模式（Visitor Pattern）中，我们使用了一个访问者类，它改变了元素类的执行算法。通过这种方式，元素的执行算法可以随着访问者改变而改变。这种类型的设计模式属于行为型模式。根据模式，元素对象已接受访问者对象，这样访问者对象就可以处理元素对象上的操作。
 
 ![](https://www.runoob.com/wp-content/uploads/2014/08/visitor_pattern_uml_diagram.jpg)
@@ -5429,8 +5650,8 @@ public class VisitorPatternDemo {
 ```
 
 
-### 1.16.22. 状态模式
-<a href="#menu" style="float:right">目录</a>
+## 16.23. 状态模式
+<a href="#menu"  >目录</a>
 在状态模式（State Pattern）中，类的行为是基于它的状态改变的。这种类型的设计模式属于行为型模式。
 
 在状态模式中，我们创建表示各种状态的对象和一个行为随着状态对象改变而改变的 context 对象。
@@ -5526,8 +5747,8 @@ public class StatePatternDemo {
 
 
 
-### 1.16.23. 解释器模式
-<a href="#menu" style="float:right">目录</a>
+## 16.24. 解释器模式
+<a href="#menu"  >目录</a>
 解释器模式（Interpreter Pattern）提供了评估语言的语法或表达式的方式，它属于行为型模式。这种模式实现了一个表达式接口，该接口解释一个特定的上下文。这种模式被用在 SQL 解析、符号处理引擎等。
 
 ![](https://www.runoob.com/wp-content/uploads/2014/08/interpreter_pattern_uml_diagram.jpg)
@@ -5638,8 +5859,8 @@ public class InterpreterPatternDemo {
 ```
 
 
-### 1.16.24. 享元模式
-<a href="#menu" style="float:right">目录</a>
+## 16.25. 享元模式
+<a href="#menu"  >目录</a>
 享元模式（Flyweight Pattern）主要用于减少创建对象的数量，以减少内存占用和提高性能。这种类型的设计模式属于结构型模式，它提供了减少对象数量从而改善应用所需的对象结构的方式。
 
 享元模式尝试重用现有的同类对象，如果未找到匹配的对象，则创建新对象。我们将通过创建 5 个对象来画出 20 个分布于不同位置的圆来演示这种模式。由于只有 5 种可用的颜色，所以 color 属性被用来检查现有的 Circle 对象。
@@ -5677,8 +5898,8 @@ public class InterpreterPatternDemo {
     * 这些类必须有一个工厂对象加以控制。
 
 
-### 1.16.25. 桥梁模式
-<a href="#menu" style="float:right">目录</a>
+## 16.26. 桥梁模式
+<a href="#menu"  >目录</a>
 桥梁模式（Bridge）是用于把抽象化与实现化解耦，使得二者可以独立变化。这种类型的设计模式属于结构型模式，它通过提供抽象化和实现化之间的桥接结构，来实现二者的解耦。
 
 这种模式涉及到一个作为桥接的接口，使得实体类的功能独立于接口实现类。这两种类型的类可被结构化改变而互不影响。

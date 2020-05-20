@@ -57,13 +57,13 @@ Argument 0 is unknown.RIP: 0x7fb91ce54480 Code size: 0x00000208
 <thread_logfile thread='140432885225216' filename='/tmp/hs_c140432885225216_pid24801.log'/>
 <writer thread='140432895375104'/>
 [Entry Point]
-  # {method} {0x00007fb916597930} &apos;arraycopy&apos; &apos;(Ljava/lang/Object;ILjava/lang/Object;II)V&apos; in &apos;java/lang/System&apos;
-  # parm0:    rsi:rsi   = &apos;java/lang/Object&apos;
-  # parm1:    rdx       = int
-  # parm2:    rcx:rcx   = &apos;java/lang/Object&apos;
-  # parm3:    r8        = int
-  # parm4:    r9        = int
-  #           [sp+0x60]  (sp of caller)
+   {method} {0x00007fb916597930} &apos;arraycopy&apos; &apos;(Ljava/lang/Object;ILjava/lang/Object;II)V&apos; in &apos;java/lang/System&apos;
+   parm0:    rsi:rsi   = &apos;java/lang/Object&apos;
+   parm1:    rdx       = int
+   parm2:    rcx:rcx   = &apos;java/lang/Object&apos;
+   parm3:    r8        = int
+   parm4:    r9        = int
+             [sp+0x60]  (sp of caller)
   0x00007fb91ce54480: 448b5608            mov       r10d,dword ptr [rsi+8h]
   0x00007fb91ce54484: 49c1e203            shl       r10,3h
   0x00007fb91ce54488: 493bc2              cmp       rax,r10
@@ -210,10 +210,10 @@ Code:
 Argument 0 is unknown.RIP: 0x7fb91ceedae0 Code size: 0x000000d8
 [Entry Point]
 [Constants]
-  # {method} {0x00007fb916581db0} &apos;charAt&apos; &apos;(I)C&apos; in &apos;java/lang/String&apos;
-  # this:     rsi:rsi   = &apos;java/lang/String&apos;
-  # parm0:    rdx       = int
-  #           [sp+0x30]  (sp of caller)
+   {method} {0x00007fb916581db0} &apos;charAt&apos; &apos;(I)C&apos; in &apos;java/lang/String&apos;
+   this:     rsi:rsi   = &apos;java/lang/String&apos;
+   parm0:    rdx       = int
+             [sp+0x30]  (sp of caller)
   0x00007fb91ceedae0: 448b5608            mov       r10d,dword ptr [rsi+8h]
   0x00007fb91ceedae4: 49c1e203            shl       r10,3h
   0x00007fb91ceedae8: 493bc2              cmp       rax,r10
@@ -348,8 +348,8 @@ Code:
 Argument 0 is unknown.RIP: 0x7fb91ceef8c0 Code size: 0x00000290
 [Entry Point]
 [Constants]
-  # {method} {0x00007fb916583000} &apos;hashCode&apos; &apos;()I&apos; in &apos;java/lang/String&apos;
-  #           [sp+0x40]  (sp of caller)
+   {method} {0x00007fb916583000} &apos;hashCode&apos; &apos;()I&apos; in &apos;java/lang/String&apos;
+             [sp+0x40]  (sp of caller)
   0x00007fb91ceef8c0: 448b5608            mov       r10d,dword ptr [rsi+8h]
   0x00007fb91ceef8c4: 49c1e203            shl       r10,3h
   0x00007fb91ceef8c8: 4c3bd0              cmp       r10,rax
@@ -557,11 +557,11 @@ Code:
 Argument 0 is unknown.RIP: 0x7fb91cef04a0 Code size: 0x00000388
 [Entry Point]
 [Constants]
-  # {method} {0x00007fb916583180} &apos;indexOf&apos; &apos;(II)I&apos; in &apos;java/lang/String&apos;
-  # this:     rsi:rsi   = &apos;java/lang/String&apos;
-  # parm0:    rdx       = int
-  # parm1:    rcx       = int
-  #           [sp+0x40]  (sp of caller)
+   {method} {0x00007fb916583180} &apos;indexOf&apos; &apos;(II)I&apos; in &apos;java/lang/String&apos;
+   this:     rsi:rsi   = &apos;java/lang/String&apos;
+   parm0:    rdx       = int
+   parm1:    rcx       = int
+             [sp+0x40]  (sp of caller)
   0x00007fb91cef04a0: 448b5608            mov       r10d,dword ptr [rsi+8h]
   0x00007fb91cef04a4: 49c1e203            shl       r10,3h
   0x00007fb91cef04a8: 4c3bd0              cmp       r10,rax
@@ -858,10 +858,10 @@ Code:
 Argument 0 is unknown.RIP: 0x7fb91cef0c20 Code size: 0x00000550
 [Entry Point]
 [Constants]
-  # {method} {0x00007fb916582618} &apos;equals&apos; &apos;(Ljava/lang/Object;)Z&apos; in &apos;java/lang/String&apos;
-  # this:     rsi:rsi   = &apos;java/lang/String&apos;
-  # parm0:    rdx:rdx   = &apos;java/lang/Object&apos;
-  #           [sp+0x40]  (sp of caller)
+   {method} {0x00007fb916582618} &apos;equals&apos; &apos;(Ljava/lang/Object;)Z&apos; in &apos;java/lang/String&apos;
+   this:     rsi:rsi   = &apos;java/lang/String&apos;
+   parm0:    rdx:rdx   = &apos;java/lang/Object&apos;
+             [sp+0x40]  (sp of caller)
   0x00007fb91cef0c20: 448b5608            mov       r10d,dword ptr [rsi+8h]
   0x00007fb91cef0c24: 49c1e203            shl       r10,3h
   0x00007fb91cef0c28: 4c3bd0              cmp       r10,rax
@@ -1255,8 +1255,8 @@ Code:
 Argument 0 is unknown.RIP: 0x7fb91cef1600 Code size: 0x00000150
 [Entry Point]
 [Constants]
-  # {method} {0x00007fb91657e480} &apos;&lt;init&gt;&apos; &apos;()V&apos; in &apos;java/lang/Object&apos;
-  #           [sp+0x40]  (sp of caller)
+   {method} {0x00007fb91657e480} &apos;&lt;init&gt;&apos; &apos;()V&apos; in &apos;java/lang/Object&apos;
+             [sp+0x40]  (sp of caller)
   0x00007fb91cef1600: 448b5608            mov       r10d,dword ptr [rsi+8h]
   0x00007fb91cef1604: 49c1e203            shl       r10,3h
   0x00007fb91cef1608: 4c3bd0              cmp       r10,rax
@@ -1361,8 +1361,8 @@ Code:
 Argument 0 is unknown.RIP: 0x7fb91cef1980 Code size: 0x00000170
 [Entry Point]
 [Constants]
-  # {method} {0x00007fb916581c60} &apos;length&apos; &apos;()I&apos; in &apos;java/lang/String&apos;
-  #           [sp+0x40]  (sp of caller)
+   {method} {0x00007fb916581c60} &apos;length&apos; &apos;()I&apos; in &apos;java/lang/String&apos;
+             [sp+0x40]  (sp of caller)
   0x00007fb91cef1980: 448b5608            mov       r10d,dword ptr [rsi+8h]
   0x00007fb91cef1984: 49c1e203            shl       r10,3h
   0x00007fb91cef1988: 4c3bd0              cmp       r10,rax
@@ -1505,13 +1505,13 @@ Code:
 Argument 0 is unknown.RIP: 0x7fb91cef23c0 Code size: 0x00000b38
 [Entry Point]
 [Constants]
-  # {method} {0x00007fb9166cdd90} &apos;encode&apos; &apos;([CII[B)I&apos; in &apos;sun/nio/cs/UTF_8$Encoder&apos;
-  # this:     rsi:rsi   = &apos;sun/nio/cs/UTF_8$Encoder&apos;
-  # parm0:    rdx:rdx   = &apos;[C&apos;
-  # parm1:    rcx       = int
-  # parm2:    r8        = int
-  # parm3:    r9:r9     = &apos;[B&apos;
-  #           [sp+0x90]  (sp of caller)
+   {method} {0x00007fb9166cdd90} &apos;encode&apos; &apos;([CII[B)I&apos; in &apos;sun/nio/cs/UTF_8$Encoder&apos;
+   this:     rsi:rsi   = &apos;sun/nio/cs/UTF_8$Encoder&apos;
+   parm0:    rdx:rdx   = &apos;[C&apos;
+   parm1:    rcx       = int
+   parm2:    r8        = int
+   parm3:    r9:r9     = &apos;[B&apos;
+             [sp+0x90]  (sp of caller)
   0x00007fb91cef23c0: 448b5608            mov       r10d,dword ptr [rsi+8h]
   0x00007fb91cef23c4: 49c1e203            shl       r10,3h
   0x00007fb91cef23c8: 4c3bd0              cmp       r10,rax
@@ -2426,11 +2426,11 @@ Code:
 Argument 0 is unknown.RIP: 0x7fb91cef3900 Code size: 0x00000330
 [Entry Point]
 [Constants]
-  # {method} {0x00007fb916582df8} &apos;startsWith&apos; &apos;(Ljava/lang/String;I)Z&apos; in &apos;java/lang/String&apos;
-  # this:     rsi:rsi   = &apos;java/lang/String&apos;
-  # parm0:    rdx:rdx   = &apos;java/lang/String&apos;
-  # parm1:    rcx       = int
-  #           [sp+0x40]  (sp of caller)
+   {method} {0x00007fb916582df8} &apos;startsWith&apos; &apos;(Ljava/lang/String;I)Z&apos; in &apos;java/lang/String&apos;
+   this:     rsi:rsi   = &apos;java/lang/String&apos;
+   parm0:    rdx:rdx   = &apos;java/lang/String&apos;
+   parm1:    rcx       = int
+             [sp+0x40]  (sp of caller)
   0x00007fb91cef3900: 448b5608            mov       r10d,dword ptr [rsi+8h]
   0x00007fb91cef3904: 49c1e203            shl       r10,3h
   0x00007fb91cef3908: 4c3bd0              cmp       r10,rax
@@ -2714,10 +2714,10 @@ Argument 0 is unknown.RIP: 0x7fb91cef4040 Code size: 0x00000190
 [Entry Point]
 [Verified Entry Point]
 [Constants]
-  # {method} {0x00007fb9166747d8} &apos;min&apos; &apos;(II)I&apos; in &apos;java/lang/Math&apos;
-  # parm0:    rsi       = int
-  # parm1:    rdx       = int
-  #           [sp+0x40]  (sp of caller)
+   {method} {0x00007fb9166747d8} &apos;min&apos; &apos;(II)I&apos; in &apos;java/lang/Math&apos;
+   parm0:    rsi       = int
+   parm1:    rdx       = int
+             [sp+0x40]  (sp of caller)
   0x00007fb91cef4040: 89842400c0feff      mov       dword ptr [rsp+0fffffffffffec000h],eax
   0x00007fb91cef4047: 55                  push      rbp
   0x00007fb91cef4048: 4883ec30            sub       rsp,30h
