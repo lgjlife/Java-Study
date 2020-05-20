@@ -14,17 +14,49 @@ import java.util.Arrays;
 public class Code1{
     public static void main(String[] args){
 
-
+     
         Solution solution = new Solution();
 
-        int[] nums= {2, 7, 11, 15};
-        int target = 22;
+        int[] nums= {-2, -5,-4, 2, 4,32767};
+
+        solution.test(nums);
+        int target = -2;
         int[] result =  solution.twoSum1(nums, target);
 
         System.out.println("result = " + Arrays.toString(result));
     }
 }
 class Solution {
+
+
+    public void test(int[] nums){
+        int volume =1<<15; //1000 0000 0000 0000
+        int bitMode = volume-1;//011111111111 
+        int [] result =new int[volume];
+
+        for (int i=0;i<nums.length;i++){
+            result[nums[i] & bitMode]=i+1;
+        }
+
+        System.out.println(Arrays.toString(result));
+
+    }
+
+    public int[] twoSum1(int[] nums, int target) { 
+        int volume =1<<15; //1000 0000 0000 0000
+        int bitMode = volume-1;//011111111111 
+        int [] result =new int[volume];
+
+        for (int i=0;i<nums.length;i++){
+            int c = (target - nums[i]) & bitMode;
+            System.out.println(c +  "  " + Integer.toBinaryString(c));
+            if (result[c]!=0){
+                return new int[]{result[c]-1,i};
+            }
+            result[nums[i] & bitMode]=i+1;
+        }
+    return null;
+}
 
     //常规方法 慢
     public int[] twoSum(int[] nums, int target) {
@@ -48,20 +80,8 @@ class Solution {
         return  new int[]{};
     }
 
-    public int[] twoSum1(int[] nums, int target) { 
-            int volume =2048; //100000000000 
-            int bitMode = volume-1;//011111111111 
-            int [] result =new int[volume];
+    
 
-            for (int i=0;i<nums.length;i++){
-                int c = (target - nums[i]) & bitMode;
-                System.out.println(c +  "  " + Integer.toBinaryString(c));
-                if (result[c]!=0){
-                    return new int[]{result[c],i};
-                }
-                result[nums[i] & bitMode]=i;
-            }
-        return null;
-    }
+    
 
 }
