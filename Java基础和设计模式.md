@@ -4652,7 +4652,6 @@ public class Client {
 
 在工厂模式中，我们在创建对象时不会对客户端暴露创建逻辑，并且是通过使用一个共同的接口来指向新创建的对象。
 
-![](https://www.runoob.com/wp-content/uploads/2014/08/factory_pattern_uml_diagram.jpg)
 
 **介绍**
 * 意图
@@ -4712,11 +4711,11 @@ public class NewCreator{
 
 ### 16.4.4. 抽象工厂模式
 <a href="#menu"  >目录</a>
+
 抽象工厂模式（Abstract Factory Pattern）是围绕一个超级工厂创建其他工厂。该超级工厂又称为其他工厂的工厂。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
+**抽象工厂模式**提供一个创建一系列相关或者相互依赖对象的接口,而无需指定它们具体的类.
 
 在抽象工厂模式中，接口是负责创建一个相关对象的工厂，不需要显式指定它们的类。每个生成的工厂都能按照工厂模式提供对象。
-
-![](https://www.runoob.com/wp-content/uploads/2014/08/abstractfactory_pattern_uml_diagram.jpg)
 
 **介绍**
 * 意图
@@ -4729,16 +4728,65 @@ public class NewCreator{
     * 在一个产品族里面，定义多个产品。
 * 关键代码
     * 在一个工厂里聚合多个同类产品。
-* 应用实例：工作了，为了参加一些聚会，肯定有两套或多套衣服吧，比如说有商务装（成套，一系列具体产品）、时尚装（成套，一系列具体产品），甚至对于一个家庭来说，可能有商务女装、商务男装、时尚女装、时尚男装，这些也都是成套的，即一系列具体产品。假设一种情况（现实中是不存在的，要不然，没法进入共产主义了，但有利于说明抽象工厂模式），在您的家中，某一个衣柜（具体工厂）只能存放某一种这样的衣服（成套，一系列具体产品），每次拿这种成套的衣服时也自然要从这个衣柜中取出了。用 OOP 的思想去理解，所有的衣柜（具体工厂）都是衣柜类的（抽象工厂）某一个，而每一件成套的衣服又包括具体的上衣（某一具体产品），裤子（某一具体产品），这些具体的上衣其实也都是上衣（抽象产品），具体的裤子也都是裤子（另一个抽象产品）。
 * 优点
     * 当一个产品族中的多个对象被设计成一起工作时，它能保证客户端始终只使用同一个产品族中的对象。
+    * 分离接口和实现
+        * 客户端使用抽象工厂创建需要的对象,而客户端根本就不知道具体的实现是谁,客户端只是面向产品的接口编程而已.客户端从具体的产品实现中解耦
+    * 使得切换产品簇变得容易.客户端选用不同的工厂实现,就相当于是在切换不同的产品簇
 * 缺点
-    * 产品族扩展非常困难，要增加一个系列的某一产品，既要在抽象的 Creator 里加代码，又要在具体的里面加代码。
+    * 产品族扩展非常困难，要增加一个系列的某一产品，既要在抽象的 Factory 里加代码，又要在具体的工厂实现类里面加代码。
 * 使用场景
-    * QQ 换皮肤，一整套一起换。 
-    * 生成不同操作系统的程序。
+    * 如果希望一个系统独立于它的产品的创建,组合和表示的时候.也就是,希望一个系统只是知道产品的接口,而不关心实现的时候
 * 注意事项
     * 产品族难扩展，产品等级易扩展。
+
+简单工厂和工厂方法模式针对是单个产品的创建.而抽象工厂方法针对的是多个产品的创建,这多个产品组合组成了一个新产品.抽象工厂提供创建的约束,提供所有子类的一个统一的外观,来让客户端调用.具体创建对象由工厂的实现类来完成.
+
+![抽象工厂模式](pic/java/设计模式/抽象工厂模式.png)
+
+```java
+//工厂类
+public interface Factory {    
+    ProductA createProductA();
+    ProductA createProductB();
+}
+//每个工厂实现类构成一个产品簇
+public class ConcreatFactory1 implements Factory  {    
+    ProductA createProductA(){
+        return new ProductA1();
+    }
+    ProductA createProductB(){
+        return new ProductB1();
+    }
+}
+public class ConcreatFactory2 implements Factory  {    
+    ProductA createProductA(){
+        return new ProductA2();
+    }
+    ProductA createProductB(){
+        return new ProductB2();  
+    }
+}
+
+//产品类
+public interface ProductA{}
+public interface ProductB{}
+
+public class ProductA1 implements ProductA{}
+public class ProductA2 implements ProductA{}
+public class ProductB1 implements ProductB{}
+public class ProductB2 implements ProductB{}
+
+public  class Client{
+    
+    public void run(){
+        Factory factory = new ConcreatFactory1();
+        factory.createProductA();
+        factory.createProductB();
+    }
+}
+```
+
 
 ### 16.4.5. 简单工厂&抽象工厂&工厂方法比较
 <a href="#menu"  >目录</a>
