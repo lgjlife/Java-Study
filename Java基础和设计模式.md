@@ -5157,13 +5157,9 @@ public class StrategyPatternDemo {
 
 ## 16.18. 适配器模式
 <a href="#menu"  >目录</a>
-适配器模式（Adapter Pattern）是作为两个不兼容的接口之间的桥梁。这种类型的设计模式属于结构型模式，它结合了两个独立接口的功能。
 
-这种模式涉及到一个单一的类，该类负责加入独立的或不兼容的接口功能。举个真实的例子，读卡器是作为内存卡和笔记本之间的适配器。您将内存卡插入读卡器，再将读卡器插入笔记本，这样就可以通过笔记本来读取内存卡。
-
-我们通过下面的实例来演示适配器模式的使用。其中，音频播放器设备只能播放 mp3 文件，通过使用一个更高级的音频播放器来播放 vlc 和 mp4 文件。
-
-![](https://www.runoob.com/wp-content/uploads/2014/08/adapter_pattern_uml_diagram.jpg)
+**适配器模式**
+将一个类的接口转换成客户希望的另一个接口.适配器模式使得原本由于接口不兼容而不能一起工作的那些类可以一起工作.适配器模式（Adapter Pattern）是作为两个不兼容的接口之间的桥梁。这种类型的设计模式属于结构型模式，它结合了两个独立接口的功能。
 
 **介绍**
 * 意图
@@ -5178,12 +5174,6 @@ public class StrategyPatternDemo {
     * 继承或依赖（推荐）。
 * 关键代码
     * 适配器继承或依赖已有的对象，实现想要的目标接口。
-
-* 应用实例
-    * 美国电器 110V，中国 220V，就要有一个适配器将 110V 转化为 220V。 
-    * JAVA JDK 1.1 提供了 Enumeration 接口，而在 1.2 中提供了 Iterator 接口，想要使用 1.2 的 JDK，则要将以前系统的 Enumeration 接口转化为 Iterator 接口，这时就需要适配器模式。
-    * 在 LINUX 上运行 WINDOWS 程序。 
-    * JAVA 中的 jdbc。
 * 优点
     * 可以让任何两个没有关联的类一起运行。
     * 提高了类的复用。 
@@ -5196,92 +5186,45 @@ public class StrategyPatternDemo {
     * 有动机地修改一个正常运行的系统的接口，这时应该考虑使用适配器模式。
 * 注意事项
     * 适配器不是在详细设计时添加的，而是解决正在服役的项目的问题。
-```java
-public interface MediaPlayer {
-   public void play(String audioType, String fileName);
-}
-public interface AdvancedMediaPlayer { 
-   public void playVlc(String fileName);
-   public void playMp4(String fileName);
-}
-public class VlcPlayer implements AdvancedMediaPlayer{
-   @Override
-   public void playVlc(String fileName) {
-      System.out.println("Playing vlc file. Name: "+ fileName);      
-   }
- 
-   @Override
-   public void playMp4(String fileName) {
-      //什么也不做
-   }
-}
-public class Mp4Player implements AdvancedMediaPlayer{
- 
-   @Override
-   public void playVlc(String fileName) {
-      //什么也不做
-   }
- 
-   @Override
-   public void playMp4(String fileName) {
-      System.out.println("Playing mp4 file. Name: "+ fileName);      
-   }
-}
-public class MediaAdapter implements MediaPlayer {
- 
-   AdvancedMediaPlayer advancedMusicPlayer;
- 
-   public MediaAdapter(String audioType){
-      if(audioType.equalsIgnoreCase("vlc") ){
-         advancedMusicPlayer = new VlcPlayer();       
-      } else if (audioType.equalsIgnoreCase("mp4")){
-         advancedMusicPlayer = new Mp4Player();
-      }  
-   }
- 
-   @Override
-   public void play(String audioType, String fileName) {
-      if(audioType.equalsIgnoreCase("vlc")){
-         advancedMusicPlayer.playVlc(fileName);
-      }else if(audioType.equalsIgnoreCase("mp4")){
-         advancedMusicPlayer.playMp4(fileName);
-      }
-   }
-}
-public class AudioPlayer implements MediaPlayer {
-   MediaAdapter mediaAdapter; 
- 
-   @Override
-   public void play(String audioType, String fileName) {    
- 
-      //播放 mp3 音乐文件的内置支持
-      if(audioType.equalsIgnoreCase("mp3")){
-         System.out.println("Playing mp3 file. Name: "+ fileName);         
-      } 
-      //mediaAdapter 提供了播放其他文件格式的支持
-      else if(audioType.equalsIgnoreCase("vlc") 
-         || audioType.equalsIgnoreCase("mp4")){
-         mediaAdapter = new MediaAdapter(audioType);
-         mediaAdapter.play(audioType, fileName);
-      }
-      else{
-         System.out.println("Invalid media. "+
-            audioType + " format not supported");
-      }
-   }   
-}
-public class AdapterPatternDemo {
-   public static void main(String[] args) {
-      AudioPlayer audioPlayer = new AudioPlayer();
- 
-      audioPlayer.play("mp3", "beyond the horizon.mp3");
-      audioPlayer.play("mp4", "alone.mp4");
-      audioPlayer.play("vlc", "far far away.vlc");
-      audioPlayer.play("avi", "mind me.avi");
-   }
-}
+    
+![适配器模式](pic/java/设计模式/适配器模式.png)
+* Client:客户端,调用自己需要的领域接口
+* Target: 客户端调用的接口
+* Adaptee: 已经存在的接口,通常能满足客户端的需求,但是接口和客户端要求的接口不一致,需要进行适配
+* Adapter: 适配器,把Adaptee适配成客户端需要的Target
 
+
+
+```java
+public interface Target{    
+    void request();
+} 
+public class Adaptee{
+    public void specRequest(){
+        //do sth
+    }
+} 
+
+public class Adapter implements Target{
+    private Adaptee adaptee;
+    public Adater(Adaptee adaptee){
+        this.adaptee = adaptee;
+    }
+    public void request(){
+        adaptee.specRequest();
+    }
+}
+public class Client{
+
+    public void  work(){
+
+        new Adapter(new Adaptee()).request();
+    }
+}
 ```
+
+
+
 
 ## 16.19. 迭代器模式
 <a href="#menu"  >目录</a>

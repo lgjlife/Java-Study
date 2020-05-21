@@ -27,26 +27,10 @@ public class Code1{
     }
 }
 class Solution {
-
-
-    public void test(int[] nums){
-        int volume =1<<15; //1000 0000 0000 0000
-        int bitMode = volume-1;//011111111111 
-        int [] result =new int[volume];
-
-        for (int i=0;i<nums.length;i++){
-            result[nums[i] & bitMode]=i+1;
-        }
-
-        System.out.println(Arrays.toString(result));
-
-    }
-
     public int[] twoSum1(int[] nums, int target) { 
         int volume =1<<15; //1000 0000 0000 0000
         int bitMode = volume-1;//011111111111 
         int [] result =new int[volume];
-
         for (int i=0;i<nums.length;i++){
             int c = (target - nums[i]) & bitMode;
             System.out.println(c +  "  " + Integer.toBinaryString(c));
@@ -55,33 +39,23 @@ class Solution {
             }
             result[nums[i] & bitMode]=i+1;
         }
-    return null;
-}
-
+        return null;
+    }
     //常规方法 慢
     public int[] twoSum(int[] nums, int target) {
-
         if(nums.length < 2){
             return  new int[]{};
         }
-
         int max = nums.length-1;
         for(int i  = 0; i < max;i++){
             int diff = target - nums[i];
             for(int index = i+1 ; index < nums.length ; index++){
                 if(diff == nums[index]){
                     return new int[]{i,index};
-                }
-    
+                }    
             }
-        }
-
-        
+        }       
         return  new int[]{};
-    }
-
-    
-
-    
+    } 
 
 }
