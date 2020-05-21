@@ -35,6 +35,7 @@
         - [2.12.3. 建议](#2123-建议)
     - [2.13. 内部类](#213-内部类)
     - [2.14. 枚举类](#214-枚举类)
+    - [2.15. Java克隆问题](#215-java克隆问题)
 - [3. 泛型](#3-泛型)
     - [3.1. 概述](#31-概述)
 - [4. 集合](#4-集合)
@@ -1300,6 +1301,42 @@ public enum BlogReturnCode{
     }
 }
 ```
+## 2.15. Java克隆问题
+
+Java的Object类已经提供了clone方法.类如果需要实现克隆功能.需要实现接口Cloneable接口,这个接口没有方法,是一个标识接口.
+
+* 浅克隆
+    * 只负责克隆按值传递的数据(比如基本数据类型及其包装类型,String 类型)
+* 深度克隆
+    * 除了浅拷贝要克隆的值外,还负责克隆引用类型的数据,基本上就是被克隆实例的所有属性数据都会被克隆.
+    * 如果被克隆的对象里面的属性是引用类型,则要一直递归地克隆下去,也就是说其所有引用类型的属性以及该属性内部的引用类型都要实现Cloneable接口并重写clone方法.否则将会克隆失败
+```java
+class Apple  implements Cloneable{ 
+    //需要实现Cloneable
+    private int number; 
+    //重写clone()
+    @Override
+    public Object clone() {
+    	Apple apple =  null;
+    	try {
+    		return (Apple)super.clone();    		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return apple;
+    }
+} 
+```
+
+在java中 clone为什么要用super.clone(）方法 这里为什么要用super不是this？
+* Object中的clone执行的时候使用了RTTI（run-time type identification）的机制,动态得找到目前正在调用clone方法的那个reference，根据它的大小申请内存空间，然后进行bitwise的复制，将该对象的内存空间完全复制到新的空间中去，从而达到shallowcopy的目的。
+所以你调用super.clone() 得到的是当前调用类的副本，而不是父类的副本。根本没有必用调用this.clone();
+* 要让实例调用clone方法就需要让此类实现Cloneable接口，API里面还有句话是：如果在没有实现 Cloneable 接口的实例上调用 Object 的 clone 方法，则会导致抛出 CloneNotSupportedException 异常，这便是“合法”的含义。 但请注意，Cloneable接口只是个标签接口，不含任何需要实现的方法，就像Serializable接口一样。
+* 总之，一般如果你的子类没有特殊需要而重写clone()方法就直接用super.clone() 就行了。
+
+
+
+    
 # 3. 泛型
 <a href="#menu"  >目录</a>
 
@@ -4709,11 +4746,15 @@ public class NewCreator{
 }
 ```
 
+
+
 ### 16.4.4. 抽象工厂模式
 <a href="#menu"  >目录</a>
 
 抽象工厂模式（Abstract Factory Pattern）是围绕一个超级工厂创建其他工厂。该超级工厂又称为其他工厂的工厂。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
 **抽象工厂模式**提供一个创建一系列相关或者相互依赖对象的接口,而无需指定它们具体的类.
+
+
 
 在抽象工厂模式中，接口是负责创建一个相关对象的工厂，不需要显式指定它们的类。每个生成的工厂都能按照工厂模式提供对象。
 
@@ -4795,6 +4836,7 @@ public  class Client{
 * 抽象工厂模式是用来选择产品簇的实现,也就是抽象工厂里有多个选择并创建对象的方法(不同接口).这些对象之间相互关联.比如屏幕/电池/主板.不同的参数可以组装不同的手机.和简单工厂的区别就是创建的对象关联性比较大
 * 和简单工厂的方法的区别是将选择具体实现的功能放在工厂子类里实现.
 
+
 ### 16.4.6. 模板方法模式
 <a href="#menu"  >目录</a>
 在模板模式（Template Pattern）中，一个抽象类公开定义了执行它的方法的方式/模板。它的子类可以按需要重写方法实现，但调用将以抽象类中定义的方式进行。这种类型的设计模式属于行为型模式。
@@ -4829,11 +4871,11 @@ public  class Client{
 
 ### 16.4.7. 建造者模式
 <a href="#menu"  >目录</a>
+
 建造者模式（Builder Pattern）使用多个简单的对象一步一步构建成一个复杂的对象。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
 
 一个 Builder 类会一步一步构造最终的对象。该 Builder 类是独立于其他对象的。
 
-![](https://www.runoob.com/wp-content/uploads/2014/08/builder_pattern_uml_diagram.jpg)
 
 **介绍**
 * 意图
@@ -4910,9 +4952,7 @@ public  class Client{
 <a href="#menu"  >目录</a>
 原型模式（Prototype Pattern���是用于创建重复的对象，同时又能保证性能。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
 
-这种模式是实现了一个原型接口，该接口用于创建当前对象的克隆。当直接创建对象的代价比较大时，则采用这种模式。例如，一个对象需要在一个高代价的数据库操作之后被创建。我们可以缓存该对象，在下一个请求时返回它的克隆，在需要的时候更新数据库，以此来减少数据库调用。
-
-![](https://www.runoob.com/wp-content/uploads/2014/08/prototype_pattern_uml_diagram.jpg)
+这种模式是实现了一个原型接口，该接口用于创建当前对象的克隆。当直接创建对象的代价比较大时，则采用这种模式。例如，一个对象需要在一个高代价的数据库操作之后被创建。我们可以缓存该对象，在下一个请求时返回它的克隆，在需要的时候更新数据库，以此来减少数据库调用。  
 
 **介绍**
 * 意图
@@ -4929,8 +4969,7 @@ public  class Client{
 * 关键代码
     * 实现克隆操作，在 JAVA 继承 Cloneable，重写 clone()，在 .NET 中可以使用 Object 类的 MemberwiseClone() 方法来实现对象的浅拷贝或通过序列化的方式来实现深拷贝。 
     * 原型模式同样用于隔离类对象的使用者和具体类型（易变类）之间的耦合关系，它同样要求这些"易变类"拥有稳定的接口。
-* 应用实例
-    * 细胞分裂。 
+* 应用实例 
     * JAVA 中的 Object clone() 方法。
 * 优点
     * 性能提高。
@@ -4945,10 +4984,29 @@ public  class Client{
     * 通过 new 产生一个对象需要非常繁琐的数据准备或访问权限，则可以使用原型模式。 
     * 一个对象多个修改者的场景。 
     * 一个对象需要提供给其他对象访问，而且各个调用者可能都需要修改其值时，可以考虑使用原型模式拷贝多个对象供调用者使用。
-    * 在实际项目中，原型模式很少单独出现，一般是和工厂方法模式一起出现，通过 clone 的方法创建一个对象，然后由工厂方法提供给调用者。原型模式已经与 Java 融为浑然一体，大家可以随手拿来使用。
+    * 在实际项目中，原型模式很少单独出现，一般是和工厂方法模式一起出现，通过 clone 的方法创建一个对象，然后由工厂方法提供给调用者。
 * 注意事项
-    * 与通过对一个类进行实例化来构造新对象不同的是，原型模式是通过拷贝一个现有对象生成新对象的。浅拷贝实现 Cloneable，重写，深拷贝是通过实现 Serializable 读取二进制流。
+    * 与通过对一个类进行实例化来构造新对象不同的是，原型模式是通过拷贝一个现有对象生成新对象的。浅拷贝实现 Cloneable重写，深拷贝是通过实现 Serializable 读取二进制流。
 
+```java
+```java
+class Apple  implements Cloneable{ 
+    //需要实现Cloneable
+    private int number; 
+    //重写clone()
+    @Override
+    public Object clone() {
+    	Apple apple =  null;
+    	try {
+    		return (Apple)super.clone();    		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return apple;
+    }
+} 
+```
+```
 ### 16.4.10. 中介者模式
 <a href="#menu"  >目录</a>
 中介者模式（Mediator Pattern）是用来降低多个对象和类之间的通信复杂性。这种模式提供了一个中介类，该类通常处理不同类之间的通信，并支持松耦合，使代码易于维护。中介者模式属于行为型模式。
