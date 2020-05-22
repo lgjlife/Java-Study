@@ -19,7 +19,7 @@ public class Code1{
 
         int[] nums= {-2, -5,-4, 2, 4,32767};
 
-        solution.test(nums);
+   
         int target = -2;
         int[] result =  solution.twoSum1(nums, target);
 
