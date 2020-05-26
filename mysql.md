@@ -4,10 +4,11 @@
 - [1. MySQL](#1-mysql)
     - [1.1. 基本概念](#11-基本概念)
         - [1.1.1. 基本概念](#111-基本概念)
-        - [1.1.2. 常用工具](#112-常用工具)
-        - [1.1.3. 逻辑架构图](#113-逻辑架构图)
-        - [1.1.4. OLAP、OLTP的介绍和比较](#114-olapoltp的介绍和比较)
-        - [1.1.5. 常用配置](#115-常用配置)
+        - [1.1.2. 安装和配置](#112-安装和配置)
+        - [1.1.3. 常用工具](#113-常用工具)
+        - [1.1.4. 逻辑架构图](#114-逻辑架构图)
+        - [1.1.5. OLAP、OLTP的介绍和比较](#115-olapoltp的介绍和比较)
+        - [1.1.6. 常用配置](#116-常用配置)
     - [1.2. NoSQL与关系型数据库设计理念比较](#12-nosql与关系型数据库设计理念比较)
         - [1.2.1. 关系型数据库](#121-关系型数据库)
         - [1.2.2. 非关系型数据库](#122-非关系型数据库)
@@ -18,6 +19,7 @@
         - [1.6.1. 查询入门](#161-查询入门)
         - [1.6.2. 多表连接查询](#162-多表连接查询)
         - [1.6.3. union 查询](#163-union-查询)
+        - [1.6.4. 子查询](#164-子查询)
     - [1.7. 函数](#17-函数)
         - [1.7.1. 聚集函数](#171-聚集函数)
         - [1.7.2. 数学函数](#172-数学函数)
@@ -86,14 +88,9 @@
         - [1.17.2. 套接字文件](#1172-套接字文件)
         - [1.17.3. pid文件](#1173-pid文件)
         - [1.17.4. 表结构定义文件](#1174-表结构定义文件)
-        - [1.17.5. 日志](#1175-日志)
-            - [1.17.5.1. 错误日志](#11751-错误日志)
-            - [1.17.5.2. 查询日志](#11752-查询日志)
-            - [1.17.5.3. 二进制日志](#11753-二进制日志)
-            - [1.17.5.4. 慢查询日志](#11754-慢查询日志)
-        - [1.17.6. InnoDB存储引擎文件](#1176-innodb存储引擎文件)
-            - [1.17.6.1. 表空间文件](#11761-表空间文件)
-            - [1.17.6.2. 重做日志文件](#11762-重做日志文件)
+        - [1.17.5. InnoDB存储引擎文件](#1175-innodb存储引擎文件)
+            - [1.17.5.1. 表空间文件](#11751-表空间文件)
+            - [1.17.5.2. 重做日志文件](#11752-重做日志文件)
     - [1.18. 表与数据类型优化](#118-表与数据类型优化)
         - [1.18.1. 选择优化的数据类型](#1181-选择优化的数据类型)
         - [1.18.2. 表设计中的陷阱](#1182-表设计中的陷阱)
@@ -131,7 +128,8 @@
         - [1.20.1. 基本概念](#1201-基本概念)
             - [1.20.1.1. 分类](#12011-分类)
             - [1.20.1.2. 索引用途](#12012-索引用途)
-            - [1.20.1.3. 索引的误区](#12013-索引的误区)
+            - [1.20.1.3. 索引优化](#12013-索引优化)
+            - [1.20.1.4. 索引的误区](#12014-索引的误区)
         - [1.20.2. 索引概述](#1202-索引概述)
         - [1.20.3. 表和索引结构](#1203-表和索引结构)
             - [1.20.3.1. 索引页和表页](#12031-索引页和表页)
@@ -289,30 +287,41 @@
             - [1.27.2.2. 降低平均恢复时间](#12722-降低平均恢复时间)
             - [1.27.2.3. 使用复制避免单点故障](#12723-使用复制避免单点故障)
     - [1.28. 分库分表](#128-分库分表)
-    - [1.29. 备份与恢复](#129-备份与恢复)
-        - [1.29.1. 为什么要备份](#1291-为什么要备份)
-        - [1.29.2. 定义恢复需求](#1292-定义恢复需求)
-        - [1.29.3. 设计MYSQL备份方案](#1293-设计mysql备份方案)
-        - [1.29.4. 备份数据](#1294-备份数据)
-    - [1.30. 查询性能优化](#130-查询性能优化)
-        - [1.30.1. 为什么查询会变慢](#1301-为什么查询会变慢)
-        - [1.30.2. 慢查询基础](#1302-慢查询基础)
-        - [1.30.3. 重构查询方式](#1303-重构查询方式)
-        - [1.30.4. 查询执行的基础](#1304-查询执行的基础)
-        - [1.30.5. 查询优化器的局限性](#1305-查询优化器的局限性)
-        - [1.30.6. 查询优化器的提示](#1306-查询优化器的提示)
-        - [1.30.7. 优化特定类型的查询](#1307-优化特定类型的查询)
-        - [1.30.8. 案例学习](#1308-案例学习)
-    - [1.31. 性能调优](#131-性能调优)
-        - [1.31.1. 选择合适的CPU](#1311-选择合适的cpu)
-        - [1.31.2. 内存的重要性](#1312-内存的重要性)
-        - [1.31.3. 硬盘对数据库性能的影响](#1313-硬盘对数据库性能的影响)
-        - [1.31.4. 合理地设置RAIN](#1314-合理地设置rain)
-        - [1.31.5. 操作系统的影响](#1315-操作系统的影响)
-        - [1.31.6. 不同文件系统的影响](#1316-不同文件系统的影响)
-        - [1.31.7. 选择合适的基准测试](#1317-选择合适的基准测试)
-            - [1.31.7.1. sysbench](#13171-sysbench)
-            - [1.31.7.2. mysql-tpcc](#13172-mysql-tpcc)
+    - [1.29. 查询性能优化](#129-查询性能优化)
+        - [1.29.1. 为什么查询会变慢](#1291-为什么查询会变慢)
+        - [1.29.2. 慢查询基础](#1292-慢查询基础)
+        - [1.29.3. 重构查询方式](#1293-重构查询方式)
+        - [1.29.4. 查询执行的基础](#1294-查询执行的基础)
+        - [1.29.5. 查询优化器的局限性](#1295-查询优化器的局限性)
+        - [1.29.6. 查询优化器的提示](#1296-查询优化器的提示)
+        - [1.29.7. 优化特定类型的查询](#1297-优化特定类型的查询)
+        - [1.29.8. 案例学习](#1298-案例学习)
+    - [1.30. 性能调优](#130-性能调优)
+        - [1.30.1. 选择合适的CPU](#1301-选择合适的cpu)
+        - [1.30.2. 内存的重要性](#1302-内存的重要性)
+        - [1.30.3. 硬盘对数据库性能的影响](#1303-硬盘对数据库性能的影响)
+        - [1.30.4. 合理地设置RAIN](#1304-合理地设置rain)
+        - [1.30.5. 操作系统的影响](#1305-操作系统的影响)
+        - [1.30.6. 不同文件系统的影响](#1306-不同文件系统的影响)
+        - [1.30.7. 选择合适的基准测试](#1307-选择合适的基准测试)
+            - [1.30.7.1. sysbench](#13071-sysbench)
+            - [1.30.7.2. mysql-tpcc](#13072-mysql-tpcc)
+    - [1.31. 数据库管理](#131-数据库管理)
+        - [1.31.1. 安全性机制](#1311-安全性机制)
+            - [1.31.1.1. 用户创建](#13111-用户创建)
+            - [1.31.1.2. 权限管理](#13112-权限管理)
+        - [1.31.2. 日志管理](#1312-日志管理)
+            - [1.31.2.1. 错误日志](#13121-错误日志)
+            - [1.31.2.2. 通用查询日志](#13122-通用查询日志)
+            - [1.31.2.3. 二进制日志](#13123-二进制日志)
+            - [1.31.2.4. 慢查询日志](#13124-慢查询日志)
+            - [1.31.2.5. 操作二进制日志](#13125-操作二进制日志)
+        - [1.31.3. 数据库维护和性能提高](#1313-数据库维护和性能提高)
+            - [1.31.3.1. 备份与恢复](#13131-备份与恢复)
+                - [1.31.3.1.1. 为什么要备份](#131311-为什么要备份)
+                - [1.31.3.1.2. 定义恢复需求](#131312-定义恢复需求)
+                - [1.31.3.1.3. 设计MYSQL备份方案](#131313-设计mysql备份方案)
+                - [1.31.3.1.4. 备份数据](#131314-备份数据)
     - [1.32. SQL实战](#132-sql实战)
         - [1.32.1. 查找最晚入职员工的所有信息](#1321-查找最晚入职员工的所有信息)
         - [1.32.2. 查找入职员工时间排名倒数第三的员工所有信息](#1322-查找入职员工时间排名倒数第三的员工所有信息)
@@ -378,10 +387,10 @@
 
 <!-- /TOC -->
 # 1. MySQL
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ## 1.1. 基本概念
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.1.1. 基本概念
 * 基本概念
@@ -413,6 +422,8 @@
 ```sql
 FOREIGN KEY (P_Id) REFERENCES Persons(P_Id)
 ```
+
+
 
 **关系型数据库和非关系型数据库的区别**
 * 关系型数据库
@@ -454,16 +465,92 @@ FOREIGN KEY (P_Id) REFERENCES Persons(P_Id)
         * 无事务处理，附加功能bi和报表等支持也不好；
         * 数据结构相对复杂，复杂查询方面稍欠。
 
-### 1.1.2. 常用工具
+* SQL (sequel) Structure Query Language 结构化查询语言
+    * 主要功能
+        * 数据定义语言 DDL
+            * 定义数据库涉及各种对象，定义数据的完整性约束，保密限制等约束
+        * 数据操作语言 DML
+            * 实现对数据的操作(增删改查)
+        * 数据控制语言 DCL
+            * 实现对数据库的控制，包含数据完整性控制，数据安全性控制
+    * 优点
+        * 符合SQL语言规范的数据库都能使用
+        * 简单易学
+        * 高度非过程化，只需指出做什么，不用关注过程
+
+* mysql数据库分类
+    * 系统数据库:系统附带的数据库
+        * information_schema : 主要存储系统中的一些数据库对象信息，如用户表信息，列信息，权限信息，字符集信息和分区信息
+        * performance_schema : 主要存储数据库服务器性能信息
+        * mysql : 主要存储系统的用户权限信息
+        * test : 自动创建的用户数据库，任何用户都可以使用
+    * 用户数据库:　用户自行创建的数据库
+    
+### 1.1.2. 安装和配置
+
+* 下载[Mysql5.7](https://dev.mysql.com/downloads/mysql/5.7.html#downloads)
+* 解压: tar -xvf mysql-xxx.tar 
+* 移动: mv mysql-xxx /usr/local/mysql
+* 创建mysql用户组和用户并修改权限
+    * groupadd mysql
+    * useradd -r -g mysql mysql
+* 创建数据目录并赋予权限
+    * mkdir -p  /data/mysql              #创建目录
+    * chown mysql:mysql -R /data/mysql   #赋予权限
+* 配置
+```yml
+[mysqld]
+bind-address=0.0.0.0
+port=3306
+user=mysql
+
+basedir=/usr/local/mysql
+datadir=/data/mysql
+
+socket=/tmp/mysql.sock
+log-error=/data/mysql/mysql.err
+pid-file=/data/mysql/mysql.pid
+#character config
+character_set_server=utf8mb4
+symbolic-links=0
+explicit_defaults_for_timestamp=true
+```
+* 初始化数据库
+    * 进入mysql的bin目录
+        * cd /usr/local/mysql/bin/
+    * 初始化
+        * ./mysqld --defaults-file=/etc/my.cnf --basedir=/usr/local/mysql/ --datadir=/data/mysql/ --user=mysql --initialize
+    *  查看密码
+        * cat /data/mysql/mysql.err
+* 启动mysql，并更改root 密码
+    * 先将mysql.server放置到/etc/init.d/mysql中
+        * cp /usr/local/mysql/support-files/mysql.server /etc/init.d/mysql
+    * 启动
+        * srvice mysql start
+        * 查看是否运行: ps -ef|grep mysql
+* 修改密码
+    * 登录
+        * 可以把bin目录下的mysql链接到/usr/bin下: ln -s  /usr/local/mysql/bin/mysql    /usr/bin/mysql
+        * mysql -u root -p
+    * 修改密码
+        * SET PASSWORD = PASSWORD('123456');
+        * ALTER USER 'root'@'localhost' PASSWORD EXPIRE NEVER;
+        * FLUSH PRIVILEGES; 
+    * 如入法连接
+        * use mysql                                            #访问mysql库
+        * update user set host = '%' where user = 'root';      #使root能再任何host访问
+        * FLUSH PRIVILEGES; 
+
+### 1.1.3. 常用工具
 * workbench : 跨平台可视化客户端
 * MySQL Administrator : 一个图形交互客户机，用来简化MySQL服务器的管理。
 * MySQL Query Browser为一个图形交互客户机，用来编写和执行MySQL命令
 
-### 1.1.3. 逻辑架构图
-<a href="#menu" style="float:right">目录</a>
+### 1.1.4. 逻辑架构图
+<a href="#menu" >目录</a>
 
-![](https://github.com/lgjlife/Java-Study/blob/master/pic/mysql/mysql1.jpeg?raw=true)
-![](https://github.com/lgjlife/Java-Study/blob/master/pic/mysql/mysql2.jpeg?raw=true)
+![](pic/mysql/mysql1.jpeg)
+![](pic/mysql/mysql2.jpeg)
 
 * 连接--->认证---->确认可执行的权限
 * MYSQL5.5及以上提供线程池插件，可以使用池中较少的线程来服务大量的连接
@@ -479,8 +566,8 @@ FOREIGN KEY (P_Id) REFERENCES Persons(P_Id)
 * 对于SELECT查询，在解析优化之前，会先查询缓存，如果能改在其中找到对应的查询，服务器就不需要进行解析查询、优化和执行整个步骤，而是直接返回缓存的值，当修改数据时会更新该缓存。
 
 
-### 1.1.4. OLAP、OLTP的介绍和比较
-<a href="#menu" style="float:right">目录</a>
+### 1.1.5. OLAP、OLTP的介绍和比较
+<a href="#menu" >目录</a>
 
 **OLTP与OLAP的介绍**
 
@@ -540,156 +627,309 @@ OLAP，也叫联机分析处理（Online Analytical Processing）系统，有的
 
 
 
-### 1.1.5. 常用配置
-<a href="#menu" style="float:right">目录</a>
+### 1.1.6. 常用配置
+<a href="#menu" >目录</a>
 
-```
-[client]
-# 该目录下的内容常用来进行localhost登陆，一般不需要修改
-port = 3306	# 端口号
-socket = /var/lib/mysql/mysql.sock	# 套接字文件(localhost登陆会自动生成)
+```yml
+#客户端设置，即客户端默认的连接参数
+[client]　
+#默认连接端口
+port = 3307　　
+#用于本地连接的socket套接字　　　　　　 　　　　　　　　
+socket = /data/mysqldata/3307/mysql.sock
+
+#编码	　　
+default-character-set = utf8mb4　　
+　　　　　
+#服务端基本设置
+[mysqld]	　　　　　　　　　　　　　　　　　　
+port = 3307	MySQL监听端口
+#为MySQL客户端程序和服务器之间的本地通讯指定一个套接字文件
+socket = /data/mysqldata/3307/mysql.sock　
+#pid文件所在目录　	
+pid-file = /data/mysqldata/3307/mysql.pid　
+#使用该目录作为根目录（安装目录）　
+basedir = /usr/local/mysql-5.7.11　
+#数据文件存放的目录　　　　　
+datadir = /data/mysqldata/3307/data
+#MySQL存放临时文件的目录　　　　　
+tmpdir = /data/mysqldata/3307/tmp	
+#服务端默认编码（数据库级别）　　　　  
+character_set_server = utf8mb4
+#服务端默认的比对规则，排序规则	　　　　　　 
+collation_server = utf8mb4_bin
+#MySQL启动用户	　　　　　　 
+user = mysql
+	　　　　　　　　　　　　　　　　
+ #This variable applies when binary logging is enabled. It controls whether stored function creators can be trusted not to create stored functions that will cause 　　　　　　　　　　　　　　　　　　　　　　 
+ #unsafe events to be written to the binary log. If set to 0 (the default), users are not permitted to create or alter stored functions unless they have the SUPER 
+ #privilege in addition to the CREATE ROUTINE or ALTER ROUTINE privilege. 开启了binlog后，必须设置这个值为1.主要是考虑binlog安全
+log_bin_trust_function_creators = 1
+#性能优化的引擎，默认关闭
+performance_schema = 0	　　　　　　　　　　 
+#secure_auth 为了防止低版本的MySQL客户端(<4.1)使用旧的密码认证方式访问高版本的服务器。MySQL 5.6.7开始
+secure_auth = 1
+#默认为启用值1　　　　　　　　　　　　　　　
+secure_auth 
+#开启全文索引
+#ft_min_word_len = 1	　　　　　　　　　　　 
+#自动修复MySQL的myisam表
+#myisam_recover	　　　
+#明确时间戳默认null方式　　　　　　　　　　　	
+explicit_defaults_for_timestamp	　　　　　　	
+#计划任务（事件调度器）
+event_scheduler	
+#跳过外部锁定;External-locking用于多进程条件下为MyISAM数据表进行锁定　　　　　　　　　　　　　　	
+skip-external-locking　　　　　　　　　　　　
+#跳过客户端域名解析；当新的客户连接mysqld时，mysqld创建一个新的线程来处理请求。该线程先检查是否主机名在主机名缓存中。如果不在，线程试图解析主机名。
+skip-name-resolve　　　　　　　　　　　　　　
+
+#使用这一选项以消除MySQL进行DNS解析的时间。但需要注意，如果开启该选项，则所有远程主机连接授权都要使用IP地址方式，否则MySQL将无法正常处理连接请求!
+#MySQL绑定IP
+#bind-address = 127.0.0.1　　　　　　　　　　
+#为了安全起见，复制环境的数据库还是设置--skip-slave-start参数，防止复制随着mysql启动而自动启动
+skip-slave-start　　　　　　　　　　　　　　
+The number of seconds to wait for more data from a master/slave connection before aborting the read. MySQL主从复制的时候，
+#当Master和Slave之间的网络中断，但是Master和Slave无法察觉的情况下（比如防火墙或者路由问题）。
+#Slave会等待slave_net_timeout设置的秒数后，才能认为网络出现故障，然后才会重连并且追赶这段时间主库的数据。
+#1.用这三个参数来判断主从是否延迟是不准确的Slave_IO_Running,Slave_SQL_Running,Seconds_Behind_Master.还是用pt-heartbeat吧。
+#2.slave_net_timeout不要用默认值，设置一个你能接受的延时时间。
+slave_net_timeout = 30	　　　　　　　　　　　
+
+#设定是否支持命令load data local infile。如果指定local关键词，则表明支持从客户主机读文件
+local-infile = 0	　　　　　　　　　　　　　 
+#指定MySQL可能的连接数量。当MySQL主线程在很短的时间内得到非常多的连接请求，该参数就起作用，之后主线程花些时间（尽管很短）检查连接并且启动一个新线程。
+#back_log参数的值指出在MySQL暂时停止响应新请求之前的短时间内多少个请求可以被存在堆栈中。
+back_log = 1024 　　　　　　　　　　　　　　
+
+　　　　　　　　　　　　　　　　　　　　 
+#sql_mode = 'PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,NO_KEY_OPTIONS,NO_TABLE_OPTIONS,NO_FIELD_OPTIONS,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
+#sql_mode,定义了mysql应该支持的sql语法，数据校验等!  NO_AUTO_CREATE_USER：禁止GRANT创建密码为空的用户。
+sql_mode = NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER　　
+
+#NO_ENGINE_SUBSTITUTION 如果需要的存储引擎被禁用或未编译，可以防止自动替换存储引擎
+#索引块的缓冲区大小，对MyISAM表性能影响最大的一个参数.决定索引处理的速度，尤其是索引读的速度。默认值是16M，通过检查状态值Key_read_requests
+key_buffer_size = 32M　　　　　　　　　　　
+
+#和Key_reads，可以知道key_buffer_size设置是否合理
+#一个查询语句包的最大尺寸。消息缓冲区被初始化为net_buffer_length字节，但是可在需要时增加到max_allowed_packet个字节。
+#该值太小则会在处理大包时产生错误。如果使用大的BLOB列，必须增加该值。
+#这个值来限制server接受的数据包大小。有时候大的插入和更新会受max_allowed_packet 参数限制，导致写入或者更新失败。
+max_allowed_packet = 512M　　　　　　　　　　
+#线程缓存；主要用来存放每一个线程自身的标识信息，如线程id，线程运行时基本信息等等，我们可以通过 thread_stack 参数来设置为每一个线程栈分配多大的内存。
+thread_stack = 256K　　　　　　　　　　　　　
+#是MySQL执行排序使用的缓冲大小。如果想要增加ORDER BY的速度，首先看是否可以让MySQL使用索引而不是额外的排序阶段。
+#如果不能，可以尝试增加sort_buffer_size变量的大小。
+sort_buffer_size = 16M　　　　　　　　　　　 
+
+#如果对表的顺序扫描请求非常频繁，并且你认为频繁扫描进行得太慢，可以通过增加该变量值以及内存缓冲区大小提高其性能。
+#是MySQL读入缓冲区大小。对表进行顺序扫描的请求将分配一个读入缓冲区，MySQL会为它分配一段内存缓冲区。read_buffer_size变量控制这一缓冲区的大
+read_buffer_size = 16M　　　　　　　　　　　 
+
+#应用程序经常会出现一些两表（或多表）Join的操作需求，MySQL在完成某些 Join 需求的时候（all/index join），为了减少参与Join的“被驱动表”
+#读取次数以提高性能，需要使用到 Join Buffer 来协助完成 Join操作。当 Join Buffer 太小，MySQL 不会将该 Buffer 存入磁盘文件，
+#而是先将Join Buffer中的结果集与需要 Join 的表进行 Join 操作，
+#然后清空 Join Buffer 中的数据，继续将剩余的结果集写入此 Buffer 中，如此往复。这势必会造成被驱动表需要被多次读取，成倍增加 IO 访问，降低效率。
+join_buffer_size = 16M　　　　　　　　　　　
+#是MySQL的随机读缓冲区大小。当按任意顺序读取行时(例如，按照排序顺序)，将分配一个随机读缓存区。进行排序查询时，MySQL会首先扫描一遍该缓冲，以避免磁盘搜索，
+#提高查询速度，如果需要排序大量数据，可适当调高该值。但MySQL会为每个客户连接发放该缓冲空间，所以应尽量适当设置该值，以避免内存开销过大。
+read_rnd_buffer_size = 32M　　　　　　　　　
+#通信缓冲区在查询期间被重置到该大小。通常不要改变该参数值，但是如果内存不足，可以将它设置为查询期望的大小。
+#（即，客户发出的SQL语句期望的长度。如果语句超过这个长度，缓冲区自动地被扩大，直到max_allowed_packet个字节。）
+net_buffer_length = 16K　　　　　　　　　　
+#当对MyISAM表执行repair table或创建索引时，用以缓存排序索引；设置太小时可能会遇到” myisam_sort_buffer_size is too small”
+myisam_sort_buffer_size = 128M　　　　　　  
+#默认8M，当对MyISAM非空表执行insert … select/ insert … values(…),(…)或者load data infile时，使用树状cache缓存数据，每个thread分配一个；
+#注：当对MyISAM表load 大文件时，调大bulk_insert_buffer_size/myisam_sort_buffer_size/key_buffer_size会极大提升速度
+bulk_insert_buffer_size = 32M　　　　　　  
+#thread_cahe_size线程池，线程缓存。用来缓存空闲的线程，以至于不被销毁，如果线程缓存在的空闲线程，需要重新建立新连接，
+#则会优先调用线程池中的缓存，很快就能响应连接请求。每建立一个连接，都需要一个线程与之匹配
+thread_cache_size = 384　　　　　　　　   
+ #工作原理： 一个SELECT查询在DB中工作后，DB会把该语句缓存下来，当同样的一个SQL再次来到DB里调用时，DB在该表没发生变化的情况下把结果从缓存中返回给Client。　
+ #在数据库写入量或是更新量也比较大的系统，该参数不适合分配过大。而且在高并发，写入量大的系统，建系把该功能禁掉。　　　　　　　　　　　　　　　　　　　　 
+query_cache_size = 0　　　　　　　　　   
+#决定是否缓存查询结果。这个变量有三个取值：0,1,2，分别代表了off、on、demand。　　　　　　　　　　　　　　　　　    
+query_cache_type = 0　　　　　　　　　    　　　　　　
+#它规定了内部内存临时表的最大值，每个线程都要分配。（实际起限制作用的是tmp_table_size和max_heap_table_size的最小值。）
+#如果内存临时表超出了限制，MySQL就会自动地把它转化为基于磁盘的MyISAM表，存储在指定的tmpdir目录下
+tmp_table_size = 1024M　　　　　　　　　　
+
+#独立的内存表所允许的最大容量.# 此选项为了防止意外创建一个超大的内存表导致永尽所有的内存资源.
+max_heap_table_size = 512M	　　　　　　  
+#mysql打开最大文件数
+open_files_limit = 10240　　　　　　　　　 
+#MySQL无论如何都会保留一个用于管理员（SUPER）登陆的连接，用于管理员连接数据库进行维护操作，即使当前连接数已经达到了max_connections。
+#因此MySQL的实际最大可连接数为max_connections+1；
+#这个参数实际起作用的最大值（实际最大可连接数）为16384，即该参数最大值不能超过16384，即使超过也以16384为准；
+#增加max_connections参数的值，不会占用太多系统资源。系统资源（CPU、内存）的占用主要取决于查询的密度、效率等；
+#该参数设置过小的最明显特征是出现”Too many connections”错误；
+max_connections = 2000　　　　　　　　　　 
+#用来限制用户资源的，0不限制；对整个服务器的用户限制
+max-user-connections = 0　　　　　　　　　 
+#max_connect_errors是一个MySQL中与安全有关的计数器值，它负责阻止过多尝试失败的客户端以防止暴力破解密码的情况。max_connect_errors的值与性能并无太大关系。
+#当此值设置为10时，意味着如果某一客户端尝试连接此MySQL服务器，但是失败（如密码错误等等）10次，则MySQL会无条件强制阻止此客户端连接。
+max_connect_errors = 100000　　　　　　　　 
+#表描述符缓存大小，可减少文件打开/关闭次数；　　　　　　　　　　　　　　　　　　　　
+table_open_cache = 5120　　　　　　　　　　
+#interactive_time -- 指的是mysql在关闭一个交互的连接之前所要等待的秒数(交互连接如mysql gui tool中的连接
+interactive_timeout = 86400　　　
+#wait_timeout -- 指的是MySQL在关闭一个非交互的连接之前所要等待的秒数　　　　　
+wait_timeout = 86400　
+#二进制日志缓冲大小　　　　
+#我们知道InnoDB存储引擎是支持事务的，实现事务需要依赖于日志技术，为了性能，日志编码采用二进制格式。那么，我们如何记日志呢？有日志的时候，就直接写磁盘？
+#可是磁盘的效率是很低的，如果你用过Nginx，，一般Nginx输出access log都是要缓冲输出的。因此，记录二进制日志的时候，我们是否也需要考虑Cache呢？
+#答案是肯定的，但是Cache不是直接持久化，于是面临安全性的问题——因为系统宕机时，Cache中可能有残余的数据没来得及写入磁盘。因此，Cache要权衡，要恰到好处：
+#既减少磁盘I/O，满足性能要求；又保证Cache无残留，及时持久化，满足安全要求。　　　　　　　
+binlog_cache_size = 16M　　　　　　　　　　
+#开启慢查询　　　　　　　　　　　　　　　　　　　　 
+slow_query_log = 1　　　
+#超过的时间为1s；MySQL能够记录执行时间超过参数 long_query_time 设置值的SQL语句，默认是不记录的。　　　　　　　　　　
+long_query_time = 1　　　　　　　　　　　
+
+log-slow-admin-statements 
+#记录管理语句和没有使用index的查询记录
+log-queries-not-using-indexes　　　　　　　
+
+# *** Replication related settings ***
+#在复制方面的改进就是引进了新的复制技术：基于行的复制。简言之，这种新技术就是关注表中发生变化的记录，而非以前的照抄 binlog 模式。
+#从 MySQL 5.1.12 开始，可以用以下三种模式来实现：基于SQL语句的复制(statement-based replication, SBR)，基于行的复制(row-based replication, RBR)，混合模式复制(mixed-based replication, MBR)。相应地，binlog的格式也有三种：STATEMENT，ROW，MIXED。MBR 模式中，SBR 模式是默认的。
+binlog_format = ROW　　　　　　　　　　　　
+
+# 为每个session 最大可分配的内存，在事务过程中用来存储二进制日志的缓存。
+#max_binlog_cache_size = 102400　　　
+#开启二进制日志功能，binlog数据位置　　　　　　　　　　　  
+log-bin = /data/mysqldata/3307/binlog/mysql-bin	　　　　　　　
+log-bin-index = /data/mysqldata/3307/binlog/mysql-bin.index
+#relay-log日志记录的是从服务器I/O线程将主服务器的二进制日志读取过来记录到从服务器本地文件，
+#然后SQL线程会读取relay-log日志的内容并应用到从服务器
+relay-log = /data/mysqldata/3307/relay/mysql-relay-bin	　　　　
+#binlog传到备机被写道relaylog里，备机的slave sql线程从relaylog里读取然后应用到本地。　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+relay-log-index = /data/mysqldata/3307/relay/mysql-relay-bin.index	
+#服务端ID，用来高可用时做区分
+server_id = 100　
+#log_slave_updates是将从服务器从主服务器收到的更新记入到从服务器自己的二进制日志文件中。　　　　　　　　　　　 	
+log_slave_updates = 1
+#二进制日志自动删除的天数。默认值为0,表示“没有自动删除”。启动时和二进制日志循环时可能删除。　　　　　　　　　　	
+expire-logs-days = 15
+#如果二进制日志写入的内容超出给定值，日志就会发生滚动。你不能将该变量设置为大于1GB或小于4096字节。 默认值是1GB。　　　　　　　　　　	
+max_binlog_size = 512M　　　　　　　　　　	
+#replicate-wild-ignore-table参数能同步所有跨数据库的更新，比如replicate-do-db或者replicate-ignore-db不会同步类似 
+replicate-wild-ignore-table = mysql.%
+#设定需要复制的Table　　
+#replicate-wild-do-table = db_name.%　　	
+#复制时跳过一些错误;不要胡乱使用这些跳过错误的参数，除非你非常确定你在做什么。当你使用这些参数时候，MYSQL会忽略那些错误，
+#这样会导致你的主从服务器数据不一致。
+#slave-skip-errors = 1062,1053,1146　　　　
+
+#这两个参数一般用在主主同步中，用来错开自增值, 防止键值冲突
+auto_increment_offset = 1
+auto_increment_increment = 2　　　　　　　　
+
+ 
+#将中继日志的信息写入表:mysql.slave_realy_log_info
+relay_log_info_repository = TABLE　　
+ #将master的连接信息写入表：mysql.salve_master_info　　　
+master_info_repository = TABLE
+#中继日志自我修复；当slave从库宕机后，假如relay-log损坏了，导致一部分中继日志没有处理，则自动放弃所有未执行的relay-log，
+#并且重新从master上获取日志，这样就保证了relay-log的完整性　　　　　　
+relay_log_recovery = on　　　　　　　　　　
+
+# *** innodb setting ***
+#InnoDB 用来高速缓冲数据和索引内存缓冲大小。 更大的设置可以使访问数据时减少磁盘 I/O。
+innodb_buffer_pool_size = 4G　　　　　　　　
+#单独指定数据文件的路径与大小
+innodb_data_file_path = ibdata1:1G:autoextend　　
+#每次commit 日志缓存中的数据刷到磁盘中。通常设置为 1，意味着在事务提交前日志已被写入磁盘， 事务可以运行更长以及服务崩溃后的修复能力。
+#如果你愿意减弱这个安全，或你运行的是比较小的事务处理，可以将它设置为 0 ，以减少写日志文件的磁盘 I/O。这个选项默认设置为 0。
+innodb_flush_log_at_trx_commit = 0　　　　　　
+　　　　　　　　　　　　　　　　　　　　　　
+#sync_binlog=n，当每进行n次事务提交之后，MySQL将进行一次fsync之类的磁盘同步指令来将binlog_cache中的数据强制写入磁盘。
+#sync_binlog = 1000　　　　　　　　　　　　
+
+innodb_read_io_threads = 8　
+#对于多核的CPU机器，可以修改innodb_read_io_threads和innodb_write_io_threads来增加IO线程，来充分利用多核的性能　
+innodb_write_io_threads = 8　　　　　　　　
+#Innodb Plugin引擎开始引入多种格式的行存储机制，目前支持：Antelope、Barracuda两种。其中Barracuda兼容Antelope格式。
+innodb_file_format = Barracuda　　　　　　
+#限制Innodb能打开的表的数量
+innodb_open_files = 65536
+#开始碎片回收线程。这个应该能让碎片回收得更及时而且不影响其他线程的操作　　　　　　　　　
+innodb_purge_threads = 1　　
+#分布式事务　　　　　　　
+innodb_support_xa = FALSE　
+#InnoDB 将日志写入日志磁盘文件前的缓冲大小。理想值为 1M 至 8M。大的日志缓冲允许事务运行时不需要将日志保存入磁盘而只到事务被提交(commit)。
+#因此，如果有大的事务处理，设置大的日志缓冲可以减少磁盘I/O。　　　　　　　
+innodb_log_buffer_size = 256M　　　　　　
+
+#日志组中的每个日志文件的大小(单位 MB)。如果 n 是日志组中日志文件的数目，那么理想的数值为 1M 至下面设置的缓冲池(buffer pool)大小的 1/n。较大的值，
+#可以减少刷新缓冲池的次数，从而减少磁盘 I/O。但是大的日志文件意味着在崩溃时需要更长的时间来恢复数据。
+innodb_log_file_size = 1G　　　　　　　 
+
+#指定有三个日志组　　　　　　　　　　　　　　　　　　　
+innodb_log_files_in_group = 3　　　　　　
+#在回滚(rooled back)之前，InnoDB 事务将等待超时的时间(单位 秒)
+#innodb_lock_wait_timeout = 120
+#innodb_max_dirty_pages_pct作用：控制Innodb的脏页在缓冲中在那个百分比之下，值在范围1-100,默认为90.这个参数的另一个用处：
+#当Innodb的内存分配过大，致使swap占用严重时，可以适当的减小调整这个值，使达到swap空间释放出来。建义：这个值最大在90%，最小在15%。
+#太大，缓存中每次更新需要致换数据页太多，太小，放的数据页太小，更新操作太慢。　　　　　
+innodb_max_dirty_pages_pct = 75　　　　　
+#innodb_buffer_pool_size 一致 可以开启多个内存缓冲池，把需要缓冲的数据hash到不同的缓冲池中，这样可以并行的内存读写。
+innodb_buffer_pool_instances = 4 　　　 
+#这个参数据控制Innodb checkpoint时的IO能力
+innodb_io_capacity = 500　　　　　　　　
+#作用：使每个Innodb的表，有自已独立的表空间。如删除文件后可以回收那部分空间。
+#分配原则：只有使用不使用。但ＤＢ还需要有一个公共的表空间。
+innodb_file_per_table = 1　　　　　　　　
+#当更新/插入的非聚集索引的数据所对应的页不在内存中时（对非聚集索引的更新操作通常会带来随机IO），会将其放到一个insert buffer中，
+#当随后页面被读到内存中时，会将这些变化的记录merge到页中。当服务器比较空闲时，后台线程也会做merge操作
+innodb_change_buffering = inserts　　　　
+#该值影响每秒刷新脏页的操作，开启此配置后，刷新脏页会通过判断产生重做日志的速度来判断最合适的刷新脏页的数量；
+innodb_adaptive_flushing = 1　　　　　　
+#数据库事务隔离级别 ，读取提交内容
+transaction-isolation = READ-COMMITTED　
+#innodb_flush_method这个参数控制着innodb数据文件及redo log的打开、刷写模式　
+#InnoDB使用O_DIRECT模式打开数据文件，用fsync()函数去更新日志和数据文件。
+innodb_flush_method = O_DIRECT　　　　　　
+#默认设置值为1.设置为0：表示Innodb使用自带的内存分配程序；设置为1：表示InnoDB使用操作系统的内存分配程序。　　　　　　　　　　　　　　　　　　　　　　　
+#innodb_use_sys_malloc = 1　　　　　　　　
+
+ 
+
+[mysqldump]
+#它强制 mysqldump 从服务器查询取得记录直接输出而不是取得所有记录后将它们缓存到内存中
+quick　　　　　　　　　　　　　　　　　
+#限制server接受的数据包大小;指代mysql服务器端和客户端在一次传送数据包的过程当中数据包的大小
+max_allowed_packet = 512M	　　　　
+#TCP/IP和套接字通信缓冲区大小,创建长度达net_buffer_length的行	　　
+net_buffer_length = 16384	　　　　	　　
 
 [mysql]
-# 包含一些客户端mysql命令行的配置
-no-auto-rehash # 默认不自动补全	auto-rehash自动补全
+#auto-rehash是自动补全的意思
+auto-rehash　　　　　　　　　　　　　　
 
-[mysqld]
-# mysql优化的配置目录，除硬件和环境配置外，全部优化在此配置，
-# 一般服务器安装只有此配置目录
-user = mysql	#默认启动用户，一般不需要修改，可能出现启动不成功
-port = 3306	#端口号
-socket = /var/lib/mysql/mysql.sock	#套接字文件 （套接字方式登陆比TCP/IP方式连接快）
-character-set-server = utf8	#设置数据库服务器默认编码 utf-8
-basedir = /usr/local/mysql	#数据库安装目录--指定此参数可解决相对路径造成的问题
-datadir = /data/mysql	#数据库目录，数据库目录切换时需要用到
-pid-file = /var/run/mysqld/mysqld.pid	#mysql进程文件，可指定自己的进程文件
-external-locking = FALSE	#外部锁定(非多服务器可不设置该选项，默认skip-external-locking)
-skip-external-locking	#跳过外部锁定 （避免多进程环境下的external locking--锁机制）
-skip-name-resolve	#跳过主机名解析，直接IP访问，可提升访问速度
-log-error = /data/log/mysqld.log	#错误日志文件
-log-warnings	#默认为1,表示启用警告信息记录日志,不需要置0即可,大于1时表示将错误或者失败连接记录日志
-open_files_limit = 10240	#全局只读变量,文件描述符限制 注：上限其实为OS文件描述符上限，小于OS上限时生效 可用lsof查看限制并修改相应配置
+#isamchk数据检测恢复工具
+[isamchk]	　　　　　　　　　　　　　　	
+key_buffer = 256M
+sort_buffer_size = 256M
+read_buffer = 2M
+write_buffer = 2M
 
-#以下配置较为重要
-back_log = 600 #在MYSQL暂时停止响应新请求之前，短时间内的多少个请求可以被存在堆栈中。不超过TCP/IP监听队列，建议512倍数
-#如果系统在短时间内有很多连接，则需要增大该参数的值，该参数值指定到来的TCP/IP连接的监听队列的大小。默认值50。
-max_connections = 5000	#MySQL允许最大的进程连接数，如果经常出现Too Many Connections的错误提示，则需要增大此值
-max_connect_errors = 6000	#设置每个主机的连接请求异常中断的最大次数，当超过该次数，MYSQL服务器将禁止host的连接请求，
-#直到mysql服务器重启或通过flush hosts命令清空此host的相关信息
-max_allowed_packet = 32M	#限制接收数据包的大小,单条数据超过该值时插入或更新失败,
-#show VARIABLES like '%max_allowed_packet%'; 查看当前限制大小
-sort_buffer_size = 8M	#每个连接独享，用于优化不能通过sql或者索引优化的group和order等，设置的值应适中
-#比如：500个连接，500*8 = 4G,将消耗4G内存
-join_buffer_size = 8M	#用于表间关联缓存的大小,每个连接独享
-#thread_concurrency = 16	#应设为CPU核数的2倍. 
-thread_cache_size = 600	#线程缓存变量，减少连接的创建，一般设置规则
-#1G->8;2G->16;3G->32;根据实际情况可适当加大(个人：2^(n+2))
-thread_stack = 1024K	#设置MYSQL每个线程的堆栈大小，可设置范围为128K至4GB,默认足够大，一般不用修改
-query_cache_size = 128M	#查询缓存，设置不宜过大，主要是因为缓存越大，设置失效时间越长。如果高并发写，可以禁用该功能
-query_cache_limit = 2M	#指定单个查询能够使用的缓冲区大小，默认为1M
-query_cache_min_res_unit = 4k	#大数据查询4k,小数据查询2k,目的是提高缓存命中率
+ 
 
-#数据库引擎相关参数
-default-storage-engine = InnoDB	#默认数据库引擎
-innodb_data_file_path = ibdata1:1024M:autoextend	#指定数据文件，初始大小，指定扩展大小 注意与数据库中初始文件大小保持一致
-#格式：size-allocation[:autoextend[:max-size-allocation]] 
-innodb_read_io_threads = 16	#read IO线程,根据cpu核心线程数量设置
-innodb_write_io_threads = 16	#write IO线程,根据cpu核心线程数量设置
-innodb_thread_concurrency = 48	#服务器有几个CPU就设置为几，建议用默认设置，一般为8
-innodb_lock_wait_timeout = 120	#事务获取锁的最长等待时间，超时请求失败
-innodb_buffer_pool_size = 80G	#类似于myisam的key_pool_size 适当增加可提高命中率，专用服务器可设置为70-80%
-#innodb_flush_log_at_trx_commit = 2	#默认值1 每次提交日志记录磁盘 2 日志写入系统缓存 0 不提交也记录，不安全，不推荐
-innodb_flush_method = O_DIRECT	#控制着innodb数据文件及redo log的打开、刷写模式
-#fdatasync(默认)，调用fsync()去刷数据文件与redo log的buffer
-#O_DSYNC，innodb会使用O_SYNC方式打开和刷写redo log,使用fsync()刷写数据文件
-#O_DIRECT，innodb使用O_DIRECT打开数据文件，使用fsync()刷写数据文件跟redo log
-#fsync() 作用：数作用是flush时将与fd文件描述符所指文件有关的buffer刷写到磁盘
-innodb_log_files_in_group = 2	#以循环方式将日志文件写到多个文件，默认2
-innodb_log_file_size = 4G	#数据日志文件大小，较大可提升性能，
-innodb_log_buffer_size = 512M	#日志文件所用的内存大小，以M为单位。缓冲区更大能提高性能，但意外的故障将会丢失数据(开发人员推荐1-8M---不知道为什么)
-#innodb_file_per_table = 1	#独立表空间 innodb 默认一个表空间
-#
-innodb_autoinc_lock_mode = 2	#主要作用于自增列
-#0 这个表示tradition 传统 得到语句级别的锁，具有连续性和重复性，但影响并发的插入
-　　　　	#1 这个表示consecutive 连续 根据一次性插入的数量生成连续的值，
-#auto_inc锁不需要一直保持到语句的结束，语句得到了相应的值后就可以提前释放锁
-　　　　	#2 这个表示interleaved 交错 没有auto_inc锁，auto_incremant值可能不是连续的
-
-#Percona XtraDB Cluster 5.7. 基于同步复制的多主MySQL集群解决方案，只支持Innodb引擎
-#需要安装wsrep打过补丁的版本
-#下载地址：https://www.percona.com/downloads/
-
-pxc_strict_mode = ENFORCING	
-wsrep_cluster_address = gcomm://192.168.66.242,192.168.66.241 #集群中的节点地址，可以使用主机名或IP
-wsrep_node_address = 192.168.66.241	#本机节点地址，可以使用主机名或IP
-wsrep_provider = /usr/lib64/galera3/libgalera_smm.so
-wsrep_sst_method = xtrabackup-v2	#指定SST方式，支持rsync(最快，需要锁表)，
-#mysqldump和xtrabackup，从5.5.33-23.7.6起支持xtrabackup-v2
-wsrep_slave_threads = 8	#线程数量
-wsrep_cluster_name = Cluster	#集群名字，必须统一
-wsrep_node_name = Node1	#集群中节点名字，必须唯一
-wsrep_sst_auth = "sstuser:8jUthGnAUfWEfJ9"	#xtrabackup使用的用户名密码，第一台节点启动时创建，详见安装文档
-#wsrep_sst_donor='node3,'	#一个逗号分割的节点串作为状态转移源，
-#比如wsrep_sst_donor=node5,node3, 如果node5可用，用node5,不可用用node3,
-#如果node3不可用，最后的逗号表明让提供商自己选择一个最优的。
-
-transaction_isolation = READ-COMMITTED	#事务隔离级别 
-# 1.READ-UNCOMMITTED-读未提交 --脏读(开发生产均不建议)
-# 2.READ-COMMITTE-读已提交 --非默认
-# 3.REPEATABLE-READ -可重复读	--可能出现幻影行（Innodb 和 Falcon 通过并发解决幻读问题）
-# 4.SERIALIZABLE -串行	--最高级别 可能出现大量超时和锁竞争
-tmp_table_size = 10G	#查询生成的临时表大小超过该值时会在硬盘生成MyISAM表，如果存在大量group by 等语句，可调整大小
-max_heap_table_size = 5G	#内存表最大空间限制 表在磁盘中，数据在内存中
-explicit_defaults_for_timestamp=1	#主要针对TIMESTAMP列，不指定默认会自动加上notnull属性，第一列会自动添加current timestamp	
-table-definition-cache = 4096	#表定义相关信息缓存 实际存放的是frm与内存的映射关系
-table-open-cache = 4096	#打开表缓存 存放已打开的表句柄
-#同时设置生效
-interactive_timeout = 120	#mysql在关闭一个交互的连接之前所要等待的秒数(客户端连接)	
-wait_timeout = 864000	#mysql在关闭一个非交互的连接之前所要等待的秒数 默认8小时(应用程序调用),
-#根据应用实际情况决定 show processlist; sleep进程多则相应调小
-long_query_time = 2	#慢查询超时设置，默认10秒，记录超过查询时间的语句
-slow-query-log=1	#注意之前的版本5.6之前的版本为 log-slow-query 是否记录慢查询日志---作为数据库分析
-slow-query-log-file=/data/log/query-slow.log	#慢查询日志记录文件
-#相关二进制文件设置
-log_bin	#数据库操作二进制记录，数据库备份，复制所需
-binlog_format = ROW	#ROW(基于行的复制--安全，但是注意并发) STATEMENT(基于sql语句的复制)，MIXED(混合模式复制)
-binlog_cache_size = 4M	#二进制日志缓存，提高log-bin记录效率
-log_bin_trust_function_creators = 1	#主从复制是需要注意，为了保证主从复制完全一致，需要开启此选项，主从默认阻止函数创建
-max_binlog_size = 1G	#二进制日志文件大小默认1G 要求大于4096 小于1G
-expire_logs_days = 7	#清除过期日志
-#binlog_do_db	#此参数表示只记录指定数据库的二进制日志
-#binlog_ignore_db	#忽略某数据库记录
-
-key_buffer_size = 2048M	#提高查询命中率，最好不要超过4G,可根据缓存命中率适当调整show global status like 'key_read%';
-read_buffer_size = 16M	#顺序读缓存，每个连接独享
-read_rnd_buffer_size = 64M	#随机读缓存，每个连接独享
-bulk_insert_buffer_size = 1G	#批量插入并且只有向非空表添加数据时才使用该缓存,只对myisam表使用。
+[myisamchk]
+#使用myisamchk实用程序来获得有关你的数据库桌表的信息、检查和修复他们或优化他们　　　　　　　　　　　　　　
+key_buffer = 256M
+sort_buffer_size = 256M
+read_buffer = 2M
+write_buffer = 2M
 
 
-#主从复制相关--必须开启log-bin
-server-id = 19911216	#主从复制必须，并且各服务器具有唯一性
-log_slave_updates	#配置从服务器的更新是否写入二进制日志，默认是不打开的
-replicate-ignore-db = mysql	#主从复制默认忽略的数据库，可用","分隔或使用多条记录
-#replicate-do-db=qrs,login	#主从复制指定数据库,","号隔开或使用多条记录
+[mysqlhotcopy]
+#mysqlhotcopy使用lock tables、flush tables和cp或scp来快速备份数据库.它是备份数据库或单个表最快的途径,完全属于物理备份,但只能用于备份MyISAM存储引擎和运行在数据库目录所在的机器上.
+#与mysqldump备份不同,mysqldump属于逻辑备份,备份时是执行的sql语句.使用mysqlhotcopy命令前需要要安装相应的软件依赖包.
+interactive-timeout 
 
-[mysqldump]	#数据库全量备份
-quick	#强制mysqldump从服务器一次一行地检索表中的行
-max_allowed_packet = 32M	#可接收数据包大小
-
-[isamchk]	#在mysqld服务器不使用的情况下修复表或在崩溃状态下恢复表
-key_buffer = 1024M
-sort_buff_size =1024M
-read_buffer = 16M
-write_buffer = 16M
-
-[myisamchk]	#在mysqld服务器不使用的情况下修复表或在崩溃状态下恢复表
-key_buffer = 1024M	
-sort_buff_size = 1024M
-read_buffer = 16M
-write_buffer = 16M
-
-[mysqld_safe]	#safe方式启动数据库，相比于mysqld,会在服务启动后继续监控服务状态，死机时重启
-open-files-limit = 8192
+　　　　　　　　　　
 ```
 
 
@@ -699,7 +939,7 @@ open-files-limit = 8192
 关系型数据库中的表都是存储一些格式化的数据结构，每个元组字段的组成都一样，即使不是每个元组都需要所有的字段，但数据库会为每个元组分配所有的字段，这样的结构可以便于表与表之间进行连接等操作，但从另一个角度来说它也是关系型数据库性能瓶颈的一个因素。而非关系型数据库以键值对存储，它的结构不固定，每一个元组可以有不一样的字段，每个元组可以根据需要增加一些自己的键值对，这样就不会局限于固定的结构，可以减少一些时间和空间的开销。
 
 ### 1.2.1. 关系型数据库
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 * 关系型数据库中一对多，多对一，多对多关系
     * 一对一
         * 一个学生对应一个身份证帐号
@@ -734,7 +974,7 @@ open-files-limit = 8192
 Microsoft Access， SQLite，Teradata，MariaDB(MySQL的一个分支)，SAP
 
 ### 1.2.2. 非关系型数据库
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 * 非关系型数据库：指非关系型的，分布式的，且一般不保证遵循ACID原则的数据存储系统。
 * 非关系型数据库结构
     * 非关系型数据库以键值对存储，且结构不固定，每一个元组可以有不一样的字段，每个元组可以根据需要增加一些自己的键值对，不局限于固定的结构，可以减少一些时间和空间的开销。
@@ -792,7 +1032,7 @@ Microsoft Access， SQLite，Teradata，MariaDB(MySQL的一个分支)，SAP
 
 
 ## 1.3. 使用数据库
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 启停数据库
     * service mysql start|stop|restart
@@ -801,9 +1041,21 @@ Microsoft Access， SQLite，Teradata，MariaDB(MySQL的一个分支)，SAP
     * mysql  -h127.0.0.1 -P3349 -uroot -p123456
 * 查看mysql支持的存储引擎
     * show engines
+    * show variables like "default_storage_engine" 
+修改存储引擎，配置文件添加
+```
+[mysqld]
+default_storage_engine=INNODB
+```
 
 * 创建数据库
     * create database database_name
+    * 命名规范:
+        * 由字母，数字，下划线，＠，＃，$组成
+        * 首字母不能是数字或者$
+        * 标识符不允许是数据库保留字
+        * 不允许有空格和特殊字符
+        * 长度小于128 
 * 查看数据库
     * show databases
 * 删除数据库
@@ -827,23 +1079,33 @@ lgj@lgj-Lenovo-G470:~$ mysql --help | grep my.cnf
 mysql以读取的最后一个文件配置为准
 
 * 创建表
-    * 设置默认值: default xxx
-    * 不能为NULL: NOT NULL,默认为NULL
-    * 注释: COMMENT "XXXX" 
-    * AUTO_INCREMENT 插入时自增
-    * PRIMARY KEY 主键
+    * 完整性约束
+        * NOT NULL　非空
+        * DEFAULT XXX　默认值
+        * UNIQUE KEY　唯一约束
+        * PRIMARY KEY 主键
+        * AUTO_INCREMENT　插入新记录时主键自增
+        * FOREIGN KEY　外键
+    * 注释
+        *  COMMENT "XXXX" 
     * ENGINE=InnoDB InnoDB|MEMORY|MyISAM 引擎
+    * 无符号: unsigned
 
 ```sql
 DROP TABLE IF EXISTS `relation`;
 CREATE TABLE `relation`(
    `id` BIGINT   AUTO_INCREMENT COMMENT "ID",
-   `followerId` BIGINT   COMMENT "关注者ID",
-   `followeeId` BIGINT   COMMENT "被关注者ID",
+   `followerId` BIGINT NOT NULL  COMMENT "关注者ID",
+   `followeeId`  unsigned  BIGINT  default 100 COMMENT "被关注者ID",
+    /*单字段主键*/
     PRIMARY KEY (`id`),
+    /*多字段主键*/
+    PRIMARY KEY (`id`，`followerId`),
     index(`followerId`),
     index(`followeeId`),
     index(`followerId`,`followeeId`)
+    /*外键，两个属性名数据类型必须一致*/
+    CONSTARAINT 外键约束名　FOREIGN KEY　(属性名１)　REFERENCES 表名(属名２)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT="关系表";
 ```
 
@@ -858,18 +1120,51 @@ CREATE TABLE `relation`(
     * ALTER TABLE tbl_name
     [alter_specification [, alter_specification] ...]
     [partition_options]
-
+    * 修改表名
+        * alter table oldName RENAME newName
+    * 增加字段
+        * ALTER TABLE tableName ADD 属性名　属性类型　FIRST| AFTER 属性名称
+    * 删除字段
+        * ALTER TABLE tableName DROP 属性名
+    * 修改数据名称或者类型
+        * ALTER TABLE tableName modify 属性名 新数据类型
+        * ALTER TABLE tableName modify 旧属性名 　新属性名　旧数据类型
+        * ALTER TABLE tableName modify 旧属性名 　新属性名　新数据类型
+    * 修改字段顺序
+        * ALTER TABLE tableName MODIFY　属性名１　数据类型　FIRST|AFTER 属性名2　
 * 删除表
     * drop table table_name
 * 删除表中数据
     * delete from table_name where xx=xxx
+* 查看表结构
+    * desc tablename
+```
+mysql> desc  bit_table;
++-------+--------+------+-----+---------+-------+
+| Field | Type   | Null | Key | Default | Extra |
++-------+--------+------+-----+---------+-------+
+| id    | bit(8) | YES  |     | NULL    |       |
++-------+--------+------+-----+---------+-------+
+```
+* 查看表创建时的定义
+    * show create table tablename
+```
+show create  table bit_table;
++-----------+--------------------------------------------------------------------------------------------+
+| Table     | Create Table                                                                               |
++-----------+--------------------------------------------------------------------------------------------+
+| bit_table | CREATE TABLE `bit_table` (
+  `id` bit(8) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 |
++-----------+--------------------------------------------------------------------------------------------+
+```
 * 查看支持字符集
     * show character set
 
 
 
 ## 1.4. 数据类型
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **整形数据类型**
 
@@ -888,17 +1183,54 @@ CREATE TABLE `relation`(
 **浮点型数据类型**
 |数据类型|取值范围|说明|单位|
 |---|---|---|---|
-|FLOAT(p,s)|（+-）3.4E38|单精度浮点数|8或4字节|
-|DOUBLE(p,s)|（+-）1.79E38，（+-）2.22E308||双精度浮点数|8字节|
+|FLOAT(p,s)|（+-）3.4E38|单精度浮点数|4字节|
+|DOUBLE(p,s)|（+-）1.79E308，（+-）2.22E308||双精度浮点数|8字节|
 |DECIMAL(p,s)|可变|一般整数|自定义长度|
 
 * 当使用浮点类型时，可以指定其精度(小数点左边到右边所允许的数字总位数)和有效位(小数点右边所允许的数字位数)。
     * 这两个参数由p和s指定,如果数字超过了该列所定义的精度或者有效位，那么该列中存储的数据将会被四舍五入。
     * float(4,2):存储4位数字，两位在左边，两位在右边。存储17.8675将会被四舍五入17.87，178.23将会报错。
 * DECIMAL允许最多65个数字。MySQL实现了该类型的直接和高精度计算。
+    * 存储的是字符串，因此提供了更高的精度
     * 因为需要额外的空间和计算开销，所以只有需要对小数进行精确计算时才使用DECIMAL，例如财务数据
     * 但是在数据量比较大但对精度要求不高时的浮点类型数据，可以使用BIGINT类型，只要对结果乘以或者除以相应的倍数。
 
+**位类型**
+|数据类型|取值范围|说明|单位|
+|---|---|---|---|
+|BIT(M)|1-8字节，BIT(1)-BIT(64)|||
+
+```
+mysql> create table bit_table(id BIT(8));
+mysql> INSERT INTO bit_table (id) values (11)
+mysql> INSERT INTO bit_table (id) values (12);
+mysql> select * from bit_table;
++------+
+| id   |
++------+
+| 
+      |
+| 
+      |
++------+
+mysql> select id+0 from bit_table;
++------+
+| id+0 |
++------+
+|   11 |
+|   12 |
++------+
+mysql> select BIN(id+0) from bit_table;
++-----------+
+| BIN(id+0) |
++-----------+
+| 1011      |
+| 1100      |
++-----------+
+
+```
+* 插入十进制: INSERT INTO bit_table (id) values (11)
+* 插入二进制: INSERT INTO bit_table (id) values (b'11')
 **常规字符串类型**
 |数据类型|取值范围|说明|单位|
 |---|---|---|---|
@@ -1017,13 +1349,13 @@ char和varchar可以有默认值，text不能指定默认值。
 
 
 **日期和时间类型**
-|数据类型|取值范围|说明|
-|---|---|---|
-|DATE|1000-01-01 999-12-31|日期，YYYY-MM-DD|
-|TIME|-383：58：59  835：59：59|时间，HH-MM-SS|
-|DATETIME|1000-01-01 00：00：00 - 9999-12-31 23：59：59|日期和时间|
-|TIMESTAMP|1970-01-01 00：00：00 - 2037 的时间戳||
-|YEAR|1901-2155|年份可以指定两位数字和四位数字的格式|
+|数据类型|取值范围|说明|字节|
+|---|---|---|---|
+|DATE|1000-01-01 999-12-31|日期，YYYY-MM-DD|4
+|TIME|-835：58：59  838：59：59|时间，HH-MM-SS|3
+|DATETIME|1000-01-01 00：00：00 - 9999-12-31 23：59：59|日期和时间|8
+|TIMESTAMP|1970-01-01 00：00：00 - 2037 的时间戳||4
+|YEAR|1901-2155|年份可以指定两位数字和四位数字的格式|1
 
 * 日期格式的组成部分
 |组成部分|定义|范围|
@@ -1079,11 +1411,11 @@ default-time_zone = '+8:00'
 ## 1.5. 数据更新
 
 ```sql
-//插入单条数据
+--插入单条数据
 insert into table_name(xx,xx) value|values (xxx,xxx)
-//插入多条数据
+--插入多条数据
 insert into table_name(xx,xx) value|values (xxx,xxx), (xxx,xxx), (xxx,xxx)
-//插入检索出的数据
+--插入检索出的数据
 insert into table1(xx,xxx) select xx,xx from table2;
 
 //
@@ -1093,13 +1425,16 @@ UPDATE [LOW_PRIORITY] [IGNORE] table_reference
     [ORDER BY ...]
     [LIMIT row_count]
 
-//更新数据
+--更新数据
 update table_name
-    set xxx=xxx
+    set xxx=xxx,
+        xxx=xxx,
         where xx=xx
 
-//删除数据
+--删除数据
 delete from table_name where xx=xx
+--删除所有数据
+delete from table_name
 ```
 
 **IGNORE关键字** 如果用UPDATE语句更新多行，并且在更新这些行中的一行或多行时出一个现错误，则整个UPDATE操作被取消（错误发生前更新的所有行被恢复到它们原来的值）。为即使是发生错误，也继续进行更新，可使用IGNORE关键字，如下所示：UPDATE IGNORE customers…
@@ -1117,27 +1452,27 @@ delete from table_name where xx=xx
 ## 1.6. 数据查询
 
 ### 1.6.1. 查询入门
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * select 基本语法
 ```sql
 select * 
 from table_name
 where xx=xxx
-group by column
-order by column
-having  xxx 
-limit start,count 
+group by column1,column1... --分组，多个字段时，先对第一个字段进行分组，分组再按照第二个字段进行分组
+order by column　[ASC|DESC] --默认ASC,多字段排序　order by column1 ASC,  by column2 DESC
+having  xxx -- 指定分组后的条件
+limit start,count --初始偏移量是０，单个参数　limit 0,n 等价于　limit n
 ```
 * 比较运算法
 
 |运算符|名称|示例|运算符|名称|示例|
 |---|---|---|---|---|---|
 |=|等于|i=5|is not null||id is not null|
-|>|大于|id>5|between|范围| id between 5 and 15|
+|>|大于|id>5|between或者not between|范围| id between 5 and 15|
 |<|小于| id < 5|in |在集合里|id in (2,3,4)|
-|=>|大于等于|id => 5|Not in |||
-|<=|小于等于| id<=5|Like|字符串匹配,"%"多个字符，"_"单个字符| name like "%a%"|
+|=>|大于等于|id => 5|Not in |不在集合里|id not in (2,3,4)|
+|<=|小于等于| id<=5|Like|字符串匹配,"%"多个字符，"_"单个字符，like不仅可以匹配字符串，还可以是其他类型| name like "%a%"|
 |!= 或者<>|不等于|id != 5|Not Like|||
 |is null|空值|id is null|Regexp|正则表达式||
 
@@ -1145,9 +1480,12 @@ limit start,count
 AND / && /OR /|| /!/NOT 
 
 * 算数运算符
-```
+```sql
 + - * / % 
+select age+2 as xxx from ...
 ```
+
+
 * from
     * 永久表
     * 临时表
@@ -1179,7 +1517,7 @@ AND / && /OR /|| /!/NOT
     * 非 group by 的字段需要使用聚合函数进行聚合
 
 * having 过滤掉不需要的组
-    * select age SUM(name) AS NAME 
+    * select age ，SUM(name) AS NAME 
         FROM xxx
         GROUP age
         HAVING SUM(name) > 10
@@ -1229,17 +1567,67 @@ regexp "g*"
 
 ```
 
-### 1.6.2. 多表连接查询
-<a href="#menu" style="float:right">目录</a>
+**统计函数**
+* COUNT():计数
+    * COUNT(*) 包含null
+    * COUNT(field) 忽略null
+* AVG(): 平均数。忽略null
+* SUM()。忽略null
+* MAX()。忽略null
+* MIN()。忽略null
 
-* 迪卡尔积
-```sql
-select * from table1 JOIN table2';
 ```
+SELECT COUNT(name) from xxx
+```
+
+在进行分组查询时，非分组字段都要使用统计函数
+```sql
+--- 分组是age,name字段要使用统计函数
+select age ,height,count(name) from user group by age，height
+```
+
+### 1.6.2. 多表连接查询
+<a href="#menu" >目录</a>
+
+**并集Ｕnion**
+
+就是把具有相同字段数目和字段类型的表合并到一起。union去掉重复记录；union all不会去掉重复记录。
+```sql
+select id,name,address  
+    from table1 
+    union 
+    select * from table3;
++------+-----------+----------+
+| id   | name      | address  |
++------+-----------+----------+
+|    1 | libai     | shenzhen |
+|    2 | lilin     | nanjing  |
+|    3 | zhangsan  | fujian   |
+|    1 | libai3    | shenzhen |
+|    2 | lili3     | nanjing  |
+|    3 | zhangsan3 | fujian   |
++------+-----------+----------+
+
+```
+
+**迪卡尔积Cartesian product**
+
 只将将两表关联查询，没有判断条件，查询结果的条数为两表的数据记录之积。实际应用基本不用。
 
-连接是把不同表的记录连接到一起最普遍的方法。 
-本文将使用实例测试各个不同连接情况的查询。
+```sql
+-- a表有一个字段：name，两条数据分别为　'zhangsan','lisi'
+-- b表有一个字段：loc，两条数据分别为　'beijing','shenzhen'
+
+select * from a JOIN b';
+--结果
+
+name          loc
+zhangsan     beijing 
+zhangsan     shenzhen
+lisi         beijing 
+lisi         shenzhen
+```
+
 
 创建两个数据表stu_info(学生信息表)和stu_score(学生成绩表)。 
 如下图所示： 
@@ -1247,9 +1635,13 @@ select * from table1 JOIN table2';
  ![](https://img-blog.csdn.net/20180315123059458?watermark/2/text/Ly9ibG9nLmNzZG4ubmV0L3UwMTE2NzYzMDA=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
-一.内连接查询 
-内连接是最普遍的连接类型，而且是最匀称的。因为他们们要求构成链接的每一部分的每一个表匹配，不匹配的行将会被排除。
+一.内连接查询
 
+内连接是最普遍的连接类型，而且是最匀称的。因为他们们要求构成链接的每一部分的每一个表匹配，不匹配的行将会被排除。
+* 两种方式
+    * 方式１:  select *  from table1 ,table2 where xxx
+    * 方式２:  select *  from table1 inner join table2   where  xxx inner join table3 where xxx
+使用inner join 或者join 都可以
 **内连接相等查询** 
 概述：指使用等号”=”比较两个表的连接列的值，相当于两表执行笛卡尔后，取两表连结列值相等的记录。
 ```sql
@@ -1260,20 +1652,22 @@ select * from table1 JOIN table2';
 
 **内连接非等值连接**
 
-概述：指使用大于号”>”或小于号”<”比较两个表的连接列的值，相当于两表执行笛卡尔后，取一个表大于或小于另一个表的连结列值的记录。
+概述：指使用大于号”>”或小于号”<”比较两个表的连接列的值，相当于两表执行笛卡尔后，取一符合条件的记录。
 ```sql
 select * from stu_info A inner join stu_score  B where A.id>B.id;
 ```
 ![](https://img-blog.csdn.net/20180315123808798?watermark/2/text/Ly9ibG9nLmNzZG4ubmV0L3UwMTE2NzYzMDA=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 二.外连接查询 
+
+外连接就是在表关系的迪卡儿积数据记录中，不仅保留表关系中所有匹配的数据记录，还保留部分不匹配的数据记录。
 外连接是指使用OUTER JOIN关键字将两个表连接起来，外连接生成的结果集不仅包含符合连接条件的数据，而且还包含左表（左外连接时的表），右表（右外连接时的表）或两边连接表（全外连接时的表）
 
 MySql没有全连接。
 
 语法格式
 ```sql
-SELECT 字段名称 FROM 表1 LEFT|RIGHT JOIN 表2  ON 表1.字段=表2.字段
+SELECT 字段名称 FROM 表1 LEFT|RIGHT|FULL [OUTER] JOIN 表2  ON 表1.字段=表2.字段
 ```
 **左外连接** 
 右表未包含在内的部分用NULL表示
@@ -1294,6 +1688,27 @@ select * from stu_info A right join stu_score  B on A.id=B.id;
 ```sql
 select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on xxx=xx;
 ```
+
+三.全外连接
+
+全外连接操作就是表关系中的迪卡儿积中，除了选择相匹配的数据记录，还包含关联左右两边表中不匹配的数据记录.Mysql不支持全外连接
+
+* 全外连接：左表和右表都不做限制，所有的记录都显示，两表不足的地方用null 填充；
+    * 左外连接=左表全部记录+相关联结果
+    * 右外连接=右表全部记录+相关联结果
+    * 全外连接=左表全部记录+右表全部记录+相关联结果=左外连接+右外连接-相关联结果（即去重复）
+
+MYSQL 可以使用UNION实现，其操作符用于合并两个或多个 SELECT 语句的结果集。
+
+注释：默认地，UNION 操作符选取不同的值。如果允许重复的值，请使用 UNION ALL。
+
+故实现全外连接可以使用：
+```sql
+SELECT * FROM emp e LEFT JOIN dept d ON e.deptno=d.deptno
+UNION
+SELECT * FROM emp e RIGHT JOIN dept d ON e.deptno=d.deptno;
+```
+
 ### 1.6.3. union 查询
 
 UNION ALL只是简单的将两个结果合并后就返回。这样，如果返回的两个结果集中有重复的数据，那么返回的结果集就会包含重复的数据了。
@@ -1302,6 +1717,26 @@ UNION ALL只是简单的将两个结果合并后就返回。这样，如果返�
 ```sql
 select * from A union all select * from B  //A B数据结构一定要一样
 ```
+
+就是把具有相同字段数目和字段类型的表合并到一起。union去掉重复记录；union all不会去掉重复记录。
+```sql
+select id,name,address  
+    from table1 
+    union 
+    select * from table3;
++------+-----------+----------+
+| id   | name      | address  |
++------+-----------+----------+
+|    1 | libai     | shenzhen |
+|    2 | lilin     | nanjing  |
+|    3 | zhangsan  | fujian   |
+|    1 | libai3    | shenzhen |
+|    2 | lili3     | nanjing  |
+|    3 | zhangsan3 | fujian   |
++------+-----------+----------+
+
+```
+
 使用Union，则所有返回的行都是唯一的，如同您已经对整个结果集合使用了DISTINCT
 使用Union all，则不会排重，返回所有的行
 
@@ -1321,8 +1756,31 @@ UNION
 * UNION中的每个查询必须包含相同的列、表达式或聚集函数（不过各个列不需要以相同的次序列出）。
 * 列数据类型必须兼容：类型不必完全相同，但必须是DBMS可以隐含地转换的类型（例如，不同的数值类型或不同的日期类型）。
 
+### 1.6.4. 子查询
+
+连接查询的性能较差，可以使用子查询来替代。连接查询会先使用迪卡儿积操作，再去除不满足条件的数据记录。进行迪卡儿积时，会生成两个表数据记录数的乘积条数据记录，如果这两张表的数据量比较大，则在进行迪卡儿积操作可能会造成死机。
+
+所谓子查询，就是在一个查询之中嵌套了其他若干查询。子查询经常出现在WHERE或者FROM中。
+* where 子句中的子查询：该位置处的子查询一般返回单行单列，多行单列，单行多列数据。
+```sql
+--　单行单列
+select ×　　
+    from xxx
+    where sal > (
+        select sal From where xxxx
+    )；
+-- 单行多列
+select ×　　
+    from xxx
+    where (name,sal) = (
+        select sal From where xxxx
+    )；
+```
+* from　子句中的子查询：该位置处的子查询一般返回多行多列数据记录，可以当作一张临时表
+
+
 ## 1.7. 函数
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.7.1. 聚集函数
 * 运行在行祖上，计算和返回单个值的函数
@@ -1503,7 +1961,7 @@ UNION
 
 
 ## 1.8. 存储过程
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.8.1. 基本概念
 * 存储过程
@@ -1522,11 +1980,16 @@ UNION
 
 
 ## 1.9. 视图
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.9.1. 基本概念
 
 * 视图是虚拟的表，视图本身不包含数据，原始表数据更改，视图查询将会返回最新的数据
+    * 视图的列可以来自不同的表，是表的抽象和在逻辑意义上建立的新关系
+    * 视图是由基本表(实表)产生的表(虚表)
+    * 视图的建立和删除不影响基本表
+    * 对视图的内容的更新(增删改)直接影响基本表
+    * 当视图来自于多个基本表时，不允许添加和删除数据
 * 使用视图的原因
     * 重用SQL语句
     * 简化复杂的SQL操作，在编写查询后，可以重用它不必知道它的基本查询细节
@@ -1542,12 +2005,16 @@ UNION
     * 视图可以嵌套，即可以利用从其他视图中检索数据的查询来构造一个视图。
     * ORDER BY可以用在视图中，但如果从该视图检索数据SELECT中也含有ORDER BY，那么该视图中的ORDER BY将被覆盖。
     * 视图不能索引，也不能有关联的触发器或默认值。
-    * 视图可以和表一起使用。例如，编写一��联结表和视图的SELECT语句
+    * 视图可以和表一起使用。例如，编写一联结表和视图的SELECT语句
 * 视图相关操作
     * 创建视图:CREATE VIEW veiew_name AS select xxx
-    * 使用SHOW CREATE VIEW viewname；来查看创建视图的语句。
+    * show tables 也会列出视图列表
+    * show table status from DB_name
+    * 通过视图查询数据: select * from veiew_name
+    * 查看创建视图： SHOW CREATE VIEW viewname；
+    * DESC viewName
     * 用DROP删除视图，其语法为DROP VIEW viewname;。
-    * 更新视图时，可以先用DROP再用CREATE，也可以直接用CREATE ORREPLACE VIEW。如果要更新的视图不存在，则第2条更新语句会创建一个视图；如果要更新的视图存在，则第2条更新语句会替换原有视图。
+    * 更新视图时，可以先用DROP再用CREATE，也可以直接用CREATE OR REPLACE VIEW。如果要更新的视图不存在，则第2条更新语句会创建一个视图；如果要更新的视图存在，则第2条更新语句会替换原有视图。也可以使用ALTER VIEW view_name AS select xxx
 
 ## 1.10. 存储过程
 
@@ -1557,7 +2024,7 @@ MySQL 5.0 版本开始支持存储过程。
 存储过程思想上很简单，就是数据库 SQL 语言层面的代码封装与重用
 
 ### 1.10.1. 为什么要使用存储过程
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 好处
     * 通过把处理封装在容易使用的单元中，简化复杂的操作。
@@ -1572,7 +2039,7 @@ MySQL 5.0 版本开始支持存储过程。
     * 存储过程的性能调校与撰写，受限于各种数据库系统。
 
 ### 1.10.2. 使用存储过程
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ```SQL
 CREATE
@@ -1691,7 +2158,7 @@ mysql> delimiter;　　#将语句的结束符号恢复为分号
 delete_matches(10);
 ```
 ### 1.10.3. 存储过程的参数
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 MySQL存储过程的参数用在存储过程的定义，共有三种参数类型,IN,OUT,INOUT,形式如：
 ```
@@ -1804,7 +2271,7 @@ mysql> select @p_inout;
 ```
 
 ### 1.10.4. 变量
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **变量定义**
 局部变量声明一定要放在存储过程体的开始：
@@ -1879,7 +2346,7 @@ mysql> CALL p2( );
 2、滥用用户变量会导致程序难以理解及管理
 
 ### 1.10.5. 注释
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **注释**
 MySQL 存储过程可使用两种风格的注释
@@ -2209,7 +2676,7 @@ open cur;
 
 
 ## 1.12. 触发器
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.12.1. 基本概念
@@ -2256,24 +2723,31 @@ FOR EACH ROW SELECT NEW.order_num;
     * 在BEFORE UPDATE触发器中， NEW中的值可能也被更新（允许更改将要用于UPDATE语句中的值）；
     * OLD中的值全都是只读的，不能更新。
 
+* 查看触发器
+    * SHOW TRIGGERS
+* 删除触发器
+    * DROP TRIGGER name
 
 ## 1.13. 事务
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.13.1. 基本概念
 
 #### 1.13.1.1. 事务特点
 * 事务:
-    * 数据库事务是指作为单个逻辑工作单元执行的一系列操作（SQL语句）。这些操作要么全部执行，要么全部不执行
+    * 为了保证数据更新能够从一个一致性状态变更为另一个一致性状态，需要引入事务。数据库事务是指作为单个逻辑工作单元执行的一系列操作（SQL语句）。这些操作要么全部执行，要么全部不执行
 * 四个特征 ACID 特性。 
     * 原子性 Atomicity 
-        * 事务是数据库的逻辑工作单位，事务中包含的各操作要么都做，要么都不做 
+        * 事务中的所有操作视为一个原子单元，即对于事务所进行的数据修改等操作只能是完全提交或者完全回滚
     * 一致性 Consistency
-        * 事务执行的结果必须是使数据库从一个一致性状态变到另一个一致性状态。因此当数据库只包含成功事务提交的结果时，就说数据库处于一致性状态。如果数据库系统 运行中发生故障，有些事务尚未完成就被迫中断，这些未完成事务对数据库所做的修改有一部分已写入物理数据库，这时数据库就处于一种不正确的状态，或者说是 不一致的状态。 
+        * 事务执行的结果必须是使数据库从一个一致性状态变到另一个一致性状态。所有的变更操作必须应用于事务的修改，以便确保数据的完整性
     * 隔离性 Isolation
-        * 一个事务的执行不能其它事务干扰。即一个事务内部的操作及使用的数据对其它并发事务是隔离的，并发执行的各个事务之间不能互相干扰。 
+        * 一个事务的执行不能其它事务干扰。即一个事务内部的操作及使用的数据对其它并发事务是隔离的，并发执行的各个事务之间不能互相干扰。 这种特性通过锁实现。
     * 持续性 Durability
         * 也称永久性，指一个事务一旦提交，它对数据库中的数据的改变就应该是永久性的。接下来的其它操作或故障不应该对其执行结果有任何影响。
+
+**事务隔离级别**
+
 * 数据并发问题
     * 脏读
         * A事务读到B事务还未提交的更改数据，并且在这个基础上进行操作，如果B事务进行回滚，那么将会出现脏读问题。
@@ -2281,8 +2755,9 @@ FOR EACH ROW SELECT NEW.order_num;
         * A事务先开启，第一次读取，B事务开启，B事务修改数据，B事务结束提交，第二次读取，两次读取的数据不一致。
         * A事务多次读取，读取到的数据不一致。也就是读取到别人已经提交的数据。
     * 幻象读
-        * A事务读取到B事务新增的数据。
-        * 幻象读侧重新增数据，不可重复读侧重已有数据被修改。
+        * 在一个事务中两次查询的数据行数不一样
+        * 一个事务查询了几行数据，而另一个事务却在此时插入了新的数据。先前的事务在接下来的查询中就会发现几行数据是它先前所没有的
+        * 幻象读侧重新增/删除导致的行数变化，不可重复读侧重已有数据被修改。
         * 因此解决幻象读使用表级锁，不可重复读使用行级锁即可。
     * 第一类丢失更新
         * A事务开始-->查询余额为100-->B事务开始-->B事务修改余额为1000-->B事务提交--->A事务撤销--->余额被撤销到100
@@ -2298,19 +2773,74 @@ FOR EACH ROW SELECT NEW.order_num;
 
 |隔离级别|脏读|不可重复读|幻象读|第一类丢失更新|第二类丢失更新|
 |---|---|---|---|---|---|
-|READ UNCOMMITED|出现|出现|出现|不出现|出现|
-|READ UNCOMMITED|不出现|出现|出现|不出现|出现|
+|READ UNCOMMITTED|出现|出现|出现|不出现|出现|
+|READ COMMITTED|不出现|出现|出现|不出现|出现|
 |REPEATABLE READ|不出现|不出现|出现|不出现|不出现|
 |SERIALIZABLE|不出现|不出现|不出现|不出现|不出现|
 
-* 如果事务操作中包括事务型(InnoDB)的表和非事务型(MyISAM)的表，回滚时非事务型的表将不会回滚，使用时要注意，尽量不要混合使用。
-* 对非事务型的表进行事务操作，不会有错误提示。但是回滚无效。
+* 事务隔离级别设定
+    * READ UNCOMMITTED 读未提交
+        * 所有事务都能看到其他未提交事务的执行结果，会存在脏读问题
+        * 开启ＡＢ两个事务，在Ｂ事务更新但是还没提交之前，Ａ事务读取到了更新后的数据，但由于Ｂ事务回滚，Ａ读取到的是脏数据
+        * SET GLOBAL TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+    * READ COMMITTED 读已提交
+        * 事务只有在提交之后，其他事务才能看到改变 
+        * 会存在不可重复读问题，因为其他事务如果在事务提交前和提交后读取，两次读取到的数据是不一致的
+        * SET GLOBAL TRANSACTION ISOLATION LEVEL READ COMMITED
+    * REPEATABLE READ 可重复读
+        * Ｍysql默认隔离级别
+        * 能确保同一个事务的多个实例在并发读取数据时，会看到同样的数据行。但是会导致幻读。也就是读取到新增的行 。MYSQL使用mvcc解决这个问题。
+        * SET GLOBAL TRANSACTION ISOLATION LEVEL REPEATABLE READ
+    * SERIALIZABLE 序列化读
+        * 通过强制事务排序，使之不会互相冲突。从而解决幻读的问题。
+        * 也就是在每个读的数据行上加上共享锁实现。这种会导致大量的超时和锁争用现象，效率较低
+        * SET GLOBAL TRANSACTION ISOLATION LEVEL SERIALIZABLE
+
+* 数据库的两种读，每种读读的数据版本不一样，所以也称为MVCC，即多版本并发控制
+    * 快照读 ：读取的是快照版本，也就是历史版本
+        * select * from where xxx  这种形式的都是快照读。
+    * 当前读 : 读取的是最新版本
+        * update , insert ,delete ,select xx from xx for update ,  in share mode 都是当前读
+        * 当前读会等待，不会返回数据的历史版本 
+* mysql 是如何解决脏读、幻读、不可重复读的
+    * 在快照读下是用的mvcc 做的　，mysql RR 下 会产生幻读！！  
+    * 快照读下数据的可见返回 = mvcc + 当前事务加锁的行 　
+    * 在当前读使用 锁
+    * 加上锁了，别的事务要修改只能等待，自然也就没有各种问题了
+
+* 不可重复读是用行锁来解决的，而行锁是通过版本号实现的。
+* innodb默认使用的mvcc + 锁的混合模式。innodb的RR模式并没有完全解决幻读的问题。
+* mvcc 和 锁 都可以解决幻读、重复读问题。两者方式不一样，前者通过冗余数据，后者通过锁。
+
+
+**事务日志**
+* 为支持事务INNODB存储引擎引入了与事务处理相关的UNDO，REDO日志，同时依赖与数据库提供的锁机制
+    * REDO日志
+        * 事务执行时需要将执行的事务日志写入到日志文件中，对应的文件为REDO日志，当每条SQL进行数据库更新操作时，首先将REDO日志写入到日志缓冲区。当客户端执行COMMIT 命令提交时，日志缓冲区的内容将会被刷新到磁盘。日志缓冲区的刷新方式或者时间间隔可以通过参数：innodb_flush_log_at_tx_commit控制
+    * UNDO日志
+        * 主要用于事务异常时的数据回滚，具体内容就是复制事务前的数据库内容到UNDO缓冲区，然后在合适的时间将内容刷新到磁盘
+        * 与REDO日志不同的是，磁盘上不存在单独的UNDO日志文件，所有的UNDO日志均存放在表空间对应的.ibd数据文件中，即使MYSQL服务启用了独立表空间依然如此.UNDO日志又称为回滚段。
 
 #### 1.13.1.2. 锁
-* 共享锁(shared lock)和排他锁(exclusive lock)
-    * 读锁是共享的，可以多个线程同时读取相同的数据
-    * 写锁是排他锁，任意时刻只能由一个线程操作同一个数据，否则将出现并发问题.获取到写锁时，其他线程禁止读写。
+* 锁类型
+    * 共享锁(shared lock)
+        * 共享锁粒度是行或者多行，一个事务获取共享锁之后，可以对锁定范围内的数据执行读操作
+        * 读锁是共享的，可以多个线程同时读取相同的数据
+    * 排他锁(exclusive lock)
+        * 粒度和共享锁相同，一个事务获取共享锁之后，可以对锁定范围内的数据执行写操作
+        * 写锁是排他锁，任意时刻只能由一个线程操作同一个数据，否则将出现并发问题.获取到写锁时，其他线程禁止读写。
+    * 意向锁
+        * 是一种表锁，锁定的粒度是整张表，分为意向共享锁和意向排他锁
+        * 意向锁表示一个事务有意对数据上共享锁或者排他锁
     * 根据SQL语句判定是读或者写，从而获取到对应的锁
+
+||排他锁　|共享锁|意向共享锁|意向排他锁|
+|---|---|---|---|---|
+|排他锁|互斥|互斥|互斥|互斥|
+|共享锁|互斥|相容|互斥|相容|
+|意向共享锁|互斥|互斥|相容|相容|
+|意向排他锁|互斥|相容|相容|相容|
+
 * 锁一般由存储引擎管理，但服务器会为ALTER TABLE之类的语句使用表锁，忽略存储引擎的锁机制
 * INSERT,UPDATE,DELETE,SELECT FOR UPDATE都会隐式采用行级锁，会根据实际情况确认是否升级为表锁
 * 表锁
@@ -2338,6 +2868,7 @@ FOR EACH ROW SELECT NEW.order_num;
     * 显示锁定
         * SELECT ... LOCK IN SHARE MODE
         * SELECT ... FOR UPDATE
+
 
 #### 1.13.1.3. 多版本并发控制
 
@@ -2376,11 +2907,12 @@ FOR EACH ROW SELECT NEW.order_num;
         * 取消自动提交,只有commit之后才会提交
     * autocommit针对单条连接，而不是MySQL服务器
 
-
+* 如果事务操作中包括事务型(InnoDB)的表和非事务型(MyISAM)的表，回滚时非事务型的表将不会回滚，使用时要注意，尽量不要混合使用。
+* 对非事务型的表进行事务操作，不会有错误提示。但是回滚无效。
   
     
 ## 1.14. 存储引擎
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 查看存储引擎
 ```SQL
@@ -2453,7 +2985,7 @@ MEMORY存储引擎将表中的数据存储到内存中，未查询和引用其�
 
 不同的存储引擎都有各自的特点，以适应不同的需求，如下表所示：
 
-![](https://github.com/lgjlife/Java-Study/blob/master/pic/mysql/mysql-engines.jpeg?raw=true)
+![mysql存储引擎](pic/mysql/mysql-engines.jpeg)
 
 |功 能|MYISAM|Memory|InnoDB|
 |---|---|---|---|
@@ -2476,10 +3008,10 @@ MEMORY存储引擎将表中的数据存储到内存中，未查询和引用其�
 ### 1.14.2. InnoDB存储引擎
 
 #### 1.14.2.1. 体系结构
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.14.2.2. 后台线程
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 InnoDB存储引擎是多线程模型，其后台线程负责处理不同的任务
 
@@ -2553,7 +3085,7 @@ mysql> show variables like "innodb_purge_threads";
 
 
 #### 1.14.2.3. 内存
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 innodb是基于���盘存储，并将其中的记录按照页的方式进行管理。在数据库系统中 ，由于CPU速度和磁盘速度的差异，基于磁盘的数据库系统通常使用缓冲池技术来提高数据库的整体性能。
 
@@ -2597,7 +3129,7 @@ mysql> show variables like "innodb_buffer_pool_instances";
 
 
 #### 1.14.2.4. checkpoint技术
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **checkpoint产生的背景**
 数据库在发生增删查改操作的时候，为了提高事物操作的效率，都是先在buffer pool中完成的，buffer pool中修改之后的数据，并没有立即写入到磁盘，这有可能会导致内存中数据与磁盘中的数据产生不一致的情况。
@@ -2684,14 +3216,14 @@ MySQL数据库（当然其他关系数据也有类似的机制），为了提高
 不同的情况下，会发生不同的checkpoint，将不同数量的脏页刷新到磁盘，从而到达管理内存（第1,2,4种checkpoint）和redo log可用空间（第3种checkpoint）的目的。 
 
 #### 1.14.2.5. Master Thread 工作方式
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.14.2.6. InnoDB关键特性
 插入缓存（insert buffer）、两次写(double write)、自适应哈希(Adaptive Hash index)、异步IO(Async IO)、刷新邻接页(Flush Neighbor Page)
 
 
 ##### 1.14.2.6.1. 插入缓存
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **Insert Buffer**
 Insert Buffer是InnoDB存储引擎关键特性中最令人激动与兴奋的一个功能。不过这个名字可能会让人认为插入缓冲是缓冲池中的一个组成部分。其实不然，InnoDB缓冲池中有Insert Buffer信息固然不错，但是Insert Buffer和数据页一样，也是物理页的一个组成部分。
@@ -2757,7 +3289,7 @@ Insert Buffer Bitmap页用来追踪每个辅助索引页的可用空间，并至
 还有一种情况，之前在分析Master Thread时曾讲到，在Master Thread线程中每秒或每10秒会进行一次Merge Insert Buffer的操作，不同之处在于每次进行merge操作的页的数量不同。
 
 ##### 1.14.2.6.2. 两次写
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **doublewrite应用场景**
 我们知道，innodb的数据页一般大小是16KB，MySQL存取数据的最小单位也是页，而操作系统并不能保障一个数据页的原子性，也就是说当写入数据时，有可能在一个页中写入一半时（比如8K）数据库宕机，这种情况称为部分写失效（partial page write），从而导致数据丢失。
@@ -2790,7 +3322,7 @@ Variable_name: Innodb_dblwr_writes
 如果操作系统在将页写入磁盘的过程中发生崩溃，如上图，在恢复过程中，innodb存储引擎可以从共享表空间的doublewrite中找到该页的一个最近的副本，将其复制到表空间文件，再应用redo log，就完成了恢复过程。因为有副本所以也不担心表空间中数据页是否损坏。
 
 ##### 1.14.2.6.3. 自适应哈希索引
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 哈希是一种非常快的查找方法，在一般情况时间复杂度为O(1)。而B+树的查找次数，取决于B+树的高度，在生成环境中，B+树的高度一般为3-4层，不需要查询3-4次。
 
@@ -2807,7 +3339,7 @@ AHI有一个要求，对这个页的连续访问模式(查询条件)必须一样
 根据官方文档显示，启用AHI后，读取和写入的速度可以提高2倍，负责索引的链接操作性能可以提高5倍。其设计思想是数据库自由化的，无需DBA对数据库进行人为调整。
 
 ##### 1.14.2.6.4. 异步IO
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 为了提高磁盘操作性能，当前的数据库系统都采用异步IO的方式来处理磁盘操作。InnoDB也是如此。
 
@@ -2820,7 +3352,7 @@ AIO的另外一个优势是进行IO Merge操作，也就是将多个IO合并为�
 MySQL可以通过参数innodb_use_native_aio来决定是否启用Native AIO。在InnoDB存储引擎中，read ahead方式的读取都是通过AIO完成，脏页的刷新，也是通过AIO完成。
 
 ##### 1.14.2.6.5. 刷新邻接页
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 InnoDB存储引擎在刷新一个脏页时，会检测该页所在区(extent)的所有页，如果是脏页，那么一起刷新。这样做的好处是通过AIO可以将多个IO写操作合并为一个IO操作。该工作机制在传统机械磁盘下有显著优势。但是需要考虑下吧两个问题:
 * 是不是将不怎么脏的页进行写入，而该页之后又会很快变成脏页？
@@ -2830,34 +3362,34 @@ InnoDB存储引擎在刷新一个脏页时，会检测该页所在区(extent)的
 
 
 ##### 1.14.2.6.6. 启动、关闭与恢复
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ## 1.15. MySQL基准测试
 
 ### 1.15.1. 为什么需要基准测试
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.15.2. 基准测试的策略
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.15.3. 基准测试的方法
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.15.4. 基准测试工具
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.15.5. 基准测试案例
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ## 1.16. 服务器性能剖析
 
 ### 1.16.1. 性能优化简介
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 性能：完成某件任务所需要的时间，也就是说，性能即响应时间。响应时间的变化可以反映优化的效果。
 
 ### 1.16.2. 剖析MYSQL查询
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 
@@ -2877,7 +3409,7 @@ InnoDB存储引擎在刷新一个脏页时，会检测该页所在区(extent)的
     * 每个存储引擎都会有自己的文件保存数据，用于存储数据和索引。
 
 ### 1.17.1. 参数文件
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 告诉MYSQL实例启动时在哪里可以找到数据库文件，并且指定初始化参数，这些参数定义了某种内存结构的大小等设置，还会介绍参数的类型
 也就是配置文件
@@ -2914,7 +3446,7 @@ variable: {
 
 
 ### 1.17.2. 套接字文件
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 在UNIX系统下本地连接MySQL可以采用Unix域套接字方式，这种方式需要一个套接字(socket)文件
 
@@ -2930,7 +3462,7 @@ mysql> show variables like "SOCKET";
 
 ```
 ### 1.17.3. pid文件
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 数据库启动时，会将自己的进程ID写入一个pid文件中
 ```
@@ -2943,268 +3475,18 @@ mysql> show variables like "pid_file";
 
 ```
 ### 1.17.4. 表结构定义文件
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 表结构文件后缀名为frm.记录了表的表结构定义。
 文件名与表名相同，每个表对应一个同名frm文件，与操作系统和存储引擎无关，即不管MySQL运行在何种操作系统上，使用何种存储引擎，都有这个文件
 
-### 1.17.5. 日志
-<a href="#menu" style="float:right">目录</a>
-
-在MySQL中，主要有5种日志文件：
-1.错误日志(error log)：记录mysql服务的启停时正确和错误的信息，还记录启动、停止、运行过程中的错误信息。
-2.查询日志(general log)：记录建立的客户端连接和执行的语句。
-3.二进制日志(bin log)：记录所有更改数据的语句，可用于数据复制。
-4.慢查询日志(slow log)：记录所有执行时间超过long_query_time的所有查询或不使用索引的查询。
-5.中继日志(relay log)：主从复制时使用的日志。
-
-当存储事务日志的磁盘坏掉，数据是无法恢复的！因此选择一个可靠的磁盘还是相当有必要的，比如我们可以给我们的数据做raid10或者raid1（推荐使用raid10）来提供这种保障。事务日志不能帮助我们恢复数据，它的作用在于当操作系统崩溃时（比如异常断电）它能够保障已经提交的事物不丢失，而未提交的事物能回滚。如果想要恢复日志还得依赖于二进制日志。 
-
-
-#### 1.17.5.1. 错误日志
-<a href="#menu" style="float:right">目录</a>
-
-记录数据库启动、运行、关闭过程中所有的错误信息，也包括一些警告信息或者正确信息。
-
-```
-mysql> show variables like "log_error";
-+---------------+--------------------------+
-| Variable_name | Value                    |
-+---------------+--------------------------+
-| log_error     | /var/log/mysql/error.log |
-+---------------+--------------------------+
-
-```
-
-文件内容
-```
-lgj@lgj-Lenovo-G470:~$ cat /var/log/mysql/error.log 
-2019-09-01T16:08:29.763333Z 0 [Warning] TIMESTAMP with implicit DEFAULT value is deprecated. Please use --explicit_defaults_for_timestamp server option (see documentation for more details).
-2019-09-01T16:08:29.764547Z 0 [Note] /usr/sbin/mysqld (mysqld 5.7.25-0ubuntu0.18.04.2-log) starting as process 1537 ...
-2019-09-01T16:08:29.883509Z 0 [Note] InnoDB: PUNCH HOLE support available
-2019-09-01T16:08:29.883547Z 0 [Note] InnoDB: Mutexes and rw_locks use GCC atomic builtins
-2019-09-01T16:08:29.883553Z 0 [Note] InnoDB: Uses event mutexes
-2019-09-01T16:08:45.723104Z 0 [Note] Server hostname (bind-address): '0.0.0.0'; port: 3306
-2019-09-01T16:08:45.723133Z 0 [Note]   - '0.0.0.0' resolves to '0.0.0.0';
-2019-09-01T16:08:45.723208Z 0 [Note] Server socket created on IP: '0.0.0.0'.
-2019-09-01T16:08:52.062686Z 0 [Note] /usr/sbin/mysqld: ready for connections.
-Version: '5.7.25-0ubuntu0.18.04.2-log'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  (Ubuntu)
-
-```
-
-#### 1.17.5.2. 查询日志
-<a href="#menu" style="float:right">目录</a>
-它是用来保存所有跟查询相关的日志，这种日志类型默认是关闭状态的，因为MySQL的用户有很多，如果将每个用户的查询操作都记录下来的话，对服务器的资源开销也是一件令人烦恼的事情。查询日志常见的几个参数：
-
-```
-mysql> show global variables like 'log';            　　　　　　#查看是否记录所有语句的日志信息于一般查询日志文件（general_log），默认是关闭状态。
-+---------------+-------+
-| Variable_name | Value |
-+---------------+-------+
-| log           | OFF   |
-+---------------+-------+
-1 row in set (0.00 sec)
-
-mysql> show global variables like 'log_output';    　　　　　　#它有三个值，即{TABLE|FILE|NONE}，分别表示记录在表中（table），文件（file）中或是不记录（none）。注意，只有og_output的值等于 FILE时，general_log_file的参数才会有意义。且 table和file 可以同时出现，用逗号分隔即可
-+---------------+-------+
-| Variable_name | Value |
-+---------------+-------+
-| log_output    | FILE  |
-+---------------+-------+
-1 row in set (0.00 sec)
-
-mysql> show global variables like 'general_log';            #查看是否启用查询日志功能
-+---------------+-------+
-| Variable_name | Value |
-+---------------+-------+
-| general_log   | OFF   |
-+---------------+-------+
-1 row in set (0.00 sec)
-
-mysql> show global variables like 'general_log_file';        #定义了一般查询日志保存的文件
-+------------------+----------------------------+
-| Variable_name    | Value                      |
-+------------------+----------------------------+
-| general_log_file | /var/run/mysqld/mysqld.log |
-+------------------+----------------------------+
-1 row in set (0.00 sec)
-
-mysql>
-```
 
 
 
-#### 1.17.5.3. 二进制日志
-<a href="#menu" style="float:right">目录</a>
+### 1.17.5. InnoDB存储引擎文件
 
-1>.什么是二进制文件
-　　只记录修改相关的操作，记录了当前服务器的数据修改和有潜在可能性影响数据修改的语句。它用来实现复制的基本凭据。也就是说，你可以将生成环境中的MySQL的二进制文件拿到线下的服务器上运行一下，理论上你会拿到和生成环境中一样的数据哟，因此，二进制日志也叫复制日志。二进制日志文件默认在数据目录下，通常情况下为mysql-bin#（例如：mysql-bin.000001，mysql-bin000002）。
- 
-2>.查看MySQL日志文件
-　　由于二进制文件格式是二进制类型的，我们不能用cat等查看普通文本类命令去查看这些二进制日志，我们可以通过mysqlbinlog来查看。注意“show master status; ”查看当前使用的二进制日志和下一个事件开始时的基于的位置。
-
-```
-MariaDB [(none)]> show binlog events\G    　　#查看mysql的日志
-*************************** 1. row ***************************
-   Log_name: mysql-bin.000001
-        Pos: 4
- Event_type: Format_desc        　　　　　　　　#事件类型
-  Server_id: 1                    　　　　　　　#指定服务器的唯一标识。
-End_log_pos: 245
-       Info: Server ver: 5.5.36-MariaDB-log, Binlog ver: 4
-```
-
-**二进制日志作用**
-* 恢复
-    * 某些数据的恢复需要二进制日志
-* 复制
-    * 将二进制文件复制到从数据库，进行数据 复制
-* 审计
-    * 可以对文件进行审计，判断是否有注入攻击
-
-* 通过参数 log-bin=[name]可以启动二进制日志。如果不指定name,则默认进制文件名称为主机名和序列号组成
-
-存放位置
-```
-mysql> show variables like "datadir";
-+---------------+-----------------+
-| Variable_name | Value           |
-+---------------+-----------------+
-| datadir       | /var/lib/mysql/ |
-+---------------+-----------------+
-
-```
-
-开启二进制日志会使性能下降1%。但由于数据恢复和复制的需要，性能可以忽略不计。
-
-以下配置影响二进制日志
-* max_binlog_size
-    * 超过该值，则产生新的二进制文件
-    * 默认值:104857600字节
-* binlog_cache_size
-    * 默认值32k
-* sync_binlog
-* binlog-do-db
-* binlog-ignore-db
-* log-slave-update
-* binlog-format
-
-* 当使用事务的表存储引擎时，所有未提交的二进制日志会被记录到一个缓存中，等该事务提交时直接将缓冲中的二进制日志写入二进制文件。而该缓冲的大小由binlog_cache_size决定，默认值32k
-```
-mysql> show variables like "binlog_cache_size";
-+-------------------+-------+
-| Variable_name     | Value |
-+-------------------+-------+
-| binlog_cache_size | 32768 |
-+-------------------+-------+
-
-```
-* binlog_cache是基于会话的，也就是一个事务就需要申请一个binlog_cache_size大小的缓存。因此不能设置过大。设置太小如果超过该值，缓存中的信息又被写入一个临时文件中去。
-
-Binlog_cache_use:使用缓冲写二进制日志的次数
-Binlog_cache_disk_use:使用临时文件写二进制日志的次数
-目的是要降低写入临时文件的次数
-```
-mysql> show global status like "binlog_cache%";
-+-----------------------+-------+
-| Variable_name         | Value |
-+-----------------------+-------+
-| Binlog_cache_disk_use | 0     |
-| Binlog_cache_use      | 0     |
-+-----------------------+-------+
-
-```
-
-* 二进制日志并不是每次写的时候都会同步到磁盘，因此在操作系统发生宕积时，可能会有一部分数据没有写入二进制文件。造成数据丢失。
-mysql> show variables like "sync_binlog";
-+---------------+-------+
-| Variable_name | Value |
-+---------------+-------+
-| sync_binlog   | 1     |
-+---------------+-------+
-sync_binlog表示每写缓冲多少次就同步到磁盘。设置为1表示每次写缓存就写入日志文件。
-但仍然有个问题，数据已经写入文件，但是事务还没提交就宕机了。重启之后由于COMMIT没有发生，事务就会被回滚，但是二进制日志已经记录了该事务信息，不能被回滚。
-这个问题可以通过innodb_support_xa解决，默认打开。这个参数与XA事务有关，但它同时也确保了二进制日志和InnoDB存储引擎数据文件的同步。
-
-mysql> show variables like "innodb_support_xa";
-+-------------------+-------+
-| Variable_name     | Value |
-+-------------------+-------+
-| innodb_support_xa | ON    |
-+-------------------+-------+
-
-
-* 参数binlog-do-db和binlog-ignore-db表示需要写入或者忽略哪些库的日志，默认为空，表示需要同步所有库的日志到二进制日志文件。这个是动态参数，可以在运行时进行修改。
-
-* 如果当前数据库是复制中的从机角色，则它不会将从master取得并执行的二进制日志写入自己的二进制日志文件中去。如果需要写入，要设置log-slave-update.如果需要搭建master->slave->slave.则必须设置该参数。
-
-* binlog_format(二进制日志的格式)
-    * STATEMENT
-        * 和5.1之前一样，记录的是逻辑SQL语句
-    * ROW(默认值)
-        * 不是简单的SQL语句，而是记录表的行更改情况，如果设置为ROW，可以将InnoDB的事务隔离级别设为READ COMMITTED，以获得更好的并发性。
-        * 使用ROW会使数据库的恢复和复制带来更好的可靠性
-        * 有些语句下ROW格式需要更大的容量，这是因为数据库不是记录逻辑的SQL操作，而是记录对于每行的修改。也就是说也会增加网络传输的负载
-    * MIXED
-        * 默认使用STATEMENT，某些情况下使用ROW。可能的情况有：
-            * 表的存储引擎为NDB，这时对表的DML操作都会以ROW格式进行记录
-            * 使用UUID(),USER(),CURRENT_USER(),FOUND_ROWS(),ROW_COUNT()等不确定函数
-            * 使用INSERT DELAY语句
-            * 使用用户自定义函数(UDF)
-            * 使用临时表
-    * NDB不支持 STATEMENT格式，NDB不支持ROW格式，其他存储引擎所有的格式都支持。
-
-            
-```
-mysql> show variables like "binlog_format";
-+---------------+-------+
-| Variable_name | Value |
-+---------------+-------+
-| binlog_format | ROW   |
-+---------------+-------+
-```
-
-
-
-#### 1.17.5.4. 慢查询日志
-<a href="#menu" style="float:right">目录</a>
-
-查询执行时长超过指定时长的查询，即为慢查询。这里的慢不一定是查询语句存在问题，可能是因为访问你的资源当时不被许可访问，就好比你将一个一个MySQL库中的一个表添加写锁，那么别人就没有办法去查询这个表的内容啦，等到你将这个表锁解开之后，访问这张表的查询语句才会被执行。
-　　慢查询日志是我们通常拿来定位系统上查询操作执行速度过慢时常用到的一个评估工具，所以在生产环境中很有必要启用慢查询日志功能的！它默认情况下也是没有启用的哟。慢查询常见的几个参数
-
-```
-mysql> show global variables like 'slow_query_log';            　　　　　　#是否启用慢查询日志，它的输出位置也取决log_output={table|file|none}。
-+----------------+-------+
-| Variable_name  | Value |
-+----------------+-------+
-| slow_query_log | OFF   |
-+----------------+-------+
-1 row in set (0.01 sec)
-
-mysql> show global variables like 'slow_query_log_file';                #查看定义慢查询日志的文件
-+---------------------+---------------------------------+
-| Variable_name       | Value                           |
-+---------------------+---------------------------------+
-| slow_query_log_file | /var/run/mysqld/mysqld-slow.log |
-+---------------------+---------------------------------+
-1 row in set (0.02 sec)
-
-mysql> show global variables like 'long_query_time';                　　#慢查询的时长，超出这个时长的都被记录为慢查询。
-+-----------------+-----------+
-| Variable_name   | Value     |
-+-----------------+-----------+
-| long_query_time | 10.000000 |
-+-----------------+-----------+
-1 row in set (0.00 sec)
-
-mysql>
-```
-
-
-### 1.17.6. InnoDB存储引擎文件
-
-#### 1.17.6.1. 表空间文件
-<a href="#menu" style="float:right">目录</a>
+#### 1.17.5.1. 表空间文件
+<a href="#menu" >目录</a>
 
 InnoDB存储引擎在存储设计上模仿了Oracle，将存储的数据按表空间进行存放。默认配置下，会有一个初始化大小为10MB、名为ibdata1的文件。该文件就是默认的表空间文件（tablespace file）。你可以通过参数innodb_data_file_path对其进行设置。格式如下：
 ```
@@ -3240,8 +3522,8 @@ mysql> show variables like 'innodb_file_per_table';
 ```
 
 
-#### 1.17.6.2. 重做日志文件
-<a href="#menu" style="float:right">目录</a>
+#### 1.17.5.2. 重做日志文件
+<a href="#menu" >目录</a>
 
 默认情况下会有两个文件，名称分别为ib_logfile0和ib_logfile1。MySQL官方手册中将其称为InnoDB存储引擎的日志文件，不过更准确的定义应该是重做日志文件（redo log file）。为什么强调是重做日志文件呢？因为重做日志文件对于InnoDB存储引擎至关重要，它们记录了对于InnoDB存储引擎的事务日志。
 
@@ -3324,7 +3606,7 @@ InnoDB：largest such row.
 ## 1.18. 表与数据类型优化
 
 ### 1.18.1. 选择优化的数据类型
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 选择小的数据类型
     * 更小的通常更快，因为它们占用更少的磁盘，内存，和CPU缓存，并且处理时需要的CPU周期也更少
@@ -3346,7 +3628,7 @@ InnoDB：largest such row.
 
 
 ### 1.18.2. 表设计中的陷阱
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **太多的列**
 MYSQL的存储引擎API工作时需要在服务器层和存储引擎层之间通过行缓冲格式拷贝数据,然后在服务器层将缓冲内容解码成各个列。从行缓冲中将编码过的列转换成行数据结构的操作代价是非常高的。 MYISAM的定长行结构实际上与服务器层的行结构正好匹配,所以不需要转换。然而, MYISAM的变长行结构和 INNODB的行结构则总是需要转换。转换的代价依赖于列的数量。当我们研究一个CPU占用非常高的案例时,发现客户使用了非常宽的表(数千个字段),然而只有一小部分列会实际用到,这时转换的代价就非常高。如果计划使用数千个字段,必须意识到服务器的性能运行特征会有一些不同。
@@ -3384,7 +3666,7 @@ CREATE TABLE..(
 
 
 ### 1.18.3. 范式和反范式
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 设计关系数据库时，遵从不同的规范要求，设计出合理的关系型数据库，这些不同的规范要求被称为不同的范式，各种范式呈递次规范，越高的范式数据库冗余越小。但是有些时候一昧的追求范式减少冗余，反而会降低数据读写的效率，这个时候就要反范式，利用空间来换时间。
 
@@ -3427,7 +3709,7 @@ CREATE TABLE..(
 
         
 ### 1.18.4. 加快ALTER操作的速度
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 Mysql 的alter table 操作的性能对大表来说是个大问题。mysql执行大部分修改表结构操作的方法是用新的结构创建一个空表，从旧表中查出所有数据插入新表，然后删除旧表。这样的操作可能需要很长时间，如果内存不足而表又很大，而且还有很多索引的情况下尤其如此。许多人都有这样的经验，alter table操作需要花费数个小时甚至数天才能完成。 
 一般而言，大部分alter table操作将导致mysql服务中断。对常见的场景而言我们会使用两种技巧： 
@@ -3435,7 +3717,7 @@ Mysql 的alter table 操作的性能对大表来说是个大问题。mysql执行
 2.另外一种技巧是“影子拷贝”。影子拷贝的技巧是用要求的表结构创建一张和源表无关的新表，然后通过重命名和删表操作交换两张表。也有一些工具可以完成影子拷贝工作。 
 
 ### 1.18.5. 总结
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 良好的schema设计原则是普遍适用的，但mysql有它自己的实现细节要注意。概括来说，尽可能保持任何东西小而简单总是好的。设计时尽量遵循简单原则：
 * 尽量避免过度设计，例如会导致极其复杂查询的schema设计，或者有多列的表设计（很多的意思是介于有点多和非常多之间）
@@ -3448,35 +3730,35 @@ Mysql 的alter table 操作的性能对大表来说是个大问题。mysql执行
 
 
 ### 1.18.6. 日志文件
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 用来记录运行时产生的日志，比如慢查询日志，二进制日志
 
 ### 1.18.7. socket文件
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 当用UNIX域套接字进行连接时需要的文件 
 
 ### 1.18.8. pid文件
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * MYSQL实例的进程PID文件
 
 
 ### 1.18.9. MySQL表结构文件
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 表结构定义文件 
 
 ### 1.18.10. 存储引擎文件
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 存储了记录和索引等数据
 
 ## 1.19. 表
 
 ### 1.19.1. 索引组织表
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 在InnoDB 存储引擎中，表都是根据主键顺序组织存放的，这种存储方式的额表称为索引组织表。在InnoDB存储引擎表中，每张表都有个主键(Primary key)，如果在创建表时 没有显示地定义主键，则InnoDB存储引擎会按如下方式选择或创建主键：
 * 首先判断表是否有非空的唯一索引(Unique not null),如果有，则该列即为主键。
@@ -3485,21 +3767,21 @@ Mysql 的alter table 操作的性能对大表来说是个大问题。mysql执行
 
 
 ### 1.19.2. 逻辑存储结构
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 InnoDB存储引擎的逻辑存储结构和Oracle大致相同，所有数据都被逻辑地存放在一个空间中，我们称之为表空间（tablespace）。表空间又由段（segment）、区（extent）、页（page）组成。页在一些文档中有时也称为块（block），1 extent = 64 pages,InnoDB存储引擎的逻辑存储结构大致如图所示。
 
 ![](https://images2015.cnblogs.com/blog/990532/201701/990532-20170116094754739-1789768872.png)
 
 #### 1.19.2.1. 表空间
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 表空间可以看做是InnoDB存储引擎逻辑结构的最高层，所有的数据都是存放在表空间中。默认情况下InnoDB存储引擎有一个共享表空间ibdata1，即所有数据都放在这个表空间内。如果我们启用了参数innodb_file_per_table，则每张表内的数据可以单独放到一个表空间内。
 
 对于启用了innodb_file_per_table的参数选项，需要注意的是，每张表的表空间内存放的只是数据、索引和插入缓冲，其他类的数据，如撤销（Undo）信息、系统事务信息、二次写缓冲（double write buffer）等还是存放在原来的共享表空间内。这也就说明了另一个问题：即使在启用了参数innodb_file_per_table之后，共享表空间还是会不断地增加其大小。
 
 #### 1.19.2.2. 段
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 上图中显示了表空间是由各个段组成的，常见的段有数据段、索引段、回滚段等。InnoDB存储引擎表是索引组织的（index organized），因此数据即索引，索引即数据。那么数据段即为B+树的页节点（上图的leaf node segment），索引段即为B+树的非索引节点（上图的non-leaf node segment）。
 
 与Oracle不同的是，InnoDB存储引擎对于段的管理是由引擎本身完成，这和Oracle的自动段空间管理（ASSM）类似，没有手动段空间管理（MSSM）的方式，这从一定程度上简化了DBA的管理。
@@ -3507,14 +3789,14 @@ InnoDB存储引擎的逻辑存储结构和Oracle大致相同，所有数据都�
 需要注意的是，并不是每个对象都有段。因此更准确地说，表空间是由分散的页和段组成。
 
 #### 1.19.2.3. 区
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 区是由64个连续的页组成的，每个页大小为16KB，即每个区的大小为1MB。对于大的数据段，InnoDB存储引擎最多每次可以申请4个区，以此来保证数据的顺序性能。
 
 在我们启用了参数innodb_file_per_talbe后，创建的表默认大小是96KB。区是64个连续的页，那创建的表的大小至少是1MB才对啊？其实这是因为在每个段开始时，先有32个页大小的碎片页（fragment page）来存放数据，当这些页使用完之后才是64个连续页的申请。
 
 #### 1.19.2.4. 页
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 同大多数数据库一样，InnoDB有页（page）的概念（也可以称为块），页是InnoDB磁盘管理的最小单位。与Oracle类似的是，Microsoft SQL Server数据库默认每页大小为8KB，不同于InnoDB页的大小（16KB），且不可以更改（也许通过更改源码可以）。
 
@@ -3530,7 +3812,7 @@ InnoDB存储引擎的逻辑存储结构和Oracle大致相同，所有数据都�
 
 
 #### 1.19.2.5. 行
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 InnoDB存储引擎是面向行的（row-oriented），也就是说数据的存放按行进行存放。每个页存放的行记录也是有硬性定义的，最多允许存放16KB/2～200行的记录，即7992行记录。这里提到面向行（row-oriented）的数据库，那么也就是说，还存在有面向列（column-orientied）的数据库。MySQL infobright储存引擎就是按列来存放数据的，这对于数据仓库下的分析类SQL语句的执行以及数据压缩很有好处。类似的数据库还有Sybase IQ、Google Big Table。面向列的数据库是当前数据库发展的一个方向。
 
@@ -3538,19 +3820,19 @@ InnoDB存储引擎是面向行的（row-oriented），也就是说数据的存�
 
 
 ### 1.19.3. 行记录格式
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.19.4. 数据页结构
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.19.5. Nameed File Formats机制
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.19.6. 约束
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.19.6.1. 数据完整性
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 关系型数据库和文件系统的不同点是其本身能保证存储数据的完整性，不需要应用程序的控制，而文件系统一般需要在程序端进行控制。约束机制提供了一条强大的途径来保证数据库中数据的完整性。
 
@@ -3659,16 +3941,16 @@ ALTER TABLE <表名> DROP FOREIGN KEY <外键约束名>;
 ```
 
 #### 1.19.6.3. 约束和索引的区别
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 约束是一个逻辑的概念，用来保证数据的完整性
 而索引是一个数据结构，既有逻辑上的概念，在数据库中还代表数据的存储方式
 
 ### 1.19.7. 分区表
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.19.7.1. 概述
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 分区功能是在数据层面实现，与存储引擎无关，但是有些存储引擎不支持比如CSV，FEDORATED，MERGE等。
 MySQL5.1版本增加了对分区的支持，分区的过程使用将一个表或索引分解为多个更小、更可管理的部分。
@@ -3683,23 +3965,27 @@ MySQL5.1版本增加了对分区的支持，分区的过程使用将一个表或
 
 
 #### 1.19.7.2. 分区类型
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.19.7.3. 子分区
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.19.7.4. 分区中的NULL值
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.19.7.5. 分区和性能
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.19.7.6. 在表和分区间交换数据
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ## 1.20. 索引与算法
 
 ### 1.20.1. 基本概念
+
+数据库对象索引其实与书的目录相似，主要为了提高检索速度。由于数据存储在数据库表中所以索引是创建在数据库表对象上的，由表中的一个或者多个字段生成的键组成，这些键存储在数据结构(B\B+树或者哈希表)中，所以分为Ｂ型树索引和哈希索引。
+
+Ｉnnodb和ＭyISAM支持Ｂ型树索引，MEMORY存储引擎支hash索引。
 
 #### 1.20.1.1. 分类
 * 索引类型
@@ -3738,22 +4024,40 @@ lock_option:
 ```
 * 例子
 ```SQL
+-- 语法： INDEX|KEY 索引名称　（属性名(长度)　ASC|DESC,...）
 
 --创建普通索引
-CREATE INDEX index_name ON table_name(col_name);
+CREATE INDEX|KEY index_name ON table_name(col_name);
 --创建唯一索引
-CREATE UNIQUE INDEX index_name ON table_name(col_name);
+CREATE UNIQUE INDEX|KEY index_name ON table_name(col_name);
 --创建普通组合索引
-CREATE INDEX index_name ON table_name(col_name_1,col_name_2);
+CREATE INDEX|KEY index_name ON table_name(col_name_1,col_name_2);
 --创建唯一组合索引
-CREATE UNIQUE INDEX index_name ON table_name(col_name_1,col_name_2);
+CREATE UNIQUE INDEX|KEY index_name ON table_name(col_name_1,col_name_2);
+
+-- 全文索引　FULLTEXT　INDEX|KEY
 -- 创建表时直接指定索引
+
 CREATE TABLE table_name (
-    ID INT NOT NULL,col_name VARCHAR (16) NOT NULL,INDEX index_name (col_name)
+    ID INT NOT NULL,
+    col_name VARCHAR (16) NOT NULL,
+    INDEX index_name (col_name)
 );
 
+--　通过alter创建
+ALTER TABLE tableName ADD INDEX|KEY   索引名称　（属性名(长度)　ASC|DESC,...）
+
+alter table bit_table add UNIQUE INDEX (id_index(1) asc);
+desc bit_table;
++-------+--------+------+-----+---------+-------+
+| Field | Type   | Null | Key | Default | Extra |
++-------+--------+------+-----+---------+-------+
+| id    | bit(8) | YES  | UNI | NULL    |       |
++-------+--------+------+-----+---------+-------+
 
 ```
+MYSQL所支持的存储引擎对每个表至少支持16个索引，总索引长度至少为256个字节。
+
 * 删除索引
 ```SQL
 DROP INDEX index_name ON tbl_name
@@ -3765,8 +4069,35 @@ algorithm_option:
 lock_option:
     LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}
 ```
+
+确认查询使用的索引: EXPLAIN select语句
+```
+show create table test_table;
+test_table | CREATE TABLE `test_table` (
+  `id` bigint(20) DEFAULT NULL,
+  `name` varchar(25) DEFAULT NULL,
+  KEY `name_index` (`name`(15))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 |
+
+explain select * from test_table where name='libai' \G
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: test_table
+   partitions: NULL
+         type: ref
+possible_keys: name_index
+          key: name_index
+      key_len: 48
+          ref: const
+         rows: 1
+     filtered: 100.00
+        Extra: Using where
+1 row in set, 1 warning (0.02 sec)
+
+```
 #### 1.20.1.2. 索引用途
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 数据完整性
     * 使用主键索引或者唯一键来确保数据唯一性
@@ -3793,7 +4124,33 @@ lock_option:
 * 可以帮助服务器避免排序和临时表
 * 将随机IO变为顺序IO
 
-#### 1.20.1.3. 索引的误区
+#### 1.20.1.3. 索引优化
+
+索引虽然好处很多，但过多的使用索引可能带来相反的问题，索引也是有缺点的：
+* 虽然索引大大提高了查询速度，同时却会降低更新表的速度，如对表进行INSERT,UPDATE和DELETE。因为更新表时，mysql不仅要保存数据，还要保存一下索引文件
+* 建立索引会占用磁盘空间的索引文件。一般情况这个问题不太严重，但如果你在要给大表上建了多种组合索引，索引文件会膨胀很宽
+* 索引只是提高效率的一个方式，如果mysql有大数据量的表，就要花时间研究建立最优的索引，或优化查询语句。
+
+* 使用索引技巧：
+    * 索引不会包含有NULL的列.只要列中包含有NULL值，都将不会被包含在索引中，复合索引中只要有一列含有NULL值，那么这一列对于此复合索引就是无效的。
+    * 使用短索引
+        * 对串列进行索引，如果可以就应该指定一个前缀长度。例如，如果有一个char（255）的列，如果在前10个或20个字符内，多数值是唯一的，那么就不要对整个列进行索引。短索引不仅可以提高查询速度而且可以节省磁盘空间和I/O操作。
+    * 索引列排序
+        * mysql查询只使用一个索引，因此如果where子句中已经使用了索引的话，那么order by中的列是不会使用索引的。因此数据库默认排序可以符合要求的情况下不要使用排序操作，尽量不要包含多个列的排序，如果需要最好给这些列建复合索引。
+    * like语句操作
+        * 一般情况下不鼓励使用like操作，如果非使用不可，注意正确的使用方式。like ‘%aaa%’不会使用索引，而like ‘aaa%’可以使用索引。
+    * 不要在列上进行运算
+    * 不使用NOT IN 、<>、！=操作，但<,<=，=，>,>=,BETWEEN,IN是可以用到索引的
+    * 索引要建立在经常进行select操作的字段上。
+        * 这是因为，如果这些列很少用到，那么有无索引并不能明显改变查询速度。相反，由于增加了索引，反而降低了系统的维护速度和增大了空间需求。
+    * 索引要建立在值比较唯一的字段上。
+    * 对于那些定义为text、image和bit数据类型的列不应该增加索引。因为这些列的数据量要么相当大，要么取值很少。
+    * 在where和join中出现的列需要建立索引。
+    * where的查询条件里有不等号(where column != …),mysql将无法使用索引。
+    * 如果where字句的查询条件里使用了函数(如：where DAY(column)=…),mysql将无法使用索引。
+    * 在join操作中(需要从多个数据表提取数据时)，mysql只有在主键和外键的数据类型相同时才能使用索引，否则及时建立了索引也不会使用。
+
+#### 1.20.1.4. 索引的误区
 目前，MySQL的服务器可以提供足够大的内存来提供缓存索引相关数据，提高性能，因此有些规范不再适合当前的硬件环境。
 * 误区
     * 索引层级不要超过5层
@@ -3803,7 +4160,7 @@ lock_option:
    
    
 ### 1.20.2. 索引概述
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 支持的索引
     * B+树索引
@@ -3815,7 +4172,7 @@ lock_option:
 ### 1.20.3. 表和索引结构
 
 #### 1.20.3.1. 索引页和表页
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 表和索引行都被存储在页中，Innodb的数据页是16K，只能修改源码并重新编译。页的大小决定了一个页可以存储多少个索引行，表行，以及一共需要多少个页来存储表或者索引。当表和索引被加载或者重组时，每个页都会预留出一定比例的空闲空间以 满足向其添加新的表行或索引行的需求。
 缓存池和IO都是基于页的，例如一次将一个完整的页读取到缓冲池，也就是一次IO会读入多条记录到缓冲池。
@@ -3828,7 +4185,7 @@ lock_option:
 
 
 ### 1.20.4. B树和B+树
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 注意：只有B树和B+树，没有B-树。
 
@@ -3903,7 +4260,7 @@ b+树，是b树的一种变体，查询性能更好。m阶的b+树的特征：
 
 
 ### 1.20.5. InnoDB B+树索引
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 B+树索引本质就是B+树在数据库中的实现。但是B+树索引的一个特点是高扇出性，因此在数据库中，B+树索引的高度一般都在2-4层，也就是说查找某一键值的行记录时只需要2-4次IO。
 
@@ -3916,7 +4273,7 @@ B+树索引本质就是B+树在数据库中的实现。但是B+树索引的一�
 
 * 索引能够加快访问数据的速度，因为存储引擎不再需要全表扫描来获取需要的数据。
 
-![](https://github.com/lgjlife/Java-Study/blob/master/pic/mysql/innodb-b+.png?raw=true)
+![](pic/mysql/innodb-b+.png)
 
 B+树索引适合查找类型:
 * 全值匹配
@@ -3927,7 +4284,7 @@ B+树索引适合查找类型:
 
 
 #### 1.20.5.1. 聚集索引
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 聚集索引就是按照每张表的主键构造一棵B+树，同时叶子节点中存放的即为整张表的行记录数据，也是聚集索引的叶子节点称为数据页，每个数据页之间都通过一个双向链表进行链接。
 * 由于实际的数据页只能按照一棵B+树进行排序，每张表只能有一个聚集索引。
@@ -3952,7 +4309,7 @@ B+树索引适合查找类型:
 * 对于主键的排序查找和范围查找速度很快，叶子节点的数据就是用户所要查询的数据
 
 #### 1.20.5.2. 辅助索引
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 辅助索引：辅助索引中索引的逻辑顺序与磁盘上行的物理存储顺序不同，一个表中可以拥有多个非聚集索引。叶子节点并不包含行记录的全部数据。叶子节点除了包含键值(该键值是下一层级页中的最大键值)以外，还存储了一个指向该行数据的聚集索引键的书签。该书签用来告诉存储引擎哪里可以找到与索引相对应的行数据。
 * 由于InnoDD存储引擎表是索引组织表，因此InnoDB存储引擎的书签就是相应行数据的聚集索引键。
@@ -3985,13 +4342,13 @@ index(A)
 
 
 #### 1.20.5.3. B+树索引的分裂
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.20.5.4. B+树索引的管理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.20.6. B+树索引的使用
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.20.6.1. 不同应用中B+树索引的使用
 
@@ -4007,7 +4364,7 @@ index(A)
 
 从本质上，联合索引也是一棵B+树。如图所示。
 
-![联合索引](https://github.com/lgjlife/Java-Study/blob/master/pic/mysql/union-index.png?raw=true)
+![联合索引](pic/mysql/union-index.png)
 
 比如对于索引index(a,b)，先按a进行排序，如果a相同，再按b进行排序。
 因此查询时，查询条件a=xxx或者a=xxx and b=xxx,都是能够使用索引的，单独的b=xxx就不会使用索引。
@@ -4068,7 +4425,7 @@ B树索引具有范围查找和前缀查找的能力，对于有N节点的B树�
 #### 1.20.6.7. Index Condition Pushdown 优化
 
 ### 1.20.7. 哈希索引
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 哈希索引基于哈希表实现，只有精确匹配索引所有列的查询才有效。
 哈希索引将所有的哈希码存储在索引中，同时在哈希表中保存指向每个数据行的指针。
@@ -4154,7 +4511,7 @@ Hash table size 34673, node heap has 0 buffer(s)
 由于自适应哈希索引是由InnoDB存储引擎自己控制的，所以这里的信息只供我们参考而已。不过我们可以通过参数innodb_adaptive_hash_index来禁用或启动此特性，默认为开启。
 
 ### 1.20.8. 全文索引
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 从InnoDB 1.2.x开始支持全文索引，其支持MyISAM存储引擎的全部功能，并且还支持其他的一些特性。
 
@@ -4165,7 +4522,7 @@ select * from where xxx like "%sss%";
 
 
 #### 1.20.8.1. 倒排索引
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 全文索引通常使用倒排索引(inverted index)来实现.倒排索引和B+索引一样，也是一种索引结构。它在辅助表中存储了单词与单词自身在一个或者多个文档中所在位置之间的映射，其拥有两种表现形式：
 * inverted file index ,其形式是{单词，单词所在的文档ID}
@@ -4323,10 +4680,10 @@ MYSQL还支持全文索引的扩展查询
 
 
 ### 1.20.9. 高性能索引策略
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.20.9.1. 独立的列
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 索引不能是**表达式的一部分**，也不能是**函数的参数**，如，下面这个查询无法使用索引：
 ```
@@ -4334,7 +4691,7 @@ SELECT actor_id FROM actor WHERE actor_id+1=5;
 ```
 
 #### 1.20.9.2. 前缀索引和索引选择性
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 如果需要索引很长的字符串，可以索引开始的部分字符，可以大大节约索引空间从而提高索引效率，但是降低了索引的选择性（不重复的索引值和数据表的记录总数）。为了决定前缀的合适长度，第一种方法是需要找到最常见的值的列表，然后和最常见的前缀列表进行比较。第二种方法是计算完整列的选择性，并使前缀的选择性接近于完整列的选择性：
 
@@ -4346,7 +4703,7 @@ SELECT actor_id FROM actor WHERE actor_id+1=5;
 
 
 #### 1.20.9.3. 多列索引
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 在多个列上建立单独的索引大部分情况下不能提高mysql的查询性能，在老版本的mysql中，只能使用其中某一个单列索引，然而这种情况下没有哪一个单例索引是非常有效的。MySQL5.0和更新版本中引入了“索引合并”，能够同时使用多个单例索引进行扫描，并将结果进行合并，包括：OR条件的联合（union），AND条件的相交（intersection），组合这两种情况的联合及相交。
 
 索引合并策略有时候是一种优化的结果，但实际上说明了表上的索引建的很糟糕：
@@ -4356,11 +4713,11 @@ SELECT actor_id FROM actor WHERE actor_id+1=5;
 * 如果在explain中看到索引合并，应该好好检查一下查询和表的结构，看是不是已经是最优的，也可以通过参数optimizer_switch来关闭索引合并功能。
 
 #### 1.20.9.4. 选择合适的索引列顺序
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 　当不需要考虑排序和分组时，将选择性最高的列放在前面通常是很好的，这是后索引的作用只是用于优化where条件的查询，对于在where子句中使用了索引部分前缀列的查询来说选择性也更高。然而，性能不只是依赖于所有索引列的选择性（整体基数），也和查询条件的具体值有关（值得分布）。
 
 #### 1.20.9.5. 聚簇索引
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 优点：
     * 把相关的数据保存在一起减少磁盘IO；
@@ -4386,34 +4743,34 @@ SELECT actor_id FROM actor WHERE actor_id+1=5;
     * 由于InnoDB的聚簇索引，覆盖索引对InnDB表特别有用，InnoDB的二级索引在叶子节点中保存了行的主键值，所以如果二级主键能够覆盖查询，可以避免对主键索引的二级查询；
 
 #### 1.20.9.7. 使用索引扫描来做排序
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 MySQL有两种方式可以生成有序的结果：通过排序操作或者按照索引顺序扫描，如果explain出来的type列的值为index，则说明mysql使用了索引扫描来做排序；
 扫描索引本身虽然很快，但如果索引不能覆盖查询所需的全部列，就不得不每扫描一条索引记录就回表查询一次对应得行，这基本都是随机I/O操作，所以按索引顺序读取数据得速度通常要比顺序地全表扫描还要慢；
 只有当索引得列顺序和order by子句得顺序完全一致，并且所有列得排序方向都一样时，MySQL才能够使用索引来对结果做排序；如果查询需要关联多张表，则只有当order by子句引用得字段全部为第一个表时才能使用索引做排序。
 
 #### 1.20.9.8. 压缩索引
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 MyISAM压缩每个索引块的方法是，先完全保存索引块中得第一个值，然后将其他值和第一个值进行比较得到相同前缀得字节数和剩余得不同后缀部分，把这部分存储起来即可。
 * 优点：使用得空间减小；
 * 缺点：有些操作可能变慢，MyISAM查找时无法在索引块使用二分查找而只能从头开始扫描；
 
 #### 1.20.9.9. 冗余和重复索引
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 MySQL允许在相同列上创建多个索引，并需要单独维护重复索引，并且优化器在优化查询得时候也需要逐个地进行考虑，影响性能；重复索引是指在相同得列上按照相同得顺序创建相同类型得索引（如创建主键，加上唯一限制后，又加索引会创建三个重复二等索引），应该避免，并及时删除；冗余索引不等于重复索引，如创建了索引（A，B）后又创建了索引（A），A是冗余索引因为它是前一个索引得前缀索引，但如果再创建索引（B，A）或者（B）则不是冗余索引；
 
 解决冗余和重复索引得方法很简单，删除这些索引就可以了，但是要先找出这些索引。可以通过写一些复杂得访问INFORMATION_SCHEMA表得查询来找，或者使用common_schema中得一些视图来定位。
 
 #### 1.20.9.10. 未使用的索引
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 有些索引是没有使用，建立就没有必要，可以通过以下方式查看未使用的索引。
 定位未使用得索引：在Percona Server或MariaDB中先打开userstates服务器变量（默认是关闭的），然后让服务器运行一段时间再通过查询INFORMATION_SCHEMA.INDEX_STATISTICS就能查到每个索引得使用频率；
 
 #### 1.20.9.11. 索引和锁
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 索引可以让查询锁定更少得行，如果你的查询不访问那些不需要的行，那么就会锁定更少的行。
 虽然InnoDB行锁得效率很高，内存使用也很少，但是锁定行的时候仍然会带来额外开销，其次，锁定超过需要的行会增加锁争用并减少并发性。
@@ -4425,7 +4782,7 @@ InnoDB只有在访问行的时候才会对其加锁。而索引能减少访问�
 ### 1.20.10. 索引使用注意事项
 
 #### 1.20.10.1. 全表扫描的情况
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 使用null做为判断条件 
 如：select account from member where nickname = null; 
@@ -4466,7 +4823,7 @@ not in 可以对应 not exists;
 ## 1.21. 锁
 
 ### 1.21.1. 什么是锁
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 数据库系统使用锁是为了支持对共享资源进行并发访问，提供数据一致性和完整性。
 
@@ -4511,7 +4868,7 @@ not in 可以对应 not exists;
    
 
 ### 1.21.2. lock与latch
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * latch一般称为闩锁(轻量级的锁),因为其要求锁定的时间必须非常短。若持续的时间长,则应用的性能会非常差。在 InnoDB存储引擎中, latch又可以分为 mutex(互斥量)和 relock(读写锁)。其目的是用来保证并发线程操作临界资源的正确性,并且通常没有死锁检测的机制。
 * lock的对象是事务,用来锁定的是数据库中的对象,如表、页、行。并且一般lock的对象仅在事务 commit或 rollback后进行释放(不同事务隔离级别释放的时间可能不同)。此外,lock,正如在大多数数据库中一样,是有死锁机制的。下表显示了lock与latch的不同。
@@ -4527,10 +4884,10 @@ lock与latch的比较
 |存在于|	Lock Manager的哈希表中|	每个数据结构的对象中
 
 ### 1.21.3. Innodb存储引擎的锁
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.21.3.1. 锁的类型
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 行级锁
     * 共享锁(S Lock)，允许事务读一行数据
@@ -4576,20 +4933,20 @@ LIST OF TRANSACTIONS FOR EACH SESSION:
 ```
 
 #### 1.21.3.2. 一致性非锁定读
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.21.3.3. 一致性锁定读
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.21.3.4. 自增长与锁
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.21.3.5. 外键和锁
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.21.4. 锁的算法
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.21.4.1. 行锁的三种算法
 
@@ -4616,7 +4973,7 @@ select age from xxx where age > 4 for update;
 ```
 
 ### 1.21.5. 锁的问题
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 数据并发问题
     * 脏读
@@ -4636,7 +4993,7 @@ select age from xxx where age > 4 for update;
         * A事务提交覆盖B事务的提交
 
 ### 1.21.6. 阻塞
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ```
 mysql> show variables like "%innodb_lock_wait%";
@@ -4659,7 +5016,7 @@ innodb_rollback_on_timeout:超时是否回滚
 当发生超时时，数据库会抛出1205错误。
 
 ### 1.21.7. 死锁
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.21.7.1. 死锁的概念
 
@@ -4685,7 +5042,7 @@ InnoDB死锁产生时解决:锁并发等待时，会检测是否存在回路(互
 |||
 
 ### 1.21.8. 锁升级
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 锁升级是将当前的锁的粒度降低，比如行锁升级为页锁，页锁升级为表锁。
 
@@ -4801,7 +5158,7 @@ delete from table where id=1;
 ## 1.22. 事务
 
 ### 1.22.1. 认识事务
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.22.1.1. 事务特点
 
@@ -4965,7 +5322,7 @@ S3：在米兰转火车前往佛罗伦萨，预订去佛罗伦萨的火车
 对于InnoDB存储引擎来说，其支持扁平事务，带保存点的事务，链事务，分布式事务。对于嵌套事务，其原生不支持。因此对有并发事务需求的用户来说,MySQL数据库或InnoDB存储引擎就显得无能为力，然而用户仍可以通过带保存点的事务来模拟串行的嵌套事务。
 
 ### 1.22.2. 事务的实现
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * redo log 称为重做日志
     * 用来保证事务的原子性和持久性。通常是物理日志，记录的是页的物理修改操作。
@@ -4977,7 +5334,7 @@ S3：在米兰转火车前往佛罗伦萨，预订去佛罗伦萨的火车
     * 随机读写
 
 #### 1.22.2.1. redo
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 重做日志包含两部分
     * 内存中的重做日志缓冲 redo log buffer，其是易失的
@@ -5016,7 +5373,7 @@ S3：在米兰转火车前往佛罗伦萨，预订去佛罗伦萨的火车
 * 当发生宕积时，数据库通过redo日志进行数据恢复。所以只要事务消息写入redo 日志，还没有同步到数据库文件，即使发生宕积，数据也能够恢复。
 
 #### 1.22.2.2. undo 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * undo log用于实现事务回滚。
 * 存放位置
@@ -5066,14 +5423,14 @@ mysql> show variables like "%undo%";
 
 ```
 #### 1.22.2.3. purge 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 Innodb支持MVCC，所以删除和更新记录不能在事务提交时进行处理。因为这时其他事务可能正在引用这一行，故需要保存记录之前的版本。而是否删除由purge来进行判断。若该行记录已经不会被任何其他事务引用，那么就可以进行真正的删除操作。
 
 purge操作是清理之前的delete和update操作，将上述操作最终完成。
 
 #### 1.22.2.4. group commit 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 为了提高fsync的效率，当前数据库都提供了group commit 的功能，即一次fsync可以刷新确保多个事务日志被写入文件。
 
@@ -5085,7 +5442,7 @@ purge操作是清理之前的delete和update操作，将上述操作最终完成
 
 
 ### 1.22.3. 事务控制语句
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 默认情况下，事务都是自动提交的，即执行SQL语句后就会马上执行COMMIT操作。可以通过SET AUTOCOMMIT=0禁止当前会话的自动提交。
 
@@ -5118,13 +5475,13 @@ purge操作是清理之前的delete和update操作，将上述操作最终完成
     
 
 ### 1.22.4. 隐式提交的SQL语句
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.22.5. 对于事务操作的统计
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.22.6. 事务的隔离级别
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 |隔离级别|脏读|不可重复读|幻象读|第一类丢失更新|第二类丢失更新|
 |---|---|---|---|---|---|
@@ -5139,7 +5496,7 @@ Innodb默认使用REPEATABLE READ
 ### 1.22.7. 分布式事务
 
 #### 1.22.7.1. MYSQL分布式事务
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 Innodb存储引擎提供了对XA事务的支持，并通过XA事务来支持分布式事务的实现。
 分布式事务指的是允许多个独立的事务参与到一个全局事务中，只要其中一个事务发生异常回滚内，其他的事务也要执行回滚操作，以保持数据的一致性，也就是分布式事务具有原子性。
@@ -5168,11 +5525,11 @@ XA RECOVER
 ```
 
 #### 1.22.7.2. 内部XA事务
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 内部XA事务： 在存储引擎和插件之间，又或者在存储引擎与存储引擎之间使用。
 
-![](https://github.com/lgjlife/Java-Study/blob/master/pic/mysql/mysql-inner-transication.png?raw=true)
+![](pic/mysql/mysql-inner-transication.png)
 
 
 ### 1.22.8. 不好的事务习惯
@@ -5189,10 +5546,10 @@ XA RECOVER
 ## 1.23. 备份与恢复
 
 ## 1.24. 性能优化基本的分析命令
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.24.1. explain
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 ```SQL
 mysql> explain select * from user;
 | id | select_type | table | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra |
@@ -5246,7 +5603,7 @@ mysql> explain select * from user;
     * distinct：优化distinct操作，在找到第一匹配的元组后即停止找同样值的动作。
 
 ### 1.24.2. show indexs
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 查看表的索引信息
 ```SQL
@@ -5460,10 +5817,10 @@ mysql> show global status;
     * 分库分表后使用数据库中间件，比如MyCAT,sharding-jdbc
 
 ### 1.25.2. 分布式事务
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.25.3. 应对多机数据查询
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.25.3.1. 跨库Join
 * 应用层处理，将单次Join操作分成多次查询
@@ -5478,7 +5835,7 @@ mysql> show global status;
 
 ## 1.26. 复制
 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.26.1. 复制功能概述 
@@ -5520,7 +5877,7 @@ mysql> show global status;
 * I/O线程去请求主库的binlog日志，并将binlog日志中的文件写入relay log（中继日志）中
 * SQL线程会读取relay loy中的内容，并解析成具体的操作，来实现主从的操作一致，达到最终数据一致的目的
 
-![复制原理](https://github.com/lgjlife/Java-Study/blob/master/pic/mysql/copy.png?raw=true)
+![复制原理](pic/mysql/copy.png)
 ### 1.26.4. 主从同步配置
 
 * 主数据库
@@ -5591,95 +5948,95 @@ mysql> show slave hosts ;
 * 重启服务器
 
 ### 1.26.6. 复制的原理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.6.1. 基于语句的复制
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.6.2. 基于行的复制
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.6.3. 两种方式比较
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.6.4. 复制文件
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.6.5. 发送复制事件到其他备库
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.6.6. 复制过滤器
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.26.7. 复制拓扑
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.7.1. 一主库多备库
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.7.2. 主动-主动模式下的主-从复制
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.7.3. 主动-被动模式下的主-从复制
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.7.4. 拥有备库的主-主结构
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.7.5. 环形复制
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.7.6. 主库、分发主库和备库
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.7.7. 树或金字塔形
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.7.8. 定制的复制方案
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.26.8. 复制和容量规划
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.8.1. 为什么复制无法扩展写操作
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 #### 1.26.8.2. 备库什么时候开始写延迟
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 #### 1.26.8.3. 规划冗余容量
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.26.9. 复制管理和维护
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.9.1. 监控复制
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.9.2. 测量备库延迟
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.9.3. 确定主备是否一致
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.9.4. 从主库重新同步备库
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.9.5. 改变主库
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.9.6. 在一个主从配置中交换角色
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.26.10. 复制的问题和解决方案
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.10.1. 数据损坏或者丢失的错误
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **主库意外关闭**
 * 问题
@@ -5702,68 +6059,68 @@ mysql> show slave hosts ;
 
 
 #### 1.26.10.2. 使用非事务型表
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.10.3. 混合事务型和非事务型表
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.10.4. 不确定语句
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.10.5. 主库和备库使用不同的存储引擎
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.10.6. 备库发生数据改变
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.10.7. 不唯一的服务器ID
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.10.8. 未定义的服务器ID
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.10.9. 对未复制数据的依赖性
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.10.10. 丢失的临时表
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.10.11. 不复制所有的更新
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.10.12. Innodb加锁读引起的锁争用
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.10.13. 在主主复制结构中写入两台主库
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.10.14. 过大的复制延迟
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.10.15. 来自主库过大的包
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.10.16. 受限制的复制带宽
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.10.17. 磁盘空间不足
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.26.10.18. 复制的局限性
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 
 
 
 ### 1.26.11. 复制有多快
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 复制是由主库发起的，只要复制线程被唤醒并且能够通过网络传输数据，事件很快会达到备库。
 
 
 ### 1.26.12. 复制的高级特性
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 增加多线程(并行)复制以减少当前单线程复制的瓶颈
 * 半同步复制
@@ -5779,14 +6136,14 @@ mysql> show slave hosts ;
 
 
 ### 1.26.13. 其他复制技术
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * Tungsten Replicator
 
 ## 1.27. 高可用
 
 ### 1.27.1. 导致宕积的原因
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 磁盘空间耗尽
 * 连接客户端过多
@@ -5797,7 +6154,7 @@ mysql> show slave hosts ;
 * 数据丢失(误操作)并且没有可用备份的数据
 
 ### 1.27.2. 如何实现高可用
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.27.2.1. 提升平均失效时间MTBF
 
@@ -5827,24 +6184,542 @@ mysql> show slave hosts ;
 
 ## 1.28. 分库分表
 
-## 1.29. 备份与恢复
 
-### 1.29.1. 为什么要备份
-<a href="#menu" style="float:right">目录</a>
+## 1.29. 查询性能优化
 
-* 灾难恢复
-* 数据删除之后恢复
-* 审计，保留某个时间点的数据
+### 1.29.1. 为什么查询会变慢
+<a href="#menu" >目录</a>
 
-### 1.29.2. 定义恢复需求
-<a href="#menu" style="float:right">目录</a>
+### 1.29.2. 慢查询基础
+<a href="#menu" >目录</a>
+
+### 1.29.3. 重构查询方式
+<a href="#menu" >目录</a>
+
+
+### 1.29.4. 查询执行的基础
+<a href="#menu" >目录</a>
+
+
+### 1.29.5. 查询优化器的局限性
+<a href="#menu" >目录</a>
+
+
+### 1.29.6. 查询优化器的提示
+<a href="#menu" >目录</a>
+
+
+### 1.29.7. 优化特定类型的查询
+<a href="#menu" >目录</a>
+
+
+### 1.29.8. 案例学习
+<a href="#menu" >目录</a>
+
+
+## 1.30. 性能调优
+
+### 1.30.1. 选择合适的CPU
+<a href="#menu" >目录</a>
+
+* OLTP
+    * 在线事务处理
+    * 日常事务处理应用中
+    * 用户操作的并发量大
+    * 事务处理的时间一般较短
+    * 查询的语句较为简单,一般都走索引
+    * 复杂的查询较少
+* OLAP
+    * 在线分析处理
+    * 多用于数据仓库或者数据集中,需要执行复杂的SQL语句
+
+综上，OLAP数据库应用本身对CPU的要求比较高，因为需要执行比较，排序，连接等非常耗时的操作。OLTP对CPU要求较低，但并发高，因此是IO密集型，因此需要在IO上进行优化。
+
+此外，为了获得更多内存的支持，因此应该选择64位的机器。
+
+### 1.30.2. 内存的重要性
+<a href="#menu" >目录</a>
+
+内存越大，可利用的数据缓冲区越大，可以减少IO次数，因此性能能够得到提升。
+
+当然，并不是越大越好，当超过数据的大小，增加再多的内存也没有用。
+
+```
+mysql> show global status like "innodb%read%";
++---------------------------------------+---------+
+| Variable_name                         | Value   |
++---------------------------------------+---------+
+| Innodb_buffer_pool_read_ahead_rnd     | 0       |
+| Innodb_buffer_pool_read_ahead         | 0       |
+| Innodb_buffer_pool_read_ahead_evicted | 0       |
+| Innodb_buffer_pool_read_requests      | 1855    |
+| Innodb_buffer_pool_reads              | 435     |
+| Innodb_data_pending_reads             | 0       |
+| Innodb_data_read                      | 8704512 |
+| Innodb_data_reads                     | 638     |
+| Innodb_pages_read                     | 434     |
+| Innodb_rows_read                      | 11      |
++---------------------------------------+---------+
+
+```
+通常InnoDB存储引擎的缓冲池的命中率不应该小于99%。
+缓冲池命中率 = (Innodb_buffer_pool_read_requests)/(Innodb_buffer_pool_read_requests + Innodb_buffer_pool_read_ahead + Innodb_buffer_pool_reads)
+平均每次读取的字节数 = Innodb_data_read/Innodb_data_reads
+
+Innodb_buffer_pool_reads：表示从物理磁盘读取的页数
+Innodb_buffer_pool_read_ahead：预读的页数
+Innodb_buffer_pool_read_ahead_evicted：预读的页数，但是没有被读取就从缓冲池中被替换的页的数量，一般用来判断预读的效率。
+Innodb_buffer_pool_read_requests：从缓冲池中读取的次数。
+Innodb_data_read：总共读入的字节数。
+Innodb_data_reads：发起读请求的次数，每次读取可能需要读取多个页。
+
+
+### 1.30.3. 硬盘对数据库性能的影响
+<a href="#menu" >目录</a>
+
+
+
+### 1.30.4. 合理地设置RAIN
+<a href="#menu" >目录</a>
+
+
+
+### 1.30.5. 操作系统的影响
+<a href="#menu" >目录</a>
+
+
+
+### 1.30.6. 不同文件系统的影响
+<a href="#menu" >目录</a>
+
+
+
+### 1.30.7. 选择合适的基准测试
+<a href="#menu" >目录</a>
+
+
+
+#### 1.30.7.1. sysbench
+<a href="#menu" >目录</a>
+
+
+
+#### 1.30.7.2. mysql-tpcc
+<a href="#menu" >目录</a>
+
+## 1.31. 数据库管理
+<a href="#menu" >目录</a>
+
+### 1.31.1. 安全性机制
+<a href="#menu" >目录</a>
+* 权限表
+    * 系统表 mysql.user
+        * 用户字段
+        * 权限字段
+        * 安全字段
+        * 资源控制字段
+    * mysql.db
+    * mysql.host
+
+* 登录: mysql -h hostname|hostIP -p port -u username -P password
+
+#### 1.31.1.1. 用户创建
+
+* 创建普通用户
+```sql
+CREATE USER username [IDENTIFIED BY [PASSWORD] 'password'],...
+
+--username　用户名，由用户名和主机名构成
+--IDENTIFIED BY 用来设置密码
+--password用户密码，如果该值为普通字符串，则PASSWORD不需要，该关键字用来实现对密码进行加密
+
+--例子，方式１
+CREATE USER 'myname'@'localhost' IDENTIFIED BY '123456' 
+--方式２,直接插入mysql.user表
+INSERT INTO user(Host,User,Password) Values('host','name',PASSWORD('password'))
+--密码必须使用PASSWORD()函数进行加密
+
+-- 如果报错，先执行以下语句，设置完成也需要下面这命令使设置生效
+flush privileges;
+--查看
+select * from user where User='myname'\G
+
+--以上两种方式不便为用户设置权限，需要使用ＧＲＡＮＴ
+-- priv_type 权限
+-- databasename.tablename 权限范围: 数据库.表
+GRANT priv_type ON databasename.tablename
+    TO username [IDENTIFIED BY [PASSWORD] 'password'],...
+
+
+```
+
+**修改超级用户root的密码**
+
+```sql
+--- 三种方式
+--使用mysqladmin命令
+mysqladmin -u username -p password "new_password"
+--使用SET直接设置
+SET PASSWORD=PASSWORD('new password') 
+--直接更新mysql.user表
+UPDATE user SET password=PASSWORD("new password") WHERE user='root' and host='xxx';
+```
+
+**利用超级用户root修改普通用户帐号和密码**
+```sql
+GRANT priv_type ON database.table
+    TO user [IDENTIFIED BY [PASSWORD] "new_password"]
+
+SET PASSWORD FOR 'username'@'host'=PASSWORD("new_password")
+
+--直接更新mysql.user表
+UPDATE user SET password=PASSWORD("new password") WHERE user='root' and host='xxx';
+```
+
+**删除普通用户帐号**
+```sql
+--
+DROP USER user1,...
+
+DELETE FROM user WHERE user="xxx" and host="xxx" 
+```
+
+#### 1.31.1.2. 权限管理
+
+```sql
+GRANT priv_type [(column list)] ON database.table
+    TO user [IDENTIFIED BY [PASSWORD] "new_password"]...
+    [WITH with-option[with-option]...]
+```
+* priv_type 权限的类型
+* column list 权限所作用的字段，没有则是全表
+* user: 用户名和主机构成
+* IDENTIFIED BY ：　用于设置密码，不设置则不需要
+* with-option
+    * GRANT OPTION : 被授权的用户可以将权限授权给其他用户
+    * MAX_QUERIES_PER_HOUR count: 设置每个小时可以执行count次查询
+    * MAX_UPDATES_PER_HOUR count:　设置每个小时可以执行count次更新
+    * MAX_CONNECTIONS_PER_HOUR count:　设置每个小时可以建立　count次连接
+    * MAX_USER_CONNECTIONS count:　设置单个用户同时具有count个连接
+
+* 查看用户所拥有的权限
+    * SHOW GRANTS FOR username@host
+* 收回权限
+```sql
+REVOKE priv_type [(column list)] ON database.table
+    FROM user [IDENTIFIED BY [PASSWORD] "new_password"],...
+```
+### 1.31.2. 日志管理
+<a href="#menu" >目录</a>
+
+在MYSQL中，除了二进制日志文件外，其他日志文件都是文本文件。默认情况下，只会启动错误日志文件，而其他日志文件则需要手动启动才可以被启动
+* 二进制日志：该日志文件会以二进制形式记录数据库的各种操作，但是却不记录查询操作
+* 错误日志: 记录mysql启动，关闭，运行时的错误信息
+* 通用查询日志: 该日志记录MYSQL启动和关闭信息，客户端的连接信息，更新数据记录ＳＱＬ语句和查询数据记录SQL
+* 慢查询日志：记录执行时间超过指定时间的各种操作，通过分析工具分析慢查询日志可以定位MYSQL服务器性能瓶颈
+* 中继日志(relay log)：主从复制时使用的日志。
+
+
+当存储事务日志的磁盘坏掉，数据是无法恢复的！因此选择一个可靠的磁盘还是相当有必要的，比如我们可以给我们的数据做raid10或者raid1（推荐使用raid10）来提供这种保障。事务日志不能帮助我们恢复数据，它的作用在于当操作系统崩溃时（比如异常断电）它能够保障已经提交的事物不丢失，而未提交的事物能回滚。如果想要恢复日志还得依赖于二进制日志。 
+
+
+#### 1.31.2.1. 错误日志
+<a href="#menu" >目录</a>
+
+记录数据库启动、运行、关闭过程中所有的错误信息，也包括一些警告信息或者正确信息。
+
+配置
+```
+[mysqld]
+error-bin=dir/filename
+
+```
+```
+mysql> show variables like "log_error";
++---------------+--------------------------+
+| Variable_name | Value                    |
++---------------+--------------------------+
+| log_error     | /var/log/mysql/error.log |
++---------------+--------------------------+
+
+```
+
+文件内容
+```
+lgj@lgj-Lenovo-G470:~$ cat /var/log/mysql/error.log 
+2019-09-01T16:08:29.763333Z 0 [Warning] TIMESTAMP with implicit DEFAULT value is deprecated. Please use --explicit_defaults_for_timestamp server option (see documentation for more details).
+2019-09-01T16:08:29.764547Z 0 [Note] /usr/sbin/mysqld (mysqld 5.7.25-0ubuntu0.18.04.2-log) starting as process 1537 ...
+2019-09-01T16:08:29.883509Z 0 [Note] InnoDB: PUNCH HOLE support available
+2019-09-01T16:08:29.883547Z 0 [Note] InnoDB: Mutexes and rw_locks use GCC atomic builtins
+2019-09-01T16:08:29.883553Z 0 [Note] InnoDB: Uses event mutexes
+2019-09-01T16:08:45.723104Z 0 [Note] Server hostname (bind-address): '0.0.0.0'; port: 3306
+2019-09-01T16:08:45.723133Z 0 [Note]   - '0.0.0.0' resolves to '0.0.0.0';
+2019-09-01T16:08:45.723208Z 0 [Note] Server socket created on IP: '0.0.0.0'.
+2019-09-01T16:08:52.062686Z 0 [Note] /usr/sbin/mysqld: ready for connections.
+Version: '5.7.25-0ubuntu0.18.04.2-log'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  (Ubuntu)
+
+```
+
+**删除错误日志**
+```
+mysqladmin -u root -p flush-logs
+```
+
+#### 1.31.2.2. 通用查询日志
+<a href="#menu" >目录</a>
+
+它是用来保存所有跟查询相关的日志，这种日志类型默认是关闭状态的，因为MySQL的用户有很多，如果将每个用户的查询操作都记录下来的话，将会降低服务器的性能。查询日志常见的几个参数：
+
+配置
+```
+[mysqld]
+log=dir/filename
+```
+
+
+```sql
+--查看是否记录所有语句的日志信息于一般查询日志文件（general_log），默认是关闭状态。
+show  variables like '%general_log%';
++------------------+------------------------------------+
+| Variable_name    | Value                              |
++------------------+------------------------------------+
+| general_log      | OFF                                |
+| general_log_file | /var/lib/mysql/lgj-Lenovo-G470.log |
++------------------+------------------------------------+
+
+
+mysql> show global variables like 'log_output';    #它有三个值，即{TABLE|FILE|NONE}，分别表示记录在表中（table），文件（file）中或是不记录（none）。注意，只有og_output的值等于 FILE时，general_log_file的参数才会有意义。且 table和file 可以同时出现，用逗号分隔即可
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| log_output    | FILE  |
++---------------+-------+
+
+```
+
+**停用通用日志**
+```
+方式１是不进行配置
+方式２
+
+set global general_log=off
+```
+**删除**
+```
+mysqladmin -u root -p flush-logs
+```
+服务器会创建一个新的查询日志，覆盖掉旧的查询日志，如果需要备份，应该先备份再执行上述命令。该命令也会删除错误日志文件。
+
+
+#### 1.31.2.3. 二进制日志
+<a href="#menu" >目录</a>
+
+* 什么是二进制文件
+    * 只记录修改相关的操作，记录了当前服务器的数据修改和有潜在可能性影响数据修改的语句。它用来实现复制的基本凭据。也就是说，你可以将生成环境中的MySQL的二进制文件拿到线下的服务器上运行一下，理论上你会拿到和生成环境中一样的数据，因此，二进制日志也叫复制日志。二进制日志文件默认在数据目录下，通常情况下为mysql-bin#（例如：mysql-bin.000001，mysql-bin000002）。
+* 查看MySQL日志文件
+    * 由于二进制文件格式是二进制类型的，我们不能用cat等查看普通文本类命令去查看这些二进制日志，我们可以通过mysqlbinlog来查看：　mysqlbinlog　filename 。注意“show master status; ”查看当前使用的二进制日志和下一个事件开始时的基于的位置。
+
+```
+
+MariaDB [(none)]> show binlog events\G    　　#查看mysql的日志
+*************************** 1. row ***************************
+   Log_name: mysql-bin.000001
+        Pos: 4
+ Event_type: Format_desc        　　　　　　　　#事件类型
+  Server_id: 1                    　　　　　　　#指定服务器的唯一标识。
+End_log_pos: 245
+       Info: Server ver: 5.5.36-MariaDB-log, Binlog ver: 4
+```
+
+**二进制日志作用**
+* 恢复
+    * 某些数据的恢复需要二进制日志
+* 复制
+    * 将二进制文件复制到从数据库，进行数据 复制
+* 审计
+    * 可以对文件进行审计，判断是否有注入攻击
+
+* 通过参数 log-bin=[name]可以启动二进制日志。如果不指定name,则默认进制文件名称为主机名和序列号组成
+
+存放位置
+```
+mysql> show variables like "datadir";
++---------------+-----------------+
+| Variable_name | Value           |
++---------------+-----------------+
+| datadir       | /var/lib/mysql/ |
++---------------+-----------------+
+
+```
+
+开启二进制日志会使性能下降1%。但由于数据恢复和复制的需要，性能可以忽略不计。
+
+以下配置影响二进制日志
+* max_binlog_size
+    * 超过该值，则产生新的二进制文件
+    * 默认值:104857600字节
+* binlog_cache_size
+    * 默认值32k
+* sync_binlog
+* binlog-do-db
+* binlog-ignore-db
+* log-slave-update
+* binlog-format
+
+* 当使用事务的表存储引擎时，所有未提交的二进制日志会被记录到一个缓存中，等该事务提交时直接将缓冲中的二进制日志写入二进制文件。而该缓冲的大小由binlog_cache_size决定，默认值32k
+```
+mysql> show variables like "binlog_cache_size";
++-------------------+-------+
+| Variable_name     | Value |
++-------------------+-------+
+| binlog_cache_size | 32768 |
++-------------------+-------+
+
+```
+* binlog_cache是基于会话的，也就是一个事务就需要申请一个binlog_cache_size大小的缓存。因此不能设置过大。设置太小如果超过该值，缓存中的信息又被写入一个临时文件中去。
+
+Binlog_cache_use:使用缓冲写二进制日志的次数
+Binlog_cache_disk_use:使用临时文件写二进制日志的次数
+目的是要降低写入临时文件的次数
+```
+mysql> show global status like "binlog_cache%";
++-----------------------+-------+
+| Variable_name         | Value |
++-----------------------+-------+
+| Binlog_cache_disk_use | 0     |
+| Binlog_cache_use      | 0     |
++-----------------------+-------+
+
+```
+
+* 二进制日志并不是每次写的时候都会同步到磁盘，因此在操作系统发生宕积时，可能会有一部分数据没有写入二进制文件。造成数据丢失。
+mysql> show variables like "sync_binlog";
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| sync_binlog   | 1     |
++---------------+-------+
+sync_binlog表示每写缓冲多少次就同步到磁盘。设置为1表示每次写缓存就写入日志文件。
+但仍然有个问题，数据已经写入文件，但是事务还没提交就宕机了。重启之后由于COMMIT没有发生，事务就会被回滚，但是二进制日志已经记录了该事务信息，不能被回滚。
+这个问题可以通过innodb_support_xa解决，默认打开。这个参数与XA事务有关，但它同时也确保了二进制日志和InnoDB存储引擎数据文件的同步。
+
+mysql> show variables like "innodb_support_xa";
++-------------------+-------+
+| Variable_name     | Value |
++-------------------+-------+
+| innodb_support_xa | ON    |
++-------------------+-------+
+
+
+* 参数binlog-do-db和binlog-ignore-db表示需要写入或者忽略哪些库的日志，默认为空，表示需要同步所有库的日志到二进制日志文件。这个是动态参数，可以在运行时进行修改。
+
+* 如果当前数据库是复制中的从机角色，则它不会将从master取得并执行的二进制日志写入自己的二进制日志文件中去。如果需要写入，要设置log-slave-update.如果需要搭建master->slave->slave.则必须设置该参数。
+
+* binlog_format(二进制日志的格式)
+    * STATEMENT
+        * 和5.1之前一样，记录的是逻辑SQL语句
+    * ROW(默认值)
+        * 不是简单的SQL语句，而是记录表的行更改情况，如果设置为ROW，可以将InnoDB的事务隔离级别设为READ COMMITTED，以获得更好的并发性。
+        * 使用ROW会使数据库的恢复和复制带来更好的可靠性
+        * 有些语句下ROW格式需要更大的容量，这是因为数据库不是记录逻辑的SQL操作，而是记录对于每行的修改。也就是说也会增加网络传输的负载
+    * MIXED
+        * 默认使用STATEMENT，某些情况下使用ROW。可能的情况有：
+            * 表的存储引擎为NDB，这时对表的DML操作都会以ROW格式进行记录
+            * 使用UUID(),USER(),CURRENT_USER(),FOUND_ROWS(),ROW_COUNT()等不确定函数
+            * 使用INSERT DELAY语句
+            * 使用用户自定义函数(UDF)
+            * 使用临时表
+    * NDB不支持 STATEMENT格式，NDB不支持ROW格式，其他存储引擎所有的格式都支持。
+
+            
+```
+mysql> show variables like "binlog_format";
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| binlog_format | ROW   |
++---------------+-------+
+```
+
+**暂停二进制日志**
+* SET SQL_LOG_BIN=0|1  0:暂停，1:开启
+
+**删除二进制日志文件**
+* RESET MASTER
+    * 删除所有二进制文件
+* PURGE MASTER LOGS TO filename.number
+    * 删除编号小于这个编号的二进制文件
+* PURGE MASTER LOGS BEFORE 'yyyy-mm-dd hh:MM:ss'
+    * 删除时间之前的二进制文件
+
+    
+
+#### 1.31.2.4. 慢查询日志
+<a href="#menu" >目录</a>
+
+查询执行时长超过指定时长的查询，即为慢查询。这里的慢不一定是查询语句存在问题，可能是因为访问你的资源当时不被许可访问，就好比你将一个一个MySQL库中的一个表添加写锁，那么别人就没有办法去查询这个表的内容啦，等到你将这个表锁解开之后，访问这张表的查询语句才会被执行。
+　　慢查询日志是我们通常拿来定位系统上查询操作执行速度过慢时常用到的一个评估工具，所以在生产环境中很有必要启用慢查询日志功能的！它默认情况下也是没有启用的。慢查询常见的几个参数
+
+```
+show  variables like '%_query_%';
++------------------------------+-----------------------------------------+
+| Variable_name                | Value                                   |
++------------------------------+-----------------------------------------+
+#慢查询的时长，超出这个时长的都被记录为慢查询。单位s
+| long_query_time              | 0.000000                                |
+#是否启用慢查询日志，它的输出位置也取决log_output={table|file|none}。
+| slow_query_log               | ON                                      |
+ #查看定义慢查询日志的文件
+| slow_query_log_file          | /var/lib/mysql/lgj-Lenovo-G470-slow.log |
++------------------------------+-----------------------------------------+
+```
+
+**设置**
+```
+[mysqld]
+log-slow-queries[=dir/filename]
+long_query_time=10
+```
+
+**删除**
+```
+mysqladmin -u root -p flush-logs
+```
+
+
+#### 1.31.2.5. 操作二进制日志
+
+**启动**
+```yml
+[mysqld]
+#filename 格式为filename.number ,不设置dir/filename则默认为:主机名-bin.number,保存到默认目录－数据库数据文件里
+#每次重启，日志文件会重新生成，filename不会改变，num会递增
+#一般不要把二进制日志文件和数据文件放在同一个磁盘，这样存放数据文件的磁盘损坏了，还可以使用二进制文件恢复数据
+log-bin[=dir/filename]
+```
+### 1.31.3. 数据库维护和性能提高
+<a href="#menu" >目录</a>
+
+
+#### 1.31.3.1. 备份与恢复
+
+##### 1.31.3.1.1. 为什么要备份
+<a href="#menu" >目录</a>
+
+* 数据损失的原因
+    * 存储介质故障:保存数据的磁盘文件存坏，用户没有数据库备份导致数据彻底丢失
+    * 用户错误操作，误删除数据
+    * 服务器彻底崩溃，系统需要重建
+
+##### 1.31.3.1.2. 定义恢复需求
+<a href="#menu" >目录</a>
 
 * 在不导致严重后果的情况下，可以容忍丢失多少数据
-* 恢复需要多成时间内完成
+* 恢复需要多少时间内完成
 * 需要恢复什么数据？恢复整个数据库，单个数据库，单个表，或者仅仅是特定的事务和语句
 
-### 1.29.3. 设计MYSQL备份方案
-<a href="#menu" style="float:right">目录</a>
+##### 1.31.3.1.3. 设计MYSQL备份方案
+<a href="#menu" >目录</a>
 
 备份的类型
 
@@ -5852,9 +6727,9 @@ mysql> show slave hosts ;
     * 冷备（cold backup）：需要关mysql服务，读写请求均不允许状态下进行；
     * 温备（warm backup）： 服务在线，但仅支持读请求，不允许写请求；
     * 热备（hot backup）：备份的同时，业务不受影响。
-注：
-1、这种类型的备份，取决于业务的需求，而不是备份工具
-2、MyISAM不支持热备，InnoDB支持热备，但是需要专门的工具
+* 注意：
+    * 这种类型的备份，取决于业务的需求，而不是备份工具
+    * MyISAM不支持热备，InnoDB支持热备，但是需要专门的工具
 
 * 根据要备份的数据集合的范围
     * 完全备份：full backup，备份全部字符集。
@@ -5885,8 +6760,8 @@ mysql> show slave hosts ;
             * 还原之后，缩影需要重建
 
 
-### 1.29.4. 备份数据
-<a href="#menu" style="float:right">目录</a>
+##### 1.31.3.1.4. 备份数据
+<a href="#menu" >目录</a>
 
 **mysqldump工具备份**
 备份整个数据库
@@ -5905,11 +6780,23 @@ $> mysqldump -u root -h host -p --databases dbname1, dbname2 > backdb.sql
 ```
 备份系统中所有数据库
 ```
-$> mysqldump -u root -h host -p --all-databases > backdb.sql
+$> mysqldump -u root -h host -p --all -databases > backdb.sql
 ```
 
 **直接复制整个数据库目录(对于InnoDB存储引擎不适用)备份**
 
+由于ＭYSQL服务器的数据文件是基于磁盘的文本文件。最简单最直接的备份操作就是数据文件直接复制出来。由于ＭYSQL服务器的数据文件在服务器运行时期，总是在打开和使用状态，因此文本文件副本备份不一定有效，因此，在具体复制数据文件时，需要先停止MySQL数据库服务器。
+
+为了保证锁备份数据的完整性，在停止MySQL数据库服务器之前，需要先执行FLUSH TABLES语句将所有数据写入到数据文件的文本文件里。实际这种方法并不被推荐，因为实际上服务器并不允许出现停止的情况，同时对于Innodb并不适合。
+
+```
+show  variables like 'datadir';
++---------------+-----------------+
+| Variable_name | Value           |
++---------------+-----------------+
+| datadir       | /var/lib/mysql/ |
++---------------+-----------------+
+```
 * windowns: installpath/mysql/data
 * linux: /var/lib/mysql
 
@@ -5958,25 +6845,9 @@ $> mysqldump -h www.bcd.com -uroot -p password
 ```
 
 **不同版本的mysql数据库之间的迁移**
-备份原数据库。
 
-卸载原数据库。
 
-安装新数据库。
-
-在新数据库中还原备份的数据库数据。
-
-数据库用户访问信息需要备份mysql数据库。
-
-默认字符集问题，MySQL4.x中使用latin1作为默认字符集，mysql5.x使用utf8作为默认字符集。如果有中文数据需要对默认字符集进行更改。
-
-不同数据库之间的迁移
-
-MyODBC工具实现MySQL和SQL Server之间的迁移。
-
-MySQL Migration Toolkit工具。
-
-表的导出和导入
+* 表的导出和导入
 
 SELECT ...... INTO OUTFILE 导出文本文件,该方法只能导出到数据库服务器上，并且导出文件不能已存在。
 ```
@@ -5984,6 +6855,8 @@ MYSQL> SELECT ...... INTO OUTFILE filename [OPTIONS]
 MYSQL> SELECT * FROM test.person INTO OUTFILE "C:\person0.txt";
 # 将表person里的数据导入为文本文件person0.txt。
 ```
+* OPTIONS
+
 
 mysqldump文件导出文本文件(和INTO OUTFILE不一样的是该方法所有的选项不需要添加引号)
 ```
@@ -6049,138 +6922,16 @@ MYSQL> PURGE {MASTER | BINARY} LOGS BEFORE 'date';  #删除指定日期以前的
 MYSQL> SET sql_log_bin = {0|1}  #暂停或启动二进制日志。
 ```
 
-## 1.30. 查询性能优化
-
-### 1.30.1. 为什么查询会变慢
-<a href="#menu" style="float:right">目录</a>
-
-### 1.30.2. 慢查询基础
-<a href="#menu" style="float:right">目录</a>
-
-### 1.30.3. 重构查询方式
-<a href="#menu" style="float:right">目录</a>
-
-
-### 1.30.4. 查询执行的基础
-<a href="#menu" style="float:right">目录</a>
-
-
-### 1.30.5. 查询优化器的局限性
-<a href="#menu" style="float:right">目录</a>
-
-
-### 1.30.6. 查询优化器的提示
-<a href="#menu" style="float:right">目录</a>
-
-
-### 1.30.7. 优化特定类型的查询
-<a href="#menu" style="float:right">目录</a>
-
-
-### 1.30.8. 案例学习
-<a href="#menu" style="float:right">目录</a>
-
-
-## 1.31. 性能调优
-
-### 1.31.1. 选择合适的CPU
-<a href="#menu" style="float:right">目录</a>
-
-* OLTP
-    * 在线事务处理
-    * 日常事务处理应用中
-    * 用户操作的并发量大
-    * 事务处理的时间一般较短
-    * 查询的语句较为简单,一般都走索引
-    * 复杂的查询较少
-* OLAP
-    * 在线分析处理
-    * 多用于数据仓库或者数据集中,需要执行复杂的SQL语句
-
-综上，OLAP数据库应用本身对CPU的要求比较高，因为需要执行比较，排序，连接等非常耗时的操作。OLTP对CPU要求较低，但并发高，因此是IO密集型，因此需要在IO上进行优化。
-
-此外，为了获得更多内存的支持，因此应该选择64位的机器。
-
-### 1.31.2. 内存的重要性
-<a href="#menu" style="float:right">目录</a>
-
-内存越大，可利用的数据缓冲区越大，可以减少IO次数，因此性能能够得到提升。
-
-当然，并不是越大越好，当超过数据的大小，增加再多的内存也没有用。
-
-```
-mysql> show global status like "innodb%read%";
-+---------------------------------------+---------+
-| Variable_name                         | Value   |
-+---------------------------------------+---------+
-| Innodb_buffer_pool_read_ahead_rnd     | 0       |
-| Innodb_buffer_pool_read_ahead         | 0       |
-| Innodb_buffer_pool_read_ahead_evicted | 0       |
-| Innodb_buffer_pool_read_requests      | 1855    |
-| Innodb_buffer_pool_reads              | 435     |
-| Innodb_data_pending_reads             | 0       |
-| Innodb_data_read                      | 8704512 |
-| Innodb_data_reads                     | 638     |
-| Innodb_pages_read                     | 434     |
-| Innodb_rows_read                      | 11      |
-+---------------------------------------+---------+
-
-```
-通常InnoDB存储引擎的缓冲池的命中率不应该小于99%。
-缓冲池命中率 = (Innodb_buffer_pool_read_requests)/(Innodb_buffer_pool_read_requests + Innodb_buffer_pool_read_ahead + Innodb_buffer_pool_reads)
-平均每次读取的字节数 = Innodb_data_read/Innodb_data_reads
-
-Innodb_buffer_pool_reads：表示从物理磁盘读取的页数
-Innodb_buffer_pool_read_ahead：预读的页数
-Innodb_buffer_pool_read_ahead_evicted：预读的页数，但是没有被读取就从缓冲池中被替换的页的数量，一般用来判断预读的效率。
-Innodb_buffer_pool_read_requests：从缓冲池中读取的次数。
-Innodb_data_read：总共读入的字节数。
-Innodb_data_reads：发起读请求的次数，每次读取可能需要读取多个页。
-
-
-### 1.31.3. 硬盘对数据库性能的影响
-<a href="#menu" style="float:right">目录</a>
-
-
-
-### 1.31.4. 合理地设置RAIN
-<a href="#menu" style="float:right">目录</a>
-
-
-
-### 1.31.5. 操作系统的影响
-<a href="#menu" style="float:right">目录</a>
-
-
-
-### 1.31.6. 不同文件系统的影响
-<a href="#menu" style="float:right">目录</a>
-
-
-
-### 1.31.7. 选择合适的基准测试
-<a href="#menu" style="float:right">目录</a>
-
-
-
-#### 1.31.7.1. sysbench
-<a href="#menu" style="float:right">目录</a>
-
-
-
-#### 1.31.7.2. mysql-tpcc
-<a href="#menu" style="float:right">目录</a>
-
 
 
 
 ## 1.32. SQL实战
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 本文内容来源于[牛课网题库](https://www.nowcoder.com/ta/sql?page=0)
 
 ### 1.32.1. 查找最晚入职员工的所有信息
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ```SQL
 CREATE TABLE `employees` (
@@ -6199,7 +6950,7 @@ select * from employees
 ```
 ### 1.32.2. 查找入职员工时间排名倒数第三的员工所有信息
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ```SQL
 CREATE TABLE `employees` (
@@ -6229,7 +6980,7 @@ select *
 
 ### 1.32.3. 查找各个部门当前(to_date='9999-01-01')领导当前薪水详情以及其对应部门编号dept_no
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ```SQL
 CREATE TABLE `dept_manager` (
@@ -6256,7 +7007,7 @@ select s.*,d.dept_no
 ```
 
 ### 1.32.4. 查找所有已经分配部门的员工的last_name和first_name
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ```SQL
 CREATE TABLE `dept_emp` (
@@ -6283,7 +7034,7 @@ select e.last_name ,e.first_name,d.dept_no
 ```
 
 ### 1.32.5. 查找所有员工的last_name和first_name以及对应部门编号dept_no，也包括展示没有分配具体部门的员工
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ```sql
 CREATE TABLE `dept_emp` (
@@ -6309,7 +7060,7 @@ select e.last_name,e.first_name,d.dept_no
 ```
 
 ### 1.32.6. 查找所有员工入职时候的薪水情况，给出emp_no以及salary， 并按照emp_no进行逆序
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ```SQL
 CREATE TABLE `employees` (
@@ -6339,7 +7090,7 @@ select e.emp_no,s.salary
 ```
 
 ### 1.32.7. 查找薪水涨幅超过15次的员工号emp_no以及其对应的涨幅次数t
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ```SQL
 CREATE TABLE `salaries` (
@@ -6360,7 +7111,7 @@ SELECT emp_no, COUNT(emp_no) AS t
 	GROUP BY emp_no HAVING t > 15;
 ```
 ### 1.32.8. 找出所有员工当前(to_date='9999-01-01')具体的薪水salary情况，对于相同的薪水只显示一次,并按照逆序显示
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ```SQL
 CREATE TABLE `salaries` (
@@ -6380,7 +7131,7 @@ SELECT salary
         ORDER BY salary desc;
 ```
 ### 1.32.9. 获取所有部门当前manager的当前薪水情况，给出dept_no, emp_no以及salary，当前表示to_date='9999-01-01'
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ```SQL
 CREATE TABLE `dept_manager` (
@@ -6407,7 +7158,7 @@ select d.dept_no,d.emp_no,s.salary
 ```
 
 ### 1.32.10. 获取所有非manager的员工emp_no
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ```SQL
 CREATE TABLE `dept_manager` (
@@ -6436,7 +7187,7 @@ select emp_no
               from dept_manager
         );
 ```
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.11. 获取所有员工当前的manager，如果当前的manager是自己的话结果不显示，当前表示to_date='9999-01-01'。
 结果第一列给出当前员工的emp_no,第二列给出其manager对应的manager_no。
@@ -6469,7 +7220,7 @@ select e.emp_no emp_no,m.emp_no manager_no
          and  m.to_date='9999-01-01' 
          and m.to_date = e.to_date;
 ```
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.12. 获取所有部门中当前员工薪水最高的相关信息，给出dept_no, emp_no以及其对应的salary
 
@@ -6500,7 +7251,7 @@ select d.dept_no, d.emp_no ,max(s.salary)
         where d.to_date = '9999-01-01'  and  s.to_date = '9999-01-01' 
             group by d.dept_no
 ```
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.13. 从titles表获取按照title进行分组，每组个数大于等于2，给出title以及对应的数目t。
 
@@ -6519,7 +7270,7 @@ select  title,count(title)
     from titles
         group by title;
 ```
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.14. 从titles表获取按照title进行分组，每组个数大于等于2，给出title以及对应的数目t。
 
@@ -6542,7 +7293,7 @@ select  title,count(distinct emp_no) t
         group by title
         having t >= 2;
 ```
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.15. 查找employees表所有emp_no为奇数，且last_name不为Mary的员工信息，并按照hire_date逆序排列
 
@@ -6565,7 +7316,7 @@ select *
         and last_name != 'Mary'
         order by hire_date desc;
 ```
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.16. 统计出当前各个title类型对应的员工当前薪水对应的平均工资。结果给出title以及平均工资avg。
 
@@ -6591,7 +7342,7 @@ select t.title title ,avg(s.salary) avg
         and s.to_date='9999-01-01'  and t.to_date='9999-01-01' 
         group by t.title;
 ```
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.17. 获取当前（to_date='9999-01-01'）薪水第二多的员工的emp_no以及其对应的薪水salary
 
@@ -6614,7 +7365,7 @@ select emp_no ,salary
         order  by salary desc 
         limit 1,1;
 ```
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.18. 查找当前薪水(to_date='9999-01-01')排名第二多的员工编号emp_no、薪水salary、last_name以及first_name，不准使用order by
 
@@ -6658,7 +7409,7 @@ select s.emp_no,s.salary,e.last_name,e.first_name
                              and   to_date='9999-01-01'
                     );
 ```
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.19. 查找所有员工的last_name和first_name以及对应的dept_name，也包括暂时没有分配部门的员工
 
@@ -6695,7 +7446,7 @@ select  e.last_name,e.first_name,dp.dept_name
      from (employees e left join dept_emp de on e.emp_no = de.emp_no )
            left join  departments dp on de.dept_no = dp.dept_no;
 ```
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.20. 查找员工编号emp_no为10001其自入职以来的薪水salary涨幅值growth
 ```SQL
@@ -6726,7 +7477,7 @@ select
     as growth;
    
 ```
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.21. **查找所有员工自入职以来的薪水涨幅情况，给出员工编号emp_no以及其对应的薪水涨幅growth，并按照growth进行升序
 
@@ -6760,7 +7511,7 @@ from
     on a.emp_no = c.emp_no and a.hire_date = c.from_date
 order by growth asc
 ```
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.22. 统计各个部门对应员工涨幅的次数总和，给出部门编码dept_no、部门名称dept_name以及次数sum
 
@@ -6795,7 +7546,7 @@ select dp.dept_no,dp.dept_name,count(s.salary)
         inner join  departments  dp  on  dp.dept_no = de.dept_no
         group by dp.dept_no;
 ```
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.23. 对所有员工的当前(to_date='9999-01-01')薪水按照salary进行按照1-N的排名，相同salary并列且按照emp_no升序排列
 
@@ -6810,7 +7561,7 @@ PRIMARY KEY (`emp_no`,`from_date`));
 
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.24. 获取所有非manager员工当前的薪水情况，给出dept_no、emp_no以及salary ，当前表示to_date='9999-01-01'
 
@@ -6850,7 +7601,7 @@ PRIMARY KEY (`emp_no`,`from_date`));
 
 
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.25. 获取员工其当前的薪水比其manager当前薪水还高的相关信息，当前表示to_date='9999-01-01',
 
@@ -6883,7 +7634,7 @@ PRIMARY KEY (`emp_no`,`from_date`));
 ```
 
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.26. 汇总各个部门当前员工的title类型的分配数目，结果给出部门编号dept_no、dept_name、其当前员工所有的title以及该类型title对应的数目count
 
@@ -6910,7 +7661,7 @@ CREATE TABLE IF NOT EXISTS `titles` (
 s
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.27. 给出每个员工每年薪水涨幅超过5000的员工编号emp_no、薪水变更开始日期from_date以及薪水涨幅值salary_growth，并按照salary_growth逆序排列。
 提示：在sqlite中获取datetime时间对应的年份函数为strftime('%Y', to_date)
@@ -6927,7 +7678,7 @@ PRIMARY KEY (`emp_no`,`from_date`));
 s
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.28. 查找描述信息中包括robot的电影对应的分类名称以及电影数目，而且还需要该分类对应电影数量>=5部
 
@@ -6969,7 +7720,7 @@ category_id  tinyint(3)  NOT NULL, `last_update` timestamp);
 s
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.29. 使用join查询方式找出没有分类的电影id以及名称
 
@@ -7009,7 +7760,7 @@ category_id  tinyint(3)  NOT NULL, `last_update` timestamp);
 s
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.30. 使用子查询的方式找出属于Action分类的所有电影对应的title,description
 
@@ -7065,7 +7816,7 @@ from film as f inner join film_category as fc on f.film_id = fc.film_id
 where c.name = 'Action';
 ```
 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.32.31. 获取select
 
@@ -7076,7 +7827,7 @@ where c.name = 'Action';
 EXPLAIN SELECT * FROM employees
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.32. 将employees表的所有员工的last_name和first_name拼接起来作为Name，中间以一个空格区分
 
@@ -7096,7 +7847,7 @@ select concat（last_name，‘ ’，first_name）as name from employees
 ```
 
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.33. 创建一个actor表，包含如下列信息
 
@@ -7123,7 +7874,7 @@ CREATE TABLE actor(
 ```
 
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.34. 批量插入数据
 
@@ -7147,7 +7898,7 @@ SELECT 1, 'PENELOPE', 'GUINESS', '2006-02-15 12:34:33'
 UNION SELECT 2, 'NICK', 'WAHLBERG', '2006-02-15 12:34:33'
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.35. 批量插入数据，不使用replace操作
 ```
@@ -7163,7 +7914,7 @@ insert IGNORE into actor
 values(3,'ED','CHASE','2006-02-15 12:34:33');
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.36. 创建一个actor_name表
 
@@ -7183,7 +7934,7 @@ create table actor_name
 select first_name,last_name from actor;
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.37. 对first_name创建唯一索引uniq_idx_firstname
 ```SQL
@@ -7204,7 +7955,7 @@ CREATE UNIQUE INDEX uniq_idx_firstname ON actor(first_name);
 CREATE INDEX idx_lastname ON actor(last_name);
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.38. 针对actor表创建视图actor_name_view
 ```SQL
@@ -7226,7 +7977,7 @@ CREATE VIEW actor_name_view (fist_name_v, last_name_v) AS
 SELECT first_name, last_name FROM actor 
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.39. 针对上面的salaries表emp_no字段创建索引idx_emp_no
 ```SQL
@@ -7244,7 +7995,7 @@ create index idx_emp_no on salaries(emp_no);
 SELECT * FROM salaries FORCE INDEX idx_emp_no WHERE emp_no = 10005
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.40. 在last_update后面新增加一列名字为create_date
 
@@ -7263,7 +8014,7 @@ ALTER TABLE actor ADD COLUMN create_date datetime NOT NULL DEFAULT '0000-00-00 0
 ALTER TABLE actor ADD create_date datetime DEFAULT '0000-00-00 00:00:00' NOT NULL ;
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.41. 构造一个触发器audit_log
 
@@ -7322,7 +8073,7 @@ insert into titles_test values ('1', '10001', 'Senior Engineer', '1986-06-26', '
 ```
 
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.43. 将所有to_date为9999-01-01的全部更新为NULL
 ```SQL
@@ -7349,7 +8100,7 @@ UPDATE titles_test SET to_date = NULL, from_date = '2001-01-01'
 WHERE to_date = '9999-01-01';
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.44. 将id=5以及emp_no=10001的行数据替换成id=5以及emp_no=10005
 
@@ -7388,7 +8139,7 @@ UPDATE titles_test SET emp_no = REPLACE(emp_no,10001,10005) WHERE id = 5
 UPDATE titles_test SET emp_no = 10005 WHERE id = 5
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 
 ### 1.32.45. 将titles_test表名修改为titles_2017
@@ -7413,7 +8164,7 @@ insert into titles_test values ('1', '10001', 'Senior Engineer', '1986-06-26', '
 ALTER TABLE titles_test RENAME TO titles_2017
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.46. 在audit表上创建外键约束，其emp_no对应employees_test表的主键id
 ```SQL
@@ -7440,7 +8191,7 @@ CREATE TABLE audit(
 
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 
   
@@ -7486,7 +8237,7 @@ SELECT * FROM emp_v
 SELECT * FROM employees, emp_v WHERE employees.emp_no = emp_v.emp_no
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 
 ### 1.32.48. 将所有获取奖金的员工当前的薪水增加百分之十
@@ -7521,7 +8272,7 @@ UPDATE salaries SET salary = salary * 1.1 WHERE emp_no IN
 UPDATE salaries SET salary = salary * 1.1 
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.49. 针对库中的所有表生成select count(*)对应的SQL语句
 
@@ -7576,7 +8327,7 @@ select concat('select count(*) from', ' ', TABLE_NAME, ';') as cnts
  from (select table_name from information_schema.tables where table_schema='shop') as hi;
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.50. 将employees表中的所有员工的last_name和first_name通过(')连接起来。
 ```SQL
@@ -7603,7 +8354,7 @@ select concat(last_name,"‘",first_name) as name
 from employees;
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.51. 查找字符串'10,A,B' 中逗号','出现的次数cnt
 
@@ -7611,7 +8362,7 @@ from employees;
 select length('10,A,B') -length(replace('10,A,B',",",""))
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.52. 获取Employees中的first_name
 ```SQL
@@ -7641,7 +8392,7 @@ SELECT first_name FROM employees ORDER BY substr(first_name,length(first_name)-1
 SELECT first_name FROM employees ORDER BY substr(first_name,-2) 
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.53. 按照dept_no进行汇总
 ```SQL
@@ -7662,7 +8413,7 @@ d003	10005
 select dept_no,group_concat(emp_no SEPARATOR ',') from dept_emp group by dept_no;
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.54. 查找排除当前最大、最小salary之后的员工的平均工资avg_salary
 ```SQL
@@ -7684,7 +8435,7 @@ salary not in  (select max(salary )from salaries  ) and
 to_date='9999-01-01'
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.55. 分页查询employees表，每5行一页，返回第2页的数据
 ```SQL
@@ -7709,7 +8460,7 @@ SELECT * FROM employees LIMIT 5 OFFSET 5
 SELECT * FROM employees LIMIT 5,5
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.56. 获取所有员工的emp_no
 ```SQL
@@ -7764,7 +8515,7 @@ FROM dept_emp AS de LEFT JOIN emp_bonus AS eb
 ON de.emp_no = eb.emp_no
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.57. 使用含有关键字exists查找未分配具体部门的员工的所有信息。
 ```SQL
@@ -7798,7 +8549,7 @@ SELECT * FROM employees WHERE NOT EXISTS
 SELECT * FROM employees WHERE emp_no NOT IN (SELECT emp_no FROM dept_emp)
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.58. 获取employees中的行数据，且这些行也存在于emp_v中
 ```SQL
@@ -7833,7 +8584,7 @@ SELECT em.* FROM employees AS em, emp_v AS ev WHERE em.emp_no = ev.emp_no
 SELECT * FROM emp_v
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.59. 获取有奖金的员工相关信息。
 ```SQL
@@ -7884,7 +8635,7 @@ on eb.emp_no = s.emp_no and s.to_date='9999-01-01';
 ```
 
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.60. 统计salary的累计和running_total
 ```SQL
@@ -7916,7 +8667,7 @@ SELECT s1.emp_no, s1.salary,
 FROM salaries AS s1 WHERE s1.to_date = '9999-01-01' ORDER BY s1.emp_no
 ```
 
-<a href="#menu" style="float:right">目录</a> 
+<a href="#menu" >目录</a> 
 
 ### 1.32.61. 对于employees表中，给出奇数行的first_name
 
