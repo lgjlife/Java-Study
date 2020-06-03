@@ -304,84 +304,90 @@
         - [1.29.7. 选择合适的基准测试](#1297-选择合适的基准测试)
             - [1.29.7.1. sysbench](#12971-sysbench)
             - [1.29.7.2. mysql-tpcc](#12972-mysql-tpcc)
-    - [1.30. 数据库管理](#130-数据库管理)
-        - [1.30.1. 安全性机制](#1301-安全性机制)
-            - [1.30.1.1. 用户创建](#13011-用户创建)
-            - [1.30.1.2. 权限管理](#13012-权限管理)
-        - [1.30.2. 日志管理](#1302-日志管理)
-            - [1.30.2.1. 错误日志](#13021-错误日志)
-            - [1.30.2.2. 通用查询日志](#13022-通用查询日志)
-            - [1.30.2.3. 二进制日志](#13023-二进制日志)
-            - [1.30.2.4. 慢查询日志](#13024-慢查询日志)
-            - [1.30.2.5. 操作二进制日志](#13025-操作二进制日志)
-        - [1.30.3. 数据库维护和性能提高](#1303-数据库维护和性能提高)
-            - [1.30.3.1. 备份与恢复](#13031-备份与恢复)
-                - [1.30.3.1.1. 为什么要备份](#130311-为什么要备份)
-                - [1.30.3.1.2. 定义恢复需求](#130312-定义恢复需求)
-                - [1.30.3.1.3. 设计MYSQL备份方案](#130313-设计mysql备份方案)
-                - [1.30.3.1.4. 备份数据](#130314-备份数据)
-    - [1.31. SQL实战](#131-sql实战)
-        - [1.31.1. 查找最晚入职员工的所有信息](#1311-查找最晚入职员工的所有信息)
-        - [1.31.2. 查找入职员工时间排名倒数第三的员工所有信息](#1312-查找入职员工时间排名倒数第三的员工所有信息)
-        - [1.31.3. 查找各个部门当前(to_date='9999-01-01')领导当前薪水详情以及其对应部门编号dept_no](#1313-查找各个部门当前to_date9999-01-01领导当前薪水详情以及其对应部门编号dept_no)
-        - [1.31.4. 查找所有已经分配部门的员工的last_name和first_name](#1314-查找所有已经分配部门的员工的last_name和first_name)
-        - [1.31.5. 查找所有员工的last_name和first_name以及对应部门编号dept_no，也包括展示没有分配具体部门的员工](#1315-查找所有员工的last_name和first_name以及对应部门编号dept_no也包括展示没有分配具体部门的员工)
-        - [1.31.6. 查找所有员工入职时候的薪水情况，给出emp_no以及salary， 并按照emp_no进行逆序](#1316-查找所有员工入职时候的薪水情况给出emp_no以及salary-并按照emp_no进行逆序)
-        - [1.31.7. 查找薪水涨幅超过15次的员工号emp_no以及其对应的涨幅次数t](#1317-查找薪水涨幅超过15次的员工号emp_no以及其对应的涨幅次数t)
-        - [1.31.8. 找出所有员工当前(to_date='9999-01-01')具体的薪水salary情况，对于相同的薪水只显示一次,并按照逆序显示](#1318-找出所有员工当前to_date9999-01-01具体的薪水salary情况对于相同的薪水只显示一次并按照逆序显示)
-        - [1.31.9. 获取所有部门当前manager的当前薪水情况，给出dept_no, emp_no以及salary，当前表示to_date='9999-01-01'](#1319-获取所有部门当前manager的当前薪水情况给出dept_no-emp_no以及salary当前表示to_date9999-01-01)
-        - [1.31.10. 获取所有非manager的员工emp_no](#13110-获取所有非manager的员工emp_no)
-        - [1.31.11. 获取所有员工当前的manager，如果当前的manager是自己的话结果不显示，当前表示to_date='9999-01-01'。](#13111-获取所有员工当前的manager如果当前的manager是自己的话结果不显示当前表示to_date9999-01-01)
-        - [1.31.12. 获取所有部门中当前员工薪水最高的相关信息，给出dept_no, emp_no以及其对应的salary](#13112-获取所有部门中当前员工薪水最高的相关信息给出dept_no-emp_no以及其对应的salary)
-        - [1.31.13. 从titles表获取按照title进行分组，每组个数大于等于2，给出title以及对应的数目t。](#13113-从titles表获取按照title进行分组每组个数大于等于2给出title以及对应的数目t)
-        - [1.31.14. 从titles表获取按照title进行分组，每组个数大于等于2，给出title以及对应的数目t。](#13114-从titles表获取按照title进行分组每组个数大于等于2给出title以及对应的数目t)
-        - [1.31.15. 查找employees表所有emp_no为奇数，且last_name不为Mary的员工信息，并按照hire_date逆序排列](#13115-查找employees表所有emp_no为奇数且last_name不为mary的员工信息并按照hire_date逆序排列)
-        - [1.31.16. 统计出当前各个title类型对应的员工当前薪水对应的平均工资。结果给出title以及平均工资avg。](#13116-统计出当前各个title类型对应的员工当前薪水对应的平均工资结果给出title以及平均工资avg)
-        - [1.31.17. 获取当前（to_date='9999-01-01'）薪水第二多的员工的emp_no以及其对应的薪水salary](#13117-获取当前to_date9999-01-01薪水第二多的员工的emp_no以及其对应的薪水salary)
-        - [1.31.18. 查找当前薪水(to_date='9999-01-01')排名第二多的员工编号emp_no、薪水salary、last_name以及first_name，不准使用order by](#13118-查找当前薪水to_date9999-01-01排名第二多的员工编号emp_no薪水salarylast_name以及first_name不准使用order-by)
-        - [1.31.19. 查找所有员工的last_name和first_name以及对应的dept_name，也包括暂时没有分配部门的员工](#13119-查找所有员工的last_name和first_name以及对应的dept_name也包括暂时没有分配部门的员工)
-        - [1.31.20. 查找员工编号emp_no为10001其自入职以来的薪水salary涨幅值growth](#13120-查找员工编号emp_no为10001其自入职以来的薪水salary涨幅值growth)
-        - [1.31.21. **查找所有员工自入职以来的薪水涨幅情况，给出员工编号emp_no以及其对应的薪水涨幅growth，并按照growth进行升序](#13121-查找所有员工自入职以来的薪水涨幅情况给出员工编号emp_no以及其对应的薪水涨幅growth并按照growth进行升序)
-        - [1.31.22. 统计各个部门对应员工涨幅的次数总和，给出部门编码dept_no、部门名称dept_name以及次数sum](#13122-统计各个部门对应员工涨幅的次数总和给出部门编码dept_no部门名称dept_name以及次数sum)
-        - [1.31.23. 对所有员工的当前(to_date='9999-01-01')薪水按照salary进行按照1-N的排名，相同salary并列且按照emp_no升序排列](#13123-对所有员工的当前to_date9999-01-01薪水按照salary进行按照1-n的排名相同salary并列且按照emp_no升序排列)
-        - [1.31.24. 获取所有非manager员工当前的薪水情况，给出dept_no、emp_no以及salary ，当前表示to_date='9999-01-01'](#13124-获取所有非manager员工当前的薪水情况给出dept_noemp_no以及salary-当前表示to_date9999-01-01)
-        - [1.31.25. 获取员工其当前的薪水比其manager当前薪水还高的相关信息，当前表示to_date='9999-01-01',](#13125-获取员工其当前的薪水比其manager当前薪水还高的相关信息当前表示to_date9999-01-01)
-        - [1.31.26. 汇总各个部门当前员工的title类型的分配数目，结果给出部门编号dept_no、dept_name、其当前员工所有的title以及该类型title对应的数目count](#13126-汇总各个部门当前员工的title类型的分配数目结果给出部门编号dept_nodept_name其当前员工所有的title以及该类型title对应的数目count)
-        - [1.31.27. 给出每个员工每年薪水涨幅超过5000的员工编号emp_no、薪水变更开始日期from_date以及薪水涨幅值salary_growth，并按照salary_growth逆序排列。](#13127-给出每个员工每年薪水涨幅超过5000的员工编号emp_no薪水变更开始日期from_date以及薪水涨幅值salary_growth并按照salary_growth逆序排列)
-        - [1.31.28. 查找描述信息中包括robot的电影对应的分类名称以及电影数目，而且还需要该分类对应电影数量>=5部](#13128-查找描述信息中包括robot的电影对应的分类名称以及电影数目而且还需要该分类对应电影数量5部)
-        - [1.31.29. 使用join查询方式找出没有分类的电影id以及名称](#13129-使用join查询方式找出没有分类的电影id以及名称)
-        - [1.31.30. 使用子查询的方式找出属于Action分类的所有电影对应的title,description](#13130-使用子查询的方式找出属于action分类的所有电影对应的titledescription)
-        - [1.31.31. 获取select](#13131-获取select)
-        - [1.31.32. 将employees表的所有员工的last_name和first_name拼接起来作为Name，中间以一个空格区分](#13132-将employees表的所有员工的last_name和first_name拼接起来作为name中间以一个空格区分)
-        - [1.31.33. 创建一个actor表，包含如下列信息](#13133-创建一个actor表包含如下列信息)
-        - [1.31.34. 批量插入数据](#13134-批量插入数据)
-        - [1.31.35. 批量插入数据，不使用replace操作](#13135-批量插入数据不使用replace操作)
-        - [1.31.36. 创建一个actor_name表](#13136-创建一个actor_name表)
-        - [1.31.37. 对first_name创建唯一索引uniq_idx_firstname](#13137-对first_name创建唯一索引uniq_idx_firstname)
-        - [1.31.38. 针对actor表创建视图actor_name_view](#13138-针对actor表创建视图actor_name_view)
-        - [1.31.39. 针对上面的salaries表emp_no字段创建索引idx_emp_no](#13139-针对上面的salaries表emp_no字段创建索引idx_emp_no)
-        - [1.31.40. 在last_update后面新增加一列名字为create_date](#13140-在last_update后面新增加一列名字为create_date)
-        - [1.31.41. 构造一个触发器audit_log](#13141-构造一个触发器audit_log)
-        - [1.31.42. 删除emp_no重复的记录，只保留最小的id对应的记录。](#13142-删除emp_no重复的记录只保留最小的id对应的记录)
-        - [1.31.43. 将所有to_date为9999-01-01的全部更新为NULL](#13143-将所有to_date为9999-01-01的全部更新为null)
-        - [1.31.44. 将id=5以及emp_no=10001的行数据替换成id=5以及emp_no=10005](#13144-将id5以及emp_no10001的行数据替换成id5以及emp_no10005)
-        - [1.31.45. 将titles_test表名修改为titles_2017](#13145-将titles_test表名修改为titles_2017)
-        - [1.31.46. 在audit表上创建外键约束，其emp_no对应employees_test表的主键id](#13146-在audit表上创建外键约束其emp_no对应employees_test表的主键id)
-        - [1.31.47. 如何获取emp_v和employees有相同的数据no](#13147-如何获取emp_v和employees有相同的数据no)
-        - [1.31.48. 将所有获取奖金的员工当前的薪水增加百分之十](#13148-将所有获取奖金的员工当前的薪水增加百分之十)
-        - [1.31.49. 针对库中的所有表生成select count(*)对应的SQL语句](#13149-针对库中的所有表生成select-count对应的sql语句)
-        - [1.31.50. 将employees表中的所有员工的last_name和first_name通过(')连接起来。](#13150-将employees表中的所有员工的last_name和first_name通过连接起来)
-        - [1.31.51. 查找字符串'10,A,B' 中逗号','出现的次数cnt](#13151-查找字符串10ab-中逗号出现的次数cnt)
-        - [1.31.52. 获取Employees中的first_name](#13152-获取employees中的first_name)
-        - [1.31.53. 按照dept_no进行汇总](#13153-按照dept_no进行汇总)
-        - [1.31.54. 查找排除当前最大、最小salary之后的员工的平均工资avg_salary](#13154-查找排除当前最大最小salary之后的员工的平均工资avg_salary)
-        - [1.31.55. 分页查询employees表，每5行一页，返回第2页的数据](#13155-分页查询employees表每5行一页返回第2页的数据)
-        - [1.31.56. 获取所有员工的emp_no](#13156-获取所有员工的emp_no)
-        - [1.31.57. 使用含有关键字exists查找未分配具体部门的员工的所有信息。](#13157-使用含有关键字exists查找未分配具体部门的员工的所有信息)
-        - [1.31.58. 获取employees中的行数据，且这些行也存在于emp_v中](#13158-获取employees中的行数据且这些行也存在于emp_v中)
-        - [1.31.59. 获取有奖金的员工相关信息。](#13159-获取有奖金的员工相关信息)
-        - [1.31.60. 统计salary的累计和running_total](#13160-统计salary的累计和running_total)
-        - [1.31.61. 对于employees表中，给出奇数行的first_name](#13161-对于employees表中给出奇数行的first_name)
+    - [1.30. 数据库连接池](#130-数据库连接池)
+        - [1.30.1. 传统的连接机制与数据库连接池的运行机制区别](#1301-传统的连接机制与数据库连接池的运行机制区别)
+        - [1.30.2. 为何要使用数据库连接池](#1302-为何要使用数据库连接池)
+        - [使用数据库连接池的关键点](#使用数据库连接池的关键点)
+        - [使用数据库连接池的优势和其工作原理](#使用数据库连接池的优势和其工作原理)
+        - [数据库连接池druid](#数据库连接池druid)
+    - [1.31. 数据库管理](#131-数据库管理)
+        - [1.31.1. 安全性机制](#1311-安全性机制)
+            - [1.31.1.1. 用户创建](#13111-用户创建)
+            - [1.31.1.2. 权限管理](#13112-权限管理)
+        - [1.31.2. 日志管理](#1312-日志管理)
+            - [1.31.2.1. 错误日志](#13121-错误日志)
+            - [1.31.2.2. 通用查询日志](#13122-通用查询日志)
+            - [1.31.2.3. 二进制日志](#13123-二进制日志)
+            - [1.31.2.4. 慢查询日志](#13124-慢查询日志)
+            - [1.31.2.5. 操作二进制日志](#13125-操作二进制日志)
+        - [1.31.3. 数据库维护和性能提高](#1313-数据库维护和性能提高)
+            - [1.31.3.1. 备份与恢复](#13131-备份与恢复)
+                - [1.31.3.1.1. 为什么要备份](#131311-为什么要备份)
+                - [1.31.3.1.2. 定义恢复需求](#131312-定义恢复需求)
+                - [1.31.3.1.3. 设计MYSQL备份方案](#131313-设计mysql备份方案)
+                - [1.31.3.1.4. 备份数据](#131314-备份数据)
+    - [1.32. SQL实战](#132-sql实战)
+        - [1.32.1. 查找最晚入职员工的所有信息](#1321-查找最晚入职员工的所有信息)
+        - [1.32.2. 查找入职员工时间排名倒数第三的员工所有信息](#1322-查找入职员工时间排名倒数第三的员工所有信息)
+        - [1.32.3. 查找各个部门当前(to_date='9999-01-01')领导当前薪水详情以及其对应部门编号dept_no](#1323-查找各个部门当前to_date9999-01-01领导当前薪水详情以及其对应部门编号dept_no)
+        - [1.32.4. 查找所有已经分配部门的员工的last_name和first_name](#1324-查找所有已经分配部门的员工的last_name和first_name)
+        - [1.32.5. 查找所有员工的last_name和first_name以及对应部门编号dept_no，也包括展示没有分配具体部门的员工](#1325-查找所有员工的last_name和first_name以及对应部门编号dept_no也包括展示没有分配具体部门的员工)
+        - [1.32.6. 查找所有员工入职时候的薪水情况，给出emp_no以及salary， 并按照emp_no进行逆序](#1326-查找所有员工入职时候的薪水情况给出emp_no以及salary-并按照emp_no进行逆序)
+        - [1.32.7. 查找薪水涨幅超过15次的员工号emp_no以及其对应的涨幅次数t](#1327-查找薪水涨幅超过15次的员工号emp_no以及其对应的涨幅次数t)
+        - [1.32.8. 找出所有员工当前(to_date='9999-01-01')具体的薪水salary情况，对于相同的薪水只显示一次,并按照逆序显示](#1328-找出所有员工当前to_date9999-01-01具体的薪水salary情况对于相同的薪水只显示一次并按照逆序显示)
+        - [1.32.9. 获取所有部门当前manager的当前薪水情况，给出dept_no, emp_no以及salary，当前表示to_date='9999-01-01'](#1329-获取所有部门当前manager的当前薪水情况给出dept_no-emp_no以及salary当前表示to_date9999-01-01)
+        - [1.32.10. 获取所有非manager的员工emp_no](#13210-获取所有非manager的员工emp_no)
+        - [1.32.11. 获取所有员工当前的manager，如果当前的manager是自己的话结果不显示，当前表示to_date='9999-01-01'。](#13211-获取所有员工当前的manager如果当前的manager是自己的话结果不显示当前表示to_date9999-01-01)
+        - [1.32.12. 获取所有部门中当前员工薪水最高的相关信息，给出dept_no, emp_no以及其对应的salary](#13212-获取所有部门中当前员工薪水最高的相关信息给出dept_no-emp_no以及其对应的salary)
+        - [1.32.13. 从titles表获取按照title进行分组，每组个数大于等于2，给出title以及对应的数目t。](#13213-从titles表获取按照title进行分组每组个数大于等于2给出title以及对应的数目t)
+        - [1.32.14. 从titles表获取按照title进行分组，每组个数大于等于2，给出title以及对应的数目t。](#13214-从titles表获取按照title进行分组每组个数大于等于2给出title以及对应的数目t)
+        - [1.32.15. 查找employees表所有emp_no为奇数，且last_name不为Mary的员工信息，并按照hire_date逆序排列](#13215-查找employees表所有emp_no为奇数且last_name不为mary的员工信息并按照hire_date逆序排列)
+        - [1.32.16. 统计出当前各个title类型对应的员工当前薪水对应的平均工资。结果给出title以及平均工资avg。](#13216-统计出当前各个title类型对应的员工当前薪水对应的平均工资结果给出title以及平均工资avg)
+        - [1.32.17. 获取当前（to_date='9999-01-01'）薪水第二多的员工的emp_no以及其对应的薪水salary](#13217-获取当前to_date9999-01-01薪水第二多的员工的emp_no以及其对应的薪水salary)
+        - [1.32.18. 查找当前薪水(to_date='9999-01-01')排名第二多的员工编号emp_no、薪水salary、last_name以及first_name，不准使用order by](#13218-查找当前薪水to_date9999-01-01排名第二多的员工编号emp_no薪水salarylast_name以及first_name不准使用order-by)
+        - [1.32.19. 查找所有员工的last_name和first_name以及对应的dept_name，也包括暂时没有分配部门的员工](#13219-查找所有员工的last_name和first_name以及对应的dept_name也包括暂时没有分配部门的员工)
+        - [1.32.20. 查找员工编号emp_no为10001其自入职以来的薪水salary涨幅值growth](#13220-查找员工编号emp_no为10001其自入职以来的薪水salary涨幅值growth)
+        - [1.32.21. **查找所有员工自入职以来的薪水涨幅情况，给出员工编号emp_no以及其对应的薪水涨幅growth，并按照growth进行升序](#13221-查找所有员工自入职以来的薪水涨幅情况给出员工编号emp_no以及其对应的薪水涨幅growth并按照growth进行升序)
+        - [1.32.22. 统计各个部门对应员工涨幅的次数总和，给出部门编码dept_no、部门名称dept_name以及次数sum](#13222-统计各个部门对应员工涨幅的次数总和给出部门编码dept_no部门名称dept_name以及次数sum)
+        - [1.32.23. 对所有员工的当前(to_date='9999-01-01')薪水按照salary进行按照1-N的排名，相同salary并列且按照emp_no升序排列](#13223-对所有员工的当前to_date9999-01-01薪水按照salary进行按照1-n的排名相同salary并列且按照emp_no升序排列)
+        - [1.32.24. 获取所有非manager员工当前的薪水情况，给出dept_no、emp_no以及salary ，当前表示to_date='9999-01-01'](#13224-获取所有非manager员工当前的薪水情况给出dept_noemp_no以及salary-当前表示to_date9999-01-01)
+        - [1.32.25. 获取员工其当前的薪水比其manager当前薪水还高的相关信息，当前表示to_date='9999-01-01',](#13225-获取员工其当前的薪水比其manager当前薪水还高的相关信息当前表示to_date9999-01-01)
+        - [1.32.26. 汇总各个部门当前员工的title类型的分配数目，结果给出部门编号dept_no、dept_name、其当前员工所有的title以及该类型title对应的数目count](#13226-汇总各个部门当前员工的title类型的分配数目结果给出部门编号dept_nodept_name其当前员工所有的title以及该类型title对应的数目count)
+        - [1.32.27. 给出每个员工每年薪水涨幅超过5000的员工编号emp_no、薪水变更开始日期from_date以及薪水涨幅值salary_growth，并按照salary_growth逆序排列。](#13227-给出每个员工每年薪水涨幅超过5000的员工编号emp_no薪水变更开始日期from_date以及薪水涨幅值salary_growth并按照salary_growth逆序排列)
+        - [1.32.28. 查找描述信息中包括robot的电影对应的分类名称以及电影数目，而且还需要该分类对应电影数量>=5部](#13228-查找描述信息中包括robot的电影对应的分类名称以及电影数目而且还需要该分类对应电影数量5部)
+        - [1.32.29. 使用join查询方式找出没有分类的电影id以及名称](#13229-使用join查询方式找出没有分类的电影id以及名称)
+        - [1.32.30. 使用子查询的方式找出属于Action分类的所有电影对应的title,description](#13230-使用子查询的方式找出属于action分类的所有电影对应的titledescription)
+        - [1.32.31. 获取select](#13231-获取select)
+        - [1.32.32. 将employees表的所有员工的last_name和first_name拼接起来作为Name，中间以一个空格区分](#13232-将employees表的所有员工的last_name和first_name拼接起来作为name中间以一个空格区分)
+        - [1.32.33. 创建一个actor表，包含如下列信息](#13233-创建一个actor表包含如下列信息)
+        - [1.32.34. 批量插入数据](#13234-批量插入数据)
+        - [1.32.35. 批量插入数据，不使用replace操作](#13235-批量插入数据不使用replace操作)
+        - [1.32.36. 创建一个actor_name表](#13236-创建一个actor_name表)
+        - [1.32.37. 对first_name创建唯一索引uniq_idx_firstname](#13237-对first_name创建唯一索引uniq_idx_firstname)
+        - [1.32.38. 针对actor表创建视图actor_name_view](#13238-针对actor表创建视图actor_name_view)
+        - [1.32.39. 针对上面的salaries表emp_no字段创建索引idx_emp_no](#13239-针对上面的salaries表emp_no字段创建索引idx_emp_no)
+        - [1.32.40. 在last_update后面新增加一列名字为create_date](#13240-在last_update后面新增加一列名字为create_date)
+        - [1.32.41. 构造一个触发器audit_log](#13241-构造一个触发器audit_log)
+        - [1.32.42. 删除emp_no重复的记录，只保留最小的id对应的记录。](#13242-删除emp_no重复的记录只保留最小的id对应的记录)
+        - [1.32.43. 将所有to_date为9999-01-01的全部更新为NULL](#13243-将所有to_date为9999-01-01的全部更新为null)
+        - [1.32.44. 将id=5以及emp_no=10001的行数据替换成id=5以及emp_no=10005](#13244-将id5以及emp_no10001的行数据替换成id5以及emp_no10005)
+        - [1.32.45. 将titles_test表名修改为titles_2017](#13245-将titles_test表名修改为titles_2017)
+        - [1.32.46. 在audit表上创建外键约束，其emp_no对应employees_test表的主键id](#13246-在audit表上创建外键约束其emp_no对应employees_test表的主键id)
+        - [1.32.47. 如何获取emp_v和employees有相同的数据no](#13247-如何获取emp_v和employees有相同的数据no)
+        - [1.32.48. 将所有获取奖金的员工当前的薪水增加百分之十](#13248-将所有获取奖金的员工当前的薪水增加百分之十)
+        - [1.32.49. 针对库中的所有表生成select count(*)对应的SQL语句](#13249-针对库中的所有表生成select-count对应的sql语句)
+        - [1.32.50. 将employees表中的所有员工的last_name和first_name通过(')连接起来。](#13250-将employees表中的所有员工的last_name和first_name通过连接起来)
+        - [1.32.51. 查找字符串'10,A,B' 中逗号','出现的次数cnt](#13251-查找字符串10ab-中逗号出现的次数cnt)
+        - [1.32.52. 获取Employees中的first_name](#13252-获取employees中的first_name)
+        - [1.32.53. 按照dept_no进行汇总](#13253-按照dept_no进行汇总)
+        - [1.32.54. 查找排除当前最大、最小salary之后的员工的平均工资avg_salary](#13254-查找排除当前最大最小salary之后的员工的平均工资avg_salary)
+        - [1.32.55. 分页查询employees表，每5行一页，返回第2页的数据](#13255-分页查询employees表每5行一页返回第2页的数据)
+        - [1.32.56. 获取所有员工的emp_no](#13256-获取所有员工的emp_no)
+        - [1.32.57. 使用含有关键字exists查找未分配具体部门的员工的所有信息。](#13257-使用含有关键字exists查找未分配具体部门的员工的所有信息)
+        - [1.32.58. 获取employees中的行数据，且这些行也存在于emp_v中](#13258-获取employees中的行数据且这些行也存在于emp_v中)
+        - [1.32.59. 获取有奖金的员工相关信息。](#13259-获取有奖金的员工相关信息)
+        - [1.32.60. 统计salary的累计和running_total](#13260-统计salary的累计和running_total)
+        - [1.32.61. 对于employees表中，给出奇数行的first_name](#13261-对于employees表中给出奇数行的first_name)
 
 <!-- /TOC -->
 # 1. MySQL
@@ -6348,10 +6354,99 @@ Innodb_data_reads：发起读请求的次数，每次读取可能需要读取多
 #### 1.29.7.2. mysql-tpcc
 <a href="#menu" >目录</a>
 
-## 1.30. 数据库管理
+## 1.30. 数据库连接池
 <a href="#menu" >目录</a>
 
-### 1.30.1. 安全性机制
+创建数据库连接是非常耗时的过程，首先是TCP连接建立，然后是连接的安全认证，因此就比较耗时，所以需要复用这些连接。数据库连接池（Connection pooling）是程序启动时建立足够的数据库连接，并将这些连接组成一个连接池，由程序动态地对池中的连接进行申请，使用，释放。
+
+### 1.30.1. 传统的连接机制与数据库连接池的运行机制区别
+
+* 传统统链接:一般来说，Java应用程序访问数据库的过程是：
+    * 装载数据库驱动程序；
+    * 通过JDBC建立数据库连接；
+    * 访问数据库，执行SQL语句；
+    * 断开数据库连接。
+* 使用了数据库连接池的机制：
+    * 程序初始化时创建连接池
+    * 使用时向连接池申请可用连接
+    * 使用完毕，将连接返还给连接池
+    * 程序退出时，断开所有连接，并释放资源
+
+### 1.30.2. 为何要使用数据库连接池
+
+假设网站一天有很大的访问量，数据库服务器就需要为每次连接创建一次数据库连接，极大的浪费数据库的资源，并且极易造成数据库服务器内存溢出、宕机。
+数据库连接是一种关键的有限的昂贵的资源,这一点在多用户的网页应用程序中体现的尤为突出.对数据库连接的管理能显著影响到整个应用程序的伸缩性和健壮性,影响到程序的性能指标.数据库连接池正式针对这个问题提出来的.数据库连接池负责分配,管理和释放数据库连接,它允许应用程序重复使用一个现有的数据库连接,而不是重新建立一个。
+
+
+数据库连接池在初始化时将创建一定数量的数据库连接放到连接池中, 这些数据库连接的数量是由最小数据库连接数来设定的.无论这些数据库连接是否被使用,连接池都将一直保证至少拥有这么多的连接数量.连接池的最大数据库连接数量限定了这个连接池能占有的最大连接数,当应用程序向连接池请求的连接数超过最大连接数量时,这些请求将被加入到等待队列中.
+
+数据库连接池的最小连接数和最大连接数的设置要考虑到以下几个因素:
+* 最小连接数:是连接池一直保持的数据库连接,所以如果应用程序对数据库连接的使用量不大,将会有大量的数据库连接资源被浪费.
+* 最大连接数:是连接池能申请的最大连接数,如果数据库连接请求超过次数,后面的数据库连接请求将被加入到等待队列中,这会影响以后的数据库操作
+* 如果最小连接数与最大连接数相差很大:那么最先连接请求将会获利,之后超过最小连接数量的连接请求等价于建立一个新的数据库连接.不过,这些大于最小连接数的数据库连接在使用完不会马上被释放,他将被放到连接池中等待重复使用或是空间超时后被释放.
+
+### 使用数据库连接池的关键点
+
+**并发问题**
+
+为了使连接管理服务具有最大的通用性，必须考虑多线程环境，即并发问题。避免单个连接被多个线程同时使用
+
+**事务处理**
+
+DB连接池必须要确保某一时间内一个 conn 只能分配给一个线程。不同 conn 的事务是相互独立的。 
+
+我们知道当２个线程共用一个连接Connection对象，而且各自都有自己的事务要处理时候，对于连接池是一个很头疼的问题，因为即使Connection类提供了相应的事务支持，可是我们仍然不能确定那个数据库操作是对应那个事务的，这是由于我们有２个线程都在进行事务操作而引起的。为此我们可以使用每一个事务独占一个连接来实现，虽然这种方法有点浪费连接池资源但是可以大大降低事务管理的复杂性。 
+
+ 
+
+**连接池的分配与释放**
+
+连接池的分配与释放，对系统的性能有很大的影响。合理的分配与释放，可以提高连接的复用度，从而降低建立新连接的开销，同时还可以加快用户的访问速度。 
+
+对于连接的管理可使用一个List。即把已经创建的连接都放入List中去统一管理。每当用户请求一个连接时，系统检查这个List中有没有可以分配的连接。如果有就把那个最合适的连接分配给他（如何能找到最合适的连接文章将在关键议题中指出）；如果没有就抛出一个异常给用户，List中连接是否可以被分配由一个线程来专门管理捎后我会介绍这个线程的具体实现。
+
+**连接池的配置与维护**
+
+连接池中到底应该放置多少连接，才能使系统的性能最佳？系统可采取设置最小连接数（minConnection）和最大连接数（maxConnection）等参数来控制连接池中的连接。比方说，最小连接数是系统启动时连接池所创建的连接数。如果创建过多，则系统启动就慢，但创建后系统的响应速度会很快；如果创建过少，则系统启动的很快，响应起来却慢。这样，可以在开发时，设置较小的最小连接数，开发起来会快，而在系统实际使用时设置较大的，因为这样对访问客户来说速度会快些。最大连接数是连接池中允许连接的最大数目，具体设置多少，要看系统的访问量，可通过软件需求上得到。 
+
+如何确保连接池中的最小连接数呢？有动态和静态两种策略。动态即每隔一定时间就对连接池进行检测，如果发现连接数量小于最小连接数，则补充相应数量的新连接,以保证连接池的正常运转。静态是发现空闲连接不够时再去检查。
+
+### 使用数据库连接池的优势和其工作原理
+
+**连接池的优势**
+
+连接池用于创建和管理数据库连接的缓冲池技术，缓冲池中的连接可以被任何需要他们的线程使用。当一个线程需要用JDBC对一个数据库操作时，将从池中请求一个连接。当这个连接使用完毕后，将返回到连接池中，等待为其他的线程服务。
+
+连接池的主要优点有以下三个方面。
+* 减少连接创建时间。连接池中的连接是已准备好的、可重复使用的，获取后可以直接访问数据库，因此减少了连接创建的次数和时间。
+* 简化的编程模式。当使用连接池时，每一个单独的线程能够像创建一个自己的JDBC连接一样操作，允许用户直接使用JDBC编程技术。
+* 控制资源的使用。如果不使用连接池，每次访问数据库都需要创建一个连接，这样系统的稳定性受系统连接需求影响很大，很容易产生资源浪费和高负载异常。连接池能够使性能最大化，将资源利用控制在一定的水平之下。连接池能控制池中的连接数量，增强了系统在大量用户应用时的稳定性。
+
+**连接池的工作原理**
+
+下面，简单的阐述下连接池的工作原理。
+
+连接池技术的核心思想是连接复用，通过建立一个数据库连接池以及一套连接使用、分配和管理策略，使得该连接池中的连接可以得到高效、安全的复用，避免了数据库连接频繁建立、关闭的开销。
+
+连接池的工作原理主要由三部分组成，分别为连接池的建立、连接池中连接的使用管理、连接池的关闭。
+* 连接池的建立。一般在系统初始化时，连接池会根据系统配置建立，并在池中创建了几个连接对象，以便使用时能从连接池中获取。连接池中的连接不能随意创建和关闭，这样避免了连接随意建立和关闭造成的系统开销。Java中提供了很多容器类可以方便的构建连接池，例如Vector、Stack等。
+* 连接池的管理。连接池管理策略是连接池机制的核心，连接池内连接的分配和释放对系统的性能有很大的影响。其管理策略是：
+
+当客户请求数据库连接时，首先查看连接池中是否有空闲连接，如果存在空闲连接，则将连接分配给客户使用；如果没有空闲连接，则查看当前所开的连接数是否已经达到最大连接数，如果没达到就重新创建一个连接给请求的客户；如果达到就按设定的最大等待时间进行等待，如果超出最大等待时间，则抛出异常给客户。
+当客户释放数据库连接时，先判断该连接的引用次数是否超过了规定值，如果超过就从连接池中删除该连接，否则保留为其他客户服务。
+
+该策略保证了数据库连接的有效复用，避免频繁的建立、释放连接所带来的系统资源开销。
+
+* 连接池的关闭。当应用程序退出时，关闭连接池中所有的连接，释放连接池相关的资源，该过程正好与创建相反。
+
+### 数据库连接池druid
+
+[数据库连接池druid](https://github.com/alibaba/druid/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)
+
+## 1.31. 数据库管理
+<a href="#menu" >目录</a>
+
+### 1.31.1. 安全性机制
 <a href="#menu" >目录</a>
 * 权限表
     * 系统表 mysql.user
@@ -6364,7 +6459,7 @@ Innodb_data_reads：发起读请求的次数，每次读取可能需要读取多
 
 * 登录: mysql -h hostname|hostIP -p port -u username -P password
 
-#### 1.30.1.1. 用户创建
+#### 1.31.1.1. 用户创建
 
 * 创建普通用户
 ```sql
@@ -6425,7 +6520,7 @@ DROP USER user1,...
 DELETE FROM user WHERE user="xxx" and host="xxx" 
 ```
 
-#### 1.30.1.2. 权限管理
+#### 1.31.1.2. 权限管理
 
 ```sql
 GRANT priv_type [(column list)] ON database.table
@@ -6450,7 +6545,7 @@ GRANT priv_type [(column list)] ON database.table
 REVOKE priv_type [(column list)] ON database.table
     FROM user [IDENTIFIED BY [PASSWORD] "new_password"],...
 ```
-### 1.30.2. 日志管理
+### 1.31.2. 日志管理
 <a href="#menu" >目录</a>
 
 在MYSQL中，除了二进制日志文件外，其他日志文件都是文本文件。默认情况下，只会启动错误日志文件，而其他日志文件则需要手动启动才可以被启动
@@ -6464,7 +6559,7 @@ REVOKE priv_type [(column list)] ON database.table
 当存储事务日志的磁盘坏掉，数据是无法恢复的！因此选择一个可靠的磁盘还是相当有必要的，比如我们可以给我们的数据做raid10或者raid1（推荐使用raid10）来提供这种保障。事务日志不能帮助我们恢复数据，它的作用在于当操作系统崩溃时（比如异常断电）它能够保障已经提交的事物不丢失，而未提交的事物能回滚。如果想要恢复日志还得依赖于二进制日志。 
 
 
-#### 1.30.2.1. 错误日志
+#### 1.31.2.1. 错误日志
 <a href="#menu" >目录</a>
 
 记录数据库启动、运行、关闭过程中所有的错误信息，也包括一些警告信息或者正确信息。
@@ -6506,7 +6601,7 @@ Version: '5.7.25-0ubuntu0.18.04.2-log'  socket: '/var/run/mysqld/mysqld.sock'  p
 mysqladmin -u root -p flush-logs
 ```
 
-#### 1.30.2.2. 通用查询日志
+#### 1.31.2.2. 通用查询日志
 <a href="#menu" >目录</a>
 
 它是用来保存所有跟查询相关的日志，这种日志类型默认是关闭状态的，因为MySQL的用户有很多，如果将每个用户的查询操作都记录下来的话，将会降低服务器的性能。查询日志常见的几个参数：
@@ -6552,7 +6647,7 @@ mysqladmin -u root -p flush-logs
 服务器会创建一个新的查询日志，覆盖掉旧的查询日志，如果需要备份，应该先备份再执行上述命令。该命令也会删除错误日志文件。
 
 
-#### 1.30.2.3. 二进制日志
+#### 1.31.2.3. 二进制日志
 <a href="#menu" >目录</a>
 
 * 什么是二进制文件
@@ -6695,7 +6790,7 @@ mysql> show variables like "binlog_format";
 
     
 
-#### 1.30.2.4. 慢查询日志
+#### 1.31.2.4. 慢查询日志
 <a href="#menu" >目录</a>
 
 查询执行时长超过指定时长的查询，即为慢查询。这里的慢不一定是查询语句存在问题，可能是因为访问你的资源当时不被许可访问，就好比你将一个一个MySQL库中的一个表添加写锁，那么别人就没有办法去查询这个表的内容啦，等到你将这个表锁解开之后，访问这张表的查询语句才会被执行。
@@ -6728,7 +6823,7 @@ mysqladmin -u root -p flush-logs
 ```
 
 
-#### 1.30.2.5. 操作二进制日志
+#### 1.31.2.5. 操作二进制日志
 
 **启动**
 ```yml
@@ -6738,13 +6833,13 @@ mysqladmin -u root -p flush-logs
 #一般不要把二进制日志文件和数据文件放在同一个磁盘，这样存放数据文件的磁盘损坏了，还可以使用二进制文件恢复数据
 log-bin[=dir/filename]
 ```
-### 1.30.3. 数据库维护和性能提高
+### 1.31.3. 数据库维护和性能提高
 <a href="#menu" >目录</a>
 
 
-#### 1.30.3.1. 备份与恢复
+#### 1.31.3.1. 备份与恢复
 
-##### 1.30.3.1.1. 为什么要备份
+##### 1.31.3.1.1. 为什么要备份
 <a href="#menu" >目录</a>
 
 * 数据损失的原因
@@ -6752,14 +6847,14 @@ log-bin[=dir/filename]
     * 用户错误操作，误删除数据
     * 服务器彻底崩溃，系统需要重建
 
-##### 1.30.3.1.2. 定义恢复需求
+##### 1.31.3.1.2. 定义恢复需求
 <a href="#menu" >目录</a>
 
 * 在不导致严重后果的情况下，可以容忍丢失多少数据
 * 恢复需要多少时间内完成
 * 需要恢复什么数据？恢复整个数据库，单个数据库，单个表，或者仅仅是特定的事务和语句
 
-##### 1.30.3.1.3. 设计MYSQL备份方案
+##### 1.31.3.1.3. 设计MYSQL备份方案
 <a href="#menu" >目录</a>
 
 备份的类型
@@ -6801,7 +6896,7 @@ log-bin[=dir/filename]
             * 还原之后，缩影需要重建
 
 
-##### 1.30.3.1.4. 备份数据
+##### 1.31.3.1.4. 备份数据
 <a href="#menu" >目录</a>
 
 **mysqldump工具备份**
@@ -6966,12 +7061,12 @@ MYSQL> SET sql_log_bin = {0|1}  #暂停或启动二进制日志。
 
 
 
-## 1.31. SQL实战
+## 1.32. SQL实战
 <a href="#menu" >目录</a>
 
 本文内容来源于[牛课网题库](https://www.nowcoder.com/ta/sql?page=0)
 
-### 1.31.1. 查找最晚入职员工的所有信息
+### 1.32.1. 查找最晚入职员工的所有信息
 <a href="#menu" >目录</a> 
 
 ```SQL
@@ -6989,7 +7084,7 @@ PRIMARY KEY (`emp_no`));
 select * from employees 
     order by hire_date desc limit 1;
 ```
-### 1.31.2. 查找入职员工时间排名倒数第三的员工所有信息
+### 1.32.2. 查找入职员工时间排名倒数第三的员工所有信息
 
 <a href="#menu" >目录</a> 
 
@@ -7019,7 +7114,7 @@ select *
        limit 2,1 ;
 ```
 
-### 1.31.3. 查找各个部门当前(to_date='9999-01-01')领导当前薪水详情以及其对应部门编号dept_no
+### 1.32.3. 查找各个部门当前(to_date='9999-01-01')领导当前薪水详情以及其对应部门编号dept_no
 
 <a href="#menu" >目录</a> 
 
@@ -7047,7 +7142,7 @@ select s.*,d.dept_no
           and d.emp_no = s.emp_no;
 ```
 
-### 1.31.4. 查找所有已经分配部门的员工的last_name和first_name
+### 1.32.4. 查找所有已经分配部门的员工的last_name和first_name
 <a href="#menu" >目录</a> 
 
 ```SQL
@@ -7074,7 +7169,7 @@ select e.last_name ,e.first_name,d.dept_no
       where e.emp_no = d.emp_no;
 ```
 
-### 1.31.5. 查找所有员工的last_name和first_name以及对应部门编号dept_no，也包括展示没有分配具体部门的员工
+### 1.32.5. 查找所有员工的last_name和first_name以及对应部门编号dept_no，也包括展示没有分配具体部门的员工
 <a href="#menu" >目录</a> 
 
 ```sql
@@ -7100,7 +7195,7 @@ select e.last_name,e.first_name,d.dept_no
       on e.emp_no = d.emp_no;
 ```
 
-### 1.31.6. 查找所有员工入职时候的薪水情况，给出emp_no以及salary， 并按照emp_no进行逆序
+### 1.32.6. 查找所有员工入职时候的薪水情况，给出emp_no以及salary， 并按照emp_no进行逆序
 <a href="#menu" >目录</a> 
 
 ```SQL
@@ -7130,7 +7225,7 @@ select e.emp_no,s.salary
      order by   e.emp_no desc;
 ```
 
-### 1.31.7. 查找薪水涨幅超过15次的员工号emp_no以及其对应的涨幅次数t
+### 1.32.7. 查找薪水涨幅超过15次的员工号emp_no以及其对应的涨幅次数t
 <a href="#menu" >目录</a> 
 
 ```SQL
@@ -7151,7 +7246,7 @@ SELECT emp_no, COUNT(emp_no) AS t
   FROM salaries
 	GROUP BY emp_no HAVING t > 15;
 ```
-### 1.31.8. 找出所有员工当前(to_date='9999-01-01')具体的薪水salary情况，对于相同的薪水只显示一次,并按照逆序显示
+### 1.32.8. 找出所有员工当前(to_date='9999-01-01')具体的薪水salary情况，对于相同的薪水只显示一次,并按照逆序显示
 <a href="#menu" >目录</a> 
 
 ```SQL
@@ -7171,7 +7266,7 @@ SELECT salary
         GROUP BY salary
         ORDER BY salary desc;
 ```
-### 1.31.9. 获取所有部门当前manager的当前薪水情况，给出dept_no, emp_no以及salary，当前表示to_date='9999-01-01'
+### 1.32.9. 获取所有部门当前manager的当前薪水情况，给出dept_no, emp_no以及salary，当前表示to_date='9999-01-01'
 <a href="#menu" >目录</a> 
 
 ```SQL
@@ -7198,7 +7293,7 @@ select d.dept_no,d.emp_no,s.salary
         and  s.to_date='9999-01-01';
 ```
 
-### 1.31.10. 获取所有非manager的员工emp_no
+### 1.32.10. 获取所有非manager的员工emp_no
 <a href="#menu" >目录</a> 
 
 ```SQL
@@ -7230,7 +7325,7 @@ select emp_no
 ```
 <a href="#menu" >目录</a> 
 
-### 1.31.11. 获取所有员工当前的manager，如果当前的manager是自己的话结果不显示，当前表示to_date='9999-01-01'。
+### 1.32.11. 获取所有员工当前的manager，如果当前的manager是自己的话结果不显示，当前表示to_date='9999-01-01'。
 结果第一列给出当前员工的emp_no,第二列给出其manager对应的manager_no。
 
 ```SQL
@@ -7263,7 +7358,7 @@ select e.emp_no emp_no,m.emp_no manager_no
 ```
 <a href="#menu" >目录</a> 
 
-### 1.31.12. 获取所有部门中当前员工薪水最高的相关信息，给出dept_no, emp_no以及其对应的salary
+### 1.32.12. 获取所有部门中当前员工薪水最高的相关信息，给出dept_no, emp_no以及其对应的salary
 
 ```SQL
 CREATE TABLE `dept_emp` (
@@ -7294,7 +7389,7 @@ select d.dept_no, d.emp_no ,max(s.salary)
 ```
 <a href="#menu" >目录</a> 
 
-### 1.31.13. 从titles表获取按照title进行分组，每组个数大于等于2，给出title以及对应的数目t。
+### 1.32.13. 从titles表获取按照title进行分组，每组个数大于等于2，给出title以及对应的数目t。
 
 ```SQL
 CREATE TABLE IF NOT EXISTS "titles" (
@@ -7313,7 +7408,7 @@ select  title,count(title)
 ```
 <a href="#menu" >目录</a> 
 
-### 1.31.14. 从titles表获取按照title进行分组，每组个数大于等于2，给出title以及对应的数目t。
+### 1.32.14. 从titles表获取按照title进行分组，每组个数大于等于2，给出title以及对应的数目t。
 
 注意对于重复的emp_no进行忽略。
 
@@ -7336,7 +7431,7 @@ select  title,count(distinct emp_no) t
 ```
 <a href="#menu" >目录</a> 
 
-### 1.31.15. 查找employees表所有emp_no为奇数，且last_name不为Mary的员工信息，并按照hire_date逆序排列
+### 1.32.15. 查找employees表所有emp_no为奇数，且last_name不为Mary的员工信息，并按照hire_date逆序排列
 
 ```SQL
 CREATE TABLE `employees` (
@@ -7359,7 +7454,7 @@ select *
 ```
 <a href="#menu" >目录</a> 
 
-### 1.31.16. 统计出当前各个title类型对应的员工当前薪水对应的平均工资。结果给出title以及平均工资avg。
+### 1.32.16. 统计出当前各个title类型对应的员工当前薪水对应的平均工资。结果给出title以及平均工资avg。
 
 ```SQL
 CREATE TABLE `salaries` (
@@ -7385,7 +7480,7 @@ select t.title title ,avg(s.salary) avg
 ```
 <a href="#menu" >目录</a> 
 
-### 1.31.17. 获取当前（to_date='9999-01-01'）薪水第二多的员工的emp_no以及其对应的薪水salary
+### 1.32.17. 获取当前（to_date='9999-01-01'）薪水第二多的员工的emp_no以及其对应的薪水salary
 
 ```SQL
 CREATE TABLE `salaries` (
@@ -7408,7 +7503,7 @@ select emp_no ,salary
 ```
 <a href="#menu" >目录</a> 
 
-### 1.31.18. 查找当前薪水(to_date='9999-01-01')排名第二多的员工编号emp_no、薪水salary、last_name以及first_name，不准使用order by
+### 1.32.18. 查找当前薪水(to_date='9999-01-01')排名第二多的员工编号emp_no、薪水salary、last_name以及first_name，不准使用order by
 
 ```SQL
 CREATE TABLE `employees` (
@@ -7452,7 +7547,7 @@ select s.emp_no,s.salary,e.last_name,e.first_name
 ```
 <a href="#menu" >目录</a> 
 
-### 1.31.19. 查找所有员工的last_name和first_name以及对应的dept_name，也包括暂时没有分配部门的员工
+### 1.32.19. 查找所有员工的last_name和first_name以及对应的dept_name，也包括暂时没有分配部门的员工
 
 ```SQL
 CREATE TABLE `departments` (
@@ -7489,7 +7584,7 @@ select  e.last_name,e.first_name,dp.dept_name
 ```
 <a href="#menu" >目录</a> 
 
-### 1.31.20. 查找员工编号emp_no为10001其自入职以来的薪水salary涨幅值growth
+### 1.32.20. 查找员工编号emp_no为10001其自入职以来的薪水salary涨幅值growth
 ```SQL
 CREATE TABLE `salaries` (
 `emp_no` int(11) NOT NULL,
@@ -7520,7 +7615,7 @@ select
 ```
 <a href="#menu" >目录</a> 
 
-### 1.31.21. **查找所有员工自入职以来的薪水涨幅情况，给出员工编号emp_no以及其对应的薪水涨幅growth，并按照growth进行升序
+### 1.32.21. **查找所有员工自入职以来的薪水涨幅情况，给出员工编号emp_no以及其对应的薪水涨幅growth，并按照growth进行升序
 
 ```SQL
 CREATE TABLE `employees` (
@@ -7554,7 +7649,7 @@ order by growth asc
 ```
 <a href="#menu" >目录</a> 
 
-### 1.31.22. 统计各个部门对应员工涨幅的次数总和，给出部门编码dept_no、部门名称dept_name以及次数sum
+### 1.32.22. 统计各个部门对应员工涨幅的次数总和，给出部门编码dept_no、部门名称dept_name以及次数sum
 
 ```SQL
 CREATE TABLE `departments` (
@@ -7589,7 +7684,7 @@ select dp.dept_no,dp.dept_name,count(s.salary)
 ```
 <a href="#menu" >目录</a> 
 
-### 1.31.23. 对所有员工的当前(to_date='9999-01-01')薪水按照salary进行按照1-N的排名，相同salary并列且按照emp_no升序排列
+### 1.32.23. 对所有员工的当前(to_date='9999-01-01')薪水按照salary进行按照1-N的排名，相同salary并列且按照emp_no升序排列
 
 ```SQL
 CREATE TABLE `salaries` (
@@ -7604,7 +7699,7 @@ PRIMARY KEY (`emp_no`,`from_date`));
 
 <a href="#menu" >目录</a> 
 
-### 1.31.24. 获取所有非manager员工当前的薪水情况，给出dept_no、emp_no以及salary ，当前表示to_date='9999-01-01'
+### 1.32.24. 获取所有非manager员工当前的薪水情况，给出dept_no、emp_no以及salary ，当前表示to_date='9999-01-01'
 
 ```SQL
 CREATE TABLE `dept_emp` (
@@ -7644,7 +7739,7 @@ PRIMARY KEY (`emp_no`,`from_date`));
 
 <a href="#menu" >目录</a> 
 
-### 1.31.25. 获取员工其当前的薪水比其manager当前薪水还高的相关信息，当前表示to_date='9999-01-01',
+### 1.32.25. 获取员工其当前的薪水比其manager当前薪水还高的相关信息，当前表示to_date='9999-01-01',
 
 结果第一列给出员工的emp_no，
 第二列给出其manager的manager_no，
@@ -7677,7 +7772,7 @@ PRIMARY KEY (`emp_no`,`from_date`));
 
 <a href="#menu" >目录</a> 
 
-### 1.31.26. 汇总各个部门当前员工的title类型的分配数目，结果给出部门编号dept_no、dept_name、其当前员工所有的title以及该类型title对应的数目count
+### 1.32.26. 汇总各个部门当前员工的title类型的分配数目，结果给出部门编号dept_no、dept_name、其当前员工所有的title以及该类型title对应的数目count
 
 ```SQL
 CREATE TABLE `departments` (
@@ -7704,7 +7799,7 @@ s
 
 <a href="#menu" >目录</a> 
 
-### 1.31.27. 给出每个员工每年薪水涨幅超过5000的员工编号emp_no、薪水变更开始日期from_date以及薪水涨幅值salary_growth，并按照salary_growth逆序排列。
+### 1.32.27. 给出每个员工每年薪水涨幅超过5000的员工编号emp_no、薪水变更开始日期from_date以及薪水涨幅值salary_growth，并按照salary_growth逆序排列。
 提示：在sqlite中获取datetime时间对应的年份函数为strftime('%Y', to_date)
 
 ```SQL
@@ -7721,7 +7816,7 @@ s
 
 <a href="#menu" >目录</a> 
 
-### 1.31.28. 查找描述信息中包括robot的电影对应的分类名称以及电影数目，而且还需要该分类对应电影数量>=5部
+### 1.32.28. 查找描述信息中包括robot的电影对应的分类名称以及电影数目，而且还需要该分类对应电影数量>=5部
 
 ```SQL
 film表
@@ -7763,7 +7858,7 @@ s
 
 <a href="#menu" >目录</a> 
 
-### 1.31.29. 使用join查询方式找出没有分类的电影id以及名称
+### 1.32.29. 使用join查询方式找出没有分类的电影id以及名称
 
 ```SQL
 film表
@@ -7803,7 +7898,7 @@ s
 
 <a href="#menu" >目录</a> 
 
-### 1.31.30. 使用子查询的方式找出属于Action分类的所有电影对应的title,description
+### 1.32.30. 使用子查询的方式找出属于Action分类的所有电影对应的title,description
 
 ```SQL
 lm表
@@ -7859,7 +7954,7 @@ where c.name = 'Action';
 
 <a href="#menu" >目录</a>
 
-### 1.31.31. 获取select
+### 1.32.31. 获取select
 
 
 获取select * from employees对应的执行计划
@@ -7870,7 +7965,7 @@ EXPLAIN SELECT * FROM employees
 
 <a href="#menu" >目录</a> 
 
-### 1.31.32. 将employees表的所有员工的last_name和first_name拼接起来作为Name，中间以一个空格区分
+### 1.32.32. 将employees表的所有员工的last_name和first_name拼接起来作为Name，中间以一个空格区分
 
 ```SQL
 CREATE TABLE `employees` ( `emp_no` int(11) NOT NULL,
@@ -7890,7 +7985,7 @@ select concat（last_name，‘ ’，first_name）as name from employees
 
 <a href="#menu" >目录</a> 
 
-### 1.31.33. 创建一个actor表，包含如下列信息
+### 1.32.33. 创建一个actor表，包含如下列信息
 
 ```SQL
 列表	类型	是否为NULL	含义
@@ -7917,7 +8012,7 @@ CREATE TABLE actor(
 
 <a href="#menu" >目录</a> 
 
-### 1.31.34. 批量插入数据
+### 1.32.34. 批量插入数据
 
 ```SQL
 对于表actor批量插入如下数据
@@ -7941,7 +8036,7 @@ UNION SELECT 2, 'NICK', 'WAHLBERG', '2006-02-15 12:34:33'
 
 <a href="#menu" >目录</a> 
 
-### 1.31.35. 批量插入数据，不使用replace操作
+### 1.32.35. 批量插入数据，不使用replace操作
 ```
 对于表actor批量插入如下数据,如果数据已经存在，请忽略，不使用replace操作
 CREATE TABLE IF NOT EXISTS actor (
@@ -7957,7 +8052,7 @@ values(3,'ED','CHASE','2006-02-15 12:34:33');
 
 <a href="#menu" >目录</a> 
 
-### 1.31.36. 创建一个actor_name表
+### 1.32.36. 创建一个actor_name表
 
 ```
 对于如下表actor，其对应的数据为:
@@ -7977,7 +8072,7 @@ select first_name,last_name from actor;
 
 <a href="#menu" >目录</a> 
 
-### 1.31.37. 对first_name创建唯一索引uniq_idx_firstname
+### 1.32.37. 对first_name创建唯一索引uniq_idx_firstname
 ```SQL
 针对如下表actor结构创建索引：
 CREATE TABLE IF NOT EXISTS actor (
@@ -7998,7 +8093,7 @@ CREATE INDEX idx_lastname ON actor(last_name);
 
 <a href="#menu" >目录</a> 
 
-### 1.31.38. 针对actor表创建视图actor_name_view
+### 1.32.38. 针对actor表创建视图actor_name_view
 ```SQL
 针对actor表创建视图actor_name_view，只包含first_name以及last_name两列，并对这两列重新命名，first_name为first_name_v，last_name修改为last_name_v：
 CREATE TABLE IF NOT EXISTS actor (
@@ -8020,7 +8115,7 @@ SELECT first_name, last_name FROM actor
 
 <a href="#menu" >目录</a> 
 
-### 1.31.39. 针对上面的salaries表emp_no字段创建索引idx_emp_no
+### 1.32.39. 针对上面的salaries表emp_no字段创建索引idx_emp_no
 ```SQL
 针对salaries表emp_no字段创建索引idx_emp_no，查询emp_no为10005, 使用强制索引。
 CREATE TABLE `salaries` (
@@ -8038,7 +8133,7 @@ SELECT * FROM salaries FORCE INDEX idx_emp_no WHERE emp_no = 10005
 
 <a href="#menu" >目录</a> 
 
-### 1.31.40. 在last_update后面新增加一列名字为create_date
+### 1.32.40. 在last_update后面新增加一列名字为create_date
 
 ```SQL
 存在actor表，包含如下列信息：
@@ -8057,7 +8152,7 @@ ALTER TABLE actor ADD create_date datetime DEFAULT '0000-00-00 00:00:00' NOT NUL
 
 <a href="#menu" >目录</a> 
 
-### 1.31.41. 构造一个触发器audit_log
+### 1.32.41. 构造一个触发器audit_log
 
 ```SQL
 构造一个触发器audit_log，在向employees_test表中插入一条数据的时候，触发插入相关的数据到audit中。
@@ -8093,7 +8188,7 @@ END;
 ```
 
 
-### 1.31.42. 删除emp_no重复的记录，只保留最小的id对应的记录。
+### 1.32.42. 删除emp_no重复的记录，只保留最小的id对应的记录。
 
 ```SQL
 删除emp_no重复的记录，只保留最小的id对应的记录。
@@ -8116,7 +8211,7 @@ insert into titles_test values ('1', '10001', 'Senior Engineer', '1986-06-26', '
 
 <a href="#menu" >目录</a> 
 
-### 1.31.43. 将所有to_date为9999-01-01的全部更新为NULL
+### 1.32.43. 将所有to_date为9999-01-01的全部更新为NULL
 ```SQL
 将所有to_date为9999-01-01的全部更新为NULL,且 from_date更新为2001-01-01。
 CREATE TABLE IF NOT EXISTS titles_test (
@@ -8143,7 +8238,7 @@ WHERE to_date = '9999-01-01';
 
 <a href="#menu" >目录</a> 
 
-### 1.31.44. 将id=5以及emp_no=10001的行数据替换成id=5以及emp_no=10005
+### 1.32.44. 将id=5以及emp_no=10001的行数据替换成id=5以及emp_no=10005
 
 ```SQL
 将id=5以及emp_no=10001的行数据替换成id=5以及emp_no=10005,其他数据保持不变，使用replace实现。
@@ -8183,7 +8278,7 @@ UPDATE titles_test SET emp_no = 10005 WHERE id = 5
 <a href="#menu" >目录</a> 
 
 
-### 1.31.45. 将titles_test表名修改为titles_2017
+### 1.32.45. 将titles_test表名修改为titles_2017
 ```SQL
 将titles_test表名修改为titles_2017。
 CREATE TABLE IF NOT EXISTS titles_test (
@@ -8207,7 +8302,7 @@ ALTER TABLE titles_test RENAME TO titles_2017
 
 <a href="#menu" >目录</a> 
 
-### 1.31.46. 在audit表上创建外键约束，其emp_no对应employees_test表的主键id
+### 1.32.46. 在audit表上创建外键约束，其emp_no对应employees_test表的主键id
 ```SQL
 在audit表上创建外键约束，其emp_no对应employees_test表的主键id。
 CREATE TABLE employees_test(
@@ -8236,7 +8331,7 @@ CREATE TABLE audit(
 
 
   
-### 1.31.47. 如何获取emp_v和employees有相同的数据no
+### 1.32.47. 如何获取emp_v和employees有相同的数据no
 
 ```SQL
 存在如下的视图：
@@ -8281,7 +8376,7 @@ SELECT * FROM employees, emp_v WHERE employees.emp_no = emp_v.emp_no
 <a href="#menu" >目录</a> 
 
 
-### 1.31.48. 将所有获取奖金的员工当前的薪水增加百分之十
+### 1.32.48. 将所有获取奖金的员工当前的薪水增加百分之十
 
 ```SQL
 将所有获取奖金的员工当前的薪水增加10%。
@@ -8315,7 +8410,7 @@ UPDATE salaries SET salary = salary * 1.1
 
 <a href="#menu" >目录</a> 
 
-### 1.31.49. 针对库中的所有表生成select count(*)对应的SQL语句
+### 1.32.49. 针对库中的所有表生成select count(*)对应的SQL语句
 
 ```SQL
 针对库中的所有表生成select count(*)对应的SQL语句
@@ -8370,7 +8465,7 @@ select concat('select count(*) from', ' ', TABLE_NAME, ';') as cnts
 
 <a href="#menu" >目录</a> 
 
-### 1.31.50. 将employees表中的所有员工的last_name和first_name通过(')连接起来。
+### 1.32.50. 将employees表中的所有员工的last_name和first_name通过(')连接起来。
 ```SQL
 将employees表中的所有员工的last_name和first_name通过(')连接起来。
 CREATE TABLE `employees` (
@@ -8397,7 +8492,7 @@ from employees;
 
 <a href="#menu" >目录</a> 
 
-### 1.31.51. 查找字符串'10,A,B' 中逗号','出现的次数cnt
+### 1.32.51. 查找字符串'10,A,B' 中逗号','出现的次数cnt
 
 ```SQL
 select length('10,A,B') -length(replace('10,A,B',",",""))
@@ -8405,7 +8500,7 @@ select length('10,A,B') -length(replace('10,A,B',",",""))
 
 <a href="#menu" >目录</a> 
 
-### 1.31.52. 获取Employees中的first_name
+### 1.32.52. 获取Employees中的first_name
 ```SQL
 获取Employees中的first_name，查询按照first_name最后两个字母，按照升序进行排列
 CREATE TABLE `employees` (
@@ -8435,7 +8530,7 @@ SELECT first_name FROM employees ORDER BY substr(first_name,-2)
 
 <a href="#menu" >目录</a> 
 
-### 1.31.53. 按照dept_no进行汇总
+### 1.32.53. 按照dept_no进行汇总
 ```SQL
 按照dept_no进行汇总，属于同一个部门的emp_no按照逗号进行连接，结果给出dept_no以及连接出的结果employees
 CREATE TABLE `dept_emp` (
@@ -8456,7 +8551,7 @@ select dept_no,group_concat(emp_no SEPARATOR ',') from dept_emp group by dept_no
 
 <a href="#menu" >目录</a> 
 
-### 1.31.54. 查找排除当前最大、最小salary之后的员工的平均工资avg_salary
+### 1.32.54. 查找排除当前最大、最小salary之后的员工的平均工资avg_salary
 ```SQL
 查找排除当前最大、最小salary之后的员工的平均工资avg_salary。
 CREATE TABLE `salaries` ( `emp_no` int(11) NOT NULL,
@@ -8478,7 +8573,7 @@ to_date='9999-01-01'
 
 <a href="#menu" >目录</a> 
 
-### 1.31.55. 分页查询employees表，每5行一页，返回第2页的数据
+### 1.32.55. 分页查询employees表，每5行一页，返回第2页的数据
 ```SQL
 分页查询employees表，每5行一页，返回第2页的数据
 CREATE TABLE `employees` (
@@ -8503,7 +8598,7 @@ SELECT * FROM employees LIMIT 5,5
 
 <a href="#menu" >目录</a> 
 
-### 1.31.56. 获取所有员工的emp_no
+### 1.32.56. 获取所有员工的emp_no
 ```SQL
 获取所有员工的emp_no、部门编号dept_no以及对应的bonus类型btype和recevied，没有分配具体的员工不显示
 CREATE TABLE `dept_emp` ( `emp_no` int(11) NOT NULL,
@@ -8558,7 +8653,7 @@ ON de.emp_no = eb.emp_no
 
 <a href="#menu" >目录</a> 
 
-### 1.31.57. 使用含有关键字exists查找未分配具体部门的员工的所有信息。
+### 1.32.57. 使用含有关键字exists查找未分配具体部门的员工的所有信息。
 ```SQL
 使用含有关键字exists查找未分配具体部门的员工的所有信息。
 CREATE TABLE `employees` (
@@ -8592,7 +8687,7 @@ SELECT * FROM employees WHERE emp_no NOT IN (SELECT emp_no FROM dept_emp)
 
 <a href="#menu" >目录</a> 
 
-### 1.31.58. 获取employees中的行数据，且这些行也存在于emp_v中
+### 1.32.58. 获取employees中的行数据，且这些行也存在于emp_v中
 ```SQL
 存在如下的视图：
 create view emp_v as select * from employees where emp_no >10005;
@@ -8627,7 +8722,7 @@ SELECT * FROM emp_v
 
 <a href="#menu" >目录</a> 
 
-### 1.31.59. 获取有奖金的员工相关信息。
+### 1.32.59. 获取有奖金的员工相关信息。
 ```SQL
 获取有奖金的员工相关信息。
 CREATE TABLE `employees` (
@@ -8678,7 +8773,7 @@ on eb.emp_no = s.emp_no and s.to_date='9999-01-01';
 
 <a href="#menu" >目录</a> 
 
-### 1.31.60. 统计salary的累计和running_total
+### 1.32.60. 统计salary的累计和running_total
 ```SQL
 按照salary的累计和running_total，其中running_total为前两个员工的salary累计和，其他以此类推。
  具体结果如下Demo展示。。
@@ -8710,7 +8805,7 @@ FROM salaries AS s1 WHERE s1.to_date = '9999-01-01' ORDER BY s1.emp_no
 
 <a href="#menu" >目录</a> 
 
-### 1.31.61. 对于employees表中，给出奇数行的first_name
+### 1.32.61. 对于employees表中，给出奇数行的first_name
 
 ```SQL
 对于employees表中，给出奇数行的first_name
