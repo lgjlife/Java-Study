@@ -2316,6 +2316,56 @@ public Object clone() {
 
 ### 4.4.2. Linklist
 
+Linklist的存储结构是双向链表。因此可以在链表的任意位置实现插入和删除元素。其他设计理念和ArrayList差不多
+```java
+public class LinkedList<E>
+    extends AbstractSequentialList<E>
+    implements List<E>, Deque<E>, Cloneable, java.io.Serializable
+{
+
+    private static class Node<E> {
+        E item;
+        Node<E> next;
+        Node<E> prev;
+
+        Node(Node<E> prev, E element, Node<E> next) {
+            this.item = element;
+            this.next = next;
+            this.prev = prev;
+        }
+    } 
+
+    public Object clone() {
+        LinkedList<E> clone = superClone();
+
+        // Put clone into "virgin" state
+        clone.first = clone.last = null;
+        clone.size = 0;
+        clone.modCount = 0;
+
+        // Initialize clone with our elements
+        for (Node<E> x = first; x != null; x = x.next)
+            clone.add(x.item);
+
+        return clone;
+    }
+}
+
+```
+
+**ArrayList和LinkedList区别及使用场景**
+* LinkedList和ArrayList的差别主要来自于Array和LinkedList数据结构的不同。ArrayList是基于数组实现的，LinkedList是基于双链表实现的。另外LinkedList类不仅是List接口的实现类，可以根据索引来随机访问集合中的元素，除此之外，LinkedList还实现了Deque接口，Deque接口是Queue接口的子接口，它代表一个双向队列，因此LinkedList可以作为双向对列，栈（可以参见Deque提供的接口方法）和List集合使用，功能强大。
+* 因为Array是基于索引(index)的数据结构，它使用索引在数组中搜索和读取数据是很快的，可以直接返回数组中index位置的元素，因此在随机访问集合元素上有较好的性能。Array获取数据的时间复杂度是O(1),但是要插入、删除数据却是开销很大的，因为这需要移动数组中插入位置之后的的所有元素。
+* 相对于ArrayList，LinkedList的随机访问集合元素时性能较差，因为需要在双向列表中找到要index的位置，再返回；但在插入，删除操作是更快的。因为LinkedList不像ArrayList一样，不需要改变数组的大小，也不需要在数组装满的时候要将所有的数据重新装入一个新的数组，这是ArrayList最坏的一种情况，时间复杂度是O(n)，而LinkedList中插入或删除的时间复杂度仅为O(1)。ArrayList在插入数据时还需要更新索引（除了插入数组的尾部）。
+* LinkedList需要更多的内存，因为ArrayList的每个索引的位置是实际的数据，而LinkedList中的每个节点中存储的是实际的数据和前后节点的位置。
+
+**使用场景：**
+* 如果应用程序对数据有较多的随机访问，ArrayList对象要优于LinkedList对象；
+* 如果应用程序有更多的插入或者删除操作，较少的数据读取，LinkedList对象要优于ArrayList对象；
+* 不过ArrayList的插入，删除操作也不一定比LinkedList慢，如果在List靠近末尾的地方插入，那么ArrayList只需要移动较少的数据，而LinkedList则需要一直查找到列表尾部，反而耗费较多时间，这时ArrayList就比LinkedList要快。
+
+
+
 ### 4.4.3. Vector
 
 Vector 的实现方式和ArrayList基本一样，只是在一些方法上添加了synchronized，使其编程线程安全类，但是此种方式在多线程环境下性能一般。一般多线程环境使用并发集合类。
@@ -2330,6 +2380,11 @@ public class Vector<E>
 ```
 ### 4.4.4. Stack
 
+Stack是Vector的子类，实现了一个同步的栈类。
+```java
+public
+class Stack<E> extends Vector<E> {}
+```
 ### 4.4.5. HashSet
 
 ### 4.4.6. TreeSet
