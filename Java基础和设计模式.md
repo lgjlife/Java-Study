@@ -2318,6 +2318,16 @@ public Object clone() {
 
 ### 4.4.3. Vector
 
+Vector 的实现方式和ArrayList基本一样，只是在一些方法上添加了synchronized，使其编程线程安全类，但是此种方式在多线程环境下性能一般。一般多线程环境使用并发集合类。
+
+```java
+public class Vector<E>
+    extends AbstractList<E>
+    implements List<E>, RandomAccess, Cloneable, java.io.Serializable
+{
+    
+}
+```
 ### 4.4.4. Stack
 
 ### 4.4.5. HashSet
