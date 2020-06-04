@@ -2197,7 +2197,122 @@ private class Itr implements Iterator<E> {
 ## 4.4. 基本集合源码分析
 <a href="#menu"  >目录</a>
 
+![集合继承体系](pic/java/集合继承体系.png)
+
 ### 4.4.1. ArrayList
+
+从继承体系上来看，ArrayList可以被随机访问和被深复制和可序列化的。
+```java
+public class ArrayList<E> extends AbstractList<E>
+        implements List<E>, RandomAccess, Cloneable, java.io.Serializable｛
+
+    private int size;
+    protected transient int modCount = 0;
+    transient Object[] elementData; // non-private to simplify nested class access        
+｝
+```
+ArrayList的本质上是一个数组存储结构，元素存储在elementData中。在不指定初始容量时，其大小为０。注意，这里的size并不是数组的大小，而是Ｌist集合中元素的数量。modCount用于在迭代期间检测是否发生数组元素改变。modCount每次添加或者删除元素时，都会自增。
+
+**添加元素流程**
+* 每次添加的时候都会检测容量是否足够
+* modCount自增
+* 每次扩容都是1.5倍扩容
+```java
+public boolean add(E e) {
+    //每次添加的时候都会检测容量是否足够
+    ensureCapacityInternal(size + 1);  // Increments modCount!!
+    elementData[size++] = e;
+    return true;
+}
+
+private void ensureCapacityInternal(int minCapacity) {
+    ensureExplicitCapacity(calculateCapacity(elementData, minCapacity));
+}
+private void ensureExplicitCapacity(int minCapacity) {
+    modCount++;
+    // overflow-conscious code
+    if (minCapacity - elementData.length > 0)
+        grow(minCapacity);
+}
+//扩容
+private void grow(int minCapacity) {
+    // overflow-conscious code
+    int oldCapacity = elementData.length;
+    int newCapacity = oldCapacity + (oldCapacity >> 1);
+    if (newCapacity - minCapacity < 0)
+        newCapacity = minCapacity;
+    if (newCapacity - MAX_ARRAY_SIZE > 0)
+        newCapacity = hugeCapacity(minCapacity);
+    // minCapacity is usually close to size, so this is a win:
+    elementData = Arrays.copyOf(elementData, newCapacity);
+}     
+```
+
+**移除元素**
+
+移除元素时modCount同样自增，同时移除元素的后面所有元素往前移动
+```java
+public E remove(int index) {
+    rangeCheck(index);
+    modCount++;
+    E oldValue = elementData(index);
+
+    int numMoved = size - index - 1;
+    if (numMoved > 0)
+        System.arraycopy(elementData, index+1, elementData, index,
+                            numMoved);
+    elementData[--size] = null; // clear to let GC do its work
+    return oldValue;
+}
+```
+
+**迭代器**
+
+在创建迭代器时，都会保存当前的modCount到expectedModCount。每次迭代时都会检测两个值是否相同，不同则抛出异常ConcurrentModificationException。也就是说迭代时不允许并发修改。
+```java
+ private class Itr implements Iterator<E> {
+    int cursor;       // index of next element to return
+    int lastRet = -1; // index of last element returned; -1 if no such
+    int expectedModCount = modCount;
+
+    final void checkForComodification() {
+        if (modCount != expectedModCount)
+            throw new ConcurrentModificationException();
+    }
+
+    public boolean hasNext() {
+        return cursor != size;
+    }
+    public E next() {
+        checkForComodification();
+    }
+    public void remove() {
+        if (lastRet < 0)
+            throw new IllegalStateException();
+        checkForComodification();
+    .....
+    }
+ }
+```
+ArrayList　支持两种迭代器，Itr，Itr支持迭代时移除元素。ListItr，是Itr的子类，除了支持Itr的功能，还支持向前遍历，和设置添加元素。
+
+**深复制**
+
+```java
+public Object clone() {
+    try {
+        //这里已经复制所有的值了，为何还要再次调用Arrays.copyOf
+        ArrayList<?> v = (ArrayList<?>) super.clone();
+        v.elementData = Arrays.copyOf(elementData, size);
+        v.modCount = 0;
+        return v;
+    } catch (CloneNotSupportedException e) {
+        // this shouldn't happen, since we are Cloneable
+        throw new InternalError(e);
+    }
+}
+
+```
 
 ### 4.4.2. Linklist
 
@@ -3295,6 +3410,8 @@ public class com.code.base.javap.JavapTest {
 <a href="#menu"  >目录</a>
 
 
+
+
 # 10. JDBC
 <a href="#menu"  >目录</a>
 
@@ -3471,19 +3588,21 @@ x -> 2 * x
 Lambda 表达式和方法引用（实际上也可认为是Lambda表达式）上。
 
 如定义了一个函数式接口如下：
-
+```java
 @FunctionalInterface
 interface GreetingService 
 {
     void sayMessage(String message);
 }
+```
 那么就可以使用Lambda表达式来表示该接口的一个实现(注：JAVA 8 之前一般是用匿名类实现的)：
 
 GreetingService greetService1 = message -> System.out.println("Hello " + message);
+
 函数式接口可以对现有的函数友好地支持 lambda。
 
 JDK 1.8 之前已有的函数式接口:
-
+```java
 java.lang.Runnable
 java.util.concurrent.Callable
 java.security.PrivilegedAction
@@ -3494,10 +3613,12 @@ java.lang.reflect.InvocationHandler
 java.beans.PropertyChangeListener
 java.awt.event.ActionListener
 javax.swing.event.ChangeListener
+```
 JDK 1.8 新增加的函数接口：
-
+```java
 java.util.function
 java.util.function 它包含了很多类，用来支持 Java的 函数式编程，该包中的函数式接口有：
+```
 
 |序号	|接口 & 描述
 |---|---|
