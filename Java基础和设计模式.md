@@ -47,10 +47,10 @@
         - [4.4.2. Linklist](#442-linklist)
         - [4.4.3. Vector](#443-vector)
         - [4.4.4. Stack](#444-stack)
-        - [4.4.5. HashSet](#445-hashset)
-        - [4.4.6. TreeSet](#446-treeset)
         - [4.4.7. HashMap](#447-hashmap)
         - [4.4.8. TreeMap](#448-treemap)
+        - [4.4.5. HashSet](#445-hashset)
+        - [4.4.6. TreeSet](#446-treeset)
 - [5. 异常](#5-异常)
 - [6. 注解](#6-注解)
 - [7. IO](#7-io)
@@ -2385,13 +2385,69 @@ Stack是Vector的子类，实现了一个同步的栈类。
 public
 class Stack<E> extends Vector<E> {}
 ```
+### 4.4.7. HashMap
+
+HashMap的存储结构是:数组+单链表+结构。HashMap通过链地址法来解决哈希冲突。JDK1.8在JDK1.7的基础上针对增加了红黑树来进行优化。即当链表达到某一个条件的时候，链表就转换为红黑树，利用红黑树快速增删改查的特点提高HashMap的性能，其中会用到红黑树的插入、删除、查找等算法。
+
+继承体系
+```java
+public class HashMap<K,V> extends AbstractMap<K,V>
+    implements Map<K,V>, Cloneable, Serializable {
+        
+}
+```
+
+**链表上的节点**
+
+链表上的节点是一个单链表结构
+```java
+static class Node<K,V> implements Map.Entry<K,V> {
+    final int hash;
+    final K key;
+    V value;
+    Node<K,V> next;
+｝
+```
+
+**哈希值计算**
+
+从哈希函数可以看出，HashMap支持null值的key，但仅有一个。
+```java
+ static final int hash(Object key) {
+    int h;
+    return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+}
+```
+
+**属性**
+
+```java
+static final int DEFAULT_INITIAL_CAPACITY = 1 << 4; 
+static final int MAXIMUM_CAPACITY = 1 << 30;
+static final float DEFAULT_LOAD_FACTOR = 0.75f;
+static final int TREEIFY_THRESHOLD = 8;
+static final int UNTREEIFY_THRESHOLD = 6;
+static final int MIN_TREEIFY_CAPACITY = 64;
+```
+* DEFAULT_INITIAL_CAPACITY
+    * 默认的初始容量16。必须为2的倍数
+* MAXIMUM_CAPACITY
+    * 最大容量
+* DEFAULT_LOAD_FACTOR
+    * 负载因子，当当前的元素数量=当前容量 x DEFAULT_LOAD_FACTOR时，认为哈希冲突相对比较严重，需要重新扩容
+* TREEIFY_THRESHOLD & MIN_TREEIFY_CAPACITY
+    * 当单链表上的元素超过TREEIFY_THRESHOLD并且，总元素数量超过MIN_TREEIFY_CAPACITY，则将将该链表转化为红黑树结构
+* UNTREEIFY_THRESHOLD
+    *  当单链表上的元素小于该值，取消红黑树结构
+
+
+### 4.4.8. TreeMap
+
 ### 4.4.5. HashSet
 
 ### 4.4.6. TreeSet
 
-### 4.4.7. HashMap
 
-### 4.4.8. TreeMap
 
 
 

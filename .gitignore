@@ -35,3 +35,7 @@ build/
 *.jar
 
 output/
+
+## java
+*.class
+/code/out/
