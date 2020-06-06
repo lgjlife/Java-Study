@@ -47,10 +47,10 @@
         - [4.4.2. Linklist](#442-linklist)
         - [4.4.3. Vector](#443-vector)
         - [4.4.4. Stack](#444-stack)
-        - [4.4.7. HashMap](#447-hashmap)
-        - [4.4.8. TreeMap](#448-treemap)
-        - [4.4.5. HashSet](#445-hashset)
-        - [4.4.6. TreeSet](#446-treeset)
+        - [4.4.5. HashMap](#445-hashmap)
+        - [4.4.6. TreeMap](#446-treemap)
+        - [4.4.7. HashSet](#447-hashset)
+        - [4.4.8. TreeSet](#448-treeset)
 - [5. 异常](#5-异常)
 - [6. 注解](#6-注解)
 - [7. IO](#7-io)
@@ -73,6 +73,8 @@
         - [9.1.7. Javap生成的class文件结构](#917-javap生成的class文件结构)
     - [9.2. 反射](#92-反射)
 - [10. JDBC](#10-jdbc)
+    - [10.1. 基本使用](#101-基本使用)
+    - [10.2. 预编译](#102-预编译)
 - [11. 函数式编程](#11-函数式编程)
 - [12. Java 8 的新特性：](#12-java-8-的新特性)
     - [12.1. Java 8 Lambda 表达式](#121-java-8-lambda-表达式)
@@ -2385,7 +2387,7 @@ Stack是Vector的子类，实现了一个同步的栈类。
 public
 class Stack<E> extends Vector<E> {}
 ```
-### 4.4.7. HashMap
+### 4.4.5. HashMap
 
 HashMap的存储结构是:数组+单链表+结构。HashMap通过链地址法来解决哈希冲突。JDK1.8在JDK1.7的基础上针对增加了红黑树来进行优化。即当链表达到某一个条件的时候，链表就转换为红黑树，利用红黑树快速增删改查的特点提高HashMap的性能，其中会用到红黑树的插入、删除、查找等算法。
 
@@ -2441,11 +2443,11 @@ static final int MIN_TREEIFY_CAPACITY = 64;
     *  当单链表上的元素小于该值，取消红黑树结构
 
 
-### 4.4.8. TreeMap
+### 4.4.6. TreeMap
 
-### 4.4.5. HashSet
+### 4.4.7. HashSet
 
-### 4.4.6. TreeSet
+### 4.4.8. TreeSet
 
 
 
@@ -3536,12 +3538,17 @@ public class com.code.base.javap.JavapTest {
 # 10. JDBC
 <a href="#menu"  >目录</a>
 
+## 10.1. 基本使用
+
 **数据库驱动**
-这里的驱动的概念和平时听到的那种驱动的概念是一样的，比如平时购买的声卡，网卡直接插到计算机上面是不能用的，必须要安装相应的驱动程序之后才能够使用声卡和网卡，同样道理，我们安装好数据库之后，我们的应用程序也是不能直接使用数据库的，必须要通过相应的数据库驱动程序，通过驱动程序去和数据库打交道，如下所示：
+
+jdk的sql只是定义了操作数据库的接口，其实现类要厂商自行解决，所以需要自行加载相应的数据库驱动。
+
 * 应用程序-->Mysq驱动--Mysql
 * 应用程序-->Oracle驱动--Oracle
 
 **JDBC介绍**
+
 　　SUN公司为了简化、统一对数据库的操作，定义了一套Java操作数据库的规范（接口），称之为JDBC。这套接口由数据库厂商去实现，这样，开发人员只需要学习jdbc接口，并通过jdbc加载具体的驱动，就可以操作数据库。
 ```java
 package me.gacl.demo;
@@ -3640,7 +3647,7 @@ stmt.executeBatch();
 PreparedStatement pstmt  = con.prepareStatement("UPDATE EMPLOYEES  SET SALARY = ? WHERE ID =?");  
 pstmt.setBigDecimal(1, 153.00);  
 pstmt.setInt(2, 1102);  
-pstmt. executeUpdate()
+pstmt.executeUpdate()
    
 //PreparedStatement的Batch使用:  
 PreparedStatement pstmt  = con.prepareStatement("UPDATE EMPLOYEES  SET SALARY = ? WHERE ID =?");  
@@ -3658,6 +3665,40 @@ cstmt.registerOutParameter(1, java.sql.Types.TINYINT);
 cstmt.executeUpdate();  
 byte x = cstmt.getByte(1);  
 ```
+
+## 10.2. 预编译
+
+**预编译的SQL语句处理**
+
+预编译语句PreparedStatement 是java.sql中的一个接口，它是Statement的子接口。通过Statement对象执行SQL语句时，需要将SQL语句发送给DBMS，由DBMS首先进行编译后再执行。预编译语句和Statement不同，在创建PreparedStatement 对象时就指定了SQL语句，该语句立即发送给DBMS进行编译。当该编译语句被执行时，DBMS直接运行编译后的SQL语句，而不需要像其他SQL语句那样首先将其编译。预编译的SQL语句处理性能稍微高于普通的传递变量的办法。
+
+**预编译语句的作用**
+
+提高效率：当需要对数据库进行数据插入、更新或者删除的时候，程序会发送整个SQL语句给数据库处理和执行。数据库处理一个SQL语句，需要完成解析SQL语句、检查语法和语义以及生成代码；一般说来，处理时间要比执行语句所需要的时间长。预编译语句在创建的时候已经是将指定的SQL语句发送给了DBMS，完成了解析、检查、编译等工作。因此，当一个SQL语句需要执行多次时，使用预编译语句可以减少处理时间，提高执行效率。
+
+提高安全性：防止sql注入。
+
+**预编译语句的使用**
+
+创建 PreparedStatement 对象
+
+以下的代码段（其中 conn 是 Connection 对象）创建包含带4个 IN 参数占位符的 SQL 语句的 PreparedStatement 对象：
+```java
+//组织一条含有参数的SQL语句
+String sql = “insert into t_customer values(?,?,?,?)”;
+ps对象包含语句 insert into t_customer values(?,?,?,?)，它已发送给DBMS，并为执行作好了准备。
+PreparedStatement ps = conn.prepareStatement(sql);
+```
+
+传递 IN 参数 
+
+在执行 PreparedStatement 对象之前，必须设置每个 ? 参数的值。这可通过调用 setXXX 方法来完成，其中 XXX 是与该参数相应的类型。例如，如果参数具有Java 类型 long，则使用的方法就是 setLong,setXXX 方法的第一个参数是要设置的参数的序数位置，第二个参数是设置给该参数的值。例如，以下代码将第一个参数设为 输进来的account，第二个参数设为 password：
+```java
+ps.setString(1, account);
+ps.setString(2, password);
+```
+一旦设置了给定语句的参数值，其值将一直保留，直到被设置为新值或者调用clearParameters()方法清除它为止。
+
 # 11. 函数式编程
 
 函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。
