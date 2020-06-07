@@ -11,106 +11,109 @@
         - [1.1.4. Mybatis与iBatis的主要差异对比](#114-mybatis与ibatis的主要差异对比)
         - [1.1.5. Mybatis基本构成](#115-mybatis基本构成)
         - [1.1.6. 常见面试题](#116-常见面试题)
-    - [1.2. 配置](#12-配置)
-        - [1.2.1. 配置](#121-配置)
-        - [1.2.2. 属性（properties）](#122-属性properties)
-        - [1.2.3. 类型别名（typeAliases）](#123-类型别名typealiases)
-        - [1.2.4. 类型处理器（typeHandlers）](#124-类型处理器typehandlers)
-        - [1.2.5. 处理枚举类型](#125-处理枚举类型)
-        - [1.2.6. 对象工厂（objectFactory）](#126-对象工厂objectfactory)
-        - [1.2.7. 插件（plugins）](#127-插件plugins)
-        - [1.2.8. 事务管理器（transactionManager）](#128-事务管理器transactionmanager)
-        - [1.2.9. 数据源（dataSource）](#129-数据源datasource)
-        - [1.2.10. 数据库厂商标识（databaseIdProvider）](#1210-数据库厂商标识databaseidprovider)
-        - [1.2.11. 映射器（mappers）](#1211-映射器mappers)
-    - [1.3. XML 映射文件](#13-xml-映射文件)
-        - [1.3.1. select](#131-select)
-        - [1.3.2. Insert, Update, Delete 元素的属性](#132-insert-update-delete-元素的属性)
-        - [1.3.3. sql](#133-sql)
-        - [1.3.4. 参数](#134-参数)
-        - [1.3.5. 字符串替换](#135-字符串替换)
-        - [1.3.6. 结果映射](#136-结果映射)
-        - [1.3.7. 高级结果映射](#137-高级结果映射)
-        - [1.3.8. 结果映射（resultMap）](#138-结果映射resultmap)
-        - [1.3.9. 支持的 JDBC 类型](#139-支持的-jdbc-类型)
-        - [1.3.10. 构造方法](#1310-构造方法)
-        - [1.3.11. 关联](#1311-关联)
-        - [1.3.12. 关联的嵌套 Select 查询](#1312-关联的嵌套-select-查询)
-        - [1.3.13. 关联的嵌套结果映射](#1313-关联的嵌套结果映射)
-        - [1.3.14. 关联的多结果集（ResultSet）](#1314-关联的多结果集resultset)
-        - [1.3.15. 集合](#1315-集合)
-        - [1.3.16. 集合的嵌套 Select 查询](#1316-集合的嵌套-select-查询)
-        - [1.3.17. 集合的嵌套结果映射](#1317-集合的嵌套结果映射)
-        - [1.3.18. 集合的多结果集（ResultSet）](#1318-集合的多结果集resultset)
-        - [1.3.19. 鉴别器](#1319-鉴别器)
-        - [1.3.20. 自动映射](#1320-自动映射)
-    - [1.4. 动态 SQL](#14-动态-sql)
-        - [1.4.1. if](#141-if)
-        - [1.4.2. choose, when, otherwise](#142-choose-when-otherwise)
-        - [1.4.3. trim, where, set](#143-trim-where-set)
-        - [1.4.4. WHERE](#144-where)
-        - [1.4.5. foreach](#145-foreach)
-        - [1.4.6. script](#146-script)
-        - [1.4.7. bind](#147-bind)
-    - [1.5. 插件](#15-插件)
-        - [1.5.1. 拦截的接口](#151-拦截的接口)
-        - [1.5.2. 拦截器实现](#152-拦截器实现)
-        - [1.5.3. 签名说明](#153-签名说明)
-        - [1.5.4. 在Spring中引入](#154-在spring中引入)
-        - [1.5.5. 实现一个插件](#155-实现一个插件)
-    - [1.6. 代码生成器](#16-代码生成器)
-        - [1.6.1. 创建需要生成的数据表](#161-创建需要生成的数据表)
-        - [1.6.2. 创建Mybatis代码自动生成配置文件](#162-创建mybatis代码自动生成配置文件)
-        - [1.6.3. 配置运行](#163-配置运行)
-    - [1.7. Mybatis整体架构](#17-mybatis整体架构)
-        - [1.7.1. 基础支持层](#171-基础支持层)
-        - [1.7.2. 核心处理层](#172-核心处理层)
-        - [1.7.3. 接口层](#173-接口层)
-        - [1.7.4. 模块说明](#174-模块说明)
-    - [1.8. MyBatis实现原理](#18-mybatis实现原理)
-        - [1.8.1. 基本的例子](#181-基本的例子)
-        - [1.8.2. 执行流程](#182-执行流程)
-            - [1.8.2.1. 解析XML配置文件](#1821-解析xml配置文件)
-            - [1.8.2.2. 获取mapper对象](#1822-获取mapper对象)
-            - [1.8.2.3. 执行拦截](#1823-执行拦截)
-            - [1.8.2.4. SqlSession处理](#1824-sqlsession处理)
-            - [1.8.2.5. MappedStatement](#1825-mappedstatement)
-            - [1.8.2.6. Executor](#1826-executor)
-                - [1.8.2.6.1. BaseExecutor](#18261-baseexecutor)
-                - [1.8.2.6.2. SimpleExecutor](#18262-simpleexecutor)
-                - [1.8.2.6.3. BatchExecutor](#18263-batchexecutor)
-                - [1.8.2.6.4. ReuseExecutor](#18264-reuseexecutor)
-                - [1.8.2.6.5. CachingExecutor](#18265-cachingexecutor)
-            - [1.8.2.7. Statement](#1827-statement)
-            - [1.8.2.8. ResultSetHandler](#1828-resultsethandler)
-            - [1.8.2.9. RowBounds分页说明](#1829-rowbounds分页说明)
-        - [1.8.3. Mybatis 缓存](#183-mybatis-缓存)
-            - [1.8.3.1. 基本概念](#1831-基本概念)
-                - [1.8.3.1.1. 基本介紹](#18311-基本介紹)
-                - [1.8.3.1.2. 基本配置](#18312-基本配置)
-            - [1.8.3.2. 缓存顶层接口](#1832-缓存顶层接口)
-                - [1.8.3.2.1. Cache接口以及实现类](#18321-cache接口以及实现类)
-                - [1.8.3.2.2. CacheKey创建](#18322-cachekey创建)
-            - [1.8.3.3. 缓存实现类](#1833-缓存实现类)
-                - [1.8.3.3.1. PerpetualCache](#18331-perpetualcache)
-                - [1.8.3.3.2. BlockingCache](#18332-blockingcache)
-                - [1.8.3.3.3. FifoCache](#18333-fifocache)
-                - [1.8.3.3.4. LoggingCache](#18334-loggingcache)
-                - [1.8.3.3.5. LruCache](#18335-lrucache)
-                - [1.8.3.3.6. ScheduledCache](#18336-scheduledcache)
-                - [1.8.3.3.7. SerializedCache](#18337-serializedcache)
-                - [1.8.3.3.8. SoftCache](#18338-softcache)
-                - [1.8.3.3.9. SynchronizedCache](#18339-synchronizedcache)
-                - [1.8.3.3.10. TransactionalCache](#183310-transactionalcache)
-                - [1.8.3.3.11. WeakCache](#183311-weakcache)
-            - [1.8.3.4. 缓存实现原理](#1834-缓存实现原理)
-                - [1.8.3.4.1. 一级缓存／二级缓存实现原理](#18341-一级缓存／二级缓存实现原理)
-            - [1.8.3.5. 使用自定义缓存](#1835-使用自定义缓存)
-    - [1.9. SpringBoot集成Ｍybatis](#19-springboot集成ｍybatis)
-        - [1.9.1. 依赖](#191-依赖)
-        - [1.9.2. yml配置](#192-yml配置)
-        - [1.9.3. 启动类添加注解](#193-启动类添加注解)
-        - [1.9.4. 使用druid连接池](#194-使用druid连接池)
+    - [1.2. 基本构成](#12-基本构成)
+    - [1.3. 配置](#13-配置)
+        - [1.3.1. 配置](#131-配置)
+        - [1.3.2. 属性（properties）](#132-属性properties)
+        - [1.3.3. 类型别名（typeAliases）](#133-类型别名typealiases)
+        - [1.3.4. 类型处理器（typeHandlers）](#134-类型处理器typehandlers)
+        - [1.3.5. 处理枚举类型](#135-处理枚举类型)
+        - [1.3.6. 对象工厂（objectFactory）](#136-对象工厂objectfactory)
+        - [1.3.7. 插件（plugins）](#137-插件plugins)
+        - [1.3.8. 事务管理器（transactionManager）](#138-事务管理器transactionmanager)
+        - [1.3.9. 数据源（dataSource）](#139-数据源datasource)
+        - [1.3.10. 数据库厂商标识（databaseIdProvider）](#1310-数据库厂商标识databaseidprovider)
+        - [1.3.11. 映射器（mappers）](#1311-映射器mappers)
+    - [1.4. XML 映射文件](#14-xml-映射文件)
+        - [1.4.1. select](#141-select)
+        - [1.4.2. Insert, Update, Delete 元素的属性](#142-insert-update-delete-元素的属性)
+        - [1.4.3. sql](#143-sql)
+        - [1.4.4. 参数](#144-参数)
+        - [1.4.5. 字符串替换](#145-字符串替换)
+        - [1.4.6. 结果映射](#146-结果映射)
+        - [1.4.7. 高级结果映射](#147-高级结果映射)
+        - [1.4.8. 结果映射（resultMap）](#148-结果映射resultmap)
+        - [1.4.9. 支持的 JDBC 类型](#149-支持的-jdbc-类型)
+        - [1.4.10. 构造方法](#1410-构造方法)
+        - [1.4.11. 关联](#1411-关联)
+        - [1.4.12. 关联的嵌套 Select 查询](#1412-关联的嵌套-select-查询)
+        - [1.4.13. 关联的嵌套结果映射](#1413-关联的嵌套结果映射)
+        - [1.4.14. 关联的多结果集（ResultSet）](#1414-关联的多结果集resultset)
+        - [1.4.15. 集合](#1415-集合)
+        - [1.4.16. 集合的嵌套 Select 查询](#1416-集合的嵌套-select-查询)
+        - [1.4.17. 集合的嵌套结果映射](#1417-集合的嵌套结果映射)
+        - [1.4.18. 集合的多结果集（ResultSet）](#1418-集合的多结果集resultset)
+        - [1.4.19. 鉴别器](#1419-鉴别器)
+        - [1.4.20. 自动映射](#1420-自动映射)
+    - [1.5. 动态 SQL](#15-动态-sql)
+        - [1.5.1. if](#151-if)
+        - [1.5.2. choose, when, otherwise](#152-choose-when-otherwise)
+        - [1.5.3. trim, where, set](#153-trim-where-set)
+        - [1.5.4. WHERE](#154-where)
+        - [1.5.5. foreach](#155-foreach)
+        - [1.5.6. script](#156-script)
+        - [1.5.7. bind](#157-bind)
+    - [1.6. 插件](#16-插件)
+        - [1.6.1. 拦截的接口](#161-拦截的接口)
+        - [1.6.2. 拦截器实现](#162-拦截器实现)
+        - [1.6.3. 签名说明](#163-签名说明)
+        - [1.6.4. 常用工具类MetaObject](#164-常用工具类metaobject)
+        - [1.6.5. 在Spring中引入](#165-在spring中引入)
+        - [1.6.6. 实现一个插件](#166-实现一个插件)
+    - [1.7. 代码生成器](#17-代码生成器)
+        - [1.7.1. 创建需要生成的数据表](#171-创建需要生成的数据表)
+        - [1.7.2. 创建Mybatis代码自动生成配置文件](#172-创建mybatis代码自动生成配置文件)
+        - [1.7.3. 配置运行](#173-配置运行)
+    - [1.8. Mybatis整体架构](#18-mybatis整体架构)
+        - [1.8.1. 基础支持层](#181-基础支持层)
+        - [1.8.2. 核心处理层](#182-核心处理层)
+        - [1.8.3. 接口层](#183-接口层)
+        - [1.8.4. 模块说明](#184-模块说明)
+    - [1.9. MyBatis实现原理](#19-mybatis实现原理)
+        - [1.9.1. 基本的例子](#191-基本的例子)
+        - [1.9.2. 执行流程](#192-执行流程)
+            - [1.9.2.1. 解析XML配置文件](#1921-解析xml配置文件)
+            - [1.9.2.2. 获取mapper对象](#1922-获取mapper对象)
+            - [1.9.2.3. 执行拦截](#1923-执行拦截)
+            - [1.9.2.4. SqlSession处理](#1924-sqlsession处理)
+            - [1.9.2.5. MappedStatement](#1925-mappedstatement)
+            - [1.9.2.6. Executor](#1926-executor)
+                - [1.9.2.6.1. BaseExecutor](#19261-baseexecutor)
+                - [1.9.2.6.2. SimpleExecutor](#19262-simpleexecutor)
+                - [1.9.2.6.3. BatchExecutor](#19263-batchexecutor)
+                - [1.9.2.6.4. ReuseExecutor](#19264-reuseexecutor)
+                - [1.9.2.6.5. CachingExecutor](#19265-cachingexecutor)
+            - [1.9.2.7. Statement](#1927-statement)
+            - [1.9.2.8. ResultSetHandler](#1928-resultsethandler)
+            - [1.9.2.9. RowBounds分页说明](#1929-rowbounds分页说明)
+        - [1.9.3. Mybatis 缓存](#193-mybatis-缓存)
+            - [1.9.3.1. 基本概念](#1931-基本概念)
+                - [1.9.3.1.1. 基本介紹](#19311-基本介紹)
+                - [1.9.3.1.2. 基本配置](#19312-基本配置)
+            - [1.9.3.2. 缓存顶层接口](#1932-缓存顶层接口)
+                - [1.9.3.2.1. Cache接口以及实现类](#19321-cache接口以及实现类)
+                - [1.9.3.2.2. CacheKey创建](#19322-cachekey创建)
+            - [1.9.3.3. 缓存实现类](#1933-缓存实现类)
+                - [1.9.3.3.1. PerpetualCache](#19331-perpetualcache)
+                - [1.9.3.3.2. BlockingCache](#19332-blockingcache)
+                - [1.9.3.3.3. FifoCache](#19333-fifocache)
+                - [1.9.3.3.4. LoggingCache](#19334-loggingcache)
+                - [1.9.3.3.5. LruCache](#19335-lrucache)
+                - [1.9.3.3.6. ScheduledCache](#19336-scheduledcache)
+                - [1.9.3.3.7. SerializedCache](#19337-serializedcache)
+                - [1.9.3.3.8. SoftCache](#19338-softcache)
+                - [1.9.3.3.9. SynchronizedCache](#19339-synchronizedcache)
+                - [1.9.3.3.10. TransactionalCache](#193310-transactionalcache)
+                - [1.9.3.3.11. WeakCache](#193311-weakcache)
+            - [1.9.3.4. 缓存实现原理](#1934-缓存实现原理)
+                - [1.9.3.4.1. 一级缓存／二级缓存实现原理](#19341-一级缓存／二级缓存实现原理)
+            - [1.9.3.5. 使用自定义缓存](#1935-使用自定义缓存)
+    - [1.10. SpringBoot集成Ｍybatis](#110-springboot集成ｍybatis)
+        - [1.10.1. 依赖](#1101-依赖)
+        - [1.10.2. yml配置](#1102-yml配置)
+        - [1.10.3. 启动类添加注解](#1103-启动类添加注解)
+        - [1.10.4. 使用druid连接池](#1104-使用druid连接池)
+    - [实用场景](#实用场景)
 
 <!-- /TOC -->
 
@@ -189,17 +192,24 @@ public interface PreparedStatement extends Statement {}
 public interface CallableStatement extends PreparedStatement {}
 ```
 
+从上面可以看出，使用传统jdbc的缺点是操作比较复杂，比如要加载驱动，创建连接，自行处理结果集等操作。二是还要自行处理事务，异常处理等工作。
+
 ### 1.1.2. ORM模型
 
 * ORM(Object Relation Mapping)对象关系映射
-* ORM就是数据库的表和简单的Java对象的映射关系模型，通过这种关系就能迅速地将数据库的表和POJO对象相互转化。
+* ORM就是数据库的表和简单的Java对象的映射关系模型，通过这种关系就能迅速地将数据库的表和POJO对象相互转化。整个过程是自动进行的。
 
-
-**什么是 MyBatis**
-MyBatis 是一款优秀的持久层框架，它支持定制化 SQL、存储过程以及高级映射。MyBatis 避免了几乎所有的 JDBC 代码和手动设置参数以及获取结果集。MyBatis 可以使用简单的 XML 或注解来配置和映射原生类型、接口和 Java 的 POJO（Plain Old Java Objects，普通老式 Java 对象）为数据库中的记录。
 
 ### 1.1.3. HIBERNATE与MYBATIS的对比
 <a href="#menu">目录</a>
+
+* Hibernate缺点
+  * 全表映射问题，比如更新时需要发送所有字段
+  * 无法根据不同的条件组装不同的SQL
+  * 对多表关联和复杂SQL查询支持较差，需要自己写SQL，返回后需要自己将数据组织为POJO
+  * 不能有效支持存储过程
+  * 虽然有HQL，但是性能较差
+
 
 **开发速度的对比**
 
@@ -237,12 +247,12 @@ MyBatis 包含一个非常强大的查询缓存特性,它可以非常方便地�
 ```
 字面上看就是这样。这个简单语句的效果如下:
 
-映射语句文件中的所有 select 语句将会被缓存。
-映射语句文件中的所有 insert,update 和 delete 语句会刷新缓存。
-缓存会使用 Least Recently Used(LRU,最近最少使用的)算法来收回。
-根据时间表(比如 no Flush Interval,没有刷新间隔), 缓存不会以任何时间顺序 来刷新。
-缓存会存储列表集合或对象(无论查询方法返回什么)的 1024 个引用。
-缓存会被视为是 read/write(可读/可写)的缓存,意味着对象检索不是共享的,而 且可以安全地被调用者修改,而不干扰其他调用者或线程所做的潜在修改。
+* 映射语句文件中的所有 select 语句将会被缓存。
+* 映射语句文件中的所有 insert,update 和 delete 语句会刷新缓存。
+* 缓存会使用 Least Recently Used(LRU,最近最少使用的)算法来收回。
+* 根据时间表(比如 no Flush Interval,没有刷新间隔), 缓存不会以任何时间顺序 来刷新。
+* 缓存会存储列表集合或对象(无论查询方法返回什么)的 1024 个引用。
+* 缓存会被视为是 read/write(可读/可写)的缓存,意味着对象检索不是共享的,而 且可以安全地被调用者修改,而不干扰其他调用者或线程所做的潜在修改。
 所有的这些属性都可以通过缓存元素的属性来修改。
 
 比如: 
@@ -787,32 +797,86 @@ mapper接口中的方法名和mapper.xml中的定义的statement的id保持一�
 
 编写插件：实现Mybatis的Interceptor接口并复写intercept()方法，然后在给插件编写注解，指定要拦截哪一个接口的哪些方法即可，记住，别忘了在配置文件中配置你编写的插件。
 
-
-
-
-
-## 1.2. 配置
+## 1.2. 基本构成
 <a href="#menu">目录</a>
 
-### 1.2.1. 配置
+* SqlSessionFactoryBuild（工厂构造器），根据配置信息或者代码来生成SqlSessionFactory工厂接口
+* SqlSessionFactory,工厂类，用于生成SqlSession
+* SqlSession,获取mapper代理对象，包含query,update等方法，用于提交sql执行并返回结果。
+* SQL mapper，有Java接口和XML文件(可省略)组成，需要给出SQL和接口方法的对应映射，当调用接口方法时，最终会执行映射的  
+
+使用mybatis的基本流程
+```java
+//1.获取配置的文件流
+String resource = "mybatis-config.xml";
+InputStream is = Resources.getResourceAsStream(resource);
+//２.通过SqlSessionFactoryBuilder创建sqlSessionFactory
+SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(is);
+//3. 通过sqlSessionFactory获取SqlSession
+SqlSession sqlSession = sqlSessionFactory.openSession();
+//４-1.直接通过sqlSession的方法执行并返回结果
+List<User> users =  sqlSession.selectList("select * from user");
+//4-2.　通过获取mapper代理对象来执行
+UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+List<User> users1 = userMapper.select();
+//5.关闭sqlSession
+sqlSession.close();
+```
+**生命周期**
+
+ SqlSessionFactoryBuild利用xml配置文件或者编码来获取sqlSessionFactory，可以创建多个sqlSessionFactory。它的作用是仅仅是创建sqlSessionFactory。创建完成已经不再需要，因此生命周期很短
+
+ SqlSessionFactory用于创建SqlSession,因为每次操作数据库都要重新创建一个sqlSession，因此sqlSessionFactory的生命周期是和应用生命周期一样。每个SqlSessionFactory创建时会打开一个数据库的连接，为了避免消耗连接资源，一般一个应用创建一个sqlSessionFactory即可
+
+ SqlSession是一个会话，相当于JDBC的一个连接对象，生命周期是在请求数据库处理事务的过程中。它是一个线程不安全的对象。SqlSession就是数据库的连接，只不过，对它进行了封装后，就成了现在的SqlSession, 通过session工厂，来创建它。由于创建连接非常耗费资源，因此应当使用连接池来复用这些连接。使用连接池一是保证一定的并发性，二是避免重复建立连接导致性能变差。
+
+**mapper**
+
+mapper是一个接口，通过配置文件或者注解，与sql语句进行映射绑定，当调用mapper的方法时(实际上执行的mapper代理的方法)，最终会调用该方法对应的SQL语句。
+
+## 1.3. 配置
 <a href="#menu">目录</a>
 
+### 1.3.1. 配置
+<a href="#menu">目录</a>
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <properties/>
+    <settings/>
+    <typeAliases/>
+    <typeHandlers/>
+    <objectFactory/>
+    <plugins>
+      <plugin/>
+    </plugins>
+    <environments>
+      <environment>
+        <transactionManager/>
+        <dataSource/>
+      </environment>
+    </environments>
+    <databaseIdProvider/>
+    <mappers/>
+</configuration>
+```
 **配置结构**
 * configuration（配置）
-    * properties（属性）
-    * settings（设置）
-    * typeAliases（类型别名）
-    * typeHandlers（类型处理器）
-    * objectFactory（对象工厂）
-    * plugins（插件）
-    * environments（环境配置）
-    * environment（环境变量）
-    * transactionManager（事务管理器）
-    * dataSource（数据源）
-    * databaseIdProvider（数据库厂商标识）
-    * mappers（映射器）
+    * properties （属性）
+    * settings （设置）
+    * typeAliases （类型别名）
+    * typeHandlers （类型处理器）
+    * objectFactory （对象工厂）
+    * plugins （插件）
+    * environments （环境配置）
+    * environment （环境变量）
+    * transactionManager （事务管理器）
+    * dataSource （数据源）
+    * databaseIdProvider （数据库厂商标识）
+    * mappers （映射器）
 
-### 1.2.2. 属性（properties）
+### 1.3.2. 属性（properties）
 <a href="#menu">目录</a>
 
 这些属性都是可外部配置且可动态替换的，既可以在典型的 Java 属性文件中配置，亦可通过 properties 元素的子元素来传递。例如：
@@ -931,7 +995,7 @@ logImpl	指定 MyBatis 所用日志的具体实现，未指定时将自动查找
 </settings>
 ```
 
-### 1.2.3. 类型别名（typeAliases）
+### 1.3.3. 类型别名（typeAliases）
 <a href="#menu">目录</a>
 
 类型别名是为 Java 类型设置一个短的名字。 它只和 XML 配置有关，存在的意义仅在于用来减少类完全限定名的冗余。例如：
@@ -992,7 +1056,7 @@ public class Author {
 |collection|	Collection
 |iterator|	Iterator
 
-### 1.2.4. 类型处理器（typeHandlers）
+### 1.3.4. 类型处理器（typeHandlers）
 <a href="#menu">目录</a>
 
 无论是 MyBatis 在预处理语句（PreparedStatement）中设置一个参数时，还是从结果集中取出一个值时， 都会用类型处理器将获取的值以合适的方式转换成 Java 类型。下表描述了一些默认的类型处理器。
@@ -1113,7 +1177,7 @@ public class GenericTypeHandler<E extends MyObject> extends BaseTypeHandler<E> {
 ```
 EnumTypeHandler 和 EnumOrdinalTypeHandler 都是泛型类型处理器，我们将会在接下来的部分详细探讨。
 
-### 1.2.5. 处理枚举类型
+### 1.3.5. 处理枚举类型
 <a href="#menu">目录</a>
 
 若想映射枚举类型 Enum，则需要从 EnumTypeHandler 或者 EnumOrdinalTypeHandler 中选一个来使用。
@@ -1176,7 +1240,7 @@ EnumTypeHandler 和 EnumOrdinalTypeHandler 都是泛型类型处理器，我们�
 
 注意，这里的 select 语句强制使用 resultMap 来代替 resultType。
 
-### 1.2.6. 对象工厂（objectFactory）
+### 1.3.6. 对象工厂（objectFactory）
 <a href="#menu">目录</a>
 
 MyBatis 每次创建结果对象的新实例时，它都会使用一个对象工厂（ObjectFactory）实例来完成。 默认的对象工厂需要做的仅仅是实例化目标类，要么通过默认构造方法，要么在参数映射存在的时候通过参数构造方法来实例化。 如果想覆盖对象工厂的默认行为，则可以通过创建自己的对象工厂来实现。比如：
@@ -1206,7 +1270,7 @@ public class ExampleObjectFactory extends DefaultObjectFactory {
 
 ObjectFactory 接口很简单，它包含两个创建用的方法，一个是处理默认构造方法的，另外一个是处理带参数的构造方法的。 最后，setProperties 方法可以被用来配置 ObjectFactory，在初始化你的 ObjectFactory 实例后， objectFactory 元素体中定义的属性会被传递给 setProperties 方法。
 
-### 1.2.7. 插件（plugins）
+### 1.3.7. 插件（plugins）
 <a href="#menu">目录</a>
 
 MyBatis 允许你在已映射语句执行过程中的某一点进行拦截调用。默认情况下，MyBatis 允许使用插件来拦截的方法调用包括：
@@ -1297,7 +1361,7 @@ SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(reader, propert
 数据源的配置（比如：type="POOLED"）。
 默认的环境和环境 ID 是自解释的，因此一目了然。 你可以对环境随意命名，但一定要保证默认的环境 ID 要匹配其中一个环境 ID。
 
-### 1.2.8. 事务管理器（transactionManager）
+### 1.3.8. 事务管理器（transactionManager）
 <a href="#menu">目录</a>
 
 在 MyBatis 中有两种类型的事务管理器（也就是 type=”[JDBC|MANAGED]”）：
@@ -1339,7 +1403,7 @@ public interface Transaction {
 
 使用这两个接口，你可以完全自定义 MyBatis 对事务的处理。
 
-### 1.2.9. 数据源（dataSource）
+### 1.3.9. 数据源（dataSource）
 <a href="#menu">目录</a>
 
 dataSource 元素使用标准的 JDBC 数据源接口来配置 JDBC 连接对象的资源。
@@ -1412,7 +1476,7 @@ public class C3P0DataSourceFactory extends UnpooledDataSourceFactory {
 </dataSource>
 ```
 
-### 1.2.10. 数据库厂商标识（databaseIdProvider）
+### 1.3.10. 数据库厂商标识（databaseIdProvider）
 <a href="#menu">目录</a>
 
 MyBatis 可以根据不同的数据库厂商执行不同的语句，这种多厂商的支持是基于映射语句中的 databaseId 属性。 MyBatis 会加载不带 databaseId 属性和带有匹配当前数据库 databaseId 属性的所有语句。 如果同时找到带有 databaseId 和不带 databaseId 的相同语句，则后者会被舍弃。 为支持多厂商特性只要像下面这样在 mybatis-config.xml 文件中加入 databaseIdProvider 即可：
@@ -1443,7 +1507,7 @@ public interface DatabaseIdProvider {
 }
 ```
 
-### 1.2.11. 映射器（mappers）
+### 1.3.11. 映射器（mappers）
 <a href="#menu">目录</a>
 
 既然 MyBatis 的行为已经由上述元素配置完了，我们现在就要定义 SQL 映射语句了。 但是首先我们需要告诉 MyBatis 到哪里去找到这些语句。 Java 在自动查找这方面没有提供一个很好的方法，所以最佳的方式是告诉 MyBatis 到哪里去找映射文件。 你可以使用相对于类路径的资源引用， 或完全限定资源定位符（包括 file:/// 的 URL），或类名和包名等。例如：
@@ -1473,7 +1537,7 @@ public interface DatabaseIdProvider {
 </mappers>
 ```
 
-## 1.3. XML 映射文件
+## 1.4. XML 映射文件
 <a href="#menu">目录</a>
 
 MyBatis 的真正强大在于它的映射语句，这是它的魔力所在。由于它的异常强大，映射器的 XML 文件就显得相对简单。如果拿它跟具有相同功能的 JDBC 代码进行对比，你会立即发现省掉了将近 95% 的代码。MyBatis 为聚焦于 SQL 而构建，以尽可能地为你减少麻烦。
@@ -1488,9 +1552,10 @@ MyBatis 的真正强大在于它的映射语句，这是它的魔力所在。由
     * update – 映射更新语句
     * delete – 映射删除语句
     * select – 映射查询语句
+
 下一部分将从语句本身开始来描述每个元素的细节。
 
-### 1.3.1. select
+### 1.4.1. select
 <a href="#menu">目录</a>
 
 查询语句是 MyBatis 中最常用的元素之一，光能把数据存到数据库中价值并不大，只有还能重新取出来才有用，多数应用也都是查询比修改要频繁。对每个插入、更新或删除操作，通常间隔多个查询操作。这是 MyBatis 的基本原则之一，也是将焦点和努力放在查询和结果映射的原因。简单查询的 select 元素是非常简单的。比如：
@@ -1510,9 +1575,12 @@ MyBatis 的真正强大在于它的映射语句，这是它的魔力所在。由
 这就告诉 MyBatis 创建一个预处理语句（PreparedStatement）参数，在 JDBC 中，这样的一个参数在 SQL 中会由一个“?”来标识，并被传递到一个新的预处理语句中，就像这样：
 
 // 近似的 JDBC 代码，非 MyBatis 代码...
+```
 String selectPerson = "SELECT * FROM PERSON WHERE ID=?";
 PreparedStatement ps = conn.prepareStatement(selectPerson);
 ps.setInt(1,id);
+```
+
 当然，使用 JDBC 意味着需要更多的代码来提取结果并将它们映射到对象实例中，而这就是 MyBatis 节省你时间的地方。参数和结果映射还有更深入的细节。这些细节会分别在后面单独的小节中呈现。
 
 select 元素允许你配置很多属性来配置每条语句的作用细节。
@@ -1577,7 +1645,7 @@ insert, update 和 delete数据变更语句 insert，update 和 delete 的实现
   timeout="20">
 ```
 
-### 1.3.2. Insert, Update, Delete 元素的属性
+### 1.4.2. Insert, Update, Delete 元素的属性
 <a href="#menu">目录</a>
 
 |属性	|描述
@@ -1672,7 +1740,7 @@ selectKey 元素的属性
 |order|	这可以被设置为 BEFORE 或 AFTER。如果设置为 BEFORE，那么它会首先生成主键，设置 keyProperty 然后执行插入语句。如果设置为 AFTER，那么先执行插入语句，然后是 selectKey 中的语句 - 这和 Oracle 数据库的行为相似，在插入语句内部可能有嵌入索引调用。
 |statementType|	与前面相同，MyBatis 支持 STATEMENT，PREPARED 和 CALLABLE 语句的映射类型，分别代表 PreparedStatement 和 CallableStatement 类型。
 
-### 1.3.3. sql
+### 1.4.3. sql
 <a href="#menu">目录</a>
 
 这个元素可以被用来定义可重用的 SQL 代码段，这些 SQL 代码可以被包含在其他语句中。它可以（在加载的时候）被静态地设置参数。 在不同的包含语句中可以设置不同的值到参数占位符上。比如：
@@ -1711,7 +1779,7 @@ selectKey 元素的属性
   </include>
 </select>
 ```
-### 1.3.4. 参数
+### 1.4.4. 参数
 <a href="#menu">目录</a>
 
 你之前见到的所有语句中，使用的都是简单参数。实际上参数是 MyBatis 非常强大的元素。对于简单的使用场景，大约 90% 的情况下你都不需要使用复杂的参数，比如：
@@ -1767,7 +1835,7 @@ MyBatis 也支持很多高级的数据类型，比如结构体（structs），�
 #{lastName}
 ```
 
-### 1.3.5. 字符串替换
+### 1.4.5. 字符串替换
 <a href="#menu">目录</a>
 
 默认情况下,使用 #{} 格式的语法会导致 MyBatis 创建 PreparedStatement 参数占位符并安全地设置参数（就像使用 ? 一样）。 这样做更安全，更迅速，通常也是首选做法，不过有时你就是想直接在 SQL 语句中插入一个不转义的字符串。 比如，像 ORDER BY，你可以这样来使用：
@@ -1799,7 +1867,7 @@ User userOfEmail = userMapper.findByColumn("email", "noone@nowhere.com");'
 
 提示 用这种方式接受用户的输入，并将其用于语句中的参数是不安全的，会导致潜在的 SQL 注入攻击，因此要么不允许用户输入这些字段，要么自行转义并检验。
 
-### 1.3.6. 结果映射
+### 1.4.6. 结果映射
 <a href="#menu">目录</a>
 
 resultMap 元素是 MyBatis 中最重要最强大的元素。它可以让你从 90% 的 JDBC ResultSets 数据提取代码中解放出来，并在一些情形下允许你进行一些 JDBC 不支持的操作。实际上，在为一些比如连接的复杂语句编写映射代码的时候，一份 resultMap 能够代替实现同等功能的长达数千行的代码。ResultMap 的设计思想是，对于简单的语句根本不需要配置显式的结果映射，而对于复杂一点的语句只需要描述它们的关系就行了。
@@ -1893,7 +1961,7 @@ ResultMap 最优秀的地方在于，虽然你已经对它相当了解了，但�
 
 如果世界总是这么简单就好了。
 
-### 1.3.7. 高级结果映射
+### 1.4.7. 高级结果映射
 <a href="#menu">目录</a>
 
 MyBatis 创建时的一个思想是：数据库不可能永远是你所想或所需的那个样子。 我们希望每个数据库都具备良好的第三范式或 BCNF 范式，可惜它们不总都是这样。 如果能有一种完美的数据库映射模式，所有应用程序都可以使用它，那就太好了，但可惜也没有。 而 ResultMap 就是 MyBatis 对这个问题的答案。
@@ -1973,7 +2041,7 @@ MyBatis 创建时的一个思想是：数据库不可能永远是你所想或所
 
 resultMap 元素有很多子元素和一个值得深入探讨的结构。 下面是resultMap 元素的概念视图。
 
-### 1.3.8. 结果映射（resultMap）
+### 1.4.8. 结果映射（resultMap）
 <a href="#menu">目录</a>
 
 * constructor - 用于在实例化类时，注入结果到构造方法中
@@ -2019,7 +2087,7 @@ Id 和 Result 的属性
 |jdbcType|	JDBC 类型，所支持的 JDBC 类型参见这个表格之后的“支持的 JDBC 类型”。 只需要在可能执行插入、更新和删除的且允许空值的列上指定 JDBC 类型。这是 JDBC 的要求而非 MyBatis 的要求。如果你直接面向 JDBC 编程，你需要对可能存在空值的列指定这个类型。
 |typeHandler|	我们在前面讨论过默认的类型处理器。使用这个属性，你可以覆盖默认的类型处理器。 这个属性值是一个类型处理器实现类的完全限定名，或者是类型别名。
 
-### 1.3.9. 支持的 JDBC 类型
+### 1.4.9. 支持的 JDBC 类型
 <a href="#menu">目录</a>
 
 为了以后可能的使用场景，MyBatis 通过内置的 jdbcType 枚举类型支持下面的 JDBC 类型。
@@ -2032,7 +2100,7 @@ Id 和 Result 的属性
 |INTEGER|	NUMERIC|	DATE|	LONGVARBINARY	|BOOLEAN|	NCLOB|
 |BIGINT|	DECIMAL|	TIME|	NULL|	CURSOR|	ARRAY|
 
-### 1.3.10. 构造方法
+### 1.4.10. 构造方法
 <a href="#menu">目录</a>
 
 通过修改对象属性的方式，可以满足大多数的数据传输对象（Data Transfer Object, DTO）以及绝大部分领域模型的要求。但有些情况下你想使用不可变类。 一般来说，很少改变或基本不变的包含引用或数据的表，很适合使用不可变类。 构造方法注入允许你在初始化时为类设置属性的值，而不用暴露出公有方法。MyBatis 也支持私有属性和私有 JavaBean 属性来完成注入，但有一些人更青睐于通过构造方法进行注入。 constructor 元素就是为此而生的。
@@ -2079,7 +2147,7 @@ public class User {
 |resultMap|	结果映射的 ID，可以将嵌套的结果集映射到一个合适的对象树中。 它可以作为使用额外 select 语句的替代方案。它可以将多表连接操作的结果映射成一个单一的 ResultSet。这样的 ResultSet 将会将包含重复或部分数据重复的结果集。为了将结果集正确地映射到嵌套的对象树中，MyBatis 允许你 “串联”结果映射，以便解决嵌套结果集的问题。想了解更多内容，请参考下面的关联元素。
 |name|	构造方法形参的名字。从 3.4.3 版本开始，通过指定具体的参数名，你可以以任意顺序写入 arg 元素。参看上面的解释。
 
-### 1.3.11. 关联
+### 1.4.11. 关联
 <a href="#menu">目录</a>
 
 ```xml
@@ -2104,7 +2172,7 @@ public class User {
 |jdbcType|	JDBC 类型，所支持的 JDBC 类型参见这个表格之前的“支持的 JDBC 类型”。 只需要在可能执行插入、更新和删除的且允许空值的列上指定 JDBC 类型。这是 JDBC 的要求而非 MyBatis 的要求。如果你直接面向 JDBC 编程，你需要对可能存在空值的列指定这个类型。
 |typeHandler|	我们在前面讨论过默认的类型处理器。使用这个属性，你可以覆盖默认的类型处理器。 这个属性值是一个类型处理器实现类的完全限定名，或者是类型别名。
 
-### 1.3.12. 关联的嵌套 Select 查询
+### 1.4.12. 关联的嵌套 Select 查询
 <a href="#menu">目录</a>
 
 |属性|	描述
@@ -2142,7 +2210,7 @@ public class User {
 
 所以还有另外一种方法。
 
-### 1.3.13. 关联的嵌套结果映射
+### 1.4.13. 关联的嵌套结果映射
 <a href="#menu">目录</a>
 
 |属性|	描述
@@ -2249,7 +2317,7 @@ public class User {
 </resultMap>
 ```
 
-### 1.3.14. 关联的多结果集（ResultSet）
+### 1.4.14. 关联的多结果集（ResultSet）
 <a href="#menu">目录</a>
 
 |属性|	描述
@@ -2292,7 +2360,7 @@ SELECT * FROM AUTHOR WHERE ID = #{id}
 
 你已经在上面看到了如何处理“有一个”类型的关联。但是该怎么处理“有很多个”类型的关联呢？这就是我们接下来要介绍的。
 
-### 1.3.15. 集合
+### 1.4.15. 集合
 <a href="#menu">目录</a>
 
 ```xml
@@ -2310,7 +2378,7 @@ SELECT * FROM AUTHOR WHERE ID = #{id}
 private List<Post> posts;
 要像上面这样，映射嵌套结果集合到一个 List 中，可以使用集合元素。 和关联元素一样，我们可以使用嵌套 Select 查询，或基于连接的嵌套结果映射集合。
 
-### 1.3.16. 集合的嵌套 Select 查询
+### 1.4.16. 集合的嵌套 Select 查询
 <a href="#menu">目录</a>
 
 首先，让我们看看如何使用嵌套 Select 查询来为博客加载文章。
@@ -2341,7 +2409,7 @@ private List<Post> posts;
 ```xml
 <collection property="posts" column="id" ofType="Post" select="selectPostsForBlog"/>
 ```
-### 1.3.17. 集合的嵌套结果映射
+### 1.4.17. 集合的嵌套结果映射
 <a href="#menu">目录</a>
 
 
@@ -2392,7 +2460,7 @@ private List<Post> posts;
 </resultMap>
 ```
 
-### 1.3.18. 集合的多结果集（ResultSet）
+### 1.4.18. 集合的多结果集（ResultSet）
 <a href="#menu">目录</a>
 
 像关联元素那样，我们可以通过执行存储过程实现，它会执行两个查询并返回两个结果集，一个是博客的结果集，另一个是文章的结果集：
@@ -2426,7 +2494,7 @@ SELECT * FROM POST WHERE BLOG_ID = #{id}
 
 高级关联和集合映射是一个深度话题。文档的介绍只能到此为止。配合少许的实践，你会很快了解全部的用法。
 
-### 1.3.19. 鉴别器
+### 1.4.19. 鉴别器
 <a href="#menu">目录</a>
 
 ```xml
@@ -2504,7 +2572,7 @@ SELECT * FROM POST WHERE BLOG_ID = #{id}
 
 提示 请注意，这些都是结果映射，如果你完全不设置任何的 result 元素，MyBatis 将为你自动匹配列和属性。所以上面的例子大多都要比实际的更复杂。 这也表明，大多数数据库的复杂度都比较高，我们不太可能一直依赖于这种机制。
 
-### 1.3.20. 自动映射
+### 1.4.20. 自动映射
 <a href="#menu">目录</a>
 
 正如你在前面一节看到的，在简单的场景下，MyBatis 可以为你自动映射查询结果。但如果遇到复杂的场景，你需要构建一个结果映射。 但是在本节中，你将看到，你可以混合使用这两种策略。让我们深入了解一下自动映射是怎样工作的。
@@ -2565,7 +2633,7 @@ FULL - 自动映射所有属性。
 ```
 
 
-## 1.4. 动态 SQL
+## 1.5. 动态 SQL
 <a href="#menu">目录</a>
 
 MyBatis 的强大特性之一便是它的动态 SQL。如果你有使用 JDBC 或其它类似框架的经验，你就能体会到根据不同条件拼接 SQL 语句的痛苦。例如拼接时要确保不能忘记添加必要的空格，还要注意去掉列表最后一个列名的逗号。利用动态 SQL 这一特性可以彻底摆脱这种痛苦。
@@ -2574,12 +2642,12 @@ MyBatis 的强大特性之一便是它的动态 SQL。如果你有使用 JDBC �
 
 动态 SQL 元素和 JSTL 或基于类似 XML 的文本处理器相似。在 MyBatis 之前的版本中，有很多元素需要花时间了解。MyBatis 3 大大精简了元素种类，现在只需学习原来一半的元素便可。MyBatis 采用功能强大的基于 OGNL 的表达式来淘汰其它大部分元素。
 
-* if
-* choose (when, otherwise)
-* trim (where, set)
-* foreach
+* if (判断语句)
+* choose (when, otherwise) (选择语句)
+* trim (where, set)　(用于处理一些sql拼装问题)
+* foreach　(循环)
 
-### 1.4.1. if
+### 1.5.1. if
 <a href="#menu">目录</a>
 
 动态 SQL 通常要做的事情是根据条件包含 where 子句的一部分。比如：
@@ -2588,8 +2656,9 @@ MyBatis 的强大特性之一便是它的动态 SQL。如果你有使用 JDBC �
 <select id="findActiveBlogWithTitleLike"
      resultType="Blog">
   SELECT * FROM BLOG
-  WHERE state = ‘ACTIVE’
-  <if test="title != null">
+  WHERE state = 'ACTIVE'
+  <!-- 根据参数title是否为null ,决定是否加入里面的语句-->
+  <if test="title != null and title != ''">
     AND title like #{title}
   </if>
 </select>
@@ -2612,7 +2681,7 @@ MyBatis 的强大特性之一便是它的动态 SQL。如果你有使用 JDBC �
 </select>
 ```
 
-### 1.4.2. choose, when, otherwise
+### 1.5.2. choose, when, otherwise
 有时我们不想应用到所有的条件语句，而只想从中择其一项。针对这种情况，MyBatis 提供了 choose 元素，它有点像 Java 中的 switch 语句。
 
 还是上面的例子，但是这次变为提供了“title”就按“title”查找，提供了“author”就按“author”查找的情形，若两者都没有提供，就返回所有符合条件的 BLOG（实际情况可能是由管理员按一定策略选出 BLOG 列表，而不是返回大量无意义的随机结果）。
@@ -2635,7 +2704,7 @@ MyBatis 的强大特性之一便是它的动态 SQL。如果你有使用 JDBC �
 </select>
 ``` 
 
-### 1.4.3. trim, where, set
+### 1.5.3. trim, where, set
 前面几个例子已经合宜地解决了一个臭名昭著的动态 SQL 问题。现在回到“if”示例，这次我们将“ACTIVE = 1”也设置成动态的条件，看看会发生什么。
 
 ```xml
@@ -2655,17 +2724,18 @@ MyBatis 的强大特性之一便是它的动态 SQL。如果你有使用 JDBC �
 </select>
 ```
 
-如果这些条件没有一个能匹配上会发生什么？最终这条 SQL 会变成这样：
+如果这些条件没有一个能匹配上会发生什么？最终这条 SQL 会变成这样：SELECT * FROM BLOG WHERE
 
-SELECT * FROM BLOG
-
-### 1.4.4. WHERE
 这会导致查询失败。如果仅仅第二个条件匹配又会怎样？这条 SQL 最终会是这样:
-
+```
 SELECT * FROM BLOG
 WHERE
 AND title like ‘someTitle’
-这个查询也会失败。这个问题不能简单地用条件句式来解决，如果你也曾经被迫这样写过，那么你很可能从此以后都不会再写出这种语句了。
+```
+这个查询也会失败。这个问题不能简单地用条件句式来解决。
+
+
+### 1.5.4. WHERE
 
 MyBatis 有一个简单的处理，这在 90% 的情况下都会有用。而在不能使用的地方，你可以自定义处理方式来令其正常工作。一处简单的修改就能达到目的：
 
@@ -2696,8 +2766,6 @@ where 元素只会在至少有一个子元素的条件返回 SQL 子句的情况
   ...
 </trim>
 ```
-
-
 prefixOverrides 属性会忽略通过管道分隔的文本序列（注意此例中的空格也是必要的）。它的作用是移除所有指定在 prefixOverrides 属性中的内容，并且插入 prefix 属性中指定的内容。
 
 类似的用于动态更新语句的解决方案叫做 set。set 元素可以用于动态包含需要更新的列，而舍去其它的。比如：
@@ -2727,7 +2795,7 @@ prefixOverrides 属性会忽略通过管道分隔的文本序列（注意此例�
 
 注意这里我们删去的是后缀值，同时添加了前缀值。
 
-### 1.4.5. foreach
+### 1.5.5. foreach
 动态 SQL 的另外一个常用的操作需求是对一个集合进行遍历，通常是在构建 IN 条件语句的时候。比如：
 
 ```xml
@@ -2741,14 +2809,16 @@ prefixOverrides 属性会忽略通过管道分隔的文本序列（注意此例�
   </foreach>
 </select>
 ```
-
-foreach 元素的功能非常强大，它允许你指定一个集合，声明可以在元素体内使用的集合项（item）和索引（index）变量。它也允许你指定开头与结尾的字符串以及在迭代结果之间放置分隔符。这个元素是很智能的，因此它不会偶然地附加多余的分隔符。
+* collection , selectPostIn传递进来的参数名称
+* index ,如果是数组，List,Se则是迭代次数或者下标,如果是map,则是键
+* item  ,迭代的值 
+* open,close，定义以什么符号将这些值包围起来
+* separator，各个元素间的分隔符
 
 注意 你可以将任何可迭代对象（如 List、Set 等）、Map 对象或者数组对象传递给 foreach 作为集合参数。当使用可迭代对象或者数组时，index 是当前迭代的次数，item 的值是本次迭代获取的元素。当使用 Map 对象（或者 Map.Entry 对象的集合）时，index 是键，item 是值。
 
-到此我们已经完成了涉及 XML 配置文件和 XML 映射文件的讨论。下一章将详细探讨 Java API，这样就能提高已创建的映射文件的利用效率。
 
-### 1.4.6. script
+### 1.5.6. script
 For using dynamic SQL in annotated mapper class, script element can be used. For example:
 
     @Update({"<script>",
@@ -2762,7 +2832,7 @@ For using dynamic SQL in annotated mapper class, script element can be used. For
       "where id=#{id}",
       "</script>"})
     void updateAuthorValues(Author author);
-### 1.4.7. bind
+### 1.5.7. bind
 bind 元素可以从 OGNL 表达式中创建一个变量并将其绑定到上下文。比如：
 
 ```xml
@@ -2830,15 +2900,17 @@ public interface Mapper {
 
 
 
-## 1.5. 插件
+## 1.6. 插件
 <a href="#menu">目录</a>
 
 MyBatis开放用户实现自己的插件，从而对整个调用过程进行个性化扩展。这是MyBatis整个调用流程的主要参与者。我们可以对其中的一些过程进行拦截，添加自己的功能，比如重写Sql添加分页参数。
 
 ![](https://img2018.cnblogs.com/blog/1404294/201906/1404294-20190610164312882-425922091.png)
  
+插件生成的是层层代理对象的责任链模式，通过反射方法运行，性能不高，能不用就不用。而且将修改Mybatis的底层数据，使用不熟悉可能会出现问题。
 
-### 1.5.1. 拦截的接口
+
+### 1.6.1. 拦截的接口
 
 
 MyBatis允许在已映射语句执行过程中的某一点进行拦截调用。 默认情况下， MyBatis允许使用插件来拦截的接口和方法包括以下几个。
@@ -2888,9 +2960,8 @@ public interface ResultSetHandler {
     <E> Cursor<E> handleCursorResultSets(Statement var1) throws SQLException;
 
     void handleOutputParameters(CallableStatement var1) throws SQLException;
-}
+} 
 ```
- 
 
 StatementHandler
 
@@ -2910,7 +2981,7 @@ public interface StatementHandler {
 
 只要拦截器定义了拦截的接口和方法，后续调用该方法时，将会被拦截。
 
-### 1.5.2. 拦截器实现
+### 1.6.2. 拦截器实现
 
 如果要实现自己的拦截器，需要实现接口Interceptor
 
@@ -2950,7 +3021,7 @@ public class MyIntercetor implements Interceptor {
 * setProperties
     * 允许在pluin元素中配置所需参数，方法在插件初始化就被调用了一次，然后把插件对象存入到配置中，以便以后取出来。
 
-### 1.5.3. 签名说明
+### 1.6.3. 签名说明
 
 **Signature**
 
@@ -3033,6 +3104,51 @@ public Object plugin(Object o) {
     return Plugin.wrap(o,this);
 }
 ```
+
+对于每次的sql操作，都会创建上面的四大对象，在创建的时候都会为它们创建插件的代理对象.
+```java
+
+//以下的方法是在类Configuration中
+public Executor newExecutor(Transaction transaction, ExecutorType executorType) {
+    .......
+
+    Executor executor = (Executor)this.interceptorChain.pluginAll(executor);
+    return executor;
+}
+
+public ParameterHandler newParameterHandler(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql) {
+    ParameterHandler parameterHandler = mappedStatement.getLang().createParameterHandler(mappedStatement, parameterObject, boundSql);
+    parameterHandler = (ParameterHandler)this.interceptorChain.pluginAll(parameterHandler);
+    return parameterHandler;
+}
+
+public ResultSetHandler newResultSetHandler(Executor executor, MappedStatement mappedStatement, RowBounds rowBounds, ParameterHandler parameterHandler, ResultHandler resultHandler, BoundSql boundSql) {
+    ResultSetHandler resultSetHandler = new DefaultResultSetHandler(executor, mappedStatement, parameterHandler, resultHandler, boundSql, rowBounds);
+    ResultSetHandler resultSetHandler = (ResultSetHandler)this.interceptorChain.pluginAll(resultSetHandler);
+    return resultSetHandler;
+}
+
+public StatementHandler newStatementHandler(Executor executor, MappedStatement mappedStatement, Object parameterObject, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) {
+    StatementHandler statementHandler = new RoutingStatementHandler(executor, mappedStatement, parameterObject, rowBounds, resultHandler, boundSql);
+    StatementHandler statementHandler = (StatementHandler)this.interceptorChain.pluginAll(statementHandler);
+    return statementHandler;
+}
+```
+通过interceptorChain.pluginAll来创建.interceptorChain在初始化时会将实现Interceptor的类加载进来(如果进行相关配置了的话)
+```java
+public class InterceptorChain {
+    private final List<Interceptor> interceptors = new ArrayList();
+    public Object pluginAll(Object target) {
+        Interceptor interceptor;
+        for(Iterator var2 = this.interceptors.iterator(); var2.hasNext(); target = interceptor.plugin(target)) {
+            interceptor = (Interceptor)var2.next();
+        }
+        return target;
+    }
+｝
+```
+
+
  可以看下wrap方法，其实现了JDK的接口InvocationHandler，也就是为传入的target创建了一个代理对象。这里使用了JDK动态代理方式。也可以自己实现其他代理方式，比如cglib.
 
 ```java
@@ -3049,6 +3165,7 @@ private final Map<Class<?>, Set<Method>> signatureMap;
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     try {
       Set<Method> methods = (Set)this.signatureMap.get(method.getDeclaringClass());
+      //签名中方法是否包含当前执行的method,有则执行插件的拦截方法，没有则直接调用方法
       return methods != null && methods.contains(method) ? this.interceptor.intercept(new Invocation(this.target, method, args)) : method.invoke(this.target, args);
       } catch (Exception var5) {
           throw ExceptionUtil.unwrapThrowable(var5);
@@ -3063,9 +3180,38 @@ private final Map<Class<?>, Set<Method>> signatureMap;
 
 否则直接调用method.invoke(this.target, args);
 
+### 1.6.4. 常用工具类MetaObject
 
+这是mybatis提供的工具类。由于四大对象中提供的setter非常少，当在插件中想要修改四大对象的属性就很麻烦。
 
-### 1.5.4. 在Spring中引入
+Ｍybatis通过MetaObject来实现这个功能
+
+```java
+//用于包装对象
+public static MetaObject forObject(Object object, ObjectFactory objectFactory, ObjectWrapperFactory objectWrapperFactory, ReflectorFactory reflectorFactory) 
+//获取对象中的值
+public Object getValue(String name)
+//设置对象中的值 
+public void setValue(String name, Object value) 
+```
+一般不直接使用第一个方法。而是通过 SystemMetaObject.forObject(Ｏbject obj）来间接调用。
+
+如下简单的例子
+```java
+class ClassA{
+  private ClassB clb;
+}
+class ClassB{
+  private String name;  
+}
+
+ClassA classA = new ClassA(new ClassB());
+MetaObject metaObject = SystemMetaObject.forObject(classA）;
+metaObject.setValue("clb.name","libai");
+String name = metaObject.getValue("clb.name");
+```
+
+### 1.6.5. 在Spring中引入
 
 **第一种方式:**
 
@@ -3126,7 +3272,7 @@ public class IntercetorConfiguration {
 由于上面定义的拦截器是拦截Executor的update方法，所以在执行insert,update,delete的操作时，将会被拦截。
 
 
-### 1.5.5. 实现一个插件
+### 1.6.6. 实现一个插件
 
 这里拦截StatementHandler的prepare方法，也就是SQL语句预编译之前进行SQL改写。
 
@@ -3144,6 +3290,11 @@ public class MyInterceptor implements Interceptor {
         //获取代理对象
         StatementHandler statementHandler =  (StatementHandler)invocation.getTarget();        
         MetaObject metaObject  = SystemMetaObject.forObject(statementHandler);
+        //由于目标类可能被多个拦截器拦截，从而形成多次代理，通过循环可以分离最原始的目标类
+        while (metaObject.hasGetter("h")){
+            Object object = metaObject.getValue("h");
+            metaObject = SystemMetaObject.forObject(object);
+        }
         /*
         statementHandler的默认实现是routingStatementHandler。这个类有一个属性statementHandler，属性名就叫delegate，而这个属性的默认实现又是preparedStatementHandler.后面这个类又有属性boundSql，所以，最终形成的写法就是delegate.boundSql。
         所以这也体现了MetaObject工具类的强大，可以通过实例传参，就可以根据属性名获取对应属性值
@@ -3195,10 +3346,10 @@ Statement需要定义statementType="STATEMENT"，这个时候SQL语句不需要�
   </select>
 ```
 
-## 1.6. 代码生成器
+## 1.7. 代码生成器
 <a href="#menu">目录</a>
 
-### 1.6.1. 创建需要生成的数据表
+### 1.7.1. 创建需要生成的数据表
 <a href="#menu">目录</a>
 
 数据表结构
@@ -3213,7 +3364,7 @@ CREATE TABLE `scheduler` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务调度表'
 ```
 
-### 1.6.2. 创建Mybatis代码自动生成配置文件
+### 1.7.2. 创建Mybatis代码自动生成配置文件
 <a href="#menu">目录</a>
 
 默认名称为：generatorConfig.xml
@@ -3312,7 +3463,7 @@ CREATE TABLE `scheduler` (
  </plugin>
 ```
 
-### 1.6.3. 配置运行
+### 1.7.3. 配置运行
 <a href="#menu">目录</a>
 
 选择Maven选项。 
@@ -3339,7 +3490,7 @@ Command line 填入：mybatis-generator:generate -e
 [INFO] ------------------------------------------------------------------------
 ```
 
-## 1.7. Mybatis整体架构
+## 1.8. Mybatis整体架构
 
 <a href="#menu">目录</a>
 
@@ -3348,7 +3499,7 @@ Command line 填入：mybatis-generator:generate -e
 MyBatis 的整体架构分为三层 ， 分别是基础支持层 、 核心处理层和接口层
 ![MyBatis 的整体架构](https://github.com/lgjlife/Java-Study/blob/master/pic/mybatis/mybatis.png?raw=true)
 
-### 1.7.1. 基础支持层
+### 1.8.1. 基础支持层
 <a href="#menu">目录</a>
 
 基础支持层包含整个 MyBatis 的基础模块，这些模块为核心处理层的功能提供了良好的支
@@ -3380,12 +3531,11 @@ MyBatis 对数据库中的事务进行了抽象，其自身提供了相应的事
 在优化系统性能时 ，优化数据库性能是非常重要的一个环节，而添加缓存则是优化数据库时最有效的手段之一。正确、合理地使用缓存可以将一部分数据库请求拦截在缓存这一层，如图 1-4 所示，这就能够减少相当一部分数据库的压力。MyBatis 中提供了一级缓存和二级缓存，而这两级缓存都是依赖于基础支持层中的缓存模块实现的。这里需要读者注意的是， MyBatis 中自带的这两级缓存与MyBatis 以及整个应用是运行在同一个 川币4 中的，共享同一块堆内存。如果这两级缓存中的数据量较大， 则可能影响系统中其他功能的运行，所以当需要缓存大量数据时 ，优先考虑使用 Redis 、 Memcache 等缓存产品。
 
 * **Binding 模块**
-通过前面的示例我们知道，在调用 SqISession 相应方法执行数据库操作时，需要指定映射文件中定义的 SQL 节点，如果出现拼写错误，我们只能在运行时才能发现相应的异常 。 为了尽早发现这种错误， MyBatis 通过 Binding 模块将用户自定义的 Mapper 接口与映射配置文件关联起来，系统可以通过调用自定义 Mapper 接口中的方法执行相应
-的 SQL 语句完成数据库操作，从而避免上述问题。
+通过前面的示例我们知道，在调用 SqISession 相应方法执行数据库操作时，需要指定映射文件中定义的 SQL 节点，如果出现拼写错误，我们只能在运行时才能发现相应的异常 。 为了尽早发现这种错误， MyBatis 通过 Binding 模块将用户自定义的 Mapper 接口与映射配置文件关联起来，系统可以通过调用自定义 Mapper 接口中的方法执行相应的 SQL 语句完成数据库操作，从而避免上述问题。
 
 值得读者注意的是，开发人员无须编写自定义 Mapper 接口的实现， MyBatis 会自动为其创建动态代理对象 。在有些场景中，自定义Mapper接口可以完全代替映射配置文件，但有的映射规则和 SQL 语句的定义还是写在映射配置文件中比较方便，例如动态 SQL语句的定义 。
 
-### 1.7.2. 核心处理层
+### 1.8.2. 核心处理层
 <a href="#menu">目录</a>
 
 介绍完 MyBatis 的基础支持层之后，我们来分析 MyBatis 的核心处理层。在核心处理层中实现了MyBatis的核心处理流程，其中包括MyBatis 的初始化以及完成一次数据库操作的涉及的全部流程 。
@@ -3404,12 +3554,12 @@ Mybatis 自身的功能虽然强大，但是并不能完美切合所有 的应�
 
 ![SQL执行流程](https://github.com/lgjlife/Java-Study/blob/master/pic/mybatis/mybatis-excute-sql.png?raw=true)
 
-### 1.7.3. 接口层
+### 1.8.3. 接口层
 <a href="#menu">目录</a>
 
 接口层相对简单，其核心是 SqlSession 接口，该接口中定义了 MyBatis 暴露给应用程序调用的 API，也就是上层应用与 MyBatis 交互的桥梁。接口层在接收到调用请求时，会调用核心处理层的相应模块来完成具体的数据库操作
 
-### 1.7.4. 模块说明
+### 1.8.4. 模块说明
 <a href="#menu">目录</a>
 
 * SqlSession 作为MyBatis工作的主要顶层API，表示和数据库交互的会话，完成必要数据库增删改查功能
@@ -3472,10 +3622,10 @@ public interface SqlSession extends Closeable {
 
 ```
 
-## 1.8. MyBatis实现原理
+## 1.9. MyBatis实现原理
 <a href="#menu">目录</a>
 
-### 1.8.1. 基本的例子
+### 1.9.1. 基本的例子
 <a href="#menu">目录</a>
 
 1. 获取SqlSession
@@ -3493,7 +3643,7 @@ mapper.xxx()
 ```
 
 
-### 1.8.2. 执行流程
+### 1.9.2. 执行流程
 <a href="#menu">目录</a>
 
 分析上面的执行流程
@@ -3503,7 +3653,7 @@ InputStream inputStream = Resources.getResourceAsStream(resource);
 SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream,prop);
 ```
 
-#### 1.8.2.1. 解析XML配置文件
+#### 1.9.2.1. 解析XML配置文件
 <a href="#menu">目录</a>
 
 上面的build()方法有两个作用:
@@ -3563,7 +3713,7 @@ private void parseConfiguration(XNode root) {
 }
 ```
 
-#### 1.8.2.2. 获取mapper对象
+#### 1.9.2.2. 获取mapper对象
 <a href="#menu">目录</a>
 
 getMapper()通过mapper的类类型获取mapper对象,这是SqlSession类中的方法,由于mapper文件是接口类型,因此这也是获取mapper的代理对象的过程
@@ -3631,7 +3781,7 @@ public class MapperProxyFactory<T> {
 }
 ```
 
-#### 1.8.2.3. 执行拦截
+#### 1.9.2.3. 执行拦截
 <a href="#menu">目录</a>
 
 MapperProxy是InvocationHandler的实现类,也就是说执行mapper的相关方法时,将会被invoke方法拦截.
@@ -3734,7 +3884,7 @@ public class MapperMethod {
 }
 ```
 
-#### 1.8.2.4. SqlSession处理
+#### 1.9.2.4. SqlSession处理
 <a href="#menu">目录</a>
 
 DefaultSqlSession是SqlSession的实现类
@@ -3788,7 +3938,7 @@ public int update(String statement, Object parameter) {
 //key为方法id
  protected final Map<String, MappedStatement> mappedStatements;
 ```
-#### 1.8.2.5. MappedStatement
+#### 1.9.2.5. MappedStatement
 <a href="#menu">目录</a>
 
 MappedStatement维护了一条< select|update|delete|insert>节点的封装
@@ -3822,7 +3972,7 @@ public final class MappedStatement {
     //setter getter  
 }
 ```
-#### 1.8.2.6. Executor
+#### 1.9.2.6. Executor
 <a href="#menu">目录</a>
 
 ![Executor](https://github.com/lgjlife/Java-Study/blob/master/pic/mybatis/Executor.png?raw=true)
@@ -3857,7 +4007,7 @@ public interface Executor {
 }
 ```
 
-##### 1.8.2.6.1. BaseExecutor
+##### 1.9.2.6.1. BaseExecutor
 
 BaseExecutor是一个抽象类，采用模板方法的设计模式。
 
@@ -4030,7 +4180,7 @@ protected abstract <E> Cursor<E> doQueryCursor(MappedStatement ms, Object parame
   throws SQLException;
 ```
 
-##### 1.8.2.6.2. SimpleExecutor
+##### 1.9.2.6.2. SimpleExecutor
 <a href="#menu">目录</a>
 
 最简单的执行器，根据对应的sql直接执行即可，不会做一些额外的操作；
@@ -4092,13 +4242,13 @@ public class SimpleExecutor extends BaseExecutor {
 }
 
 ```
-##### 1.8.2.6.3. BatchExecutor
+##### 1.9.2.6.3. BatchExecutor
 <a href="#menu">目录</a>
 通过批量操作来优化性能。通常需要注意的是批量更新操作，由于内部有缓存的实现，使用完成后记得调用flushStatements来清除缓存。
 
 
 
-##### 1.8.2.6.4. ReuseExecutor
+##### 1.9.2.6.4. ReuseExecutor
 <a href="#menu">目录</a>
 
 可重用的执行器，重用的对象是Statement，也就是说该执行器会缓存同一个sql的Statement，省去Statement的重新创建，优化性能。
@@ -4158,7 +4308,7 @@ public class ReuseExecutor extends BaseExecutor {
 }
 ```
 
-##### 1.8.2.6.5. CachingExecutor
+##### 1.9.2.6.5. CachingExecutor
 
 启用于二级缓存时的执行器；
 采用静态代理；代理一个 Executor 对象。
@@ -4220,7 +4370,7 @@ public class CachingExecutor implements Executor {
 从上面可以看出一级缓存是存放在Executor中的localCache,而Executor对象是存在SqlSession中,因此一级缓存是基于SqlSession,只要更换SqlSession,缓存就会失效
 而二级缓存是存放在MappedStatement中的cache变量,MappedStatement对象存放在mappedStatements中的,因此可以跨SqlSession.
 
-#### 1.8.2.7. Statement
+#### 1.9.2.7. Statement
 <a href="#menu">目录</a>
 
 
@@ -4283,7 +4433,7 @@ public class RoutingStatementHandler implements StatementHandler {
 ```
 
 
-#### 1.8.2.8. ResultSetHandler
+#### 1.9.2.8. ResultSetHandler
 <a href="#menu">目录</a>
 
 在StatementHandler里的查询,最后的结果都是交由ResultSetHandler来进行处理
@@ -4353,7 +4503,7 @@ public List<Object> handleResultSets(Statement stmt) throws SQLException {
 ```
 处理完成后将结果返回.上面就是mybatis的执行流程.
 
-#### 1.8.2.9. RowBounds分页说明
+#### 1.9.2.9. RowBounds分页说明
 <a href="#menu">目录</a>
 
 ```java
@@ -4392,12 +4542,12 @@ private <E> Object executeForMany(SqlSession sqlSession, Object[] args) {
 ```
 
 
-### 1.8.3. Mybatis 缓存
+### 1.9.3. Mybatis 缓存
 <a href="#menu">目录</a>
 
-#### 1.8.3.1. 基本概念
+#### 1.9.3.1. 基本概念
 
-##### 1.8.3.1.1. 基本介紹
+##### 1.9.3.1.1. 基本介紹
 <a href="#menu">目录</a>
 
 MyBatis内置了查询缓存,包括一级缓存和二级缓存.
@@ -4412,7 +4562,7 @@ MyBatis内置了查询缓存,包括一级缓存和二级缓存.
 
 **注意:**缓存使用的是堆内存，使用前应确认是否是必须的，也需要配置好回收策略，避免出现频繁的垃圾回收。
 
-##### 1.8.3.1.2. 基本配置
+##### 1.9.3.1.2. 基本配置
 
 全局缓存使能,默认使能,也就是以及缓存是打开的.
 ```yml
@@ -4480,39 +4630,6 @@ public @interface CacheNamespaceRef {
 
 
 
-
-这个示例展示了如何使用一个自定义的缓存实现。type 属性指定的类必须实现 org.mybatis.cache.Cache 接口，且提供一个接受 String 参数作为 id 的构造器。 这个接口是 MyBatis 框架中许多复杂的接口之一，但是行为却非常简单。
-```java
-public interface Cache {
-  String getId();
-  int getSize();
-  void putObject(Object key, Object value);
-  Object getObject(Object key);
-  boolean hasKey(Object key);
-  Object removeObject(Object key);
-  void clear();
-}
-```
-
-为了对你的缓存进行配置，只需要简单地在你的缓存实现中添加公有的 JavaBean 属性，然后通过 cache 元素传递属性值，例如，下面的例子将在你的缓存实现上调用一个名为 setCacheFile(String file) 的方法：
-```xml
-<cache type="com.domain.something.MyCustomCache">
-  <property name="cacheFile" value="/tmp/my-custom-cache.tmp"/>
-</cache>
-```
-
-你可以使用所有简单类型作为 JavaBean 属性的类型，MyBatis 会进行转换。 你也可以使用占位符（如 ${cache.file}），以便替换成在配置文件属性中定义的值。
-
-从版本 3.4.2 开始，MyBatis 已经支持在所有属性设置完毕之后，调用一个初始化方法。 如果想要使用这个特性，请在你的自定义缓存类里实现 org.apache.ibatis.builder.InitializingObject 接口。
-
-```java
-public interface InitializingObject {
-  void initialize() throws Exception;
-}
-```
-
-提示 上一节中对缓存的配置（如清除策略、可读或可读写等），不能应用于自定义缓存。
-
 请注意，缓存的配置和缓存实例会被绑定到 SQL 映射文件的命名空间中。 因此，同一命名空间中的所有语句和缓存将通过命名空间绑定在一起。 每条语句可以自定义与缓存交互的方式，或将它们完全排除于缓存之外，这可以通过在每条语句上使用两个简单属性来达成。 默认情况下，语句会这样来配置：
 
 ```xml
@@ -4525,6 +4642,7 @@ public interface InitializingObject {
 鉴于这是默认行为，显然你永远不应该以这样的方式显式配置一条语句。但如果你想改变默认的行为，只需要设置 flushCache 和 useCache 属性。比如，某些情况下你可能希望特定 select 语句的结果排除于缓存之外，或希望一条 select 语句清空缓存。类似地，你可能希望某些 update 语句执行时不要刷新缓存。
 
 **cache-ref**
+
 回想一下上一节的内容，对某一命名空间的语句，只会使用该命名空间的缓存进行缓存或刷新。 但你可能会想要在多个命名空间中共享相同的缓存配置和实例。要实现这种需求，你可以使用 cache-ref 元素来引用另一个缓存。
 
 ```xml
@@ -4532,10 +4650,10 @@ public interface InitializingObject {
 ```
 
 
-#### 1.8.3.2. 缓存顶层接口
+#### 1.9.3.2. 缓存顶层接口
 <a href="#menu">目录</a>
 
-##### 1.8.3.2.1. Cache接口以及实现类
+##### 1.9.3.2.1. Cache接口以及实现类
 
 Mybatis的缓存是通过Cache接口以及其子类实现的.
 ```java
@@ -4565,7 +4683,7 @@ public interface Cache {
 * TransactionalCache
 * WeakCache  
 
-##### 1.8.3.2.2. CacheKey创建
+##### 1.9.3.2.2. CacheKey创建
 
 CacheKey是缓存的键对象,根据SQL的ID，参数，SQL本身，分页参数以及JDBC的参数信息构成。
 
@@ -4665,10 +4783,10 @@ BaseExecutor中获取CacheKey对象
   }
 ```
 
-#### 1.8.3.3. 缓存实现类
+#### 1.9.3.3. 缓存实现类
 <a href="#menu">目录</a>
 
-##### 1.8.3.3.1. PerpetualCache
+##### 1.9.3.3.1. PerpetualCache
 <a href="#menu">目录</a>
 
 PerpetualCache使用HashMap来存储查询结果，也是一级缓存的实现方式。由于MyBatis每次查询都会创建一个SqlSession,且一级缓存的生命周期和SqlSession。因此每次只有一级缓存时都会找不到缓存数据，都要重新从数据库读取。除非手动创建SqlSession并且每次都使用该SqlSession查询。
@@ -4687,7 +4805,7 @@ public class PerpetualCache implements Cache {
 }
 ```
 
-##### 1.8.3.3.2. BlockingCache
+##### 1.9.3.3.2. BlockingCache
 <a href="#menu">目录</a>
 
 BlockingCache 是阻塞版本的缓存装饰器，它保证只有一个线程到数据库中查找指定key对应的数据。
@@ -4719,7 +4837,7 @@ public class BlockingCache implements Cache {
 }
 ```
 
-##### 1.8.3.3.3. FifoCache
+##### 1.9.3.3.3. FifoCache
 <a href="#menu">目录</a>
  
 按照先进先出方式异常对象。这里使用一个队列来实现。每次插入缓存时查看缓存对象数量是否超过最大size。eviction＝"FIFO"时使用。
@@ -4748,7 +4866,7 @@ public class FifoCache implements Cache {
 }
 ```
 
-##### 1.8.3.3.4. LoggingCache
+##### 1.9.3.3.4. LoggingCache
 <a href="#menu">目录</a>
 
 使能日志输出时，会打印当前的缓存命中率
@@ -4770,7 +4888,7 @@ public class LoggingCache implements Cache {
 }
 ```
 
-##### 1.8.3.3.5. LruCache
+##### 1.9.3.3.5. LruCache
 <a href="#menu">目录</a>
 
 最近最少使用：移除最长时间不被使用的对象
@@ -4817,7 +4935,7 @@ public class LruCache implements Cache {
 }
 ```
 
-##### 1.8.3.3.6. ScheduledCache
+##### 1.9.3.3.6. ScheduledCache
 <a href="#menu">目录</a>
 
 定时清理所有的缓存
@@ -4841,7 +4959,7 @@ public class ScheduledCache implements Cache {
 }
 ```
 
-##### 1.8.3.3.7. SerializedCache
+##### 1.9.3.3.7. SerializedCache
 <a href="#menu">目录</a>
 
 存储的是序列化之后的数据，因此读取的反序列化的数据。当readOnly=false时使用，优点是随便对缓存对象更改，不用考虑是否会影响其他线程的使用。缺点由于要序列化，因此性能会偏差些。
@@ -4865,7 +4983,7 @@ public class SerializedCache implements Cache {
 ```
 
 
-##### 1.8.3.3.8. SoftCache
+##### 1.9.3.3.8. SoftCache
 <a href="#menu">目录</a>
 
 使用SoftReference来实现软引用，当内存不足时，缓存会被回收
@@ -4916,25 +5034,25 @@ public class SoftCache implements Cache {
 ```
 
 
-##### 1.8.3.3.9. SynchronizedCache
+##### 1.9.3.3.9. SynchronizedCache
 <a href="#menu">目录</a>
 
 
-##### 1.8.3.3.10. TransactionalCache
+##### 1.9.3.3.10. TransactionalCache
 <a href="#menu">目录</a>
 
 
 
-##### 1.8.3.3.11. WeakCache  
+##### 1.9.3.3.11. WeakCache  
 <a href="#menu">目录</a>
 
 使用WeakReference来实现弱引用，当垃圾收集器进行垃圾回收时，缓存会被回收
 
 
-#### 1.8.3.4. 缓存实现原理
+#### 1.9.3.4. 缓存实现原理
 
 
-##### 1.8.3.4.1. 一级缓存／二级缓存实现原理
+##### 1.9.3.4.1. 一级缓存／二级缓存实现原理
 
 ```java
 public <E> List<E> query(MappedStatement ms, Object parameterObject, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql) throws SQLException {
@@ -4977,21 +5095,35 @@ MappedStatement保存的mapper.xml文件中每个操作方法的信息，其id�
 
 一级缓存由于每次都是创建新的PerpetualCache对象，因此没有对其中的hashmap属性的size进行限制,因为查询完成，就失去了强引用，在合适的时候会被垃圾收集器回收。二级缓存会默认设置缓存的大小。
 
-#### 1.8.3.5. 使用自定义缓存
+#### 1.9.3.5. 使用自定义缓存
 <a href="#menu">目录</a>
 
 
 除了上述自定义缓存的方式，你也可以通过实现你自己的缓存，或为其他第三方缓存方案(比如redis)创建适配器，来完全覆盖缓存行为。
 
 ```xml
-<cache type="com.domain.something.MyCustomCache"/>
+<cache type="com.domain.something.MyCustomCache">
+  <property name="host" value="localhost"/>
+</cache>
+```
+MyCustomCache中有setHost就会自动调用设置host.
+
+从版本 3.4.2 开始，MyBatis 已经支持在所有属性设置完毕之后，调用一个初始化方法。 如果想要使用这个特性，请在你的自定义缓存类里实现 org.apache.ibatis.builder.InitializingObject 接口。
+
+```java
+public interface InitializingObject {
+  void initialize() throws Exception;
+}
 ```
 
+对缓存的配置（如清除策略、可读或可读写等），不能应用于自定义缓存。
 
-## 1.9. SpringBoot集成Ｍybatis
+
+
+## 1.10. SpringBoot集成Ｍybatis
 <a href="#menu">目录</a>
 
-### 1.9.1. 依赖
+### 1.10.1. 依赖
 
 ```xml
 <!--mybatis　atarter-->
@@ -5009,7 +5141,7 @@ MappedStatement保存的mapper.xml文件中每个操作方法的信息，其id�
 </dependency>
 ```
 
-### 1.9.2. yml配置
+### 1.10.2. yml配置
 
 先使用插件生成mybatis的mapper和pojo文件。
 
@@ -5048,7 +5180,7 @@ mybatis:
     default-executor-type: simple
     cache-enabled: true
 ```
-### 1.9.3. 启动类添加注解
+### 1.10.3. 启动类添加注解
 
 @MapperScan用于定义Mapper.java文件的位置，springboot将会生成mapper接口的代理对象并注入容器中。
 
@@ -5066,7 +5198,7 @@ public class MybatisApplication {
 UserDeleteMapper userDeleteMapper;
 ```
 
-### 1.9.4. 使用druid连接池
+### 1.10.4. 使用druid连接池
 
 ```xml
 <dependency>
@@ -5086,3 +5218,5 @@ apache已经出了一套完美支持SpringBoot的方案所以说我们不使用�
 </dependency>
 ```
 更多使用方法参考[druid-starter](https://github.com/alibaba/druid/tree/master/druid-spring-boot-starter)
+
+##　实用场景
