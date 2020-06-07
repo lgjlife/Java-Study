@@ -85,32 +85,32 @@
             - [1.8.2.8. ResultSetHandler](#1828-resultsethandler)
             - [1.8.2.9. RowBounds分页说明](#1829-rowbounds分页说明)
         - [1.8.3. Mybatis 缓存](#183-mybatis-缓存)
-            - [1.8.3.1. 基本介紹](#1831-基本介紹)
-            - [1.8.3.2. 基本配置](#1832-基本配置)
-        - [1.8.4. 缓存顶层接口](#184-缓存顶层接口)
-            - [1.8.4.1. Cache接口以及实现类](#1841-cache接口以及实现类)
-            - [1.8.4.2. CacheKey创建](#1842-cachekey创建)
-        - [1.8.5. 缓存实现类](#185-缓存实现类)
-            - [1.8.5.1. PerpetualCache](#1851-perpetualcache)
-            - [1.8.5.2. BlockingCache](#1852-blockingcache)
-            - [1.8.5.3. FifoCache](#1853-fifocache)
-            - [1.8.5.4. LoggingCache](#1854-loggingcache)
-            - [1.8.5.5. LruCache](#1855-lrucache)
-            - [1.8.5.6. ScheduledCache](#1856-scheduledcache)
-            - [1.8.5.7. SerializedCache](#1857-serializedcache)
-            - [1.8.5.8. SoftCache](#1858-softcache)
-            - [1.8.5.9. SynchronizedCache](#1859-synchronizedcache)
-            - [1.8.5.10. TransactionalCache](#18510-transactionalcache)
-            - [1.8.5.11. WeakCache](#18511-weakcache)
-    - [1.9. 缓存实现原理](#19-缓存实现原理)
-        - [1.9.1. 一级缓存实现原理](#191-一级缓存实现原理)
-        - [1.9.2. 二级缓存实现原理](#192-二级缓存实现原理)
-    - [1.10. 使用自定义缓存](#110-使用自定义缓存)
-    - [1.11. SpringBoot集成Ｍybatis](#111-springboot集成ｍybatis)
-        - [1.11.1. 依赖](#1111-依赖)
-        - [1.11.2. yml配置](#1112-yml配置)
-        - [1.11.3. 启动类添加注解](#1113-启动类添加注解)
-        - [1.11.4. 使用druid连接池](#1114-使用druid连接池)
+            - [1.8.3.1. 基本概念](#1831-基本概念)
+                - [1.8.3.1.1. 基本介紹](#18311-基本介紹)
+                - [1.8.3.1.2. 基本配置](#18312-基本配置)
+            - [1.8.3.2. 缓存顶层接口](#1832-缓存顶层接口)
+                - [1.8.3.2.1. Cache接口以及实现类](#18321-cache接口以及实现类)
+                - [1.8.3.2.2. CacheKey创建](#18322-cachekey创建)
+            - [1.8.3.3. 缓存实现类](#1833-缓存实现类)
+                - [1.8.3.3.1. PerpetualCache](#18331-perpetualcache)
+                - [1.8.3.3.2. BlockingCache](#18332-blockingcache)
+                - [1.8.3.3.3. FifoCache](#18333-fifocache)
+                - [1.8.3.3.4. LoggingCache](#18334-loggingcache)
+                - [1.8.3.3.5. LruCache](#18335-lrucache)
+                - [1.8.3.3.6. ScheduledCache](#18336-scheduledcache)
+                - [1.8.3.3.7. SerializedCache](#18337-serializedcache)
+                - [1.8.3.3.8. SoftCache](#18338-softcache)
+                - [1.8.3.3.9. SynchronizedCache](#18339-synchronizedcache)
+                - [1.8.3.3.10. TransactionalCache](#183310-transactionalcache)
+                - [1.8.3.3.11. WeakCache](#183311-weakcache)
+            - [1.8.3.4. 缓存实现原理](#1834-缓存实现原理)
+                - [1.8.3.4.1. 一级缓存／二级缓存实现原理](#18341-一级缓存／二级缓存实现原理)
+            - [1.8.3.5. 使用自定义缓存](#1835-使用自定义缓存)
+    - [1.9. SpringBoot集成Ｍybatis](#19-springboot集成ｍybatis)
+        - [1.9.1. 依赖](#191-依赖)
+        - [1.9.2. yml配置](#192-yml配置)
+        - [1.9.3. 启动类添加注解](#193-启动类添加注解)
+        - [1.9.4. 使用druid连接池](#194-使用druid连接池)
 
 <!-- /TOC -->
 
@@ -4395,22 +4395,24 @@ private <E> Object executeForMany(SqlSession sqlSession, Object[] args) {
 ### 1.8.3. Mybatis 缓存
 <a href="#menu">目录</a>
 
-#### 1.8.3.1. 基本介紹
+#### 1.8.3.1. 基本概念
+
+##### 1.8.3.1.1. 基本介紹
 <a href="#menu">目录</a>
 
 MyBatis内置了查询缓存,包括一级缓存和二级缓存.
 
 **一级缓存**
-* 一级缓存默认开启，存在SqlSession的生命周期中。也就是缓存共享于同一个SqlSession
-* 在同一个SqlSession查询中，Mybatis会把执行的方法和参数通过一定的方法生成缓存的键值，将键值和查询结果存入一个map中BaseExecutor
 
+每当我们使用MyBatis开启一次和数据库的会话，MyBatis会创建出一个SqlSession对象表示一次数据库会话。MyBatis会在表示会话的SqlSession对象中建立一个简单的缓存，将每次查询到的结果结果缓存起来，当下次查询的时候，如果判断先前有个完全一样的查询，会直接从缓存中直接将结果取出，返回给用户，不需要再进行一次数据库查询了.但是由于每次查询都会创建sqlsession，即使是在同一个线程中多次查询，因此这个一级缓存基本没有，每次依然会从数据库进行查询。除非你手动创建sqlSession进行多次查询。 一级缓存默认开启，存在SqlSession的生命周期中。也就是缓存共享于同一个SqlSession。在同一个SqlSession查询中，Mybatis会把执行的方法和参数通过一定的方法生成缓存的键
 
 **二级缓存**
-* 二级缓存存在于SqlSessionFactory生命周期中，也就是缓存共享于同一个SqlSessionFactory。一般全局只创建一个SqlSessionFactory。所以二级缓存是全局有效的。
+
+二级缓存存在于SqlSessionFactory生命周期中，也就是缓存共享于同一个SqlSessionFactory。一般全局只创建一个SqlSessionFactory。所以二级缓存是全局有效的。同时用户还可以通过实现接口Cache来实现自定义缓存。
 
 **注意:**缓存使用的是堆内存，使用前应确认是否是必须的，也需要配置好回收策略，避免出现频繁的垃圾回收。
 
-#### 1.8.3.2. 基本配置
+##### 1.8.3.1.2. 基本配置
 
 全局缓存使能,默认使能,也就是以及缓存是打开的.
 ```yml
@@ -4530,10 +4532,10 @@ public interface InitializingObject {
 ```
 
 
-### 1.8.4. 缓存顶层接口
+#### 1.8.3.2. 缓存顶层接口
 <a href="#menu">目录</a>
 
-#### 1.8.4.1. Cache接口以及实现类
+##### 1.8.3.2.1. Cache接口以及实现类
 
 Mybatis的缓存是通过Cache接口以及其子类实现的.
 ```java
@@ -4563,7 +4565,7 @@ public interface Cache {
 * TransactionalCache
 * WeakCache  
 
-#### 1.8.4.2. CacheKey创建
+##### 1.8.3.2.2. CacheKey创建
 
 CacheKey是缓存的键对象,根据SQL的ID，参数，SQL本身，分页参数以及JDBC的参数信息构成。
 
@@ -4606,6 +4608,16 @@ public class CacheKey implements Cloneable, Serializable {
     }
 }
 ```
+
+MyBatis认为，对于两次查询，如果以下条件都完全一样，那么就认为它们是完全相同的两次查询:
+* 传入的 statementId 
+  * 传入的statementId，对于MyBatis而言，你要使用它，必须需要一个statementId，它代表着你将执行什么样的Sql.也就是mapper.java中的方法全限定名称:"com.xxx.XxxMapper.selectAll"
+* 查询时要求的结果集中的结果范围 （结果的范围通过rowBounds.offset和rowBounds.limit表示）；
+  * MyBatis自身提供的分页功能是通过RowBounds来实现的，它通过rowBounds.offset和rowBounds.limit来过滤查询出来的结果集，这种分页功能是基于查询结果的再过滤，而不是进行数据库的物理分页
+* 这次查询所产生的最终要传递给JDBC java.sql.Preparedstatement的Sql语句字符串（boundSql.getSql() ）
+  * SQL语句本身，如果使用Preparedstatement则是带?的sql
+* 传递给java.sql.Statement要设置的参数值
+  
 
 BaseExecutor中获取CacheKey对象
 ```java
@@ -4653,10 +4665,10 @@ BaseExecutor中获取CacheKey对象
   }
 ```
 
-### 1.8.5. 缓存实现类
+#### 1.8.3.3. 缓存实现类
 <a href="#menu">目录</a>
 
-#### 1.8.5.1. PerpetualCache
+##### 1.8.3.3.1. PerpetualCache
 <a href="#menu">目录</a>
 
 PerpetualCache使用HashMap来存储查询结果，也是一级缓存的实现方式。由于MyBatis每次查询都会创建一个SqlSession,且一级缓存的生命周期和SqlSession。因此每次只有一级缓存时都会找不到缓存数据，都要重新从数据库读取。除非手动创建SqlSession并且每次都使用该SqlSession查询。
@@ -4675,7 +4687,7 @@ public class PerpetualCache implements Cache {
 }
 ```
 
-#### 1.8.5.2. BlockingCache
+##### 1.8.3.3.2. BlockingCache
 <a href="#menu">目录</a>
 
 BlockingCache 是阻塞版本的缓存装饰器，它保证只有一个线程到数据库中查找指定key对应的数据。
@@ -4707,7 +4719,7 @@ public class BlockingCache implements Cache {
 }
 ```
 
-#### 1.8.5.3. FifoCache
+##### 1.8.3.3.3. FifoCache
 <a href="#menu">目录</a>
  
 按照先进先出方式异常对象。这里使用一个队列来实现。每次插入缓存时查看缓存对象数量是否超过最大size。eviction＝"FIFO"时使用。
@@ -4736,7 +4748,7 @@ public class FifoCache implements Cache {
 }
 ```
 
-#### 1.8.5.4. LoggingCache
+##### 1.8.3.3.4. LoggingCache
 <a href="#menu">目录</a>
 
 使能日志输出时，会打印当前的缓存命中率
@@ -4758,7 +4770,7 @@ public class LoggingCache implements Cache {
 }
 ```
 
-#### 1.8.5.5. LruCache
+##### 1.8.3.3.5. LruCache
 <a href="#menu">目录</a>
 
 最近最少使用：移除最长时间不被使用的对象
@@ -4805,7 +4817,7 @@ public class LruCache implements Cache {
 }
 ```
 
-#### 1.8.5.6. ScheduledCache
+##### 1.8.3.3.6. ScheduledCache
 <a href="#menu">目录</a>
 
 定时清理所有的缓存
@@ -4829,7 +4841,7 @@ public class ScheduledCache implements Cache {
 }
 ```
 
-#### 1.8.5.7. SerializedCache
+##### 1.8.3.3.7. SerializedCache
 <a href="#menu">目录</a>
 
 存储的是序列化之后的数据，因此读取的反序列化的数据。当readOnly=false时使用，优点是随便对缓存对象更改，不用考虑是否会影响其他线程的使用。缺点由于要序列化，因此性能会偏差些。
@@ -4853,7 +4865,7 @@ public class SerializedCache implements Cache {
 ```
 
 
-#### 1.8.5.8. SoftCache
+##### 1.8.3.3.8. SoftCache
 <a href="#menu">目录</a>
 
 使用SoftReference来实现软引用，当内存不足时，缓存会被回收
@@ -4904,31 +4916,68 @@ public class SoftCache implements Cache {
 ```
 
 
-#### 1.8.5.9. SynchronizedCache
+##### 1.8.3.3.9. SynchronizedCache
 <a href="#menu">目录</a>
 
 
-#### 1.8.5.10. TransactionalCache
+##### 1.8.3.3.10. TransactionalCache
 <a href="#menu">目录</a>
 
 
 
-#### 1.8.5.11. WeakCache  
+##### 1.8.3.3.11. WeakCache  
 <a href="#menu">目录</a>
 
 使用WeakReference来实现弱引用，当垃圾收集器进行垃圾回收时，缓存会被回收
 
 
-## 1.9. 缓存实现原理
+#### 1.8.3.4. 缓存实现原理
 
 
-### 1.9.1. 一级缓存实现原理
+##### 1.8.3.4.1. 一级缓存／二级缓存实现原理
 
+```java
+public <E> List<E> query(MappedStatement ms, Object parameterObject, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql) throws SQLException {
+        //从MappedStatement里获取cache
+        //对于一级缓存，mybatis不会初始化MappedStatement的cache属性，因此返回的是null
+        //二级缓存返回的是已经创建好的cache实现类
+        Cache cache = ms.getCache();
+        if (cache != null) {
+          //二级缓存处理
+            this.flushCacheIfRequired(ms);
+            if (ms.isUseCache() && resultHandler == null) {
+                this.ensureNoOutParams(ms, boundSql);
+                //从缓存中查询
+                List<E> list = (List)this.tcm.getObject(cache, key);
+                if (list == null) {
+                  //缓存不存在，则从数据库中查询
+                    list = this.delegate.query(ms, parameterObject, rowBounds, resultHandler, key, boundSql);
+                    //写入缓存
+                    this.tcm.putObject(cache, key, list);
+                }
 
-### 1.9.2. 二级缓存实现原理
+                return list;
+            }
+        }
+        //一级缓存处理
+        //最后是调用BaseExecutor的query进行处理
+        //因为每次新的查询都会创建BaseExecutor，BaseExecutor的cache属性就是在创建BaseExecutor时进行初始化，也就是创建PerpetualCache对象
+        return this.delegate.query(ms, parameterObject, rowBounds, resultHandler, key, boundSql);
+    }
+```
+MappedStatement保存的mapper.xml文件中每个操作方法的信息，其id就是每个方法的全限定名称。
 
+![MappedStatement](pic/mybatis/MappedStatement.png)
 
-## 1.10. 使用自定义缓存
+可以看到这里初始化了cache属性，通过装饰器模式实现级联。
+
+![MappedStatement-cache](pic/mybatis/MappedStatement-cache.png)
+
+对于mybatis，如果使用接口方式查询(不是手动创建sqlSession),就算在同一个线程里，每次都会创建新的sqlSession和Excutor.对于一级缓存，一级缓存的实现类PerpetualCache每次都会创建新的对象，所以之前的缓存就不存在。而对于二级缓存，都会复用PerpetualCache和其他实现类，所以之前存储的缓存就能够查找到。mybatis就是通过是否重用缓存实现类来实现缓存是基于SqlSession有效还是全局有效。这里不管是一级缓存还是二级缓存都是通过PerpetualCache类的HashMap来存储缓存，其他缓存实现类（比如FifoCache等）只不过是扩展了缓存的功能，通过装饰器模式进行扩展。
+
+一级缓存由于每次都是创建新的PerpetualCache对象，因此没有对其中的hashmap属性的size进行限制,因为查询完成，就失去了强引用，在合适的时候会被垃圾收集器回收。二级缓存会默认设置缓存的大小。
+
+#### 1.8.3.5. 使用自定义缓存
 <a href="#menu">目录</a>
 
 
@@ -4939,10 +4988,10 @@ public class SoftCache implements Cache {
 ```
 
 
-## 1.11. SpringBoot集成Ｍybatis
+## 1.9. SpringBoot集成Ｍybatis
 <a href="#menu">目录</a>
 
-### 1.11.1. 依赖
+### 1.9.1. 依赖
 
 ```xml
 <!--mybatis　atarter-->
@@ -4960,7 +5009,7 @@ public class SoftCache implements Cache {
 </dependency>
 ```
 
-### 1.11.2. yml配置
+### 1.9.2. yml配置
 
 先使用插件生成mybatis的mapper和pojo文件。
 
@@ -4999,7 +5048,7 @@ mybatis:
     default-executor-type: simple
     cache-enabled: true
 ```
-### 1.11.3. 启动类添加注解
+### 1.9.3. 启动类添加注解
 
 @MapperScan用于定义Mapper.java文件的位置，springboot将会生成mapper接口的代理对象并注入容器中。
 
@@ -5017,7 +5066,7 @@ public class MybatisApplication {
 UserDeleteMapper userDeleteMapper;
 ```
 
-### 1.11.4. 使用druid连接池
+### 1.9.4. 使用druid连接池
 
 ```xml
 <dependency>
