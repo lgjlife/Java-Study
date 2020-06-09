@@ -4736,7 +4736,8 @@ public class RoutingStatementHandler implements StatementHandler {
 #### 1.10.2.8. ResultSetHandler
 <a href="#menu">目录</a>
 
-在StatementHandler里的查询,最后的结果都是交由ResultSetHandler来进行处理
+在StatementHandler接口在执行完指定的select语句之后，会将查询得到的结果集交给ResultSetHandler 完成映射处理。 ResultSetHandler 除了负责映射select语句查询得到的结果集，还会处理存储过程执行后的输出参数。
+
 ```java
 public <E> List<E> query(Statement statement, ResultHandler resultHandler) throws SQLException {
     PreparedStatement ps = (PreparedStatement)statement;
@@ -5813,6 +5814,16 @@ public class SysUser {
 
 由于columnPrefix为'role_',所以查询sql要添加前缀role_　：　r.role_name role_role_name,
 
+查询过程
+```yml
+==>  Preparing: select u.id, u.user_name , u.user_password , u.user_email , u.create_time , u.sex , u.gender , u.user_info , r.id role_id, r.role_name role_role_name, r.enable role_enable, r.create_by role_create_by, r.create_time role_create_time from sys_user u inner join sys_user_role ur on u.id =ur.user_id inner join sys_role r on ur.role_id =r.id where u.id=? 
+==> Parameters: 1001(Long)
+<==    Columns: id, user_name, user_password, user_email, create_time, sex, gender, user_info, role_id, role_role_name, role_enable, role_create_by, role_create_time
+<==        Row: 1001, test, 123456, test@mybatis.com, 2020-06-08 11:12:00, 1, 女, <<BLOB>>, 1, 管理员, 1, libai, 2020-06-08 11:12:00
+<==      Total: 1
+```
+
+
 **方式4: association标签的嵌套查询**
 
 association标签的嵌套查询常用的属性如下。
@@ -5820,6 +5831,467 @@ association标签的嵌套查询常用的属性如下。
 * column： 列名（或别名），将主查询中列的结果作为嵌套查询的参数， 配置方式如column={prop1=col1， prop2=col2}， prop1和prop2将作为嵌套查询的参数。
 * fetchType： 数据加载方式， 可选值为lazy和eager， 分别为延迟加载和积极加载， 这个配置会覆盖全局的lazyLoadingEnabled配置。
 
+```xml
+<!--role xml　里面的selectByPrimaryKey定义，
+注意这里不能使用parameterType，否则会报错：java.lang.NoSuchMethodException: java.lang.Long
+应该是因为配置了ParameterType 后Mybatis 会自动创建对象并且设置参数. 但java.lang.Long 没有空参数的构造函数报错. 去掉parameterType 后, Mybatis 会自动进行类型匹配.
+-->
+ <select id="selectByPrimaryKey"  resultMap="BaseResultMap">
+    select id, role_name, enable, create_by, create_time
+    from sys_role
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+<resultMap id="userRoleResultMap"
+            extends="BaseResultMap"
+            type="com.springboot.mybatis.model.SysUser">
+  <association property="role"
+                column="{id=role_id}"
+                select="com.springboot.mybatis.mapper.SysRoleMapper.selectByPrimaryKey" />
+</resultMap>
+
+<select id="selectUserAndRoleById" resultMap="userRoleResultMap">
+  select
+    u.id,
+    u.user_name ,
+    u.user_password ,
+    u.user_email ,
+    u.create_time ,
+    u.sex ,
+    u.gender ,
+    u.user_info ,
+    ur.role_id
+  from sys_user u
+  inner join sys_user_role ur on u.id =ur.user_id
+  where u.id=#{id}
+</select>
+```
+
+查询过程
+```yml
+//第一次查询
+==>  Preparing: select u.id, u.user_name , u.user_password , u.user_email , u.create_time , u.sex , u.gender , u.user_info , ur.role_id from sys_user u inner join sys_user_role ur on u.id =ur.user_id where u.id=? 
+==> Parameters: 1001(Long)
+<==    Columns: id, user_name, user_password, user_email, create_time, sex, gender, user_info, role_id
+<==        Row: 1001, test, 123456, test@mybatis.com, 2020-06-08 11:12:00, 1, 女, <<BLOB>>, 1
+
+//第二次查询
+====>  Preparing: select id, role_name, enable, create_by, create_time from sys_role where id = ? 
+====> Parameters: 1(Long)
+<====    Columns: id, role_name, enable, create_by, create_time
+<====        Row: 1, 管理员, 1, libai, 2020-06-08 11:12:00
+<====      Total: 1
+<==      Total: 1
+```
+从日志可以看出，执行了两次查询。
+
+下面使用fetchTy实现懒加载，某些情况下，如果user中有很多role类似的参数需要查询，但是有些属性并不是必须的，这时候可以使用懒加载，需要的时候才加载。将fetchType设置为true。除此之外，还要将全局配置aggressive-lazy-loading设置为false.在 MyBatis 的全局配置中， 有一个参数为 aggressiveLazyLoadin。 这个参数的含义是， 当该参数设置为true时， 对任意延迟属性的调用会使带有延迟加载属性的对象完整加载， 反之， 每种属性都将按需加载。就是因为这个参数默认为 true， 所以当查询sys_user过后并给SysUser对象赋值时， 会调用该对象其他属性的setter方法， 这也会触发上述规则， 导致本该延迟加载的属性直接加载。 为了避免这种情况， 需要在mybatis-config.xml中添加如下配置。
+
+```yml
+mybatis:
+  configuration:
+    aggressive-lazy-loading: false
+```
+```xml
+<resultMap id="userRoleResultMap"
+            extends="BaseResultMap"
+            type="com.springboot.mybatis.model.SysUser">
+  <association property="role"
+                column="{id=role_id}"
+                fetchType="true"
+                select="com.springboot.mybatis.mapper.SysRoleMapper.selectByPrimaryKey" />
+</resultMap>
+```
+
+这里需要注意的是，如果实体字段上加有FetchType.LAZY，并使用jackson序列化为json串时，会遇到SerializationFeature.FAIL_ON_EMPTY_BEANS异常。
+因此，需要修改jackson的配置
+```java
+@Component
+@Slf4j
+public class JacksonConfiguration  implements ApplicationContextAware {
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        ObjectMapper objectMapper =  applicationContext.getBean(ObjectMapper.class);
+        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS,false);
+        log.info("objectMapper　＝　" + objectMapper);
+    }
+}
+```
+
+应用调用
+```java
+SysUser  sysUser = sysUserService.selectUserAndRoleById();
+log.info("获取角色信息");
+sysUser.getRole();
+```
+查询过程
+```yml
+==>  Preparing: select u.id, u.user_name , u.user_password , u.user_email , u.create_time , u.sex , u.gender , u.user_info , ur.role_id from sys_user u inner join sys_user_role ur on u.id =ur.user_id where u.id=? 
+==> Parameters: 1001(Long)
+<==    Columns: id, user_name, user_password, user_email, create_time, sex, gender, user_info, role_id
+<==        Row: 1001, test, 123456, test@mybatis.com, 2020-06-08 11:12:00, 1, 女, <<BLOB>>, 1
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@185feeef]
+
+2020-06-09 20:17:02.189  INFO 27454 --- [nio-8080-exec-1] c.s.m.controller.SysUserController       : 获取角色信息
+
+JDBC Connection [HikariProxyConnection@1219654394 wrapping com.mysql.cj.jdbc.ConnectionImpl@3c747200] will not be managed by Spring
+==>  Preparing: select id, role_name, enable, create_by, create_time from sys_role where id = ? 
+==> Parameters: 1(Long)
+<==    Columns: id, role_name, enable, create_by, create_time
+<==        Row: 1, 管理员, 1, libai, 2020-06-08 11:12:00
+<==      Total: 1
+```
+可以看到，当调用sysUser.getRole();时，才会执行查询角色信息。从而实现了懒加载。
+
+MyBatis延迟加载是通过动态代理实现的， 当调用配置为延迟加载的属性方法时， 动态代理的操作会被触发， 这些额外的操作就是通过MyBatis的SqlSession去执行嵌套SQL的。 由于在和某些框架集成时， SqlSession 的生命周期交给了框架来管理， 因此当对象超出SqlSession生命周期调用时， 会由于链接关闭等问题而抛出异常。 在和Spring集成时， 要确保只能在Service层调用延迟加载的属性。 当结果从Service层返回至Controller层时， 如果获取延迟加载的属性值， 会因为SqlSession已经关闭而抛出异常。
+
+虽然这个方法已经满足了我们的要求， 但是有些时候还是需要在触发某方法时将所有的数据都加载进来， 而我们已经将aggressiveLazyLoading设置为false， 这种情况又该怎么解决呢？
+
+MyBatis 仍然提供了参数 lazyLoadTriggerMethods 帮助解决这个问题， 这个参数的含义是， 当调用配置中的方法时， 加载全部的延迟加载数据。 默认值为＂ equals， clone， hashCode， toString＂ 。 因此在使用默认值的情况下， 只要调用其中一个方法就可以实现加载调用对象的全部数据
+```java
+sysUser.equals();
+sysUser.clone();
+sysUser.hashCode();
+sysUser.toString();
+```
+
+如果查询的对象要返回前端，因为要经过序列化过程，因此也会发生对象加载。
+
 #### 1.13.3.2. 一对多查询
 <a href="#menu">目录</a>
+
+**用户表和角色表一对多查询**
+
+一个用户有多个角色，这就是一对多关系
+```java
+public class SysUser {
+    private List<SysRole> roleList;
+}
+```
+
+一对多关系使用collection来解决。
+
+这里查询所有用户的所有角色。
+```xml
+<resultMap id="userRoleListResultMap"
+             extends="BaseResultMap"
+             type="com.springboot.mybatis.model.SysUser">
+    <collection property="roleList" resultMap="com.springboot.mybatis.mapper.SysRoleMapper.BaseResultMap"
+                 columnPrefix="role_"/>
+  </resultMap>
+
+  <select id="selectUserAndRoleList" resultMap="userRoleListResultMap">
+    select
+    u.id,
+    u.user_name ,
+    u.user_password ,
+    u.user_email ,
+    u.create_time ,
+    u.sex ,
+    u.gender ,
+    u.user_info ,
+    r.id role_id,
+    r.role_name role_role_name,
+    r.enable role_enable,
+    r.create_by role_create_by,
+    r.create_time role_create_time
+
+    from sys_user u
+    inner join sys_user_role ur on u.id =ur.user_id
+    inner join sys_role r on ur.role_id =r.id
+  </select>
+```
+
+查询结果
+```yml
+==>  Preparing: select u.id, u.user_name , u.user_password , u.user_email , u.create_time , u.sex , u.gender , u.user_info , r.id role_id, r.role_name role_role_name, r.enable role_enable, r.create_by role_create_by, r.create_time role_create_time from sys_user u inner join sys_user_role ur on u.id =ur.user_id inner join sys_role r on ur.role_id =r.id 
+==> Parameters: 
+<==    Columns: id, user_name, user_password, user_email, create_time, sex, gender, user_info, role_id, role_role_name, role_enable, role_create_by, role_create_time
+<==        Row: 1, admin, 123456, admin@mybatis.com, 2020-06-06 17:00:00, 0, 男, <<BLOB>>, 1, 管理员, 1, libai, 2020-06-08 11:12:00
+<==        Row: 1, admin, 123456, admin@mybatis.com, 2020-06-06 17:00:00, 0, 男, <<BLOB>>, 2, 管理员, 1, zhangfei, 2020-06-08 11:12:00
+<==        Row: 1001, test, 123456, test@mybatis.com, 2020-06-08 11:12:00, 1, 女, <<BLOB>>, 1, 管理员, 1, libai, 2020-06-08 11:12:00
+<==        Row: 1001, test, 123456, test@mybatis.com, 2020-06-08 11:12:00, 1, 女, <<BLOB>>, 2, 管理员, 1, zhangfei, 2020-06-08 11:12:00
+<==      Total: 4
+```
+resultMap定义主键之后，会将主键相同的数据进行合并成一条。就比如上面的数据，前两条的主键都为１，角色的主键为1和２，因此合并后的数据为{用户１:{角色１，解决色２}}。假如角色的主键定义为角色名称role_name.那么合并后为{用户１｛角色(因为主键角色名称都为管理员，因此合并后只有一条数据)｝}。
+
+假如不配置主键，那么mybatis就会将所有字段进行比较，只要有一个字段不一致，则不会进行合并。
+
+```json
+
+
+[
+  {
+    "id": 1,
+    "userName": "admin",
+    "userPassword": "123456",
+    "userEmail": "admin@mybatis.com",
+    "createTime": "Jun 6, 2020 5:00:00 PM",
+    "sex": 0,
+    "gender": "男",
+    "userInfo": "管理员",
+    "roleList": [
+      {
+        "id": 1,
+        "roleName": "管理员",
+        "enable": 1,
+        "createBy": "libai",
+        "createTime": "Jun 8, 2020 11:12:00 AM"
+      },
+      {
+        "id": 2,
+        "roleName": "管理员",
+        "enable": 1,
+        "createBy": "zhangfei",
+        "createTime": "Jun 8, 2020 11:12:00 AM"
+      }
+    ]
+  },
+  {
+    "id": 1001,
+    "userName": "test",
+    "userPassword": "123456",
+    "userEmail": "test@mybatis.com",
+    "createTime": "Jun 8, 2020 11:12:00 AM",
+    "sex": 1,
+    "gender": "女",
+    "userInfo": "管理员",
+    "roleList": [
+      {
+        "id": 1,
+        "roleName": "管理员",
+        "enable": 1,
+        "createBy": "libai",
+        "createTime": "Jun 8, 2020 11:12:00 AM"
+      },
+      {
+        "id": 2,
+        "roleName": "管理员",
+        "enable": 1,
+        "createBy": "zhangfei",
+        "createTime": "Jun 8, 2020 11:12:00 AM"
+      }
+    ]
+  }
+]
+```
+
+**用户表，角色表，权限表一对多查询**
+
+一个角色有多个权限。因此三个表组合为
+```java
+public class SysUser {
+    private List<SysRole> roleList;
+}
+public class SysRole {
+    private List<SysPrivilege> privileges;
+}
+```
+
+权限表的resultMap
+```xml
+<resultMap id="BaseResultMap" type="com.springboot.mybatis.model.SysPrivilege">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="privilege_name" jdbcType="VARCHAR" property="privilegeName" />
+    <result column="privilege_url" jdbcType="VARCHAR" property="privilegeUrl" />
+  </resultMap>
+```
+
+角色表的resultMap
+```xml
+<resultMap id="RolePriListResultMap"
+             extends="BaseResultMap"
+             type="com.springboot.mybatis.model.SysRole">
+    <collection property="privileges" resultMap="com.springboot.mybatis.mapper.SysPrivilegeMapper.BaseResultMap"
+                columnPrefix="privilege_"/>
+</resultMap>
+```
+
+用户表的resultMap
+```xml
+<resultMap id="userRolePriListResultMap"
+             extends="BaseResultMap"
+             type="com.springboot.mybatis.model.SysUser">
+    <collection property="roleList" resultMap="com.springboot.mybatis.mapper.SysRoleMapper.RolePriListResultMap"
+                columnPrefix="role_"/>
+</resultMap>
+```
+
+如上resultMap是一层一层地嵌套
+
+查询配置
+
+注意权限表的字段别名为: role_privilege_privilege_name,前缀还要加上role_privilege_
+```xml
+  <select id="selectUserAndRoleListAndPriList" resultMap="userRolePriListResultMap">
+    select
+    u.id,
+    u.user_name ,
+    u.user_password ,
+    u.user_email ,
+    u.create_time ,
+    u.sex ,
+    u.gender ,
+    u.user_info ,
+    r.id role_id,
+    r.role_name role_role_name,
+    r.enable role_enable,
+    r.create_by role_create_by,
+    r.create_time role_create_time,
+    p.id role_privilege_id,
+    p.privilege_name role_privilege_privilege_name,
+    p.privilege_url role_privilege_privilege_url
+
+    from sys_user u
+    inner join sys_user_role ur on u.id =ur.user_id
+    inner join sys_role r on ur.role_id =r.id
+    inner join sys_role_privilege rp on rp.role_id =r.id
+    inner join sys_privilege p on rp.privilege_id =p.id
+  </select>
+```
+
+查询结果
+```json
+==>  Preparing: select u.id, u.user_name , u.user_password , u.user_email , u.create_time , u.sex , u.gender , u.user_info , r.id role_id, r.role_name role_role_name, r.enable role_enable, r.create_by role_create_by, r.create_time role_create_time, p.id role_privilege_id, p.privilege_name role_privilege_privilege_name, p.privilege_url role_privilege_privilege_url from sys_user u inner join sys_user_role ur on u.id =ur.user_id inner join sys_role r on ur.role_id =r.id inner join sys_role_privilege rp on rp.role_id =r.id inner join sys_privilege p on rp.privilege_id =p.id 
+==> Parameters: 
+<==    Columns: id, user_name, user_password, user_email, create_time, sex, gender, user_info, role_id, role_role_name, role_enable, role_create_by, role_create_time, role_privilege_id, role_privilege_privilege_name, role_privilege_privilege_url
+<==        Row: 1, admin, 123456, admin@mybatis.com, 2020-06-06 17:00:00, 0, 男, <<BLOB>>, 1, 管理员, 1, libai, 2020-06-08 11:12:00, 1, 用户管理, /users
+<==        Row: 1001, test, 123456, test@mybatis.com, 2020-06-08 11:12:00, 1, 女, <<BLOB>>, 1, 管理员, 1, libai, 2020-06-08 11:12:00, 1, 用户管理, /users
+<==        Row: 1, admin, 123456, admin@mybatis.com, 2020-06-06 17:00:00, 0, 男, <<BLOB>>, 1, 管理员, 1, libai, 2020-06-08 11:12:00, 2, 角色管理, /roles
+<==        Row: 1001, test, 123456, test@mybatis.com, 2020-06-08 11:12:00, 1, 女, <<BLOB>>, 1, 管理员, 1, libai, 2020-06-08 11:12:00, 2, 角色管理, /roles
+<==        Row: 1, admin, 123456, admin@mybatis.com, 2020-06-06 17:00:00, 0, 男, <<BLOB>>, 1, 管理员, 1, libai, 2020-06-08 11:12:00, 3, 系统日志, /logs
+<==        Row: 1001, test, 123456, test@mybatis.com, 2020-06-08 11:12:00, 1, 女, <<BLOB>>, 1, 管理员, 1, libai, 2020-06-08 11:12:00, 3, 系统日志, /logs
+<==        Row: 1, admin, 123456, admin@mybatis.com, 2020-06-06 17:00:00, 0, 男, <<BLOB>>, 2, 管理员, 1, zhangfei, 2020-06-08 11:12:00, 4, 人员维护, /persons
+<==        Row: 1001, test, 123456, test@mybatis.com, 2020-06-08 11:12:00, 1, 女, <<BLOB>>, 2, 管理员, 1, zhangfei, 2020-06-08 11:12:00, 4, 人员维护, /persons
+<==        Row: 1, admin, 123456, admin@mybatis.com, 2020-06-06 17:00:00, 0, 男, <<BLOB>>, 2, 管理员, 1, zhangfei, 2020-06-08 11:12:00, 5, 单位维护, /companies
+<==        Row: 1001, test, 123456, test@mybatis.com, 2020-06-08 11:12:00, 1, 女, <<BLOB>>, 2, 管理员, 1, zhangfei, 2020-06-08 11:12:00, 5, 单位维护, /companies
+<==        Row: 1, admin, 123456, admin@mybatis.com, 2020-06-06 17:00:00, 0, 男, <<BLOB>>, 2, 管理员, 1, zhangfei, 2020-06-08 11:12:00, 1, 用户管理, /users
+<==        Row: 1001, test, 123456, test@mybatis.com, 2020-06-08 11:12:00, 1, 女, <<BLOB>>, 2, 管理员, 1, zhangfei, 2020-06-08 11:12:00, 1, 用户管理, /users
+<==      Total: 12
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@33feeea8]
+2020-06-09 23:09:54.982  INFO 7439 --- [nio-8080-exec-1] c.s.m.controller.SysUserController       : sysUser + [
+  {
+    "id": 1,
+    "userName": "admin",
+    "userPassword": "123456",
+    "userEmail": "admin@mybatis.com",
+    "createTime": "Jun 6, 2020 5:00:00 PM",
+    "sex": 0,
+    "gender": "男",
+    "userInfo": "管理员",
+    "roleList": [
+      {
+        "id": 1,
+        "roleName": "管理员",
+        "enable": 1,
+        "createBy": "libai",
+        "createTime": "Jun 8, 2020 11:12:00 AM",
+        "privileges": [
+          {
+            "id": 1,
+            "privilegeName": "用户管理",
+            "privilegeUrl": "/users"
+          },
+          {
+            "id": 2,
+            "privilegeName": "角色管理",
+            "privilegeUrl": "/roles"
+          },
+          {
+            "id": 3,
+            "privilegeName": "系统日志",
+            "privilegeUrl": "/logs"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "roleName": "管理员",
+        "enable": 1,
+        "createBy": "zhangfei",
+        "createTime": "Jun 8, 2020 11:12:00 AM",
+        "privileges": [
+          {
+            "id": 4,
+            "privilegeName": "人员维护",
+            "privilegeUrl": "/persons"
+          },
+          {
+            "id": 5,
+            "privilegeName": "单位维护",
+            "privilegeUrl": "/companies"
+          },
+          {
+            "id": 1,
+            "privilegeName": "用户管理",
+            "privilegeUrl": "/users"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 1001,
+    "userName": "test",
+    "userPassword": "123456",
+    "userEmail": "test@mybatis.com",
+    "createTime": "Jun 8, 2020 11:12:00 AM",
+    "sex": 1,
+    "gender": "女",
+    "userInfo": "管理员",
+    "roleList": [
+      {
+        "id": 1,
+        "roleName": "管理员",
+        "enable": 1,
+        "createBy": "libai",
+        "createTime": "Jun 8, 2020 11:12:00 AM",
+        "privileges": [
+          {
+            "id": 1,
+            "privilegeName": "用户管理",
+            "privilegeUrl": "/users"
+          },
+          {
+            "id": 2,
+            "privilegeName": "角色管理",
+            "privilegeUrl": "/roles"
+          },
+          {
+            "id": 3,
+            "privilegeName": "系统日志",
+            "privilegeUrl": "/logs"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "roleName": "管理员",
+        "enable": 1,
+        "createBy": "zhangfei",
+        "createTime": "Jun 8, 2020 11:12:00 AM",
+        "privileges": [
+          {
+            "id": 4,
+            "privilegeName": "人员维护",
+            "privilegeUrl": "/persons"
+          },
+          {
+            "id": 5,
+            "privilegeName": "单位维护",
+            "privilegeUrl": "/companies"
+          },
+          {
+            "id": 1,
+            "privilegeName": "用户管理",
+            "privilegeUrl": "/users"
+          }
+        ]
+      }
+    ]
+  }
+]
+
+```
 
