@@ -57,65 +57,98 @@
     - [7.1. File](#71-file)
         - [7.1.1. IO流](#711-io流)
         - [7.1.2. 序列化](#712-序列化)
-    - [7.2. NIO](#72-nio)
-        - [7.2.1. 内存映射](#721-内存映射)
-- [8. Javac编译原理](#8-javac编译原理)
-    - [8.1. Javac编译器的基本结构](#81-javac编译器的基本结构)
-    - [8.2. Javac的工作原理分析](#82-javac的工作原理分析)
-- [9. 类加载和反射](#9-类加载和反射)
-    - [9.1. Class文件结构](#91-class文件结构)
-        - [9.1.1. JVM指令集简介](#911-jvm指令集简介)
-        - [9.1.2. class文件头的表示形式](#912-class文件头的表示形式)
-        - [9.1.3. 常量池](#913-常量池)
-        - [9.1.4. 类信息](#914-类信息)
-        - [9.1.5. Fields和Method定义](#915-fields和method定义)
-        - [9.1.6. 类属性描述](#916-类属性描述)
-        - [9.1.7. Javap生成的class文件结构](#917-javap生成的class文件结构)
-    - [9.2. 反射](#92-反射)
-- [10. JDBC](#10-jdbc)
-    - [10.1. 基本使用](#101-基本使用)
-    - [10.2. 预编译](#102-预编译)
-- [11. 函数式编程](#11-函数式编程)
-- [12. Java 8 的新特性：](#12-java-8-的新特性)
-    - [12.1. Java 8 Lambda 表达式](#121-java-8-lambda-表达式)
-    - [12.2. Java 8 函数式接口](#122-java-8-函数式接口)
-    - [12.3. 默认方法](#123-默认方法)
-    - [12.4. Optional 类](#124-optional-类)
-    - [12.5. Stream](#125-stream)
-    - [12.6. Java 8 日期时间 API](#126-java-8-日期时间-api)
-    - [12.7. Java8 Base64](#127-java8-base64)
-- [13. Java-SPI机制](#13-java-spi机制)
-    - [13.1. Java--SPI机制](#131-java--spi机制)
-    - [13.2. 使用场景](#132-使用场景)
-        - [13.2.1. 实现方式](#1321-实现方式)
-    - [13.3. spi使用](#133-spi使用)
-    - [13.4. 原理解析](#134-原理解析)
-    - [13.5. 总结](#135-总结)
-- [14. 常用类源码说明](#14-常用类源码说明)
-- [15. JDK版本变化](#15-jdk版本变化)
-- [16. 设计模式](#16-设计模式)
-    - [16.1. 概述](#161-概述)
-    - [16.2. 设计原则](#162-设计原则)
-    - [16.3. UML图](#163-uml图)
-        - [16.3.1. 用例图](#1631-用例图)
-        - [16.3.2. 类图](#1632-类图)
-        - [16.3.3. 组件图](#1633-组件图)
-        - [16.3.4. 部署图](#1634-部署图)
-        - [16.3.5. 顺序图](#1635-顺序图)
-        - [16.3.6. 活动图](#1636-活动图)
-        - [16.3.7. 状态机图](#1637-状态机图)
-    - [16.4. 设计模式](#164-设计模式)
-        - [16.4.1. 单例模式](#1641-单例模式)
-            - [16.4.1.1. 基本概念](#16411-基本概念)
-            - [16.4.1.2. 实现](#16412-实现)
-        - [16.4.2. 简单工厂模式](#1642-简单工厂模式)
-        - [16.4.3. 工厂方法模式](#1643-工厂方法模式)
-        - [16.4.4. 抽象工厂模式](#1644-抽象工厂模式)
-        - [16.4.5. 简单工厂&抽象工厂&工厂方法比较](#1645-简单工厂抽象工厂工厂方法比较)
-        - [16.4.6. 模板方法模式](#1646-模板方法模式)
-        - [16.4.7. 建造者模式](#1647-建造者模式)
-        - [16.4.8. 代理模式](#1648-代理模式)
-        - [16.4.9. 原型模式](#1649-原型模式)
+- [8. NIO](#8-nio)
+    - [8.1. IO基础知识](#81-io基础知识)
+    - [8.2. NIO基本概念](#82-nio基本概念)
+        - [8.2.1. 缓冲区Buffers](#821-缓冲区buffers)
+        - [8.2.2. 通道 Channels](#822-通道-channels)
+        - [8.2.3. 选择器 Selectors](#823-选择器-selectors)
+        - [8.2.4. 套接字 Sockets](#824-套接字-sockets)
+    - [8.3. IO对性能的影响](#83-io对性能的影响)
+    - [8.4. I/O概念](#84-io概念)
+        - [8.4.1. 缓冲区操作](#841-缓冲区操作)
+        - [8.4.2. 虚拟内存](#842-虚拟内存)
+        - [8.4.3. 内存页面调度](#843-内存页面调度)
+        - [8.4.4. 文件I/O](#844-文件io)
+        - [8.4.5. 流I/O](#845-流io)
+    - [8.5. 内存映射](#85-内存映射)
+    - [8.6. 缓冲区](#86-缓冲区)
+        - [8.6.1. 缓冲区基础](#861-缓冲区基础)
+        - [8.6.2. 字节缓冲区ByteBuffer](#862-字节缓冲区bytebuffer)
+    - [8.7. 通道](#87-通道)
+        - [8.7.1. 通道接口介绍](#871-通道接口介绍)
+        - [8.7.2. Scatter/Gather](#872-scattergather)
+        - [8.7.3. 文件通道](#873-文件通道)
+        - [8.7.4. 内存映射通道](#874-内存映射通道)
+        - [8.7.5. Socket通道](#875-socket通道)
+        - [8.7.6. 管道](#876-管道)
+        - [8.7.7. 管道工具类](#877-管道工具类)
+    - [8.8. 选择器](#88-选择器)
+        - [8.8.1. 选择器基础](#881-选择器基础)
+        - [8.8.2. 使用选择器](#882-使用选择器)
+        - [8.8.3. 异步关闭能力](#883-异步关闭能力)
+        - [8.8.4. 选择过程的可扩展性](#884-选择过程的可扩展性)
+    - [8.9. AIO的使用](#89-aio的使用)
+        - [8.9.1. AsynchronousFileChannel 类的使用](#891-asynchronousfilechannel-类的使用)
+        - [8.9.2. synchronousServerSocketChannel 和 AsynchronousSockeChannel类的使用](#892-synchronousserversocketchannel-和-asynchronoussockechannel类的使用)
+    - [8.10. 字符集](#810-字符集)
+- [9. Javac编译原理](#9-javac编译原理)
+    - [9.1. Javac编译器的基本结构](#91-javac编译器的基本结构)
+    - [9.2. Javac的工作原理分析](#92-javac的工作原理分析)
+- [10. 类加载和反射](#10-类加载和反射)
+    - [10.1. Class文件结构](#101-class文件结构)
+        - [10.1.1. JVM指令集简介](#1011-jvm指令集简介)
+        - [10.1.2. class文件头的表示形式](#1012-class文件头的表示形式)
+        - [10.1.3. 常量池](#1013-常量池)
+        - [10.1.4. 类信息](#1014-类信息)
+        - [10.1.5. Fields和Method定义](#1015-fields和method定义)
+        - [10.1.6. 类属性描述](#1016-类属性描述)
+        - [10.1.7. Javap生成的class文件结构](#1017-javap生成的class文件结构)
+    - [10.2. 反射](#102-反射)
+- [11. JDBC](#11-jdbc)
+    - [11.1. 基本使用](#111-基本使用)
+    - [11.2. 预编译](#112-预编译)
+- [12. 函数式编程](#12-函数式编程)
+- [13. Java 8 的新特性：](#13-java-8-的新特性)
+    - [13.1. Java 8 Lambda 表达式](#131-java-8-lambda-表达式)
+    - [13.2. Java 8 函数式接口](#132-java-8-函数式接口)
+    - [13.3. 默认方法](#133-默认方法)
+    - [13.4. Optional 类](#134-optional-类)
+    - [13.5. Stream](#135-stream)
+    - [13.6. Java 8 日期时间 API](#136-java-8-日期时间-api)
+    - [13.7. Java8 Base64](#137-java8-base64)
+- [14. Java-SPI机制](#14-java-spi机制)
+    - [14.1. Java--SPI机制](#141-java--spi机制)
+    - [14.2. 使用场景](#142-使用场景)
+        - [14.2.1. 实现方式](#1421-实现方式)
+    - [14.3. spi使用](#143-spi使用)
+    - [14.4. 原理解析](#144-原理解析)
+    - [14.5. 总结](#145-总结)
+- [15. 常用类源码说明](#15-常用类源码说明)
+- [16. JDK版本变化](#16-jdk版本变化)
+- [17. 设计模式](#17-设计模式)
+    - [17.1. 概述](#171-概述)
+    - [17.2. 设计原则](#172-设计原则)
+    - [17.3. UML图](#173-uml图)
+        - [17.3.1. 用例图](#1731-用例图)
+        - [17.3.2. 类图](#1732-类图)
+        - [17.3.3. 组件图](#1733-组件图)
+        - [17.3.4. 部署图](#1734-部署图)
+        - [17.3.5. 顺序图](#1735-顺序图)
+        - [17.3.6. 活动图](#1736-活动图)
+        - [17.3.7. 状态机图](#1737-状态机图)
+    - [17.4. 设计模式](#174-设计模式)
+        - [17.4.1. 单例模式](#1741-单例模式)
+            - [17.4.1.1. 基本概念](#17411-基本概念)
+            - [17.4.1.2. 实现](#17412-实现)
+        - [17.4.2. 简单工厂模式](#1742-简单工厂模式)
+        - [17.4.3. 工厂方法模式](#1743-工厂方法模式)
+        - [17.4.4. 抽象工厂模式](#1744-抽象工厂模式)
+        - [17.4.5. 简单工厂&抽象工厂&工厂方法比较](#1745-简单工厂抽象工厂工厂方法比较)
+        - [17.4.6. 模板方法模式](#1746-模板方法模式)
+        - [17.4.7. 建造者模式](#1747-建造者模式)
+        - [17.4.8. 代理模式](#1748-代理模式)
+        - [17.4.9. 原型模式](#1749-原型模式)
 
 <!-- /TOC -->
 
@@ -3090,14 +3123,98 @@ os.writeObject(person);
 
 ```
 
-## 7.2. NIO
+# 8. NIO
+<a href="#menu"  >目录</a>
 
-### 7.2.1. 内存映射  
+## 8.1. IO基础知识
+
+## 8.2. NIO基本概念
+<a href="#menu"  >目录</a>
+
+### 8.2.1. 缓冲区Buffers
+
+新的 Buffer 类是常规 Java 类和通道之间的纽带。原始数据元素组成的固定长度数组，封装在包含状态信息的对象中，存入缓冲区。缓冲区提供了一个会合点：通道既可提取放在缓冲区中的数据（写），也可向缓冲区存入数据供读取（读）。此外，还有一种特殊类型的缓冲区，用于内存映射文件。
+
+### 8.2.2. 通道 Channels
+
+NIO 新引入的最重要的抽象是通道的概念。 Channel 对象模拟了通信连接，管道既可以是单向的（进或出），也可以是双向的（进和出）。可以把通道想象成连接缓冲区和 I/O 服务的捷径。某些情况下，软件包中的旧类可利用通道。为了能够向与文件或套接字关联的通道进行存取，适当的地方都增加了新方法。多数通道可工作在非块模式下，这意味着更好的可伸缩性，尤其是与选择器一同使用的时候。
+
+新的 FileChannel 对象包含在 java.nio.channels 软件包内，提供许多面向文件的新特性，其中最有趣的两个是文件锁定和内存映射文件。
+
+在多个进程协同工作的情况下，要协调各个进程对共享数据的访问，文件锁定是必不可少的工具。
+
+将文件映射到内存，这样在您看来，磁盘上的文件数据就像是在内存中一样。这利用了操作系统的虚拟内存功能，无需在内存中实际保留一份文件的拷贝，就可实现文件内容的动态高速缓存。
+
+### 8.2.3. 选择器 Selectors
+
+选择器可实现就绪性选择。 Selector 类提供了确定一或多个通道当前状态的机制。使用选择器，借助单一线程，就可对数量庞大的活动 I/O 通道实施监控和维护。
+
+### 8.2.4. 套接字 Sockets
+
+套接字Sockets不是NIO的概念，Socket是网络通信的接口。
+
+套接字通道类为使用网络套接字实现交互提供了新方法。套接字通道可工作于非块模式，并可与选择器一同使用。因此，多个套接字可实现多路传输，管理效率也比 java.net 提供的传统套接字更高。三个新套接字通道，即 ServerSocketChannel、 SocketChannel 和 DatagramChannel
+
+
+## 8.3. IO对性能的影响 
+
+目前的cpu的速度已经非常快，通常比较影响程序运行效率的硬件是IO的读写速度。因此需要通过多种手段提高IO读写效率，比如使用异步非阻塞IO,使用多线程避免因IO阻塞导致CPU空等待浪费时间。同时，如今在JVM优化方面，加入了JIT编译器，jvm会根据运行情况，不断地优化代码。因此现在的JVM运行字节码的效率已经接近本地编译代码，借助动态运行时优化，甚至有所超越。因此Java代码已经不再受CPU的限制，更多是受IO的限制。
+
+在大多数情况下， Java 应用程序并非真的受着 I/O 的束缚。操作系统并非不能快速传送数据，让 Java 有事可做；相反，是 JVM 自身在 I/O 方面效率欠佳。操作系统与 Java 基于流的 I/O模型有些不匹配。操作系统要移动的是大块数据（缓冲区），这往往是在硬件直接存储器存取（DMA）的协助下完成的。而 JVM 的 I/O 类喜欢操作小块数据——单个字节、几行文本。结果，操作系统送来整缓冲区的数据， java.io 的流数据类再花大量时间把它们拆成小块，往往拷贝一个小块就要往返于几层对象。操作系统喜欢整卡车地运来数据， java.io 类则喜欢一铲子一铲子地加工数据。有了 NIO，就可以轻松地把一卡车数据备份到您能直接使用的地方（ ByteBuffer 对象）。
+
+这并不是说使用传统的 I/O 模型无法移动大量数据——当然可以（现在依然可以）。具体地说， RandomAccessFile 类在这方面的效率就不低，只要坚持使用基于数组的 read( )和 write( )方法。这些方法与底层操作系统调用相当接近，尽管必须保留至少一份缓冲区拷贝。
+
+## 8.4. I/O概念
+<a href="#menu"  >目录</a>
+
+### 8.4.1. 缓冲区操作
+<a href="#menu"  >目录</a>
+
+![IO缓冲区操作简图](pic/java/IO缓冲区操作简图.png)
+
+用户空间是常规进程所在区域。 JVM 就是常规进程，驻守于用户空间。用户空间是非特权区域：比如，在该区域执行的代码就不能直接访问硬件设备。内核空间是操作系统所在区域。内核代码有特别的权力：它能与设备控制器通讯，控制着用户区域进程的运行状态。
+
+当进程执行IO操作的时候，它执行一个系统调用,比如read，write,close等，程序将会从用户空间进入系统空间，由于这个过程对性能有些影响，因此在实际应用中应当尽量减少系统的调用，比如读数据时一次性读取完成，写数据也是一次性写入。当写入数据时，数据将从用户缓冲区转移到内核缓冲区，再从内核缓冲区发送出去。读数据正好相反。
+
+数据从内核空间拷贝到用户空间似乎有些多余。为什么不直接让磁盘控制器把数据送到用户空间的缓冲区呢？这样做有几个问题。首先，硬件通常不能直接访问用户空间。其次，像磁盘这样基于块存储的硬件设备操作的是固定大小的数据块，而用户进程请求的可能是任意大小的或非对齐的数据块。在数据往来于用户空间与存储设备的过程中，内核负责数据的分解、再组合工作，因此充当着中间人的角色。
+
+
+
+### 8.4.2. 虚拟内存
+<a href="#menu"  >目录</a>
+
+所有现代操作系统都使用虚拟内存。虚拟内存意为使用虚假（或虚拟）地址取代物理（硬件RAM）内存地址。这样做好处颇多，总结起来可分为两大类：
+* 一个以上的虚拟地址可指向同一个物理内存地址。
+* 虚拟内存空间可大于实际可用的硬件内存。、
+
+设备控制器不能通过 DMA 直接存储到用户空间，但通过利用上面提到的第一项，则可以达到相同效果。把内核空间地址与用户空间的虚拟地址映射到同一个物理地址，这样，
+DMA 硬件（只能访问物理内存地址）就可以填充对内核与用户空间进程同时可见的缓冲区
+
+![内存空间多重映射](pic/java/内存空间多重映射.png)
+
+省去了内核与用户空间的往来拷贝，但前提条件是，内核与用户缓冲区必须使用相同的页对齐，缓冲区的大小还必须是磁盘控制器块大小（通常为 512 字节磁盘扇区）的倍数。操作系统把内存地址空间划分为页，即固定大小的字节组。内存页的大小总是磁盘块大小的倍数，通常为 2 次幂（这样可简化寻址操作）。典型的内存页为 1024、 2048 和 4096 字节。虚拟和物理内存页的大小总是相同的
+
+### 8.4.3. 内存页面调度
+<a href="#menu"  >目录</a>
+
+### 8.4.4. 文件I/O
+<a href="#menu"  >目录</a>
+
+### 8.4.5. 流I/O
+<a href="#menu"  >目录</a>
+
+
+
+
+
+
+## 8.5. 内存映射  
+<a href="#menu"  >目录</a>
 
 内存映射的方式是指操作系统将内存中的某一块区域与磁盘中的文件相关联，当访问内存中的一段数据时，转换为访问文件的某一段数据。这种方式的目的同样是减少数据从内核空间缓存到用户空间缓存的数据复制操作，因为这两个空间的数据是共享的。
 
 
-![内存映射方式](https://github.com/lgjlife/Java-Study/blob/master/pic/java/nio-storage-mapping.png?raw=true)
+![内存映射方式](pic/java/nio-storage-mapping.png)
 
 
 Java类库中的NIO包相对于IO 包来说有一个新功能是内存映射文件，日常编程中并不是经常用到，但是在处理大文件时是比较理想的提高效率的手段。本文我主要想结合操作系统中（OS）相关方面的知识介绍一下原理。
@@ -3345,8 +3462,515 @@ ByteBuffer.allocate 意味着直接在 JVM堆上分配内存，所以受 新生�
 
 最后一点为 DirectMemory的内存只有在 JVM执行 full gc 的时候才会被回收，那么如果在其上分配过大的内存空间，那么也将出现 OutofMemoryError，即便 JVM 堆中的很多内存处于空闲状态。
 
+## 8.6. 缓冲区
+<a href="#menu"  >目录</a>
 
-# 8. Javac编译原理
+```yml
+|---Buffer
+    |---IntBuffer
+        |---DirectIntBufferU
+        |---ByteBufferAsIntBufferL
+        |---DirectIntBufferS
+        |---ByteBufferAsIntBufferB
+        |---HeapIntBuffer
+    |---FloatBuffer
+        |--- .....
+    |---CharBuffer
+    |---DoubleBuffer
+    |---ShortBuffer
+    |---LongBuffer
+    |---ByteBuffer
+```
+缓冲区的本质是应用层用于存放要发送的数据和从通道获取的数据的数组。但是比传统数组提供了更多的功能。
+
+抽象类 Buffer.java 的7个子类也是抽象类，也就意味着 XxxBuffer这些类也不能被直接new 实例化 。 如果不能直接 new 实例化，那么如何创建这些类的对象呢？ 使用的方式是将上面 7 种数据类型的数组包装（ wrap ） 进缓冲区中，此时就需要借助静态方法 wrap（）进行实现。 wrap（）方法的作用是将数组放入缓冲区中，来构建存储不同数据类型的缓冲区 
+
+```java
+//buffer的容量由传入参数的数组大小决定
+ByteBuffer byteBuffer = ByteBuffer.wrap(new Byte[]);
+IntBuffer intBuffer = IntBuffer.wrap(new Int[]);
+
+public static IntBuffer wrap(int[] array,
+                                    int offset, int length)
+{
+    try {
+        return new HeapIntBuffer(array, offset, length);
+    } catch (IllegalArgumentException x) {
+        throw new IndexOutOfBoundsException();
+    }
+}
+```
+不同的Buffer都是由相应的HeapXxxBuffer创建。
+
+
+
+
+### 8.6.1. 缓冲区基础
+<a href="#menu"  >目录</a>
+
+**属性**
+* 容量(capacity):缓冲区能够容纳的数据元素的最大数量。这一容量在缓冲区创建时被设定，并且永远不能被改变
+* 上界(Limit)：缓冲区的第一个不能被读或写的元素。或者说，缓冲区中现存元素的计数。
+* 位置(Position):下一个要被读或写的元素的索引。位置会自动由相应的 get( )和 put( )函数更新。
+* 标记(Mark):一个备忘位置。调用 mark( )来设定 mark = postion。调用 reset( )设定 position =mark。标记在设定前是未定义的(undefined)。
+
+假如缓冲区的大小是100个字节，也就是容量为100个字节。初始化时limit=capacity，position=0,mark=-1。当从通道读取了90个字节，limit变为90。然后应用代码调用read读取了10个字节，position变为10。也就是每读取一个字节，pos就自增１。每从通道读取一个字节到缓冲区，limit就自增1。当pos等于limit,说明缓冲区没有数据可读。
+有些场景需要重复读取数据，可以用mark来标记位置，下次就从这个位置开始读取。注意缓冲区并不区分读缓冲区和写缓冲区，而是通过limit和pos来决定读写的位置。
+
+```
+0 <= mark <= position <= limit <= capacity
+```
+
+**缓冲区API**
+
+```java
+public abstract class Buffer {
+    //获取容量
+    public final int capacity( )
+    //获取pos
+    public final int position( )
+    //设置pos
+    public final Buffer position (int newPositio）
+    //
+    public final int limit( )
+    //
+    public final Buffer limit (int newLimit)
+    //标记　mark = position;　
+    public final Buffer mark( )
+    //设置　position　＝　mark
+    //当mark(默认为-1)小于０时，会报错。使用场景是在读数据之前，使用position (int newPositio)设置标记位，读取数据之后调用reset使pos回到mark.然后可以重新读读过的数据
+    public final Buffer reset( )
+    //position = 0;  limit = capacity;   mark = -1;
+    //将一个读状态的缓冲区转变成一个准备写的缓冲区。
+    public final Buffer clear( )
+    //limit = position;   position = 0;   mark = -1;
+    //将一个能够继续添加元素的缓冲翻转成一个准备读出数据的元素的缓冲
+    public final Buffer flip( )
+    //position = 0; mark = -1;
+    public final Buffer rewind( )
+    //返回可读的数据
+    public final int remaining( )
+    //
+    public final boolean hasRemaining( )
+    //所有的缓冲区都是可读的，但并非都是可写的
+    public abstract boolean isReadOnly( );
+}
+
+```
+
+缓冲的读写是由各个实现类定义和编写的。缓冲区是存放从通道中读出来的数据和将要发送到通道的数据。
+
+position 用于指定下一个将要读写的位置，limit用于指定最多可读写的位置。因此position读写过程中是不断增加的，但是到了position >= limit，则会抛出异常BufferOverflowException或者BufferUnderflowException。
+```java
+CharBuffer charBuffer = CharBuffer.allocate(10);
+
+printInfo(charBuffer);
+charBuffer.put("c");
+printInfo(charBuffer);
+//写状态转换为读状态
+charBuffer.flip();
+char data =  charBuffer.get();
+System.out.println(data);
+//读状态转换为写状态
+charBuffer.clear();
+printInfo(charBuffer);
+
+
+-----
+position = 0 limit = 10 capacity = 10
+position = 1 limit = 10 capacity = 10
+c
+position = 0 limit = 10 capacity = 10
+```
+
+### 8.6.2. 字节缓冲区ByteBuffer
+<a href="#menu"  >目录</a>
+
+**直接缓冲区**
+
+通过ByteBuffer 向硬盘存取数据时是需要将数据暂存在 JVM 的中 间缓冲区，如果有频繁操作数据的情况发生， 则在每次操作时都会将数据暂存在JVM的中间缓冲区，再交 给ByteBuffer处理，这样做就大大降低软件对数据的吞吐量，提高内存占有率 ，造成软件运行效率降低，这就是非直接缓冲区保存数据的过程，所以非直接缓冲区的这个弊端就由直接缓冲区解决了 。
+
+如果使用直接缓冲区来实现两端数据交互 ， 则直接在内核空间中就进行了处理，无须 JVM 创建新的缓冲区，这样就减少了在JVM 中创建中间缓冲区的步骤，增加了程序运行效率 。
+
+
+```java
+//创建堆缓冲区
+ByteBuffer byteBuffer1 = ByteBuffer.allocate(10);
+System.out.println("byteBuffer1 is direct buffer? " + byteBuffer1.isDirect());
+
+ByteBuffer byteBuffer2 = ByteBuffer.wrap(new byte[]{1,2});
+System.out.println("byteBuffer2 is direct buffer? " + byteBuffer2.isDirect());
+
+//创建直接缓冲区
+ByteBuffer byteBuffer3 = ByteBuffer.allocateDirect(20);
+System.out.println("byteBuffer3 is direct buffer? " + byteBuffer3.isDirect());
+
+byteBuffer1 is direct buffer? false
+byteBuffer2 is direct buffer? false
+byteBuffer3 is direct buffer? true
+```
+
+```java
+//堆缓冲区由HeapByteBuffer实现，数组实现
+public static ByteBuffer allocate(int capacity) {
+    if (capacity < 0)
+        throw new IllegalArgumentException();
+    return new HeapByteBuffer(capacity, capacity);
+}
+//直接缓冲区由DirectByteBuffer实现，内部由Unsafe实现
+public static ByteBuffer allocateDirect(int capacity) {
+    return new DirectByteBuffer(capacity);
+}
+    
+```
+
+
+ByteBuffer还可以通过方法 asXxxBuffer()来转换成其他的类型的缓冲区。
+
+asDoubleBuffer　创建此字节缓冲区的视图，作为 double 缓冲区 。 新缓冲区的内容将从此缓冲区的当前位置开始 。 此缓冲区 内容的更改在新缓冲区中是可见的，反之亦然；这两个缓冲区的位置、限制和标记值是相互独立的 。 新缓冲区的位置将为 0 ，其容量和界限将为此缓冲区中所剩余的字节数的 1／8 ， 其标记是不确定的 。 当且仅当此缓冲区为直接缓冲区时，新缓冲区才是直接缓冲区 。 当且仅当此缓冲区为只读时，新缓冲区才是只读的 （通过asReadOnlyBuffer()来转换只读缓冲区）。
+
+```java
+ByteBuffer byteBuffer1 = ByteBuffer.allocate(50);
+
+byteBuffer1.putFloat(1.1f);
+byteBuffer1.putFloat(1.2f);
+byteBuffer1.putFloat(1.3f);
+printInfo(byteBuffer1);
+
+FloatBuffer floatBuffer = byteBuffer1.asFloatBuffer();
+byteBuffer1.flip();
+byteBuffer1.getFloat();
+printInfo(byteBuffer1);
+printInfo(floatBuffer);
+
+----
+position = 12 limit = 50 capacity = 50
+position = 4 limit = 12 capacity = 50
+position = 0 limit = 9 capacity = 9
+
+```
+
+视图缓冲区与字节缓冲区相比有以下三个优势：
+* 视图缓冲区不是根据字节进行索引，而是根据其特定于类型的值的大小进行索引；
+* 视图缓冲区提供了相对批量 get 和 put 方法，这些方法可在缓冲区和数组或相同类型的其他缓冲区之间传输值的连续序列；
+* 视图缓冲区可能更高效，这是因为当且仅当其支持的字节缓冲区为直接缓冲区时，它才是直接缓冲区 。
+
+**压缩缓冲区**
+
+compact（）方法的作用： 压缩此缓冲区（可选操作），将缓冲区的当前位置和限制之间的字节（如果有）复制到缓冲区的开始处， 即将索引 p = position（）处的字节复制到索引 0 处，将索引 p+1 处的字节复制到索引 1 处， 依此类推，直到将索引 limit() - 1 处的字节复制到索引 n = limit（）-1-p 处 。 然后，将缓冲区的位置设置为 n+1 ，并将其限制设置为其容量。 如果已定义了标记，则丢弃它 。 将缓冲 区的位置设置为复制的字节数，而不是 0，以便调用此方法后可以紧接着调用另一个相对 put 方法。
+
+```java
+
+public ByteBuffer compact() {
+    //将pos--limit处的字节复制到0开始处
+    System.arraycopy(hb, ix(position()), hb, ix(0), remaining());
+    //pos = remain
+    position(remaining());
+    //limit = cap
+    limit(capacity());
+    //mark = -1
+    discardMark();
+    return this;
+}
+
+ByteBuffer byteBuffer1 = ByteBuffer.allocate(50);
+
+byteBuffer1.putFloat(1.1f);
+byteBuffer1.putFloat(1.2f);
+byteBuffer1.putFloat(1.3f);
+printInfo(byteBuffer1);
+
+byteBuffer1.flip();
+byteBuffer1.getFloat();
+printInfo(byteBuffer1);
+byteBuffer1 = byteBuffer1.compact();
+printInfo(byteBuffer1);
+----
+position = 12 limit = 50 capacity = 50
+position = 4 limit = 12 capacity = 50
+position = 8 limit = 50 capacity = 50
+```
+
+
+
+## 8.7. 通道
+<a href="#menu"  >目录</a>
+
+在 NIO 技术中，要将操作的数据打包到缓冲区中，而缓冲区中的数据想要传输到目的地是要依赖于通道的 。 缓冲区是将数据进行打包，而通道是将数据进行传输.从缓冲区和通道的数据类型可以发现，缓冲区都是类，而通道都是接口，这是由于通道的功能实现是要依赖于操作系统的， Channel 接口只定义有哪些功能，而功能的具体实现在不同的操作系统中是不一样的，因此 ，在 JDK 中， 通道被设计成接口数据类型 
+
+```java
+public interface Channel extends Closeable {
+    public boolean isOpen();
+    public void close() throws IOException;
+}
+```
+Channel 接口具有 11 个子接口
+```java
+AsynchronousChannel
+AsynchronousByteChannel
+ReadableByteChannel
+WritableByteChannel
+ScatteringByteChannel
+GatheringByteChannel
+ByteChannel
+SeekableByteChannel
+NetworkChannel
+MulticastChannel
+InterruptibleChannel
+```
+
+### 8.7.1. 通道接口介绍
+<a href="#menu"  >目录</a>
+
+
+
+### 8.7.2. Scatter/Gather
+<a href="#menu"  >目录</a>
+
+
+### 8.7.3. 文件通道
+<a href="#menu"  >目录</a>
+
+
+### 8.7.4. 内存映射通道
+<a href="#menu"  >目录</a>
+
+
+### 8.7.5. Socket通道
+<a href="#menu"  >目录</a>
+
+
+### 8.7.6. 管道
+<a href="#menu"  >目录</a>
+
+
+### 8.7.7. 管道工具类
+<a href="#menu"  >目录</a>
+
+
+## 8.8. 选择器
+<a href="#menu"  >目录</a>
+
+### 8.8.1. 选择器基础
+<a href="#menu"  >目录</a>
+
+### 8.8.2. 使用选择器
+<a href="#menu"  >目录</a>
+
+
+### 8.8.3. 异步关闭能力
+<a href="#menu"  >目录</a>
+
+
+### 8.8.4. 选择过程的可扩展性
+<a href="#menu"  >目录</a>
+
+## 8.9. AIO的使用
+<a href="#menu"  >目录</a>
+
+### 8.9.1. AsynchronousFileChannel 类的使用
+
+在 Java 7 中，AsynchronousFileChannel 已添加到 Java NIO 中，它可以异步读取数据或者将数据写入文件，当调用read,write方法时，可以设定回调函数。写入或者读取完成之后通过回调函数通知。同时还可以对文件添加锁，避免写入时出现竞争问题。文件锁使用的是操作系统提供的操作锁函数。
+
+
+**基本例子**
+
+```java
+Path path = Paths.get("/home/lgj/aProject/JavaCode/socketproject/test.test");
+
+AsynchronousFileChannel channel =  AsynchronousFileChannel.open(path, StandardOpenOption.WRITE);
+Future<FileLock> future = channel.lock();
+
+//锁定
+FileLock  lock = future.get();
+ByteBuffer byteBuffer = ByteBuffer.allocateDirect(1000);
+//读取数据
+Integer size = channel.read(byteBuffer,0).get();
+//释放锁
+lock.release();
+
+System.out.println("size = " + size);
+
+printInfo(byteBuffer);
+byteBuffer.flip();
+byte[] datas = new byte[byteBuffer.remaining()];
+byteBuffer.get(datas);
+
+for(byte d:datas){
+    System.out.println(d);
+}
+```
+
+AsynchronousFileChannel的构造器不是public,其实例是通过类方法open创建。第一个参数是Path类型的文件路径，第二个是对文件的操作类型。
+```java
+AsynchronousFileChannel channel =  AsynchronousFileChannel.open(path, StandardOpenOption.WRITE);
+
+public static AsynchronousFileChannel open(Path file, OpenOption... options)
+        throws IOException
+{
+    Set<OpenOption> set = new HashSet<OpenOption>(options.length);
+    Collections.addAll(set, options);
+    return open(file, set, null, NO_ATTRIBUTES);
+}
+```
+
+StandardOpenOption说明，注意只有配置了写操作才能创建锁。
+```java
+
+public enum StandardOpenOption implements OpenOption {
+    READ,
+    WRITE,
+    //追加内容    
+    APPEND,
+    //如果配置了READ，TRUNCATE_EXISTING无效
+    //如果配置了WRITE,则会将文件size清零
+    TRUNCATE_EXISTING,
+
+   　//创建新文件，如果文件存在不会出现异常
+    CREATE,
+    //创建新文件，但是文件已经存在则创建失败
+    CREATE_NEW,
+    //关闭时尽量删除文件，如果打开的是链接文件，有可能会失败
+    DELETE_ON_CLOSE,
+    //当配置了CREATE_NEW时，新文件将会被sparse(稀疏???),反之将忽略该配置
+    SPARSE,
+    //要求对文件内容和文件元数据的每次更新都同步写入基础存储设备
+    SYNC,
+    //要求对文件内容的每次更新都同步写入基础存储设备
+    DSYNC;
+}
+
+```
+
+**读取数据**
+
+读取数据有两种方式
+```java
+/**
+* dst:读取出来的数据存储在该缓冲区中
+* position:文件的起始读取字节
+* attachment:　任意值，可以通过回调函数获取到
+* CompletionHandler:　回调类
+
+//通过Future等待读取完成
+public abstract Future<Integer> read(ByteBuffer dst, long position);
+//通过CompletionHandler进行回调
+public abstract <A> void read(ByteBuffer dst,
+                                  long position,
+                                  A attachment,
+                                  CompletionHandler<Integer,? super A> handler);
+```
+实例
+```java
+public static void  read0(Path path ) throws Exception{
+
+        AsynchronousFileChannel channel =  AsynchronousFileChannel.open(path, StandardOpenOption.READ);
+
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(1000);
+        Future<Integer> future = channel.read(byteBuffer,0);
+        //等待读取完成，这里会阻塞
+        Integer size =  future.get();
+        //或者
+        while(!future.isDone()); Integer size =  future.get();
+
+        System.out.println("读取到的数据数量:" + size);
+        printInfo(byteBuffer);
+        byteBuffer.flip();
+        byte[] datas = new byte[byteBuffer.remaining()];
+        byteBuffer.get(datas);
+        for(byte d:datas){
+            System.out.print((char)d);
+        }
+        channel.close();
+
+
+    }
+
+    public static void  read1(Path path ) throws Exception{
+
+        AsynchronousFileChannel channel =  AsynchronousFileChannel.open(path, StandardOpenOption.READ);
+
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(1000);
+        //这里需要注意的是，read调用完成后立即返回，不会等到数据读取完成，因此数据还未读取完成，如果将通道关闭，将会发生异常
+        try{
+            //开始读取数据
+            System.out.println("开始读取数据");
+            channel.read(byteBuffer, 0, byteBuffer, new CompletionHandler<Integer, ByteBuffer>() {
+                //读取完成回调
+                @Override
+                public void completed(Integer result, ByteBuffer byteBuffer) {
+
+                    System.out.println("读取到的数据数量:" + result);                    
+                    byteBuffer.flip();
+                    byte[] datas = new byte[byteBuffer.remaining()];
+                    byteBuffer.get(datas);
+                    for(byte d:datas){
+                        System.out.print((char)d);
+                    }
+
+                }
+                //出现异常回调
+                @Override
+                public void failed(Throwable exc, ByteBuffer byteBuffer) {
+                    System.out.println("出现异常回调");
+                }
+            });
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+        finally{
+            //channel.close();
+        }
+    }
+```
+
+**写入数据**
+
+和写入数据类似，不再赘述
+```java
+public abstract Future<Integer> write(ByteBuffer src, long position);
+public abstract <A> void write(ByteBuffer src,
+                                long position,
+                                A attachment,
+                                CompletionHandler<Integer,? super A> handler);
+```
+
+这里使用了文件锁，使写期间只能有一个线程访问。注意，只有写写才互斥，读写和读读不会互斥。
+```java
+ public static void  write(Path path){
+    try{
+        AsynchronousFileChannel channel =  AsynchronousFileChannel.open(path, StandardOpenOption.WRITE);
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(1000);
+        byteBuffer.put("abcd".getBytes());
+
+        Future<FileLock> future =  channel.lock();
+        //获取排他锁
+        FileLock lock =  future.get();
+        Future<Integer> future1 =  channel.write(byteBuffer, 0);
+        byteBuffer.clear();
+
+        while (!future1.isDone());
+        //释放锁
+        lock.release();
+
+    }
+    catch(Exception ex){
+        ex.printStackTrace();
+    }
+
+}
+```
+
+### 8.9.2. synchronousServerSocketChannel 和 AsynchronousSockeChannel类的使用
+<a href="#menu"  >目录</a>
+
+## 8.10. 字符集
+<a href="#menu"  >目录</a>
+
+
+
+# 9. Javac编译原理
 <a href="#menu"  >目录</a>
 
 * Javac是一种编译器，将Java源码编译成Java字节码。.Java文件转化成。class文件。
@@ -3356,39 +3980,39 @@ ByteBuffer.allocate 意味着直接在 JVM堆上分配内存，所以受 新生�
     * 语法分析器
         * 将Token流组建成更加结构化的语法树
     * 语义分析器
-## 8.1. Javac编译器的基本结构
+## 9.1. Javac编译器的基本结构
 <a href="#menu"  >目录</a>
 
-## 8.2. Javac的工作原理分析
-<a href="#menu"  >目录</a>
-
-
-# 9. 类加载和反射
-<a href="#menu"  >目录</a>
-
-## 9.1. Class文件结构
-<a href="#menu"  >目录</a>
-
-### 9.1.1. JVM指令集简介
-<a href="#menu"  >目录</a>
-
-### 9.1.2. class文件头的表示形式
-<a href="#menu"  >目录</a>
-
-### 9.1.3. 常量池
+## 9.2. Javac的工作原理分析
 <a href="#menu"  >目录</a>
 
 
-### 9.1.4. 类信息
+# 10. 类加载和反射
 <a href="#menu"  >目录</a>
 
-### 9.1.5. Fields和Method定义
+## 10.1. Class文件结构
 <a href="#menu"  >目录</a>
 
-### 9.1.6. 类属性描述
+### 10.1.1. JVM指令集简介
 <a href="#menu"  >目录</a>
 
-### 9.1.7. Javap生成的class文件结构
+### 10.1.2. class文件头的表示形式
+<a href="#menu"  >目录</a>
+
+### 10.1.3. 常量池
+<a href="#menu"  >目录</a>
+
+
+### 10.1.4. 类信息
+<a href="#menu"  >目录</a>
+
+### 10.1.5. Fields和Method定义
+<a href="#menu"  >目录</a>
+
+### 10.1.6. 类属性描述
+<a href="#menu"  >目录</a>
+
+### 10.1.7. Javap生成的class文件结构
 <a href="#menu"  >目录</a>
 
 javap用法
@@ -3529,16 +4153,16 @@ public class com.code.base.javap.JavapTest {
 ```
 
  
-## 9.2. 反射
+## 10.2. 反射
 <a href="#menu"  >目录</a>
 
 
 
 
-# 10. JDBC
+# 11. JDBC
 <a href="#menu"  >目录</a>
 
-## 10.1. 基本使用
+## 11.1. 基本使用
 
 **数据库驱动**
 
@@ -3666,7 +4290,7 @@ cstmt.executeUpdate();
 byte x = cstmt.getByte(1);  
 ```
 
-## 10.2. 预编译
+## 11.2. 预编译
 
 **预编译的SQL语句处理**
 
@@ -3699,14 +4323,14 @@ ps.setString(2, password);
 ```
 一旦设置了给定语句的参数值，其值将一直保留，直到被设置为新值或者调用clearParameters()方法清除它为止。
 
-# 11. 函数式编程
+# 12. 函数式编程
 
 函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。
 
 函数式编程的一个特点就是，允许把函数本身作为参数传入另一个函数，还允许返回一个函数！
-# 12. Java 8 的新特性：
+# 13. Java 8 的新特性：
 
-## 12.1. Java 8 Lambda 表达式
+## 13.1. Java 8 Lambda 表达式
 Lambda 表达式，也可称为闭包，它是推动 Java 8 发布的最重要新特性。
 Lambda 允许把函数作为一个方法的参数（函数作为参数传递进方法中）。
 使用 Lambda 表达式可以使代码变的更加简洁紧凑。
@@ -3742,7 +4366,7 @@ x -> 2 * x
 * lambda 表达式的局部变量可以不用声明为 final，但是必须不可被后面的代码修改（即隐性的具有 final 的语义）
 * 在Lambda 表达式当中不允许声明一个与外部局部变量同名的参数或者局部变量
 
-## 12.2. Java 8 函数式接口
+## 13.2. Java 8 函数式接口
 函数式接口(Functional Interface)就是一个有且仅有一个抽象方法，但是可以有多个非抽象方法的接口。
 
 函数式接口可以被隐式转换为 lambda 表达式。
@@ -3880,7 +4504,7 @@ public class Java8Tester {
    }
 }
 ```
-## 12.3. 默认方法
+## 13.3. 默认方法
 <a href="#menu"  >目录</a>
 
 Java 8 新增了接口的默认方法。
@@ -3899,7 +4523,7 @@ public interface Vehicle {
 默认方法也可以设置为静态。
 ```
 
-## 12.4. Optional 类
+## 13.4. Optional 类
 <a href="#menu"  >目录</a>
 
 Optional 类是一个可以为null的容器对象。如果值存在则isPresent()方法会返回true，调用get()方法会返回该对象。
@@ -3975,7 +4599,7 @@ public class Java8Tester {
 }
 ```
 
-## 12.5. Stream
+## 13.5. Stream
 <a href="#menu"  >目录</a>
 
 Java 8 API添加了一个新的抽象称为流Stream，可以让你以一种声明的方式处理数据。
@@ -4275,7 +4899,7 @@ public class Java8Tester {
    }
 }
 ```
-## 12.6. Java 8 日期时间 API
+## 13.6. Java 8 日期时间 API
 <a href="#menu"  >目录</a>
 
 Java 8通过发布新的Date-Time API (JSR 310)来进一步加强对日期与时间的处理。
@@ -4337,7 +4961,7 @@ public class Java8Tester {
    }
 }
 ```
-## 12.7. Java8 Base64
+## 13.7. Java8 Base64
 <a href="#menu"  >目录</a>
 
 在Java 8中，Base64编码已经成为Java类库的标准。
@@ -4371,10 +4995,10 @@ MIME：输出隐射到MIME友好格式。输出每行不超过76字符，并且�
 |7|	static Base64.Encoder getUrlEncoder()返回一个 Base64.Encoder ，编码使用 URL 和文件名安全型 base64 编码方案。
 
 
-# 13. Java-SPI机制
+# 14. Java-SPI机制
 <a href="#menu"  >目录</a>
 
-## 13.1. Java--SPI机制
+## 14.1. Java--SPI机制
 
 SPI全称为Service Provider Interface，是JDK内置的一种服务提供发现机制。简单来说，它就是一种动态替换发现机制。例如：有个接口想在运行时才发现具体的实现类，那么你只需要在程序运行前添加一个实现即可，并把新加的实现描述给JDK即可。此外，在程序的运行过程中，也可以随时对该描述进行修改，完成具体实现的替换。
 
@@ -4393,7 +5017,7 @@ Java提供了很多服务提供者接口（Service Provider Interface，SPI）�
 引导类加载器在加载时是无法找到SPI的实现类的，因为双亲委派模型中规定，引导类加载器BootstrapClassloader无法委派系统类加载器AppClassLoader来加载。这时候，该如何解决此问题？
 线程上下文类加载由此诞生，它的出现也破坏了类加载器的双亲委派模型，使得程序可以进行逆向类加载。
 
-## 13.2. 使用场景
+## 14.2. 使用场景
 概括地说，适用于：调用者根据实际使用需要，启用、扩展、或者替换框架的实现策略
 比较常见的例子：
 
@@ -4406,7 +5030,7 @@ Java提供了很多服务提供者接口（Service Provider Interface，SPI）�
 * Dubbo
     * Dubbo中也大量使用SPI的方式实现框架的扩展, 不过它对Java提供的原生SPI做了封装，允许用户扩展实现Filter接口
 
-### 13.2.1. 实现方式
+### 14.2.1. 实现方式
 
 * 标准制定者制定接口
 * 不同厂商编写针对于该接口的实现类，并在jar的“classpath:META-INF/services/全接口名称”文件中指定相应的实现类全类名
@@ -4414,7 +5038,7 @@ Java提供了很多服务提供者接口（Service Provider Interface，SPI）�
 
 
 
-## 13.3. spi使用
+## 14.3. spi使用
 首先，通过一张图来看，完成spi的实现，需要哪些操作，需要遵循哪些规范？
 
 ![spi使用](https://upload-images.jianshu.io/upload_images/5621908-679688568081a389.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/860/format/webp)
@@ -4473,7 +5097,7 @@ public class Test {
     }
 }
 ```
-## 13.4. 原理解析
+## 14.4. 原理解析
 首先看ServiceLoader类的签名类的成员变量：
 ```java
 public final class ServiceLoader<S> implements Iterable<S>{
@@ -4526,7 +5150,7 @@ try {
 
 
 
-## 13.5. 总结
+## 14.5. 总结
 
 * 优点：
     * 使用Java SPI机制的优势是实现解耦，使得第三方服务模块的装配控制的逻辑与调用者的业务代码分离，而不是耦合在一起。应用程序可以根据实际业务情况启用框架扩展或替换框架组件。
@@ -4534,13 +5158,13 @@ try {
     * 虽然ServiceLoader也算是使用的延迟加载，但是基本只能通过遍历全部获取，也就是接口的实现类全部加载并实例化一遍。如果你并不想用某些实现类，它也被加载并实例化了，这就造成了浪费。获取某个实现类的方式不够灵活，只能通过Iterator形式获取，不能根据某个参数来获取对应的实现类。
     * 多个并发多线程使用ServiceLoader类的实例是不安全的。
 
-# 14. 常用类源码说明
+# 15. 常用类源码说明
 <a href="#menu"  >目录</a>
 
 
 
 
-# 15. JDK版本变化
+# 16. JDK版本变化
 <a href="#menu"  >目录</a>
 
 * JDK5的新特性：
@@ -4626,10 +5250,10 @@ try {
 
 
 
-# 16. 设计模式
+# 17. 设计模式
 <a href="#menu"  >目录</a>
 
-## 16.1. 概述
+## 17.1. 概述
 <a href="#menu"  >目录</a>
 
 **设计模式**
@@ -4678,7 +5302,7 @@ try {
     * 访问者模式 
 
 
-## 16.2. 设计原则
+## 17.2. 设计原则
 <a href="#menu"  >目录</a>
 
 **单一职责原则**
@@ -4697,16 +5321,16 @@ try {
 * 当需要增加新功能时，应当避免修改原类的代码，应当通过一些设计模式来进行功能扩展。比如装饰模式，这样可以达到对其他使用类的影响。
 * 以上的原则都是施行指南，开闭原则是最终目标。
 
-## 16.3. UML图
+## 17.3. UML图
 <a href="#menu"  >目录</a>
 
 UML（Unified Modeling Language）是一种统一建模语言，为面向对象开发系统的产品进行说明、可视化、和编制文档的一种标准语言。下面将对UML的九种图+包图的基本概念进行介绍以及各个图的使用场景。
 
-### 16.3.1. 用例图
+### 17.3.1. 用例图
 
 用例图用于描述系统提供的系列功能，而每个用例代表系统的一个功能模块．用例图的主要目的是帮助开发团队以一种可视化的方式理解系统的需求功能，用例图对系统的实现不作任何说明．仅仅是系统功能的描述．
 
-### 16.3.2. 类图
+### 17.3.2. 类图
 
 用户根据用例图抽象成类，描述类的内部结构和类与类之间的关系，是一种静态结构图。 在UML类图中，常见的有以下几种关系: 泛化（Generalization）,  实现（Realization），关联（Association)，聚合（Aggregation），组合(Composition)，依赖(Dependency)。
 
@@ -4724,36 +5348,36 @@ _ : 下划线表示static
 斜体: 表示抽象  
 ```
 
-### 16.3.3. 组件图
+### 17.3.3. 组件图
 
 对于现代大型应用程序来说，通常会有多个模块，在Java中，可复用的组件通常打包成一个Jar或者war等文件．组件图提供系统的物理视图，它的用途是显示系统中的软件对其他软件组件的依赖关系．
 
 
-### 16.3.4. 部署图
+### 17.3.4. 部署图
 
 部署图用于描述软件系统如何部署到硬件环境中．它的用途是显示软件系统不同的组件将在何处物理地运行．以及它们将如何彼此通信．
 
 
-### 16.3.5. 顺序图
+### 17.3.5. 顺序图
 
 顺序图显示具体用例的详细流程，并且显示了流程中不同对象之间的调用关系，同时还可以很详细地显示对不同对象的不同调用．顺序图描述了对象之间的交互(顺序图和通信图都被称为交互图)．重点在于描述消息及其时间顺序．
 
 顺序图有两个维度．垂直维度以发生的时间顺序显示消息/调用的序列．水平维度显示消息被发送到的对象实例．顺序图描述了一个功能的实现时的类之间的调用顺序
 
-### 16.3.6. 活动图
+### 17.3.6. 活动图
 
 
 
-### 16.3.7. 状态机图
+### 17.3.7. 状态机图
 
 表示某个类所处的不同状态和该类的的状态转换信息．例子如线程状态的变化
 
-## 16.4. 设计模式
+## 17.4. 设计模式
 
-### 16.4.1. 单例模式
+### 17.4.1. 单例模式
 <a href="#menu"  >目录</a>
 
-#### 16.4.1.1. 基本概念
+#### 17.4.1.1. 基本概念
 
 **定义**:确保某一个类只有一个对象实例。并提供一个访问它的全局访问点.
 **衍生**：有限多例，比如对象池技术，使用缓存将创建的对象缓存起来。
@@ -4764,7 +5388,7 @@ _ : 下划线表示static
 
 **缺点**:
 
-#### 16.4.1.2. 实现
+#### 17.4.1.2. 实现
 单例模式需要注意的关键点是如何避免高并发条件下出现多例的问题。高并发环境下，任何两条语句执行之间都有可能被其他线程所抢占并执行完整的指令。这种情况处理不好，很容易产生出多例。
 还有需要关注的是，一个系统中存在很多类，但是有的类在系统运行的生命周期中是始终没机会创建对象，比如有个偏门的用户操作才会触发某个类创建对象。这种情况下就没必要创建对象，也就是需要延迟创建对象，在使用时才去创建。
 作为单例类，没必要去考虑通过反射会破解单例模式，定义一个类为单例，作为开发者应当遵循这个规范，而不是尝试使用反射来创建多个对象从而破坏这个规定。单例模式只防君子不防小人。
@@ -4904,7 +5528,7 @@ public class Singleton5 implements Serializable {
 }
 ```
 
-### 16.4.2. 简单工厂模式
+### 17.4.2. 简单工厂模式
 <a href="#menu"  >目录</a>
 
 **定义**
@@ -4958,7 +5582,7 @@ public class Client {
     * 可能增加客户端的复杂度,如果根据参数来创建实例,客户端需要理解各个参数的含义
     * 不方便扩展子工厂,一般也不需要
     
-### 16.4.3. 工厂方法模式
+### 17.4.3. 工厂方法模式
 <a href="#menu"  >目录</a>
 
 工厂模式（Factory Pattern）是 Java 中最常用的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
@@ -5028,7 +5652,7 @@ public class NewCreator{
 
 
 
-### 16.4.4. 抽象工厂模式
+### 17.4.4. 抽象工厂模式
 <a href="#menu"  >目录</a>
 
 抽象工厂模式（Abstract Factory Pattern）是围绕一个超级工厂创建其他工厂。该超级工厂又称为其他工厂的工厂。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
@@ -5109,7 +5733,7 @@ public  class Client{
 ```
 
 
-### 16.4.5. 简单工厂&抽象工厂&工厂方法比较
+### 17.4.5. 简单工厂&抽象工厂&工厂方法比较
 <a href="#menu"  >目录</a>
 
 * 简单工厂是用来选择实现的,可以选择任意接口的实现.一个简单工厂可以有多个用于选择并创建对象的方法.多个方法创建的对象可以有关系也可以没有关系.简单工厂里创建的对象也可以分属不同的接口.
@@ -5117,11 +5741,10 @@ public  class Client{
 * 和简单工厂的方法的区别是将选择具体实现的功能放在工厂子类里实现.
 
 
-### 16.4.6. 模板方法模式
+### 17.4.6. 模板方法模式
 <a href="#menu"  >目录</a>
 在模板模式（Template Pattern）中，一个抽象类公开定义了执行它的方法的方式/模板。它的子类可以按需要重写方法实现，但调用将以抽象类中定义的方式进行。这种类型的设计模式属于行为型模式。
 
-![](https://www.runoob.com/wp-content/uploads/2014/08/template_pattern_uml_diagram.jpg)
 
 **介绍**
 * 意图
@@ -5149,7 +5772,7 @@ public  class Client{
 * 注意事项
     * 为防止恶意操作，一般模板方法都加上 final 关键词。
 
-### 16.4.7. 建造者模式
+### 17.4.7. 建造者模式
 <a href="#menu"  >目录</a>
 
 建造者模式（Builder Pattern）使用多个简单的对象一步一步构建成一个复杂的对象。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
@@ -5182,7 +5805,7 @@ public  class Client{
 * 注意事项
     * 与工厂模式的区别是：建造者模式更加关注与零件装配的顺序。
     
-### 16.4.8. 代理模式
+### 17.4.8. 代理模式
 <a href="#menu"  >目录</a>
 
 代理模式（Proxy Pattern）中，一个类代表另一个类的功能。这种类型的设计模式属于结构型模式。
@@ -5223,7 +5846,7 @@ public  class Client{
     * 和适配器模式的区别：适配器模式主要改变所考虑对象的接口，而代理模式不能改变所代理类的接口。 
     * 和装饰器模式的区别：装饰器模式为了增强功能，而代理模式是为了加以控制。
 
-### 16.4.9. 原型模式
+### 17.4.9. 原型模式
 <a href="#menu"  >目录</a>
 原型模式（Prototype Pattern���是用于创建重复的对象，同时又能保证性能。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
 
@@ -5323,7 +5946,6 @@ class Apple  implements Cloneable{
 <a href="#menu"  >目录</a>
 命令模式（Command Pattern）是一种数据驱动的设计模式，它属于行为型模式。请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该命令传给相应的对象，该对象执行命令。
 
-![](https://www.runoob.com/wp-content/uploads/2014/08/command_pattern_uml_diagram.jpg)
 
 **介绍**
 * 意图
@@ -5467,7 +6089,6 @@ public class CommandPatternDemo {
 
 我们通过下面的实例来演示装饰器模式的用法。其中，我们将把一个形状装饰上不同的颜色，同时又不改变形状类。
 
-![](https://www.runoob.com/wp-content/uploads/2014/08/decorator_pattern_uml_diagram.jpg)
 
 **介绍**
 * 意图
@@ -5500,7 +6121,6 @@ public class CommandPatternDemo {
 
 在策略模式中，我们创建表示各种策略的对象和一个行为随着策略对象改变而改变的 context 对象。策略对象改变 context 对象的执行算法。
 
-![](https://www.runoob.com/wp-content/uploads/2014/08/strategy_pattern_uml_diagram.jpg)
 
 **介绍**
 * 意图
@@ -5727,7 +6347,6 @@ public class Client{
 <a href="#menu"  >目录</a>
 当对象间存在一对多关系时，则使用观察者模式（Observer Pattern）。比如，当一个对象被修改时，则会自动通知它的依赖对象。观察者模式属于行为型模式。
 
-![](https://www.runoob.com/wp-content/uploads/2014/08/observer_pattern_uml_diagram.jpg)
 
 **介绍**
 * 意图
@@ -5897,7 +6516,6 @@ public class ObserverPatternDemo {
 <a href="#menu"  >目录</a>
 备忘录模式（Memento Pattern）保存一个对象的某个状态，以便在适当的时候恢复对象。备忘录模式属于行为型模式。
 
-![](https://www.runoob.com/wp-content/uploads/2014/08/memento_pattern_uml_diagram.jpg)
 
 **介绍**
 * 意图
@@ -5996,7 +6614,7 @@ public class MementoPatternDemo {
 <a href="#menu"  >目录</a>
 在访问者模式（Visitor Pattern）中，我们使用了一个访问者类，它改变了元素类的执行算法。通过这种方式，元素的执行算法可以随着访问者改变而改变。这种类型的设计模式属于行为型模式。根据模式，元素对象已接受访问者对象，这样访问者对象就可以处理元素对象上的操作。
 
-![](https://www.runoob.com/wp-content/uploads/2014/08/visitor_pattern_uml_diagram.jpg)
+
 
 **介绍**
 * 意图
@@ -6112,7 +6730,7 @@ public class VisitorPatternDemo {
 
 在状态模式中，我们创建表示各种状态的对象和一个行为随着状态对象改变而改变的 context 对象。
 
-![](https://www.runoob.com/wp-content/uploads/2014/08/state_pattern_uml_diagram.png)
+
 **介绍**
 * 意图
     * 允许对象在内部状态发生改变时改变它的行为，对象看起来好像修改了它的类。
@@ -6207,7 +6825,7 @@ public class StatePatternDemo {
 <a href="#menu"  >目录</a>
 解释器模式（Interpreter Pattern）提供了评估语言的语法或表达式的方式，它属于行为型模式。这种模式实现了一个表达式接口，该接口解释一个特定的上下文。这种模式被用在 SQL 解析、符号处理引擎等。
 
-![](https://www.runoob.com/wp-content/uploads/2014/08/interpreter_pattern_uml_diagram.jpg)
+
 **介绍**
 * 意图
     * 给定一个语言，定义它的文法表示，并定义一个解释器，这个解释器使用该标识来解释语言中的句子。
@@ -6321,7 +6939,7 @@ public class InterpreterPatternDemo {
 
 享元模式尝试重用现有的同类对象，如果未找到匹配的对象，则创建新对象。我们将通过创建 5 个对象来画出 20 个分布于不同位置的圆来演示这种模式。由于只有 5 种可用的颜色，所以 color 属性被用来检查现有的 Circle 对象。
 
-![](https://www.runoob.com/wp-content/uploads/2014/08/flyweight_pattern_uml_diagram-1.jpg)
+
 
 
 **介绍**
@@ -6362,7 +6980,7 @@ public class InterpreterPatternDemo {
 
 我们通过下面的实例来演示桥接模式（Bridge Pattern）的用法。其中，可以使用相同的抽象类方法但是不同的桥接实现类，来画出不同颜色的圆。
 
-![](https://www.runoob.com/wp-content/uploads/2014/08/bridge_pattern_uml_diagram.jpg)
+
 **介绍**
 
 
