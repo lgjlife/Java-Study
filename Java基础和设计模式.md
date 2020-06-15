@@ -13,6 +13,9 @@
         - [1.3.3. char](#133-char)
         - [1.3.4. 数组](#134-数组)
         - [1.3.5. String](#135-string)
+            - [1.3.5.1. String基础](#1351-string基础)
+            - [1.3.5.2. StringBuffer和StringBuilder](#1352-stringbuffer和stringbuilder)
+            - [1.3.5.3. String.format()的详细用法](#1353-stringformat的详细用法)
     - [1.4. 运算符](#14-运算符)
     - [1.5. 流程控制](#15-流程控制)
         - [1.5.1. switch－case](#151-switchcase)
@@ -84,7 +87,7 @@
         - [8.7.6. 管道](#876-管道)
         - [8.7.7. 管道工具类](#877-管道工具类)
     - [8.8. 选择器](#88-选择器)
-        - [8.8.1. 选择器基础](#881-选择器基础)
+        - [8.8.1. 选择器与 1/0 多路复用](#881-选择器与-10-多路复用)
         - [8.8.2. 使用选择器](#882-使用选择器)
         - [8.8.3. 异步关闭能力](#883-异步关闭能力)
         - [8.8.4. 选择过程的可扩展性](#884-选择过程的可扩展性)
@@ -517,6 +520,10 @@ private static int binarySearch0(int[] a, int fromIndex, int toIndex,
 ### 1.3.5. String 
 <a href="#menu"  >目录</a>
 
+
+#### 1.3.5.1. String基础
+<a href="#menu"  >目录</a>
+
 String 内部使用数组来存储字符串的值
 ```java
 private final char value[];
@@ -625,6 +632,141 @@ public boolean equals(Object anObject) {
     return false;
 }
 ```
+#### 1.3.5.2. StringBuffer和StringBuilder
+<a href="#menu"  >目录</a>
+
+String类的缺点是一旦字符串内容改变，就会创建新的对象，造成内存浪费和增加垃圾回收时间，相对影响性能。StringBuffer和StringBuilder正是解决这个问题的。
+
+看一下核心方法
+```java
+//追加字符串
+public AbstractStringBuilder append(String str) {
+    if (str == null)
+        return appendNull();
+    int len = str.length();
+    //确保存放字符串的数组容量大小
+    ensureCapacityInternal(count + len);
+    //进行复制
+    str.getChars(0, len, value, count);
+    count += len;
+    return this;
+}
+public void getChars(int srcBegin, int srcEnd, char dst[], int dstBegin) {
+    if (srcBegin < 0) {
+        throw new StringIndexOutOfBoundsException(srcBegin);
+    }
+    if (srcEnd > value.length) {
+        throw new StringIndexOutOfBoundsException(srcEnd);
+    }
+    if (srcBegin > srcEnd) {
+        throw new StringIndexOutOfBoundsException(srcEnd - srcBegin);
+    }
+    //将追加字符串的数组复制到原StringBuilder的数组后部分
+    System.arraycopy(value, srcBegin, dst, dstBegin, srcEnd - srcBegin);
+}
+
+//追加整形
+public AbstractStringBuilder append(int i) {
+    if (i == Integer.MIN_VALUE) {
+        append("-2147483648");
+        return this;
+    }
+    int appendedLength = (i < 0) ? Integer.stringSize(-i) + 1
+                                    : Integer.stringSize(i);
+    int spaceNeeded = count + appendedLength;
+    ensureCapacityInternal(spaceNeeded);
+    Integer.getChars(i, spaceNeeded, value);
+    count = spaceNeeded;
+    return this;
+}  
+static void getChars(int i, int index, char[] buf) {
+    int q, r;
+    int charPos = index;
+    char sign = 0;
+
+    if (i < 0) {
+        sign = '-';
+        i = -i;
+    }
+
+    // Generate two digits per iteration
+    while (i >= 65536) {
+        q = i / 100;
+    // really: r = i - (q * 100);
+        r = i - ((q << 6) + (q << 5) + (q << 2));
+        i = q;
+        buf [--charPos] = DigitOnes[r];
+        buf [--charPos] = DigitTens[r];
+    }
+
+    // Fall thru to fast mode for smaller numbers
+    // assert(i <= 65536, i);
+    for (;;) {
+        q = (i * 52429) >>> (16+3);
+        r = i - ((q << 3) + (q << 1));  // r = i-(q*10) ...
+        buf [--charPos] = digits [r];
+        i = q;
+        if (i == 0) break;
+    }
+    if (sign != 0) {
+        buf [--charPos] = sign;
+    }
+}
+    
+//追加本身类型
+AbstractStringBuilder append(AbstractStringBuilder asb) {
+    if (asb == null)
+        return appendNull();
+    int len = asb.length();
+    ensureCapacityInternal(count + len);
+    asb.getChars(0, len, value, count);
+    count += len;
+    return this;
+}
+public void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin)
+{
+    if (srcBegin < 0)
+        throw new StringIndexOutOfBoundsException(srcBegin);
+    if ((srcEnd < 0) || (srcEnd > count))
+        throw new StringIndexOutOfBoundsException(srcEnd);
+    if (srcBegin > srcEnd)
+        throw new StringIndexOutOfBoundsException("srcBegin > srcEnd");
+    System.arraycopy(value, srcBegin, dst, dstBegin, srcEnd - srcBegin);
+}
+
+//添加对象
+public AbstractStringBuilder append(Object obj) {
+    return append(String.valueOf(obj));
+}
+public static String valueOf(Object obj) {
+    return (obj == null) ? "null" : obj.toString();
+}  
+```
+从上面可以看出,对于字符串类型的比如String,StringBuffer和StringBuilder最后都是通过System.arraycopy来实现将其内部存放数据的数组进行复制。
+而对于数值类型的，会该数值进行解析，获得对应的char字符，在添加到StringBuilder内部数组的末尾。对于对象类型的，先通过toString获取对象的String结果，然后再进行复制。
+
+StringBuffer和StringBuilder都是AbstractStringBuilder的子类。唯一的区别是StringBuffer在一些方法上使用了synchronized，避免了多线程下的竞争问题。但是相对的性能会略为下降。需要根据使用环境进行选择。
+
+* 三者的使用总结
+    * String：适用于少量的字符串操作的情况；
+    * StringBuilder：适用于单线程下在字符缓冲区进行大量操作的情况；
+    * StringBuffer：适用多线程下在字符缓冲区进行大量操作的情况。
+
+
+* 三者之间的转换
+    * String-----StringBuffer
+        * 通过构造方法：StringBuffer sb = new StringBuffer("abc");
+        * 通过append方法：StringBuffer sb = new StringBuffer();sb.append("abc");
+    * StringBuffer------String
+        * 通过构造方法：StringBuffer sb = new StringBuffer("abc");String s = new String(sb);
+        * 通过toString方法：StringBuffer sb = new StringBuffer("abc");String s = sb.toString();
+        * 通过subString方法：StringBuffer sb = new StringBuffer("abc");String s = sb.substring(0, sb.length());
+
+
+#### 1.3.5.3. String.format()的详细用法
+<a href="#menu"  >目录</a>
+
+
 
 ## 1.4. 运算符
 
@@ -3751,7 +3893,12 @@ InterruptibleChannel
 ## 8.8. 选择器
 <a href="#menu"  >目录</a>
 
-### 8.8.1. 选择器基础
+Selector 一般称 为选择器 ，当然你也可以翻译为 多路复用器 。它是Java NIO核心组件中的一个，用于检查一个或多个NIO Channel（通道）的状态是否处于可读、可写。如此可以实现单线程管理多个channels,也就是可以管理多个网络链接。
+
+使用Selector的好处在于： 使用更少的线程来就可以来处理通道了， 相比使用多个线程，避免了线程上下文切换带来的开销。
+
+
+### 8.8.1. 选择器与 1/0 多路复用
 <a href="#menu"  >目录</a>
 
 ### 8.8.2. 使用选择器
