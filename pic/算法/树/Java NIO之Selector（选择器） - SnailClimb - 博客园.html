@@ -1,0 +1,1718 @@
+<!DOCTYPE html>
+<!-- saved from url=(0049)https://www.cnblogs.com/snailclimb/p/9086334.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="never">
+    <meta property="og:description" content="历史回顾:Java NIO 概览Java NIO 之 Buffer(缓冲区)Java NIO 之 Channel（通道）其他高赞文章：面试中关于Redis的问题看这篇就够了一文轻松搞懂redis集群原">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Java NIO之Selector（选择器） - SnailClimb - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.ico?v=20200522" type="image/x-icon">
+    
+    <link rel="stylesheet" href="./Java NIO之Selector（选择器） - SnailClimb - 博客园_files/blog-common.min.css">
+    <link id="MainCss" rel="stylesheet" href="./Java NIO之Selector（选择器） - SnailClimb - 博客园_files/bundle-blacklowkey.min.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./Java NIO之Selector（选择器） - SnailClimb - 博客园_files/bundle-blacklowkey-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/snailclimb/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/snailclimb/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/snailclimb/wlwmanifest.xml">
+    <script async="" src="./Java NIO之Selector（选择器） - SnailClimb - 博客园_files/analytics.js"></script><script src="./Java NIO之Selector（选择器） - SnailClimb - 博客园_files/jquery-2.2.0.min.js"></script>
+    <script src="./Java NIO之Selector（选择器） - SnailClimb - 博客园_files/blog-common.min.js"></script>
+    <script>
+        var currentBlogId = 432499;
+        var currentBlogApp = 'snailclimb';
+        var cb_enable_mathjax = false;
+        var isLogined = true;
+        var skinName = 'BlackLowKey';
+    </script>
+    
+    
+    
+<link rel="preload" href="./Java NIO之Selector（选择器） - SnailClimb - 博客园_files/f.txt" as="script"><script type="text/javascript" src="./Java NIO之Selector（选择器） - SnailClimb - 博客园_files/f.txt"></script><script src="./Java NIO之Selector（选择器） - SnailClimb - 博客园_files/pubads_impl_2020061608.js" async=""></script><link rel="prefetch" href="https://f9be85f313c36a54fff01f4e018f412e.safeframe.googlesyndication.com/safeframe/1-0-37/html/container.html"><link rel="prefetch" href="https://tpc.googlesyndication.com/safeframe/1-0-37/html/container.html"></head>
+<body>
+    <a name="top"></a>
+    
+    
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/snailclimb/"><img id="blogLogo" src="./Java NIO之Selector（选择器） - SnailClimb - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/snailclimb/">骑一头小毛驴啊</a>
+</h1>
+<h2>
+
+</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/snailclimb/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/SnailClimb">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/snailclimb/rss/">订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			
+			<span id="stats_post_count">随笔 - 
+222&nbsp; </span>
+<span id="stats_article_count">文章 - 
+0&nbsp; </span>
+<span id="stats-comment_count">评论 - 
+5</span>
+
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/snailclimb/p/9086334.html">
+    <span>Java NIO之Selector（选择器）</span>
+    
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                
+<div id="cnblogs_post_body" class="blogpost-body ">
+    
+                <p><strong>历史回顾:</strong></p>
+
+<p><a href="https://mp.weixin.qq.com/s?__biz=MzU4NDQ4MzU5OA==&amp;mid=2247483956&amp;idx=1&amp;sn=57692bc5b7c2c6dfb812489baadc29c9&amp;chksm=fd985455caefdd4331d828d8e89b22f19b304aa87d6da73c5d8c66fcef16e4c0b448b1a6f791#rd">Java NIO 概览</a></p>
+
+<p><a href="http://mp.weixin.qq.com/s?__biz=MzU4NDQ4MzU5OA==&amp;mid=2247483961&amp;idx=1&amp;sn=f67bef4c279e78043ff649b6b03fdcbc&amp;chksm=fd985458caefdd4e3317ccbdb2d0a5a70a5024d3255eebf38183919ed9c25ade536017c0a6ba#rd">Java NIO 之 Buffer(缓冲区)</a></p>
+
+<p><a href="https://mp.weixin.qq.com/s?__biz=MzU4NDQ4MzU5OA==&amp;mid=2247483966&amp;idx=1&amp;sn=d5cf18c69f5f9ec2aff149270422731f&amp;chksm=fd98545fcaefdd49296e2c78000ce5da277435b90ba3c03b92b7cf54c6ccc71d61d13efbce63#rd">Java NIO 之 Channel（通道）</a></p>
+
+<p><strong>其他高赞文章：</strong></p>
+
+<p><a href="https://mp.weixin.qq.com/s?__biz=MzU4NDQ4MzU5OA==&amp;mid=2247483867&amp;idx=1&amp;sn=39a06fa3d6d8f09eefaaf3d2b15b40e4&amp;chksm=fd9857bacaefdeaccd7cacf9dba5b702bf6f639377ded5a29fc1e56ae4f1d0a121ad0829c9dc#rd">面试中关于Redis的问题看这篇就够了</a></p>
+
+<p><a href="https://mp.weixin.qq.com/s?__biz=MzU4NDQ4MzU5OA==&amp;mid=2247483863&amp;idx=1&amp;sn=8a7d08783f45d3af7947b8a2e7cc981e&amp;chksm=fd9857b6caefdea072a7cec992fa1d32316ffdca8eea24e7f5a7871ce189bdd4e5b144619ae8#rd">一文轻松搞懂redis集群原理及搭建与使用</a></p>
+
+<p><a href="http://mp.weixin.qq.com/s?__biz=MzU4NDQ4MzU5OA==&amp;mid=2247483661&amp;idx=1&amp;sn=4836dfcf4c2a952ec9287bd9bfc380bd&amp;chksm=fd98576ccaefde7ad1f2feb10e652e896d24884a4a1fb804490bd192ff099c039dbf85eb8dbc#rd">超详细的Java面试题总结（三）之Java集合篇常见问题</a></p>
+
+
+
+<h2 id="一-selector选择器介绍">一 Selector（选择器）介绍</h2>
+
+<p><strong>Selector</strong> 一般称 为<strong>选择器</strong> ，当然你也可以翻译为 <strong>多路复用器</strong> 。它是Java NIO核心组件中的一个，用于检查一个或多个NIO Channel（通道）的状态是否处于可读、可写。如此可以实现单线程管理多个channels,也就是可以管理多个网络链接。</p>
+
+<p><img src="./Java NIO之Selector（选择器） - SnailClimb - 博客园_files/16363f5338f36c54" alt="Selector（选择器）" title=""></p>
+
+<p><strong>使用Selector的好处在于：</strong> 使用更少的线程来就可以来处理通道了， 相比使用多个线程，避免了线程上下文切换带来的开销。</p>
+
+
+
+<h2 id="二-selector选择器的使用方法介绍">二 Selector（选择器）的使用方法介绍</h2>
+
+
+
+<h3 id="1-selector的创建">1. Selector的创建</h3>
+
+<p>通过调用Selector.open()方法创建一个Selector对象，如下：</p>
+
+
+
+<pre class="prettyprint"><code class="language-java hljs">Selector selector = Selector.open();</code></pre>
+
+<p>这里需要说明一下</p>
+
+
+
+<h3 id="2-注册channel到selector">2. 注册Channel到Selector</h3>
+
+
+
+<pre class="prettyprint"><code class="language-java hljs">channel.configureBlocking(<span class="hljs-keyword"><span class="hljs-keyword">false</span></span>);
+SelectionKey key = channel.register(selector, Selectionkey.OP_READ);</code></pre>
+
+<p><strong>Channel必须是非阻塞的</strong>。 <br>
+所以FileChannel不适用Selector，因为FileChannel不能切换为非阻塞模式，更准确的来说是因为FileChannel没有继承SelectableChannel。Socket channel可以正常使用。</p>
+
+<p><strong>SelectableChannel抽象类</strong> 有一个 <strong>configureBlocking（）</strong> 方法用于使通道处于阻塞模式或非阻塞模式。</p>
+
+
+
+<pre class="prettyprint"><code class="language-java hljs"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">abstract</span></span></span><span class="hljs-function"> SelectableChannel <span class="hljs-title">configureBlocking</span><span class="hljs-params">(</span></span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-params"><span class="hljs-keyword">boolean</span></span></span></span><span class="hljs-function"><span class="hljs-params"> block)</span>  </span></code></pre>
+
+
+
+<h3 id="注意"><strong>注意：</strong></h3>
+
+<p><strong>SelectableChannel抽象类</strong>的<strong>configureBlocking（）</strong> 方法是由 <strong>AbstractSelectableChannel抽象类</strong>实现的，<strong>SocketChannel、ServerSocketChannel、DatagramChannel</strong>都是直接继承了 <strong>AbstractSelectableChannel抽象类</strong> 。 <br>
+大家有兴趣可以看看NIO的源码，各种抽象类和抽象类上层的抽象类。我本人暂时不准备研究NIO源码，因为还有很多事情要做，需要研究的同学可以自行看看。</p>
+
+<p><strong>register()</strong> 方法的第二个参数。这是一个“ <strong>interest集合</strong> ”，意思是在<strong>通过Selector监听Channel时对什么事件感兴趣</strong>。可以监听四种不同类型的事件：</p>
+
+<ul>
+<li><strong>Connect</strong></li>
+<li><strong>Accept</strong></li>
+<li><strong>Read</strong></li>
+<li><strong>Write</strong></li>
+</ul>
+
+<p>通道触发了一个事件意思是该事件已经就绪。比如某个Channel成功连接到另一个服务器称为“ <strong>连接就绪</strong> ”。一个Server Socket Channel准备好接收新进入的连接称为“ <strong>接收就绪</strong> ”。一个有数据可读的通道可以说是“ <strong>读就绪</strong> ”。等待写数据的通道可以说是“ <strong>写就绪</strong> ”。</p>
+
+<p>这四种事件用SelectionKey的四个常量来表示：</p>
+
+
+
+<pre class="prettyprint"><code class="language-java hljs">SelectionKey.OP_CONNECT
+SelectionKey.OP_ACCEPT
+SelectionKey.OP_READ
+SelectionKey.OP_WRITE
+</code></pre>
+
+<p>如果你对不止一种事件感兴趣，使用或运算符即可，如下：</p>
+
+
+
+<pre class="prettyprint"><code class="language-java hljs"><span class="hljs-keyword"><span class="hljs-keyword">int</span></span> interestSet = SelectionKey.OP_READ | SelectionKey.OP_WRITE;</code></pre>
+
+
+
+<h3 id="3-selectionkey介绍">3. SelectionKey介绍</h3>
+
+<p>一个SelectionKey键表示了一个特定的通道对象和一个特定的选择器对象之间的注册关系。</p>
+
+
+
+<pre class="prettyprint"><code class="language-java hljs">key.attachment(); <span class="hljs-comment"><span class="hljs-comment">//返回SelectionKey的attachment，attachment可以在注册channel的时候指定。</span></span>
+key.channel(); <span class="hljs-comment"><span class="hljs-comment">// 返回该SelectionKey对应的channel。</span></span>
+key.selector(); <span class="hljs-comment"><span class="hljs-comment">// 返回该SelectionKey对应的Selector。</span></span>
+key.interestOps(); <span class="hljs-comment"><span class="hljs-comment">//返回代表需要Selector监控的IO操作的bit mask</span></span>
+key.readyOps(); <span class="hljs-comment"><span class="hljs-comment">// 返回一个bit mask，代表在相应channel上可以进行的IO操作。</span></span>
+</code></pre>
+
+<blockquote>
+  <p><strong>key.interestOps():</strong></p>
+</blockquote>
+
+<p>我们可以通过以下方法来判断Selector是否对Channel的某种事件感兴趣</p>
+
+
+
+<pre class="prettyprint"><code class="language-java hljs"><span class="hljs-keyword"><span class="hljs-keyword">int</span></span> interestSet = selectionKey.interestOps(); 
+<span class="hljs-keyword"><span class="hljs-keyword">boolean</span></span> isInterestedInAccept = (interestSet &amp; SelectionKey.OP_ACCEPT) == SelectionKey.OP_ACCEPT；
+<span class="hljs-keyword"><span class="hljs-keyword">boolean</span></span> isInterestedInConnect = interestSet &amp; SelectionKey.OP_CONNECT;
+<span class="hljs-keyword"><span class="hljs-keyword">boolean</span></span> isInterestedInRead = interestSet &amp; SelectionKey.OP_READ;
+<span class="hljs-keyword"><span class="hljs-keyword">boolean</span></span> isInterestedInWrite = interestSet &amp; SelectionKey.OP_WRITE;</code></pre>
+
+<blockquote>
+  <p><strong>key.readyOps()</strong></p>
+</blockquote>
+
+<p>ready 集合是通道已经准备就绪的操作的集合。JAVA中定义以下几个方法用来检查这些操作是否就绪.</p>
+
+
+
+<pre class="prettyprint"><code class="language-java hljs"><span class="hljs-comment"><span class="hljs-comment">//创建ready集合的方法</span></span>
+<span class="hljs-keyword"><span class="hljs-keyword">int</span></span> readySet = selectionKey.readyOps();
+<span class="hljs-comment"><span class="hljs-comment">//检查这些操作是否就绪的方法</span></span>
+key.isAcceptable();<span class="hljs-comment"><span class="hljs-comment">//是否可读，是返回 true</span></span>
+<span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">boolean</span></span></span><span class="hljs-function"> <span class="hljs-title">isWritable</span><span class="hljs-params">()</span>：</span><span class="hljs-comment"><span class="hljs-function"><span class="hljs-comment">//是否可写，是返回 true</span></span></span><span class="hljs-function">
+</span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">boolean</span></span></span><span class="hljs-function"> <span class="hljs-title">isConnectable</span><span class="hljs-params">()</span>：</span><span class="hljs-comment"><span class="hljs-function"><span class="hljs-comment">//是否可连接，是返回 true</span></span></span><span class="hljs-function">
+</span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">boolean</span></span></span><span class="hljs-function"> <span class="hljs-title">isAcceptable</span><span class="hljs-params">()</span>：</span><span class="hljs-comment"><span class="hljs-function"><span class="hljs-comment">//是否可接收，是返回 true</span></span></span></code></pre>
+
+<p><strong>从SelectionKey访问Channel和Selector很简单。如下：</strong></p>
+
+
+
+<pre class="prettyprint"><code class="language-java hljs">Channel channel = key.channel();
+Selector selector = key.selector();
+key.attachment();</code></pre>
+
+<p>可以将一个对象或者更多信息附着到SelectionKey上，这样就能方便的识别某个给定的通道。例如，可以附加 与通道一起使用的Buffer，或是包含聚集数据的某个对象。使用方法如下：</p>
+
+
+
+<pre class="prettyprint"><code class="language-java hljs">key.attach(theObject);
+Object attachedObj = key.attachment();</code></pre>
+
+<p>还可以在用register()方法向Selector注册Channel的时候附加对象。如：</p>
+
+
+
+<pre class="prettyprint"><code class="language-java hljs">SelectionKey key = channel.register(selector, SelectionKey.OP_READ, theObject);</code></pre>
+
+
+
+<h3 id="4-从selector中选择channelselecting-channels-via-a-selector">4. 从Selector中选择channel(Selecting Channels via a Selector)</h3>
+
+<p>选择器维护注册过的通道的集合，并且这种注册关系都被封装在SelectionKey当中.</p>
+
+<blockquote>
+  <p><strong>Selector维护的三种类型SelectionKey集合：</strong></p>
+</blockquote>
+
+<ul>
+<li><p><strong>已注册的键的集合(Registered key set)</strong></p>
+
+<p>所有与选择器关联的通道所生成的键的集合称为已经注册的键的集合。并不是所有注册过的键都仍然有效。这个集合通过 <strong>keys()</strong> 方法返回，并且可能是空的。这个已注册的键的集合不是可以直接修改的；试图这么做的话将引发java.lang.UnsupportedOperationException。</p></li>
+<li><p><strong>已选择的键的集合(Selected key set)</strong></p>
+
+<p>所有与选择器关联的通道所生成的键的集合称为已经注册的键的集合。并不是所有注册过的键都仍然有效。这个集合通过 <strong>keys()</strong> 方法返回，并且可能是空的。这个已注册的键的集合不是可以直接修改的；试图这么做的话将引发java.lang.UnsupportedOperationException。    </p></li>
+<li><p><strong>已取消的键的集合(Cancelled key set)</strong></p>
+
+<p>已注册的键的集合的子集，这个集合包含了 <strong>cancel()</strong> 方法被调用过的键(这个键已经被无效化)，但它们还没有被注销。这个集合是选择器对象的私有成员，因而无法直接访问。</p>
+
+<p><strong>注意：</strong> <br>
+当键被取消（ 可以通过<strong>isValid( )</strong> 方法来判断）时，它将被放在相关的选择器的已取消的键的集合里。注册不会立即被取消，但键会立即失效。当再次调用 <strong>select( )</strong> 方法时（或者一个正在进行的select()调用结束时），已取消的键的集合中的被取消的键将被清理掉，并且相应的注销也将完成。通道会被注销，而新的SelectionKey将被返回。当通道关闭时，所有相关的键会自动取消（记住，一个通道可以被注册到多个选择器上）。当选择器关闭时，所有被注册到该选择器的通道都将被注销，并且相关的键将立即被无效化（取消）。一旦键被无效化，调用它的与选择相关的方法就将抛出CancelledKeyException。</p></li>
+</ul>
+
+<blockquote>
+  <p><strong>select()方法介绍：</strong></p>
+</blockquote>
+
+<p>在刚初始化的Selector对象中，这三个集合都是空的。 <strong>通过Selector的select（）方法可以选择已经准备就绪的通道</strong> （这些通道包含你感兴趣的的事件）。比如你对读就绪的通道感兴趣，那么select（）方法就会返回读事件已经就绪的那些通道。下面是Selector几个重载的select()方法：</p>
+
+<ul>
+<li>int select()：阻塞到至少有一个通道在你注册的事件上就绪了。 </li>
+<li>int select(long timeout)：和select()一样，但最长阻塞时间为timeout毫秒。 </li>
+<li>int selectNow()：非阻塞，只要有通道就绪就立刻返回。</li>
+</ul>
+
+<p><strong>select()方法返回的int值表示有多少通道已经就绪,是自上次调用select()方法后有多少通道变成就绪状态。之前在select（）调用时进入就绪的通道不会在本次调用中被记入，而在前一次select（）调用进入就绪但现在已经不在处于就绪的通道也不会被记入</strong>。例如：首次调用select()方法，如果有一个通道变成就绪状态，返回了1，若再次调用select()方法，如果另一个通道就绪了，它会再次返回1。如果对第一个就绪的channel没有做任何操作，现在就有两个就绪的通道，但在每次select()方法调用之间，只有一个通道就绪了。</p>
+
+<p><strong>一旦调用select()方法，并且返回值不为0时，则 可以通过调用Selector的selectedKeys()方法来访问已选择键集合</strong> 。如下：  <br>
+Set selectedKeys=selector.selectedKeys();  <br>
+进而可以放到和某SelectionKey关联的Selector和Channel。如下所示：</p>
+
+<pre class="prettyprint"><code class="language-java hljs">Set selectedKeys = selector.selectedKeys();
+Iterator keyIterator = selectedKeys.iterator();
+<span class="hljs-keyword"><span class="hljs-keyword">while</span></span>(keyIterator.hasNext()) {
+    SelectionKey key = keyIterator.next();
+    <span class="hljs-keyword"><span class="hljs-keyword">if</span></span>(key.isAcceptable()) {
+        <span class="hljs-comment"><span class="hljs-comment">// a connection was accepted by a ServerSocketChannel.</span></span>
+    } <span class="hljs-keyword"><span class="hljs-keyword">else</span></span> <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (key.isConnectable()) {
+        <span class="hljs-comment"><span class="hljs-comment">// a connection was established with a remote server.</span></span>
+    } <span class="hljs-keyword"><span class="hljs-keyword">else</span></span> <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (key.isReadable()) {
+        <span class="hljs-comment"><span class="hljs-comment">// a channel is ready for reading</span></span>
+    } <span class="hljs-keyword"><span class="hljs-keyword">else</span></span> <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (key.isWritable()) {
+        <span class="hljs-comment"><span class="hljs-comment">// a channel is ready for writing</span></span>
+    }
+    keyIterator.remove();
+}</code></pre>
+
+
+
+<h3 id="5-停止选择的方法">5. 停止选择的方法</h3>
+
+<p>选择器执行选择的过程，系统底层会依次询问每个通道是否已经就绪，这个过程可能会造成调用线程进入阻塞状态,那么我们有以下三种方式可以唤醒在select（）方法中阻塞的线程。</p>
+
+<ul>
+<li><strong>wakeup()方法</strong> ：通过调用Selector对象的wakeup（）方法让处在阻塞状态的select()方法立刻返回  <br>
+该方法使得选择器上的第一个还没有返回的选择操作立即返回。如果当前没有进行中的选择操作，那么下一次对select()方法的一次调用将立即返回。</li>
+<li><strong>close()方法</strong> ：通过close（）方法关闭Selector，  <br>
+该方法使得任何一个在选择操作中阻塞的线程都被唤醒（类似wakeup（）），同时使得注册到该Selector的所有Channel被注销，所有的键将被取消，但是Channel本身并不会关闭。</li>
+</ul>
+
+<h2 id="三-模板代码">三  模板代码</h2>
+
+<p><strong>一个服务端的模板代码：</strong></p>
+
+<p>有了模板代码我们在编写程序时，大多数时间都是在模板代码中添加相应的业务代码</p>
+
+
+
+<pre class="prettyprint"><code class="language-java hljs">ServerSocketChannel ssc = ServerSocketChannel.open();
+ssc.socket().bind(<span class="hljs-keyword"><span class="hljs-keyword">new</span></span> InetSocketAddress(<span class="hljs-string"><span class="hljs-string">"localhost"</span></span>, <span class="hljs-number"><span class="hljs-number">8080</span></span>));
+ssc.configureBlocking(<span class="hljs-keyword"><span class="hljs-keyword">false</span></span>);
+
+Selector selector = Selector.open();
+ssc.register(selector, SelectionKey.OP_ACCEPT);
+
+<span class="hljs-keyword"><span class="hljs-keyword">while</span></span>(<span class="hljs-keyword"><span class="hljs-keyword">true</span></span>) {
+    <span class="hljs-keyword"><span class="hljs-keyword">int</span></span> readyNum = selector.select();
+    <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (readyNum == <span class="hljs-number"><span class="hljs-number">0</span></span>) {
+        <span class="hljs-keyword"><span class="hljs-keyword">continue</span></span>;
+    }
+
+    Set&lt;SelectionKey&gt; selectedKeys = selector.selectedKeys();
+    Iterator&lt;SelectionKey&gt; it = selectedKeys.iterator();
+
+    <span class="hljs-keyword"><span class="hljs-keyword">while</span></span>(it.hasNext()) {
+        SelectionKey key = it.next();
+
+        <span class="hljs-keyword"><span class="hljs-keyword">if</span></span>(key.isAcceptable()) {
+            <span class="hljs-comment"><span class="hljs-comment">// 接受连接</span></span>
+        } <span class="hljs-keyword"><span class="hljs-keyword">else</span></span> <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (key.isReadable()) {
+            <span class="hljs-comment"><span class="hljs-comment">// 通道可读</span></span>
+        } <span class="hljs-keyword"><span class="hljs-keyword">else</span></span> <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (key.isWritable()) {
+            <span class="hljs-comment"><span class="hljs-comment">// 通道可写</span></span>
+        }
+
+        it.remove();
+    }
+}</code></pre>
+
+
+
+<h2 id="四-客户端与服务端简单交互实例">四 客户端与服务端简单交互实例</h2>
+
+<p><strong>服务端：</strong></p>
+
+
+
+<pre class="prettyprint"><code class="language-java hljs"><span class="hljs-keyword"><span class="hljs-keyword">package</span></span> selector;
+
+<span class="hljs-keyword"><span class="hljs-keyword">import</span></span> java.io.IOException;
+<span class="hljs-keyword"><span class="hljs-keyword">import</span></span> java.net.InetSocketAddress;
+<span class="hljs-keyword"><span class="hljs-keyword">import</span></span> java.nio.ByteBuffer;
+<span class="hljs-keyword"><span class="hljs-keyword">import</span></span> java.nio.channels.SelectionKey;
+<span class="hljs-keyword"><span class="hljs-keyword">import</span></span> java.nio.channels.Selector;
+<span class="hljs-keyword"><span class="hljs-keyword">import</span></span> java.nio.channels.ServerSocketChannel;
+<span class="hljs-keyword"><span class="hljs-keyword">import</span></span> java.nio.channels.SocketChannel;
+<span class="hljs-keyword"><span class="hljs-keyword">import</span></span> java.util.Iterator;
+<span class="hljs-keyword"><span class="hljs-keyword">import</span></span> java.util.Set;
+
+<span class="hljs-keyword"><span class="hljs-keyword">public</span></span> <span class="hljs-class"><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">class</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">WebServer</span></span></span><span class="hljs-class"> </span>{</span>
+    <span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">public</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">static</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">void</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">main</span></span></span><span class="hljs-function"><span class="hljs-params">(String[] args)</span> </span>{
+        <span class="hljs-keyword"><span class="hljs-keyword">try</span></span> {
+            ServerSocketChannel ssc = ServerSocketChannel.open();
+            ssc.socket().bind(<span class="hljs-keyword"><span class="hljs-keyword">new</span></span> InetSocketAddress(<span class="hljs-string"><span class="hljs-string">"127.0.0.1"</span></span>, <span class="hljs-number"><span class="hljs-number">8000</span></span>));
+            ssc.configureBlocking(<span class="hljs-keyword"><span class="hljs-keyword">false</span></span>);
+
+            Selector selector = Selector.open();
+            <span class="hljs-comment"><span class="hljs-comment">// 注册 channel，并且指定感兴趣的事件是 Accept</span></span>
+            ssc.register(selector, SelectionKey.OP_ACCEPT);
+
+            ByteBuffer readBuff = ByteBuffer.allocate(<span class="hljs-number"><span class="hljs-number">1024</span></span>);
+            ByteBuffer writeBuff = ByteBuffer.allocate(<span class="hljs-number"><span class="hljs-number">128</span></span>);
+            writeBuff.put(<span class="hljs-string"><span class="hljs-string">"received"</span></span>.getBytes());
+            writeBuff.flip();
+
+            <span class="hljs-keyword"><span class="hljs-keyword">while</span></span> (<span class="hljs-keyword"><span class="hljs-keyword">true</span></span>) {
+                <span class="hljs-keyword"><span class="hljs-keyword">int</span></span> nReady = selector.select();
+                Set&lt;SelectionKey&gt; keys = selector.selectedKeys();
+                Iterator&lt;SelectionKey&gt; it = keys.iterator();
+
+                <span class="hljs-keyword"><span class="hljs-keyword">while</span></span> (it.hasNext()) {
+                    SelectionKey key = it.next();
+                    it.remove();
+
+                    <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (key.isAcceptable()) {
+                        <span class="hljs-comment"><span class="hljs-comment">// 创建新的连接，并且把连接注册到selector上，而且，</span></span>
+                        <span class="hljs-comment"><span class="hljs-comment">// 声明这个channel只对读操作感兴趣。</span></span>
+                        SocketChannel socketChannel = ssc.accept();
+                        socketChannel.configureBlocking(<span class="hljs-keyword"><span class="hljs-keyword">false</span></span>);
+                        socketChannel.register(selector, SelectionKey.OP_READ);
+                    }
+                    <span class="hljs-keyword"><span class="hljs-keyword">else</span></span> <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (key.isReadable()) {
+                        SocketChannel socketChannel = (SocketChannel) key.channel();
+                        readBuff.clear();
+                        socketChannel.read(readBuff);
+
+                        readBuff.flip();
+                        System.out.println(<span class="hljs-string"><span class="hljs-string">"received : "</span></span> + <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> String(readBuff.array()));
+                        key.interestOps(SelectionKey.OP_WRITE);
+                    }
+                    <span class="hljs-keyword"><span class="hljs-keyword">else</span></span> <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (key.isWritable()) {
+                        writeBuff.rewind();
+                        SocketChannel socketChannel = (SocketChannel) key.channel();
+                        socketChannel.write(writeBuff);
+                        key.interestOps(SelectionKey.OP_READ);
+                    }
+                }
+            }
+        } <span class="hljs-keyword"><span class="hljs-keyword">catch</span></span> (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+
+<p><strong>客户端：</strong></p>
+
+
+
+<pre class="prettyprint"><code class="language-java hljs"><span class="hljs-keyword"><span class="hljs-keyword">package</span></span> selector;
+
+<span class="hljs-keyword"><span class="hljs-keyword">import</span></span> java.io.IOException;
+<span class="hljs-keyword"><span class="hljs-keyword">import</span></span> java.net.InetSocketAddress;
+<span class="hljs-keyword"><span class="hljs-keyword">import</span></span> java.nio.ByteBuffer;
+<span class="hljs-keyword"><span class="hljs-keyword">import</span></span> java.nio.channels.SocketChannel;
+
+<span class="hljs-keyword"><span class="hljs-keyword">public</span></span> <span class="hljs-class"><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">class</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">WebClient</span></span></span><span class="hljs-class"> </span>{</span>
+    <span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">public</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">static</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">void</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">main</span></span></span><span class="hljs-function"><span class="hljs-params">(String[] args)</span> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">throws</span></span></span><span class="hljs-function"> IOException </span>{
+        <span class="hljs-keyword"><span class="hljs-keyword">try</span></span> {
+            SocketChannel socketChannel = SocketChannel.open();
+            socketChannel.connect(<span class="hljs-keyword"><span class="hljs-keyword">new</span></span> InetSocketAddress(<span class="hljs-string"><span class="hljs-string">"127.0.0.1"</span></span>, <span class="hljs-number"><span class="hljs-number">8000</span></span>));
+
+            ByteBuffer writeBuffer = ByteBuffer.allocate(<span class="hljs-number"><span class="hljs-number">32</span></span>);
+            ByteBuffer readBuffer = ByteBuffer.allocate(<span class="hljs-number"><span class="hljs-number">32</span></span>);
+
+            writeBuffer.put(<span class="hljs-string"><span class="hljs-string">"hello"</span></span>.getBytes());
+            writeBuffer.flip();
+
+            <span class="hljs-keyword"><span class="hljs-keyword">while</span></span> (<span class="hljs-keyword"><span class="hljs-keyword">true</span></span>) {
+                writeBuffer.rewind();
+                socketChannel.write(writeBuffer);
+                readBuffer.clear();
+                socketChannel.read(readBuffer);
+            }
+        } <span class="hljs-keyword"><span class="hljs-keyword">catch</span></span> (IOException e) {
+        }
+    }
+}</code></pre>
+
+<p><strong>运行结果：</strong></p>
+
+<p>先运行服务端，再运行客户端，服务端会不断收到客户端发送过来的消息。 <br>
+<img src="./Java NIO之Selector（选择器） - SnailClimb - 博客园_files/1636720b53ff3a72" alt="运行结果" title=""></p>
+
+<p><strong>其他实例：</strong></p>
+
+<p><a href="http://www.coolblog.xyz/2018/04/04/%E5%9F%BA%E4%BA%8E-Java-NIO-%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84-HTTP-%E6%9C%8D%E5%8A%A1%E5%99%A8/">《基于 Java NIO 实现简单的 HTTP 服务器》</a></p>
+
+
+
+<h2 id="参考">参考：</h2>
+
+<p><a href="https://docs.oracle.com/javase/8/docs/api/">官方JDK相关文档</a></p>
+
+<p><a href="http://tutorials.jenkov.com/java-nio/channels.html">谷歌搜索排名第一的Java NIO教程</a></p>
+
+<p><a href="https://book.douban.com/subject/1433583/">《Java NIO》</a></p>
+
+<p><a href="https://book.douban.com/subject/26320992/">《Java 8编程官方参考教程（第9版）》</a></p>
+
+<p><a href="https://blog.csdn.net/jeffleo/article/details/54695959">Java NIO Selector详解（含多人聊天室实例）</a></p>
+
+<p><a href="https://zhuanlan.zhihu.com/p/27434028">Java NIO(6): Selector</a></p>
+
+<p><strong>欢迎关注我的微信公众号:”Java面试通关手册”（一个有温度的微信公众号，期待与你共同进步~~~坚持原创，分享美文，分享各种Java学习资源）：</strong> <br>
+<img src="./Java NIO之Selector（选择器） - SnailClimb - 博客园_files/163587eed3857758" alt="" title=""></p>            
+</div>
+<div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/snailclimb/category/1223020.html" target="_blank">Java IO与NIO                    </a>,             <a href="https://www.cnblogs.com/snailclimb/category/1223020.html" target="_blank">Java IO与NIO                    </a></div>
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(9086334,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;bd6e360c-cc79-4b68-2c44-08d4a8d9e085&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./Java NIO之Selector（选择器） - SnailClimb - 博客园_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./Java NIO之Selector（选择器） - SnailClimb - 博客园_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/snailclimb/" target="_blank"><img src="./Java NIO之Selector（选择器） - SnailClimb - 博客园_files/20190523205502.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/snailclimb/">SnailClimb</a><br>
+            <a href="https://home.cnblogs.com/u/snailclimb/followees/">关注 - 8</a><br>
+            <a href="https://home.cnblogs.com/u/snailclimb/followers/">粉丝 - 22</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;bd6e360c-cc79-4b68-2c44-08d4a8d9e085&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(9086334,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">5</span>
+    </div>
+    <div class="buryit" onclick="votePost(9086334,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/snailclimb/p/9086335.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/snailclimb/p/9086335.html" title="发布于 2018-05-15 16:42">Java NIO 之 Channel（通道）</a>
+    <br>
+    <a href="https://www.cnblogs.com/snailclimb/p/9086333.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/snailclimb/p/9086333.html" title="发布于 2018-05-17 12:07">Java NIO之拥抱Path和Files</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2018-05-16 17:58</span>&nbsp;
+<a href="https://www.cnblogs.com/snailclimb/">SnailClimb</a>&nbsp;
+阅读(<span id="post_view_count">33387</span>)&nbsp;
+评论(<span id="post_comment_count">2</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=9086334" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(9086334);return false;">收藏</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script src="./Java NIO之Selector（选择器） - SnailClimb - 博客园_files/highlight.min.js"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 432499, cb_blogApp = 'snailclimb', cb_blogUserGuid = 'bd6e360c-cc79-4b68-2c44-08d4a8d9e085';
+    var cb_entryId = 9086334, cb_entryCreatedDate = '2018-05-16 17:58', cb_postType = 1; 
+    loadViewCount(cb_entryId);
+    loadSideColumnAd();
+</script><a name="!comments"></a>
+<div id="blog-comments-placeholder">
+
+<div id="comment_pager_top">
+    
+</div>
+
+<br>
+<div class="feedback_area_title">评论列表</div>
+<div class="feedbackNoItems"><div class="feedbackNoItems"></div></div>	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;
+
+<span class="comment_actions">
+    <a href="javascript:void(0);" onclick="return ReplyComment(4331269, &#39;layG8c5KlYtg5VNiTr5v/jE3KT1lDUdhRCHE1KN9TP4ZNBJxoWIRSw==&#39;)">
+        回复
+    </a>
+    <a href="javascript:void(0);" onclick="return QuoteComment(4331269, &#39;layG8c5KlYtg5VNiTr5v/jE3KT1lDUdhRCHE1KN9TP4ZNBJxoWIRSw==&#39;)">
+        引用
+    </a>
+    
+    
+</span>
+
+
+				</div>
+				
+<a href="https://www.cnblogs.com/snailclimb/p/9086334.html#4331269" class="layer">#1楼</a>
+<a name="4331269" id="comment_anchor_4331269"></a>
+
+ 
+<span class="comment_date">2019-08-20 08:53</span>
+
+ 
+
+            <a id="a_comment_author_4331269" href="https://www.cnblogs.com/DianeDi/" target="_blank">初君</a>
+
+			</div>
+			<div class="feedbackCon">
+				
+<div id="comment_body_4331269" data-format-type="Ubb" class="blog_comment_body cnblogs-ubb">
+    666
+</div>
+        <div class="comment_vote">
+            <span class="comment_error" style="color: red"></span>
+            <a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4331269, &#39;Digg&#39;, this.parentElement, false);">
+                支持(0)
+            </a>
+            <a href="javascript:void(0);" class="comment_burry" onclick="return voteComment(4331269, &#39;Bury&#39;, this.parentElement, false);">
+                反对(0)
+            </a>
+        </div>
+        <span id="comment_4331269_avatar" style="display:none">
+            https://pic.cnblogs.com/face/1341725/20180304094023.png
+        </span>
+
+			</div>
+		</div>
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;
+
+<span class="comment_actions">
+    <a href="javascript:void(0);" onclick="return ReplyComment(4582301, &#39;zqyiPAHRz2ohNMmxT7Yrxls9Nt1B8BV59kS1vo1zMRXxRaxzmGMf3g==&#39;)">
+        回复
+    </a>
+    <a href="javascript:void(0);" onclick="return QuoteComment(4582301, &#39;zqyiPAHRz2ohNMmxT7Yrxls9Nt1B8BV59kS1vo1zMRXxRaxzmGMf3g==&#39;)">
+        引用
+    </a>
+    
+    
+</span>
+
+
+				</div>
+				
+<a href="https://www.cnblogs.com/snailclimb/p/9086334.html#4582301" class="layer">#2楼</a>
+<a name="4582301" id="comment_anchor_4582301"></a>
+
+        <span id="comment-maxId" style="display:none">4582301</span>
+        <span id="comment-maxDate" style="display:none">5/20/2020 4:19:02 PM</span>
+ 
+<span class="comment_date">2020-05-20 16:19</span>
+
+ 
+
+            <a id="a_comment_author_4582301" href="https://www.cnblogs.com/starry-skys/" target="_blank">烟雨星空</a>
+
+			</div>
+			<div class="feedbackCon">
+				
+<div id="comment_body_4582301" data-format-type="Markdown" class="blog_comment_body cnblogs-markdown">
+    <p>竟然刷到guide哥的文章了，666</p>
+
+</div>
+        <div class="comment_vote">
+            <span class="comment_error" style="color: red"></span>
+            <a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4582301, &#39;Digg&#39;, this.parentElement, false);">
+                支持(0)
+            </a>
+            <a href="javascript:void(0);" class="comment_burry" onclick="return voteComment(4582301, &#39;Bury&#39;, this.parentElement, false);">
+                反对(0)
+            </a>
+        </div>
+        <span id="comment_4582301_avatar" style="display:none">
+            https://pic.cnblogs.com/face/1714084/20191108232004.png
+        </span>
+
+			</div>
+		</div>
+
+<div id="comment_pager_bottom">
+    
+</div>
+
+
+</div>
+<script>
+    var commentManager = new blogCommentManager();
+    commentManager.renderComments(0);
+</script>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/snailclimb/p/9086334.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/snailclimb/p/9086334.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><script type="text/javascript" src="./Java NIO之Selector（选择器） - SnailClimb - 博客园_files/mention.js"></script>
+<div id="commentform_title">发表评论</div>
+<span id="tip_comment" style="color:Red"></span>
+<div class="commentbox_main comment_textarea">
+    <div class="commentbox_title">
+        <div class="commentbox_title_left">
+            <span id="btn_edit_comment" class="commentbox_tab active" title="编辑评论">编辑</span>
+            <span id="btn_preview_comment" class="commentbox_tab" title="Markdown 预览">预览</span>
+        </div>
+        <div class="commentbox_title_right">
+            <span id="ubb_bold" class="comment_icon" alt="粗体" title="添加粗体(Ctrl + B)">
+                <svg class="comment_svg" version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <g fill-rule="evenodd">
+                        <path d="m13.221 19c1.4414 0 2.5793-0.27451 3.3759-0.82353 0.92931-0.66667 1.4034-1.7059 1.4034-3.1176 0-0.94118-0.22759-1.7059-0.66379-2.2549-0.45517-0.56863-1.119-0.94118-2.0103-1.1176 0.68276-0.27451 1.1948-0.64706 1.5552-1.1569 0.36034-0.54902 0.55-1.2157 0.55-2 0-1.0588-0.36034-1.902-1.0621-2.5294-0.75862-0.66667-1.8207-1-3.1672-1h-6.2017v14h6.2207zm-0.82196-8h-3.3987v-4h3.4367c0.91139 0 1.557 0.15686 1.9747 0.47059 0.37975 0.29412 0.58861 0.78431 0.58861 1.451 0 0.72549-0.20886 1.2549-0.58861 1.5882-0.39873 0.31373-1.0633 0.4902-2.0127 0.4902zm0.52612 6h-3.9249v-4h3.9855c1.052 0 1.8208 0.16216 2.3064 0.48649 0.46532 0.32432 0.70809 0.84685 0.70809 1.5856 0 0.72072-0.3237 1.2252-0.9711 1.5495-0.50578 0.25225-1.2139 0.37838-2.104 0.37838z" fill-rule="nonzero" stroke-width=".35"></path>
+                    </g>
+                </svg>
+            </span>
+            <span id="ubb_url" class="comment_icon" title="添加链接(Ctrl + K)" alt="链接">
+                <svg class="comment_svg comment_svg_stroke" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <g fill-rule="evenodd">
+                        <g transform="translate(4 4)" fill-rule="nonzero" stroke-width=".4">
+                            <path d="m6.304 9.696c-0.288-0.288-0.512-0.608-0.704-0.992-0.16-0.32-0.032-0.704 0.288-0.864 0.32-0.16 0.704-0.032 0.864 0.288 0.128 0.224 0.256 0.448 0.448 0.64 0.928 0.928 2.432 0.928 3.36 0l3.36-3.328c0.928-0.928 0.928-2.432 0-3.36s-2.432-0.928-3.36 0l-2.272 2.272c-0.256 0.256-0.64 0.256-0.896 0-0.256-0.256-0.256-0.64 0-0.896l2.272-2.272c1.44-1.44 3.744-1.44 5.184 0 1.44 1.44 1.44 3.744 0 5.184l-3.36 3.296c-0.704 0.704-1.632 1.088-2.592 1.088-0.928 0-1.856-0.352-2.592-1.056z"></path>
+                            <path d="m3.776 15.808c-0.992 0-1.888-0.384-2.592-1.056-1.44-1.44-1.44-3.744 0-5.184l3.328-3.328c1.44-1.44 3.744-1.44 5.184 0 0.288 0.288 0.544 0.64 0.736 1.024 0.16 0.32 0 0.704-0.32 0.864-0.32 0.16-0.704 0-0.864-0.32-0.128-0.256-0.288-0.48-0.48-0.672-0.928-0.928-2.432-0.928-3.36 0l-3.296 3.328c-0.928 0.928-0.928 2.432 0 3.36 0.448 0.448 1.056 0.704 1.664 0.704 0.608 0 1.248-0.256 1.664-0.704l2.112-2.112c0.256-0.256 0.64-0.256 0.896 0s0.256 0.64 0 0.896l-2.112 2.112c-0.672 0.704-1.568 1.088-2.56 1.088z"></path>
+                        </g>
+                    </g>
+                </svg>
+            </span>
+            <span id="ubb_code" class="comment_icon" title="添加代码(Ctrl + `)" alt="代码">
+                <svg class="comment_svg comment_svg_stroke" version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <g fill-rule="evenodd">
+                        <g transform="translate(16 6)" stroke-linecap="round" stroke-width="2">
+                            <line x1=".5" x2="4.5" y1=".7" y2="6.3"></line>
+                            <line transform="translate(2.5 9.1) scale(1 -1) translate(-2.5 -9.1)" x1=".5" x2="4.5" y1="6.3" y2="11.9"></line>
+                        </g>
+                        <g transform="translate(3 6.1)" stroke-linecap="round" stroke-width="2">
+                            <line transform="translate(2.5 3.5) scale(-1 1) translate(-2.5 -3.5)" x1=".5" x2="4.5" y1=".7" y2="6.3"></line>
+                            <line transform="translate(2.5 9.1) scale(-1) translate(-2.5 -9.1)" x1=".5" x2="4.5" y1="6.3" y2="11.9"></line>
+                        </g>
+                        <path transform="translate(12 12.5) scale(1 -1) translate(-12 -12.5)" d="m10.778 7.1249c0.50008-0.11366 0.9978 0.16911 1.1643 0.64128l0.032406 0.11223 2 8.8c0.1224 0.53855-0.21496 1.0744-0.75351 1.1968-0.50008 0.11366-0.9978-0.16911-1.1643-0.64128l-0.032406-0.11223-2-8.8c-0.1224-0.53855 0.21496-1.0744 0.75351-1.1968z" fill-rule="nonzero" stroke-width=".25"></path>
+                    </g>
+                </svg>
+            </span>
+            <span id="ubb_quote" class="comment_icon" title="添加引用(Ctrl + Q)" alt="引用">
+                <svg class="comment_svg" version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <g fill-rule="evenodd">
+                        <g transform="translate(5 4)" fill-rule="nonzero" stroke-width=".25">
+                            <path d="m5.0013 15v-5.2702h-2.8008c-0.13413-3.3762 1.2004-6.2143 4.0009-8.5135l-1.2-1.2163c-3.335 2.2996-5.0013 5.8119-5.0013 10.54v4.4595h5.0013-1.285e-5zm8.7987 0v-5.2702h-2.8008c-0.13453-3.3762 1.2-6.2143 4.0009-8.5135l-1.2-1.2163c-3.335 2.2996-5.0013 5.8119-5.0013 10.54v4.4595h5.0013-1.28e-5z"></path>
+                        </g>
+                    </g>
+                </svg>
+            </span>
+            <span id="ubb_img" class="comment_icon" alt="图片" title="上传图片(Ctrl + I)">
+                <svg class="comment_svg" version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <g fill-rule="evenodd">
+                        <g transform="translate(3 3.8)" fill-rule="nonzero">
+                            <path d="m14.1 0.58235h-11.2c-1.32 0-2.4 1.0482-2.4 2.3294v10.871c0 1.2812 1.08 2.3294 2.4 2.3294h11.2c1.32 0 2.4-1.0482 2.4-2.3294v-10.871c0-1.2812-1.08-2.3294-2.4-2.3294zm0.7 13.569-3.63-3.4165 1.33-1.2909c0.21-0.20382 0.59-0.20382 0.8 0l1.6 1.5529v2.7856c0 0.13588-0.04 0.26206-0.1 0.36882zm-11.9-12.016h11.2c0.44 0 0.8 0.34941 0.8 0.77647v5.8915l-0.47-0.45618c-0.84-0.825-2.22-0.825-3.07 0l-1.35 1.3103-2.39-2.2421c-0.85-0.825-2.22-0.825-3.05-0.019412l-2.48 2.2615v-6.7456c0.01-0.42706 0.37-0.77647 0.81-0.77647zm-0.8 11.647v-1.9897l3.6-3.2806c0.21-0.20382 0.58-0.21353 0.81 0.0097059l6.43 6.0371h-10.04c-0.44 0-0.8-0.33971-0.8-0.77647z"></path>
+                            <ellipse cx="10.5" cy="6.4059" rx="1" ry="1"></ellipse>
+                        </g>
+                    </g>
+                </svg>
+            </span>
+        </div>
+    </div>
+    <div style="display:none">
+        <span id="comment_edit_id"></span>
+        <span id="span_parentcomment_id"></span>
+        <span id="span_parent_id"></span>
+        <span id="span_comment_replyto"></span>
+        <span id="span_comment_posted"></span>
+        <span id="span_current_user_id">24c4e68d-4f0d-46f1-ac0a-08d5bd673bdc</span>
+    </div>
+    <textarea id="tbCommentBody" placeholder="支持 Markdown"></textarea>
+    <div id="tbCommentBodyPreview" class="feedbackCon" style="display: none">
+        <div id="tbCommentBodyPreviewBody" class="blog_comment_body comment_preview cnblogs-markdown"></div>
+    </div>
+    <div class="commentbox_footer">
+        <a class="comment_option">Markdown 帮助</a>
+        <span id="btn_comment_options" class="comment_option">
+            <input id="ubb_auto_completion" class="inline_middle" type="checkbox">
+            <label class="inline_middle" for="ubb_auto_completion">自动补全</label>
+        </span>
+    </div>
+</div>
+<p id="commentbox_opt">
+    <input id="btn_comment_submit" type="button" class="comment_btn" title="提交评论(Ctrl + Enter)" value="提交评论">
+    <span id="span_comment_canceledit" style="display:none"><a href="javascript:void(0);" onclick="return CancelCommentEdit()">不改了</a></span>
+    <a href="javascript:void(0);" onclick="return logout();">退出</a>
+            <a id="commentbox_opt_sub" href="javascript:void(0);" title="订阅后有新评论时会邮件通知您" onclick="commentManager.Subscribe()">订阅评论</a>
+</p>
+<div id="tip_comment2" style="color:Red"></div>
+<p>[Ctrl+Enter快捷键提交]</p>
+<script>var commentEditor = initCommentEditor("tbCommentBody");</script>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"><a href="https://www.wenjuan.com/s/3uIjeq0/" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-博客园问卷调查&#39;)">【推荐】了解你才能更懂你，博客园首发问卷调查，助力社区新升级</a><br><a href="http://www.ucancode.com/index.htm" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-ucancode&#39;)">【推荐】超50万行VC++源码: 大型组态工控、电力仿真CAD与GIS源码库</a><br><a href="https://developer.aliyun.com/article/759626?utm_content=g_1000133217" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-阿里云开发者社区&#39;)">【推荐】开放下载！《OSS运维基础实战手册》</a><br></div>
+    <div id="opt_under_post"></div>
+    <script async="" src="./Java NIO之Selector（选择器） - SnailClimb - 博客园_files/gpt.js"></script>
+    <script>
+        var mobileVisit = screen.width < 500;
+        window.googletag = window.googletag || { cmd: [] };
+        googletag.cmd.push(function () {
+            googletag.defineSlot('/1090369/C1', [300, 250], 'div-gpt-ad-1592365906576-0').addService(googletag.pubads());
+            if (!mobileVisit) {
+                googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1592366332455-0').addService(googletag.pubads());
+            }
+            googletag.pubads().enableSingleRequest();
+            googletag.enableServices();
+        });
+    </script>
+    <div id="cnblogs_c1" class="c_ad_block">
+        <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;" data-google-query-id="CML8rMucieoCFQgMXAodIM8CiQ">
+            
+        <div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C1_0" width="300" height="250" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" style="border: 0px; vertical-align: bottom;" data-google-container-id="1" data-load-complete="true" src="./Java NIO之Selector（选择器） - SnailClimb - 博客园_files/saved_resource.html"></iframe></div></div>
+    </div>
+    <div id="under_post_news"><div class="recomm-block"><b>相关博文：</b><br>·  <a title="【NIO】Java NIO之选择器" href="https://www.cnblogs.com/leesf456/p/6756067.html" target="_blank" onclick="clickRecomItmem(6756067)">【NIO】Java NIO之选择器</a><br>·  <a title="NIO（四、Selector）" href="https://www.cnblogs.com/sally-zhou/p/6624901.html" target="_blank" onclick="clickRecomItmem(6624901)">NIO（四、Selector）</a><br>·  <a title="Java NIO Selector选择器" href="https://www.cnblogs.com/zqyanywn/p/7865889.html" target="_blank" onclick="clickRecomItmem(7865889)">Java NIO Selector选择器</a><br>·  <a title="Java NIO6：选择器1——理论篇" href="https://www.cnblogs.com/xiaoxi/p/6604658.html" target="_blank" onclick="clickRecomItmem(6604658)">Java NIO6：选择器1——理论篇</a><br>·  <a title="Java NIO5：选择器1---理论篇" href="https://www.cnblogs.com/xrq730/p/5182357.html" target="_blank" onclick="clickRecomItmem(5182357)">Java NIO5：选择器1---理论篇</a><br>»  <a target="_blank" href="https://recomm.cnblogs.com/blogpost/9086334">更多推荐...</a></div></div>
+    <div id="cnblogs_c2" class="c_ad_block">
+        <div id="div-gpt-ad-1592366332455-0" style="width: 468px; height: 60px;" data-google-query-id="CKTkq8ucieoCFQgMXAodIM8CiQ">
+            <script>
+                if (!mobileVisit && canShowAdsense()) {
+                    googletag.cmd.push(function () { googletag.display('div-gpt-ad-1592366332455-0'); });
+                }
+                else {
+                    $('#cnblogs_c2').hide();
+                }
+            </script>
+        <div id="google_ads_iframe_/1090369/C2_0__container__" style="border: 0pt none; width: 468px; height: 60px;"></div></div>
+    </div>
+    <div id="under_post_kb">
+<div class="itnews c_ad_block">
+    <b>最新 IT 新闻</b>:
+    <br>
+ ·              <a href="https://news.cnblogs.com/n/665365/" target="_blank">海外业务的剥离，是张一鸣送给世界的「黑域」</a>
+            <br>
+ ·              <a href="https://news.cnblogs.com/n/665364/" target="_blank">我，掉进20万创业补贴陷阱：最后被告上法庭</a>
+            <br>
+ ·              <a href="https://news.cnblogs.com/n/665363/" target="_blank">当马斯克离火星更近一步时，波音在哪里？</a>
+            <br>
+ ·              <a href="https://news.cnblogs.com/n/665362/" target="_blank">微信支付启动“500不强”线上公益活动，助力千万中国小店“码上”复苏</a>
+            <br>
+ ·              <a href="https://news.cnblogs.com/n/665361/" target="_blank">这届年轻人开始分期结婚了</a>
+            <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="c_ad_block"></div>
+    <script type="text/javascript">
+        fixPostBody();
+        deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);        deliverAdT2();
+        deliverAdC1();
+        deliverAdC2();
+        loadNewsAndKb();
+        loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+        loadOptUnderPost();
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<div id="sidebar_news" class="newsItem"><!--done-->
+<h3 class="catListTitle">公告</h3>
+
+<div id="blog-news">
+    <p>笔主开源的《Java学习+面试指南》：<a href="https://github.com/Snailclimb/JavaGuide">https://github.com/Snailclimb/JavaGuide</a></p>(欢迎Star和完善！) 
+<p>公众号后台回复关键字“1”免费领取笔主整理的Java工程师必备学习资源</p>
+<p><img alt="我的公众号" src="./Java NIO之Selector（选择器） - SnailClimb - 博客园_files/167598cd2e17b8ec.png"></p>
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/snailclimb/">
+            SnailClimb
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/snailclimb/" title="入园时间：2017-06-02">
+            3年
+        </a>
+        <br>
+        粉丝：
+        <a href="https://home.cnblogs.com/u/snailclimb/followers/">
+            22
+        </a>
+        <br>
+        关注：
+        <a href="https://home.cnblogs.com/u/snailclimb/followees/">
+            8
+        </a>
+        <div id="p_b_follow">
+<a href="javascript:void(0)" onclick="follow(&#39;bd6e360c-cc79-4b68-2c44-08d4a8d9e085&#39;)">+加关注</a></div>
+        <script>getFollowStatus('bd6e360c-cc79-4b68-2c44-08d4a8d9e085');</script>
+    </div>
+</div>
+
+</div>
+
+<div id="sidebar_ad"></div>
+			<div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2020/05/18&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2020年6月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2020/07/18&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+                    <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+                    <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+                    <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+                    <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+                    <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+                    <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+                    <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+        </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">31</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                        <td class="" align="center">
+                            2
+                        </td>
+                        <td class="" align="center">
+                            3
+                        </td>
+                        <td class="" align="center">
+                            4
+                        </td>
+                        <td class="" align="center">
+                            5
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        6
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            7
+                        </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                            <td class="" align="center">
+                                11
+                            </td>
+                            <td class="" align="center">
+                                12
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            13
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            14
+                        </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                            <td class="CalTodayDay" align="center">
+                                18
+                            </td>
+                            <td class="" align="center">
+                                19
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            20
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            21
+                        </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                            <td class="" align="center">
+                                25
+                            </td>
+                            <td class="" align="center">
+                                26
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            27
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            28
+                        </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                            <td class="" align="center">
+                                30
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                1
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                2
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            4
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            5
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                8
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                9
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                10
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            11
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn">
+<!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            <div id="widget_my_google" class="div_my_zzk">
+                <input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block">
+    <div class="catListLink">
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+		<li>
+
+<a href="https://www.cnblogs.com/snailclimb/p/" title="我的博客的随笔列表">我的随笔</a>
+</li>
+		<li>
+
+<a href="https://www.cnblogs.com/snailclimb/MyComments.html" title="我的发表过的评论列表">我的评论</a>
+</li>
+		<li>
+
+<a href="https://www.cnblogs.com/snailclimb/OtherPosts.html" title="我评论过的随笔列表">我的参与</a>
+</li>
+		<li>
+
+<a href="https://www.cnblogs.com/snailclimb/RecentComments.html" title="我的博客的评论列表">最新评论</a>
+</li>
+		<li>
+
+<a href="https://www.cnblogs.com/snailclimb/tag/" title="我的博客的标签列表">我的标签</a>
+</li>
+
+</ul>
+<div id="itemListLin_con" style="display:none;">
+<ul>
+
+</ul>
+</div>
+</div>
+
+
+</div>
+
+<!-- 最新随笔 -->
+
+
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block">
+    <div class="catListTag">
+<h3 class="catListTitle">我的标签</h3>
+<ul>
+
+        <li>
+            <a href="https://www.cnblogs.com/snailclimb/tag/Java/">Java</a>(14)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/snailclimb/tag/Spring/">Spring</a>(8)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/snailclimb/tag/Mysql/">Mysql</a>(7)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/snailclimb/tag/jpa/">jpa</a>(6)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/snailclimb/tag/springboot/">springboot</a>(6)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/snailclimb/tag/IO/">IO</a>(2)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/snailclimb/tag/NIO/">NIO</a>(2)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/snailclimb/tag/Spring%20Boot/">Spring Boot</a>(1)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/snailclimb/tag/JavaWeb/">JavaWeb</a>(1)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/snailclimb/tag/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a>(1)
+        </li>
+    <li>
+        <a href="https://www.cnblogs.com/snailclimb/tag/">更多</a>
+    </li>
+
+</ul>
+</div>
+
+
+</div>
+
+<!-- 积分与排名 -->
+
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+    
+        <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+            <h3 class="catListTitle">
+                
+
+随笔分类
+
+
+
+            </h3>
+
+
+            <ul>
+
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/category/1223045.html" rel="" target="">
+    C++/C                    (5)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/category/1223033.html" rel="" target="">
+    HttpClient官方文档翻译与源码分析                    (16)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/category/1223020.html" rel="" target="">
+    Java IO与NIO                    (10)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/category/1223024.html" rel="" target="">
+    JavaWeb                    (11)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/category/1223019.html" rel="" target="">
+    Java多线程                    (17)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/category/1223017.html" rel="" target="">
+    Java基础知识                    (18)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/category/1223021.html" rel="" target="">
+    Java面试相关                    (14)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/category/1223031.html" rel="" target="">
+    Linux                    (1)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/category/1223028.html" rel="" target="">
+    Lucene&amp;redis&amp;solr&amp;消息队列&amp;dubbo                    (9)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/category/1223037.html" rel="" target="">
+    Python                    (7)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/category/1223049.html" rel="" target="">
+    互联网技术拓展                    (5)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/category/1223047.html" rel="" target="">
+    计算机网络与安全                    (13)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/category/1223035.html" rel="" target="">
+    架构                    (5)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/category/1223029.html" rel="" target="">
+    剑指Offer编程题                    (5)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/category/1223043.html" rel="" target="">
+    企业级商城项目总结与补充                    (8)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/category/1224610.html" rel="" target="">
+    设计模式(3)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/category/1223026.html" rel="" target="">
+    深入理解Java虚拟机                    (7)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/category/1223039.html" rel="" target="">
+    数据结构与算法                    (4)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/category/1223050.html" rel="" target="">
+    优质资源分享                    (16)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/category/1223040.html" rel="" target="">
+    杂文闲记                    (1)
+</a>
+ 
+
+                        </li>
+
+            </ul>
+
+
+        </div>
+        <div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+            <h3 class="catListTitle">
+                
+
+随笔档案
+
+
+
+            </h3>
+
+
+            <ul>
+
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/archive/2019/10.html" rel="" target="">
+    2019年10月(5)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/archive/2019/09.html" rel="" target="">
+    2019年9月(2)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/archive/2019/05.html" rel="" target="">
+    2019年5月(1)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/archive/2018/06.html" rel="" target="">
+    2018年6月(5)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/archive/2018/05.html" rel="" target="">
+    2018年5月(23)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/archive/2018/04.html" rel="" target="">
+    2018年4月(60)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/archive/2018/03.html" rel="" target="">
+    2018年3月(43)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/archive/2018/02.html" rel="" target="">
+    2018年2月(4)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/archive/2018/01.html" rel="" target="">
+    2018年1月(6)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/archive/2017/12.html" rel="" target="">
+    2017年12月(14)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/archive/2017/11.html" rel="" target="">
+    2017年11月(6)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/archive/2017/10.html" rel="" target="">
+    2017年10月(2)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/archive/2017/09.html" rel="" target="">
+    2017年9月(8)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/archive/2017/06.html" rel="" target="">
+    2017年6月(26)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/archive/2017/04.html" rel="" target="">
+    2017年4月(8)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/archive/2017/03.html" rel="" target="">
+    2017年3月(4)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/archive/2016/11.html" rel="" target="">
+    2016年11月(1)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/snailclimb/archive/2016/10.html" rel="" target="">
+    2016年10月(4)
+</a>
+ 
+
+                        </li>
+
+            </ul>
+
+
+        </div>
+
+</div>
+
+<!-- 最新评论 -->
+<div id="sidebar_recentcomments" class="sidebar-block">
+    <div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+
+	<div class="RecentCommentBlock">
+        <ul>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/snailclimb/p/9086334.html">1. Re:Java NIO之Selector（选择器）</a></li>
+                    <li class="recent_comment_body"><p>竟然刷到guide哥的文章了，666</p>
+</li>
+                    <li class="recent_comment_author">--烟雨星空</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/snailclimb/p/9086362.html">2. Re:商城项目（ssm+dubbo+nginx+mysql统合项目）总结（1）</a></li>
+                    <li class="recent_comment_body">The import org.springframework.beans.factory.annotation.Autowired cannot be resolved（无法使用注解的问题）这里咋解决...</li>
+                    <li class="recent_comment_author">--代码美化世界</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/snailclimb/p/9086334.html">3. Re:Java NIO之Selector（选择器）</a></li>
+                    <li class="recent_comment_body">666</li>
+                    <li class="recent_comment_author">--初君</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/snailclimb/p/9086358.html">4. Re:淘淘商城项目补充（1）批量删除商品功能实现</a></li>
+                    <li class="recent_comment_body">感谢</li>
+                    <li class="recent_comment_author">--马修马修马修</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/snailclimb/p/ThreadPool.html">5. Re:Java多线程学习（八）线程池与Executor 框架</a></li>
+                    <li class="recent_comment_body">你这头像好像我家二哈，哈哈，总体还可以，继续加油，关注你了。</li>
+                    <li class="recent_comment_author">--TesterWei</li>
+        </ul>
+    </div>
+</div>
+
+
+</div>
+
+
+
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block">
+    <div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/snailclimb/p/9086334.html">
+                            1. Java NIO之Selector（选择器）(33386)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/snailclimb/p/builderpattern.html">
+                            2. 深入理解建造者模式 ——组装复杂的实例(10329)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/snailclimb/p/9086329.html">
+                            3. Python使用OpenCV实现简单的人脸检测(5986)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/snailclimb/p/fenbushijisuan.html">
+                            4. 关于分布式计算的一些概念(4690)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/snailclimb/p/9086335.html">
+                            5. Java NIO 之 Channel（通道）(2978)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+
+
+</div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block">
+    <div class="catListFeedback">
+<h3 class="catListTitle">评论排行榜</h3>
+	<div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/snailclimb/p/9086334.html">
+                            1. Java NIO之Selector（选择器）(2)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/snailclimb/p/9086358.html">
+                            2. 淘淘商城项目补充（1）批量删除商品功能实现(1)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/snailclimb/p/9086362.html">
+                            3. 商城项目（ssm+dubbo+nginx+mysql统合项目）总结（1）(1)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/snailclimb/p/ThreadPool.html">
+                            4. Java多线程学习（八）线程池与Executor 框架(1)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+
+
+</div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block">
+    
+<div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">推荐排行榜</h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/snailclimb/p/9086334.html">
+                                1. Java NIO之Selector（选择器）(5)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/snailclimb/p/9086356.html">
+                                2. 思维导图形式带你读完《大型网站技术架构》上(1)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/snailclimb/p/11645644.html">
+                                3. 新手也能看懂的 SpringBoot 异步编程指南(1)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/snailclimb/p/builderpattern.html">
+                                4. 深入理解建造者模式 ——组装复杂的实例(1)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/snailclimb/p/9086330.html">
+                                5. Spring编程式和声明式事务实例讲解(1)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2020 SnailClimb
+<br><span id="poweredby">Powered by .NET Core on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+
+
+</body></html>

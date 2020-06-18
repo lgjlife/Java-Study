@@ -74,23 +74,29 @@
         - [8.4.3. 内存页面调度](#843-内存页面调度)
         - [8.4.4. 文件I/O](#844-文件io)
         - [8.4.5. 流I/O](#845-流io)
-    - [8.5. 内存映射](#85-内存映射)
-    - [8.6. 缓冲区](#86-缓冲区)
-        - [8.6.1. 缓冲区基础](#861-缓冲区基础)
-        - [8.6.2. 字节缓冲区ByteBuffer](#862-字节缓冲区bytebuffer)
-    - [8.7. 通道](#87-通道)
-        - [8.7.1. 通道接口介绍](#871-通道接口介绍)
-        - [8.7.2. Scatter/Gather](#872-scattergather)
-        - [8.7.3. 文件通道](#873-文件通道)
-        - [8.7.4. 内存映射通道](#874-内存映射通道)
-        - [8.7.5. Socket通道](#875-socket通道)
-        - [8.7.6. 管道](#876-管道)
-        - [8.7.7. 管道工具类](#877-管道工具类)
-    - [8.8. 选择器](#88-选择器)
-        - [8.8.1. 选择器与 1/0 多路复用](#881-选择器与-10-多路复用)
-        - [8.8.2. 使用选择器](#882-使用选择器)
-        - [8.8.3. 异步关闭能力](#883-异步关闭能力)
-        - [8.8.4. 选择过程的可扩展性](#884-选择过程的可扩展性)
+    - [8.5. 缓冲区](#85-缓冲区)
+        - [8.5.1. 缓冲区基础](#851-缓冲区基础)
+        - [8.5.2. 字节缓冲区ByteBuffer](#852-字节缓冲区bytebuffer)
+    - [8.6. 通道](#86-通道)
+        - [8.6.1. 使用通道](#861-使用通道)
+        - [8.6.2. Scatter/Gather](#862-scattergather)
+        - [8.6.3. 文件通道](#863-文件通道)
+            - [8.6.3.1. 访问文件](#8631-访问文件)
+            - [8.6.3.2. 文件锁定](#8632-文件锁定)
+        - [8.6.4. 内存映射通道](#864-内存映射通道)
+        - [8.6.5. Socket通道](#865-socket通道)
+        - [8.6.6. 管道](#866-管道)
+    - [8.7. 选择器](#87-选择器)
+        - [8.7.1. 相关接口](#871-相关接口)
+        - [8.7.2. 使用例子](#872-使用例子)
+        - [8.7.3. 选择器，可选择通道和选择键类](#873-选择器可选择通道和选择键类)
+        - [8.7.4. 异步关闭能力](#874-异步关闭能力)
+        - [8.7.5. 选择过程的可扩展性](#875-选择过程的可扩展性)
+    - [8.8. IO编程实战](#88-io编程实战)
+        - [8.8.1. BIO实例](#881-bio实例)
+        - [8.8.2. NIO实例](#882-nio实例)
+        - [8.8.3. AIO实例](#883-aio实例)
+        - [8.8.4. AIO读取文件实例](#884-aio读取文件实例)
     - [8.9. AIO的使用](#89-aio的使用)
         - [8.9.1. AsynchronousFileChannel 类的使用](#891-asynchronousfilechannel-类的使用)
         - [8.9.2. synchronousServerSocketChannel 和 AsynchronousSockeChannel类的使用](#892-synchronousserversocketchannel-和-asynchronoussockechannel类的使用)
@@ -152,6 +158,27 @@
         - [17.4.7. 建造者模式](#1747-建造者模式)
         - [17.4.8. 代理模式](#1748-代理模式)
         - [17.4.9. 原型模式](#1749-原型模式)
+        - [17.4.10. 中介者模式](#17410-中介者模式)
+        - [17.4.11. 命令模式](#17411-命令模式)
+        - [17.4.12. 责任链模式](#17412-责任链模式)
+        - [17.4.13. 装饰模式](#17413-装饰模式)
+        - [17.4.14. 策略模式](#17414-策略模式)
+        - [17.4.15. 适配器模式](#17415-适配器模式)
+        - [17.4.16. 迭代器模式](#17416-迭代器模式)
+        - [17.4.17. 组合模式](#17417-组合模式)
+        - [17.4.18. 观察者模式](#17418-观察者模式)
+        - [17.4.19. 门面模式](#17419-门面模式)
+        - [17.4.20. 备忘录模式](#17420-备忘录模式)
+        - [17.4.21. 访问者模式](#17421-访问者模式)
+        - [17.4.22. 状态模式](#17422-状态模式)
+        - [17.4.23. 解释器模式](#17423-解释器模式)
+        - [17.4.24. 享元模式](#17424-享元模式)
+        - [17.4.25. 桥梁模式](#17425-桥梁模式)
+    - [17.5. 设计模式对比](#175-设计模式对比)
+        - [17.5.1. 适配器与桥接模式](#1751-适配器与桥接模式)
+        - [17.5.2. 适配器与装饰模式](#1752-适配器与装饰模式)
+        - [17.5.3. 适配器与代理模式](#1753-适配器与代理模式)
+        - [17.5.4. 中介者和外观模式](#1754-中介者和外观模式)
 
 <!-- /TOC -->
 
@@ -3332,13 +3359,8 @@ os.writeObject(person);
 
 ### 8.2.2. 通道 Channels
 
-NIO 新引入的最重要的抽象是通道的概念。 Channel 对象模拟了通信连接，管道既可以是单向的（进或出），也可以是双向的（进和出）。可以把通道想象成连接缓冲区和 I/O 服务的捷径。某些情况下，软件包中的旧类可利用通道。为了能够向与文件或套接字关联的通道进行存取，适当的地方都增加了新方法。多数通道可工作在非块模式下，这意味着更好的可伸缩性，尤其是与选择器一同使用的时候。
+NIO 新引入的最重要的抽象是通道的概念。 Channel 对象模拟了通信连接，管道既可以是单向的（进或出），也可以是双向的（进和出）。可以把通道想象成连接缓冲区和 I/O 服务的捷径。
 
-新的 FileChannel 对象包含在 java.nio.channels 软件包内，提供许多面向文件的新特性，其中最有趣的两个是文件锁定和内存映射文件。
-
-在多个进程协同工作的情况下，要协调各个进程对共享数据的访问，文件锁定是必不可少的工具。
-
-将文件映射到内存，这样在您看来，磁盘上的文件数据就像是在内存中一样。这利用了操作系统的虚拟内存功能，无需在内存中实际保留一份文件的拷贝，就可实现文件内容的动态高速缓存。
 
 ### 8.2.3. 选择器 Selectors
 
@@ -3398,266 +3420,7 @@ DMA 硬件（只能访问物理内存地址）就可以填充对内核与用户�
 ### 8.4.5. 流I/O
 <a href="#menu"  >目录</a>
 
-
-
-
-
-
-## 8.5. 内存映射  
-<a href="#menu"  >目录</a>
-
-内存映射的方式是指操作系统将内存中的某一块区域与磁盘中的文件相关联，当访问内存中的一段数据时，转换为访问文件的某一段数据。这种方式的目的同样是减少数据从内核空间缓存到用户空间缓存的数据复制操作，因为这两个空间的数据是共享的。
-
-
-![内存映射方式](pic/java/nio-storage-mapping.png)
-
-
-Java类库中的NIO包相对于IO 包来说有一个新功能是内存映射文件，日常编程中并不是经常用到，但是在处理大文件时是比较理想的提高效率的手段。本文我主要想结合操作系统中（OS）相关方面的知识介绍一下原理。
-
-在传统的文件IO操作中，我们都是调用操作系统提供的底层标准IO系统调用函数  read()、write() ，此时调用此函数的进程（在JAVA中即java进程）由当前的用户态切换到内核态，然后OS的内核代码负责将相应的文件数据读取到内核的IO缓冲区，然后再把数据从内核IO缓冲区拷贝到进程的私有地址空间中去，这样便完成了一次IO操作。至于为什么要多此一举搞一个内核IO缓冲区把原本只需一次拷贝数据的事情搞成需要2次数据拷贝呢？ 我想学过操作系统或者计算机系统结构的人都知道，这么做是为了减少磁盘的IO操作，为了提高性能而考虑的，因为我们的程序访问一般都带有局部性，也就是所谓的局部性原理，在这里主要是指的空间局部性，即我们访问了文件的某一段数据，那么接下去很可能还会访问接下去的一段数据，由于磁盘IO操作的速度比直接访问内存慢了好几个数量级，所以OS根据局部性原理会在一次 read()系统调用过程中预读更多的文件数据缓存在内核IO缓冲区中，当继续访问的文件数据在缓冲区中时便直接拷贝数据到进程私有空间，避免了再次的低效率磁盘IO操作。在JAVA中当我们采用IO包下的文件操作流，如：
-
-```JAVA
-FileInputStream in = new FileInputStream("D:\\java.txt");  
-in.read();
-```
-
-JAVA虚拟机内部便会调用OS底层的 read()系统调用完成操作，如上所述，在第二次调用 in.read()的时候可能就是从内核缓冲区直接返回数据了（可能还有经过 native堆做一次中转，因为这些函数都被声明为 native，即本地平台相关，所以可能在C代码中有做一次中转，如 win32中是通过 C代码从OS读取数据，然后再传给JVM内存）。既然如此，JAVA的IO包中为啥还要提供一个 BufferedInputStream 类来作为缓冲区呢。关键在于四个字，"系统调用"！当读取OS内核缓冲区数据的时候，便发起了一次系统调用操作（通过native的C函数调用），而系统调用的代价相对来说是比较高的，涉及到进程用户态和内核态的上下文切换等一系列操作，所以我们经常采用如下的包装：
-
-```JAVA
-FileInputStream in = new FileInputStream("D:\\java.txt"); 
-BufferedInputStream buf_in = new BufferedInputStream(in); 
-buf_in.read();
-```
-
-这样一来，我们每一次 buf_in.read() 时候，BufferedInputStream 会根据情况自动为我们预读更多的字节数据到它自己维护的一个内部字节数组缓冲区中，这样我们便可以减少系统调用次数，从而达到其缓冲区的目的。所以要明确的一点是 BufferedInputStream 的作用不是减少 磁盘IO操作次数（这个OS已经帮我们做了），而是通过减少系统调用次数来提高性能的。同理 BufferedOuputStream , BufferedReader/Writer 也是一样的。在 C语言的函数库中也有类似的实现，如 fread()，这个函数就是 C语言中的缓冲IO，作用与BufferedInputStream()相同.
-
-    这里简单的引用下JDK6 中 BufferedInputStream 的源码验证下：
-
-```JAVA
- 1 public  
- 2 class BufferedInputStream extends FilterInputStream {  
- 3   
- 4     private static int defaultBufferSize = 8192;  
- 5   
- 6     /** 
- 7      * The internal buffer array where the data is stored. When necessary, 
- 8      * it may be replaced by another array of 
- 9      * a different size. 
-10      */  
-11     protected volatile byte buf[];  
-12   /** 
-13      * The index one greater than the index of the last valid byte in  
-14      * the buffer.  
-15      * This value is always 
-16      * in the range <code>0</code> through <code>buf.length</code>; 
-17      * elements <code>buf[0]</code>  through <code>buf[count-1] 
-18      * </code>contain buffered input data obtained 
-19      * from the underlying  input stream. 
-20      */  
-21     protected int count;  
-22   
-23     /** 
-24      * The current position in the buffer. This is the index of the next  
-25      * character to be read from the <code>buf</code> array.  
-26      * <p> 
-27      * This value is always in the range <code>0</code> 
-28      * through <code>count</code>. If it is less 
-29      * than <code>count</code>, then  <code>buf[pos]</code> 
-30      * is the next byte to be supplied as input; 
-31      * if it is equal to <code>count</code>, then 
-32      * the  next <code>read</code> or <code>skip</code> 
-33      * operation will require more bytes to be 
-34      * read from the contained  input stream. 
-35      * 
-36      * @see     java.io.BufferedInputStream#buf 
-37      */  
-38     protected int pos;  
-39   
-40  /* 这里省略去 N 多代码 ------>>  */  
-41   
-42   /** 
-43      * See 
-44      * the general contract of the <code>read</code> 
-45      * method of <code>InputStream</code>. 
-46      * 
-47      * @return     the next byte of data, or <code>-1</code> if the end of the 
-48      *             stream is reached. 
-49      * @exception  IOException  if this input stream has been closed by 
-50      *              invoking its {@link #close()} method, 
-51      *              or an I/O error occurs.  
-52      * @see        java.io.FilterInputStream#in 
-53      */  
-54     public synchronized int read() throws IOException {  
-55     if (pos >= count) {  
-56         fill();  
-57         if (pos >= count)  
-58         return -1;  
-59     }  
-60     return getBufIfOpen()[pos++] & 0xff;  
-61     } 
-```
- 我们可以看到，BufferedInputStream 内部维护着一个 字节数组 byte[] buf 来实现缓冲区的功能，我们调用的  buf_in.read() 方法在返回数据之前有做一个 if 判断，如果 buf 数组的当前索引不在有效的索引范围之内，即 if 条件成立， buf 字段维护的缓冲区已经不够了，这时候会调用 内部的 fill() 方法进行填充，而fill()会预读更多的数据到 buf 数组缓冲区中去，然后再返回当前字节数据，如果 if 条件不成立便直接从 buf缓冲区数组返回数据了。其中getBufIfOpen()返回的就是 buf字段的引用。顺便说下，源码中的 buf 字段声明为  protected volatile byte buf[];  主要是为了通过 volatile 关键字保证 buf数组在多线程并发环境中的内存可见性.
-
-和 Java NIO 的内存映射无关的部分说了这么多篇幅，主要是为了做个铺垫，这样才能建立起一个知识体系，以便更好的理解内存映射文件的优点。
-
-内存映射文件和之前说的 标准IO操作最大的不同之处就在于它虽然最终也是要从磁盘读取数据，但是它并不需要将数据读取到OS内核缓冲区，而是直接将进程的用户私有地址空间中的一部分区域与文件对象建立起映射关系，就好像直接从内存中读、写文件一样，速度当然快了。为了说清楚这个，我们以 Linux操作系统为例子，看下图：
-![](https://images2015.cnblogs.com/blog/1025117/201703/1025117-20170317110759276-1661554576.jpg)
-    
-
- 此图为 Linux 2.X 中的进程虚拟存储器，即进程的虚拟地址空间，如果你的机子是 32 位，那么就有  2^32 = 4G的虚拟地址空间，我们可以看到图中有一块区域： “Memory mapped region for shared libraries” ，这段区域就是在内存映射文件的时候将某一段的虚拟地址和文件对象的某一部分建立起映射关系，此时并没有拷贝数据到内存中去，而是当进程代码第一次引用这段代码内的虚拟地址时，触发了缺页异常，这时候OS根据映射关系直接将文件的相关部分数据拷贝到进程的用户私有空间中去，当有操作第N页数据的时候重复这样的OS页面调度程序操作。注意啦，原来内存映射文件的效率比标准IO高的重要原因就是因为少了把数据拷贝到OS内核缓冲区这一步（可能还少了native堆中转这一步）。
-
-java中提供了3种内存映射模式，即：只读(readonly)、读写(read_write)、专用(private) ，对于  只读模式来说，如果程序试图进行写操作，则会抛出ReadOnlyBufferException异常；第二种的读写模式表明了通过内存映射文件的方式写或修改文件内容的话是会立刻反映到磁盘文件中去的，别的进程如果共享了同一个映射文件，那么也会立即看到变化！而不是像标准IO那样每个进程有各自的内核缓冲区，比如JAVA代码中，没有执行 IO输出流的 flush() 或者  close() 操作，那么对文件的修改不会更新到磁盘去，除非进程运行结束；最后一种专用模式采用的是OS的“写时拷贝”原则，即在没有发生写操作的情况下，多个进程之间都是共享文件的同一块物理内存（进程各自的虚拟地址指向同一片物理地址），一旦某个进程进行写操作，那么将会把受影响的文件数据单独拷贝一份到进程的私有缓冲区中，不会反映到物理文件中去。
-
- 
-
-在JAVA NIO中可以很容易的创建一块内存映射区域，代码如下：
-```JAVA
-1 File file = new File("E:\\download\\office2007pro.chs.ISO");  
-2 FileInputStream in = new FileInputStream(file);  
-3 FileChannel channel = in.getChannel();  
-4 MappedByteBuffer buff = channel.map(FileChannel.MapMode.READ_ONLY, 0,channel.size());
-```
-
-这里创建了一个只读模式的内存映射文件区域，接下来我就来测试下与普通NIO中的通道操作相比性能上的优势，先看如下代码：
-
-```JAVA
- 1 public class IOTest {  
- 2     static final int BUFFER_SIZE = 1024;  
- 3   
- 4     public static void main(String[] args) throws Exception {  
- 5   
- 6         File file = new File("F:\\aa.pdf");  
- 7         FileInputStream in = new FileInputStream(file);  
- 8         FileChannel channel = in.getChannel();  
- 9         MappedByteBuffer buff = channel.map(FileChannel.MapMode.READ_ONLY, 0,  
-10                 channel.size());  
-11   
-12         byte[] b = new byte[1024];  
-13         int len = (int) file.length();  
-14   
-15         long begin = System.currentTimeMillis();  
-16   
-17         for (int offset = 0; offset < len; offset += 1024) {  
-18   
-19             if (len - offset > BUFFER_SIZE) {  
-20                 buff.get(b);  
-21             } else {  
-22                 buff.get(new byte[len - offset]);  
-23             }  
-24         }  
-25   
-26         long end = System.currentTimeMillis();  
-27         System.out.println("time is:" + (end - begin));  
-28   
-29     }  
-30 } 
-```
-
-输出为 63，即通过内存映射文件的方式读取 86M多的文件只需要78毫秒，我现在改为普通NIO的通道操作看下：
-
-```JAVA
- 1 File file = new File("F:\\liq.pdf");  
- 2 FileInputStream in = new FileInputStream(file);  
- 3 FileChannel channel = in.getChannel();  
- 4 ByteBuffer buff = ByteBuffer.allocate(1024);   
- 5   
- 6 long begin = System.currentTimeMillis();  
- 7 while (channel.read(buff) != -1) {  
- 8     buff.flip();  
- 9     buff.clear();  
-10 }  
-11 long end = System.currentTimeMillis();  
-12 System.out.println("time is:" + (end - begin));  
-```
-
-输出为 468毫秒，几乎是 6 倍的差距，文件越大，差距便越大。所以内存映射文件特别适合于对大文件的操作，JAVA中的限制是最大不得超过 Integer.MAX_VALUE，即2G左右，不过我们可以通过分次映射文件(channel.map)的不同部分来达到操作整个文件的目的。
-
-按照jdk文档的官方说法，内存映射文件属于JVM中的直接缓冲区，还可以通过 ByteBuffer.allocateDirect() ，即DirectMemory的方式来创建直接缓冲区。他们相比基础的 IO操作来说就是少了中间缓冲区的数据拷贝开销。同时他们属于JVM堆外内存，不受JVM堆内存大小的限制。
-
- 
-
-其中 DirectMemory 默认的大小是等同于JVM最大堆，理论上说受限于 进程的虚拟地址空间大小，比如 32位的windows上，每个进程有4G的虚拟空间除去 2G为OS内核保留外，再减去 JVM堆的最大值，剩余的才是DirectMemory大小。通过 设置 JVM参数 -Xmx64M，即JVM最大堆为64M，然后执行以下程序可以证明DirectMemory不受JVM堆大小控制：
-
-```JAVA
-1 public static void main(String[] args) {       
-2     ByteBuffer.allocateDirect(1024*1024*100); // 100MB  
-3 } 
-``` 
-我们设置了JVM堆 64M限制，然后在 直接内存上分配了 100MB空间，程序执行后直接报错：Exception in thread "main" java.lang.OutOfMemoryError: Direct buffer memory。接着我设置 -Xmx200M，程序正常结束。然后我修改配置： -Xmx64M  -XX:MaxDirectMemorySize=200M，程序正常结束。因此得出结论： 直接内存DirectMemory的大小默认为 -Xmx 的JVM堆的最大值，但是并不受其限制，而是由JVM参数 MaxDirectMemorySize单独控制。接下来我们来证明直接内存不是分配在JVM堆中。我们先执行以下程序，并设置 JVM参数 -XX:+PrintGC，
-
-```JAVA
-1 public static void main(String[] args) {         
-2  for(int i=0;i<20000;i++) {  
-3            ByteBuffer.allocateDirect(1024*100);  //100K  
-4       }  
-5   } 
-```
-
-```
-[GC 1371K->1328K(61312K), 0.0070033 secs]
-[Full GC 1328K->1297K(61312K), 0.0329592 secs]
-[GC 3029K->2481K(61312K), 0.0037401 secs]
-[Full GC 2481K->2435K(61312K), 0.0102255 secs]
-```
-   我们看到这里执行 GC的次数较少，但是触发了 两次 Full GC，原因在于直接内存不受 GC(新生代的Minor GC)影响，只有当执行老年代的 Full GC时候才会顺便回收直接内存！而直接内存是通过存储在JVM堆中的DirectByteBuffer对象来引用的，所以当众多的DirectByteBuffer对象从新生代被送入老年代后才触发了 full gc。
-
- 再看直接在JVM堆上分配内存区域的情况：
-```JAVA
-1 public static void main(String[] args) {         
-2     for(int i=0;i<10000;i++) {  
-3           ByteBuffer.allocate(1024*100);  //100K  
-4     }
-5 }  
-```
-
-ByteBuffer.allocate 意味着直接在 JVM堆上分配内存，所以受 新生代的 Minor GC影响，输出如下：
-
-```
-[GC 16023K->224K(61312K), 0.0012432 secs]
-[GC 16211K->192K(77376K), 0.0006917 secs]
-[GC 32242K->176K(77376K), 0.0010613 secs]
-[GC 32225K->224K(109504K), 0.0005539 secs]
-[GC 64423K->192K(109504K), 0.0006151 secs]
-[GC 64376K->192K(171392K), 0.0004968 secs]
-[GC 128646K->204K(171392K), 0.0007423 secs]
-[GC 128646K->204K(299968K), 0.0002067 secs]
-[GC 257190K->204K(299968K), 0.0003862 secs]
-[GC 257193K->204K(287680K), 0.0001718 secs]
-[GC 245103K->204K(276480K), 0.0001994 secs]
-[GC 233662K->204K(265344K), 0.0001828 secs]
-[GC 222782K->172K(255232K), 0.0001998 secs]
-[GC 212374K->172K(245120K), 0.0002217 secs]
-```
-
-可以看到，由于直接在 JVM堆上分配内存，所以触发了多次GC，且不会触及  Full GC，因为对象根本没机会进入老年代。
-
-
-我想提个疑问，NIO中的DirectMemory和内存文件映射同属于直接缓冲区，但是前者和 -Xmx和-XX:MaxDirectMemorySize有关，而后者完全没有JVM参数可以影响和控制，这让我不禁怀疑两者的直接缓冲区是否相同，前者指的是 JAVA进程中的 native堆，即涉及底层平台如 win32的dll 部分，因为 C语言中的 malloc()分配的内存就属于 native堆，不属于 JVM堆，这也是DirectMemory能在一些场景中显著提高性能的原因，因为它避免了在 native堆和jvm堆之间数据的来回复制；而后者则是没有经过 native堆，是由 JAVA进程直接建立起 某一段虚拟地址空间和文件对象的关联映射关系，参见 Linux虚拟存储器图中的 “Memory mapped region for shared libraries”  区域，所以内存映射文件的区域并不在JVM GC的回收范围内，因为它本身就不属于堆区，卸载这部分区域只能通过系统调用 unmap()来实现 (Linux)中，而 JAVA API 只提供了 FileChannel.map 的形式创建内存映射区域，却没有提供对应的 unmap()，让人十分费解，导致要卸载这部分区域比较麻烦。
-
-最后再试试通过 DirectMemory来操作前面 内存映射和基本通道操作的例子，来看看直接内存操作的话，程序的性能如何：
-
-```JAVA
- 1 File file = new File("F:\\liq.pdf");  
- 2 FileInputStream in = new FileInputStream(file);  
- 3 FileChannel channel = in.getChannel();  
- 4 ByteBuffer buff = ByteBuffer.allocateDirect(1024);   
- 5   
- 6 long begin = System.currentTimeMillis();  
- 7 while (channel.read(buff) != -1) {  
- 8     buff.flip();  
- 9     buff.clear();  
-10 }  
-11 long end = System.currentTimeMillis();  
-12 System.out.println("time is:" + (end - begin));
-```
-
-程序输出为 312毫秒，看来比普通的NIO通道操作（468毫秒）来的快，但是比 mmap 内存映射的 63秒差距太多了，我想应该不至于吧，通过修改;ByteBuffer buff = ByteBuffer.allocateDirect(1024);  为 ByteBuffer buff = ByteBuffer.allocateDirect((int)file.length())，即一次性分配整个文件长度大小的堆外内存，最终输出为 78毫秒，由此可以得出两个结论：
-1.堆外内存的分配耗时比较大.   
-2.还是比mmap内存映射来得慢，都不要说通过mmap读取数据的时候还涉及缺页异常、页面调度的系统调用了，看来内存映射文件确实NB啊，这还只是 86M的文件，如果上 G 的大小呢？
-
-最后一点为 DirectMemory的内存只有在 JVM执行 full gc 的时候才会被回收，那么如果在其上分配过大的内存空间，那么也将出现 OutofMemoryError，即便 JVM 堆中的很多内存处于空闲状态。
-
-## 8.6. 缓冲区
+## 8.5. 缓冲区
 <a href="#menu"  >目录</a>
 
 ```yml
@@ -3697,10 +3460,7 @@ public static IntBuffer wrap(int[] array,
 ```
 不同的Buffer都是由相应的HeapXxxBuffer创建。
 
-
-
-
-### 8.6.1. 缓冲区基础
+### 8.5.1. 缓冲区基础
 <a href="#menu"  >目录</a>
 
 **属性**
@@ -3734,6 +3494,7 @@ public abstract class Buffer {
     public final Buffer mark( )
     //设置　position　＝　mark
     //当mark(默认为-1)小于０时，会报错。使用场景是在读数据之前，使用position (int newPositio)设置标记位，读取数据之后调用reset使pos回到mark.然后可以重新读读过的数据
+    // mark --> read --> reset
     public final Buffer reset( )
     //position = 0;  limit = capacity;   mark = -1;
     //将一个读状态的缓冲区转变成一个准备写的缓冲区。
@@ -3778,7 +3539,7 @@ c
 position = 0 limit = 10 capacity = 10
 ```
 
-### 8.6.2. 字节缓冲区ByteBuffer
+### 8.5.2. 字节缓冲区ByteBuffer
 <a href="#menu"  >目录</a>
 
 **直接缓冲区**
@@ -3816,7 +3577,25 @@ public static ByteBuffer allocate(int capacity) {
 public static ByteBuffer allocateDirect(int capacity) {
     return new DirectByteBuffer(capacity);
 }
-    
+/*
+byte[] data = {1,2,3};
+ByteBuffer buf = ByteBuffer.wrap(data)
+相当于 
+byte[] data = {1,2,3};
+ByteBuffer buf = ByteBuffer.allocate(cap);
+buf.put(data)
+
+*/
+public static ByteBuffer wrap(byte[] array,
+                                    int offset, int length)
+{
+    try {
+        return new HeapByteBuffer(array, offset, length);
+    } catch (IllegalArgumentException x) {
+        throw new IndexOutOfBoundsException();
+    }
+}
+        
 ```
 
 
@@ -3886,9 +3665,25 @@ position = 4 limit = 12 capacity = 50
 position = 8 limit = 50 capacity = 50
 ```
 
+**缓冲区比较**
 
+缓冲区提供compareTo进行比较
+* 两个对象类型相同。包含不同数据类型的 buffer 永远不会相等，而且 buffer绝不会等于非 buffer 对象。
+* 两个对象都剩余同样数量的元素。 Buffer 的容量不需要相同，而且缓冲区中剩余数据的索引也不必相同。但每个缓冲区中剩余元素的数目（从位置到上界）必须相同。
+* 在每个缓冲区中应被 Get()函数返回的剩余数据元素序列必须一致
+```java
+public int compareTo(ByteBuffer that) {
+    int n = this.position() + Math.min(this.remaining(), that.remaining());
+    for (int i = this.position(), j = that.position(); i < n; i++, j++) {
+        int cmp = compare(this.get(i), that.get(j));
+        if (cmp != 0)
+            return cmp;
+    }
+    return this.remaining() - that.remaining();
+}
+```
 
-## 8.7. 通道
+## 8.6. 通道
 <a href="#menu"  >目录</a>
 
 在 NIO 技术中，要将操作的数据打包到缓冲区中，而缓冲区中的数据想要传输到目的地是要依赖于通道的 。 缓冲区是将数据进行打包，而通道是将数据进行传输.从缓冲区和通道的数据类型可以发现，缓冲区都是类，而通道都是接口，这是由于通道的功能实现是要依赖于操作系统的， Channel 接口只定义有哪些功能，而功能的具体实现在不同的操作系统中是不一样的，因此 ，在 JDK 中， 通道被设计成接口数据类型 
@@ -3899,71 +3694,1132 @@ public interface Channel extends Closeable {
     public void close() throws IOException;
 }
 ```
-Channel 接口具有 11 个子接口
-```java
-AsynchronousChannel
-AsynchronousByteChannel
-ReadableByteChannel
-WritableByteChannel
-ScatteringByteChannel
-GatheringByteChannel
-ByteChannel
-SeekableByteChannel
-NetworkChannel
-MulticastChannel
-InterruptibleChannel
+
+```java 
+|---Channel
+    |--- ReadableByteChannel
+    |--- InterruptibleChannel
+    |--- SelectableChannel
+    |--- NetworkChannel
+        |--- AsynchronousServerSocketChannel 
+        |--- SocketChannel 
+        |--- MulticastChannel
+        |--- ServerSocketChannel
+        |--- AsynchronousSocketChannel
+    |--- WritableByteChannel
+    |--- AbstractInterruptibleChannel
+    |--- SelChImpl
+    |--- AsynchronousChannel
+        |--- AsynchronousServerSocketChannel
+        |--- AsynchronousFileChannel
+        |--- AsynchronousByteChannel
 ```
 
-### 8.7.1. 通道接口介绍
+### 8.6.1. 使用通道
+<a href="#menu"  >目录</a>
+
+**打开通道**
+
+```java
+//nio client
+SocketChannel sc = SocketChannel.open( );
+sc.connect (new InetSocketAddress ("somehost", someport));
+//nio server
+ServerSocketChannel ssc = ServerSocketChannel.open( );
+ssc.bind (new InetSocketAddress (somelocalport));
+
+//udp 
+DatagramChannel dc = DatagramChannel.open( );
+
+//file 
+RandomAccessFile raf = new RandomAccessFile ("somefile", "r");
+FileChannel fc = raf.getChannel( );
+
+//aio client
+AsynchronousSocketChannel asc =  AsynchronousSocketChannel.open();
+asc.connect (new InetSocketAddress ("somehost", someport));
+
+//aio server
+AsynchronousServerSocketChannel assc = AsynchronousServerSocketChannel.open();
+assc.bind(new InetSocketAddress(port));
+AsynchronousSocketChannel asynchronousSocketChannel =  assc.accept().get();
+
+```
+
+**通道常用方法**
+
+```java
+//读写数据，这是aio中用的，因此多了CompletionHandler接口
+//其他通道类差不多，只是没有CompletionHandler这个参数
+/*
+两种方法均返回已传输的字节数，可能比缓冲区的字节数少甚至可能为零。缓冲区的位置也会发生与已传输字节相同数量的前移。如果只进行了部分传输，缓冲区可以被重新提交给通道并从上次中断的地方继续传输。该过程重复进行直到缓冲区的 hasRemaining( )方法返回 false 值.
+*/
+//读写内部做了同步synchronized,所以不会出现同时调用时出现字节顺序错误
+Future<Integer> read(ByteBuffer dst);
+<A> void read(ByteBuffer dst,
+                  A attachment,
+                  CompletionHandler<Integer,? super A> handler);
+Future<Integer> write(ByteBuffer src);
+<A> void write(ByteBuffer src,
+                   A attachment,
+                   CompletionHandler<Integer,? super A> handler);
+
+//判断是否已经连接
+//注意这个方法只是判断本地状态，也就是连接之后返回true，但是客户端主动断开连接，服务端是不知道的。因此返回的还是true。服务端要判断是否断开了连接，应当通过心跳机制来实现
+ public boolean isConnected();
+
+//配置阻塞状态
+/*
+通道可以以阻塞（blocking）或非阻塞（nonblocking）模式运行。非阻塞模式的通道永远不会让调用的线程休眠。请求的操作要么立即完成，要么返回一个结果表明未进行任何操作。只有面向流的（stream-oriented）的通道，如 sockets 和 pipes 才能使用非阻塞模式
+*/
+configureBlocking(boolean)
+```
+socket 通道类从 SelectableChannel 引申而来。从 SelectableChannel 引申而来的类可以和支持有条件的选择（readiness selectio）的选择器Selectors）一起使用。将非阻塞I/O 和选择器组合起来可以使您的程序利用多路复用 I/O（multiplexed I/O）
+
+**关闭通道**
+
+SocketChannel 的关闭调用
+```java
+//AbstractInterruptibleChannel.class
+//每次只能有一个线程调用close()
+public final void close() throws IOException {
+    synchronized (closeLock) {
+        if (!open)
+            return;
+        open = false;
+        implCloseChannel();
+    }
+}
+//AbstractSelectableChannel
+protected final void implCloseChannel() throws IOException {
+    implCloseSelectableChannel();
+    synchronized (keyLock) {
+        int count = (keys == null) ? 0 : keys.length;
+        for (int i = 0; i < count; i++) {
+            SelectionKey k = keys[i];
+            if (k != null)
+            //key  曲线
+                k.cancel();
+        }
+    }
+}
+
+//SocketChannelImpl
+protected void implCloseSelectableChannel() throws IOException {
+    synchronized(this.stateLock) {
+        //输入输出流打开标志位
+        this.isInputOpen = false;
+        this.isOutputOpen = false;
+        if (this.state != 4) {
+            nd.preClose(this.fd);
+        }
+
+        if (this.readerThread != 0L) {
+            NativeThread.signal(this.readerThread);
+        }
+
+        if (this.writerThread != 0L) {
+            NativeThread.signal(this.writerThread);
+        }
+
+        if (!this.isRegistered()) {
+            //通过调用底层方法关闭该文件描述符
+            this.kill();
+        }
+
+    }
+}
+```
+
+**关闭输入流和输出流**
+
+```java
+public boolean isInputOpen() {
+    synchronized(this.stateLock) {
+        //检测状态
+        return this.isInputOpen;
+    }
+}
+
+public boolean isOutputOpen() {
+    synchronized(this.stateLock) {
+        return this.isOutputOpen;
+    }
+}
+public SocketChannel shutdownInput() throws IOException {
+    synchronized(this.stateLock) {
+        //已经关闭
+        if (!this.isOpen()) {
+            throw new ClosedChannelException();
+        } else if (!this.isConnected()) {
+            //从未连接过
+            throw new NotYetConnectedException();
+        } else {
+            if (this.isInputOpen) {
+                //调用native方法，也是是通过系统调用关闭文件描述符，0代表是关闭输入流
+                Net.shutdown(this.fd, 0);
+                if (this.readerThread != 0L) {
+                    NativeThread.signal(this.readerThread);
+                }
+
+                this.isInputOpen = false;
+            }
+
+            return this;
+        }
+    }
+}
+
+public SocketChannel shutdownOutput() throws IOException {
+    synchronized(this.stateLock) {
+        if (!this.isOpen()) {
+            throw new ClosedChannelException();
+        } else if (!this.isConnected()) {
+            throw new NotYetConnectedException();
+        } else {
+            if (this.isOutputOpen) {
+                //调用native方法，也是是通过系统调用关闭文件描述符，1代表是关闭输出流
+                Net.shutdown(this.fd, 1);
+                if (this.writerThread != 0L) {
+                    NativeThread.signal(this.writerThread);
+                }
+
+                this.isOutputOpen = false;
+            }
+
+            return this;
+        }
+    }
+}
+```
+从上面可以看出，可以单独关闭输入流和输出流，关闭之后就无法再接收或者发送数据。也可以直接调用close()来全部关闭。这些方法最后都是调用native方法来调用操作系统相关系统调用来实现。
+
+
+
+
+### 8.6.2. Scatter/Gather
+<a href="#menu"  >目录</a>
+
+通道提供了一种被称为 Scatter/Gather 的重要新功能（有时也被称为矢量 I/O）。 Scatter/Gather是一个简单却强大的概念（参见 1.4.1.1 节），它是指在多个缓冲区上实现一个简单的 I/O 操作。对于一个 write 操作而言，数据是从几个缓冲区按顺序抽取（称为 gather）并沿着通道发送的。缓冲区本身并不需要具备这种 gather 的能力（通常它们也没有此能力）。该 gather 过程的效果就好比全部缓冲区的内容被连结起来，并在发送数据前存放到一个大的缓冲区中。对于 read 操作而言，从通道读取的数据会按顺序被散布（称为 scatter）到多个缓冲区，将每个缓冲区填满直至通道中的数据或者缓冲区的最大空间被消耗完。
+
+大多数现代操作系统都支持本地矢量 I/O（native vectored I/O）。当您在一个通道上请求一个Scatter/Gather 操作时，该请求会被翻译为适当的本地调用来直接填充或抽取缓冲区。这是一个很大的进步，因为减少或避免了缓冲区拷贝和系统调用。 Scatter/Gather 应该使用直接的 ByteBuffers 以从本地 I/O 获取最大性能优势。
+
+
+```java
+public interface ScatteringByteChannel extends ReadableByteChannel
+{
+    public long read (ByteBuffer [] dsts)    throws IOException;
+    public long read (ByteBuffer [] dsts, int offset, int length)    throws IOException;
+}
+public interface GatheringByteChannel extends WritableByteChannel
+{
+    public long write(ByteBuffer[] srcs)    throws IOException;
+    public long write(ByteBuffer[] srcs, int offset, int length)    throws IOException;
+}
+```
+实现上面的类有SocketChannel,DatagramChannel,SourceChannel,FileChannel.
+
+**read例子**
+
+假如socket有30个字节要读取，那么将会有10个字节装入header，20个字节装入body。
+```java
+ByteBuffer header = ByteBuffer.allocateDirect (10);
+ByteBuffer body = ByteBuffer.allocateDirect (80);
+ByteBuffer [] buffers = { header, body };
+int bytesRead = channel.read (buffers);
+```
+
+
+
+**write例子**
+
+```java
+
+ByteBuffer [] buffers = { header, body };
+body.clear( );
+body.put("FOO".getBytes()).flip( ); // "FOO" as bytes
+header.clear( );
+header.putShort (TYPE_FILE).putLong (body.limit()).flip( );
+long bytesWritten = channel.write (buffers);
+```
+
+带 offset 和 length 参数版本的 read( ) 和 write( )方法使得我们可以使用缓冲区阵列的子集缓冲区。这里的 offset 值指哪个缓冲区将开始被使用，而不是指数据的 offset。这里的 length 参数指示要使用的缓冲区数量。举个例子，假设我们有一个五元素的 fiveBuffers 阵列，它已经被初始化并引用了五个缓冲区，下面的代码将会写第二个、第三个和第四个缓冲区的内容：
+```java
+int bytesRead = channel.write (fiveBuffers, 1, 3);
+```
+
+
+
+### 8.6.3. 文件通道
+<a href="#menu"  >目录</a>
+
+FileChannel类可以实现常用的read，write以及scatter/gather操作，同时它也提供了很多专用于文件的新方法。这些方法中的许多都是我们所熟悉的文件操作。
+
+#### 8.6.3.1. 访问文件
+<a href="#menu"  >目录</a>
+
+```java
+package java.nio.channels;
+public abstract class FileChannel extends AbstractChannel implements ByteChannel, GatheringByteChannel, ScatteringByteChannel
+{
+    // This is a partial API listing
+    // All methods listed here can throw java.io.IOException
+    //注意，由于是随机写入，写入的数据只会覆盖数据的长度空间内的字节
+    public abstract int read (ByteBuffer dst, long position);
+    public abstract int write (ByteBuffer src, long position);
+    public abstract long size();
+    //获取当前的文件位置(字节)和设置位置,读写将从pos开始
+    //一个有符号长整型（signed long）值能代表多达 9,223,372,036,854,775,807 字节的文件大小。这个数据量差不多是 840 万 TB
+    //注意pos是和通道相关的，也就是除非重新打开pos,否则会跟随读写而改变
+    public abstract long position();
+    public abstract void position (long newPosition);
+    //方法截取一个文件。截取文件时，文件将中指定长度后面的部分将被删除。
+    public abstract void truncate (long size);
+    //将通道里尚未写入磁盘的数据强制写到磁盘上。出于性能方面的考虑，操作系统会将数据缓存在内存中，所以无法保证写入到FileChannel里的数据一定会即时写到磁盘上。要保证这一点，需要调用force()方法。
+    //metaData 指明是否同时将文件元数据（权限信息等）写到磁盘上。
+    public abstract void force (boolean metaData);
+    //文件锁
+    public final FileLock lock();
+    public abstract FileLock lock (long position, long size, boolean shared);
+    public final FileLock tryLock();
+    public abstract FileLock tryLock (long position, long size, boolean shared);
+    public abstract MappedByteBuffer map (MapMode mode, long position, long size);
+    public static class MapMode;
+    public static final MapMode READ_ONLY;
+    public static final MapMode READ_WRITE;
+    public static final MapMode PRIVATE;
+    //数据转移，从一个通道到另一个通道
+    public abstract long transferTo (long position, long count, WritableByteChannel target);
+    public abstract long transferFrom (ReadableByteChannel src, long position, long count);
+}
+```
+
+文件通道总是阻塞式的，因此不能被置于非阻塞模式。现代操作系统都有复杂的缓存和预取机制，使得本地磁盘I/O操作延迟很少。网络文件系统一般而言延迟会多些，不过却也因该优化而受益。面向流的I/O的非阻塞范例对于面向文件的操作并无多大意义，这是由文件I/O本质上的不同性质造成的。对于文件I/O，最强大之处在于异步I/O（asynchronous I/O），它允许一个进程可以从操作系统请求一个或多个I/O操作而不必等待这些操作的完成。发起请求的进程之后会收到它请求的I/O操作已完成的通知。
+
+FileChannel对象是线程安全（thread-safe）的。多个进程可以在同一个实例上并发调用方法而不会引起任何问题，不过并非所有的操作都是多线程的（multithreaded）。影响通道位置或者影响文件大小的操作都是单线程的（single-threaded）。如果有一个线程已经在执行会影响通道位置或文件大小的操作，那么其他尝试进行此类操作之一的线程必须等待。并发行为也会受到底层的操作系统或文件系统影响。
+
+每个FileChannel对象都同一个文件描述符（file descriptor）有一对一的关系，所以上面列出的API方法与在您最喜欢的POSIX（可移植操作系统接口）兼容的操作系统上的常用文件I/O系统调用紧密对应也就不足为怪了。本质上讲，RandomAccessFile类提供的是同样的抽象内容。在通道出现之前，底层的文件操作都是通过RandomAccessFile类的方法来实现的。FileChannel模拟同样的I/O服务，因此它的API自然也是很相似的。
+
+将通道的 position 设置为指定值。如果尝试将通道 position 设置为一个负值会导致 java.lang.IllegalArgumentException 异常，不过可以把 position 设置到超出文件尾，这样做会把 position 设置为指定值而不改变文件大小。假如在将position 设置为超出当前文件大小时实现了一个 read( )方法，那么会返回一个文件尾（end-of-file）条件；倘若此时实现的是一个 write( )方法则会引起文件增长以容纳写入的字节，具体行为类似于实现一个绝对 write( )并可能导致出现一个文件空洞
+
+**文件空洞:**当磁盘上一个文件的分配空间小于它的文件大小时会出现“文件空洞”。对于内容稀疏的文件，大多数现代文件系统只为实际写入的数据分配磁盘空间（更准确地说，只为那些写入数据的文件系统页分配空间）。假如数据被写入到文件中非连续的位置上，这将导致文件出现在逻辑上不包含数据的区域（即“空洞”）。
+
+```java
+public class NioFileChannel {
+
+    private String fileName;
+    private String mode;
+    FileChannel fileChannel;
+    public NioFileChannel(String fileName, String mode) {
+        this.fileName = fileName;
+        this.mode = mode;
+        try{
+            fileChannel =  new RandomAccessFile(fileName,mode).getChannel();
+        }
+        catch(Exception ex){
+            log.error(ex.getMessage());
+        }
+    }
+
+    public void write(String data) throws Exception{
+
+        log.info("fileChannel.position = "+fileChannel.position());
+        ByteBuffer buf = ByteBuffer.allocate(48);
+        buf.clear();
+        buf.put(data.getBytes());
+        buf.flip();
+        while(buf.hasRemaining()) {
+            fileChannel.write(buf);
+        }
+        fileChannel.force(true);
+        log.info("fileChannel.position = "+fileChannel.position());
+    }
+
+    public void read(int position)throws Exception{
+        ByteBuffer readBuf = ByteBuffer.allocate(100);
+        log.info("readBuf = " + readBuf);
+
+        fileChannel.position(position);
+        int readC =  fileChannel.read(readBuf);
+        log.info("readBuf = " + readBuf);
+
+        if(readC != -1){
+            readBuf.flip();
+            byte[] data = new byte[readC];
+            readBuf.get(data);
+            log.info("读取到的数据:"+new String(data,"UTF-8"));
+        }
+        else {
+            log.info("未读取到任何数据");
+        }
+    }
+}
+
+```
+
+#### 8.6.3.2. 文件锁定
+<a href="#menu"  >目录</a>
+
+* 共享锁: 共享读操作，但只能一个写（读可以同时，但写不能）。共享锁防止其他正在运行的程序获得重复的独占锁，但是允许他们获得重复的共享锁。
+* 独占锁: 只有一个读或一个写（读和写都不能同时）。独占锁防止其他程序获得任何类型的锁。
+
+FileLock的生命周期：在调用FileLock.release(),或者Channel.close(),或者JVM关闭
+
+**常用方法**
+
+```java
+/**
+position & size: 锁定的范围
+shared的含义:是否使用共享锁,一些不支持共享锁的操作系统,将自动将共享锁改成排它锁。可以通过调用isShared()方法来检测获得的是什么类型的锁。
+*/
+FileLock FileChannel.lock(long position, long size, boolean shared)
+
+/**
+lock()阻塞的方法，锁定范围可以随着文件的增大而增加。无参lock()默认为独占锁；有参lock(0L, Long.MAX_VALUE, true)为共享锁。
+tryLock()非阻塞,当未获得锁时,返回null.
+*/
+public final Future<FileLock> lock() {
+    return lock(0L, Long.MAX_VALUE, false);
+}
+public final FileLock tryLock() throws IOException {
+    return tryLock(0L, Long.MAX_VALUE, false);
+}
+
+```
+
+锁（lock）可以是共享的（shared）或独占的（exclusive）。这里的文件锁定特性在很大程度上依赖本地的操作系统实现。并非所有的操作系统和文件系统都支持共享文件锁。对于那些不支持的，对一个共享锁的请求会被自动提升为对独占锁的请求。这可以保证准确性却可能严重影响性能。
+
+并非所有平台都以同一个方式来实现基本的文件锁定。在不同的操作系统上，甚至在同一个操作系统的不同文件系统上，文件锁定的语义都会有所差异。一些操作系统仅提供劝告锁定（advisory locking） ，一些仅提供独占锁（exclusive locks），而有些操作系统可能两种锁都提供。您应该总是按照劝告锁的假定来管理文件锁，因为这是最安全的。但是如能了解底层操作系统如何执行锁定也是非常好的。例如，如果所有的锁都是强制性的（mandatory）而您不及时释放您获得的锁的话，运行在同一操作系统上的其他程序可能会受到影响。
+
+
+```java
+Future<FileLock> future  = channel.lock();
+log.info("加锁....");
+FileLock lock = future.get();
+........
+lock.release();
+log.info("解锁...");
+```
+
+在linux平台下，对于同一个应用，不管是lock还是tryLock,多线程获取锁，如果获取还没释放的文件锁，将会抛出异常OverlappingFileLockException。不同的Java应用lock会阻塞等待文件锁释放。trylock会直接返回null。但是Java在锁一个文件时，还可以通过vim修改文件内容。也就是FileLock虽然使用操作系统的相关调用来实现文件锁，但是这种锁定只对java应用起到作用。
+
+### 8.6.4. 内存映射通道
+<a href="#menu"  >目录</a>
+
+新的 FileChannel 类提供了一个名为 map()的方法，该方法可以在一个打开的文件和一个特殊类型的 ByteBuffer 之间建立一个虚拟内存映射。在 FileChannel 上调用 map( )方法会创建一个由磁盘文件支持的虚拟内存映射（virtual memory mapping）并在那块虚拟内存空间外部封装一个 MappedByteBuffer 对象。
+
+由 map( )方法返回的 MappedByteBuffer 对象的行为在多数方面类似一个基于内存的缓冲区，只不过该对象的数据元素存储在磁盘上的一个文件中。调用 get( )方法会从磁盘文件中获取数据，此数据反映该文件的当前内容，即使在映射建立之后文件已经被一个外部进程做了修改。通过文件映射看到的数据同您用常规方法读取文件看到的内容是完全一样的。相似地，对映射的缓冲区实现一个 put( )会更新磁盘上的那个文件（假设对该文件您有写的权限），并且您做的修改对于该文件的其他阅读者也是可见的。
+
+通过内存映射机制来访问一个文件会比使用常规方法读写高效得多，甚至比使用通道的效率都高。因为不需要做明确的系统调用，那会很消耗时间。更重要的是，操作系统的虚拟内存可以自动缓存内存页（memory page）。这些页是用系统内存来缓存的，所以不会消耗 Java 虚拟机内存堆（memory heap）。
+
+一旦一个内存页已经生效（从磁盘上缓存进来），它就能以完全的硬件速度再次被访问而不需要再次调用系统命令来获取数据。
+
+```java
+//继承关系
+|---Buffer(abstract)
+    |--- ByteBuffer(abstract)
+        |---MappedByteBuffer(abstract)
+            |--- DirectByteBuffer
+                |---DirectByteBufferR
+
+/**
+* mode： 读写模式 READ_ONLY，READ_WRITE，PRIVATE:
+* position：映射的起始字节位置
+* size： 映射长度
+* 要引设第100到149的字节，一共是50个字节：fileCh annel.map(FileChannel.MapMode.READ_WRITE,100,50);
+* 映射文件的范围不应超过文件的实际大小。如果您请求一个超出文件大小的映射，文件会被增大以匹配映射的大小。假如size是IntMax,则文件会扩张到2.1G，引起文件空洞
+*/
+public abstract MappedByteBuffer map(MapMode mode,long position, long size)
+
+FileChannel fileChannel = new RandomAccessFile(this.path,mode).getChannel();            
+MappedByteBuffer mappedByteBuffer =  fileChannel.map(FileChannel.MapMode.READ_WRITE,0,20);
+
+//读写的pos 范围 [position,position+size]
+//超出范围写抛出错误BufferOverflowException
+mappedByteBuffer.position(0);
+mappedByteBuffer.putDouble(1.234);
+//超出范围读抛出错误BufferUnderflowException
+mappedByteBuffer.position(0);
+double d = mappedByteBuffer.getDouble();
+```
+MapMode.PRIVATE 表示您想要一个写时拷贝（ copy-on-write）的映射。这意味着您通过 put( )方法所做的任何修改都会导致产生一个私有的数据拷贝并且该拷贝中的数据只有MappedByteBuffer 实例可以看到。该过程不会对底层文件做任何修改，而且一旦缓冲区被施以垃圾收集动作（ garbage collected），那些修改都会丢失。尽管写时拷贝的映射可以防止底层文件被修改，您也必须以 read/write 权限来打开文件以建立 MapMode.PRIVATE 映射。只有这样，返回的MappedByteBuffer 对象才能允许使用 put( )方法。
+
+写时拷贝这一技术经常被操作系统使用，以在一个进程生成另一个进程时管理虚拟地址空间（ virtual address spaces）。使用写时拷贝可以允许父进程和子进程共享内存页直到它们中的一方实际发生修改行为。在处理同一文件的多个映射时也有相同的优势（当然，这需要底层操作系统的支持）。假设一个文件被多个 MappedByteBuffer 对象映射并且每个映射都是 MapMode.PRIVATE 模式，那么这份文件的大部分内容都可以被所有映射共享。
+
+选择使用 MapMode.PRIVATE 模式并不会导致您的缓冲区看不到通过其他方式对文件所做的修改。对文件某个区域的修改在使用 MapMode.PRIVATE 模式的缓冲区中都能反映出来，除非该缓冲区已经修改了文件上的同一个区域。正如第一章中所描述的，内存和文件系统都被划分成了页。当在一个写时拷贝的缓冲区上调用 put( )方法时，受影响的页会被拷贝，然后更改就会应用到该拷贝中。具体的页面大小取决于具体实现，不过通常都是和底层文件系统的页面大小时一样的。如果缓冲区还没对某个页做出修改，那么这个页就会反映被映射文件的相应位置上的内容。一旦某个页因为写操作而被拷贝，之后就将使用该拷贝页，并且不能被其他缓冲区或文件更新所修改
+
+一个映射一旦建立之后将保持有效，直到MappedByteBuffer 对象被施以垃圾收集动作为止。同锁不一样的是，映射缓冲区没有绑定到创建它们的通道上。关闭相关联的 FileChannel 不会破坏映射，只有丢弃缓冲区对象本身才会破坏该映射。 
+
+所有的 MappedByteBuffer 对象都是直接的，这意味着它们占用的内存空间位于 Java 虚拟机内存堆之外（并且可能不会算作 Java 虚拟机的内存占用，不过这取决于操作系统的虚拟内存模型）。
+
+
+因为 MappedByteBuffers 也是 ByteBuffers，所以能够被传递 SocketChannel 之类通道的 read( )或write( )以有效传输数据给被映射的文件或从被映射的文件读取数据。如能再结合 scatter/gather，那么从内存缓冲区和被映射文件内容中组织数据就变得很容易了
+
+当我们为一个文件建立虚拟内存映射之后，文件数据通常不会因此被从磁盘读取到内存（这取决于操作系统）。该过程类似打开一个文件：文件先被定位，然后一个文件句柄会被创建，当您准备好之后就可以通过这个句柄来访问文件数据。对于映射缓冲区，虚拟内存系统将根据您的需要来把文件中相应区块的数据读进来。这个页验证或防错过程需要一定的时间，因为将文件数据读取到内存需要一次或多次的磁盘访问。某些场景下，您可能想先把所有的页都读进内存以实现最小的缓冲区访问延迟。如果文件的所有页都是常驻内存的，那么它的访问速度就和访问一个基于内存的缓冲区一样了
+
+load( )方法会加载整个文件以使它常驻内存。一个内存映射缓冲区会建立与某个文件的虚拟内存映射。此映射使得操作系统的底层虚拟内存子系统可以根据需要将文件中相应区块的数据读进内存。已经在内存中或通过验证的页会占用实际内存空间，并且在它们被读进 RAM 时会挤出最近较少使用的其他内存页。
+
+在一个映射缓冲区上调用 load( )方法会是一个代价高的操作，因为它会导致大量的页调入（page-in），具体数量取决于文件中被映射区域的实际大小。然而， load( )方法返回并不能保证文件就会完全常驻内存，这是由于请求页面调入（demand paging）是动态的。具体结果会因某些因素而有所差异，这些因素包括：操作系统、文件系统，可用 Java 虚拟机内存，最大 Java 虚拟机内存，垃圾收集器实现过程等等。请小心使用 load( )方法，它可能会导致您不希望出现的结果。该方法的主要作用是为提前加载文件埋单，以便后续的访问速度可以尽可能的快。
+
+对于那些要求近乎实时访问（near-realtime access）的程序，解决方案就是预加载。但是请记住，不能保证全部页都会常驻内存，不管怎样，之后可能还会有页调入发生。内存页什么时候以及怎样消失受多个因素影响，这些因素中的许多都是不受 Java 虚拟机控制的。 JDK 1.4 的 NIO 并没有提供一个可以把页面固定到物理内存上的 API，尽管一些操作系统是支持这样做的。
+
+对于大多数程序，特别是交互性的或其他事件驱动（event-driven）的程序而言，为提前加载文件消耗资源是不划算的。在实际访问时分摊页调入开销才是更好的选择。让操作系统根据需要来调入页意味着不访问的页永远不需要被加载。同预加载整个被映射的文件相比，这很容易减少 I/O 活动总次数。操作系统已经有一个复杂的内存管理系统了，就让它来替您完成此工作吧！
+
+我们可以通过调用 isLoaded( )方法来判断一个被映射的文件是否完全常驻内存了。如果该方法返回 true 值，那么很大概率是映射缓冲区的访问延迟很少或者根本没有延迟。不过，这也是不能保证的。同样地，返回 false 值并不一定意味着访问缓冲区将很慢或者该文件并未完全常驻内存。 isLoaded( )方法的返回值只是一个暗示，由于垃圾收集的异步性质、底层操作系统以及运行系统的动态性等因素，想要在任意时刻准确判断全部映射页的状态是不可能的。
+
+
+该方法force()会强制将映射缓冲区上的更改应用到永久磁盘存储器上。当用 MappedByteBuffer 对象来更新一个文件，您应该总是使用 MappedByteBuffer.force( )而非 FileChannel.force( )，因为通道对象可能不清楚通过映射缓冲区做出的文件的全部更改。 MappedByteBuffer 没有不更新文件元数据的选项——元数据总是会同时被更新的。请注意，非本地文件系统也同样影响 MappedByteBuffer.force( )方法，正如它会对 FileChannel.force( )方法有影响
+
+如果映射是以 MapMode.READ_ONLY 或 MAP_MODE.PRIVATE 模式建立的，那么调用 force( )方法将不起任何作用，因为永远不会有更改需要应用到磁盘上。
+
+最后一点为 DirectMemory的内存只有在 JVM执行 full gc 的时候才会被回收，那么如果在其上分配过大的内存空间，那么也将出现 OutofMemoryError，即便 JVM 堆中的很多内存处于空闲状态。
+
+### 8.6.5. Socket通道
+<a href="#menu"  >目录</a>
+
+NIO则的socket 通道有DatagramChannel、 SocketChannel 和ServerSocketChannel。
+
+```java
+|---AbstractInterruptibleChannel
+    |---SelectableChannel
+        |---AbstractSelectableChannel
+            |---SocketChannel
+            |---DatagramChannel
+            |---ServerSocketChannel
+```
+这三个实例都是通过其静态方法open创建的。可以通过AbstractSelectableChannel的configureBlocking()配置阻塞状态，默认阻塞。使用非阻塞可以避免为每个socket连接创建单独的线程处理，提高了性能。
+
+DatagramChannel 和 SocketChannel 实现定义读和写功能的接口而 ServerSocketChannel不实现。 ServerSocketChannel 负责监听传入的连接和创建新的 SocketChannel 对象，它本身从不传输数据。
+
+全部 socket 通道类（DatagramChannel、 SocketChannel 和 ServerSocketChannel）在被实例化时都会创建一个对等 socket 对象。对等 socket 可以通过调用 socket( )方法从一个通道上获取。Socket 通道委派协议操作给对等 socket 对象。
+
+每个 socket 通道（在 java.nio.channels 包中）都有一个关联的 java.net socket 对象，却并非所有的 socket 都有一个关联的通道。如果您用传统方式（直接实例化）创建了一个Socket 对象，它就不会有关联的 SocketChannel 并且它的 getChannel( )方法将总是返回 null。
+
+ServerSocketChannel 没有 bind( )方法，因此有必要取出对等的 socket 并使用它来绑定到一个端口以开始监听连接
+```java
+
+//--------服务端-------
+
+//获取ServerSocketChannel
+ServerSocketChannel ssc = ServerSocketChannel.open( );
+ServerSocket serverSocket = ssc.socket( );
+//绑定端口
+serverSocket.bind (new InetSocketAddress (1234));
+
+//如果为非阻塞，将会立即返回null
+SocketChannel socketChannel = serverSocketChannel.accept();
+socketChannel.write(buf)
+socketChannel.read(buf)        
+
+//--------客户端--------
+SocketChannel socketChannel = SocketChannel.open();
+/**
+在 SocketChannel 上并没有一种 connect( )方法可以让您指定超时（timeout）值，当 connect( )方法在非阻塞模式下被调用时 SocketChannel 提供并发连接：它发起对请求地址的连接并且立即返回值。如果返回值是 true，说明连接立即建立了（这可能是本地环回连接）；如果连接不能立即建立， connect( )方法会返回 false 且并发地继续连接建立过程。
+*/
+socketChannel.connect(new InetSocketAddress(host,port));
+socketChannel.write(buf)
+socketChannel.read(buf)   
+
+```
+* connect( )方法尚未被调用。那么将产生 NoConnectionPendingException 异常。
+* 连接建立过程正在进行，尚未完成。那么什么都不会发生， finishConnect( )方法会立即返回false 值。
+* 在非阻塞模式下调用 connect( )方法之后， SocketChannel 又被切换回了阻塞模式。那么如果有必要的话，调用线程会阻塞直到连接建立完成， finishConnect( )方法接着就会返回 true值。
+* 在初次调用 connect( )或最后一次调用 finishConnect( )之后，连接建立过程已经完成。那么SocketChannel 对象的内部状态将被更新到已连接状态，finishConnect( )方法会返回 true值，然后 SocketChannel 对象就可以被用来传输数据了。
+* 连接已经建立。那么什么都不会发生， finishConnect( )方法会返回 true 值
+
+Socket 通道是线程安全的。并发访问时无需特别措施来保护发起访问的多个线程，不过任何时候都只有一个读操作和一个写操作在进行中。请记住， sockets 是面向流的而非包导向的。它们可以保证发送的字节会按照顺序到达但无法承诺维持字节分组。某个发送器可能给一个 socket 写入了20 个字节而接收器调用 read( )方法时却只收到了其中的 3 个字节。剩下的 17 个字节还是传输中。由于这个原因，让多个不配合的线程共享某个流 socket 的同一侧绝非一个好的设计选择。
+
+**DatagramChannel**
+
+SocketChannel 对应 Socket，ServerSocketChannel 对应 ServerSocket，每一个 DatagramChannel 对象也有一个关联的DatagramSocket 对象。 SocketChannel 模拟连接导向的流协议（如 TCP/IP）， DatagramChannel 则模拟包导向的无连接协议（如 UDP/IP）
+
+```java
+DatagramChannel channel = DatagramChannel.open( );
+DatagramSocket socket = channel.socket( );
+socket.bind (new InetSocketAddress (portNumber));
+```
+创建 DatagramChannel 的模式和创建其他 socket 通道是一样的：调用静态的 open( )方法来创建一个新实例。新 DatagramChannel 会有一个可以通过调用 socket( )方法获取的对等 DatagramSocket对象。 DatagramChannel 对象既可以充当服务器（监听者）也可以充当客户端（发送者）。
+
+DatagramChannel 是无连接的。每个数据报（datagram）都是一个自包含的实体，拥有它自己的目的地址及不依赖其他数据报的数据净荷。与面向流的的 socket 不同， DatagramChannel 可以发送单独的数据报给不同的目的地址。同样， DatagramChannel 对象也可以接收来自任意地址的数据包。每个到达的数据报都含有关于它来自何处的信息（源地址）。
+
+一个未绑定的 DatagramChannel 仍能接收数据包。当一个底层 socket 被创建时，一个动态生成的端口号就会分配给它。绑定行为要求通道关联的端口被设置为一个特定的值（此过程可能涉及安全检查或其他验证）。不论通道是否绑定，所有发送的包都含有 DatagramChannel 的源地址（带端口号）。未绑定的 DatagramChannel 可以接收发送给它的端口的包，通常是来回应该通道之前发出的一个包。已绑定的通道接收发送给它们所绑定的熟知端口（wellknown port）的包。数据的实际发送或接收是通过 send( )和 receive( )方法来实现的：
+```java
+public abstract SocketAddress receive(ByteBuffer dst) throws IOException;
+public abstract int send(ByteBuffer src, SocketAddress target)
+```
+
+例子
+
+```java
+//server
+DatagramChannel datagramChannel = DatagramChannel.open();
+datagramChannel = datagramChannel.bind(new InetSocketAddress(port));
+while(true){
+
+    //读数据
+    ByteBuffer buf = ByteBuffer.allocate(1024);
+    SocketAddress socketAddress = null;
+    while (( socketAddress = datagramChannel.receive(buf)) == null){
+        Thread.sleep(100);
+    }
+    log.info("接收数组来自客户端:{}",socketAddress);
+    buf.flip();
+    byte[] data = new byte[buf.remaining()];
+    buf.get(data);
+    log.info("接收到的数据:{}",new String(data,"UTF-8"));
+    
+    //写数据
+    buf.clear();
+    buf.put(("这是服务端返回的数据" + new Date().toString()).getBytes("UTF-8"));
+    buf.flip();
+    //使用上面的socketAddress，这是发送者的地址
+    datagramChannel.send(buf,socketAddress);
+
+}
+
+
+//client
+DatagramChannel datagramChannel = DatagramChannel.open();
+
+/*
+可以不使用connect,下面选择一个
+1.使用connect ===> datagramChannel绑定到一个[host:port],发送:datagramChannel.write(buf);
+2.不使用connect ===> 发送: datagramChannel.send(buf,new InetSocketAddress(host,port));
+*/
+datagramChannel.connect(new InetSocketAddress(host,port));
+
+//写数据
+ByteBuffer buf = ByteBuffer.allocate(100);
+buf.put(("这是客户端的数据" + new Date().toString()).getBytes("utf-8"));
+buf.flip();
+//发送数据
+datagramChannel.write(buf);
+
+//读数据
+ByteBuffer buf = ByteBuffer.allocate(1000);
+SocketAddress socketAddress = null;
+while (( socketAddress = datagramChannel.receive(buf)) == null){
+    Thread.sleep(100);
+}
+log.info("接收数组来自服务端的数据:{}",socketAddress);
+
+buf.flip();
+
+byte[] data = new byte[buf.remaining()];
+buf.get(data);
+
+log.info("接收到的数据:{}",new String(data,"UTF-8"));
+```
+
+receive()方法将下次将传入的数据报的数据净荷复制到预备好的 ByteBuffer 中并返回一个SocketAddress 对象以指出数据来源。如果通道处于阻塞模式，receive()可能无限期地休眠直到有包到达。如果是非阻塞模式，当没有可接收的包时则会返回 null。如果包内的数据超出缓冲区能承受的范围，多出的数据都会被悄悄地丢弃。
+
+调用 send( )会发送给定 ByteBuffer 对象的内容到给定 SocketAddress 对象所描述的目的地址和端口，内容范围为从当前 position 开始到末尾处结束。如果 DatagramChannel 对象处于阻塞模式，调用线程可能会休眠直到数据报被加入传输队列。如果通道是非阻塞的，返回值要么是字节缓冲区的字节数，要么是“0”。发送数据报是一个全有或全无（all-or-nothing）的行为。如果传输队列没有足够空间来承载整个数据报，那么什么内容都不会被发送
+
+数据报协议的不可靠性是固有的，它们不对数据传输做保证。 send( )方法返回的非零值并不表示数据报到达了目的地，仅代表数据报被成功加到本地网络层的传输队列。此外，传输过程中的协议可能将数据报分解成碎片。例如，以太网不能传输超过 1,500 个字节左右的包。如果您的数据报比较大，那么就会存在被分解成碎片的风险，成倍地增加了传输过程中包丢失的几率。被分解的数据报在目的地会被重新组合起来，接收者将看不到碎片。但是，如果有一个碎片不能按时到达，那么整个数据报将被丢弃。
+
+
+DatagramChannel 对数据报 socket 的连接语义不同于对流 socket 的连接语义。有时候，将数据报对话限制为两方是很可取的。将 DatagramChannel 置于已连接的状态可以使除了它所“连接”到的地址之外的任何其他源地址的数据报被忽略。这是很有帮助的，因为不想要的包都已经被网络层丢弃了，从而避免了使用代码来接收、检查然后丢弃包的麻烦。
+
+当 DatagramChannel 已连接时，使用同样的令牌，您不可以发送包到除了指定给 connect( )方法的目的地址以外的任何其他地址。试图一定要这样做的话会导致一个 SecurityException 异常。
+
+我们可以通过调用带 SocketAddress 对象的 connect( )方法来连接一个 DatagramChannel，该SocketAddress 对象描述了 DatagramChannel 远程对等体的地址。如果已经安装了一个安全管理器，那么它会进行权限检查。之后，每次 send/receive 时就不会再有安全检查了，因为来自或去到任何其他地址的包都是不允许的。
+
+已连接通道会发挥作用的使用场景之一是一个客户端/服务器模式、使用 UDP 通讯协议的实时游戏。每个客户端都只和同一台服务器进行会话而希望忽视任何其他来源地数据包。将客户端的DatagramChannel 实例置于已连接状态可以减少按包计算的总开销（因为不需要对每个包进行安全检查）和剔除来自欺骗玩家的假包。服务器可能也想要这样做，不过需要每个客户端都有一个DatagramChannel 对象。
+
+不同于流 socket，数据报 socket 的无状态性质不需要同远程系统进行对话来建立连接状态。没有实际的连接，只有用来指定允许的远程地址的本地状态信息。由于此原因， DatagramChannel 上也就没有单独的 finishConnect( )方法。我们可以使用 isConnected( )方法来测试一个数据报通道的连接状态。
+
+不同于 SocketChannel（必须连接了才有用并且只能连接一次）， DatagramChannel 对象可以任意次数地进行连接或断开连接。每次连接都可以到一个不同的远程地址。调用 disconnect( )方法可以配置通道，以便它能再次接收来自安全管理器（如果已安装）所允许的任意远程地址的数据或发送数据到这些地址上
+
+当一个 DatagramChannel 处于已连接状态时，发送数据将不用提供目的地址而且接收时的源地址也是已知的。这意味着 DatagramChannel 已连接时可以使用常规的 read( )和 write( )方法，包括scatter/gather 形式的读写来组合或分拆包的数据
+
+read( )方法返回读取字节的数量，如果通道处于非阻塞模式的话这个返回值可能是“0”。write( )方法的返回值同 send( )方法一致：要么返回您的缓冲区中的字节数量，要么返回“0”（如果由于通道处于非阻塞模式而导致数据报不能被发送）。当通道不是已连接状态时调用 read( )或write( )方法，都将产生 NotYetConnectedException 异常。
+
+数据报通道不同于流 socket。由于它们的有序而可靠的数据传输特性，流 socket 非常得有用。大多数网络连接都是流 socket（TCP/IP 就是一个显著的例子）。但是， 像 TCP/IP 这样面向流的的协议为了在包导向的互联网基础设施上维护流语义必然会产生巨大的开销，并且流隐喻不能适用所有的情形。数据报的吞吐量要比流协议高很多， 并且数据报可以做很多流无法完成的事情。
+
+选择数据报 socket 而非流 socket 的理由：
+* 您的程序可以承受数据丢失或无序的数据。
+* 您希望“发射后不管”（fire and forget）而不需要知道您发送的包是否已接收。
+* 数据吞吐量比可靠性更重要。
+* 您需要同时发送数据给多个接受者（多播或者广播）。
+* 包隐喻比流隐喻更适合手边的任务。
+
+### 8.6.6. 管道
+<a href="#menu"  >目录</a>
+
+java.nio.channels 包中含有一个名为 Pipe（管道）的类。广义上讲，管道就是一个用来在两个实体之间单向传输数据的导管。Unix 系统中，管道被用来连接一个进程的输出和另一个进程的输入。 Pipe 类实现一个管道范例，不过它所创建的管道是进程内（在 Java 虚拟机进程内部）而非进程间使用的。
+
+Pipe 实例是通过调用不带参数的 Pipe.open( )工厂方法来创建的。 Pipe 类定义了两个嵌套的通道类来实现管路。这两个类是 Pipe.SourceChannel（管道负责读的一端）和 Pipe.SinkChannel（管道负责写的一端）。这两个通道实例是在 Pipe 对象创建的同时被创建的，可以通过在 Pipe 对象上分别调用 source( )和 sink( )方法来取回。
+
+```java
+private Pipe pipe;
+private Pipe.SinkChannel sinkChannel;
+private  Pipe.SourceChannel sourceChannel;
+
+public void init(){
+    try{
+        pipe = Pipe.open();
+        sinkChannel =  pipe.sink();
+        sourceChannel = pipe.source();
+    }
+    catch(Exception ex){
+        log.error(ex.getMessage());
+    }
+}
+
+public void write() throws Exception{
+    sinkChannel.write(ByteBuffer.wrap("123456".getBytes()));
+}
+
+public void read() throws Exception{
+
+    ByteBuffer buf = ByteBuffer.allocate(100);
+    sourceChannel.read(buf);
+    buf.flip();
+    byte[] data = new byte[buf.remaining()];
+    buf.get(data);
+    log.info("读取到数据:{}",new String(data));
+}
+```
+
+
+## 8.7. 选择器
 <a href="#menu"  >目录</a>
 
 
-
-### 8.7.2. Scatter/Gather
-<a href="#menu"  >目录</a>
-
-
-### 8.7.3. 文件通道
-<a href="#menu"  >目录</a>
-
-
-### 8.7.4. 内存映射通道
-<a href="#menu"  >目录</a>
-
-
-### 8.7.5. Socket通道
-<a href="#menu"  >目录</a>
-
-
-### 8.7.6. 管道
-<a href="#menu"  >目录</a>
-
-
-### 8.7.7. 管道工具类
-<a href="#menu"  >目录</a>
-
-
-## 8.8. 选择器
-<a href="#menu"  >目录</a>
-
-Selector 一般称 为选择器 ，当然你也可以翻译为 多路复用器 。它是Java NIO核心组件中的一个，用于检查一个或多个NIO Channel（通道）的状态是否处于可读、可写。如此可以实现单线程管理多个channels,也就是可以管理多个网络链接。
+Selector 一般称 为选择器(多路复用器) 。它是Java NIO核心组件中的一个，用于检查一个或多个NIO Channel（通道）的状态是否处于可读、可写,连接事件。如此可以实现单线程管理多个channels,也就是可以管理多个网络链接。
 
 使用Selector的好处在于： 使用更少的线程来就可以来处理通道了， 相比使用多个线程，避免了线程上下文切换带来的开销。
 
-
-### 8.8.1. 选择器与 1/0 多路复用
+### 8.7.1. 相关接口
 <a href="#menu"  >目录</a>
 
-### 8.8.2. 使用选择器
+SelectableChannel("可被选择"通道):抽象类,此类实现了InterruptableChannel接口."可选择"通道,就是noblocking通道,它的实现需要Selector的支持.因此这些Channel取名为"SelectableChannel"是可以理解的.
+
+为 了和Selector(选择器)一起使用,此类的实例必须首先通过register方法进行注册.此方法返回一个表示该通道已向选择器注册的新 SelectionKey对象."注销"选择器绑定时,会释放分配给改通道的所有资源.需要通过selectionKey.cancel方式注销.调用 Channel.close()或者通过interrupt方式中断IO,都将会隐式的导致selectionKey的取消.一个通道只能注册一个 Selector.SelectableChannel在多线程环境中,也是安全的.
+
+
+SelectableChannel 在设计时,是可以处于"阻塞"或"非阻塞"两种模式下(configureBlocking方法设定).在"阻塞"模式下,每个I/O操作完成之前,都会阻塞其他的IO操作(参见 Channels.write/read,read使用readLock,write使用writeLock同步.).
+
+在"非阻塞"模式 下,永远不会阻塞IO操作,其将会使用Selector作为异步支持.即任何write和read将不阻塞,可能会立即返回.新创建的 SeletableChannel总是处于阻塞模式,如果需要使用selector多路复用,那么必须使用非阻塞模式(API级别控制).当向某个Selector注册时,此Channel必须处于noblocking模式,且此后模式不可改变,直到selectionKey销毁.
+
+```java
+public abstract class SelectableChannel
+    extends AbstractInterruptibleChannel
+    implements Channel
+{
+    protected SelectableChannel() { }
+    public abstract SelectorProvider provider();
+    //获取此通道所支持的操作集合,同一种类型的Channel,将会得到相同的值,此值为 SelectionKey.OP_READ,OP_WRITE,OP_CONNECT,OP_ACCEPT操作的子集...位或运算之后的结果.
+    public abstract int validOps();
+    //检测当前通道是否已经注册了selector..当SelectionKey被注销之后,或者通道关闭后,仍然有可能返回 true.取消注册关系,有一定的延迟,selector的内部机制.
+    public abstract boolean isRegistered();
+    //检测当前通道是否已经注册了selector..当SelectionKey被注销之后,或者通道关闭后,仍然有可能返回 true.取消注册关系,有一定的延迟,selector的内部机制.稍后介绍.
+    public abstract SelectionKey keyFor(Selector sel);
+    /**
+    将此通道注册在selector上,并获取相应的选择 键.ops为此通道感兴趣的操作集,attr为选择键中需要携带的"附件"信息.此方法主要目的,就是让channel与Selector建立关系,并让 selector为其支持异步操作.如果此时通道已关闭,则抛出ClosedChannelException.如果向selector提交的ops不是 当前Channel.validOps的子集,将抛出异常.(ops & ~ validOps() != 0,如果为true,则抛出异常);如果当前通道为blocking模式,则抛出IllegalBlockingModeException.如果当前通 道的选择键数组中,已经有和指定的selector的关联的键,则获得此键.每个SelectableChannel实例中,都有一个key[],这数组 结构保持了当前Channel所持有的注册成功的选择键,即每次register到不同的selector上,都有可能会导致key[]新增(如果先前已 经注册过的selector上,不会产生新的selectionKey);如果key[]通过遍历没有发现指定的selector产生的选择键,将会导致 底层生成新的选择键,然后加入到key[]中.当Channel.close()方法执行时,将会导致key[]中的相应selectionKey被 cancel.被cancel的key将会被存在Selector.cancelledKeys这个集合中,此集合将会被Selector内部实时调用, 然后清除,清除cancelKey时,将会释放channel资源以及移除channel中key[]的相应值(赋值为null).此方法内部,经过了同 步锁控制.与其说channel注册在selector上,尚不如说selector注册在channel上(思维要反转: 事实上的实现为Selector.register(channel,opts,attr)).
+    */
+    public abstract SelectionKey register(Selector sel, int ops, Object att)
+        throws ClosedChannelException;
+    //注册感兴趣的 事件,底层还是执行了当前channel对应的selectionKey.interstOps(ops);因此register注册的事件,和 selectionKey.interstOps(ops)是等效的,或者可以被修改的.
+    public final SelectionKey register(Selector sel, int ops)
+        throws ClosedChannelException
+    {
+        return register(sel, ops, null);
+    }
+    //配置当前channel的阻塞模式.基于selector的异步IO,必须为false.当前channel处于"非阻塞"模式下,如果改 成block模式时,将会抛出异常.
+    public abstract SelectableChannel configureBlocking(boolean block)
+        throws IOException;
+    //检测当前通道的阻塞状态.默认直接返回Channel.blocking属性的值.
+    public abstract boolean isBlocking();
+    public abstract Object blockingLock();
+
+}
+
+```
+
+AbstactSelectableChannel 中有2个同步锁:Object regLock和Object keyLock...regLock用于同步register()/configureBlocking()两种操作.keyLock用户同步 register()/close()/以及cancelKeys的移除.
+
+只要是实现了SelectableChannel,都可以使用selector
+```java
+|---SelectableChannel
+    |--- AbstractSelectableChannel
+        |---SctpMultiChannel
+        |---SocketChannel
+        |---SctpChannel
+        |---SctpServerChannel
+        |---SinkChannel
+        |---DatagramChannel
+        |---SourceChannel
+        |---ServerSocketChannel
+```
+
+### 8.7.2. 使用例子
+<a href="#menu"  >目录</a>
+
+```java
+ //打开服务器通道
+ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+//配置为非阻塞，必须
+serverSocketChannel.configureBlocking(false);
+//监听端口
+serverSocketChannel.bind(new InetSocketAddress(port));
+//开启多路复用器
+Selector selector = Selector.open();
+//绑定多路复用器到channel，并设定关注事件
+serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+
+//一般创建一个新线程进行轮询，需要做好异常处理，避免轮询中断
+while(true){
+    try{
+        //监听事件，没有事件发生将阻塞
+        selector.select();
+        //获取事件列表
+        Iterator<SelectionKey> selectionKeyIterator =   selector.selectedKeys().iterator();
+
+        while (selectionKeyIterator.hasNext()){
+            //获取发生事件的selectKey
+            SelectionKey selectionKey = selectionKeyIterator.next();
+            //移除key
+            selectionKeyIterator.remove();
+            //无效事件
+            if(!selectionKey.isValid())
+            {
+                continue;
+            }
+            //连接事件
+            if(selectionKey.isAcceptable()){
+                accept(selectionKey);
+            }
+            //channel有数据可读
+            if(selectionKey.isReadable()){
+                //数据读完有两种操作
+                //1.在当前线程处理，适用于处理时间不长的任务，时间太长会影响其他key的处理
+                //2.创建新线程进行处理，适用于处理时间较长的任务
+                read(selectionKey);
+                write(selectionKey);
+            }
+            //可写事件，最好不要监听可写事件，也就是 不要配置SelectionKey.OP_WRITE
+            //因为在空闲的时候，可写事件一定会发生，导致空轮询
+            if(selectionKey.isWritable()){
+                //write(selectionKey);
+            }
+        }
+    }
+    catch(Exception ex){
+        log.error(ex.getMessage());
+    }
+}
+public void accept(SelectionKey selectionKey){
+    try{
+        ServerSocketChannel serverSocketChannel = (ServerSocketChannel) selectionKey.channel();
+        SocketChannel channel = serverSocketChannel.accept();
+        //设置为非阻塞模式
+        channel.configureBlocking(false);
+        //绑定selector，进行监听，设置为监听读事件
+        channel.register(selector,SelectionKey.OP_READ);
+        log.info("与客户端[{}]连接成功",channel.getRemoteAddress());
+
+    }
+    catch(Exception ex){
+        log.error(ex.getMessage());
+    }
+
+}
+
+public void read(SelectionKey selectionKey){
+
+    try{
+        SocketChannel channel = (SocketChannel)selectionKey.channel();
+        log.info("读取客户端[{}]数据",channel.getRemoteAddress());
+
+        ByteBuffer readByteBUffer = ByteBuffer.allocate(1024);
+
+        int count = channel.read(readByteBUffer);
+        if(count == -1){
+            selectionKey.channel().close();
+            selectionKey.cancel();
+            return;
+        }
+        readByteBUffer.flip();
+        byte[] readData = new byte[readByteBUffer.remaining()];
+        readByteBUffer.get(readData);
+        log.info("接收到来自客户端的数据:"+new String(readData,"UTF-8"));
+
+
+    }
+    catch(Exception ex){
+        log.error(ex.getMessage());
+    }
+
+}
+
+public void write(SelectionKey selectionKey){
+    try{
+        SocketChannel channel = (SocketChannel)selectionKey.channel();
+        log.info("向客户端[{}]写入数据",channel.getRemoteAddress());
+        String str = "服务端返回的数据:" + new Random().nextInt(100);
+        ByteBuffer writeBuffer = ByteBuffer.wrap(str.getBytes("UTF-8"));
+        // writeBuffer.flip();
+        channel.write(writeBuffer);
+    }
+    catch(Exception ex){
+        log.error(ex.getMessage());
+    }
+}
+
+```
+
+### 8.7.3. 选择器，可选择通道和选择键类
+<a href="#menu"  >目录</a>
+
+**选择器(Selector)**
+
+选择器类管理着一个被注册的通道集合的信息和它们的就绪状态。通道是和选择器一起被注册的，并且使用选择器来更新通道的就绪状态。当这么做的时候，可以选择将被激发的线程挂起，直到有就绪的的通道。
+
+```java
+public abstract class Selector implements Closeable {
+    protected Selector() { }
+    public static Selector open() throws IOException {
+        return SelectorProvider.provider().openSelector();
+    }
+    public abstract boolean isOpen();
+    public abstract SelectorProvider provider();
+    public abstract Set<SelectionKey> keys();
+    public abstract Set<SelectionKey> selectedKeys();
+    public abstract int selectNow() throws IOException;
+    public abstract int select(long timeout) throws IOException;
+    public abstract int select() throws IOException;
+    public abstract Selector wakeup();
+    public abstract void close() throws IOException;
+
+}
+
+```
+
+**可选择通道(SelectableChannel)**
+
+这个抽象类提供了实现通道的可选择性所需要的公共方法。它是所有支持就绪检查的通道类的父类。FileChannel对象不是可选择的，因为它们没有继承SelectableChannel
+
+Channel必须是非阻塞的。所以FileChannel不适用Selector，因为FileChannel不能切换为非阻塞模式，更准确的来说是因为FileChannel没有继承SelectableChannel。Socket channel可以正常使用。
+
+所有socket通道都是可选择的，包括从管道(Pipe)对象的中获得的通道。SelectableChannel可以被注册到Selector对象上，同时可以指定对那个选择器而言，那种操作是感兴趣的。一个通道可以被注册到多个选择器上，但对每个选择器而言只能被注册一次
+
+**选择键(SelectionKey)**
+
+选择键封装了特定的通道与特定的选择器的注册关系。选择键对象被SelectableChannel.register()返回并提供一个表示这种注册关系的标记。选择键包含了两个比特集（以整数的形式进行编码），指示了该注册关系所关心的通道操作，以及通道已经准备好的操作。
+
+```java
+public abstract class SelectionKey {
+    protected SelectionKey() { }
+    public abstract SelectableChannel channel();
+    public abstract Selector selector();
+    public abstract boolean isValid();
+    public abstract void cancel();
+    public abstract int interestOps();
+    public abstract SelectionKey interestOps(int ops);
+    public abstract int readyOps();
+    public static final int OP_READ = 1 << 0;
+    public static final int OP_WRITE = 1 << 2;
+    public static final int OP_CONNECT = 1 << 3;
+    public static final int OP_ACCEPT = 1 << 4;
+    public final boolean isReadable() {
+        return (readyOps() & OP_READ) != 0;
+    }
+
+    public final boolean isWritable() {
+        return (readyOps() & OP_WRITE) != 0;
+    }
+    public final boolean isConnectable() {
+        return (readyOps() & OP_CONNECT) != 0;
+    }
+
+    public final boolean isAcceptable() {
+        return (readyOps() & OP_ACCEPT) != 0;
+    }
+
+    private volatile Object attachment = null;
+
+    private static final AtomicReferenceFieldUpdater<SelectionKey,Object>
+        attachmentUpdater = AtomicReferenceFieldUpdater.newUpdater(
+            SelectionKey.class, Object.class, "attachment"
+        );
+
+
+    public final Object attach(Object ob) {   return attachmentUpdater.getAndSet(this, ob);   }
+    public final Object attachment() {  return attachment; }
+
+}
+
+```
+
+```java
+//开启多路复用器
+Selector selector = Selector.open();
+//SelectableChannel
+//注册selector到channel，selector , 关注的事件，附件
+public abstract SelectionKey register(Selector sel, int ops, Object att)    throws ClosedChannelException;
+```
+register的第二个参数表示selector对channel的什么事件感兴趣。通道触发了一个事件意思是该事件已经就绪。比如某个Channel成功连接到另一个服务器称为“ 连接就绪 ”。一个Server Socket Channel准备好接收新进入的连接称为“ 接收就绪 ”。一个有数据可读的通道可以说是“ 读就绪 ”。等待写数据的通道可以说是“ 写就绪 ”。一般不关注写就绪事件，因为基本上大部分时候所有的通道都是可写的，关注了将会导致不断地轮询，从而消耗大量的cpu。多个事件可以通过或来传入(OP_READ|OP_ACCEPT)
+```java
+SelectionKey{
+    public static final int OP_READ = 1 << 0;
+    public static final int OP_WRITE = 1 << 2;
+    public static final int OP_CONNECT = 1 << 3;
+    public static final int OP_ACCEPT = 1 << 4;
+}
+```
+
+**SelectionKey介绍**
+
+一个SelectionKey键表示了一个特定的通道对象和一个特定的选择器对象之间的注册关系。
+```java
+key.attachment(); //返回SelectionKey的attachment，attachment可以在注册channel的时候指定。
+key.channel(); // 返回该SelectionKey对应的channel。
+key.selector(); // 返回该SelectionKey对应的Selector。
+key.interestOps(); //返回代表需要Selector监控的IO操作的bit mask
+key.readyOps(); // 返回一个bit mask，代表在相应channel上可以进行的IO操作。
+```
+
+**从Selector中选择channel**
+
+* 已注册的键的集合(Registered key set)
+    * 所有与选择器关联的通道所生成的键的集合称为已经注册的键的集合。并不是所有注册过的键都仍然有效。这个集合通过 keys() 方法返回，并且可能是空的。这个已注册的键的集合不是可以直接修改的；试图这么做的话将引发java.lang.UnsupportedOperationException。
+* 已选择的键的集合(Selected key set)
+    * 已注册的键的集合的子集。这个集合的每个成员都是相关的通道被选择器（在前一个选择操作中）判断为已经准备好的，并且包含于键的 interest 集合中的操作。这个集合通过 selectedKeys( )方法返回（并有可能是空的）。
+    * 不要将已选择的键的集合与 ready 集合弄混了。这是一个键的集合，每个键都关联一个已经准备好至少一种操作的通道。每个键都有一个内嵌的 ready 集合，指示了所关联的通道已经准备好的操作。
+    * 键可以直接从这个集合中移除，但不能添加。试图向已选择的键的集合中添加元素将抛出java.lang.UnsupportedOperationException。
+* 已取消的键的集合(Cancelled key set)
+    * 已注册的键的集合的子集，这个集合包含了 cancel() 方法被调用过的键(这个键已经被无效化)，但它们还没有被注销。这个集合是选择器对象的私有成员，因而无法直接访问。
+* 注意： 
+    * 当键被取消（ 可以通过isValid( ) 方法来判断）时，它将被放在相关的选择器的已取消的键的集合里。注册不会立即被取消，但键会立即失效。当再次调用 select( ) 方法时（或者一个正在进行的select()调用结束时），已取消的键的集合中的被取消的键将被清理掉，并且相应的注销也将完成。通道会被注销，而新的SelectionKey将被返回。当通道关闭时，所有相关的键会自动取消（记住，一个通道可以被注册到多个选择器上）。当选择器关闭时，所有被注册到该选择器的通道都将被注销，并且相关的键将立即被无效化（取消）。一旦键被无效化，调用它的与选择相关的方法就将抛出CancelledKeyException。
+
+**select()方法介绍**
+
+在刚初始化的Selector对象中，这三个集合都是空的。 通过Selector的select（）方法可以选择已经准备就绪的通道 （这些通道包含你感兴趣的的事件）。比如你对读就绪的通道感兴趣，那么select（）方法就会返回读事件已经就绪的那些通道。下面是Selector几个重载的select()方法：
+* int select()：阻塞到至少有一个通道在你注册的事件上就绪了。
+* int select(long timeout)：和select()一样，但最长阻塞时间为timeout毫秒。
+* int selectNow()：非阻塞，只要有通道就绪就立刻返回。
+select()方法返回的int值表示有多少通道已经就绪,是自上次调用select()方法后有多少通道变成就绪状态。之前在select（）调用时进入就绪的通道不会在本次调用中被记入，而在前一次select（）调用进入就绪但现在已经不在处于就绪的通道也不会被记入。例如：首次调用select()方法，如果有一个通道变成就绪状态，返回了1，若再次调用select()方法，如果另一个通道就绪了，它会再次返回1。如果对第一个就绪的channel没有做任何操作，现在就有两个就绪的通道，但在每次select()方法调用之间，只有一个通道就绪了。
+
+**select过程**
+
+1. 已取消的键的集合将会被检查。如果它是非空的，每个已取消的键的集合中的键将从另外两个集合中移除，并且相关的通道将被注销。这个步骤结束后，已取消的键的集合将是空的
+2. 已注册的键的集合中的键的 interest 集合将被检查。在这个步骤中的检查执行过后，对interest 集合的改动不会影响剩余的检查过程。一旦就绪条件被定下来，底层操作系统将会进行查询，以确定每个通道所关心的操作的真实就绪状态。依赖于特定的 select( )方法调用，如果没有通道已经准备好，线程可能会在这时阻塞，通常会有一个超时值。直到系统调用完成为止，这个过程可能会使得调用线程睡眠一段时间，然后当前每个通道的就绪状态将确定下来。对于那些还没准备好的通道将不会执行任何的操作。对于那些操作系统指示至少已经准备好 interest 集合中的一种操作的通道，将执行以下两种操作中的一种：
+* 如果通道的键还没有处于已选择的键的集合中，那么键的 ready 集合将被清空，然后表示操作系统发现的当前通道已经准备好的操作的比特掩码将被设置。
+* 否则，也就是键在已选择的键的集合中。键的 ready 集合将被表示操作系统发现的当前已经准备好的操作的比特掩码更新。所有之前的已经不再是就绪状态的操作不会被清除。事实上，所有的比特位都不会被清理。由操作系统决定的 ready 集合是与之前的 ready 集合按位分离的，一旦键被放置于选择器的已选择的键的集合中，它的ready 集合将是累积的。比特位只会被设置，不会被清理。
+3. 步骤 2 可能会花费很长时间，特别是所激发的线程处于休眠状态时。与该选择器相关的键可能会同时被取消。当步骤 2 结束时，步骤 1 将重新执行，以完成任意一个在选择进行的过程中，键已经被取消的通道的注销。
+4. select 操作返回的值是 ready 集合在步骤 2 中被修改的键的数量，而不是已选择的键的集合中的通道的总数。返回值不是已准备好的通道的总数，而是从上一个 select( )调用之后进入就绪状态的通道的数量。之前的调用中就绪的，并且在本次调用中仍然就绪的通道不会被计入，而那些在前一次调用中已经就绪但已经不再处于就绪状态的通道也不会被计入。这些通道可能仍然在已选择的键的集合中，但不会被计入返回值中。返回值可能是 0。使用内部的已取消的键的集合来延迟注销，是一种防止线程在取消键时阻塞，并防止与正在进行的选择操作冲突的优化。注销通道是一个潜在的代价很高的操作，这可能需要重新分配资源（请记住，键是与通道相关的，并且可能与它们相关的通道对象之间有复杂的交互）。清理已取消的键，并在选择操作之前和之后立即注销通道，可以消除它们可能正好在选择的过程中执行的潜在棘手问题。这是另一个兼顾健壮性的折中方案
+
+一旦调用select()方法，并且返回值不为0时，则 可以通过调用Selector的selectedKeys()方法来访问已选择键集合 
+```java
+//监听事件，没有事件发生将阻塞
+selector.select();
+//获取事件列表
+Iterator<SelectionKey> selectionKeyIterator =   selector.selectedKeys().iterator();
+while(selectionKeyIterator.hasNext()) {
+    SelectionKey key = it.next();
+
+    if(key.isAcceptable()) {
+        // 接受连接
+    } else if (key.isReadable()) {
+        // 通道可读
+    } else if (key.isWritable()) {
+        // 通道可写
+    }
+
+    it.remove();
+}
+```
+
+**停止选择的方法**
+
+选择器执行选择的过程，系统底层会依次询问每个通道是否已经就绪，这个过程可能会造成调用线程进入阻塞状态,那么我们有以下三种方式可以唤醒在select（）方法中阻塞的线程。
+
+* wakeup()方法 
+    * 调用 Selector 对象的 wakeup( )方法将使得选择器上的第一个还没有返回的选择操作立即返回。如果当前没有在进行中的选择，那么下一次对 select( )方法的一种形式的调用将立即返回。后续的选择操作将正常进行。在选择操作之间多次调用 wakeup( )方法与调用它一次没有什么不同。
+    * 有时这种延迟的唤醒行为并不是您想要的。您可能只想唤醒一个睡眠中的线程，而使得后续的选择继续正常地进行。您可以通过在调用 wakeup( )方法后调用 selectNow( )方法来绕过这个问题。尽管如此，如果您将您的代码构造为合理地关注于返回值和执行选择集合，那么即使下一个 select( )方法的调用在没有通道就绪时就立即返回，也应该不会有什么不同。不管怎么说，您应该为可能发生的事件做好准备。
+* close()方法
+    * 通过close（）方法关闭Selector， 该方法使得任何一个在选择操作中阻塞的线程都被唤醒（类似wakeup（）），同时使得注册到该Selector的所有Channel被注销，所有的键将被取消，但是Channel本身并不会关闭。
+* interrupt( )
+    * 如果睡眠中的线程的 interrupt( )方法被调用，它的返回状态将被设置。如果被唤醒的线程之后将试图在通道上执行 I/O 操作，通道将立即关闭，然后线程将捕捉到一个异常。使用 wakeup( )方法将会优雅地将一个在 select( )方法中睡眠的线程唤醒。如果您想让一个睡眠的线程在直接中断之后继续执行，需要执行一些步骤来清理中断状态。Selector 对象将捕捉 InterruptedException 异常并调用 wakeup( )方法。
+
+请注意这些方法中的任意一个都不会关闭任何一个相关的通道。中断一个选择器与中断一个通道是不一样的。选择器不会改变任意一个相关的通道，它只会检查它们的状态。当一个在 select( )方法中睡眠的线程中断时，对于通道的状态而言，是不会产生歧义的。
+
+**并发性**
+
+选择器对象是线程安全的，但它们包含的键集合不是。通过keys()和selectKeys()返回的键的集合是Selector对象内部的私有的Set对象集合的直接引用。这些集合可能在任意时间被改变。已注册的键的集合是只读的。如果您试图修改它，那么您得到的奖品将是一个java.lang.UnsupportedOperationException，但是当您在观察它们的时候，它们可能发生了改变的话，您仍然会遇到麻烦。Iterator对象是快速失败的(fail-fast)：如果底层的Set被改变了，它们将会抛出java.util.ConcurrentModificationException，因此如果您期望在多个线程间共享选择器和/或键，请对此做好准备。您可以直接修改选择键，但请注意您这么做时可能会彻底破坏另一个线程的Iterator。
+
+如果在多个线程并发地访问一个选择器的键的集合的时候存在任何问题，您可以采取一些步骤来合理地同步访问。在执行选择操作时，选择器在Selector对象上进行同步，然后是已注册的键的集合，最后是已选择的键的集合，按照这样的顺序。已取消的键的集合也在选择过程的的第1步和第3步之间保持同步（当与已取消的键的集合相关的通道被注销时）。
+
+在多线程的场景中，如果您需要对任何一个键的集合进行更改，不管是直接更改还是其他操作带来的副作用，您都需要首先以相同的顺序，在同一对象上进行同步。锁的过程是非常重要的。如果竞争的线程没有以相同的顺序请求锁，就将会有死锁的潜在隐患。如果您可以确保否其他线程不会同时访问选择器，那么就不必要进行同步了。
+
+Selector类的close()方法与slect()方法的同步方式是一样的，因此也有一直阻塞的可能性。在选择过程还在进行的过程中，所有对close()的调用都会被阻塞，直到选择过程结束，或者执行选择的线程进入睡眠。在后面的情况下，执行选择的线程将会在执行关闭的线程获得锁是立即被唤醒，并关闭选择器
+
+
+
+### 8.7.4. 异步关闭能力
+<a href="#menu"  >目录</a>
+
+任何时候都有可能关闭一个通道或者取消一个选择键。除非您采取步骤进行同步，否则键的状态及相关的通道将发生意料之外的改变。一个特定的键的集合中的一个键的存在并不保证键仍然是有效的，或者它相关的通道仍然是打开的。
+
+关闭通道的过程不应该是一个耗时的操作。 NIO 的设计者们特别想要阻止这样的可能性：一个线程在关闭一个处于选择操作中的通道时，被阻塞于无限期的等待。当一个通道关闭时，它相关的键也就都被取消了。这并不会影响正在进行的 select( )，但这意味着在调用 select( )之前仍然是有效的键，在返回时可能会变为无效。总是可以使用由选择器的 selectKeys( )方法返回的已选择的键的集合：请不要自己维护键的集合
+
+如果试图使用一个已经失效的键，大多数方法将抛出 CancelledKeyException。但是可以安全地从从已取消的键中获取通道的句柄。如果通道已经关闭时，仍然试图使用它的话，在大多数情况下将引发 ClosedChannelException。
+
+### 8.7.5. 选择过程的可扩展性
+<a href="#menu"  >目录</a>
+
+NIO的最佳实践是服务端只使用一个选择器来监听所有通道的事件。在大量通道上执行就绪选择并不会有很大的开销，大多数工作是由底层操作系统完成的。使用一个线程类执行select，如果想要合理利用cpu，可以将获取selectkey之后的操作提交给线程池处理，当然，如果确认本次的任务处理时间非常短，可以直接在当前线程上处理即可。
+
+## 8.8. IO编程实战
 <a href="#menu"  >目录</a>
 
 
-### 8.8.3. 异步关闭能力
+
+### 8.8.1. BIO实例
 <a href="#menu"  >目录</a>
 
+```java
+    
+```
 
-### 8.8.4. 选择过程的可扩展性
+```java
+
+```
+
+### 8.8.2. NIO实例
 <a href="#menu"  >目录</a>
+
+```java
+
+```
+
+```java
+
+```
+
+
+### 8.8.3. AIO实例
+<a href="#menu"  >目录</a>
+
+```java
+
+```
+```java
+
+```
+
+### 8.8.4. AIO读取文件实例
+<a href="#menu"  >目录</a>
+
+```java
+
+```
+```java
+
+```
+
+
 
 ## 8.9. AIO的使用
 <a href="#menu"  >目录</a>
@@ -6048,6 +6904,7 @@ public  class Client{
 
 ### 17.4.9. 原型模式
 <a href="#menu"  >目录</a>
+
 原型模式（Prototype Pattern���是用于创建重复的对象，同时又能保证性能。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。
 
 这种模式是实现了一个原型接口，该接口用于创建当前对象的克隆。当直接创建对象的代价比较大时，则采用这种模式。例如，一个对象需要在一个高代价的数据库操作之后被创建。我们可以缓存该对象，在下一个请求时返回它的克隆，在需要的时候更新数据库，以此来减少数据库调用。  
@@ -6086,7 +6943,7 @@ public  class Client{
 * 注意事项
     * 与通过对一个类进行实例化来构造新对象不同的是，原型模式是通过拷贝一个现有对象生成新对象的。浅拷贝实现 Cloneable重写，深拷贝是通过实现 Serializable 读取二进制流。
 
-```java
+
 ```java
 class Apple  implements Cloneable{ 
     //需要实现Cloneable
@@ -6106,7 +6963,7 @@ class Apple  implements Cloneable{
 ```
 
 
-### 16.4.10. 中介者模式
+### 17.4.10. 中介者模式
 <a href="#menu"  >目录</a>
 
 中介者模式（Mediator Pattern）是用来降低多个对象和类之间的通信复杂性。这种模式提供了一个中介类，该类通常处理不同类之间的通信 ，并支持松耦合，使代码易于维护。中介者模式属于行为型模式。
@@ -6142,7 +6999,7 @@ class Apple  implements Cloneable{
 
 
 
-### 16.4.11. 命令模式
+### 17.4.11. 命令模式
 <a href="#menu"  >目录</a>
 命令模式（Command Pattern）是一种数据驱动的设计模式，它属于行为型模式。请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该命令传给相应的对象，该对象执行命令。
 
@@ -6242,7 +7099,7 @@ public class CommandPatternDemo {
 }
 
 ```
-### 16.4.12. 责任链模式
+### 17.4.12. 责任链模式
 <a href="#menu"  >目录</a>
 顾名思义，责任链模式（Chain of Responsibility Pattern）为请求创建了一个接收者对象的链。这种模式给予请求的类型，对请求的发送者和接收者进行解耦。这种类型的设计模式属于行为型模式。
 
@@ -6281,7 +7138,7 @@ public class CommandPatternDemo {
 * 注意事项
     * 在 JAVA WEB 中遇到很多应用。
     
-### 16.4.13. 装饰模式
+### 17.4.13. 装饰模式
 <a href="#menu"  >目录</a>
 装饰器模式（Decorator Pattern）允许向一个现有的对象添加新的功能，同时又不改变其结构。这种类型的设计模式属于结构型模式，它是作为现有的类的一个包装。
 
@@ -6315,7 +7172,7 @@ public class CommandPatternDemo {
 * 注意事项
     * 可代替继承。
 
-### 16.4.14. 策略模式
+### 17.4.14. 策略模式
 <a href="#menu"  >目录</a>
 在策略模式（Strategy Pattern）中，一个类的行为或其算法可以在运行时更改。这种类型的设计模式属于行为型模式。
 
@@ -6400,7 +7257,7 @@ public class StrategyPatternDemo {
 
 ```
 
-### 16.4.15. 适配器模式
+### 17.4.15. 适配器模式
 <a href="#menu"  >目录</a>
 
 **适配器模式**
@@ -6471,7 +7328,7 @@ public class Client{
 **适配器与桥接**
 
 
-### 16.4.16. 迭代器模式
+### 17.4.16. 迭代器模式
 <a href="#menu"  >目录</a>
 迭代器模式（Iterator Pattern）是 Java 和 .Net 编程环境中非常常用的设计模式。这种模式用于顺序访问集合对象的元素，不需要知道集合对象的底层表示。
 
@@ -6506,7 +7363,7 @@ public class Client{
 * 注意事项
     * 迭代器模式就是分离了集合对象的遍历行为，抽象出一个迭代器类来负责，这样既可以做到不暴露集合的内部结构，又可让外部代码透明地访问集合内部的数据。
 
-### 16.4.17. 组合模式
+### 17.4.17. 组合模式
 <a href="#menu"  >目录</a>
 组合模式（Composite Pattern），又叫部分整体模式，是用于把一组相似的对象当作一个单一的对象。组合模式依据树形结构来组合对象，用来表示部分以及整体层次。这种类型的设计模式属于结构型模式，它创建了对象组的树形结构。
 
@@ -6543,7 +7400,7 @@ public class Client{
     * 定义时为具体类。
 
 
-### 16.4.18. 观察者模式
+### 17.4.18. 观察者模式
 <a href="#menu"  >目录</a>
 当对象间存在一对多关系时，则使用观察者模式（Observer Pattern）。比如，当一个对象被修改时，则会自动通知它的依赖对象。观察者模式属于行为型模式。
 
@@ -6664,7 +7521,7 @@ public class ObserverPatternDemo {
 
 ```
 
-### 16.4.19. 门面模式
+### 17.4.19. 门面模式
 <a href="#menu"  >目录</a>
 
 门面模式（Facade Pattern）隐藏系统的复杂性，并向客户端提供了一个客户端可以访问系统的接口。这种类型的设计模式属于结构型模式，它向现有的系统添加一个接口，来隐藏系统的复杂性。
@@ -6712,7 +7569,7 @@ public class ObserverPatternDemo {
 * 中介者模式主要是松散多个模块之间的耦合,把这些耦合全部放在 中介者中去实现.而外观模式是简化客户端的调用
 
 
-### 16.4.20. 备忘录模式
+### 17.4.20. 备忘录模式
 <a href="#menu"  >目录</a>
 备忘录模式（Memento Pattern）保存一个对象的某个状态，以便在适当的时候恢复对象。备忘录模式属于行为型模式。
 
@@ -6810,7 +7667,7 @@ public class MementoPatternDemo {
 ```
 
 
-### 16.4.21. 访问者模式
+### 17.4.21. 访问者模式
 <a href="#menu"  >目录</a>
 在访问者模式（Visitor Pattern）中，我们使用了一个访问者类，它改变了元素类的执行算法。通过这种方式，元素的执行算法可以随着访问者改变而改变。这种类型的设计模式属于行为型模式。根据模式，元素对象已接受访问者对象，这样访问者对象就可以处理元素对象上的操作。
 
@@ -6924,7 +7781,7 @@ public class VisitorPatternDemo {
 ```
 
 
-### 16.4.22. 状态模式
+### 17.4.22. 状态模式
 <a href="#menu"  >目录</a>
 在状态模式（State Pattern）中，类的行为是基于它的状态改变的。这种类型的设计模式属于行为型模式。
 
@@ -7021,7 +7878,7 @@ public class StatePatternDemo {
 
 
 
-### 16.4.23. 解释器模式
+### 17.4.23. 解释器模式
 <a href="#menu"  >目录</a>
 解释器模式（Interpreter Pattern）提供了评估语言的语法或表达式的方式，它属于行为型模式。这种模式实现了一个表达式接口，该接口解释一个特定的上下文。这种模式被用在 SQL 解析、符号处理引擎等。
 
@@ -7133,7 +7990,7 @@ public class InterpreterPatternDemo {
 ```
 
 
-### 16.4.24. 享元模式
+### 17.4.24. 享元模式
 <a href="#menu"  >目录</a>
 享元模式（Flyweight Pattern）主要用于减少创建对象的数量，以减少内存占用和提高性能。这种类型的设计模式属于结构型模式，它提供了减少对象数量从而改善应用所需的对象结构的方式。
 
@@ -7172,7 +8029,7 @@ public class InterpreterPatternDemo {
     * 这些类必须有一个工厂对象加以控制。
 
 
-### 16.4.25. 桥梁模式
+### 17.4.25. 桥梁模式
 <a href="#menu"  >目录</a>
 桥梁模式（Bridge）是用于把抽象化与实现化解耦，使得二者可以独立变化。这种类型的设计模式属于结构型模式，它通过提供抽象化和实现化之间的桥接结构，来实现二者的解耦。
 
@@ -7259,23 +8116,23 @@ public class BridgePatternDemo {
 }
 ```
 
-## 16.5. 设计模式对比
+## 17.5. 设计模式对比
 <a href="#menu"  >目录</a>
 
-### 16.5.1. 适配器与桥接模式
+### 17.5.1. 适配器与桥接模式
 
 这两个模式优点相似,但是功能上完全不同.
 适配器是把多个接口的功能进行转换匹配,而桥接模式是让接口和实现部分相分离,以便它们可以相对独立的变化.
 
 
-### 16.5.2. 适配器与装饰模式
+### 17.5.2. 适配器与装饰模式
 
 适配器侧重于不同的的接口,而装饰器是子类之间的功能扩展.两种设计模式上都是使用对象的组合.都可以在转调组合对象的功能前后进行一些附加的操作,具有相似性.
 
-### 16.5.3. 适配器与代理模式
+### 17.5.3. 适配器与代理模式
 
 
-### 中介者和外观模式
+### 17.5.4. 中介者和外观模式
 
 * 外观模式多用来封装一个子系统内部的多个模块，目的是向子系统外部提供简单易用的接口，也就是说外观模式封装的是子系统内部和外部间的交互。而中介者模式提供的是多个同事类之间的交互关系的封装，一般用在内部实现上
 * 外观模式是实现单向的交互，也就是外部调用外观接口。而中介者模式实现的是内部多个模块间的交互。
