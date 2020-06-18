@@ -3,56 +3,176 @@
 <!-- TOC -->
 
 - [1. Java网路通信](#1-java网路通信)
-    - [1.1. Java IO 演进之路](#11-java-io-演进之路)
-    - [1.2. Java IO对比](#12-java-io对比)
-        - [1.2.1. BIO编程](#121-bio编程)
-        - [1.2.2. 伪异步I/O编程](#122-伪异步io编程)
-        - [1.2.3. NIO编程](#123-nio编程)
-        - [1.2.4. AIO编程](#124-aio编程)
-        - [1.2.5. IO模型对比总结](#125-io模型对比总结)
-        - [1.2.6. 选择Netty的理由](#126-选择netty的理由)
-    - [1.3. Netty](#13-netty)
-        - [1.3.1. Netty基本案例](#131-netty基本案例)
-        - [1.3.2. TCP粘包拆包](#132-tcp粘包拆包)
-            - [1.3.2.1. 粘包拆包基本概念](#1321-粘包拆包基本概念)
-            - [1.3.2.2. Netty 中的拆包器](#1322-netty-中的拆包器)
-        - [1.3.3. 私有协议开发](#133-私有协议开发)
-            - [1.3.3.1. Netty协议栈功能设计](#1331-netty协议栈功能设计)
-            - [1.3.3.2. Netty协议栈开发](#1332-netty协议栈开发)
-        - [1.3.4. 服务端创建流程分析](#134-服务端创建流程分析)
-        - [1.3.5. 客户端创建流程分析](#135-客户端创建流程分析)
-        - [1.3.6. ByteBuf说明](#136-bytebuf说明)
-            - [1.3.6.1. ByteBuf功能说明](#1361-bytebuf功能说明)
-        - [1.3.7. Channel和Unsafe](#137-channel和unsafe)
-        - [1.3.8. ChannelPipeline和ChannelHandler](#138-channelpipeline和channelhandler)
-        - [1.3.9. EventLoop和EventLoopGroup](#139-eventloop和eventloopgroup)
-            - [1.3.9.1. Reactor单线程模型](#1391-reactor单线程模型)
-            - [1.3.9.2. Reactor多线程模型](#1392-reactor多线程模型)
-            - [1.3.9.3. 主从Reactor多线程模型](#1393-主从reactor多线程模型)
-            - [1.3.9.4. Netty线程模型](#1394-netty线程模型)
-            - [1.3.9.5. 最佳实践](#1395-最佳实践)
-            - [NioEventLoop 源码分析](#nioeventloop-源码分析)
-        - [1.3.10. Futur和Promise](#1310-futur和promise)
-        - [1.3.11. Netty架构分析](#1311-netty架构分析)
-        - [1.3.12. Java多线程编程在Netty中的应用](#1312-java多线程编程在netty中的应用)
-        - [1.3.13. 高性能之道](#1313-高性能之道)
-        - [1.3.14. 可靠性](#1314-可靠性)
-            - [1.3.14.1. 高可靠性设计](#13141-高可靠性设计)
-                - [1.3.14.1.1. 网络通信类故障](#131411-网络通信类故障)
-                - [1.3.14.1.2. 链路有效性检测](#131412-链路有效性检测)
-                - [1.3.14.1.3. Reactor线程的保护](#131413-reactor线程的保护)
-                - [1.3.14.1.4. 内存保护](#131414-内存保护)
-                - [1.3.14.1.5. 流量整形](#131415-流量整形)
-                - [1.3.14.1.6. 优雅停机接口](#131416-优雅停机接口)
-            - [1.3.14.2. 优化建议](#13142-优化建议)
+    - [1.1. IO模型](#11-io模型)
+        - [1.1.1. Linux网络IO模型介绍](#111-linux网络io模型介绍)
+        - [1.1.2. IO多路复用技术](#112-io多路复用技术)
+        - [1.1.3. Java IO 演进之路](#113-java-io-演进之路)
+        - [1.1.4. Java IO对比](#114-java-io对比)
+            - [1.1.4.1. BIO编程](#1141-bio编程)
+            - [1.1.4.2. NIO编程](#1142-nio编程)
+            - [1.1.4.3. AIO编程](#1143-aio编程)
+        - [1.1.5. IO模型对比总结](#115-io模型对比总结)
+        - [1.1.6. 选择Netty的理由](#116-选择netty的理由)
+        - [1.1.7. 实现自定义协议](#117-实现自定义协议)
+    - [1.2. Netty](#12-netty)
+        - [1.2.1. Netty基本案例](#121-netty基本案例)
+        - [1.2.2. TCP粘包拆包](#122-tcp粘包拆包)
+            - [1.2.2.1. 粘包拆包基本概念](#1221-粘包拆包基本概念)
+            - [1.2.2.2. Netty 中的拆包器](#1222-netty-中的拆包器)
+        - [1.2.3. 私有协议开发](#123-私有协议开发)
+            - [1.2.3.1. Netty协议栈功能设计](#1231-netty协议栈功能设计)
+            - [1.2.3.2. Netty协议栈开发](#1232-netty协议栈开发)
+        - [1.2.4. 服务端创建流程分析](#124-服务端创建流程分析)
+        - [1.2.5. 客户端创建流程分析](#125-客户端创建流程分析)
+        - [1.2.6. ByteBuf说明](#126-bytebuf说明)
+            - [1.2.6.1. ByteBuf功能说明](#1261-bytebuf功能说明)
+        - [1.2.7. Channel和Unsafe](#127-channel和unsafe)
+        - [1.2.8. ChannelPipeline和ChannelHandler](#128-channelpipeline和channelhandler)
+        - [1.2.9. EventLoop和EventLoopGroup](#129-eventloop和eventloopgroup)
+            - [1.2.9.1. Reactor单线程模型](#1291-reactor单线程模型)
+            - [1.2.9.2. Reactor多线程模型](#1292-reactor多线程模型)
+            - [1.2.9.3. 主从Reactor多线程模型](#1293-主从reactor多线程模型)
+            - [1.2.9.4. Netty线程模型](#1294-netty线程模型)
+            - [1.2.9.5. 最佳实践](#1295-最佳实践)
+            - [1.2.9.6. NioEventLoop 源码分析](#1296-nioeventloop-源码分析)
+        - [1.2.10. Futur和Promise](#1210-futur和promise)
+        - [1.2.11. Netty架构分析](#1211-netty架构分析)
+        - [1.2.12. Java多线程编程在Netty中的应用](#1212-java多线程编程在netty中的应用)
+        - [1.2.13. 高性能之道](#1213-高性能之道)
+        - [1.2.14. 可靠性](#1214-可靠性)
+            - [1.2.14.1. 高可靠性设计](#12141-高可靠性设计)
+                - [1.2.14.1.1. 网络通信类故障](#121411-网络通信类故障)
+                - [1.2.14.1.2. 链路有效性检测](#121412-链路有效性检测)
+                - [1.2.14.1.3. Reactor线程的保护](#121413-reactor线程的保护)
+                - [1.2.14.1.4. 内存保护](#121414-内存保护)
+                - [1.2.14.1.5. 流量整形](#121415-流量整形)
+                - [1.2.14.1.6. 优雅停机接口](#121416-优雅停机接口)
+            - [1.2.14.2. 优化建议](#12142-优化建议)
 
 <!-- /TOC -->
 # 1. Java网路通信
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
+
+## 1.1. IO模型
+<a href="#menu" >目录</a>
+
+### 1.1.1. Linux网络IO模型介绍
+<a href="#menu" >目录</a>
+
+在进行网络编程时，我们常常见到同步(Sync)/异步(Async)，阻塞(Block)/非阻塞(Unblock)四种调用方式：
+
+* 同步：所谓同步，就是在发出一个功能调用时，在没有得到结果之前，该调用就不返回。也就是必须一件一件事做,等前一件做完了才能做下一件事。例如普通B/S模式（同步）：提交请求->等待服务器处理->处理完毕返回 这个期间客户端浏览器不能干任何事
+* 异步：异步的概念和同步相对。当一个异步过程调用发出后，调用者不能立刻得到结果。实际处理这个调用的部件在完成后，通过状态、通知和回调来通知调用者。例如 ajax请求（异步）: 请求通过事件触发->服务器处理（这是浏览器仍然可以作其他事情）->处理完毕
+* 阻塞: 阻塞调用是指调用结果返回之前，当前线程会被挂起（线程进入非可执行状态，在这个状态下，cpu不会给线程分配时间片，即线程暂停运行）。函数只有在得到结果之后才会返回。有人也许会把阻塞调用和同步调用等同起来，实际上他是不同的。对于同步调用来说，很多时候当前线程还是激活的，只是从逻辑上当前函数没有返回而已。 例如，我们在socket中调用recv函数，如果缓冲区中没有数据，这个函数就会一直等待，直到有数据才返回。而此时，当前线程还会继续处理各种各样的消息。
+* 非阻塞:  非阻塞和阻塞的概念相对应，指在不能立刻得到结果之前，该函数不会阻塞当前线程，而会立刻返回。
+
+对象的阻塞模式和阻塞函数调用: 对象是否处于阻塞模式和函数是不是阻塞调用有很强的相关性，但是并不是一一对应的。阻塞对象上可以有非阻塞的调用方式，我们可以通过一定的API去轮询状 态，在适当的时候调用阻塞函数，就可以避免阻塞。而对于非阻塞对象，调用特殊的函数也可以进入阻塞调用。函数select就是这样的一个例子。
+
+**同步和异步**
+* 同步IO: 需要用户进程主动将存放在内核缓冲区的数据拷贝到用户进程中
+* 异步IO: 内核会自动将数据从内核缓冲区拷贝到用户缓冲区，然后再通知用户
+
+**阻塞和非阻塞**
+
+现在操作系统都是采用虚拟存储器，那么对32位操作系统而言，它的寻址空间（虚拟储存空间）为4G（2的32次方）。操作系统的核心是内核，独立于普通的应用程序，可以访问受保护的内存空间，也有访问底层硬件设备的所有权限。为了保证用户进程不能直接操作内核，保证内核的安全，操作系统将虚拟空间划分为两个部分，一个部分为内核空间，一部分为用户空间。
+![]()
+pic/netty/IO调用过程.png
+在Linux里面，分为用户空间和内核空间，当调用系统调用的时候，就进入内核空间，当调用返回的时候，就回到用户空间。对于IO操作，包括两个过程，IO系统调用(read,write)和实际的IO操作(将内核的数据发送到物理设备，或者从物理设备读取到内核缓冲区)。当进行系统调用之后立即返回则是非阻塞的，如果是等待IO操作完成才返回，则是阻塞型的。
+
+在IO多路复用中，是通过select，poll,epoll获取到有事件的fd列表，此时是阻塞调用，因为需要等待至少有一个fd事件发生，当然也有超时(没有一个fd事件发生)返回的。之后调用read或者write，由于此时fd上一定有事件发生，所以无所谓fd是否设置为非阻塞型。在Java的nio中，必须设置为非阻塞，不然会报错java.nio.channels.IllegalBlockingModeException。
 
 
-## 1.1. Java IO 演进之路
-<a href="#menu" style="float:right">目录</a>
+**Linux下的五种I/O模型**
+* 同步
+    * 阻塞I/O（blocking I/O）
+    * 非阻塞I/O （nonblocking I/O）
+    * I/O复用(select 和poll，epoll) （I/O multiplexing）
+    * 信号驱动I/O （signal driven I/O (SIGIO)）
+* 异步
+    * 异步I/O （asynchronous I/O (the POSIX aio_functions)）
+
+**阻塞I/O**
+
+![阻塞IO模型](pic/netty/阻塞IO模型.png)
+
+简介：进程会一直阻塞，直到数据拷贝完成. 应用程序调用一个IO函数，导致应用程序阻塞，等待数据准备好。 如果数据没有准备好，一直等待….数据准备好了，从内核拷贝到用户空间,IO函数返回成功指示。
+
+**非阻塞I/O**
+
+![非阻塞IO模型](pic/netty/非阻塞IO模型.png)
+
+简介：非阻塞IO通过进程反复调用IO函数（多次系统调用，并马上返回）；在数据拷贝的过程中，进程是阻塞的；我们把一个SOCKET接口设置为非阻塞就是告诉内核，当所请求的I/O操作无法完成时，不要将进程睡眠，而是返回一个错误。这样我们的I/O操作函数将不断的测试数据是否已经准备好，如果没有准备好，继续测试，直到数据准备好为止。在这个不断测试的过程中，会大量的占用CPU的时间。
+
+
+**I/O复用**
+
+![/IO多路复用](pic/netty/IO多路复用.png)
+
+主要是select和epoll；对一个IO端口，两次调用，两次返回，比阻塞IO并没有什么优越性；关键是能实现同时对多个IO端口进行监听； I/O复用模型会用到select、poll、epoll函数，这几个函数也会使进程阻塞，但是和阻塞I/O所不同的的，这两个函数可以同时阻塞多个I/O操作。而且可以同时对多个读操作，多个写操作的I/O函数进行检测，直到有数据可读或可写时，才真正调用I/O操作函数。
+
+
+**信号驱动I/O**
+
+![信号驱动IO](pic/netty/信号驱动IO.png)
+
+首先我们允许套接口进行信号驱动I/O,并安装一个信号处理函数，进程继续运行并不阻塞。当数据准备好时，进程会收到一个SIGIO信号，可以在信号处理函数中调用I/O操作函数处理数据。
+
+**异步I/O**
+
+![异步IO](pic/netty/异步IO.png)
+
+ 当一个异步过程调用发出后，调用者不能立刻得到结果。实际处理这个调用的部件在完成后，通过状态、通知和回调来通知调用者的输入输出操作
+
+
+**select、poll、epoll简介**
+
+epoll跟select都能提供多路I/O复用的解决方案。在现在的Linux内核里有都能够支持，其中epoll是Linux所特有，而select则应该是POSIX所规定，一般操作系统均有实现
+
+* select：
+    * select本质上是通过设置或者检查存放fd标志位的数据结构来进行下一步处理。这样所带来的缺点是：
+    * 1. 单个进程可监视的fd数量被限制，即能监听端口的大小有限。一般来说这个数目和系统内存关系很大，具体数目可以cat /proc/sys/fs/file-max察看。32位机默认是1024个。64位机默认是2048.
+    * 2. 对socket进行扫描时是线性扫描，即采用轮询的方法，效率较低：当套接字比较多的时候，每次select()都要通过遍历FD_SETSIZE个Socket来完成调度,不管哪个Socket是活跃的,都遍历一遍。这会浪费很多CPU时间。如果能给套接字注册某个回调函数，当他们活跃时，自动完成相关操作，那就避免了轮询，这正是epoll与kqueue做的。
+    * 3. 需要维护一个用来存放大量fd的数据结构，这样会使得用户空间和内核空间在传递该结构时复制开销大
+* poll：
+    * poll本质上和select没有区别，它将用户传入的数组拷贝到内核空间，然后查询每个fd对应的设备状态，如果设备就绪则在设备等待队列中加入一项并继续遍历，如果遍历完所有fd后没有发现就绪设备，则挂起当前进程，直到设备就绪或者主动超时，被唤醒后它又要再次遍历fd。这个过程经历了多次无谓的遍历。
+    * 它没有最大连接数的限制，原因是它是基于链表来存储的，但是同样有一个缺点：大量的fd的数组被整体复制于用户态和内核地址空间之间，而不管这样的复制是不是有意。                                                                                                                        
+    * poll还有一个特点是“水平触发”，如果报告了fd后，没有被处理，那么下次poll时会再次报告该fd。
+* epoll:
+    * epoll支持水平触发和边缘触发，最大的特点在于边缘触发，它只告诉进程哪些fd刚刚变为就需态，并且只会通知一次。还有一个特点是，epoll使用“事件”的就绪通知方式，通过epoll_ctl注册fd，一旦该fd就绪，内核就会采用类似callback的回调机制来激活该fd，epoll_wait便可以收到通知
+    * epoll的优点：
+        * 没有最大并发连接的限制，能打开的FD的上限远大于1024（1G的内存上能监听约10万个端口）；
+        * 效率提升，不是轮询的方式，不会随着FD数目的增加效率下降。只有活跃可用的FD才会调用callback函数；即Epoll最大的优点就在于它只管你“活跃”的连接，而跟连接总数无关，因此在实际的网络环境中，Epoll的效率就会远远高于select和poll。
+        * 内存拷贝，利用mmap()文件映射内存加速与内核空间的消息传递；即epoll使用mmap减少复制开销。
+
+* 支持一个进程所能打开的最大连接数
+    * select
+        * 单个进程所能打开的最大连接数有FD_SETSIZE宏定义，其大小是32个整数的大小（在32位的机器上，大小就是32*32，同理64位机器上FD_SETSIZE为32*64），当然我们可以对进行修改，然后重新编译内核，但是性能可能会受到影响，这需要进一步的测试。
+    * poll
+        * poll本质上和select没有区别，但是它没有最大连接数的限制，原因是它是基于链表来存储的
+    * epoll
+        * 虽然连接数有上限，但是很大，1G内存的机器上可以打开10万左右的连接，2G内存的机器可以打开20万左右的连接
+* FD剧增后带来的IO效率问题
+    * select
+        * 因为每次调用时都会对连接进行线性遍历，所以随着FD的增加会造成遍历速度慢的“线性下降性能问题”。
+    * poll 同上
+    * epoll
+        * 因为epoll内核中实现是根据每个fd上的callback函数来实现的，只有活跃的socket才会主动调用callback，所以在活跃socket较少的情况下，使用epoll没有前面两者的线性下降的性能问题，但是所有socket都很活跃的情况下，可能会有性能问题。
+* 消息传递方式
+    * select
+        * 内核需要将消息传递到用户空间，都需要内核拷贝动作
+    * poll 同上
+    * epoll
+        * epoll通过内核和用户空间共享一块内存来实现的。
+
+在选择select，poll，epoll时要根据具体的使用场合以及这三种方式的自身特点。
+1. 表面上看epoll的性能最好，但是在连接数少并且连接都十分活跃的情况下，select和poll的性能可能比epoll好，毕竟epoll的通知机制需要很多函数回调。
+2. select低效是因为每次它都需要轮询。但低效也是相对的，视情况而定，也可通过良好的设计改善
+
+### 1.1.2. IO多路复用技术
+<a href="#menu" >目录</a>
+
+### 1.1.3. Java IO 演进之路
+<a href="#menu" >目录</a>
 
 * 在JDK 1.4推出NIO之前，基于Java的所有Socket通信都采用同步阻塞模式BIO，这种一请求一响应的通信模型简化了上层的应用开发，但是在性能和可靠性上却存在很大的瓶颈。
 
@@ -74,278 +194,63 @@
     * 提供AIO功能，包括对配置和多播数据报的支持
     * 完成JSR-51定义的通道功能，包括对配置和多播数据报的支持。
 
-## 1.2. Java IO对比
-<a href="#menu" style="float:right">目录</a>
+### 1.1.4. Java IO对比
+<a href="#menu" >目录</a>
 
-### 1.2.1. BIO编程
-<a href="#menu" style="float:right">目录</a>
+#### 1.1.4.1. BIO编程
+<a href="#menu" >目录</a>
 
-网络编程的基本模型是C/S模型，即两个进程间的通信。
+网络编程的基本模型是C/S模型，即两个进程间的通信：客户端-服务器。
 
-服务端提供IP和监听端口，客户端通过连接操作想服务端监听的地址发起连接请求，通过三次握手连接，如果连接成功建立，双方就可以通过套接字进行通信。
+服务端提供IP和监听端口，客户端通过连接操作向服务端监听的地址发起连接请求，通过三次握手连接，如果连接成功建立，双方就可以通过套接字进行通信。
 
-传统的同步阻塞模型开发中，ServerSocket负责绑定IP地址，启动监听端口；Socket负责发起连接操作。连接成功后，双方通过输入和输出流进行同步阻塞式通信。 
+传统的同步阻塞模型开发中，Server  Socket负责绑定IP地址，启动监听端口；Socket负责发起连接操作。连接成功后，双方通过输入和输出流进行同步阻塞式通信。 
 
-简单的描述一下BIO的服务端通信模型：采用BIO通信模型的服务端，通常由一个独立的Acceptor线程负责监听客户端的连接，它接收到客户端连接请求之后为每个客户端创建一个新的线程进行链路处理没处理完成后，通过输出流返回应答给客户端，线程销毁。即典型的一请求一应答通宵模型。
+简单的描述一下BIO的服务端通信模型：采用BIO通信模型的服务端，通常由一个独立的Acceptor线程负责监听客户端的连接，它接收到客户端连接请求之后为每个客户端创建一个新的线程进行链路处理没处理完成后，通过输出流返回应答给客户端，线程销毁。即典型的一请求一应答通信模型。为什么需要每个线程处理一个连接:因为是阻塞式IO，读写过程都是阻塞的，如果发生长时间的阻塞并且只使用一个线程处理，就会导致大并发下处理不即时。
 
 传统BIO通信模型图
-![](http://blog.anxpp.com/usr/uploads/2016/05/549520916.png)
+![BIO](pic/netty/BIO.jpg)
 
-该模型最大的问题就是缺乏弹性伸缩能力，当客户端并发访问量增加后，服务端的线程个数和客户端并发访问数呈1:1的正比关系，Java中的线程也是比较宝贵的系统资源，线程数量快速膨胀后，系统的性能将急剧下降，随着访问量的继续增大，系统最终就死-掉-了。
+该模型最大的问题就是缺乏弹性伸缩能力，当客户端并发访问量增加后，服务端的线程个数和客户端并发访问数呈1:1的正比关系，Java中的线程也是比较宝贵的系统资源，线程数量快速膨胀后，系统的性能将急剧下降。
 
-**同步阻塞式I/O创建的Server源码**
-```JAVA
-package com.anxpp.io.calculator.bio;  
-import java.io.IOException;  
-import java.net.ServerSocket;  
-import java.net.Socket;  
-/** 
- * BIO服务端源码 
- * @author yangtao__anxpp.com 
- * @version 1.0 
- */  
-public final class ServerNormal {  
-    //默认的端口号  
-    private static int DEFAULT_PORT = 12345;  
-    //单例的ServerSocket  
-    private static ServerSocket server;  
-    //根据传入参数设置监听端口，如果没有参数调用以下方法并使用默认值  
-    public static void start() throws IOException{  
-        //使用默认值  
-        start(DEFAULT_PORT);  
-    }  
-    //这个方法不会被大量并发访问，不太需要考虑效率，直接进行方法同步就行了  
-    public synchronized static void start(int port) throws IOException{  
-        if(server != null) return;  
-        try{  
-            //通过构造函数创建ServerSocket  
-            //如果端口合法且空闲，服务端就监听成功  
-            server = new ServerSocket(port);  
-            System.out.println("服务器已启动，端口号：" + port);  
-            Socket socket;  
-            //通过无线循环监听客户端连接  
-            //如果没有客户端接入，将阻塞在accept操作上。  
-            while(true){  
-                socket = server.accept();  
-                //当有新的客户端接入时，会执行下面的代码  
-                //然后创建一个新的线程处理这条Socket链路  
-                new Thread(new ServerHandler(socket)).start();  
-            }  
-        }finally{  
-            //一些必要的清理工作  
-            if(server != null){  
-                System.out.println("服务器已关闭。");  
-                server.close();  
-                server = null;  
-            }  
-        }  
-    }  
-}  
-```
-**客户端消息处理线程ServerHandler源码：**
-```JAVA
-package com.anxpp.io.calculator.bio;  
-import java.io.BufferedReader;  
-import java.io.IOException;  
-import java.io.InputStreamReader;  
-import java.io.PrintWriter;  
-import java.net.Socket;  
-  
-import com.anxpp.io.utils.Calculator;  
-/** 
- * 客户端线程 
- * @author yangtao__anxpp.com 
- * 用于处理一个客户端的Socket链路 
- */  
-public class ServerHandler implements Runnable{  
-    private Socket socket;  
-    public ServerHandler(Socket socket) {  
-        this.socket = socket;  
-    }  
-    @Override  
-    public void run() {  
-        BufferedReader in = null;  
-        PrintWriter out = null;  
-        try{  
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));  
-            out = new PrintWriter(socket.getOutputStream(),true);  
-            String expression;  
-            String result;  
-            while(true){  
-                //通过BufferedReader读取一行  
-                //如果已经读到输入流尾部，返回null,退出循环  
-                //如果得到非空值，就尝试计算结果并返回  
-                if((expression = in.readLine())==null) break;  
-                System.out.println("服务器收到消息：" + expression);  
-                try{  
-                    result = Calculator.cal(expression).toString();  
-                }catch(Exception e){  
-                    result = "计算错误：" + e.getMessage();  
-                }  
-                out.println(result);  
-            }  
-        }catch(Exception e){  
-            e.printStackTrace();  
-        }finally{  
-            //一些必要的清理工作  
-            if(in != null){  
-                try {  
-                    in.close();  
-                } catch (IOException e) {  
-                    e.printStackTrace();  
-                }  
-                in = null;  
-            }  
-            if(out != null){  
-                out.close();  
-                out = null;  
-            }  
-            if(socket != null){  
-                try {  
-                    socket.close();  
-                } catch (IOException e) {  
-                    e.printStackTrace();  
-                }  
-                socket = null;  
-            }  
-        }  
-    }  
-}  
-```
-**同步阻塞式I/O创建的Client源码**
-```JAVA
-package com.anxpp.io.calculator.bio;  
-import java.io.BufferedReader;  
-import java.io.IOException;  
-import java.io.InputStreamReader;  
-import java.io.PrintWriter;  
-import java.net.Socket;  
-/** 
- * 阻塞式I/O创建的客户端 
- * @author yangtao__anxpp.com 
- * @version 1.0 
- */  
-public class Client {  
-    //默认的端口号  
-    private static int DEFAULT_SERVER_PORT = 12345;  
-    private static String DEFAULT_SERVER_IP = "127.0.0.1";  
-    public static void send(String expression){  
-        send(DEFAULT_SERVER_PORT,expression);  
-    }  
-    public static void send(int port,String expression){  
-        System.out.println("算术表达式为：" + expression);  
-        Socket socket = null;  
-        BufferedReader in = null;  
-        PrintWriter out = null;  
-        try{  
-            socket = new Socket(DEFAULT_SERVER_IP,port);  
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));  
-            out = new PrintWriter(socket.getOutputStream(),true);  
-            out.println(expression);  
-            System.out.println("___结果为：" + in.readLine());  
-        }catch(Exception e){  
-            e.printStackTrace();  
-        }finally{  
-            //一下必要的清理工作  
-            if(in != null){  
-                try {  
-                    in.close();  
-                } catch (IOException e) {  
-                    e.printStackTrace();  
-                }  
-                in = null;  
-            }  
-            if(out != null){  
-                out.close();  
-                out = null;  
-            }  
-            if(socket != null){  
-                try {  
-                    socket.close();  
-                } catch (IOException e) {  
-                    e.printStackTrace();  
-                }  
-                socket = null;  
-            }  
-        }  
-    }  
-}  
-
-```
-
-### 1.2.2. 伪异步I/O编程
-<a href="#menu" style="float:right">目录</a>
-
-为了改进这种一连接一线程的模型，我们可以使用线程池来管理这些线程（需要了解更多请参考前面提供的文章），实现1个或多个线程处理N个客户端的模型（但是底层还是使用的同步阻塞I/O），通常被称为“伪异步I/O模型“。
-![伪异步I/O编程](http://blog.anxpp.com/usr/uploads/2016/05/614169023.png)
-
-实现很简单，我们只需要将新建线程的地方，交给线程池管理即可，只需要改动刚刚的Server代码即可：
-
+**客户端**
 ```java
-package com.anxpp.io.calculator.bio;  
-import java.io.IOException;  
-import java.net.ServerSocket;  
-import java.net.Socket;  
-import java.util.concurrent.ExecutorService;  
-import java.util.concurrent.Executors;  
-/** 
- * BIO服务端源码__伪异步I/O 
- * @author yangtao__anxpp.com 
- * @version 1.0 
- */  
-public final class ServerBetter {  
-    //默认的端口号  
-    private static int DEFAULT_PORT = 12345;  
-    //单例的ServerSocket  
-    private static ServerSocket server;  
-    //线程池 懒汉式的单例  
-    private static ExecutorService executorService = Executors.newFixedThreadPool(60);  
-    //根据传入参数设置监听端口，如果没有参数调用以下方法并使用默认值  
-    public static void start() throws IOException{  
-        //使用默认值  
-        start(DEFAULT_PORT);  
-    }  
-    //这个方法不会被大量并发访问，不太需要考虑效率，直接进行方法同步就行了  
-    public synchronized static void start(int port) throws IOException{  
-        if(server != null) return;  
-        try{  
-            //通过构造函数创建ServerSocket  
-            //如果端口合法且空闲，服务端就监听成功  
-            server = new ServerSocket(port);  
-            System.out.println("服务器已启动，端口号：" + port);  
-            Socket socket;  
-            //通过无线循环监听客户端连接  
-            //如果没有客户端接入，将阻塞在accept操作上。  
-            while(true){  
-                socket = server.accept();  
-                //当有新的客户端接入时，会执行下面的代码  
-                //然后创建一个新的线程处理这条Socket链路  
-                executorService.execute(new ServerHandler(socket));  
-            }  
-        }finally{  
-            //一些必要的清理工作  
-            if(server != null){  
-                System.out.println("服务器已关闭。");  
-                server.close();  
-                server = null;  
-            }  
-        }  
-    }  
-}  
+//创建一个流socket并且进行连接，连接失败将会抛出异常
+Socket  socket = new Socket(host,port);
 
+//下面的write和read都是阻塞的
+//发送数据
+OutputStream outputStream = socket.getOutputStream();
+outputStream.write(byte b[]);
+outputStream.flush();
 
+//读取数据
+InputStream inputStream = socket.getInputStream();
+//返回的是读取到的字节
+int n = inputStream.read(byte b[]);
 ```
- 我们知道，如果使用CachedThreadPool线程池（不限制线程数量，如果不清楚请参考文首提供的文章），其实除了能自动帮我们管理线程（复用），看起来也就像是1:1的客户端：线程数模型，而使用FixedThreadPool我们就有效的控制了线程的最大数量，保证了系统有限的资源的控制，实现了N:M的伪异步I/O模型。
+**server端**
+```java
+//创建ServerSocket
+ServerSocket serverSocket = new ServerSocket(port);
+//由于bio读写都是阻塞的，所以必须使用单独的线程处理每一个socket连接
+while(true){
+    //等待客户端连接
+    Socket socket =  serverSocket.accept();
 
-但是，正因为限制了线程数量，如果发生大量并发请求，超过最大数量的线程就只能等待，直到线程池中的有空闲的线程可以被复用。而对Socket的输入流就行读取时，会一直阻塞，直到发生：
-* 有数据可读
-* 可用数据以及读取完毕
-* 发生空指针或I/O异常
+    //将socket 提交给新线程进行处理
+    run(){
+        //如果是长连接，则使用while进行轮询，否则读取和回复数据之后则关闭socket
+        while(true){
+            //读数据
+            //写数据
+        }
+    }
+}
+```
 
-所以在读取数据较慢时（比如数据量大、网络传输慢等），大量并发的情况下，其他接入的消息，只能一直等待，这就是最大的弊端。
-
-### 1.2.3. NIO编程
-<a href="#menu" style="float:right">目录</a>
+#### 1.1.4.2. NIO编程
+<a href="#menu" >目录</a>
 
 NIO我们一般认为是New I/O（也是官方的叫法），因为它是相对于老的I/O类库新增的（其实在JDK 1.4中就已经被引入了，但这个名词还会继续用很久，即使它们在现在看来已经是“旧”的了，所以也提示我们在命名时，需要好好考虑），做了很大的改变。但民间跟多人称之为Non-block I/O，即非阻塞I/O，因为这样叫，更能体现它的特点。而下文中的NIO，不是指整个新的I/O库，而是非阻塞I/O。
 
@@ -380,183 +285,158 @@ FileChannel：用于文件操作
 后面代码会涉及的ServerSocketChannel和SocketChannel都是SelectableChannel的子类。
 
 **多路复用器 Selector**
+
 Selector是Java  NIO 编程的基础。
 
 Selector提供选择已经就绪的任务的能力：Selector会不断轮询注册在其上的Channel，如果某个Channel上面发生读或者写事件，这个Channel就处于就绪状态，会被Selector轮询出来，然后通过SelectionKey可以获取就绪Channel的集合，进行后续的I/O操作。
 
 一个Selector可以同时轮询多个Channel，因为JDK使用了epoll()代替传统的select实现，所以没有最大连接句柄1024/2048的限制。所以，只需要一个线程负责Selector的轮询，就可以接入成千上万的客户端。
 
-**NIO服务端**
-```java
+**客户端**
 
-package com.anxpp.io.calculator.nio;  
-public class Server {  
-    private static int DEFAULT_PORT = 12345;  
-    private static ServerHandle serverHandle;  
-    public static void start(){  
-        start(DEFAULT_PORT);  
-    }  
-    public static synchronized void start(int port){  
-        if(serverHandle!=null)  
-            serverHandle.stop();  
-        serverHandle = new ServerHandle(port);  
-        new Thread(serverHandle,"Server").start();  
-    }  
-    public static void main(String[] args){  
-        start();  
-    }  
-}  
-package com.anxpp.io.calculator.nio;  
-import java.io.IOException;  
-import java.net.InetSocketAddress;  
-import java.nio.ByteBuffer;  
-import java.nio.channels.SelectionKey;  
-import java.nio.channels.Selector;  
-import java.nio.channels.ServerSocketChannel;  
-import java.nio.channels.SocketChannel;  
-import java.util.Iterator;  
-import java.util.Set;  
-  
-import com.anxpp.io.utils.Calculator;  
-/** 
- * NIO服务端 
- * @author yangtao__anxpp.com 
- * @version 1.0 
- */  
-public class ServerHandle implements Runnable{  
-    private Selector selector;  
-    private ServerSocketChannel serverChannel;  
-    private volatile boolean started;  
-    /** 
-     * 构造方法 
-     * @param port 指定要监听的端口号 
-     */  
-    public ServerHandle(int port) {  
-        try{  
-            //创建选择器  
-            selector = Selector.open();  
-            //打开监听通道  
-            serverChannel = ServerSocketChannel.open();  
-            //如果为 true，则此通道将被置于阻塞模式；如果为 false，则此通道将被置于非阻塞模式  
-            serverChannel.configureBlocking(false);//开启非阻塞模式  
-            //绑定端口 backlog设为1024  
-            serverChannel.socket().bind(new InetSocketAddress(port),1024);  
-            //监听客户端连接请求  
-            serverChannel.register(selector, SelectionKey.OP_ACCEPT);  
-            //标记服务器已开启  
-            started = true;  
-            System.out.println("服务器已启动，端口号：" + port);  
-        }catch(IOException e){  
-            e.printStackTrace();  
-            System.exit(1);  
-        }  
-    }  
-    public void stop(){  
-        started = false;  
-    }  
-    @Override  
-    public void run() {  
-        //循环遍历selector  
-        while(started){  
-            try{  
-                //无论是否有读写事件发生，selector每隔1s被唤醒一次  
-                selector.select(1000);  
-                //阻塞,只有当至少一个注册的事件发生的时候才会继续.  
-//              selector.select();  
-                Set<SelectionKey> keys = selector.selectedKeys();  
-                Iterator<SelectionKey> it = keys.iterator();  
-                SelectionKey key = null;  
-                while(it.hasNext()){  
-                    key = it.next();  
-                    it.remove();  
-                    try{  
-                        handleInput(key);  
-                    }catch(Exception e){  
-                        if(key != null){  
-                            key.cancel();  
-                            if(key.channel() != null){  
-                                key.channel().close();  
-                            }  
-                        }  
-                    }  
-                }  
-            }catch(Throwable t){  
-                t.printStackTrace();  
-            }  
-        }  
-        //selector关闭后会自动释放里面管理的资源  
-        if(selector != null)  
-            try{  
-                selector.close();  
-            }catch (Exception e) {  
-                e.printStackTrace();  
-            }  
-    }  
-    private void handleInput(SelectionKey key) throws IOException{  
-        if(key.isValid()){  
-            //处理新接入的请求消息  
-            if(key.isAcceptable()){  
-                ServerSocketChannel ssc = (ServerSocketChannel) key.channel();  
-                //通过ServerSocketChannel的accept创建SocketChannel实例  
-                //完成该操作意味着完成TCP三次握手，TCP物理链路正式建立  
-                SocketChannel sc = ssc.accept();  
-                //设置为非阻塞的  
-                sc.configureBlocking(false);  
-                //注册为读  
-                sc.register(selector, SelectionKey.OP_READ);  
-            }  
-            //读消息  
-            if(key.isReadable()){  
-                SocketChannel sc = (SocketChannel) key.channel();  
-                //创建ByteBuffer，并开辟一个1M的缓冲区  
-                ByteBuffer buffer = ByteBuffer.allocate(1024);  
-                //读取请求码流，返回读取到的字节数  
-                int readBytes = sc.read(buffer);  
-                //读取到字节，对字节进行编解码  
-                if(readBytes>0){  
-                    //将缓冲区当前的limit设置为position=0，用于后续对缓冲区的读取操作  
-                    buffer.flip();  
-                    //根据缓冲区可读字节数创建字节数组  
-                    byte[] bytes = new byte[buffer.remaining()];  
-                    //将缓冲区可读字节数组复制到新建的数组中  
-                    buffer.get(bytes);  
-                    String expression = new String(bytes,"UTF-8");  
-                    System.out.println("服务器收到消息：" + expression);  
-                    //处理数据  
-                    String result = null;  
-                    try{  
-                        result = Calculator.cal(expression).toString();  
-                    }catch(Exception e){  
-                        result = "计算错误：" + e.getMessage();  
-                    }  
-                    //发送应答消息  
-                    doWrite(sc,result);  
-                }  
-                //没有读取到字节 忽略  
-//              else if(readBytes==0);  
-                //链路已经关闭，释放资源  
-                else if(readBytes<0){  
-                    key.cancel();  
-                    sc.close();  
-                }  
-            }  
-        }  
-    }  
-    //异步发送应答消息  
-    private void doWrite(SocketChannel channel,String response) throws IOException{  
-        //将消息编码为字节数组  
-        byte[] bytes = response.getBytes();  
-        //根据数组容量创建ByteBuffer  
-        ByteBuffer writeBuffer = ByteBuffer.allocate(bytes.length);  
-        //将字节数组复制到缓冲区  
-        writeBuffer.put(bytes);  
-        //flip操作  
-        writeBuffer.flip();  
-        //发送缓冲区的字节数组  
-        channel.write(writeBuffer);  
-        //****此处不含处理“写半包”的代码  
-    }  
-}  
+客户端也可以使用selector
+
+```java
+//创建socketChannel
+SocketChannel socketChannel = SocketChannel.open();
+//连接
+socketChannel.connect(new InetSocketAddress(host,port));
+
+//发送数据
+ByteBuffer writeBuf = ByteBuffer.wrap(data.toString().getBytes("UTF-8"));
+socketChannel.write(writeBuf)
+
+//读取数据
+ByteBuffer readBuf = ByteBuffer.allocate(1024);
+socketChannel.read(readBuf);
+readBuf.flip();
+byte[] readData = new byte[readBuf.remaining()];
+readBuf.get(readData);
+clientDataHandler.handler(new String(readData,"UTF-8"));
+```
+**server端**
+```java
+//创建服务器通道
+ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+//配置为非阻塞，必须
+serverSocketChannel.configureBlocking(false);
+//监听端口
+serverSocketChannel.bind(new InetSocketAddress(port));
+
+//开启多路复用器
+Selector selector = Selector.open();
+//绑定多路复用器到channel，并设定关注事件
+serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+//创建线程进行轮询多路复用器
+new WorkHandle(selector).start();
+
+public void run() {
+
+    log.info("事件处理....");
+    while (true){
+        try{
+            //监听事件，没有事件发生将阻塞
+            selector.select();
+            //获取事件列表
+            Iterator<SelectionKey> selectionKeyIterator =   selector.selectedKeys().iterator();
+
+            while (selectionKeyIterator.hasNext()){
+                SelectionKey selectionKey = selectionKeyIterator.next();
+                
+                //无效事件
+                if(!selectionKey.isValid())
+                {
+                    continue;
+                }
+                //连接事件
+                if(selectionKey.isAcceptable()){
+
+                    accept(selectionKey);
+                }
+                //channel有数据可读
+                if(selectionKey.isReadable()){
+                    //数据读完有两种操作
+                    //1.在当前线程处理，适用于处理时间不长的任务，时间太长会影响其他key的处理
+                    //2.创建新线程进行处理，适用于处理时间较长的任务
+                    read(selectionKey);
+                    write(selectionKey);
+                }
+                //可写事件，最好不要监听可写事件，也就是 不要配置SelectionKey.OP_WRITE
+                //因为在空闲的时候，可写事件一定会发生，导致空轮询
+                if(selectionKey.isWritable()){
+                    //write(selectionKey);
+                }
+                //移除事件
+                selectionKeyIterator.remove();
+
+
+            }
+
+        }
+        catch(Exception ex){
+            log.error(ex.getMessage());
+        }
+
+    }
+}
+
+public void accept(SelectionKey selectionKey){
+    try{
+        ServerSocketChannel serverSocketChannel = (ServerSocketChannel) selectionKey.channel();
+        SocketChannel channel = serverSocketChannel.accept();
+
+        channel.configureBlocking(false);
+        channel.register(selector,SelectionKey.OP_READ);
+        log.info("与客户端[{}]连接成功",channel.getRemoteAddress());
+
+    }
+    catch(Exception ex){
+        log.error(ex.getMessage());
+    }
+
+}
+
+public void read(SelectionKey selectionKey){
+
+    try{
+        SocketChannel channel = (SocketChannel)selectionKey.channel();
+        log.info("读取客户端[{}]数据",channel.getRemoteAddress());
+
+        ByteBuffer readByteBUffer = ByteBuffer.allocate(1024);
+
+        int count = channel.read(readByteBUffer);
+        if(count == -1){
+            selectionKey.channel().close();
+            selectionKey.cancel();
+            return;
+        }
+        readByteBUffer.flip();
+        byte[] readData = new byte[readByteBUffer.remaining()];
+        readByteBUffer.get(readData);
+        log.info("接收到来自客户端的数据:"+new String(readData,"UTF-8"));
+
+
+    }
+    catch(Exception ex){
+        log.error(ex.getMessage());
+    }
+
+}
+
+public void write(SelectionKey selectionKey){
+    try{
+        SocketChannel channel = (SocketChannel)selectionKey.channel();
+        log.info("向客户端[{}]写入数据",channel.getRemoteAddress());
+        String str = "服务端返回的数据:" + new Random().nextInt(100);
+        ByteBuffer writeBuffer = ByteBuffer.wrap(str.getBytes("UTF-8"));
+        // writeBuffer.flip();
+        channel.write(writeBuffer);
+    }
+    catch(Exception ex){
+        log.error(ex.getMessage());
+    }
+}
+
 ```
 
 * 可以看到，创建NIO服务端的主要步骤如下：
@@ -565,535 +445,64 @@ public class ServerHandle implements Runnable{
     * 创建Reactor线程，创建多路复用器并启动线程
     * 将ServerSocketChannel注册到Reactor线程中的Selector上，监听ACCEPT事件
     * Selector轮询准备就绪的key
-    * Selector监听到新的客户端接入，处理新的接入请求，完成TCP三次握手，简历物理链路
+    * Selector监听到新的客户端接入，处理新的接入请求，完成TCP三次握手，建立物理链路
     * 设置客户端链路为非阻塞模式
     * 将新接入的客户端连接注册到Reactor线程的Selector上，监听读操作，读取客户端发送的网络消息
     * 异步读取客户端消息到缓冲区
     * 对Buffer编解码，处理半包消息，将解码成功的消息封装成Task
     * 将应答消息编码为Buffer，调用SocketChannel的write将消息异步发送给客户端
 
-因为应答消息的发送，SocketChannel也是异步非阻塞的，所以不能保证一次能吧需要发送的数据发送完，此时就会出现写半包的问题。我们需要注册写操作，不断轮询Selector将没有发送完的消息发送完毕，然后通过Buffer的hasRemain()方法判断消息是否发送完成。
+因为应答消息的发送，SocketChannel也是异步非阻塞的，所以不能保证一次把需要发送的数据发送完，此时就会出现写半包的问题。我们需要注册写操作，不断轮询Selector将没有发送完的消息发送完毕，然后通过Buffer的hasRemain()方法判断消息是否发送完成。
 
-**NIO客户端**
 
-```java
-package com.anxpp.io.calculator.nio;  
-public class Client {  
-    private static String DEFAULT_HOST = "127.0.0.1";  
-    private static int DEFAULT_PORT = 12345;  
-    private static ClientHandle clientHandle;  
-    public static void start(){  
-        start(DEFAULT_HOST,DEFAULT_PORT);  
-    }  
-    public static synchronized void start(String ip,int port){  
-        if(clientHandle!=null)  
-            clientHandle.stop();  
-        clientHandle = new ClientHandle(ip,port);  
-        new Thread(clientHandle,"Server").start();  
-    }  
-    //向服务器发送消息  
-    public static boolean sendMsg(String msg) throws Exception{  
-        if(msg.equals("q")) return false;  
-        clientHandle.sendMsg(msg);  
-        return true;  
-    }  
-    public static void main(String[] args){  
-        start();  
-    }  
-}  
+#### 1.1.4.3. AIO编程
+<a href="#menu" >目录</a>
 
-package com.anxpp.io.calculator.nio;  
-import java.io.IOException;  
-import java.net.InetSocketAddress;  
-import java.nio.ByteBuffer;  
-import java.nio.channels.SelectionKey;  
-import java.nio.channels.Selector;  
-import java.nio.channels.SocketChannel;  
-import java.util.Iterator;  
-import java.util.Set;  
-/** 
- * NIO客户端 
- * @author yangtao__anxpp.com 
- * @version 1.0 
- */  
-public class ClientHandle implements Runnable{  
-    private String host;  
-    private int port;  
-    private Selector selector;  
-    private SocketChannel socketChannel;  
-    private volatile boolean started;  
-  
-    public ClientHandle(String ip,int port) {  
-        this.host = ip;  
-        this.port = port;  
-        try{  
-            //创建选择器  
-            selector = Selector.open();  
-            //打开监听通道  
-            socketChannel = SocketChannel.open();  
-            //如果为 true，则此通道将被置于阻塞模式；如果为 false，则此通道将被置于非阻塞模式  
-            socketChannel.configureBlocking(false);//开启非阻塞模式  
-            started = true;  
-        }catch(IOException e){  
-            e.printStackTrace();  
-            System.exit(1);  
-        }  
-    }  
-    public void stop(){  
-        started = false;  
-    }  
-    @Override  
-    public void run() {  
-        try{  
-            doConnect();  
-        }catch(IOException e){  
-            e.printStackTrace();  
-            System.exit(1);  
-        }  
-        //循环遍历selector  
-        while(started){  
-            try{  
-                //无论是否有读写事件发生，selector每隔1s被唤醒一次  
-                selector.select(1000);  
-                //阻塞,只有当至少一个注册的事件发生的时候才会继续.  
-//              selector.select();  
-                Set<SelectionKey> keys = selector.selectedKeys();  
-                Iterator<SelectionKey> it = keys.iterator();  
-                SelectionKey key = null;  
-                while(it.hasNext()){  
-                    key = it.next();  
-                    it.remove();  
-                    try{  
-                        handleInput(key);  
-                    }catch(Exception e){  
-                        if(key != null){  
-                            key.cancel();  
-                            if(key.channel() != null){  
-                                key.channel().close();  
-                            }  
-                        }  
-                    }  
-                }  
-            }catch(Exception e){  
-                e.printStackTrace();  
-                System.exit(1);  
-            }  
-        }  
-        //selector关闭后会自动释放里面管理的资源  
-        if(selector != null)  
-            try{  
-                selector.close();  
-            }catch (Exception e) {  
-                e.printStackTrace();  
-            }  
-    }  
-    private void handleInput(SelectionKey key) throws IOException{  
-        if(key.isValid()){  
-            SocketChannel sc = (SocketChannel) key.channel();  
-            if(key.isConnectable()){  
-                if(sc.finishConnect());  
-                else System.exit(1);  
-            }  
-            //读消息  
-            if(key.isReadable()){  
-                //创建ByteBuffer，并开辟一个1M的缓冲区  
-                ByteBuffer buffer = ByteBuffer.allocate(1024);  
-                //读取请求码流，返回读取到的字节数  
-                int readBytes = sc.read(buffer);  
-                //读取到字节，对字节进行编解码  
-                if(readBytes>0){  
-                    //将缓冲区当前的limit设置为position=0，用于后续对缓冲区的读取操作  
-                    buffer.flip();  
-                    //根据缓冲区可读字节数创建字节数组  
-                    byte[] bytes = new byte[buffer.remaining()];  
-                    //将缓冲区可读字节数组复制到新建的数组中  
-                    buffer.get(bytes);  
-                    String result = new String(bytes,"UTF-8");  
-                    System.out.println("客户端收到消息：" + result);  
-                }  
-                //没有读取到字节 忽略  
-//              else if(readBytes==0);  
-                //链路已经关闭，释放资源  
-                else if(readBytes<0){  
-                    key.cancel();  
-                    sc.close();  
-                }  
-            }  
-        }  
-    }  
-    //异步发送消息  
-    private void doWrite(SocketChannel channel,String request) throws IOException{  
-        //将消息编码为字节数组  
-        byte[] bytes = request.getBytes();  
-        //根据数组容量创建ByteBuffer  
-        ByteBuffer writeBuffer = ByteBuffer.allocate(bytes.length);  
-        //将字节数组复制到缓冲区  
-        writeBuffer.put(bytes);  
-        //flip操作  
-        writeBuffer.flip();  
-        //发送缓冲区的字节数组  
-        channel.write(writeBuffer);  
-        //****此处不含处理“写半包”的代码  
-    }  
-    private void doConnect() throws IOException{  
-        if(socketChannel.connect(new InetSocketAddress(host,port)));  
-        else socketChannel.register(selector, SelectionKey.OP_CONNECT);  
-    }  
-    public void sendMsg(String msg) throws Exception{  
-        socketChannel.register(selector, SelectionKey.OP_READ);  
-        doWrite(socketChannel, msg);  
-    }  
-}  
-
-```
-### 1.2.4. AIO编程
 NIO 2.0引入了新的异步通道的概念，并提供了异步文件通道和异步套接字通道的实现。
 
 异步的套接字通道时真正的异步非阻塞I/O，对应于UNIX网络编程中的事件驱动I/O（AIO）。他不需要过多的Selector对注册的通道进行轮询即可实现异步读写，从而简化了NIO的编程模型。
 
-**Server端代码**
+
+**客户端**
+
 ```java
-package com.anxpp.io.calculator.aio.server;  
-/** 
- * AIO服务端 
- * @author yangtao__anxpp.com 
- * @version 1.0 
- */  
-public class Server {  
-    private static int DEFAULT_PORT = 12345;  
-    private static AsyncServerHandler serverHandle;  
-    public volatile static long clientCount = 0;  
-    public static void start(){  
-        start(DEFAULT_PORT);  
-    }  
-    public static synchronized void start(int port){  
-        if(serverHandle!=null)  
-            return;  
-        serverHandle = new AsyncServerHandler(port);  
-        new Thread(serverHandle,"Server").start();  
-    }  
-    public static void main(String[] args){  
-        Server.start();  
-    }  
-}  
-package com.anxpp.io.calculator.aio.server;  
-import java.io.IOException;  
-import java.net.InetSocketAddress;  
-import java.nio.channels.AsynchronousServerSocketChannel;  
-import java.util.concurrent.CountDownLatch;  
-public class AsyncServerHandler implements Runnable {  
-    public CountDownLatch latch;  
-    public AsynchronousServerSocketChannel channel;  
-    public AsyncServerHandler(int port) {  
-        try {  
-            //创建服务端通道  
-            channel = AsynchronousServerSocketChannel.open();  
-            //绑定端口  
-            channel.bind(new InetSocketAddress(port));  
-            System.out.println("服务器已启动，端口号：" + port);  
-        } catch (IOException e) {  
-            e.printStackTrace();  
-        }  
-    }  
-    @Override  
-    public void run() {  
-        //CountDownLatch初始化  
-        //它的作用：在完成一组正在执行的操作之前，允许当前的现场一直阻塞  
-        //此处，让现场在此阻塞，防止服务端执行完成后退出  
-        //也可以使用while(true)+sleep   
-        //生成环境就不需要担心这个问题，以为服务端是不会退出的  
-        latch = new CountDownLatch(1);  
-        //用于接收客户端的连接  
-        channel.accept(this,new AcceptHandler());  
-        try {  
-            latch.await();  
-        } catch (InterruptedException e) {  
-            e.printStackTrace();  
-        }  
-    }  
-}  
- 
-package com.anxpp.io.calculator.aio.server;  
-import java.nio.ByteBuffer;  
-import java.nio.channels.AsynchronousSocketChannel;  
-import java.nio.channels.CompletionHandler;  
-//作为handler接收客户端连接  
-public class AcceptHandler implements CompletionHandler<AsynchronousSocketChannel, AsyncServerHandler> {  
-    @Override  
-    public void completed(AsynchronousSocketChannel channel,AsyncServerHandler serverHandler) {  
-        //继续接受其他客户端的请求  
-        Server.clientCount++;  
-        System.out.println("连接的客户端数：" + Server.clientCount);  
-        serverHandler.channel.accept(serverHandler, this);  
-        //创建新的Buffer  
-        ByteBuffer buffer = ByteBuffer.allocate(1024);  
-        //异步读  第三个参数为接收消息回调的业务Handler  
-        channel.read(buffer, buffer, new ReadHandler(channel));  
-    }  
-    @Override  
-    public void failed(Throwable exc, AsyncServerHandler serverHandler) {  
-        exc.printStackTrace();  
-        serverHandler.latch.countDown();  
-    }  
-}  
-package com.anxpp.io.calculator.aio.server;  
-import java.io.IOException;  
-import java.io.UnsupportedEncodingException;  
-import java.nio.ByteBuffer;  
-import java.nio.channels.AsynchronousSocketChannel;  
-import java.nio.channels.CompletionHandler;  
-import com.anxpp.io.utils.Calculator;  
-public class ReadHandler implements CompletionHandler<Integer, ByteBuffer> {  
-    //用于读取半包消息和发送应答  
-    private AsynchronousSocketChannel channel;  
-    public ReadHandler(AsynchronousSocketChannel channel) {  
-            this.channel = channel;  
-    }  
-    //读取到消息后的处理  
-    @Override  
-    public void completed(Integer result, ByteBuffer attachment) {  
-        //flip操作  
-        attachment.flip();  
-        //根据  
-        byte[] message = new byte[attachment.remaining()];  
-        attachment.get(message);  
-        try {  
-            String expression = new String(message, "UTF-8");  
-            System.out.println("服务器收到消息: " + expression);  
-            String calrResult = null;  
-            try{  
-                calrResult = Calculator.cal(expression).toString();  
-            }catch(Exception e){  
-                calrResult = "计算错误：" + e.getMessage();  
-            }  
-            //向客户端发送消息  
-            doWrite(calrResult);  
-        } catch (UnsupportedEncodingException e) {  
-            e.printStackTrace();  
-        }  
-    }  
-    //发送消息  
-    private void doWrite(String result) {  
-        byte[] bytes = result.getBytes();  
-        ByteBuffer writeBuffer = ByteBuffer.allocate(bytes.length);  
-        writeBuffer.put(bytes);  
-        writeBuffer.flip();  
-        //异步写数据 参数与前面的read一样  
-        channel.write(writeBuffer, writeBuffer,new CompletionHandler<Integer, ByteBuffer>() {  
-            @Override  
-            public void completed(Integer result, ByteBuffer buffer) {  
-                //如果没有发送完，就继续发送直到完成  
-                if (buffer.hasRemaining())  
-                    channel.write(buffer, buffer, this);  
-                else{  
-                    //创建新的Buffer  
-                    ByteBuffer readBuffer = ByteBuffer.allocate(1024);  
-                    //异步读  第三个参数为接收消息回调的业务Handler  
-                    channel.read(readBuffer, readBuffer, new ReadHandler(channel));  
-                }  
-            }  
-            @Override  
-            public void failed(Throwable exc, ByteBuffer attachment) {  
-                try {  
-                    channel.close();  
-                } catch (IOException e) {  
-                }  
-            }  
-        });  
-    }  
-    @Override  
-    public void failed(Throwable exc, ByteBuffer attachment) {  
-        try {  
-            this.channel.close();  
-        } catch (IOException e) {  
-            e.printStackTrace();  
-        }  
-    }  
-}  
+AsynchronousSocketChannel asynSocketChannel  = AsynchronousSocketChannel.open();
+asynSocketChannel.connect(new InetSocketAddress(host,port),
+                         null, new CompletionHandler<Void, Object>() {
+    @Override
+    public void completed(Void result, Object attachment) {
+        //连接成功处理
+    }
 
-```
-虽然代码感觉很多，但是API比NIO的使用起来真的简单多了，主要就是监听、读、写等各种CompletionHandler。此处本应有一个WriteHandler的，确实，我们在ReadHandler中，以一个匿名内部类实现了它。
+    @Override
+    public void failed(Throwable exc, Object attachment) {
+        //连接失败处理
+    }
+});
 
-**Client端代码**
-```java
-package com.anxpp.io.calculator.aio.client;  
-import java.util.Scanner;  
-public class Client {  
-    private static String DEFAULT_HOST = "127.0.0.1";  
-    private static int DEFAULT_PORT = 12345;  
-    private static AsyncClientHandler clientHandle;  
-    public static void start(){  
-        start(DEFAULT_HOST,DEFAULT_PORT);  
-    }  
-    public static synchronized void start(String ip,int port){  
-        if(clientHandle!=null)  
-            return;  
-        clientHandle = new AsyncClientHandler(ip,port);  
-        new Thread(clientHandle,"Client").start();  
-    }  
-    //向服务器发送消息  
-    public static boolean sendMsg(String msg) throws Exception{  
-        if(msg.equals("q")) return false;  
-        clientHandle.sendMsg(msg);  
-        return true;  
-    }  
-    @SuppressWarnings("resource")  
-    public static void main(String[] args) throws Exception{  
-        Client.start();  
-        System.out.println("请输入请求消息：");  
-        Scanner scanner = new Scanner(System.in);  
-        while(Client.sendMsg(scanner.nextLine()));  
-    }  
-}  
-
-package com.anxpp.io.calculator.aio.client;  
-import java.io.IOException;  
-import java.net.InetSocketAddress;  
-import java.nio.ByteBuffer;  
-import java.nio.channels.AsynchronousSocketChannel;  
-import java.nio.channels.CompletionHandler;  
-import java.util.concurrent.CountDownLatch;  
-public class AsyncClientHandler implements CompletionHandler<Void, AsyncClientHandler>, Runnable {  
-    private AsynchronousSocketChannel clientChannel;  
-    private String host;  
-    private int port;  
-    private CountDownLatch latch;  
-    public AsyncClientHandler(String host, int port) {  
-        this.host = host;  
-        this.port = port;  
-        try {  
-            //创建异步的客户端通道  
-            clientChannel = AsynchronousSocketChannel.open();  
-        } catch (IOException e) {  
-            e.printStackTrace();  
-        }  
-    }  
-    @Override  
-    public void run() {  
-        //创建CountDownLatch等待  
-        latch = new CountDownLatch(1);  
-        //发起异步连接操作，回调参数就是这个类本身，如果连接成功会回调completed方法  
-        clientChannel.connect(new InetSocketAddress(host, port), this, this);  
-        try {  
-            latch.await();  
-        } catch (InterruptedException e1) {  
-            e1.printStackTrace();  
-        }  
-        try {  
-            clientChannel.close();  
-        } catch (IOException e) {  
-            e.printStackTrace();  
-        }  
-    }  
-    //连接服务器成功  
-    //意味着TCP三次握手完成  
-    @Override  
-    public void completed(Void result, AsyncClientHandler attachment) {  
-        System.out.println("客户端成功连接到服务器...");  
-    }  
-    //连接服务器失败  
-    @Override  
-    public void failed(Throwable exc, AsyncClientHandler attachment) {  
-        System.err.println("连接服务器失败...");  
-        exc.printStackTrace();  
-        try {  
-            clientChannel.close();  
-            latch.countDown();  
-        } catch (IOException e) {  
-            e.printStackTrace();  
-        }  
-    }  
-    //向服务器发送消息  
-    public void sendMsg(String msg){  
-        byte[] req = msg.getBytes();  
-        ByteBuffer writeBuffer = ByteBuffer.allocate(req.length);  
-        writeBuffer.put(req);  
-        writeBuffer.flip();  
-        //异步写  
-        clientChannel.write(writeBuffer, writeBuffer,new WriteHandler(clientChannel, latch));  
-    }  
-}  
-
-package com.anxpp.io.calculator.aio.client;  
-import java.io.IOException;  
-import java.nio.ByteBuffer;  
-import java.nio.channels.AsynchronousSocketChannel;  
-import java.nio.channels.CompletionHandler;  
-import java.util.concurrent.CountDownLatch;  
-public class WriteHandler implements CompletionHandler<Integer, ByteBuffer> {  
-    private AsynchronousSocketChannel clientChannel;  
-    private CountDownLatch latch;  
-    public WriteHandler(AsynchronousSocketChannel clientChannel,CountDownLatch latch) {  
-        this.clientChannel = clientChannel;  
-        this.latch = latch;  
-    }  
-    @Override  
-    public void completed(Integer result, ByteBuffer buffer) {  
-        //完成全部数据的写入  
-        if (buffer.hasRemaining()) {  
-            clientChannel.write(buffer, buffer, this);  
-        }  
-        else {  
-            //读取数据  
-            ByteBuffer readBuffer = ByteBuffer.allocate(1024);  
-            clientChannel.read(readBuffer,readBuffer,new ReadHandler(clientChannel, latch));  
-        }  
-    }  
-    @Override  
-    public void failed(Throwable exc, ByteBuffer attachment) {  
-        System.err.println("数据发送失败...");  
-        try {  
-            clientChannel.close();  
-            latch.countDown();  
-        } catch (IOException e) {  
-        }  
-    }  
-}  
-
-package com.anxpp.io.calculator.aio.client;  
-import java.io.IOException;  
-import java.io.UnsupportedEncodingException;  
-import java.nio.ByteBuffer;  
-import java.nio.channels.AsynchronousSocketChannel;  
-import java.nio.channels.CompletionHandler;  
-import java.util.concurrent.CountDownLatch;  
-public class ReadHandler implements CompletionHandler<Integer, ByteBuffer> {  
-    private AsynchronousSocketChannel clientChannel;  
-    private CountDownLatch latch;  
-    public ReadHandler(AsynchronousSocketChannel clientChannel,CountDownLatch latch) {  
-        this.clientChannel = clientChannel;  
-        this.latch = latch;  
-    }  
-    @Override  
-    public void completed(Integer result,ByteBuffer buffer) {  
-        buffer.flip();  
-        byte[] bytes = new byte[buffer.remaining()];  
-        buffer.get(bytes);  
-        String body;  
-        try {  
-            body = new String(bytes,"UTF-8");  
-            System.out.println("客户端收到结果:"+ body);  
-        } catch (UnsupportedEncodingException e) {  
-            e.printStackTrace();  
-        }  
-    }  
-    @Override  
-    public void failed(Throwable exc,ByteBuffer attachment) {  
-        System.err.println("数据读取失败...");  
-        try {  
-            clientChannel.close();  
-            latch.countDown();  
-        } catch (IOException e) {  
-        }  
-    }  
-}  
-
-
+//读写数据和前面使用通道读写数据基本一致，只是多提供了参数CompletionHandler进行异步数据回调处理
 ```
 
+**server端**
 
-### 1.2.5. IO模型对比总结
-<a href="#menu" style="float:right">目录</a>
+由于异步IO没有继承SelectableChannel接口。因此不能使用IO多路复用器。也是需要单独的线程来处理每一个连接。
+
+```java
+AsynchronousServerSocketChannel socketChannel =  AsynchronousServerSocketChannel.open();
+socketChannel.bind(new InetSocketAddress(port));
+
+while(true){
+    Future<AsynchronousSocketChannel> future =  socketChannel.accept();
+    AsynchronousSocketChannel channel = future.get();
+    log.info("连接成功:{}",channel.getRemoteAddress());
+    //提交线程池处理，线程池通过channel来读写数据
+    executorService.submit(new SocketHandler(channel));
+
+}
+```
+
+### 1.1.5. IO模型对比总结
+<a href="#menu" >目录</a>
 
 ||同步阻塞IO(BIO)|伪异步IO|非阻塞IO(NIO)|异步IO(AIO)|
 |---|---|---|---|--|
@@ -1105,8 +514,8 @@ public class ReadHandler implements CompletionHandler<Integer, ByteBuffer> {
 |可靠性 |非常差|差|高|高|
 |吞吐量|低|中|高|高|
 
-### 1.2.6. 选择Netty的理由
-<a href="#menu" style="float:right">目录</a>
+### 1.1.6. 选择Netty的理由
+<a href="#menu" >目录</a>
 
 **Java NIO的问题**
 * API复杂使用麻烦
@@ -1122,20 +531,65 @@ public class ReadHandler implements CompletionHandler<Integer, ByteBuffer> {
 * 成熟稳定
 * 社区活跃，迭代快
 
+### 1.1.7. 实现自定义协议
+<a href="#menu" >目录</a>
+
+实现自定义的应用层协议，也就是意味着要针对传输层协议进行开发，传输层有TCP、UDP两种协议，TCP传输具有可靠性，UDP传输不管数据是否送达，一般选择TCP。TCP是字节流服务,是为数据的可靠传输而设计的。如果数据在传输中丢失或者损坏，TCP会保证再次发送数据，如果数据包乱序到达，TCP会将其置回正确的顺序。对于连接来说，如果数据到来的速度太快,TCP会降低速度，以免数据丢包。程序永远不需要担心接收到乱序或者不正确的数据。不过，相对来说，这种可靠性需要速度作为代价，同时，建立和撤销连接也需要耗费时间。
+
+用户数据报协议(User Datagram Protocol ,UDP)是在IP之上发送数据的令一种传输层协议，速度很快，但是不可靠，并且发送不需要进行连接，只要有接收方的地址(host:port)即可。当发送数据时，无法确定数据是否会到达，也不知道数据的各个部分是否会以发送时的顺序到达。UDP适合在速度要求较高但是对可靠性要求不高的场景,如音频和多媒体的应用,如果要求可靠性，可以在应用层自行解决。
+
+* TCP通信协议
+    * TCP是面向连接的；
+    * 每条TCP连接只能由于两个端点，一对一通信；
+    * TCP提供可靠的交付服务，传输数据无差错，不丢失，不重复，且按时序到达；
+    * TCP提供全双工通信；
+    * 面向字节流，TCP根据对方给出的窗口和当前的网络拥塞程度决定一个报文应该包含多少个字节。
+* UDP通信协议
+    * 无连接；
+    * UDP使用尽最大努力交付，不保证可靠性UDP是面向报文的，UDP对应用层交付下来的报文，既不合并，也不拆分，而是保留报文的边界；
+    * 应用层交给UDP多长的报文，UDP就照样发送，即一次发送一个报文；
+    * UDP没有拥塞控制；
+    * UDP支持一对一，一对多，多对一和多对多的交互通信。
+    * UDP的首部开销小，只有8字节。
+
+**实现通信常见的问题**
+* 收到的信息不完整，或者比预期更多（半包，粘包）
+* BIO读写阻塞导致线程挂起
+* 物理链路意外断开，程序不能发觉异常导致挂起
+* 多线程共享同一socket导致数据错乱
+* 长时间占用大量空闲socket
 
 
-## 1.3. Netty
-<a href="#menu" style="float:right">目录</a>
+**常见解决方案**
+* 不要使用BIO,使用NIO
+* 制定消息格式(解决半粘包)
+* 规定通讯工作流程(合理使用队列、线程池、连接池)
+* 加入心跳检测机制(解决异常断开导致连接不可用)
+* 加入链接回收机制(按空闲或超时时间等规则终止链接)
+* 异常处理(不可复用异常发生时及时关闭连接)
+* 即时重发(连接不可用时，即时选用另一条连接重发)
+
+可以用并发性能来衡量一个服务器同时响应多个客户的能力。一个具有好的并发性能的服务器，必须符合两个条件：
+* 能同时接收并处理多个客户连接；
+* 对于每个客户，都会迅速给予响应。
+
+对于NIO，一般是全局只有一个selector,也就是只用一个线程区监听读写连接事件的发生。就可以不要像BIO一样为每一个连接分配一个线程。从读事件里面获取到接收数据之后，可以在当前线程里面进行处理，也可以创建新线程处理，方案选择参考数据处理的负责程度，如果应用的中大部分操作都是在内存中进行处理，可以不创建线程处理。如果还涉及到数据库等比较耗时的操作，需要创建新线程进行处理，一般使用线程池。使用线程池需要考虑线程池数量的大小，一般是和CPU数量一致或者加1。如果IO阻塞比较多的场景，可以适当增加线程数量。通常还需要防止死锁的发生，导致线程泄漏(线程长时间阻塞，导致线程名存实亡)。
 
 
-### 1.3.1. Netty基本案例
-<a href="#menu" style="float:right">目录</a>
 
-### 1.3.2. TCP粘包拆包
-<a href="#menu" style="float:right">目录</a>
 
-#### 1.3.2.1. 粘包拆包基本概念
-<a href="#menu" style="float:right">目录</a>
+## 1.2. Netty
+<a href="#menu" >目录</a>
+
+
+### 1.2.1. Netty基本案例
+<a href="#menu" >目录</a>
+
+### 1.2.2. TCP粘包拆包
+<a href="#menu" >目录</a>
+
+#### 1.2.2.1. 粘包拆包基本概念
+<a href="#menu" >目录</a>
 
 TCP是个流协议，所谓流，就是没有界限的一串数据。TCP底层并不了解上层业务数据的具体数据的具体含义，它会根据TCP缓冲区的世纪情况进行包的划分，所以每发送一个数据包，可能包含多个的上层业务数据包。也有可能一个大的业务数据包分成多个TCP数据包进行发送。
 
@@ -1184,7 +638,7 @@ TCP是个流协议，所谓流，就是没有界限的一串数据。TCP底层�
 2、发送端将每个数据包封装为固定长度（不够的可以通过补0填充），这样接收端每次从接收缓冲区中读取固定长度的数据就自然而然的把每个数据包拆分开来。
 3、可以在数据包之间设置边界，如添加特殊符号，这样，接收端通过这个边界就可以将不同的数据包拆分开。
 
-#### 1.3.2.2. Netty 中的拆包器
+#### 1.2.2.2. Netty 中的拆包器
 拆包这个工作，Netty 已经为大家备好了很多不同的拆包器。本着不重复发明轮子的原则，我们直接使用Netty现成的拆包器。
 
 **Netty 中的拆包器大致如下：**
@@ -1202,11 +656,11 @@ TCP是个流协议，所谓流，就是没有界限的一串数据。TCP底层�
     * 将应用层数据包的长度，作为接收端应用层数据包的拆分依据。按照应用层数据包的大小，拆包。这个拆包器，有一个要求，就是应用层协议中包含数据包的长度。
 
 
-### 1.3.3. 私有协议开发
-<a href="#menu" style="float:right">目录</a>
+### 1.2.3. 私有协议开发
+<a href="#menu" >目录</a>
 
-#### 1.3.3.1. Netty协议栈功能设计
-<a href="#menu" style="float:right">目录</a>
+#### 1.2.3.1. Netty协议栈功能设计
+<a href="#menu" >目录</a>
 
 **协议栈功能描述**
 * 基于Netty的NIO通信框架，提高高性能的异步通信能力
@@ -1215,13 +669,13 @@ TCP是个流协议，所谓流，就是没有界限的一串数据。TCP底层�
 * 链路有效性校验机制
 * 链路的断连重连机制
 
-#### 1.3.3.2. Netty协议栈开发
-<a href="#menu" style="float:right">目录</a>
+#### 1.2.3.2. Netty协议栈开发
+<a href="#menu" >目录</a>
 
 
 
-### 1.3.4. 服务端创建流程分析
-<a href="#menu" style="float:right">目录</a>
+### 1.2.4. 服务端创建流程分析
+<a href="#menu" >目录</a>
 
 ![](https://img-blog.csdnimg.cn/20190228093932476.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3N1bnNoaW5lMDUyNjk3,size_16,color_FFFFFF,t_70)
 
@@ -1406,8 +860,8 @@ Selector轮询，由Rector线程NioEventLoop负责调度和执行Selector轮询�
 
 
 
-### 1.3.5. 客户端创建流程分析
-<a href="#menu" style="float:right">目录</a>
+### 1.2.5. 客户端创建流程分析
+<a href="#menu" >目录</a>
 
 ![](https://img-blog.csdnimg.cn/2019022810332549.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3N1bnNoaW5lMDUyNjk3,size_16,color_FFFFFF,t_70)
 
@@ -1424,28 +878,28 @@ Selector轮询，由Rector线程NioEventLoop负责调度和执行Selector轮询�
 **步骤9**
 
 
-### 1.3.6. ByteBuf说明
-<a href="#menu" style="float:right">目录</a>
+### 1.2.6. ByteBuf说明
+<a href="#menu" >目录</a>
 
-#### 1.3.6.1. ByteBuf功能说明
-
-
+#### 1.2.6.1. ByteBuf功能说明
 
 
-### 1.3.7. Channel和Unsafe
-<a href="#menu" style="float:right">目录</a>
 
-### 1.3.8. ChannelPipeline和ChannelHandler
-<a href="#menu" style="float:right">目录</a>
 
-### 1.3.9. EventLoop和EventLoopGroup
-<a href="#menu" style="float:right">目录</a>
+### 1.2.7. Channel和Unsafe
+<a href="#menu" >目录</a>
+
+### 1.2.8. ChannelPipeline和ChannelHandler
+<a href="#menu" >目录</a>
+
+### 1.2.9. EventLoop和EventLoopGroup
+<a href="#menu" >目录</a>
 
 Netty线程模型的设计，既提升了框架的并发性能，又能在很大程度避免锁，局部实现了无所化设计。
 
 
-#### 1.3.9.1. Reactor单线程模型
-<a href="#menu" style="float:right">目录</a>
+#### 1.2.9.1. Reactor单线程模型
+<a href="#menu" >目录</a>
 
 * 单线程模型，是指所有的IO操作都在同一个NIO线程上完成。
 * NIO线程职责如下
@@ -1457,8 +911,8 @@ Netty线程模型的设计，既提升了框架的并发性能，又能在很大
     * 当NIO线程负载过重之后，处理速度将变慢，这会导致大量客户端连接超时，超时之后 往往进行重发，更加重了NIO线程的负载，最终导致大量消息积压和处理超时，称为系统的性能瓶颈
     * 可靠性问题，一旦NIO线程意外跑飞，或者进入死循环，会导致系统通信模型不可用，不能接收或处理外部消息，造成节点故障
 
-#### 1.3.9.2. Reactor多线程模型
-<a href="#menu" style="float:right">目录</a>
+#### 1.2.9.2. Reactor多线程模型
+<a href="#menu" >目录</a>
 
 * 与单线程最大的区别是有一组NIO线程来处理IO操作。
 * 特点
@@ -1468,14 +922,14 @@ Netty线程模型的设计，既提升了框架的并发性能，又能在很大
 
 * 在并发较高的情况下，如果只使用一个线程处理大量的连接，仍然会存在性能问题
 
-#### 1.3.9.3. 主从Reactor多线程模型
-<a href="#menu" style="float:right">目录</a>
+#### 1.2.9.3. 主从Reactor多线程模型
+<a href="#menu" >目录</a>
 
 * 一个线程池负责处理连接操作，一个线程池负责处理IO读写操作、
 * 连接线程池仅仅用于客户端的登录，握手和安全认证。一旦链路建立成功，就将链路注册到后端IO线程池上，由IO线程池负责后续的IO操作。
 
-#### 1.3.9.4. Netty线程模型
-<a href="#menu" style="float:right">目录</a>
+#### 1.2.9.4. Netty线程模型
+<a href="#menu" >目录</a>
 
 Netty的线程模型由用户自行设置。
 两种方式，一种是单线程池模型，连接和IO操作是由单个线程池负责处理。一种是双线程池模型，连接和IO操作是由两个线程池负责处理
@@ -1518,15 +972,15 @@ try {
 
 * Netty读取到数据之后，直接调用ChannelPipeline的fireChannelRead(Object msg).只要用户不切换线程，一直都是IO线程处理，这种串行化方式避免了多线程操作导致的锁的竞争，从性能角度看是最优的。
 
-#### 1.3.9.5. 最佳实践
-<a href="#menu" style="float:right">目录</a>
+#### 1.2.9.5. 最佳实践
+<a href="#menu" >目录</a>
 
 * 服务端创建两个线程池，用于隔离连接和IO操作
 * 尽量不要在ChannelHandler中启动用户线程(解码后用于将POJO消息派发到业务线程除外)
 * 解码放在NIO线程中进行，不要放到业务线程
 * 如果业务简单，���以很快完成，就直接在IO线程中进行处理。业务复杂，耗时较长，就另起业务线程进行处理。
 
-#### NioEventLoop 源码分析
+#### 1.2.9.6. NioEventLoop 源码分析
 
 ![NioEventLoop继承体系](https://github.com/lgjlife/Java-Study/blob/master/pic/netty/NioEventLoop.png?raw=true)
 
@@ -1539,8 +993,8 @@ public final class NioEventLoop extends SingleThreadEventLoop
     * 系统Task,通过调用NioEventLoop的execute(Runable task)方法实现，Netty有很多系统Task,创建它们的主要原因是：当IO线程和用户线程同时操作网络资源时，为了防止并发操作导致的锁竞争，将用户线程的操作封装成Task放入消息队列，由IO线程负责执行，这样就实现了局部无锁化。
     * 定时任务,通过NioEventLoop的schedule(Runnable command, long delay, TimeUnit unit) 实现。
 
-### 1.3.10. Futur和Promise
-<a href="#menu" style="float:right">目录</a>
+### 1.2.10. Futur和Promise
+<a href="#menu" >目录</a>
 
 ```java
 
@@ -1620,23 +1074,23 @@ public interface ChannelPromise extends ChannelFuture, Promise<Void> {
 
 ``` 
 
-### 1.3.11. Netty架构分析
-<a href="#menu" style="float:right">目录</a>
+### 1.2.11. Netty架构分析
+<a href="#menu" >目录</a>
 
-### 1.3.12. Java多线程编程在Netty中的应用
-<a href="#menu" style="float:right">目录</a>
+### 1.2.12. Java多线程编程在Netty中的应用
+<a href="#menu" >目录</a>
 
-### 1.3.13. 高性能之道
-<a href="#menu" style="float:right">目录</a>
+### 1.2.13. 高性能之道
+<a href="#menu" >目录</a>
 
-### 1.3.14. 可靠性
-<a href="#menu" style="float:right">目录</a>
+### 1.2.14. 可靠性
+<a href="#menu" >目录</a>
 
-#### 1.3.14.1. 高可靠性设计
-<a href="#menu" style="float:right">目录</a>
+#### 1.2.14.1. 高可靠性设计
+<a href="#menu" >目录</a>
 
-##### 1.3.14.1.1. 网络通信类故障
-<a href="#menu" style="float:right">目录</a>
+##### 1.2.14.1.1. 网络通信类故障
+<a href="#menu" >目录</a>
 
 **客户端超时连接**
 
@@ -1731,26 +1185,26 @@ public class ChannelInboundHandlerAdapter{
     }
 }
 ```
-##### 1.3.14.1.2. 链路有效性检测
-<a href="#menu" style="float:right">目录</a>
+##### 1.2.14.1.2. 链路有效性检测
+<a href="#menu" >目录</a>
 
 
-##### 1.3.14.1.3. Reactor线程的保护
-<a href="#menu" style="float:right">目录</a>
+##### 1.2.14.1.3. Reactor线程的保护
+<a href="#menu" >目录</a>
 
-##### 1.3.14.1.4. 内存保护
-<a href="#menu" style="float:right">目录</a>
+##### 1.2.14.1.4. 内存保护
+<a href="#menu" >目录</a>
 
-##### 1.3.14.1.5. 流量整形
-<a href="#menu" style="float:right">目录</a>
-
-
-##### 1.3.14.1.6. 优雅停机接口
-<a href="#menu" style="float:right">目录</a>
+##### 1.2.14.1.5. 流量整形
+<a href="#menu" >目录</a>
 
 
-#### 1.3.14.2. 优化建议
-<a href="#menu" style="float:right">目录</a>
+##### 1.2.14.1.6. 优雅停机接口
+<a href="#menu" >目录</a>
+
+
+#### 1.2.14.2. 优化建议
+<a href="#menu" >目录</a>
 
 
 

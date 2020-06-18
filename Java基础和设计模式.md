@@ -92,15 +92,13 @@
         - [8.7.3. 选择器，可选择通道和选择键类](#873-选择器可选择通道和选择键类)
         - [8.7.4. 异步关闭能力](#874-异步关闭能力)
         - [8.7.5. 选择过程的可扩展性](#875-选择过程的可扩展性)
-    - [8.8. IO编程实战](#88-io编程实战)
-        - [8.8.1. BIO实例](#881-bio实例)
-        - [8.8.2. NIO实例](#882-nio实例)
-        - [8.8.3. AIO实例](#883-aio实例)
-        - [8.8.4. AIO读取文件实例](#884-aio读取文件实例)
-    - [8.9. AIO的使用](#89-aio的使用)
-        - [8.9.1. AsynchronousFileChannel 类的使用](#891-asynchronousfilechannel-类的使用)
-        - [8.9.2. synchronousServerSocketChannel 和 AsynchronousSockeChannel类的使用](#892-synchronousserversocketchannel-和-asynchronoussockechannel类的使用)
-    - [8.10. 字符集](#810-字符集)
+    - [8.8. 网络配置选项](#88-网络配置选项)
+    - [8.9. IO编程实战](#89-io编程实战)
+        - [8.9.1. BIO实例](#891-bio实例)
+        - [8.9.2. NIO实例](#892-nio实例)
+        - [8.9.3. AIO实例](#893-aio实例)
+            - [8.9.3.1. AsynchronousFileChannel 类的使用](#8931-asynchronousfilechannel-类的使用)
+            - [8.9.3.2. synchronousServerSocketChannel 和 AsynchronousSockeChannel类的使用](#8932-synchronousserversocketchannel-和-asynchronoussockechannel类的使用)
 - [9. Javac编译原理](#9-javac编译原理)
     - [9.1. Javac编译器的基本结构](#91-javac编译器的基本结构)
     - [9.2. Javac的工作原理分析](#92-javac的工作原理分析)
@@ -4771,62 +4769,292 @@ Selector类的close()方法与slect()方法的同步方式是一样的，因此�
 
 NIO的最佳实践是服务端只使用一个选择器来监听所有通道的事件。在大量通道上执行就绪选择并不会有很大的开销，大多数工作是由底层操作系统完成的。使用一个线程类执行select，如果想要合理利用cpu，可以将获取selectkey之后的操作提交给线程池处理，当然，如果确认本次的任务处理时间非常短，可以直接在当前线程上处理即可。
 
-## 8.8. IO编程实战
+## 8.8. 网络配置选项
 <a href="#menu"  >目录</a>
 
 
+网络配置是NetworkChannel定义的，网络相关的通道都实现了这个接口。
+```java
+NetworkChannel{
+    NetworkChannel bind(SocketAddress local) throws IOException;
+    SocketAddress getLocalAddress() throws IOException;
+    //设置网络配置
+    <T> NetworkChannel setOption(SocketOption<T> name, T value) throws IOException;
+    //获取网络配置
+    <T> T getOption(SocketOption<T> name) throws IOException;
+    //获取支持的网络配置
+    Set<SocketOption<?>> supportedOptions();
+}
 
-### 8.8.1. BIO实例
+```
+查看各个网络通道的支持配置
+```java
+public static void main(String args[]) throws Exception{
+    printOps(SocketChannel.open());
+    printOps(ServerSocketChannel.open());
+    printOps(AsynchronousSocketChannel.open());
+    printOps(AsynchronousServerSocketChannel.open());
+    printOps(DatagramChannel.open());
+}
+
+
+public static void printOps(NetworkChannel channel){
+    channel.setOption()
+    System.out.println(channel);
+
+    Set<java.net.SocketOption<?>> opsSet  = channel.supportedOptions();
+
+    opsSet.forEach((socketOption)->{
+
+        System.out.println(socketOption.name()+" -- " + socketOption.type());
+
+    });
+
+    System.out.println();
+}
+```
+输出
+```yml
+java.nio.channels.SocketChannel[unconnected]
+TCP_NODELAY: class java.lang.Boolean
+SO_OOBINLINE: class java.lang.Boolean
+SO_REUSEADDR: class java.lang.Boolean
+SO_LINGER: class java.lang.Integer
+SO_SNDBUF: class java.lang.Integer
+SO_RCVBUF: class java.lang.Integer
+SO_KEEPALIVE: class java.lang.Boolean
+IP_TOS: class java.lang.Integer
+
+sun.nio.ch.ServerSocketChannelImpl[unbound]
+SO_REUSEADDR: class java.lang.Boolean
+SO_RCVBUF: class java.lang.Integer
+IP_TOS: class java.lang.Integer
+
+sun.nio.ch.UnixAsynchronousSocketChannelImpl[unconnected]
+SO_SNDBUF: class java.lang.Integer
+TCP_NODELAY: class java.lang.Boolean
+SO_REUSEADDR: class java.lang.Boolean
+SO_RCVBUF: class java.lang.Integer
+SO_KEEPALIVE: class java.lang.Boolean
+
+sun.nio.ch.UnixAsynchronousServerSocketChannelImpl[unbound]
+SO_REUSEADDR: class java.lang.Boolean
+SO_RCVBUF: class java.lang.Integer
+
+sun.nio.ch.DatagramChannelImpl@2dda6444
+IP_MULTICAST_TTL: class java.lang.Integer
+IP_MULTICAST_LOOP: class java.lang.Boolean
+SO_REUSEADDR: class java.lang.Boolean
+SO_SNDBUF: class java.lang.Integer
+SO_BROADCAST: class java.lang.Boolean
+IP_MULTICAST_IF: class java.net.NetworkInterface
+SO_RCVBUF: class java.lang.Integer
+IP_TOS: class java.lang.Integer
+```
+
+
+## 8.9. IO编程实战
 <a href="#menu"  >目录</a>
 
-```java
-    
-```
+由于操作系统的连接数量是有限制的。在网络通信中，客户端可能会因为各种原因导致无故断开连接，比如突然停机。这种情况server端是收不到client的断开连接通知的，除非是客户端主动调用close()。由于一般场景是“请求-应答”模型，因此server不会主动发送数据，也就不知道本次连接已经断开，导致维持着大量的连接。最后可能会抛出异常java.io.IOException: Too many open files，从而无法接收新的连接。为避免这种情况，在"client-server"设计中，客户端应当定时发送心跳包，服务端如果长时间没有收到心跳包，则断开与客户端的连接。
 
-```java
+最后，实际项目中，服务端并不一定比客户端先启动，所以最好是做好重连处理。
 
-```
-
-### 8.8.2. NIO实例
+### 8.9.1. BIO实例
 <a href="#menu"  >目录</a>
 
+**客户端**
 ```java
+//创建一个流socket并且进行连接，连接失败将会抛出异常
+Socket  socket = new Socket(host,port);
 
+//下面的write和read都是阻塞的
+//发送数据
+OutputStream outputStream = socket.getOutputStream();
+outputStream.write(byte b[]);
+outputStream.flush();
+
+//读取数据
+InputStream inputStream = socket.getInputStream();
+//返回的是读取到的字节
+int n = inputStream.read(byte b[]);
+```
+**server端**
+```java
+//创建ServerSocket
+ServerSocket serverSocket = new ServerSocket(port);
+//由于bio读写都是阻塞的，所以必须使用单独的线程处理每一个socket连接
+while(true){
+    //等待客户端连接
+    Socket socket =  serverSocket.accept();
+
+    //将socket 提交给新线程进行处理
+    run(){
+        //如果是长连接，则使用while进行轮询，否则读取和回复数据之后则关闭socket
+        while(true){
+            //读数据
+            //写数据
+        }
+    }
+}
 ```
 
-```java
-
-```
-
-
-### 8.8.3. AIO实例
+### 8.9.2. NIO实例
 <a href="#menu"  >目录</a>
 
+**客户端**
 ```java
+//创建socketChannel
+SocketChannel socketChannel = SocketChannel.open();
+//连接
+socketChannel.connect(new InetSocketAddress(host,port));
+
+//发送数据
+ByteBuffer writeBuf = ByteBuffer.wrap(data.toString().getBytes("UTF-8"));
+socketChannel.write(writeBuf)
+
+//读取数据
+ByteBuffer readBuf = ByteBuffer.allocate(1024);
+socketChannel.read(readBuf);
+readBuf.flip();
+byte[] readData = new byte[readBuf.remaining()];
+readBuf.get(readData);
+clientDataHandler.handler(new String(readData,"UTF-8"));
+```
+**server端**
+```java
+//创建服务器通道
+ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+//配置为非阻塞，必须
+serverSocketChannel.configureBlocking(false);
+//监听端口
+serverSocketChannel.bind(new InetSocketAddress(port));
+
+//开启多路复用器
+Selector selector = Selector.open();
+//绑定多路复用器到channel，并设定关注事件
+serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+//创建线程进行轮询多路复用器
+new WorkHandle(selector).start();
+
+public void run() {
+
+    log.info("事件处理....");
+    while (true){
+        try{
+            //监听事件，没有事件发生将阻塞
+            selector.select();
+            //获取事件列表
+            Iterator<SelectionKey> selectionKeyIterator =   selector.selectedKeys().iterator();
+
+            while (selectionKeyIterator.hasNext()){
+                SelectionKey selectionKey = selectionKeyIterator.next();
+                
+                //无效事件
+                if(!selectionKey.isValid())
+                {
+                    continue;
+                }
+                //连接事件
+                if(selectionKey.isAcceptable()){
+
+                    accept(selectionKey);
+                }
+                //channel有数据可读
+                if(selectionKey.isReadable()){
+                    //数据读完有两种操作
+                    //1.在当前线程处理，适用于处理时间不长的任务，时间太长会影响其他key的处理
+                    //2.创建新线程进行处理，适用于处理时间较长的任务
+                    read(selectionKey);
+                    write(selectionKey);
+                }
+                //可写事件，最好不要监听可写事件，也就是 不要配置SelectionKey.OP_WRITE
+                //因为在空闲的时候，可写事件一定会发生，导致空轮询
+                if(selectionKey.isWritable()){
+                    //write(selectionKey);
+                }
+                //移除事件
+                selectionKeyIterator.remove();
+
+
+            }
+
+        }
+        catch(Exception ex){
+            log.error(ex.getMessage());
+        }
+
+    }
+}
+
+public void accept(SelectionKey selectionKey){
+    try{
+        ServerSocketChannel serverSocketChannel = (ServerSocketChannel) selectionKey.channel();
+        SocketChannel channel = serverSocketChannel.accept();
+
+        channel.configureBlocking(false);
+        channel.register(selector,SelectionKey.OP_READ);
+        log.info("与客户端[{}]连接成功",channel.getRemoteAddress());
+
+    }
+    catch(Exception ex){
+        log.error(ex.getMessage());
+    }
+
+}
+
+public void read(SelectionKey selectionKey){
+
+    try{
+        SocketChannel channel = (SocketChannel)selectionKey.channel();
+        log.info("读取客户端[{}]数据",channel.getRemoteAddress());
+
+        ByteBuffer readByteBUffer = ByteBuffer.allocate(1024);
+
+        int count = channel.read(readByteBUffer);
+        if(count == -1){
+            selectionKey.channel().close();
+            selectionKey.cancel();
+            return;
+        }
+        readByteBUffer.flip();
+        byte[] readData = new byte[readByteBUffer.remaining()];
+        readByteBUffer.get(readData);
+        log.info("接收到来自客户端的数据:"+new String(readData,"UTF-8"));
+
+
+    }
+    catch(Exception ex){
+        log.error(ex.getMessage());
+    }
+
+}
+
+public void write(SelectionKey selectionKey){
+    try{
+        SocketChannel channel = (SocketChannel)selectionKey.channel();
+        log.info("向客户端[{}]写入数据",channel.getRemoteAddress());
+        String str = "服务端返回的数据:" + new Random().nextInt(100);
+        ByteBuffer writeBuffer = ByteBuffer.wrap(str.getBytes("UTF-8"));
+        // writeBuffer.flip();
+        channel.write(writeBuffer);
+    }
+    catch(Exception ex){
+        log.error(ex.getMessage());
+    }
+}
 
 ```
-```java
 
-```
 
-### 8.8.4. AIO读取文件实例
+### 8.9.3. AIO实例
 <a href="#menu"  >目录</a>
-
-```java
-
-```
-```java
-
-```
-
-
-
-## 8.9. AIO的使用
-<a href="#menu"  >目录</a>
-
-### 8.9.1. AsynchronousFileChannel 类的使用
-
 在 Java 7 中，AsynchronousFileChannel 已添加到 Java NIO 中，它可以异步读取数据或者将数据写入文件，当调用read,write方法时，可以设定回调函数。写入或者读取完成之后通过回调函数通知。同时还可以对文件添加锁，避免写入时出现竞争问题。文件锁使用的是操作系统提供的操作锁函数。
+
+
+
+
+#### 8.9.3.1. AsynchronousFileChannel 类的使用
 
 
 **基本例子**
@@ -5018,11 +5246,47 @@ public abstract <A> void write(ByteBuffer src,
 }
 ```
 
-### 8.9.2. synchronousServerSocketChannel 和 AsynchronousSockeChannel类的使用
+#### 8.9.3.2. synchronousServerSocketChannel 和 AsynchronousSockeChannel类的使用
 <a href="#menu"  >目录</a>
 
-## 8.10. 字符集
-<a href="#menu"  >目录</a>
+**客户端**
+
+```java
+AsynchronousSocketChannel asynSocketChannel  = AsynchronousSocketChannel.open();
+asynSocketChannel.connect(new InetSocketAddress(host,port),
+                         null, new CompletionHandler<Void, Object>() {
+    @Override
+    public void completed(Void result, Object attachment) {
+        //连接成功处理
+    }
+
+    @Override
+    public void failed(Throwable exc, Object attachment) {
+        //连接失败处理
+    }
+});
+
+//读写数据和前面使用通道读写数据基本一致，只是多提供了参数CompletionHandler进行异步数据回调处理
+```
+
+**server端**
+
+由于异步IO没有继承SelectableChannel接口。因此不能使用IO多路复用器。也是需要单独的线程来处理每一个连接。
+
+```java
+AsynchronousServerSocketChannel socketChannel =  AsynchronousServerSocketChannel.open();
+socketChannel.bind(new InetSocketAddress(port));
+
+while(true){
+    Future<AsynchronousSocketChannel> future =  socketChannel.accept();
+    AsynchronousSocketChannel channel = future.get();
+    log.info("连接成功:{}",channel.getRemoteAddress());
+    //提交线程池处理，线程池通过channel来读写数据
+    executorService.submit(new SocketHandler(channel));
+
+}
+```
+
 
 
 
