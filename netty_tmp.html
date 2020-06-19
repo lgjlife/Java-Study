@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>netty.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<span id="menu">
+<!-- TOC -->
+</span><ul>
+<li><a href="#1-java%E7%BD%91%E8%B7%AF%E9%80%9A%E4%BF%A1">1. Java网路通信</a>
+<ul>
+<li><a href="#11-io%E6%A8%A1%E5%9E%8B">1.1. IO模型</a>
+<ul>
+<li><a href="#111-linux%E7%BD%91%E7%BB%9Cio%E6%A8%A1%E5%9E%8B%E4%BB%8B%E7%BB%8D">1.1.1. Linux网络IO模型介绍</a></li>
+<li><a href="#113-java-io-%E6%BC%94%E8%BF%9B%E4%B9%8B%E8%B7%AF">1.1.3. Java IO 演进之路</a></li>
+<li><a href="#114-java-io%E5%AF%B9%E6%AF%94">1.1.4. Java IO对比</a>
+<ul>
+<li><a href="#1141-bio%E7%BC%96%E7%A8%8B">1.1.4.1. BIO编程</a></li>
+<li><a href="#1142-nio%E7%BC%96%E7%A8%8B">1.1.4.2. NIO编程</a></li>
+<li><a href="#1143-aio%E7%BC%96%E7%A8%8B">1.1.4.3. AIO编程</a></li>
+</ul>
+</li>
+<li><a href="#115-io%E6%A8%A1%E5%9E%8B%E5%AF%B9%E6%AF%94%E6%80%BB%E7%BB%93">1.1.5. IO模型对比总结</a></li>
+<li><a href="#116-%E9%80%89%E6%8B%A9netty%E7%9A%84%E7%90%86%E7%94%B1">1.1.6. 选择Netty的理由</a></li>
+<li><a href="#117-%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8D%8F%E8%AE%AE">1.1.7. 实现自定义协议</a></li>
+</ul>
+</li>
+<li><a href="#12-netty">1.2. Netty</a>
+<ul>
+<li><a href="#121-netty%E5%9F%BA%E6%9C%AC%E6%A1%88%E4%BE%8B">1.2.1. Netty基本案例</a></li>
+<li><a href="#122-tcp%E7%B2%98%E5%8C%85%E6%8B%86%E5%8C%85">1.2.2. TCP粘包拆包</a>
+<ul>
+<li><a href="#1221-%E7%B2%98%E5%8C%85%E6%8B%86%E5%8C%85%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5">1.2.2.1. 粘包拆包基本概念</a></li>
+<li><a href="#1222-netty-%E4%B8%AD%E7%9A%84%E6%8B%86%E5%8C%85%E5%99%A8">1.2.2.2. Netty 中的拆包器</a></li>
+</ul>
+</li>
+<li><a href="#123-%E7%A7%81%E6%9C%89%E5%8D%8F%E8%AE%AE%E5%BC%80%E5%8F%91">1.2.3. 私有协议开发</a>
+<ul>
+<li><a href="#1231-netty%E5%8D%8F%E8%AE%AE%E6%A0%88%E5%8A%9F%E8%83%BD%E8%AE%BE%E8%AE%A1">1.2.3.1. Netty协议栈功能设计</a></li>
+<li><a href="#1232-netty%E5%8D%8F%E8%AE%AE%E6%A0%88%E5%BC%80%E5%8F%91">1.2.3.2. Netty协议栈开发</a></li>
+</ul>
+</li>
+<li><a href="#124-%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90">1.2.4. 服务端创建流程分析</a></li>
+<li><a href="#125-%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90">1.2.5. 客户端创建流程分析</a></li>
+<li><a href="#126-bytebuf%E8%AF%B4%E6%98%8E">1.2.6. ByteBuf说明</a>
+<ul>
+<li><a href="#1261-bytebuf%E5%8A%9F%E8%83%BD%E8%AF%B4%E6%98%8E">1.2.6.1. ByteBuf功能说明</a></li>
+</ul>
+</li>
+<li><a href="#127-channel%E5%92%8Cunsafe">1.2.7. Channel和Unsafe</a></li>
+<li><a href="#128-channelpipeline%E5%92%8Cchannelhandler">1.2.8. ChannelPipeline和ChannelHandler</a></li>
+<li><a href="#129-eventloop%E5%92%8Ceventloopgroup">1.2.9. EventLoop和EventLoopGroup</a>
+<ul>
+<li><a href="#1291-reactor%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B">1.2.9.1. Reactor单线程模型</a></li>
+<li><a href="#1292-reactor%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B">1.2.9.2. Reactor多线程模型</a></li>
+<li><a href="#1293-%E4%B8%BB%E4%BB%8Ereactor%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B">1.2.9.3. 主从Reactor多线程模型</a></li>
+<li><a href="#1294-netty%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B">1.2.9.4. Netty线程模型</a></li>
+<li><a href="#1295-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5">1.2.9.5. 最佳实践</a></li>
+<li><a href="#1296-nioeventloop-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90">1.2.9.6. NioEventLoop 源码分析</a></li>
+</ul>
+</li>
+<li><a href="#1210-futur%E5%92%8Cpromise">1.2.10. Futur和Promise</a></li>
+<li><a href="#1211-netty%E6%9E%B6%E6%9E%84%E5%88%86%E6%9E%90">1.2.11. Netty架构分析</a></li>
+<li><a href="#1212-java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E5%9C%A8netty%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8">1.2.12. Java多线程编程在Netty中的应用</a></li>
+<li><a href="#1213-%E9%AB%98%E6%80%A7%E8%83%BD%E4%B9%8B%E9%81%93">1.2.13. 高性能之道</a></li>
+<li><a href="#1214-%E5%8F%AF%E9%9D%A0%E6%80%A7">1.2.14. 可靠性</a>
+<ul>
+<li><a href="#12141-%E9%AB%98%E5%8F%AF%E9%9D%A0%E6%80%A7%E8%AE%BE%E8%AE%A1">1.2.14.1. 高可靠性设计</a>
+<ul>
+<li><a href="#121411-%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E7%B1%BB%E6%95%85%E9%9A%9C">1.2.14.1.1. 网络通信类故障</a></li>
+<li><a href="#121412-%E9%93%BE%E8%B7%AF%E6%9C%89%E6%95%88%E6%80%A7%E6%A3%80%E6%B5%8B">1.2.14.1.2. 链路有效性检测</a></li>
+<li><a href="#121413-reactor%E7%BA%BF%E7%A8%8B%E7%9A%84%E4%BF%9D%E6%8A%A4">1.2.14.1.3. Reactor线程的保护</a></li>
+<li><a href="#121414-%E5%86%85%E5%AD%98%E4%BF%9D%E6%8A%A4">1.2.14.1.4. 内存保护</a></li>
+<li><a href="#121415-%E6%B5%81%E9%87%8F%E6%95%B4%E5%BD%A2">1.2.14.1.5. 流量整形</a></li>
+<li><a href="#121416-%E4%BC%98%E9%9B%85%E5%81%9C%E6%9C%BA%E6%8E%A5%E5%8F%A3">1.2.14.1.6. 优雅停机接口</a></li>
+</ul>
+</li>
+<li><a href="#12142-%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE">1.2.14.2. 优化建议</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<!-- /TOC -->
+<h1 id="1-java%E7%BD%91%E8%B7%AF%E9%80%9A%E4%BF%A1">1. Java网路通信</h1>
+<p><a href="#menu" >目录</a></p>
+<h2 id="11-io%E6%A8%A1%E5%9E%8B">1.1. IO模型</h2>
+<p><a href="#menu" >目录</a></p>
+<h3 id="111-linux%E7%BD%91%E7%BB%9Cio%E6%A8%A1%E5%9E%8B%E4%BB%8B%E7%BB%8D">1.1.1. Linux网络IO模型介绍</h3>
+<p><a href="#menu" >目录</a></p>
+<p>在进行网络编程时，我们常常见到同步(Sync)/异步(Async)，阻塞(Block)/非阻塞(Unblock)四种调用方式：</p>
+<ul>
+<li>同步：所谓同步，就是在发出一个功能调用时，在没有得到结果之前，该调用就不返回。也就是必须一件一件事做,等前一件做完了才能做下一件事。例如普通B/S模式（同步）：提交请求-&gt;等待服务器处理-&gt;处理完毕返回 这个期间客户端浏览器不能干任何事</li>
+<li>异步：异步的概念和同步相对。当一个异步过程调用发出后，调用者不能立刻得到结果。实际处理这个调用的部件在完成后，通过状态、通知和回调来通知调用者。例如 ajax请求（异步）: 请求通过事件触发-&gt;服务器处理（这是浏览器仍然可以作其他事情）-&gt;处理完毕</li>
+<li>阻塞: 阻塞调用是指调用结果返回之前，当前线程会被挂起（线程进入非可执行状态，在这个状态下，cpu不会给线程分配时间片，即线程暂停运行）。函数只有在得到结果之后才会返回。有人也许会把阻塞调用和同步调用等同起来，实际上他是不同的。对于同步调用来说，很多时候当前线程还是激活的，只是从逻辑上当前函数没有返回而已。 例如，我们在socket中调用recv函数，如果缓冲区中没有数据，这个函数就会一直等待，直到有数据才返回。而此时，当前线程还会继续处理各种各样的消息。</li>
+<li>非阻塞:  非阻塞和阻塞的概念相对应，指在不能立刻得到结果之前，该函数不会阻塞当前线程，而会立刻返回。</li>
+</ul>
+<p>对象的阻塞模式和阻塞函数调用: 对象是否处于阻塞模式和函数是不是阻塞调用有很强的相关性，但是并不是一一对应的。阻塞对象上可以有非阻塞的调用方式，我们可以通过一定的API去轮询状 态，在适当的时候调用阻塞函数，就可以避免阻塞。而对于非阻塞对象，调用特殊的函数也可以进入阻塞调用。函数select就是这样的一个例子。</p>
+<p><strong>同步和异步</strong></p>
+<ul>
+<li>同步IO: 需要用户进程主动将存放在内核缓冲区的数据拷贝到用户进程中</li>
+<li>异步IO: 内核会自动将数据从内核缓冲区拷贝到用户缓冲区，然后再通知用户</li>
+</ul>
+<p><strong>阻塞和非阻塞</strong></p>
+<p>现在操作系统都是采用虚拟存储器，那么对32位操作系统而言，它的寻址空间（虚拟储存空间）为4G（2的32次方）。操作系统的核心是内核，独立于普通的应用程序，可以访问受保护的内存空间，也有访问底层硬件设备的所有权限。为了保证用户进程不能直接操作内核，保证内核的安全，操作系统将虚拟空间划分为两个部分，一个部分为内核空间，一部分为用户空间。
+<img src="file:///home/lgj/aProject/aRealPrj/Java-Interview" alt="">
+pic/netty/IO调用过程.png
+在Linux里面，分为用户空间和内核空间，当调用系统调用的时候，就进入内核空间，当调用返回的时候，就回到用户空间。对于IO操作，包括两个过程，IO系统调用(read,write)和实际的IO操作(将内核的数据发送到物理设备，或者从物理设备读取到内核缓冲区)。当进行系统调用之后立即返回则是非阻塞的，如果是等待IO操作完成才返回，则是阻塞型的。</p>
+<p>在IO多路复用中，是通过select，poll,epoll获取到有事件的fd列表，此时是阻塞调用，因为需要等待至少有一个fd事件发生，当然也有超时(没有一个fd事件发生)返回的。之后调用read或者write，由于此时fd上一定有事件发生，所以无所谓fd是否设置为非阻塞型。在Java的nio中，必须设置为非阻塞，不然会报错java.nio.channels.IllegalBlockingModeException。</p>
+<p><strong>Linux下的五种I/O模型</strong></p>
+<ul>
+<li>同步
+<ul>
+<li>阻塞I/O（blocking I/O）</li>
+<li>非阻塞I/O （nonblocking I/O）</li>
+<li>I/O复用(select 和poll，epoll) （I/O multiplexing）</li>
+<li>信号驱动I/O （signal driven I/O (SIGIO)）</li>
+</ul>
+</li>
+<li>异步
+<ul>
+<li>异步I/O （asynchronous I/O (the POSIX aio_functions)）</li>
+</ul>
+</li>
+</ul>
+<p><strong>阻塞I/O</strong></p>
+<p><img src="file:///home/lgj/aProject/aRealPrj/Java-Interview/pic/netty/阻塞IO模型.png" alt="阻塞IO模型"></p>
+<p>简介：进程会一直阻塞，直到数据拷贝完成. 应用程序调用一个IO函数，导致应用程序阻塞，等待数据准备好。 如果数据没有准备好，一直等待….数据准备好了，从内核拷贝到用户空间,IO函数返回成功指示。</p>
+<p><strong>非阻塞I/O</strong></p>
+<p><img src="file:///home/lgj/aProject/aRealPrj/Java-Interview/pic/netty/非阻塞IO模型.png" alt="非阻塞IO模型"></p>
+<p>简介：非阻塞IO通过进程反复调用IO函数（多次系统调用，并马上返回）；在数据拷贝的过程中，进程是阻塞的；我们把一个SOCKET接口设置为非阻塞就是告诉内核，当所请求的I/O操作无法完成时，不要将进程睡眠，而是返回一个错误。这样我们的I/O操作函数将不断的测试数据是否已经准备好，如果没有准备好，继续测试，直到数据准备好为止。在这个不断测试的过程中，会大量的占用CPU的时间。</p>
+<p><strong>I/O复用</strong></p>
+<p><img src="file:///home/lgj/aProject/aRealPrj/Java-Interview/pic/netty/IO多路复用.png" alt="/IO多路复用"></p>
+<p>主要是select和epoll；对一个IO端口，两次调用，两次返回，比阻塞IO并没有什么优越性；关键是能实现同时对多个IO端口进行监听； I/O复用模型会用到select、poll、epoll函数，这几个函数也会使进程阻塞，但是和阻塞I/O所不同的的，这两个函数可以同时阻塞多个I/O操作。而且可以同时对多个读操作，多个写操作的I/O函数进行检测，直到有数据可读或可写时，才真正调用I/O操作函数。</p>
+<p><strong>信号驱动I/O</strong></p>
+<p><img src="file:///home/lgj/aProject/aRealPrj/Java-Interview/pic/netty/信号驱动IO.png" alt="信号驱动IO"></p>
+<p>首先我们允许套接口进行信号驱动I/O,并安装一个信号处理函数，进程继续运行并不阻塞。当数据准备好时，进程会收到一个SIGIO信号，可以在信号处理函数中调用I/O操作函数处理数据。</p>
+<p><strong>异步I/O</strong></p>
+<p><img src="file:///home/lgj/aProject/aRealPrj/Java-Interview/pic/netty/异步IO.png" alt="异步IO"></p>
+<p>当一个异步过程调用发出后，调用者不能立刻得到结果。实际处理这个调用的部件在完成后，通过状态、通知和回调来通知调用者的输入输出操作</p>
+<p><strong>select、poll、epoll简介</strong></p>
+<p>epoll跟select都能提供多路I/O复用的解决方案。在现在的Linux内核里有都能够支持，其中epoll是Linux所特有，而select则应该是POSIX所规定，一般操作系统均有实现</p>
+<ul>
+<li>
+<p>select：</p>
+<ul>
+<li>select本质上是通过设置或者检查存放fd标志位的数据结构来进行下一步处理。这样所带来的缺点是：</li>
+<li>
+<ol>
+<li>单个进程可监视的fd数量被限制，即能监听端口的大小有限。一般来说这个数目和系统内存关系很大，具体数目可以cat /proc/sys/fs/file-max察看。32位机默认是1024个。64位机默认是2048.</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>对socket进行扫描时是线性扫描，即采用轮询的方法，效率较低：当套接字比较多的时候，每次select()都要通过遍历FD_SETSIZE个Socket来完成调度,不管哪个Socket是活跃的,都遍历一遍。这会浪费很多CPU时间。如果能给套接字注册某个回调函数，当他们活跃时，自动完成相关操作，那就避免了轮询，这正是epoll与kqueue做的。</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>需要维护一个用来存放大量fd的数据结构，这样会使得用户空间和内核空间在传递该结构时复制开销大</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p>poll：</p>
+<ul>
+<li>poll本质上和select没有区别，它将用户传入的数组拷贝到内核空间，然后查询每个fd对应的设备状态，如果设备就绪则在设备等待队列中加入一项并继续遍历，如果遍历完所有fd后没有发现就绪设备，则挂起当前进程，直到设备就绪或者主动超时，被唤醒后它又要再次遍历fd。这个过程经历了多次无谓的遍历。</li>
+<li>它没有最大连接数的限制，原因是它是基于链表来存储的，但是同样有一个缺点：大量的fd的数组被整体复制于用户态和内核地址空间之间，而不管这样的复制是不是有意。</li>
+<li>poll还有一个特点是“水平触发”，如果报告了fd后，没有被处理，那么下次poll时会再次报告该fd。</li>
+</ul>
+</li>
+<li>
+<p>epoll:</p>
+<ul>
+<li>epoll支持水平触发和边缘触发，最大的特点在于边缘触发，它只告诉进程哪些fd刚刚变为就需态，并且只会通知一次。还有一个特点是，epoll使用“事件”的就绪通知方式，通过epoll_ctl注册fd，一旦该fd就绪，内核就会采用类似callback的回调机制来激活该fd，epoll_wait便可以收到通知</li>
+<li>epoll的优点：
+<ul>
+<li>没有最大并发连接的限制，能打开的FD的上限远大于1024（1G的内存上能监听约10万个端口）；</li>
+<li>效率提升，不是轮询的方式，不会随着FD数目的增加效率下降。只有活跃可用的FD才会调用callback函数；即Epoll最大的优点就在于它只管你“活跃”的连接，而跟连接总数无关，因此在实际的网络环境中，Epoll的效率就会远远高于select和poll。</li>
+<li>内存拷贝，利用mmap()文件映射内存加速与内核空间的消息传递；即epoll使用mmap减少复制开销。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>支持一个进程所能打开的最大连接数</p>
+<ul>
+<li>select
+<ul>
+<li>单个进程所能打开的最大连接数有FD_SETSIZE宏定义，其大小是32个整数的大小（在32位的机器上，大小就是32<em>32，同理64位机器上FD_SETSIZE为32</em>64），当然我们可以对进行修改，然后重新编译内核，但是性能可能会受到影响，这需要进一步的测试。</li>
+</ul>
+</li>
+<li>poll
+<ul>
+<li>poll本质上和select没有区别，但是它没有最大连接数的限制，原因是它是基于链表来存储的</li>
+</ul>
+</li>
+<li>epoll
+<ul>
+<li>虽然连接数有上限，但是很大，1G内存的机器上可以打开10万左右的连接，2G内存的机器可以打开20万左右的连接</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>FD剧增后带来的IO效率问题</p>
+<ul>
+<li>select
+<ul>
+<li>因为每次调用时都会对连接进行线性遍历，所以随着FD的增加会造成遍历速度慢的“线性下降性能问题”。</li>
+</ul>
+</li>
+<li>poll 同上</li>
+<li>epoll
+<ul>
+<li>因为epoll内核中实现是根据每个fd上的callback函数来实现的，只有活跃的socket才会主动调用callback，所以在活跃socket较少的情况下，使用epoll没有前面两者的线性下降的性能问题，但是所有socket都很活跃的情况下，可能会有性能问题。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>消息传递方式</p>
+<ul>
+<li>select
+<ul>
+<li>内核需要将消息传递到用户空间，都需要内核拷贝动作</li>
+</ul>
+</li>
+<li>poll 同上</li>
+<li>epoll
+<ul>
+<li>epoll通过内核和用户空间共享一块内存来实现的。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>在选择select，poll，epoll时要根据具体的使用场合以及这三种方式的自身特点。</p>
+<ol>
+<li>表面上看epoll的性能最好，但是在连接数少并且连接都十分活跃的情况下，select和poll的性能可能比epoll好，毕竟epoll的通知机制需要很多函数回调。</li>
+<li>select低效是因为每次它都需要轮询。但低效也是相对的，视情况而定，也可通过良好的设计改善</li>
+</ol>
+<h3 id="113-java-io-%E6%BC%94%E8%BF%9B%E4%B9%8B%E8%B7%AF">1.1.3. Java IO 演进之路</h3>
+<p><a href="#menu" >目录</a></p>
+<ul>
+<li>
+<p>在JDK 1.4推出NIO之前，基于Java的所有Socket通信都采用同步阻塞模式BIO，这种一请求一响应的通信模型简化了上层的应用开发，但是在性能和可靠性上却存在很大的瓶颈。</p>
+</li>
+<li>
+<p>JDK 1.4 推出了NIO 1.0，主要的类和接口如下</p>
+<ul>
+<li>进行异步IO操作的缓冲区ByteBuffer等</li>
+<li>进行异步IO操作的管道Pipe</li>
+<li>进行各种IO操作的Channel,包括ServerSocketChannel,SocketChannel</li>
+<li>多种字符集的编码能力和解码能力</li>
+<li>实现非阻塞IO操作的多路复用器Selector</li>
+<li>正则表达式类库</li>
+<li>文件通道FileChannel</li>
+</ul>
+</li>
+<li>
+<p>NIO 1.0的问题</p>
+<ul>
+<li>没有统一的文件属性(例如读写权限)</li>
+<li>API能力较弱，例如目录的级联创建和递归遍历，需要自己实现</li>
+<li>底层存储系统的一些高级API无法使用</li>
+<li>所有的文件操作都是同步阻塞调用，不支持异步文件操作</li>
+</ul>
+</li>
+<li>
+<p>JDK 1.7 推出 NIO2.0</p>
+<ul>
+<li>提供能够批量获取文件属性的API，这些API具有平台无关性，不与特定的文件系统相耦合。另外还提供了标准文件系统的SPI，供各个服务提供商扩展实现</li>
+<li>提供AIO功能，包括对配置和多播数据报的支持</li>
+<li>完成JSR-51定义的通道功能，包括对配置和多播数据报的支持。</li>
+</ul>
+</li>
+</ul>
+<h3 id="114-java-io%E5%AF%B9%E6%AF%94">1.1.4. Java IO对比</h3>
+<p><a href="#menu" >目录</a></p>
+<h4 id="1141-bio%E7%BC%96%E7%A8%8B">1.1.4.1. BIO编程</h4>
+<p><a href="#menu" >目录</a></p>
+<p>网络编程的基本模型是C/S模型，即两个进程间的通信：客户端-服务器。</p>
+<p>服务端提供IP和监听端口，客户端通过连接操作向服务端监听的地址发起连接请求，通过三次握手连接，如果连接成功建立，双方就可以通过套接字进行通信。</p>
+<p>传统的同步阻塞模型开发中，Server  Socket负责绑定IP地址，启动监听端口；Socket负责发起连接操作。连接成功后，双方通过输入和输出流进行同步阻塞式通信。</p>
+<p>简单的描述一下BIO的服务端通信模型：采用BIO通信模型的服务端，通常由一个独立的Acceptor线程负责监听客户端的连接，它接收到客户端连接请求之后为每个客户端创建一个新的线程进行链路处理没处理完成后，通过输出流返回应答给客户端，线程销毁。即典型的一请求一应答通信模型。为什么需要每个线程处理一个连接:因为是阻塞式IO，读写过程都是阻塞的，如果发生长时间的阻塞并且只使用一个线程处理，就会导致大并发下处理不即时。</p>
+<p>传统BIO通信模型图
+<img src="file:///home/lgj/aProject/aRealPrj/Java-Interview/pic/netty/BIO.jpg" alt="BIO"></p>
+<p>该模型最大的问题就是缺乏弹性伸缩能力，当客户端并发访问量增加后，服务端的线程个数和客户端并发访问数呈1:1的正比关系，Java中的线程也是比较宝贵的系统资源，线程数量快速膨胀后，系统的性能将急剧下降。</p>
+<p><strong>客户端</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment">//创建一个流socket并且进行连接，连接失败将会抛出异常</span>
+Socket  socket = <span class="hljs-keyword">new</span> Socket(host,port);
+
+<span class="hljs-comment">//下面的write和read都是阻塞的</span>
+<span class="hljs-comment">//发送数据</span>
+OutputStream outputStream = socket.getOutputStream();
+outputStream.write(<span class="hljs-keyword">byte</span> b[]);
+outputStream.flush();
+
+<span class="hljs-comment">//读取数据</span>
+InputStream inputStream = socket.getInputStream();
+<span class="hljs-comment">//返回的是读取到的字节</span>
+<span class="hljs-keyword">int</span> n = inputStream.read(<span class="hljs-keyword">byte</span> b[]);
+</div></code></pre>
+<p><strong>server端</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment">//创建ServerSocket</span>
+ServerSocket serverSocket = <span class="hljs-keyword">new</span> ServerSocket(port);
+<span class="hljs-comment">//由于bio读写都是阻塞的，所以必须使用单独的线程处理每一个socket连接</span>
+<span class="hljs-keyword">while</span>(<span class="hljs-keyword">true</span>){
+    <span class="hljs-comment">//等待客户端连接</span>
+    Socket socket =  serverSocket.accept();
+
+    <span class="hljs-comment">//将socket 提交给新线程进行处理</span>
+    run(){
+        <span class="hljs-comment">//如果是长连接，则使用while进行轮询，否则读取和回复数据之后则关闭socket</span>
+        <span class="hljs-keyword">while</span>(<span class="hljs-keyword">true</span>){
+            <span class="hljs-comment">//读数据</span>
+            <span class="hljs-comment">//写数据</span>
+        }
+    }
+}
+</div></code></pre>
+<h4 id="1142-nio%E7%BC%96%E7%A8%8B">1.1.4.2. NIO编程</h4>
+<p><a href="#menu" >目录</a></p>
+<p>NIO我们一般认为是New I/O（也是官方的叫法），因为它是相对于老的I/O类库新增的（其实在JDK 1.4中就已经被引入了，但这个名词还会继续用很久，即使它们在现在看来已经是“旧”的了，所以也提示我们在命名时，需要好好考虑），做了很大的改变。但民间跟多人称之为Non-block I/O，即非阻塞I/O，因为这样叫，更能体现它的特点。而下文中的NIO，不是指整个新的I/O库，而是非阻塞I/O。</p>
+<p>NIO提供了与传统BIO模型中的Socket和ServerSocket相对应的SocketChannel和ServerSocketChannel两种不同的套接字通道实现。</p>
+<p>新增的着两种通道都支持阻塞和非阻塞两种模式。</p>
+<p>阻塞模式使用就像传统中的支持一样，比较简单，但是性能和可靠性都不好；非阻塞模式正好与之相反。</p>
+<p>对于低负载、低并发的应用程序，可以使用同步阻塞I/O来提升开发速率和更好的维护性；对于高负载、高并发的（网络）应用，应使用NIO的非阻塞模式来开发。</p>
+<p>下面会先对基础知识进行介绍。</p>
+<p><strong>缓冲区 Buffer</strong>
+Buffer是一个对象，包含一些要写入或者读出的数据。</p>
+<p>在NIO库中，所有数据都是用缓冲区处理的。在读取数据时，它是直接读到缓冲区中的；在写入数据时，也是写入到缓冲区中。任何时候访问NIO中的数据，都是通过缓冲区进行操作。</p>
+<p>缓冲区实际上是一个数组，并提供了对数据结构化访问以及维护读写位置等信息。</p>
+<p>具体的缓存区有这些：ByteBuffe、CharBuffer、 ShortBuffer、IntBuffer、LongBuffer、FloatBuffer、DoubleBuffer。他们实现了相同的接口：Buffer。</p>
+<p><strong>通道 Channel</strong>
+我们对数据的读取和写入要通过Channel，它就像水管一样，是一个通道。通道不同于流的地方就是通道是双向的，可以用于读、写和同时读写操作。</p>
+<p>底层的操作系统的通道一般都是全双工的，所以全双工的Channel比流能更好的映射底层操作系统的API。</p>
+<p>Channel主要分两大类：</p>
+<p>SelectableChannel：用户网络读写
+FileChannel：用于文件操作
+后面代码会涉及的ServerSocketChannel和SocketChannel都是SelectableChannel的子类。</p>
+<p><strong>多路复用器 Selector</strong></p>
+<p>Selector是Java  NIO 编程的基础。</p>
+<p>Selector提供选择已经就绪的任务的能力：Selector会不断轮询注册在其上的Channel，如果某个Channel上面发生读或者写事件，这个Channel就处于就绪状态，会被Selector轮询出来，然后通过SelectionKey可以获取就绪Channel的集合，进行后续的I/O操作。</p>
+<p>一个Selector可以同时轮询多个Channel，因为JDK使用了epoll()代替传统的select实现，所以没有最大连接句柄1024/2048的限制。所以，只需要一个线程负责Selector的轮询，就可以接入成千上万的客户端。</p>
+<p><strong>客户端</strong></p>
+<p>客户端也可以使用selector</p>
+<pre class="hljs"><code><div><span class="hljs-comment">//创建socketChannel</span>
+SocketChannel socketChannel = SocketChannel.open();
+<span class="hljs-comment">//连接</span>
+socketChannel.connect(<span class="hljs-keyword">new</span> InetSocketAddress(host,port));
+
+<span class="hljs-comment">//发送数据</span>
+ByteBuffer writeBuf = ByteBuffer.wrap(data.toString().getBytes(<span class="hljs-string">"UTF-8"</span>));
+socketChannel.write(writeBuf)
+
+<span class="hljs-comment">//读取数据</span>
+ByteBuffer readBuf = ByteBuffer.allocate(<span class="hljs-number">1024</span>);
+socketChannel.read(readBuf);
+readBuf.flip();
+<span class="hljs-keyword">byte</span>[] readData = <span class="hljs-keyword">new</span> <span class="hljs-keyword">byte</span>[readBuf.remaining()];
+readBuf.get(readData);
+clientDataHandler.handler(<span class="hljs-keyword">new</span> String(readData,<span class="hljs-string">"UTF-8"</span>));
+</div></code></pre>
+<p><strong>server端</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment">//创建服务器通道</span>
+ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+<span class="hljs-comment">//配置为非阻塞，必须</span>
+serverSocketChannel.configureBlocking(<span class="hljs-keyword">false</span>);
+<span class="hljs-comment">//监听端口</span>
+serverSocketChannel.bind(<span class="hljs-keyword">new</span> InetSocketAddress(port));
+
+<span class="hljs-comment">//开启多路复用器</span>
+Selector selector = Selector.open();
+<span class="hljs-comment">//绑定多路复用器到channel，并设定关注事件</span>
+serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+<span class="hljs-comment">//创建线程进行轮询多路复用器</span>
+<span class="hljs-keyword">new</span> WorkHandle(selector).start();
+
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>{
+
+    log.info(<span class="hljs-string">"事件处理...."</span>);
+    <span class="hljs-keyword">while</span> (<span class="hljs-keyword">true</span>){
+        <span class="hljs-keyword">try</span>{
+            <span class="hljs-comment">//监听事件，没有事件发生将阻塞</span>
+            selector.select();
+            <span class="hljs-comment">//获取事件列表</span>
+            Iterator&lt;SelectionKey&gt; selectionKeyIterator =   selector.selectedKeys().iterator();
+
+            <span class="hljs-keyword">while</span> (selectionKeyIterator.hasNext()){
+                SelectionKey selectionKey = selectionKeyIterator.next();
+                
+                <span class="hljs-comment">//无效事件</span>
+                <span class="hljs-keyword">if</span>(!selectionKey.isValid())
+                {
+                    <span class="hljs-keyword">continue</span>;
+                }
+                <span class="hljs-comment">//连接事件</span>
+                <span class="hljs-keyword">if</span>(selectionKey.isAcceptable()){
+
+                    accept(selectionKey);
+                }
+                <span class="hljs-comment">//channel有数据可读</span>
+                <span class="hljs-keyword">if</span>(selectionKey.isReadable()){
+                    <span class="hljs-comment">//数据读完有两种操作</span>
+                    <span class="hljs-comment">//1.在当前线程处理，适用于处理时间不长的任务，时间太长会影响其他key的处理</span>
+                    <span class="hljs-comment">//2.创建新线程进行处理，适用于处理时间较长的任务</span>
+                    read(selectionKey);
+                    write(selectionKey);
+                }
+                <span class="hljs-comment">//可写事件，最好不要监听可写事件，也就是 不要配置SelectionKey.OP_WRITE</span>
+                <span class="hljs-comment">//因为在空闲的时候，可写事件一定会发生，导致空轮询</span>
+                <span class="hljs-keyword">if</span>(selectionKey.isWritable()){
+                    <span class="hljs-comment">//write(selectionKey);</span>
+                }
+                <span class="hljs-comment">//移除事件</span>
+                selectionKeyIterator.remove();
+
+
+            }
+
+        }
+        <span class="hljs-keyword">catch</span>(Exception ex){
+            log.error(ex.getMessage());
+        }
+
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">accept</span><span class="hljs-params">(SelectionKey selectionKey)</span></span>{
+    <span class="hljs-keyword">try</span>{
+        ServerSocketChannel serverSocketChannel = (ServerSocketChannel) selectionKey.channel();
+        SocketChannel channel = serverSocketChannel.accept();
+
+        channel.configureBlocking(<span class="hljs-keyword">false</span>);
+        channel.register(selector,SelectionKey.OP_READ);
+        log.info(<span class="hljs-string">"与客户端[{}]连接成功"</span>,channel.getRemoteAddress());
+
+    }
+    <span class="hljs-keyword">catch</span>(Exception ex){
+        log.error(ex.getMessage());
+    }
+
+}
+
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">read</span><span class="hljs-params">(SelectionKey selectionKey)</span></span>{
+
+    <span class="hljs-keyword">try</span>{
+        SocketChannel channel = (SocketChannel)selectionKey.channel();
+        log.info(<span class="hljs-string">"读取客户端[{}]数据"</span>,channel.getRemoteAddress());
+
+        ByteBuffer readByteBUffer = ByteBuffer.allocate(<span class="hljs-number">1024</span>);
+
+        <span class="hljs-keyword">int</span> count = channel.read(readByteBUffer);
+        <span class="hljs-keyword">if</span>(count == -<span class="hljs-number">1</span>){
+            selectionKey.channel().close();
+            selectionKey.cancel();
+            <span class="hljs-keyword">return</span>;
+        }
+        readByteBUffer.flip();
+        <span class="hljs-keyword">byte</span>[] readData = <span class="hljs-keyword">new</span> <span class="hljs-keyword">byte</span>[readByteBUffer.remaining()];
+        readByteBUffer.get(readData);
+        log.info(<span class="hljs-string">"接收到来自客户端的数据:"</span>+<span class="hljs-keyword">new</span> String(readData,<span class="hljs-string">"UTF-8"</span>));
+
+
+    }
+    <span class="hljs-keyword">catch</span>(Exception ex){
+        log.error(ex.getMessage());
+    }
+
+}
+
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">write</span><span class="hljs-params">(SelectionKey selectionKey)</span></span>{
+    <span class="hljs-keyword">try</span>{
+        SocketChannel channel = (SocketChannel)selectionKey.channel();
+        log.info(<span class="hljs-string">"向客户端[{}]写入数据"</span>,channel.getRemoteAddress());
+        String str = <span class="hljs-string">"服务端返回的数据:"</span> + <span class="hljs-keyword">new</span> Random().nextInt(<span class="hljs-number">100</span>);
+        ByteBuffer writeBuffer = ByteBuffer.wrap(str.getBytes(<span class="hljs-string">"UTF-8"</span>));
+        <span class="hljs-comment">// writeBuffer.flip();</span>
+        channel.write(writeBuffer);
+    }
+    <span class="hljs-keyword">catch</span>(Exception ex){
+        log.error(ex.getMessage());
+    }
+}
+
+</div></code></pre>
+<ul>
+<li>可以看到，创建NIO服务端的主要步骤如下：
+<ul>
+<li>打开ServerSocketChannel，监听客户端连接</li>
+<li>绑定监听端口，设置连接为非阻塞模式</li>
+<li>创建Reactor线程，创建多路复用器并启动线程</li>
+<li>将ServerSocketChannel注册到Reactor线程中的Selector上，监听ACCEPT事件</li>
+<li>Selector轮询准备就绪的key</li>
+<li>Selector监听到新的客户端接入，处理新的接入请求，完成TCP三次握手，建立物理链路</li>
+<li>设置客户端链路为非阻塞模式</li>
+<li>将新接入的客户端连接注册到Reactor线程的Selector上，监听读操作，读取客户端发送的网络消息</li>
+<li>异步读取客户端消息到缓冲区</li>
+<li>对Buffer编解码，处理半包消息，将解码成功的消息封装成Task</li>
+<li>将应答消息编码为Buffer，调用SocketChannel的write将消息异步发送给客户端</li>
+</ul>
+</li>
+</ul>
+<p>因为应答消息的发送，SocketChannel也是异步非阻塞的，所以不能保证一次把需要发送的数据发送完，此时就会出现写半包的问题。我们需要注册写操作，不断轮询Selector将没有发送完的消息发送完毕，然后通过Buffer的hasRemain()方法判断消息是否发送完成。</p>
+<h4 id="1143-aio%E7%BC%96%E7%A8%8B">1.1.4.3. AIO编程</h4>
+<p><a href="#menu" >目录</a></p>
+<p>NIO 2.0引入了新的异步通道的概念，并提供了异步文件通道和异步套接字通道的实现。</p>
+<p>异步的套接字通道时真正的异步非阻塞I/O，对应于UNIX网络编程中的事件驱动I/O（AIO）。他不需要过多的Selector对注册的通道进行轮询即可实现异步读写，从而简化了NIO的编程模型。</p>
+<p><strong>客户端</strong></p>
+<pre class="hljs"><code><div>AsynchronousSocketChannel asynSocketChannel  = AsynchronousSocketChannel.open();
+asynSocketChannel.connect(<span class="hljs-keyword">new</span> InetSocketAddress(host,port),
+                         <span class="hljs-keyword">null</span>, <span class="hljs-keyword">new</span> CompletionHandler&lt;Void, Object&gt;() {
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">completed</span><span class="hljs-params">(Void result, Object attachment)</span> </span>{
+        <span class="hljs-comment">//连接成功处理</span>
+    }
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">failed</span><span class="hljs-params">(Throwable exc, Object attachment)</span> </span>{
+        <span class="hljs-comment">//连接失败处理</span>
+    }
+});
+
+<span class="hljs-comment">//读写数据和前面使用通道读写数据基本一致，只是多提供了参数CompletionHandler进行异步数据回调处理</span>
+</div></code></pre>
+<p><strong>server端</strong></p>
+<p>由于异步IO没有继承SelectableChannel接口。因此不能使用IO多路复用器。也是需要单独的线程来处理每一个连接。</p>
+<pre class="hljs"><code><div>AsynchronousServerSocketChannel socketChannel =  AsynchronousServerSocketChannel.open();
+socketChannel.bind(<span class="hljs-keyword">new</span> InetSocketAddress(port));
+
+<span class="hljs-keyword">while</span>(<span class="hljs-keyword">true</span>){
+    Future&lt;AsynchronousSocketChannel&gt; future =  socketChannel.accept();
+    AsynchronousSocketChannel channel = future.get();
+    log.info(<span class="hljs-string">"连接成功:{}"</span>,channel.getRemoteAddress());
+    <span class="hljs-comment">//提交线程池处理，线程池通过channel来读写数据</span>
+    executorService.submit(<span class="hljs-keyword">new</span> SocketHandler(channel));
+
+}
+</div></code></pre>
+<h3 id="115-io%E6%A8%A1%E5%9E%8B%E5%AF%B9%E6%AF%94%E6%80%BB%E7%BB%93">1.1.5. IO模型对比总结</h3>
+<p><a href="#menu" >目录</a></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>同步阻塞IO(BIO)</th>
+<th>伪异步IO</th>
+<th>非阻塞IO(NIO)</th>
+<th>异步IO(AIO)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>客户端个数:IO线程</td>
+<td>1：1</td>
+<td>M：N(M&gt;=N)</td>
+<td>M:1</td>
+<td>M:0(不需要启动额外的线程)</td>
+</tr>
+<tr>
+<td>IO类型(阻塞)</td>
+<td>阻塞</td>
+<td>阻塞</td>
+<td>非阻塞</td>
+<td>非阻塞</td>
+</tr>
+<tr>
+<td>IO类型(同步)</td>
+<td>同步</td>
+<td>同步</td>
+<td>IO多路复用</td>
+<td>异步</td>
+</tr>
+<tr>
+<td>API使用难度</td>
+<td>简单</td>
+<td>简单</td>
+<td>复杂</td>
+<td>非常复杂</td>
+</tr>
+<tr>
+<td>调试难度</td>
+<td>简单</td>
+<td>简单</td>
+<td>复杂</td>
+<td>复杂</td>
+</tr>
+<tr>
+<td>可靠性</td>
+<td>非常差</td>
+<td>差</td>
+<td>高</td>
+<td>高</td>
+</tr>
+<tr>
+<td>吞吐量</td>
+<td>低</td>
+<td>中</td>
+<td>高</td>
+<td>高</td>
+</tr>
+</tbody>
+</table>
+<h3 id="116-%E9%80%89%E6%8B%A9netty%E7%9A%84%E7%90%86%E7%94%B1">1.1.6. 选择Netty的理由</h3>
+<p><a href="#menu" >目录</a></p>
+<p><strong>Java NIO的问题</strong></p>
+<ul>
+<li>API复杂使用麻烦</li>
+<li>需要具备其他的知识运用，比如多线程网络编程等</li>
+<li>可靠性需要自行处理，比如断线重连，拆包问题，网络拥塞等问题</li>
+<li>NIO epoll bug,会导致Selector空轮询。新版本概率较低，不确定完全解决。</li>
+</ul>
+<p><strong>选择Netty的理由</strong></p>
+<ul>
+<li>API使用简单,开发门槛低</li>
+<li>功能强大，预置多种编解码能力，支持多种主流协议</li>
+<li>定制能力强</li>
+<li>性能高</li>
+<li>成熟稳定</li>
+<li>社区活跃，迭代快</li>
+</ul>
+<h3 id="117-%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8D%8F%E8%AE%AE">1.1.7. 实现自定义协议</h3>
+<p><a href="#menu" >目录</a></p>
+<p>实现自定义的应用层协议，也就是意味着要针对传输层协议进行开发，传输层有TCP、UDP两种协议，TCP传输具有可靠性，UDP传输不管数据是否送达，一般选择TCP。TCP是字节流服务,是为数据的可靠传输而设计的。如果数据在传输中丢失或者损坏，TCP会保证再次发送数据，如果数据包乱序到达，TCP会将其置回正确的顺序。对于连接来说，如果数据到来的速度太快,TCP会降低速度，以免数据丢包。程序永远不需要担心接收到乱序或者不正确的数据。不过，相对来说，这种可靠性需要速度作为代价，同时，建立和撤销连接也需要耗费时间。</p>
+<p>用户数据报协议(User Datagram Protocol ,UDP)是在IP之上发送数据的令一种传输层协议，速度很快，但是不可靠，并且发送不需要进行连接，只要有接收方的地址(host:port)即可。当发送数据时，无法确定数据是否会到达，也不知道数据的各个部分是否会以发送时的顺序到达。UDP适合在速度要求较高但是对可靠性要求不高的场景,如音频和多媒体的应用,如果要求可靠性，可以在应用层自行解决。</p>
+<ul>
+<li>TCP通信协议
+<ul>
+<li>TCP是面向连接的；</li>
+<li>每条TCP连接只能由于两个端点，一对一通信；</li>
+<li>TCP提供可靠的交付服务，传输数据无差错，不丢失，不重复，且按时序到达；</li>
+<li>TCP提供全双工通信；</li>
+<li>面向字节流，TCP根据对方给出的窗口和当前的网络拥塞程度决定一个报文应该包含多少个字节。</li>
+</ul>
+</li>
+<li>UDP通信协议
+<ul>
+<li>无连接；</li>
+<li>UDP使用尽最大努力交付，不保证可靠性UDP是面向报文的，UDP对应用层交付下来的报文，既不合并，也不拆分，而是保留报文的边界；</li>
+<li>应用层交给UDP多长的报文，UDP就照样发送，即一次发送一个报文；</li>
+<li>UDP没有拥塞控制；</li>
+<li>UDP支持一对一，一对多，多对一和多对多的交互通信。</li>
+<li>UDP的首部开销小，只有8字节。</li>
+</ul>
+</li>
+</ul>
+<p><strong>实现通信常见的问题</strong></p>
+<ul>
+<li>收到的信息不完整，或者比预期更多（半包，粘包）</li>
+<li>BIO读写阻塞导致线程挂起</li>
+<li>物理链路意外断开，程序不能发觉异常导致挂起</li>
+<li>多线程共享同一socket导致数据错乱</li>
+<li>长时间占用大量空闲socket</li>
+</ul>
+<p><strong>常见解决方案</strong></p>
+<ul>
+<li>不要使用BIO,使用NIO</li>
+<li>制定消息格式(解决半粘包)</li>
+<li>规定通讯工作流程(合理使用队列、线程池、连接池)</li>
+<li>加入心跳检测机制(解决异常断开导致连接不可用)</li>
+<li>加入链接回收机制(按空闲或超时时间等规则终止链接)</li>
+<li>异常处理(不可复用异常发生时及时关闭连接)</li>
+<li>即时重发(连接不可用时，即时选用另一条连接重发)</li>
+</ul>
+<p>可以用并发性能来衡量一个服务器同时响应多个客户的能力。一个具有好的并发性能的服务器，必须符合两个条件：</p>
+<ul>
+<li>能同时接收并处理多个客户连接；</li>
+<li>对于每个客户，都会迅速给予响应。</li>
+</ul>
+<p>对于NIO，一般是全局只有一个selector,也就是只用一个线程区监听读写连接事件的发生。就可以不要像BIO一样为每一个连接分配一个线程。从读事件里面获取到接收数据之后，可以在当前线程里面进行处理，也可以创建新线程处理，方案选择参考数据处理的负责程度，如果应用的中大部分操作都是在内存中进行处理，可以不创建线程处理。如果还涉及到数据库等比较耗时的操作，需要创建新线程进行处理，一般使用线程池。使用线程池需要考虑线程池数量的大小，一般是和CPU数量一致或者加1。如果IO阻塞比较多的场景，可以适当增加线程数量。通常还需要防止死锁的发生，导致线程泄漏(线程长时间阻塞，导致线程名存实亡)。</p>
+<h2 id="12-netty">1.2. Netty</h2>
+<p><a href="#menu" >目录</a></p>
+<h3 id="121-netty%E5%9F%BA%E6%9C%AC%E6%A1%88%E4%BE%8B">1.2.1. Netty基本案例</h3>
+<p><a href="#menu" >目录</a></p>
+<h3 id="122-tcp%E7%B2%98%E5%8C%85%E6%8B%86%E5%8C%85">1.2.2. TCP粘包拆包</h3>
+<p><a href="#menu" >目录</a></p>
+<h4 id="1221-%E7%B2%98%E5%8C%85%E6%8B%86%E5%8C%85%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5">1.2.2.1. 粘包拆包基本概念</h4>
+<p><a href="#menu" >目录</a></p>
+<p>TCP是个流协议，所谓流，就是没有界限的一串数据。TCP底层并不了解上层业务数据的具体数据的具体含义，它会根据TCP缓冲区的世纪情况进行包的划分，所以每发送一个数据包，可能包含多个的上层业务数据包。也有可能一个大的业务数据包分成多个TCP数据包进行发送。</p>
+<p>而对于接收端，并不知道接收的数据流包含了多少个业务数据包。因此需要在整个发送层面做粘包/拆包处理。</p>
+<p><strong>粘包、拆包表现形式</strong></p>
+<p>第一种情况，接收端正常收到两个数据包，即没有发生拆包和粘包的现象。</p>
+<p><img src="file:///home/lgj/aProject/aRealPrj/Java-Interview/pic/netty/无粘包拆包.png" alt="无粘包拆包"></p>
+<p>第二种情况，接收端只收到一个数据包，由于TCP是不会出现丢包的，所以这一个数据包中包含了发送端发送的两个数据包的信息，这种现象即为粘包。这种情况由于接收端不知道这两个数据包的界限，所以对于接收端来说很难处理。</p>
+<p><img src="file:///home/lgj/aProject/aRealPrj/Java-Interview/pic/netty/粘包.png" alt=""></p>
+<p>第三种情况，这种情况有两种表现形式，如下图。接收端收到了两个数据包，但是这两个数据包要么是不完整的，要么就是多出来一块，这种情况即发生了拆包和粘包。这两种情况如果不加特殊处理，对于接收端同样是不好处理的。</p>
+<p><img src="file:///home/lgj/aProject/aRealPrj/Java-Interview/pic/netty/粘包和拆包1.png" alt="粘包和拆包1">
+<img src="file:///home/lgj/aProject/aRealPrj/Java-Interview/pic/netty/粘包和拆包2.png" alt="粘包和拆包2"></p>
+<ul>
+<li>粘包和半包定义如下：
+<ul>
+<li>理想情况下，发送端发送一个数据帧，底层的TCP也将这个数据帧完整地发送出去。而接收端也是接收到一个完整的数据帧。</li>
+<li>粘包，就是接收端读取的时候，多个发送过来的 数据帧 “粘”在了一起。换句话说，接收端读取一次的 字节流 ，读到了发送端的 多个数据帧 ，是为粘包。</li>
+<li>半包，就是发送端的数据帧 “拆”开了，形成一个破碎的包，我们定义这种为半包。</li>
+</ul>
+</li>
+</ul>
+<p><strong>如何解决呢？</strong></p>
+<ul>
+<li>
+<p>基本思路是，在接收端，需要根据自定义协议来，来读取底层的数据包，重新组装我们应用层的数据包，这个过程通常在接收端称为拆包。</p>
+</li>
+<li>
+<p>拆包的原理</p>
+<ul>
+<li>接收端应用层不断从底层的TCP 缓冲区中读取数据。</li>
+<li>每次读取完，判断一下是否为一个完整的应用层数据包。如果是，上层应用层数据包读取完成。</li>
+<li>如果不是，那就保留该数据在应用层缓冲区，然后继续从 TCP 缓冲区中读取，直到得到一个完整的应用层数据包为止。</li>
+<li>至此，<strong>半包</strong>问题得以解决。</li>
+<li>如果从TCP底层读到了多个应用层数据包，则将整个应用层缓冲区，拆成一个一个的独立的应用层数据包，返回给调用程序。</li>
+<li>至此，<strong>粘包</strong>问题得以解决。</li>
+</ul>
+</li>
+</ul>
+<p><strong>粘包、拆包发生原因</strong></p>
+<ul>
+<li>要发送的数据大于TCP发送缓冲区剩余空间大小，将会发生拆包。</li>
+<li>待发送数据大于MSS（最大报文长度），TCP在传输前将进行拆包。</li>
+<li>要发送的数据小于TCP发送缓冲区的大小，TCP将多次写入缓冲区的数据一次发送出去，将会发生粘包。</li>
+<li>接收数据端的应用层没有及时读取接收缓冲区中的数据，将发生粘包。</li>
+</ul>
+<p><strong>粘包、拆包解决办法</strong>
+通过以上分析，我们清楚了粘包或拆包发生的原因，那么如何解决这个问题呢？解决问题的关键在于如何给每个数据包添加边界信息，常用的方法有如下几个：</p>
+<ul>
+<li>发送端给每个数据包添加包首部，首部中应该至少包含数据包的长度，这样接收端在接收到数据后，通过读取包首部的长度字段，便知道每一个数据包的实际长度了。</li>
+<li>发送端将每个数据包封装为固定长度（不够的可以通过补0填充），这样接收端每次从接收缓冲区中读取固定长度的数据就自然而然的把每个数据包拆分开来。</li>
+<li>可以在数据包之间设置边界，如添加特殊符号，这样，接收端通过这个边界就可以将不同的数据包拆分开。</li>
+</ul>
+<h4 id="1222-netty-%E4%B8%AD%E7%9A%84%E6%8B%86%E5%8C%85%E5%99%A8">1.2.2.2. Netty 中的拆包器</h4>
+<p><a href="#menu" >目录</a></p>
+<p>拆包这个工作，Netty 已经为大家备好了很多不同的拆包器。本着不重复发明轮子的原则，我们直接使用Netty现成的拆包器。</p>
+<p><strong>Netty 中的拆包器大致如下：</strong></p>
+<ul>
+<li>固定长度的拆包器 <strong>FixedLengthFrameDecoder</strong>
+<ul>
+<li>每个应用层数据包的都拆分成都是固定长度的大小，比如 1024字节。</li>
+<li>这个显然不大适应在 Java 聊天程序 进行实际应用。</li>
+</ul>
+</li>
+<li>行拆包器 <strong>LineBasedFrameDecoder</strong>
+<ul>
+<li>每个应用层数据包，都以换行符作为分隔符，进行分割拆分。</li>
+<li>这个显然不大适应在 Java 聊天程序 进行实际应用。</li>
+</ul>
+</li>
+<li>分隔符拆包器 <strong>DelimiterBasedFrameDecoder</strong>
+<ul>
+<li>每个应用层数据包，都通过自定义的分隔符，进行分割拆分。</li>
+<li>这个版本，是LineBasedFrameDecoder 的通用版本，本质上是一样的。</li>
+<li>这个显然不大适应在 Java 聊天程序 进行实际应用。</li>
+</ul>
+</li>
+<li>基于数据包长度的拆包器 <strong>LengthFieldBasedFrameDecoder</strong>
+<ul>
+<li>将应用层数据包的长度，作为接收端应用层数据包的拆分依据。按照应用层数据包的大小，拆包。这个拆包器，有一个要求，就是应用层协议中包含数据包的长度。</li>
+</ul>
+</li>
+</ul>
+<h3 id="123-%E7%A7%81%E6%9C%89%E5%8D%8F%E8%AE%AE%E5%BC%80%E5%8F%91">1.2.3. 私有协议开发</h3>
+<p><a href="#menu" >目录</a></p>
+<h4 id="1231-netty%E5%8D%8F%E8%AE%AE%E6%A0%88%E5%8A%9F%E8%83%BD%E8%AE%BE%E8%AE%A1">1.2.3.1. Netty协议栈功能设计</h4>
+<p><a href="#menu" >目录</a></p>
+<p><strong>协议栈功能描述</strong></p>
+<ul>
+<li>基于Netty的NIO通信框架，提高高性能的异步通信能力</li>
+<li>提供消息的编解码，实现POJO的序列化和反序列化</li>
+<li>提供基于IP地址的白名单接入认证机制</li>
+<li>链路有效性校验机制</li>
+<li>链路的断连重连机制</li>
+</ul>
+<h4 id="1232-netty%E5%8D%8F%E8%AE%AE%E6%A0%88%E5%BC%80%E5%8F%91">1.2.3.2. Netty协议栈开发</h4>
+<p><a href="#menu" >目录</a></p>
+<h3 id="124-%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90">1.2.4. 服务端创建流程分析</h3>
+<p><a href="#menu" >目录</a></p>
+<p><img src="https://img-blog.csdnimg.cn/20190228093932476.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3N1bnNoaW5lMDUyNjk3,size_16,color_FFFFFF,t_70" alt=""></p>
+<pre class="hljs"><code><div> <span class="hljs-comment">//bossGroup接受传入的连接</span>
+EventLoopGroup bossGroup = <span class="hljs-keyword">new</span> NioEventLoopGroup();
+<span class="hljs-comment">//一旦bossGroup接受连接并注册到workerGroup，workerGroup则处理连接相关的流量</span>
+EventLoopGroup workerGroup = <span class="hljs-keyword">new</span> NioEventLoopGroup();
+<span class="hljs-keyword">try</span> {
+
+    ServerBootstrap serverBootstrap = <span class="hljs-keyword">new</span> ServerBootstrap();
+    <span class="hljs-comment">//用于设置服务端</span>
+    serverBootstrap.group(bossGroup, workerGroup)
+            .channel(NioServerSocketChannel<span class="hljs-class">.<span class="hljs-keyword">class</span>)
+            .<span class="hljs-title">option</span>(<span class="hljs-title">ChannelOption</span>.<span class="hljs-title">SO_BACKLOG</span>, 1024)
+            .<span class="hljs-title">childHandler</span>(<span class="hljs-title">new</span> <span class="hljs-title">ChildChannelHandler</span>())</span>;
+
+    <span class="hljs-comment">//绑定端口，同步等待成功</span>
+    serverBootstrap.bind(port).sync();
+
+} <span class="hljs-keyword">catch</span> (Exception ex) {
+    ex.printStackTrace();
+} <span class="hljs-keyword">finally</span> {
+    log.info(<span class="hljs-string">"shutdownGracefully...."</span>);
+    <span class="hljs-comment">//  bossGroup.shutdownGracefully();</span>
+    <span class="hljs-comment">//  workerGroup.shutdownGracefully();</span>
+}
+</div></code></pre>
+<p><strong>步骤1</strong>
+创建ServerBootstrap实例。ServerBootstrap是服务端的启动辅助类，提供一系列方法用于设置服务端启动的相关参数，底层通过门面模式对各种能力进行抽象和封装。</p>
+<pre class="hljs"><code><div>ServerBootstrap serverBootstrap = <span class="hljs-keyword">new</span> ServerBootstrap();
+</div></code></pre>
+<p><strong>步骤2</strong>
+设置并绑定Reactor线程池EventLoopGroup.如果只有一个，则该线程池负责连接处理和IO读写处理。如果有两个线程池，一个用于连接处理，另一个用于IO读写处理。
+NioEventLoopGroup可自行设置线程池大小以及线程工厂，默认的线程数量是CPU核心数量*2.</p>
+<pre class="hljs"><code><div>EventLoopGroup bossGroup = <span class="hljs-keyword">new</span> NioEventLoopGroup();
+
+<span class="hljs-function"><span class="hljs-keyword">public</span> ServerBootstrap <span class="hljs-title">group</span><span class="hljs-params">(EventLoopGroup group)</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.group(group, group);
+}
+<span class="hljs-function"><span class="hljs-keyword">public</span> ServerBootstrap <span class="hljs-title">group</span><span class="hljs-params">(EventLoopGroup parentGroup, EventLoopGroup childGroup)</span></span>{}
+</div></code></pre>
+<p><strong>步骤3</strong>
+设置并绑定服务端Channel.
+服务端需要创建NioServerSocketChannel，客户端则为NioSocketChannel</p>
+<pre class="hljs"><code><div>channel(NioServerSocketChannel<span class="hljs-class">.<span class="hljs-keyword">class</span>)
+</span></div></code></pre>
+<p><strong>步骤4</strong>
+配置TCP相关参数</p>
+<pre class="hljs"><code><div>option(ChannelOption.SO_BACKLOG, <span class="hljs-number">1024</span>)
+</div></code></pre>
+<p><strong>步骤5</strong>
+配置消息处理责任链。
+常见的处理有消息编解码，消息处理，定时心跳处理。</p>
+<pre class="hljs"><code><div>childHandler(<span class="hljs-keyword">new</span> ChildChannelHandler());
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChildChannelHandler</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ChannelInitializer</span>&lt;<span class="hljs-title">SocketChannel</span>&gt; </span>{
+
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">initChannel</span><span class="hljs-params">(SocketChannel socketChannel)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+        <span class="hljs-comment">//  socketChannel.pipeline().addLast(new LineBasedFrameDecoder(1024));</span>
+        <span class="hljs-comment">//  socketChannel.pipeline().addLast(new StringDecoder());</span>
+        <span class="hljs-comment">// socketChannel.pipeline().addLast(new StringEncoder());</span>
+        <span class="hljs-comment">// CoderUtil.DelimiterBasedFramDecoder(socketChannel,1024);</span>
+        <span class="hljs-comment">//  socketChannel.pipeline().addLast(new TimeServerHandler());</span>
+        <span class="hljs-comment">//  socketChannel.pipeline().addLast(new NettyConnectServerHandler());</span>
+
+        <span class="hljs-comment">// socketChannel.pipeline().addLast(new MsgpackDecoder());</span>
+        <span class="hljs-comment">//  socketChannel.pipeline().addLast(new MsgpackEncoder());</span>
+        CoderConfig.JsonCoder(socketChannel);
+        socketChannel.pipeline().addLast(<span class="hljs-keyword">new</span> MsgServerHandler());
+    }
+}
+
+
+</div></code></pre>
+<p><strong>步骤6</strong></p>
+<p>绑定端口，可以选择同步或者异步方式，异步方式需要添加监听器。
+在绑定监听端口之前系统会做一系列的初始化和检测工作，完成之后，会启动端口，并将ServerSocketChannel注册到Selector上监听客户端连接。</p>
+<pre class="hljs"><code><div>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ChannelFuture <span class="hljs-title">bind</span><span class="hljs-params">(<span class="hljs-keyword">int</span> inetPort)</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.bind(<span class="hljs-keyword">new</span> InetSocketAddress(inetPort));
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ChannelFuture</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Future</span>&lt;<span class="hljs-title">Void</span>&gt; </span>{
+    <span class="hljs-function">Channel <span class="hljs-title">channel</span><span class="hljs-params">()</span></span>;
+
+    <span class="hljs-function">ChannelFuture <span class="hljs-title">addListener</span><span class="hljs-params">(GenericFutureListener&lt;? extends Future&lt;? <span class="hljs-keyword">super</span> Void&gt;&gt; var1)</span></span>;
+
+    <span class="hljs-function">ChannelFuture <span class="hljs-title">addListeners</span><span class="hljs-params">(GenericFutureListener... var1)</span></span>;
+
+    <span class="hljs-function">ChannelFuture <span class="hljs-title">removeListener</span><span class="hljs-params">(GenericFutureListener&lt;? extends Future&lt;? <span class="hljs-keyword">super</span> Void&gt;&gt; var1)</span></span>;
+
+    <span class="hljs-function">ChannelFuture <span class="hljs-title">removeListeners</span><span class="hljs-params">(GenericFutureListener... var1)</span></span>;
+
+    <span class="hljs-function">ChannelFuture <span class="hljs-title">sync</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> InterruptedException</span>;
+
+    <span class="hljs-function">ChannelFuture <span class="hljs-title">syncUninterruptibly</span><span class="hljs-params">()</span></span>;
+
+    <span class="hljs-function">ChannelFuture <span class="hljs-title">await</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> InterruptedException</span>;
+
+    <span class="hljs-function">ChannelFuture <span class="hljs-title">awaitUninterruptibly</span><span class="hljs-params">()</span></span>;
+}
+
+
+    
+<span class="hljs-comment">//绑定端口，同步等待成功</span>
+serverBootstrap.bind(port).sync();
+
+<span class="hljs-comment">//绑定端口，异步方式，需要添加GenericFutureListener监听器</span>
+serverBootstrap.bind(port).addListener(<span class="hljs-keyword">new</span> GenericFutureListener{
+    xxx
+};
+
+
+</div></code></pre>
+<p><strong>步骤7</strong>
+Selector轮询，由Rector线程NioEventLoop负责调度和执行Selector轮询操作，选择就绪的Channel集合。</p>
+<pre class="hljs"><code><div> <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">select</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException </span>{
+    Selector selector = <span class="hljs-keyword">this</span>.selector;
+
+    <span class="hljs-keyword">try</span> {
+        <span class="hljs-keyword">int</span> selectCnt = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">long</span> currentTimeNanos = System.nanoTime();
+        <span class="hljs-keyword">long</span> selectDeadLineNanos = currentTimeNanos + <span class="hljs-keyword">this</span>.delayNanos(currentTimeNanos);
+
+        <span class="hljs-keyword">while</span>(<span class="hljs-keyword">true</span>) {
+            <span class="hljs-keyword">long</span> timeoutMillis = (selectDeadLineNanos - currentTimeNanos + <span class="hljs-number">500000L</span>) / <span class="hljs-number">1000000L</span>;
+            <span class="hljs-keyword">if</span> (timeoutMillis &lt;= <span class="hljs-number">0L</span>) {
+                <span class="hljs-keyword">if</span> (selectCnt == <span class="hljs-number">0</span>) {
+                    selector.selectNow();
+                    selectCnt = <span class="hljs-number">1</span>;
+                }
+                <span class="hljs-keyword">break</span>;
+            }
+
+            <span class="hljs-keyword">int</span> selectedKeys = selector.select(timeoutMillis);
+            ++selectCnt;
+            <span class="hljs-keyword">if</span> (selectedKeys != <span class="hljs-number">0</span> || <span class="hljs-keyword">this</span>.oldWakenUp || <span class="hljs-keyword">this</span>.wakenUp.get() || <span class="hljs-keyword">this</span>.hasTasks()) {
+                <span class="hljs-keyword">break</span>;
+            }
+
+            <span class="hljs-keyword">if</span> (SELECTOR_AUTO_REBUILD_THRESHOLD &gt; <span class="hljs-number">0</span> &amp;&amp; selectCnt &gt;= SELECTOR_AUTO_REBUILD_THRESHOLD) {
+                logger.warn(<span class="hljs-string">"Selector.select() returned prematurely {} times in a row; rebuilding selector."</span>, selectCnt);
+                <span class="hljs-keyword">this</span>.rebuildSelector();
+                selector = <span class="hljs-keyword">this</span>.selector;
+                selector.selectNow();
+                selectCnt = <span class="hljs-number">1</span>;
+                <span class="hljs-keyword">break</span>;
+            }
+
+            currentTimeNanos = System.nanoTime();
+        }
+
+        <span class="hljs-keyword">if</span> (selectCnt &gt; <span class="hljs-number">3</span> &amp;&amp; logger.isDebugEnabled()) {
+            logger.debug(<span class="hljs-string">"Selector.select() returned prematurely {} times in a row."</span>, selectCnt - <span class="hljs-number">1</span>);
+        }
+    } <span class="hljs-keyword">catch</span> (CancelledKeyException var10) {
+        <span class="hljs-keyword">if</span> (logger.isDebugEnabled()) {
+            logger.debug(CancelledKeyException<span class="hljs-class">.<span class="hljs-keyword">class</span>.<span class="hljs-title">getSimpleName</span>() + " <span class="hljs-title">raised</span> <span class="hljs-title">by</span> <span class="hljs-title">a</span> <span class="hljs-title">Selector</span> - <span class="hljs-title">JDK</span> <span class="hljs-title">bug</span>?", <span class="hljs-title">var10</span>)</span>;
+        }
+    }
+
+}
+    
+</div></code></pre>
+<h3 id="125-%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90">1.2.5. 客户端创建流程分析</h3>
+<p><a href="#menu" >目录</a></p>
+<p><img src="https://img-blog.csdnimg.cn/2019022810332549.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3N1bnNoaW5lMDUyNjk3,size_16,color_FFFFFF,t_70" alt=""></p>
+<p><strong>步骤1</strong>
+<strong>步骤2</strong>
+<strong>步骤3</strong>
+<strong>步骤4</strong>
+<strong>步骤5</strong>
+<strong>步骤6</strong>
+<strong>步骤7</strong>
+<strong>步骤8</strong>
+<strong>步骤9</strong></p>
+<h3 id="126-bytebuf%E8%AF%B4%E6%98%8E">1.2.6. ByteBuf说明</h3>
+<p><a href="#menu" >目录</a></p>
+<h4 id="1261-bytebuf%E5%8A%9F%E8%83%BD%E8%AF%B4%E6%98%8E">1.2.6.1. ByteBuf功能说明</h4>
+<h3 id="127-channel%E5%92%8Cunsafe">1.2.7. Channel和Unsafe</h3>
+<p><a href="#menu" >目录</a></p>
+<h3 id="128-channelpipeline%E5%92%8Cchannelhandler">1.2.8. ChannelPipeline和ChannelHandler</h3>
+<p><a href="#menu" >目录</a></p>
+<h3 id="129-eventloop%E5%92%8Ceventloopgroup">1.2.9. EventLoop和EventLoopGroup</h3>
+<p><a href="#menu" >目录</a></p>
+<p>Netty线程模型的设计，既提升了框架的并发性能，又能在很大程度避免锁，局部实现了无所化设计。</p>
+<h4 id="1291-reactor%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B">1.2.9.1. Reactor单线程模型</h4>
+<p><a href="#menu" >目录</a></p>
+<ul>
+<li>
+<p>单线程模型，是指所有的IO操作都在同一个NIO线程上完成。</p>
+</li>
+<li>
+<p>NIO线程职责如下</p>
+<ul>
+<li>作为NIO服务端，接收客户端的TCP连接,读取通信对端的请求或者应答消息</li>
+<li>作为NIO客户端，向服务端发起TCP连接，向通信对端发送消息或者应答消息</li>
+</ul>
+</li>
+<li>
+<p>Netty是基于NIO,所有的IO操作都是异步非阻塞，原则上可以处理所有的IO操作。但仅适用于负载较低的场景。对于高并发，高负载并不适合</p>
+<ul>
+<li>一个NIO线程同时处理成百上千的链路，性能上无法支撑。即使NIO线程的CPU负荷达到100%，也无法满足海量消息的编码，解码，读取和发送。</li>
+<li>当NIO线程负载过重之后，处理速度将变慢，这会导致大量客户端连接超时，超时之后 往往进行重发，更加重了NIO线程的负载，最终导致大量消息积压和处理超时，称为系统的性能瓶颈</li>
+<li>可靠性问题，一旦NIO线程意外跑飞，或者进入死循环，会导致系统通信模型不可用，不能接收或处理外部消息，造成节点故障</li>
+</ul>
+</li>
+</ul>
+<h4 id="1292-reactor%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B">1.2.9.2. Reactor多线程模型</h4>
+<p><a href="#menu" >目录</a></p>
+<ul>
+<li>
+<p>与单线程最大的区别是有一组NIO线程来处理IO操作。</p>
+</li>
+<li>
+<p>特点</p>
+<ul>
+<li>有一个专门的NIO线程用于监听服务端，接收客户端的TCP连接请求。</li>
+<li>网络IO操作的读写等由一个NIO线程池负责，由这些NIO线程负责消息的读取，解码，编码和发送</li>
+<li>一个NIO线程可以处理多条链路，但是一个链路只对应一个NIO线程，防止发生并发操作问题。</li>
+</ul>
+</li>
+<li>
+<p>在并发较高的情况下，如果只使用一个线程处理大量的连接，仍然会存在性能问题</p>
+</li>
+</ul>
+<h4 id="1293-%E4%B8%BB%E4%BB%8Ereactor%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B">1.2.9.3. 主从Reactor多线程模型</h4>
+<p><a href="#menu" >目录</a></p>
+<ul>
+<li>一个线程池负责处理连接操作，一个线程池负责处理IO读写操作、</li>
+<li>连接线程池仅仅用于客户端的登录，握手和安全认证。一旦链路建立成功，就将链路注册到后端IO线程池上，由IO线程池负责后续的IO操作。</li>
+</ul>
+<h4 id="1294-netty%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B">1.2.9.4. Netty线程模型</h4>
+<p><a href="#menu" >目录</a></p>
+<p>Netty的线程模型由用户自行设置。
+两种方式，一种是单线程池模型，连接和IO操作是由单个线程池负责处理。一种是双线程池模型，连接和IO操作是由两个线程池负责处理
+线程池的线程数量也可以在定义EventLoopGroup时指定。
+客户端只能设置单个线程池，服务端可以设置两个。</p>
+<p>ServerBootstrap 有两个方法用于设置线程池，分别用于设置单个和双个线程池。</p>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">public</span> ServerBootstrap <span class="hljs-title">group</span><span class="hljs-params">(EventLoopGroup group)</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.group(group, group);
+    }
+
+<span class="hljs-function"><span class="hljs-keyword">public</span> ServerBootstrap <span class="hljs-title">group</span><span class="hljs-params">(EventLoopGroup parentGroup, EventLoopGroup childGroup)</span></span>;
+
+ <span class="hljs-comment">//bossGroup接受传入的连接</span>
+EventLoopGroup bossGroup = <span class="hljs-keyword">new</span> NioEventLoopGroup();
+<span class="hljs-comment">//一旦bossGroup接受连接并注册到workerGroup，workerGroup则处理连接相关的流量</span>
+EventLoopGroup workerGroup = <span class="hljs-keyword">new</span> NioEventLoopGroup();
+<span class="hljs-keyword">try</span> {
+
+    ServerBootstrap serverBootstrap = <span class="hljs-keyword">new</span> ServerBootstrap();
+    <span class="hljs-comment">//用于设置服务端</span>
+    serverBootstrap.group(bossGroup, workerGroup)
+            .channel(NioServerSocketChannel<span class="hljs-class">.<span class="hljs-keyword">class</span>)
+            .<span class="hljs-title">option</span>(<span class="hljs-title">ChannelOption</span>.<span class="hljs-title">SO_BACKLOG</span>, 1024)
+            .<span class="hljs-title">option</span>(<span class="hljs-title">ChannelOption</span>.<span class="hljs-title">CONNECT_TIMEOUT_MILLIS</span>,3000)
+            .<span class="hljs-title">childHandler</span>(<span class="hljs-title">new</span> <span class="hljs-title">ChildChannelHandler</span>())</span>;
+}
+</div></code></pre>
+<ul>
+<li>
+<p>Netty用于接收客户端请求的线程池职责</p>
+<ul>
+<li>接收客户端TCP连接，初始化Channel参数</li>
+<li>将链路状态变更事件通知给ChannelPipeline</li>
+</ul>
+</li>
+<li>
+<p>Netty用于处理IO请求的线程池职责</p>
+<ul>
+<li>异步读取通信对端的数据报，发送事件到ChannelPipeline</li>
+<li>异步发送消息到通信对端，调用ChannelPipeline的消息发送接口</li>
+<li>执行系统调用Task</li>
+<li>执行定时任务Task,例如链路空闲状态监测定时任务</li>
+</ul>
+</li>
+<li>
+<p>Netty读取到数据之后，直接调用ChannelPipeline的fireChannelRead(Object msg).只要用户不切换线程，一直都是IO线程处理，这种串行化方式避免了多线程操作导致的锁的竞争，从性能角度看是最优的。</p>
+</li>
+</ul>
+<h4 id="1295-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5">1.2.9.5. 最佳实践</h4>
+<p><a href="#menu" >目录</a></p>
+<ul>
+<li>服务端创建两个线程池，用于隔离连接和IO操作</li>
+<li>尽量不要在ChannelHandler中启动用户线程(解码后用于将POJO消息派发到业务线程除外)</li>
+<li>解码放在NIO线程中进行，不要放到业务线程</li>
+<li>如果业务简单，���以很快完成，就直接在IO线程中进行处理。业务复杂，耗时较长，就另起业务线程进行处理。</li>
+</ul>
+<h4 id="1296-nioeventloop-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90">1.2.9.6. NioEventLoop 源码分析</h4>
+<p><img src="https://github.com/lgjlife/Java-Study/blob/master/pic/netty/NioEventLoop.png?raw=true" alt="NioEventLoop继承体系"></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NioEventLoop</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">SingleThreadEventLoop</span>
+</span></div></code></pre>
+<ul>
+<li>NioEventLoop作用
+<ul>
+<li>IO线程的读写</li>
+<li>系统Task,通过调用NioEventLoop的execute(Runable task)方法实现，Netty有很多系统Task,创建它们的主要原因是：当IO线程和用户线程同时操作网络资源时，为了防止并发操作导致的锁竞争，将用户线程的操作封装成Task放入消息队列，由IO线程负责执行，这样就实现了局部无锁化。</li>
+<li>定时任务,通过NioEventLoop的schedule(Runnable command, long delay, TimeUnit unit) 实现。</li>
+</ul>
+</li>
+</ul>
+<h3 id="1210-futur%E5%92%8Cpromise">1.2.10. Futur和Promise</h3>
+<p><a href="#menu" >目录</a></p>
+<pre class="hljs"><code><div>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Future</span>&lt;<span class="hljs-title">V</span>&gt; </span>{
+    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">cancel</span><span class="hljs-params">(<span class="hljs-keyword">boolean</span> mayInterruptIfRunning)</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">isCancelled</span><span class="hljs-params">()</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">isDone</span><span class="hljs-params">()</span></span>;
+    <span class="hljs-function">V <span class="hljs-title">get</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> InterruptedException, ExecutionException</span>;
+    <span class="hljs-function">V <span class="hljs-title">get</span><span class="hljs-params">(<span class="hljs-keyword">long</span> timeout, TimeUnit unit)</span>
+        <span class="hljs-keyword">throws</span> InterruptedException, ExecutionException, TimeoutException</span>;
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Future</span>&lt;<span class="hljs-title">V</span>&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title">java</span>.<span class="hljs-title">util</span>.<span class="hljs-title">concurrent</span>.<span class="hljs-title">Future</span>&lt;<span class="hljs-title">V</span>&gt; </span>{
+    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">isSuccess</span><span class="hljs-params">()</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">isCancellable</span><span class="hljs-params">()</span></span>;
+    <span class="hljs-function">Throwable <span class="hljs-title">cause</span><span class="hljs-params">()</span></span>;
+    <span class="hljs-function">Future&lt;V&gt; <span class="hljs-title">addListener</span><span class="hljs-params">(GenericFutureListener&lt;? extends Future&lt;? <span class="hljs-keyword">super</span> V&gt;&gt; var1)</span></span>;
+    <span class="hljs-function">Future&lt;V&gt; <span class="hljs-title">addListeners</span><span class="hljs-params">(GenericFutureListener... var1)</span></span>;
+    <span class="hljs-function">Future&lt;V&gt; <span class="hljs-title">removeListener</span><span class="hljs-params">(GenericFutureListener&lt;? extends Future&lt;? <span class="hljs-keyword">super</span> V&gt;&gt; var1)</span></span>;
+    <span class="hljs-function">Future&lt;V&gt; <span class="hljs-title">removeListeners</span><span class="hljs-params">(GenericFutureListener... var1)</span></span>;
+    <span class="hljs-function">Future&lt;V&gt; <span class="hljs-title">sync</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> InterruptedException</span>;
+    <span class="hljs-function">Future&lt;V&gt; <span class="hljs-title">syncUninterruptibly</span><span class="hljs-params">()</span></span>;
+    <span class="hljs-function">Future&lt;V&gt; <span class="hljs-title">await</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> InterruptedException</span>;
+    <span class="hljs-function">Future&lt;V&gt; <span class="hljs-title">awaitUninterruptibly</span><span class="hljs-params">()</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">await</span><span class="hljs-params">(<span class="hljs-keyword">long</span> var1, TimeUnit var3)</span> <span class="hljs-keyword">throws</span> InterruptedException</span>;
+    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">await</span><span class="hljs-params">(<span class="hljs-keyword">long</span> var1)</span> <span class="hljs-keyword">throws</span> InterruptedException</span>;
+    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">awaitUninterruptibly</span><span class="hljs-params">(<span class="hljs-keyword">long</span> var1, TimeUnit var3)</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">awaitUninterruptibly</span><span class="hljs-params">(<span class="hljs-keyword">long</span> var1)</span></span>;
+    <span class="hljs-function">V <span class="hljs-title">getNow</span><span class="hljs-params">()</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">cancel</span><span class="hljs-params">(<span class="hljs-keyword">boolean</span> var1)</span></span>;
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Promise</span>&lt;<span class="hljs-title">V</span>&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title">Future</span>&lt;<span class="hljs-title">V</span>&gt; </span>{
+    <span class="hljs-function">Promise&lt;V&gt; <span class="hljs-title">setSuccess</span><span class="hljs-params">(V var1)</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">trySuccess</span><span class="hljs-params">(V var1)</span></span>;
+    <span class="hljs-function">Promise&lt;V&gt; <span class="hljs-title">setFailure</span><span class="hljs-params">(Throwable var1)</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">tryFailure</span><span class="hljs-params">(Throwable var1)</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">setUncancellable</span><span class="hljs-params">()</span></span>;
+    <span class="hljs-function">Promise&lt;V&gt; <span class="hljs-title">addListener</span><span class="hljs-params">(GenericFutureListener&lt;? extends Future&lt;? <span class="hljs-keyword">super</span> V&gt;&gt; var1)</span></span>;
+    <span class="hljs-function">Promise&lt;V&gt; <span class="hljs-title">addListeners</span><span class="hljs-params">(GenericFutureListener... var1)</span></span>;
+    <span class="hljs-function">Promise&lt;V&gt; <span class="hljs-title">removeListener</span><span class="hljs-params">(GenericFutureListener&lt;? extends Future&lt;? <span class="hljs-keyword">super</span> V&gt;&gt; var1)</span></span>;
+    <span class="hljs-function">Promise&lt;V&gt; <span class="hljs-title">removeListeners</span><span class="hljs-params">(GenericFutureListener... var1)</span></span>;
+    <span class="hljs-function">Promise&lt;V&gt; <span class="hljs-title">await</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> InterruptedException</span>;
+    <span class="hljs-function">Promise&lt;V&gt; <span class="hljs-title">awaitUninterruptibly</span><span class="hljs-params">()</span></span>;
+    <span class="hljs-function">Promise&lt;V&gt; <span class="hljs-title">sync</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> InterruptedException</span>;
+    <span class="hljs-function">Promise&lt;V&gt; <span class="hljs-title">syncUninterruptibly</span><span class="hljs-params">()</span></span>;
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ChannelFuture</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Future</span>&lt;<span class="hljs-title">Void</span>&gt; </span>{
+    <span class="hljs-function">Channel <span class="hljs-title">channel</span><span class="hljs-params">()</span></span>;
+    <span class="hljs-function">ChannelFuture <span class="hljs-title">addListener</span><span class="hljs-params">(GenericFutureListener&lt;? extends Future&lt;? <span class="hljs-keyword">super</span> Void&gt;&gt; var1)</span></span>;
+    <span class="hljs-function">ChannelFuture <span class="hljs-title">addListeners</span><span class="hljs-params">(GenericFutureListener... var1)</span></span>;
+    <span class="hljs-function">ChannelFuture <span class="hljs-title">removeListener</span><span class="hljs-params">(GenericFutureListener&lt;? extends Future&lt;? <span class="hljs-keyword">super</span> Void&gt;&gt; var1)</span></span>;
+    <span class="hljs-function">ChannelFuture <span class="hljs-title">removeListeners</span><span class="hljs-params">(GenericFutureListener... var1)</span></span>;
+    <span class="hljs-function">ChannelFuture <span class="hljs-title">sync</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> InterruptedException</span>;
+    <span class="hljs-function">ChannelFuture <span class="hljs-title">syncUninterruptibly</span><span class="hljs-params">()</span></span>;
+    <span class="hljs-function">ChannelFuture <span class="hljs-title">await</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> InterruptedException</span>;
+    <span class="hljs-function">ChannelFuture <span class="hljs-title">awaitUninterruptibly</span><span class="hljs-params">()</span></span>;
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ChannelPromise</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ChannelFuture</span>, <span class="hljs-title">Promise</span>&lt;<span class="hljs-title">Void</span>&gt; </span>{
+    <span class="hljs-function">Channel <span class="hljs-title">channel</span><span class="hljs-params">()</span></span>;
+    <span class="hljs-function">ChannelPromise <span class="hljs-title">setSuccess</span><span class="hljs-params">(Void var1)</span></span>;
+    <span class="hljs-function">ChannelPromise <span class="hljs-title">setSuccess</span><span class="hljs-params">()</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">trySuccess</span><span class="hljs-params">()</span></span>;
+    <span class="hljs-function">ChannelPromise <span class="hljs-title">setFailure</span><span class="hljs-params">(Throwable var1)</span></span>;
+    <span class="hljs-function">ChannelPromise <span class="hljs-title">addListener</span><span class="hljs-params">(GenericFutureListener&lt;? extends Future&lt;? <span class="hljs-keyword">super</span> Void&gt;&gt; var1)</span></span>;
+    <span class="hljs-function">ChannelPromise <span class="hljs-title">addListeners</span><span class="hljs-params">(GenericFutureListener... var1)</span></span>;
+    <span class="hljs-function">ChannelPromise <span class="hljs-title">removeListener</span><span class="hljs-params">(GenericFutureListener&lt;? extends Future&lt;? <span class="hljs-keyword">super</span> Void&gt;&gt; var1)</span></span>;
+    <span class="hljs-function">ChannelPromise <span class="hljs-title">removeListeners</span><span class="hljs-params">(GenericFutureListener... var1)</span></span>;
+    <span class="hljs-function">ChannelPromise <span class="hljs-title">sync</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> InterruptedException</span>;
+    <span class="hljs-function">ChannelPromise <span class="hljs-title">syncUninterruptibly</span><span class="hljs-params">()</span></span>;
+    <span class="hljs-function">ChannelPromise <span class="hljs-title">await</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> InterruptedException</span>;
+    <span class="hljs-function">ChannelPromise <span class="hljs-title">awaitUninterruptibly</span><span class="hljs-params">()</span></span>;
+}
+
+
+</div></code></pre>
+<h3 id="1211-netty%E6%9E%B6%E6%9E%84%E5%88%86%E6%9E%90">1.2.11. Netty架构分析</h3>
+<p><a href="#menu" >目录</a></p>
+<h3 id="1212-java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E5%9C%A8netty%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8">1.2.12. Java多线程编程在Netty中的应用</h3>
+<p><a href="#menu" >目录</a></p>
+<h3 id="1213-%E9%AB%98%E6%80%A7%E8%83%BD%E4%B9%8B%E9%81%93">1.2.13. 高性能之道</h3>
+<p><a href="#menu" >目录</a></p>
+<h3 id="1214-%E5%8F%AF%E9%9D%A0%E6%80%A7">1.2.14. 可靠性</h3>
+<p><a href="#menu" >目录</a></p>
+<h4 id="12141-%E9%AB%98%E5%8F%AF%E9%9D%A0%E6%80%A7%E8%AE%BE%E8%AE%A1">1.2.14.1. 高可靠性设计</h4>
+<p><a href="#menu" >目录</a></p>
+<h5 id="121411-%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E7%B1%BB%E6%95%85%E9%9A%9C">1.2.14.1.1. 网络通信类故障</h5>
+<p><a href="#menu" >目录</a></p>
+<p><strong>客户端超时连接</strong></p>
+<ul>
+<li>
+<p>传统的BIO编程由于是阻塞式的，需要设置连接超时时间。</p>
+</li>
+<li>
+<p>netty连接超时时间实现</p>
+</li>
+</ul>
+<p>设置</p>
+<pre class="hljs"><code><div>serverBootstrap.group(bossGroup, workerGroup).option.(ChannelOption.CONNECT_TIMEOUT_MILLIS,<span class="hljs-number">3000</span>);
+</div></code></pre>
+<p>Netty在发起连接的时候，会根据超时时间创建schedule定时任务，定时时间到检测是否连接成功
+AbstractNioChannel类的内部类AbstractNioUnsafe</p>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title">connect</span><span class="hljs-params">(<span class="hljs-keyword">final</span> SocketAddress remoteAddress, SocketAddress localAddress, ChannelPromise promise)</span> </span>{
+    <span class="hljs-keyword">if</span> (promise.setUncancellable() &amp;&amp; <span class="hljs-keyword">this</span>.ensureOpen(promise)) {
+        <span class="hljs-keyword">try</span> {
+            <span class="hljs-keyword">if</span> (AbstractNioChannel.<span class="hljs-keyword">this</span>.connectPromise != <span class="hljs-keyword">null</span>) {
+                <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> ConnectionPendingException();
+            }
+
+            <span class="hljs-keyword">boolean</span> wasActive = AbstractNioChannel.<span class="hljs-keyword">this</span>.isActive();
+            <span class="hljs-keyword">if</span> (AbstractNioChannel.<span class="hljs-keyword">this</span>.doConnect(remoteAddress, localAddress)) {
+                <span class="hljs-keyword">this</span>.fulfillConnectPromise(promise, wasActive);
+            } <span class="hljs-keyword">else</span> {
+                AbstractNioChannel.<span class="hljs-keyword">this</span>.connectPromise = promise;
+                AbstractNioChannel.<span class="hljs-keyword">this</span>.requestedRemoteAddress = remoteAddress;
+                <span class="hljs-keyword">int</span> connectTimeoutMillis = AbstractNioChannel.<span class="hljs-keyword">this</span>.config().getConnectTimeoutMillis();
+                <span class="hljs-keyword">if</span> (connectTimeoutMillis &gt; <span class="hljs-number">0</span>) {
+                    <span class="hljs-comment">//</span>
+                    AbstractNioChannel.<span class="hljs-keyword">this</span>.connectTimeoutFuture = AbstractNioChannel.<span class="hljs-keyword">this</span>.eventLoop().schedule(<span class="hljs-keyword">new</span> Runnable() {
+                        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>{
+                            ChannelPromise connectPromise = AbstractNioChannel.<span class="hljs-keyword">this</span>.connectPromise;
+                            ConnectTimeoutException cause = <span class="hljs-keyword">new</span> ConnectTimeoutException(<span class="hljs-string">"connection timed out: "</span> + remoteAddress);
+                            <span class="hljs-keyword">if</span> (connectPromise != <span class="hljs-keyword">null</span> &amp;&amp; connectPromise.tryFailure(cause)) {
+                                AbstractNioUnsafe.<span class="hljs-keyword">this</span>.close(AbstractNioUnsafe.<span class="hljs-keyword">this</span>.voidPromise());
+                            }
+
+                        }
+                    }, (<span class="hljs-keyword">long</span>)connectTimeoutMillis, TimeUnit.MILLISECONDS);
+                }
+
+                promise.addListener(<span class="hljs-keyword">new</span> ChannelFutureListener() {
+                    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">operationComplete</span><span class="hljs-params">(ChannelFuture future)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+                        <span class="hljs-keyword">if</span> (future.isCancelled()) {
+                            <span class="hljs-keyword">if</span> (AbstractNioChannel.<span class="hljs-keyword">this</span>.connectTimeoutFuture != <span class="hljs-keyword">null</span>) {
+                                AbstractNioChannel.<span class="hljs-keyword">this</span>.connectTimeoutFuture.cancel(<span class="hljs-keyword">false</span>);
+                            }
+
+                            AbstractNioChannel.<span class="hljs-keyword">this</span>.connectPromise = <span class="hljs-keyword">null</span>;
+                            AbstractNioUnsafe.<span class="hljs-keyword">this</span>.close(AbstractNioUnsafe.<span class="hljs-keyword">this</span>.voidPromise());
+                        }
+
+                    }
+                });
+            }
+        } <span class="hljs-keyword">catch</span> (Throwable var6) {
+            promise.tryFailure(<span class="hljs-keyword">this</span>.annotateConnectException(var6, remoteAddress));
+            <span class="hljs-keyword">this</span>.closeIfClosed();
+        }
+
+    }
+}
+</div></code></pre>
+<p>Netty客户端超时配置方便，用户无需关心底层如何实现。</p>
+<p><strong>通信对端强制关闭连接</strong>
+在客户端和服务端正常通信的过程中，如果发生网络闪断，对方进程突然宕积或者非正常关闭链路事件时，TCP链路就会发生异常。由于TCP是全双工的，通信双方需要关闭和释放Socket句柄才不会发生句柄泄漏。</p>
+<pre class="hljs"><code><div>netstat -ano | find 8080
+
+</div></code></pre>
+<p><strong>链路关闭</strong></p>
+<p><strong>定制IO故障</strong>
+用户需要对一些异常进行定制化处理</p>
+<ul>
+<li>客户端断连重连机制</li>
+<li>消息的缓存重发</li>
+<li>接口日志中详细记录故障细节</li>
+<li>运维相关功能，例如告警，触发邮件通知等</li>
+</ul>
+<p>Netty当底层发生IO异常时，底层的资源由它释放，同时将异常堆栈信息以事件的形式通知给上层用户。</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChannelInboundHandlerAdapter</span></span>{
+
+    <span class="hljs-comment">//异常处理</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">exceptionCaught</span><span class="hljs-params">(ChannelHandlerContext ctx, Throwable cause)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+        ctx.fireExceptionCaught(cause);
+    }
+}
+</div></code></pre>
+<h5 id="121412-%E9%93%BE%E8%B7%AF%E6%9C%89%E6%95%88%E6%80%A7%E6%A3%80%E6%B5%8B">1.2.14.1.2. 链路有效性检测</h5>
+<p><a href="#menu" >目录</a></p>
+<h5 id="121413-reactor%E7%BA%BF%E7%A8%8B%E7%9A%84%E4%BF%9D%E6%8A%A4">1.2.14.1.3. Reactor线程的保护</h5>
+<p><a href="#menu" >目录</a></p>
+<h5 id="121414-%E5%86%85%E5%AD%98%E4%BF%9D%E6%8A%A4">1.2.14.1.4. 内存保护</h5>
+<p><a href="#menu" >目录</a></p>
+<h5 id="121415-%E6%B5%81%E9%87%8F%E6%95%B4%E5%BD%A2">1.2.14.1.5. 流量整形</h5>
+<p><a href="#menu" >目录</a></p>
+<h5 id="121416-%E4%BC%98%E9%9B%85%E5%81%9C%E6%9C%BA%E6%8E%A5%E5%8F%A3">1.2.14.1.6. 优雅停机接口</h5>
+<p><a href="#menu" >目录</a></p>
+<h4 id="12142-%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE">1.2.14.2. 优化建议</h4>
+<p><a href="#menu" >目录</a></p>
+
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config"> MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
+
+</body>
+</html>

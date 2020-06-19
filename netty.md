@@ -5,20 +5,22 @@
 - [1. Java网路通信](#1-java网路通信)
     - [1.1. IO模型](#11-io模型)
         - [1.1.1. Linux网络IO模型介绍](#111-linux网络io模型介绍)
-        - [1.1.2. IO多路复用技术](#112-io多路复用技术)
-        - [1.1.3. Java IO 演进之路](#113-java-io-演进之路)
-        - [1.1.4. Java IO对比](#114-java-io对比)
-            - [1.1.4.1. BIO编程](#1141-bio编程)
-            - [1.1.4.2. NIO编程](#1142-nio编程)
-            - [1.1.4.3. AIO编程](#1143-aio编程)
-        - [1.1.5. IO模型对比总结](#115-io模型对比总结)
-        - [1.1.6. 选择Netty的理由](#116-选择netty的理由)
-        - [1.1.7. 实现自定义协议](#117-实现自定义协议)
+        - [1.1.2. Java IO 演进之路](#112-java-io-演进之路)
+        - [1.1.3. Java IO对比](#113-java-io对比)
+            - [1.1.3.1. BIO编程](#1131-bio编程)
+            - [1.1.3.2. NIO编程](#1132-nio编程)
+            - [1.1.3.3. AIO编程](#1133-aio编程)
+        - [1.1.4. IO模型对比总结](#114-io模型对比总结)
+        - [1.1.5. 选择Netty的理由](#115-选择netty的理由)
+        - [1.1.6. 实现自定义协议](#116-实现自定义协议)
     - [1.2. Netty](#12-netty)
         - [1.2.1. Netty基本案例](#121-netty基本案例)
         - [1.2.2. TCP粘包拆包](#122-tcp粘包拆包)
             - [1.2.2.1. 粘包拆包基本概念](#1221-粘包拆包基本概念)
-            - [1.2.2.2. Netty 中的拆包器](#1222-netty-中的拆包器)
+            - [1.2.2.2. 行拆包器LineBasedFrameDecoder](#1222-行拆包器linebasedframedecoder)
+            - [1.2.2.3. 分隔符拆包器DelimiterBasedFrameDecoder](#1223-分隔符拆包器delimiterbasedframedecoder)
+            - [1.2.2.4. 固定长度的拆包器FixedLengthFrameDecoder](#1224-固定长度的拆包器fixedlengthframedecoder)
+            - [1.2.2.5. 基于数据包长度的拆包器LengthFieldBasedFrameDecoder](#1225-基于数据包长度的拆包器lengthfieldbasedframedecoder)
         - [1.2.3. 私有协议开发](#123-私有协议开发)
             - [1.2.3.1. Netty协议栈功能设计](#1231-netty协议栈功能设计)
             - [1.2.3.2. Netty协议栈开发](#1232-netty协议栈开发)
@@ -168,10 +170,8 @@ epoll跟select都能提供多路I/O复用的解决方案。在现在的Linux内�
 1. 表面上看epoll的性能最好，但是在连接数少并且连接都十分活跃的情况下，select和poll的性能可能比epoll好，毕竟epoll的通知机制需要很多函数回调。
 2. select低效是因为每次它都需要轮询。但低效也是相对的，视情况而定，也可通过良好的设计改善
 
-### 1.1.2. IO多路复用技术
-<a href="#menu" >目录</a>
 
-### 1.1.3. Java IO 演进之路
+### 1.1.2. Java IO 演进之路
 <a href="#menu" >目录</a>
 
 * 在JDK 1.4推出NIO之前，基于Java的所有Socket通信都采用同步阻塞模式BIO，这种一请求一响应的通信模型简化了上层的应用开发，但是在性能和可靠性上却存在很大的瓶颈。
@@ -194,10 +194,10 @@ epoll跟select都能提供多路I/O复用的解决方案。在现在的Linux内�
     * 提供AIO功能，包括对配置和多播数据报的支持
     * 完成JSR-51定义的通道功能，包括对配置和多播数据报的支持。
 
-### 1.1.4. Java IO对比
+### 1.1.3. Java IO对比
 <a href="#menu" >目录</a>
 
-#### 1.1.4.1. BIO编程
+#### 1.1.3.1. BIO编程
 <a href="#menu" >目录</a>
 
 网络编程的基本模型是C/S模型，即两个进程间的通信：客户端-服务器。
@@ -249,7 +249,7 @@ while(true){
 }
 ```
 
-#### 1.1.4.2. NIO编程
+#### 1.1.3.2. NIO编程
 <a href="#menu" >目录</a>
 
 NIO我们一般认为是New I/O（也是官方的叫法），因为它是相对于老的I/O类库新增的（其实在JDK 1.4中就已经被引入了，但这个名词还会继续用很久，即使它们在现在看来已经是“旧”的了，所以也提示我们在命名时，需要好好考虑），做了很大的改变。但民间跟多人称之为Non-block I/O，即非阻塞I/O，因为这样叫，更能体现它的特点。而下文中的NIO，不是指整个新的I/O库，而是非阻塞I/O。
@@ -455,7 +455,7 @@ public void write(SelectionKey selectionKey){
 因为应答消息的发送，SocketChannel也是异步非阻塞的，所以不能保证一次把需要发送的数据发送完，此时就会出现写半包的问题。我们需要注册写操作，不断轮询Selector将没有发送完的消息发送完毕，然后通过Buffer的hasRemain()方法判断消息是否发送完成。
 
 
-#### 1.1.4.3. AIO编程
+#### 1.1.3.3. AIO编程
 <a href="#menu" >目录</a>
 
 NIO 2.0引入了新的异步通道的概念，并提供了异步文件通道和异步套接字通道的实现。
@@ -501,7 +501,7 @@ while(true){
 }
 ```
 
-### 1.1.5. IO模型对比总结
+### 1.1.4. IO模型对比总结
 <a href="#menu" >目录</a>
 
 ||同步阻塞IO(BIO)|伪异步IO|非阻塞IO(NIO)|异步IO(AIO)|
@@ -514,7 +514,7 @@ while(true){
 |可靠性 |非常差|差|高|高|
 |吞吐量|低|中|高|高|
 
-### 1.1.6. 选择Netty的理由
+### 1.1.5. 选择Netty的理由
 <a href="#menu" >目录</a>
 
 **Java NIO的问题**
@@ -531,7 +531,7 @@ while(true){
 * 成熟稳定
 * 社区活跃，迭代快
 
-### 1.1.7. 实现自定义协议
+### 1.1.6. 实现自定义协议
 <a href="#menu" >目录</a>
 
 实现自定义的应用层协议，也就是意味着要针对传输层协议进行开发，传输层有TCP、UDP两种协议，TCP传输具有可靠性，UDP传输不管数据是否送达，一般选择TCP。TCP是字节流服务,是为数据的可靠传输而设计的。如果数据在传输中丢失或者损坏，TCP会保证再次发送数据，如果数据包乱序到达，TCP会将其置回正确的顺序。对于连接来说，如果数据到来的速度太快,TCP会降低速度，以免数据丢包。程序永远不需要担心接收到乱序或者不正确的数据。不过，相对来说，这种可靠性需要速度作为代价，同时，建立和撤销连接也需要耗费时间。
@@ -593,24 +593,28 @@ while(true){
 
 TCP是个流协议，所谓流，就是没有界限的一串数据。TCP底层并不了解上层业务数据的具体数据的具体含义，它会根据TCP缓冲区的世纪情况进行包的划分，所以每发送一个数据包，可能包含多个的上层业务数据包。也有可能一个大的业务数据包分成多个TCP数据包进行发送。
 
-
-
 而对于接收端，并不知道接收的数据流包含了多少个业务数据包。因此需要在整个发送层面做粘包/拆包处理。
 
-粘包、拆包表现形式
-第一种情况，接收端正常收到两个数据包，即没有发生拆包和粘包的现象，此种情况不在本文的讨论范围内。
-![](https://static.oschina.net/uploads/space/2018/0315/123035_GCyK_3318187.jpg)
+**粘包、拆包表现形式**
+
+第一种情况，接收端正常收到两个数据包，即没有发生拆包和粘包的现象。
+
+![无粘包拆包](pic/netty/无粘包拆包.png)
+
 第二种情况，接收端只收到一个数据包，由于TCP是不会出现丢包的，所以这一个数据包中包含了发送端发送的两个数据包的信息，这种现象即为粘包。这种情况由于接收端不知道这两个数据包的界限，所以对于接收端来说很难处理。
-![](https://static.oschina.net/uploads/space/2018/0315/123101_m6Bf_3318187.jpg)
+
+![](pic/netty/粘包.png)
+
 第三种情况，这种情况有两种表现形式，如下图。接收端收到了两个数据包，但是这两个数据包要么是不完整的，要么就是多出来一块，这种情况即发生了拆包和粘包。这两种情况如果不加特殊处理，对于接收端同样是不好处理的。
-![](https://static.oschina.net/uploads/space/2018/0315/123125_1LCT_3318187.jpg)
+
+![粘包和拆包1](pic/netty/粘包和拆包1.png)
+![粘包和拆包2](pic/netty/粘包和拆包2.png)
 
 * 粘包和半包定义如下：
-    * 粘包和半包，指的都不是一次是正常的 ByteBuf 缓存区接收。
-    * 粘包，就是接收端读取的时候，多个发送过来的 ByteBuf “粘”在了一起。换句话说，接收端读取一次的 ByteBuf ，读到了多个发送端的 ByteBuf ，是为粘包。
-    * 半包，就是接收端将一个发送端的ByteBuf “拆”开了，形成一个破碎的包，我们定义这种 ByteBuf 为半包。
+    * 理想情况下，发送端发送一个数据帧，底层的TCP也将这个数据帧完整地发送出去。而接收端也是接收到一个完整的数据帧。
+    * 粘包，就是接收端读取的时候，多个发送过来的 数据帧 “粘”在了一起。换句话说，接收端读取一次的 字节流 ，读到了发送端的 多个数据帧 ，是为粘包。
+    * 半包，就是发送端的数据帧 “拆”开了，形成一个破碎的包，我们定义这种为半包。
 
-换句话说，接收端读取一次的 ByteBuf ，读到了发送端的一个 ByteBuf的一部分，是为半包。
 
 **如何解决呢？**
 
@@ -624,37 +628,239 @@ TCP是个流协议，所谓流，就是没有界限的一串数据。TCP底层�
     * 如果从TCP底层读到了多个应用层数据包，则将整个应用层缓冲区，拆成一个一个的独立的应用层数据包，返回给调用程序。
     * 至此，**粘包**问题得以解决。
 
-
-
 **粘包、拆包发生原因**
-1、要发送的数据大于TCP发送缓冲区剩余空间大小，将会发生拆包。
-2、待发送数据大于MSS（最大报文长度），TCP在传输前将进行拆包。
-3、要发送的数据小于TCP发送缓冲区的大小，TCP将多次写入缓冲区的数据一次发送出去，将会发生粘包。
-4、接收数据端的应用层没有及时读取接收缓冲区中的数据，将发生粘包。
+* 要发送的数据大于TCP发送缓冲区剩余空间大小，将会发生拆包。
+* 待发送数据大于MSS（最大报文长度），TCP在传输前将进行拆包。
+* 要发送的数据小于TCP发送缓冲区的大小，TCP将多次写入缓冲区的数据一次发送出去，将会发生粘包。
+* 接收数据端的应用层没有及时读取接收缓冲区中的数据，将发生粘包。
 
 **粘包、拆包解决办法**
 通过以上分析，我们清楚了粘包或拆包发生的原因，那么如何解决这个问题呢？解决问题的关键在于如何给每个数据包添加边界信息，常用的方法有如下几个：
-1、发送端给每个数据包添加包首部，首部中应该至少包含数据包的长度，这样接收端在接收到数据后，通过读取包首部的长度字段，便知道每一个数据包的实际长度了。
-2、发送端将每个数据包封装为固定长度（不够的可以通过补0填充），这样接收端每次从接收缓冲区中读取固定长度的数据就自然而然的把每个数据包拆分开来。
-3、可以在数据包之间设置边界，如添加特殊符号，这样，接收端通过这个边界就可以将不同的数据包拆分开。
-
-#### 1.2.2.2. Netty 中的拆包器
-拆包这个工作，Netty 已经为大家备好了很多不同的拆包器。本着不重复发明轮子的原则，我们直接使用Netty现成的拆包器。
+* 发送端给每个数据包添加包首部，首部中应该至少包含数据包的长度，这样接收端在接收到数据后，通过读取包首部的长度字段，便知道每一个数据包的实际长度了。
+* 发送端将每个数据包封装为固定长度（不够的可以通过补0填充），这样接收端每次从接收缓冲区中读取固定长度的数据就自然而然的把每个数据包拆分开来。
+* 可以在数据包之间设置边界，如添加特殊符号，这样，接收端通过这个边界就可以将不同的数据包拆分开。
 
 **Netty 中的拆包器大致如下：**
 * 固定长度的拆包器 **FixedLengthFrameDecoder**
     * 每个应用层数据包的都拆分成都是固定长度的大小，比如 1024字节。
-    * 这个显然不大适应在 Java 聊天程序 进行实际应用。
 * 行拆包器 **LineBasedFrameDecoder**
-    * 每个应用层数据包，都以换行符作为分隔符，进行分割拆分。
-    * 这个显然不大适应在 Java 聊天程序 进行实际应用。
+    * 每个应用层数据包，都以换行符作为分隔符，进行分割拆分。每一个发送数据的字符串末尾都要加上"\r\n"
 * 分隔符拆包器 **DelimiterBasedFrameDecoder**
     * 每个应用层数据包，都通过自定义的分隔符，进行分割拆分。
     * 这个版本，是LineBasedFrameDecoder 的通用版本，本质上是一样的。
-    * 这个显然不大适应在 Java 聊天程序 进行实际应用。
 * 基于数据包长度的拆包器 **LengthFieldBasedFrameDecoder**
     * 将应用层数据包的长度，作为接收端应用层数据包的拆分依据。按照应用层数据包的大小，拆包。这个拆包器，有一个要求，就是应用层协议中包含数据包的长度。
 
+#### 1.2.2.2. 行拆包器LineBasedFrameDecoder
+<a href="#menu" >目录</a>
+
+```java
+//客户端配置
+bootstrap.handler(new ChannelInitializer(){
+    @Override
+    protected void initChannel(Channel channel) throws Exception {
+        //输入
+        channel.pipeline().addLast(new LineBasedFrameDecoder(1024));
+        channel.pipeline().addLast(new StringDecoder());
+        channel.pipeline().addLast(new ClientChannelInboundHandlerAdapter());
+    }
+});
+//服务端配置
+serverBootstrap.group(master,worker)
+    .channel(NioServerSocketChannel.class)
+    .childHandler(new ChannelInitializer<SocketChannel>(){
+        @Override
+        protected void initChannel(SocketChannel socketChannel) throws Exception {
+            //输入
+            socketChannel.pipeline().addLast(new LineBasedFrameDecoder(1024));
+            socketChannel.pipeline().addLast(new StringDecoder());
+            socketChannel.pipeline().addLast(new ServerChannelInboundHandlerAdapter());
+        }
+    });
+            
+```
+StringDecoder和LineBasedFrameDecoder是netty提供的。注意上面的添加顺序，LineBasedFrameDecoder是用于拆包，StringDecoder是用于数据转换，ServerChannelInboundHandlerAdapter是面向使用者，自定义,用户获取最终的数据并处理
+
+netty从通道获取到数据之后，会将字节数据存放在ByteBuf缓冲区中，StringDecoder用于将ByteBuf格式的数据转为字符串，避免使用者进行转换。
+```java
+//使用StringDecoder前
+@Override
+public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    //自行进行转换
+    ByteBuf byteBuf = ByteBuf(msg);
+    byte[] readData = new byte[byteBuf.readableBytes()];
+    byteBuf.readBytes(readData);
+    log.info("收到客户端数据　= "+new String(readData));
+ 
+}
+//使用StringDecoder后
+@Override
+public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    //使用StringDecoder后，内部会将ByteBuf数据转换为String,因此这里的msg类型已经是String
+    log.info("收到客户端数据msg = " + msg);
+}
+
+```
+
+LineBasedFrameDecoder用于半包和粘包处理，它的工作原理是遍历ByteBuf中的可读字节，判断是否有"\n"或者"\r\n"，如果有，就以这个为结束位置，从可读索引位置到结束位置区间的字节就组成了一行。如果到了最大长度还没找到换行分隔符，就会抛出异常。可以在ServerChannelInboundHandlerAdapter的exceptionCaught()方法里面捕捉到。
+
+```java
+public LineBasedFrameDecoder(int maxLength) {
+    this(maxLength, true, false);
+}
+```
+如果向定义自己的分隔符，可以使用DelimiterBasedFrameDecoder
+
+#### 1.2.2.3. 分隔符拆包器DelimiterBasedFrameDecoder
+<a href="#menu" >目录</a>
+
+```java
+//自定义分隔符
+ByteBuf delimiter = UnpooledcopiedBuffer("&^*".getBytes);
+socketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(1024,delimiter));
+
+```
+
+#### 1.2.2.4. 固定长度的拆包器FixedLengthFrameDecoder
+<a href="#menu" >目录</a>
+
+frameLength用于定义解析一帧数据的长度frameLength
+```java
+public FixedLengthFrameDecoder(int frameLength) {
+    ObjectUtil.checkPositive(frameLength, "frameLength");
+    this.frameLength = frameLength;
+}
+socketChannel.pipeline().addLast(new FixedLengthFrameDecoder(10));
+```
+FixedLengthFrameDecoder是根据固定长度frameLength进行解码的。比如frameLength是10，客户端发送多个"123456" 6个字节字节数据，接收端收到第一帧之后会等待第二帧数据，最终接收的数据是"1234561234"--"5612345612"...。如果发送的超过10个字节，则会截断，剩下的作为下一帧的数据。
+
+#### 1.2.2.5. 基于数据包长度的拆包器LengthFieldBasedFrameDecoder
+<a href="#menu" >目录</a>
+
+LengthFieldBasedFrameDecoder长用于自定义协议
+
+```java
+/**
+*
+* @param maxFrameLength  帧的最大长度
+* @param lengthFieldOffset length字段偏移的地址
+* @param lengthFieldLength length字段所占的字节长
+* @param lengthAdjustment 修改帧数据长度字段中定义的值，可以为负数 因为有时候我们习惯把头部记入长度,若为负数,则说明要推后多少个字段
+* @param initialBytesToStrip 解析时候跳过多少个长度
+* @param failFast 为true，当frame长度超过maxFrameLength时立即报TooLongFrameException异常，为false，读取完整个帧再报异
+*/
+
+public LengthFieldBasedFrameDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength) {
+    this(maxFrameLength, lengthFieldOffset, lengthFieldLength, 0, 0);
+}
+
+public LengthFieldBasedFrameDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength, int lengthAdjustment, int initialBytesToStrip) {
+    this(maxFrameLength, lengthFieldOffset, lengthFieldLength, lengthAdjustment, initialBytesToStrip, true);
+}
+
+public LengthFieldBasedFrameDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength, int lengthAdjustment, int initialBytesToStrip, boolean failFast) {
+    this(ByteOrder.BIG_ENDIAN, maxFrameLength, lengthFieldOffset, lengthFieldLength, lengthAdjustment, initialBytesToStrip, failFast);
+}
+```
+
+**2 bytes length field at offset 0, do not strip header**
+
+The value of the length field in this example is 12 (0x0C) which represents the length of "123456789012". By default, the decoder assumes that the length field represents the number of the bytes that follows the length field. Therefore, it can be decoded with the simplistic parameter combination.
+* lengthFieldOffset   = 0
+* lengthFieldLength   = 2
+* lengthAdjustment    = 0
+* initialBytesToStrip = 0 (= do not strip header)
+```yml
+ BEFORE DECODE (14 bytes)         AFTER DECODE (14 bytes)
+ +--------+----------------+      +--------+----------------+
+ | Length | Actual Content |----->| Length | Actual Content |
+ | 0x000C | "123456789012" |      | 0x000C | "123456789012" |
+ +--------+----------------+      +--------+----------------+
+``` 
+**2 bytes length field at offset 0, strip header**
+
+Because we can get the length of the content by calling ByteBuf.readableBytes(), you might want to strip the length field by specifying initialBytesToStrip. In this example, we specified 2, that is same with the length of the length field, to strip the first two bytes.
+* lengthFieldOffset   = 0
+* lengthFieldLength   = 2
+* lengthAdjustment    = 0
+* initialBytesToStrip = 2 (= the length of the Length field)
+```yml
+ BEFORE DECODE (14 bytes)         AFTER DECODE (12 bytes)
+ +--------+----------------+      +----------------+
+ | Length | Actual Content |----->| Actual Content |
+ | 0x000C | "123456789012" |      | "123456789012" |
+ +--------+----------------+      +----------------+
+``` 
+**2 bytes length field at offset 0, do not strip header, the length field represents the length of the whole message**
+
+In most cases, the length field represents the length of the message body only, as shown in the previous examples. However, in some protocols, the length field represents the length of the whole message, including the message header. In such a case, we specify a non-zero lengthAdjustment. Because the length value in this example message is always greater than the body length by 2, we specify -2 as lengthAdjustment for compensation.
+* lengthFieldOffset   =  0
+* lengthFieldLength   =  2
+* lengthAdjustment    = -2 (= the length of the Length field)
+* initialBytesToStrip =  0
+```yml
+ BEFORE DECODE (14 bytes)         AFTER DECODE (14 bytes)
+ +--------+----------------+      +--------+----------------+
+ | Length | Actual Content |----->| Length | Actual Content |
+ | 0x000E | "123456789012" |      | 0x000E | "123456789012" |
+ +--------+----------------+      +--------+----------------+
+```
+**3 bytes length field at the end of 5 bytes header, do not strip header**
+
+The following message is a simple variation of the first example. An extra header value is prepended to the message. lengthAdjustment is zero again because the decoder always takes the length of the prepended data into account during frame length calculation.
+* lengthFieldOffset   = 2 (= the length of Header 1)
+* lengthFieldLength   = 3
+* lengthAdjustment    = 0
+* initialBytesToStrip = 0
+```yml
+ BEFORE DECODE (17 bytes)                      AFTER DECODE (17 bytes)
+ +----------+----------+----------------+      +----------+----------+----------------+
+ | Header 1 |  Length  | Actual Content |----->| Header 1 |  Length  | Actual Content |
+ |  0xCAFE  | 0x00000C | "123456789012" |      |  0xCAFE  | 0x00000C | "123456789012" |
+ +----------+----------+----------------+      +----------+----------+----------------+
+```
+**3 bytes length field at the beginning of 5 bytes header, do not strip header**
+
+This is an advanced example that shows the case where there is an extra header between the length field and the message body. You have to specify a positive lengthAdjustment so that the decoder counts the extra header into the frame length calculation.
+* lengthFieldOffset   = 0
+* lengthFieldLength   = 3
+* lengthAdjustment    = 2 (= the length of Header 1)
+* initialBytesToStrip = 0
+```yml
+ BEFORE DECODE (17 bytes)                      AFTER DECODE (17 bytes)
+ +----------+----------+----------------+      +----------+----------+----------------+
+ |  Length  | Header 1 | Actual Content |----->|  Length  | Header 1 | Actual Content |
+ | 0x00000C |  0xCAFE  | "123456789012" |      | 0x00000C |  0xCAFE  | "123456789012" |
+ +----------+----------+----------------+      +----------+----------+----------------+
+```
+**2 bytes length field at offset 1 in the middle of 4 bytes header, strip the first header field and the length field**
+
+This is a combination of all the examples above. There are the prepended header before the length field and the extra header after the length field. The prepended header affects the lengthFieldOffset and the extra header affects the lengthAdjustment. We also specified a non-zero initialBytesToStrip to strip the length field and the prepended header from the frame. If you don't want to strip the prepended header, you could specify 0 for initialBytesToSkip.
+* lengthFieldOffset   = 1 (= the length of HDR1)
+* lengthFieldLength   = 2
+* lengthAdjustment    = 1 (= the length of HDR2)
+* initialBytesToStrip = 3 (= the length of HDR1 + LEN)
+```yml
+ BEFORE DECODE (16 bytes)                       AFTER DECODE (13 bytes)
+ +------+--------+------+----------------+      +------+----------------+
+ | HDR1 | Length | HDR2 | Actual Content |----->| HDR2 | Actual Content |
+ | 0xCA | 0x000C | 0xFE | "123456789012" |      | 0xFE | "123456789012" |
+ +------+--------+------+----------------+      +------+----------------+
+``` 
+**2 bytes length field at offset 1 in the middle of 4 bytes header, strip the first header field and the length field, the length field represents the length of the whole message**
+
+Let's give another twist to the previous example. The only difference from the previous example is that the length field represents the length of the whole message instead of the message body, just like the third example. We have to count the length of HDR1 and Length into lengthAdjustment. Please note that we don't need to take the length of HDR2 into account because the length field already includes the whole header length.
+* lengthFieldOffset   =  1
+* lengthFieldLength   =  2
+* lengthAdjustment    = -3 (= the length of HDR1 + LEN, negative)
+* initialBytesToStrip =  3
+```yml
+ BEFORE DECODE (16 bytes)                       AFTER DECODE (13 bytes)
+ +------+--------+------+----------------+      +------+----------------+
+ | HDR1 | Length | HDR2 | Actual Content |----->| HDR2 | Actual Content |
+ | 0xCA | 0x0010 | 0xFE | "123456789012" |      | 0xFE | "123456789012" |
+ +------+--------+------+----------------+      +------+----------------+
+```
 
 ### 1.2.3. 私有协议开发
 <a href="#menu" >目录</a>

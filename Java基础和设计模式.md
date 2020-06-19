@@ -4921,6 +4921,8 @@ byte[] readData = new byte[readBuf.remaining()];
 readBuf.get(readData);
 clientDataHandler.handler(new String(readData,"UTF-8"));
 ```
+
+
 **server端**
 ```java
 //创建服务器通道
@@ -5045,7 +5047,16 @@ public void write(SelectionKey selectionKey){
 }
 
 ```
-
+创建流程
+* 创建ServerSocketChannel,配置它为非阻塞模式
+* 绑定监听，配置tcp参数，配置为非阻塞模式
+* 创建Selector,将之前创建的 ServerSocketChannel注册到selector,并设置监听Accept事件
+* 创建一个独立的I/O线程，用于轮询多路复用器Selector
+* 在IO线程中循环体内，调用selector.select()获取事件列表
+* 有事件发生如果判断是accept事件，则调用ServerSocketChannel.accept()获取当前连接的SocketChannel
+* 配置SocketChannel的TCP参数，配置为非阻塞模式,并向选择器注册，监听读事件
+* 再次调用selector.select()获取事件列表
+* 如果是读事件，则获取SocketChannel通道中的数据到ByteBuffer.
 
 ### 8.9.3. AIO实例
 <a href="#menu"  >目录</a>
