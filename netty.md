@@ -2,63 +2,62 @@
 <span id="menu">
 <!-- TOC -->
 
-- [1. Java网路通信](#1-java网路通信)
-    - [1.1. IO模型](#11-io模型)
-        - [1.1.1. Linux网络IO模型介绍](#111-linux网络io模型介绍)
-        - [1.1.2. Java IO 演进之路](#112-java-io-演进之路)
-        - [1.1.3. Java IO对比](#113-java-io对比)
-            - [1.1.3.1. BIO编程](#1131-bio编程)
-            - [1.1.3.2. NIO编程](#1132-nio编程)
-            - [1.1.3.3. AIO编程](#1133-aio编程)
-        - [1.1.4. IO模型对比总结](#114-io模型对比总结)
-        - [1.1.5. 选择Netty的理由](#115-选择netty的理由)
-        - [1.1.6. 实现自定义协议](#116-实现自定义协议)
-    - [1.2. Netty](#12-netty)
-        - [1.2.1. Netty基本案例](#121-netty基本案例)
-        - [1.2.2. TCP粘包拆包](#122-tcp粘包拆包)
-            - [1.2.2.1. 粘包拆包基本概念](#1221-粘包拆包基本概念)
-            - [1.2.2.2. 行拆包器LineBasedFrameDecoder](#1222-行拆包器linebasedframedecoder)
-            - [1.2.2.3. 分隔符拆包器DelimiterBasedFrameDecoder](#1223-分隔符拆包器delimiterbasedframedecoder)
-            - [1.2.2.4. 固定长度的拆包器FixedLengthFrameDecoder](#1224-固定长度的拆包器fixedlengthframedecoder)
-            - [1.2.2.5. 基于数据包长度的拆包器LengthFieldBasedFrameDecoder](#1225-基于数据包长度的拆包器lengthfieldbasedframedecoder)
-        - [1.2.3. 私有协议开发](#123-私有协议开发)
-            - [1.2.3.1. Netty协议栈功能设计](#1231-netty协议栈功能设计)
-            - [1.2.3.2. Netty协议栈开发](#1232-netty协议栈开发)
-        - [1.2.4. 服务端创建流程分析](#124-服务端创建流程分析)
-        - [1.2.5. 客户端创建流程分析](#125-客户端创建流程分析)
-        - [1.2.6. ByteBuf说明](#126-bytebuf说明)
-            - [1.2.6.1. ByteBuf功能说明](#1261-bytebuf功能说明)
-        - [1.2.7. Channel和Unsafe](#127-channel和unsafe)
-        - [1.2.8. ChannelPipeline和ChannelHandler](#128-channelpipeline和channelhandler)
-        - [1.2.9. EventLoop和EventLoopGroup](#129-eventloop和eventloopgroup)
-            - [1.2.9.1. Reactor单线程模型](#1291-reactor单线程模型)
-            - [1.2.9.2. Reactor多线程模型](#1292-reactor多线程模型)
-            - [1.2.9.3. 主从Reactor多线程模型](#1293-主从reactor多线程模型)
-            - [1.2.9.4. Netty线程模型](#1294-netty线程模型)
-            - [1.2.9.5. 最佳实践](#1295-最佳实践)
-            - [1.2.9.6. NioEventLoop 源码分析](#1296-nioeventloop-源码分析)
-        - [1.2.10. Futur和Promise](#1210-futur和promise)
-        - [1.2.11. Netty架构分析](#1211-netty架构分析)
-        - [1.2.12. Java多线程编程在Netty中的应用](#1212-java多线程编程在netty中的应用)
-        - [1.2.13. 高性能之道](#1213-高性能之道)
-        - [1.2.14. 可靠性](#1214-可靠性)
-            - [1.2.14.1. 高可靠性设计](#12141-高可靠性设计)
-                - [1.2.14.1.1. 网络通信类故障](#121411-网络通信类故障)
-                - [1.2.14.1.2. 链路有效性检测](#121412-链路有效性检测)
-                - [1.2.14.1.3. Reactor线程的保护](#121413-reactor线程的保护)
-                - [1.2.14.1.4. 内存保护](#121414-内存保护)
-                - [1.2.14.1.5. 流量整形](#121415-流量整形)
-                - [1.2.14.1.6. 优雅停机接口](#121416-优雅停机接口)
-            - [1.2.14.2. 优化建议](#12142-优化建议)
+- [1. IO模型](#1-io模型)
+  - [1.1. Linux网络IO模型介绍](#11-linux网络io模型介绍)
+  - [1.2. Java IO 演进之路](#12-java-io-演进之路)
+  - [1.3. Java IO对比](#13-java-io对比)
+    - [1.3.1. BIO编程](#131-bio编程)
+    - [1.3.2. NIO编程](#132-nio编程)
+    - [1.3.3. AIO编程](#133-aio编程)
+  - [1.4. IO模型对比总结](#14-io模型对比总结)
+  - [1.5. 选择Netty的理由](#15-选择netty的理由)
+  - [1.6. 实现自定义协议](#16-实现自定义协议)
+- [2. Netty](#2-netty)
+  - [2.1. Netty基本案例](#21-netty基本案例)
+  - [2.2. TCP粘包拆包](#22-tcp粘包拆包)
+    - [2.2.1. 粘包拆包基本概念](#221-粘包拆包基本概念)
+    - [2.2.2. 行拆包器LineBasedFrameDecoder](#222-行拆包器linebasedframedecoder)
+    - [2.2.3. 分隔符拆包器DelimiterBasedFrameDecoder](#223-分隔符拆包器delimiterbasedframedecoder)
+    - [2.2.4. 固定长度的拆包器FixedLengthFrameDecoder](#224-固定长度的拆包器fixedlengthframedecoder)
+    - [2.2.5. 基于数据包长度的拆包器LengthFieldBasedFrameDecoder](#225-基于数据包长度的拆包器lengthfieldbasedframedecoder)
+  - [2.3. 私有协议开发](#23-私有协议开发)
+    - [2.3.1. Netty协议栈功能设计](#231-netty协议栈功能设计)
+    - [2.3.2. Netty协议栈开发](#232-netty协议栈开发)
+  - [2.4. 服务端创建流程分析](#24-服务端创建流程分析)
+  - [2.5. 客户端创建流程分析](#25-客户端创建流程分析)
+  - [2.6. ByteBuf说明](#26-bytebuf说明)
+    - [2.6.1. ByteBuf功能说明](#261-bytebuf功能说明)
+    - [2.6.2. ByteBuf源码分析](#262-bytebuf源码分析)
+    - [2.6.3. ByteBuf辅助类](#263-bytebuf辅助类)
+  - [2.7. Channel和Unsafe](#27-channel和unsafe)
+  - [2.8. ChannelPipeline和ChannelHandler](#28-channelpipeline和channelhandler)
+  - [2.9. EventLoop和EventLoopGroup](#29-eventloop和eventloopgroup)
+    - [2.9.1. Reactor单线程模型](#291-reactor单线程模型)
+    - [2.9.2. Reactor多线程模型](#292-reactor多线程模型)
+    - [2.9.3. 主从Reactor多线程模型](#293-主从reactor多线程模型)
+    - [2.9.4. Netty线程模型](#294-netty线程模型)
+    - [2.9.5. 最佳实践](#295-最佳实践)
+    - [2.9.6. NioEventLoop 源码分析](#296-nioeventloop-源码分析)
+  - [2.10. Futur和Promise](#210-futur和promise)
+  - [2.11. Netty架构分析](#211-netty架构分析)
+  - [2.12. Java多线程编程在Netty中的应用](#212-java多线程编程在netty中的应用)
+  - [2.13. 高性能之道](#213-高性能之道)
+  - [2.14. 可靠性](#214-可靠性)
+    - [2.14.1. 高可靠性设计](#2141-高可靠性设计)
+      - [2.14.1.1. 网络通信类故障](#21411-网络通信类故障)
+      - [2.14.1.2. 链路有效性检测](#21412-链路有效性检测)
+      - [2.14.1.3. Reactor线程的保护](#21413-reactor线程的保护)
+      - [2.14.1.4. 内存保护](#21414-内存保护)
+      - [2.14.1.5. 流量整形](#21415-流量整形)
+      - [2.14.1.6. 优雅停机接口](#21416-优雅停机接口)
+    - [2.14.2. 优化建议](#2142-优化建议)
 
 <!-- /TOC -->
-# 1. Java网路通信
+
+# 1. IO模型
 <a href="#menu" >目录</a>
 
-## 1.1. IO模型
-<a href="#menu" >目录</a>
-
-### 1.1.1. Linux网络IO模型介绍
+## 1.1. Linux网络IO模型介绍
 <a href="#menu" >目录</a>
 
 在进行网络编程时，我们常常见到同步(Sync)/异步(Async)，阻塞(Block)/非阻塞(Unblock)四种调用方式：
@@ -171,7 +170,7 @@ epoll跟select都能提供多路I/O复用的解决方案。在现在的Linux内�
 2. select低效是因为每次它都需要轮询。但低效也是相对的，视情况而定，也可通过良好的设计改善
 
 
-### 1.1.2. Java IO 演进之路
+## 1.2. Java IO 演进之路
 <a href="#menu" >目录</a>
 
 * 在JDK 1.4推出NIO之前，基于Java的所有Socket通信都采用同步阻塞模式BIO，这种一请求一响应的通信模型简化了上层的应用开发，但是在性能和可靠性上却存在很大的瓶颈。
@@ -194,10 +193,10 @@ epoll跟select都能提供多路I/O复用的解决方案。在现在的Linux内�
     * 提供AIO功能，包括对配置和多播数据报的支持
     * 完成JSR-51定义的通道功能，包括对配置和多播数据报的支持。
 
-### 1.1.3. Java IO对比
+## 1.3. Java IO对比
 <a href="#menu" >目录</a>
 
-#### 1.1.3.1. BIO编程
+### 1.3.1. BIO编程
 <a href="#menu" >目录</a>
 
 网络编程的基本模型是C/S模型，即两个进程间的通信：客户端-服务器。
@@ -249,7 +248,7 @@ while(true){
 }
 ```
 
-#### 1.1.3.2. NIO编程
+### 1.3.2. NIO编程
 <a href="#menu" >目录</a>
 
 NIO我们一般认为是New I/O（也是官方的叫法），因为它是相对于老的I/O类库新增的（其实在JDK 1.4中就已经被引入了，但这个名词还会继续用很久，即使它们在现在看来已经是“旧”的了，所以也提示我们在命名时，需要好好考虑），做了很大的改变。但民间跟多人称之为Non-block I/O，即非阻塞I/O，因为这样叫，更能体现它的特点。而下文中的NIO，不是指整个新的I/O库，而是非阻塞I/O。
@@ -455,7 +454,7 @@ public void write(SelectionKey selectionKey){
 因为应答消息的发送，SocketChannel也是异步非阻塞的，所以不能保证一次把需要发送的数据发送完，此时就会出现写半包的问题。我们需要注册写操作，不断轮询Selector将没有发送完的消息发送完毕，然后通过Buffer的hasRemain()方法判断消息是否发送完成。
 
 
-#### 1.1.3.3. AIO编程
+### 1.3.3. AIO编程
 <a href="#menu" >目录</a>
 
 NIO 2.0引入了新的异步通道的概念，并提供了异步文件通道和异步套接字通道的实现。
@@ -501,7 +500,7 @@ while(true){
 }
 ```
 
-### 1.1.4. IO模型对比总结
+## 1.4. IO模型对比总结
 <a href="#menu" >目录</a>
 
 ||同步阻塞IO(BIO)|伪异步IO|非阻塞IO(NIO)|异步IO(AIO)|
@@ -514,7 +513,7 @@ while(true){
 |可靠性 |非常差|差|高|高|
 |吞吐量|低|中|高|高|
 
-### 1.1.5. 选择Netty的理由
+## 1.5. 选择Netty的理由
 <a href="#menu" >目录</a>
 
 **Java NIO的问题**
@@ -531,7 +530,7 @@ while(true){
 * 成熟稳定
 * 社区活跃，迭代快
 
-### 1.1.6. 实现自定义协议
+## 1.6. 实现自定义协议
 <a href="#menu" >目录</a>
 
 实现自定义的应用层协议，也就是意味着要针对传输层协议进行开发，传输层有TCP、UDP两种协议，TCP传输具有可靠性，UDP传输不管数据是否送达，一般选择TCP。TCP是字节流服务,是为数据的可靠传输而设计的。如果数据在传输中丢失或者损坏，TCP会保证再次发送数据，如果数据包乱序到达，TCP会将其置回正确的顺序。对于连接来说，如果数据到来的速度太快,TCP会降低速度，以免数据丢包。程序永远不需要担心接收到乱序或者不正确的数据。不过，相对来说，这种可靠性需要速度作为代价，同时，建立和撤销连接也需要耗费时间。
@@ -578,17 +577,17 @@ while(true){
 
 
 
-## 1.2. Netty
+# 2. Netty
 <a href="#menu" >目录</a>
 
 
-### 1.2.1. Netty基本案例
+## 2.1. Netty基本案例
 <a href="#menu" >目录</a>
 
-### 1.2.2. TCP粘包拆包
+## 2.2. TCP粘包拆包
 <a href="#menu" >目录</a>
 
-#### 1.2.2.1. 粘包拆包基本概念
+### 2.2.1. 粘包拆包基本概念
 <a href="#menu" >目录</a>
 
 TCP是个流协议，所谓流，就是没有界限的一串数据。TCP底层并不了解上层业务数据的具体数据的具体含义，它会根据TCP缓冲区的世纪情况进行包的划分，所以每发送一个数据包，可能包含多个的上层业务数据包。也有可能一个大的业务数据包分成多个TCP数据包进行发送。
@@ -603,7 +602,7 @@ TCP是个流协议，所谓流，就是没有界限的一串数据。TCP底层�
 
 第二种情况，接收端只收到一个数据包，由于TCP是不会出现丢包的，所以这一个数据包中包含了发送端发送的两个数据包的信息，这种现象即为粘包。这种情况由于接收端不知道这两个数据包的界限，所以对于接收端来说很难处理。
 
-![](pic/netty/粘包.png)
+![粘包](pic/netty/粘包.png)
 
 第三种情况，这种情况有两种表现形式，如下图。接收端收到了两个数据包，但是这两个数据包要么是不完整的，要么就是多出来一块，这种情况即发生了拆包和粘包。这两种情况如果不加特殊处理，对于接收端同样是不好处理的。
 
@@ -651,7 +650,7 @@ TCP是个流协议，所谓流，就是没有界限的一串数据。TCP底层�
 * 基于数据包长度的拆包器 **LengthFieldBasedFrameDecoder**
     * 将应用层数据包的长度，作为接收端应用层数据包的拆分依据。按照应用层数据包的大小，拆包。这个拆包器，有一个要求，就是应用层协议中包含数据包的长度。
 
-#### 1.2.2.2. 行拆包器LineBasedFrameDecoder
+### 2.2.2. 行拆包器LineBasedFrameDecoder
 <a href="#menu" >目录</a>
 
 ```java
@@ -711,7 +710,7 @@ public LineBasedFrameDecoder(int maxLength) {
 ```
 如果向定义自己的分隔符，可以使用DelimiterBasedFrameDecoder
 
-#### 1.2.2.3. 分隔符拆包器DelimiterBasedFrameDecoder
+### 2.2.3. 分隔符拆包器DelimiterBasedFrameDecoder
 <a href="#menu" >目录</a>
 
 ```java
@@ -721,7 +720,7 @@ socketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(1024,delimiter))
 
 ```
 
-#### 1.2.2.4. 固定长度的拆包器FixedLengthFrameDecoder
+### 2.2.4. 固定长度的拆包器FixedLengthFrameDecoder
 <a href="#menu" >目录</a>
 
 frameLength用于定义解析一帧数据的长度frameLength
@@ -734,10 +733,10 @@ socketChannel.pipeline().addLast(new FixedLengthFrameDecoder(10));
 ```
 FixedLengthFrameDecoder是根据固定长度frameLength进行解码的。比如frameLength是10，客户端发送多个"123456" 6个字节字节数据，接收端收到第一帧之后会等待第二帧数据，最终接收的数据是"1234561234"--"5612345612"...。如果发送的超过10个字节，则会截断，剩下的作为下一帧的数据。
 
-#### 1.2.2.5. 基于数据包长度的拆包器LengthFieldBasedFrameDecoder
+### 2.2.5. 基于数据包长度的拆包器LengthFieldBasedFrameDecoder
 <a href="#menu" >目录</a>
 
-LengthFieldBasedFrameDecoder长用于自定义协议
+LengthFieldBasedFrameDecoder一般用于自定义协议开发
 
 ```java
 /**
@@ -862,29 +861,91 @@ Let's give another twist to the previous example. The only difference from the p
  +------+--------+------+----------------+      +------+----------------+
 ```
 
-### 1.2.3. 私有协议开发
+
+
+## 2.3. 私有协议开发
 <a href="#menu" >目录</a>
 
-#### 1.2.3.1. Netty协议栈功能设计
+### 2.3.1. Netty协议栈功能设计
 <a href="#menu" >目录</a>
+
+**网络拓扑图**
+
+所有的节点都是平等的么，不区分服务端和客户端。一个Netty节点既可以作为客户端连接其他节点，也可以作为服务端等待其他节点连接。连接可以是长连接或者短连接。
 
 **协议栈功能描述**
-* 基于Netty的NIO通信框架，提高高性能的异步通信能力
+* 基于Netty的NIO通信框架，提高性能的异步通信能力
 * 提供消息的编解码，实现POJO的序列化和反序列化
 * 提供基于IP地址的白名单接入认证机制
 * 链路有效性校验机制
 * 链路的断连重连机制
 
-#### 1.2.3.2. Netty协议栈开发
+双方通信链路成功之后，都可以进行全双工通信。无论是客户端还是服务端，都可以主动发送消息给对方。双方心跳方式采用PING-PONG，也就是作为客户端，当空闲时主动发送心跳消息Ping，服务端回应心跳消息Pong。如果对方长时间没有收到Ping或者Ｐong消息，说明对方已经挂了。可以断开当前连接并重新发起新的连接等操作。
+
+**消息定义**
+
+|名称|类型|长度|描述|
+|---|---|---|---|
+|header|Header|可变|请求头，比如长度，crc等参数|
+|body|Object|可变|请求体，实际有效的数据|
+
+Header定义
+|名称|类型|长度|描述|
+|---|---|---|---|
+|length|int|32|整个消息的长度，包括消息头和消息体|
+|id|long|64|消息的唯一标识|
+|type|byte|8|消息类型。业务请求消息，业务响应消息，业务one way消息，握手请求消息，握手应答消息，心跳请求消息，心跳应答消息|
+|priority|byte|8|消息优先级，越大越优先处理|
+|attachment|Map<　Object,Object>|可变|附件，用于扩展|
+|crc|int|32|所有非crc字段的校验码|
+
+**链路的关闭**
+
+在以下情况，客户端和服务端需要关闭连接
+* 当对方正常主动关闭连接时，自己会收到通知，也需要关闭连接，释放资源
+* 消息读写过程中发生了IO异常，需要主动关闭
+* 心跳超时，需要主动关闭连接
+* 发生编码异常等不可恢复的错误时，需要主动关闭连接
+
+**可靠性设计**
+
+* 心跳机制
+  * 当与服务端的T时间内没有读写消息时，客户端主动发送PING消息
+  * 当发送PING消息发送后，下一个Ｔ时间内还没收到PONG消息或者其他业务，则失败计数器加1
+  * 当收到PONG消息或者其他业务消息后，就将失败计数器清0,当失败计数器达到N次时，说明与服务器长时间通信失败，则主动关闭连接并在一定时间后发起重新连接操作
+  * 服务器也是类似，时间T内没有收到PING和业务消息，则服务端的失败计数器＋１，收到则清零
+  * 失败计数器达到N之后，则关闭链路释放资源，等到客户端发起重连
+
+通过PING-PONG机制，客户端都能即时关闭连接释放资源。如果读写数据过程中发生异常，说明对方已经无预警关闭连接，需要关闭本方的连接。如果是客户端，需要重新发起连接。如果是服务端，需要清空缓存的半包信息，等待客户端重连。
+
+* 重连机制
+  　计算机的连接资源有限，当失去通信之后，需要立即关闭连接释放资源，并保存相关信息，以便进行问题查找。并即时进行重新连接操作。
+* 重复登录保护
+  看场景，有的需要客户端提高并发处理能力，会让客户端创建连接池。有的场景为了避免客户端无限制创建连接导致句柄资源耗尽，需要对单个客户端维持连接的最大次数进行限制
+* 消息缓存重发
+无论是客户端还是服务端，当发生链路中断后，在链路恢复之前，缓存在消息队列中的消息不能丢失，等待链路恢复之后，重新发送这些消息，保证链路中断期间消息不丢失。同时还需要考虑内存的限制，需要设置消息缓存的上限。
+
+**安全性设计**
+
+可以进行IP验证和用户名密码验证，或者SSL/TSL安全传输。
+
+**可扩展性设计**
+
+* 一是消息的可扩展性，可以在通信协议上添加Ｍap类型可扩展字段。
+* 二是流程可扩展性，可方便地通过继承，在处理链中插入新的责任类对处理流程进行扩展
+
+
+### 2.3.2. Netty协议栈开发
 <a href="#menu" >目录</a>
 
 
 
-### 1.2.4. 服务端创建流程分析
+## 2.4. 服务端创建流程分析
 <a href="#menu" >目录</a>
 
+```
 ![](https://img-blog.csdnimg.cn/20190228093932476.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3N1bnNoaW5lMDUyNjk3,size_16,color_FFFFFF,t_70)
-
+```
 ```java
  //bossGroup接受传入的连接
 EventLoopGroup bossGroup = new NioEventLoopGroup();
@@ -1066,11 +1127,12 @@ Selector轮询，由Rector线程NioEventLoop负责调度和执行Selector轮询�
 
 
 
-### 1.2.5. 客户端创建流程分析
+## 2.5. 客户端创建流程分析
 <a href="#menu" >目录</a>
 
+```
 ![](https://img-blog.csdnimg.cn/2019022810332549.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3N1bnNoaW5lMDUyNjk3,size_16,color_FFFFFF,t_70)
-
+```
 
 
 **步骤1**
@@ -1084,27 +1146,243 @@ Selector轮询，由Rector线程NioEventLoop负责调度和执行Selector轮询�
 **步骤9**
 
 
-### 1.2.6. ByteBuf说明
+## 2.6. ByteBuf说明
 <a href="#menu" >目录</a>
 
-#### 1.2.6.1. ByteBuf功能说明
-
-
-
-
-### 1.2.7. Channel和Unsafe
+### 2.6.1. ByteBuf功能说明
 <a href="#menu" >目录</a>
 
-### 1.2.8. ChannelPipeline和ChannelHandler
+缓冲区是用于存放即将要发送给通道的数据或者装载从通道获取的数据。JDK NIO中使用的是缓冲类是Buffer，其子类一共有7种(除了布尔类型的所有基本类型)，比如IntBuffer,FloatBuffer等。其中常用的类是ByteBuffer,它的主要缺点是:
+* ByteBuffer长度固定，一旦分配完成，它的容量是不能动态扩展和收缩的，当需要编码的POJO对象大于容量时，则会发生越界异常
+* ByteBuffer有一个位置指针position,当读或者写数据前都要调用flip()和clean()等，否则会出现错误。
+* ByteBuffer的功能有限，一些高级特性需要使用者自行实现
+
+因此netty就自行实现了类似功能的缓冲区ByteBuf。
+* 7种基本类型，byte数组，ByteBuffer(ByteBuf)等的读写
+* 缓冲区自身的copy和slice等
+* 设置网络字节序
+* 构造缓冲区实例
+* 操作位置指针等方法
+* 参考ByteBuffer的实现，增加额外的功能，解决它原有的缺点
+* 聚合ByteBuffer，减少自身代码量
+
+**ByteBuffer**
+
+在ByteBuffer中，主要有几个变量
+```
+mark <= position <= limit <= capacity
+```
+* mark初始值为-1,当想重新读数据时，可以用于标记pos的位置
+* position用于标记下一个要写入或者读取的位置。
+* limit表示最大可读或者可写的位置
+* capacity表示ＢyteBuffer的容量
+
+```java
+//写状态转换为读状态
+public final Buffer flip() {
+    limit = position;
+    position = 0;
+    mark = -1;
+    return this;
+}
+//读状态转换为写状态
+public final Buffer clear() {
+    position = 0;
+    limit = capacity;
+    mark = -1;
+    return this;
+}
+```
+
+**ByteBuf**
+
+ByteBuf通过两个位置指针readIndex和writeIndex来指示读写位置。两者初始值都是0,当读一个字节或者写一个字节，readIndex和writeIndex就分别自增1.读取之后０－readIndex之间的数据已经为无效数据，可以释放掉。readIndex和writeIndex之间的数据是可读取的，writeIndex和capacity之间的空间是可写。这种方式就避免了ByteBuffer中忘记flip或者clear而出现错误。
+```yml
+|-discardable bytes-|-readable bytes -|- writeable bytes-|
+0       <=      readIndex    <=    writeIndex   <=    capacity
+```
+
+**ByteBuf动态扩展**
+
+ByteBuffer是每次put　byte[]操作都要检测剩余可写空间是否足够，不足够时会抛出异常。ByteBuf会进行动态扩容。
+
+ByteBuf处理
+```java
+public ByteBuf writeBytes(byte[] src, int srcIndex, int length) {
+    //检查空间是否足够
+    this.ensureWritable(length);
+    this.setBytes(this.writerIndex, src, srcIndex, length);
+    this.writerIndex += length;
+    return this;
+}
+
+public ByteBuf ensureWritable(int minWritableBytes) {
+    this.ensureWritable0(ObjectUtil.checkPositiveOrZero(minWritableBytes, "minWritableBytes"));
+    return this;
+}
+
+final void ensureWritable0(int minWritableBytes) {
+    int writerIndex = this.writerIndex();
+    int targetCapacity = writerIndex + minWritableBytes;
+    if (targetCapacity <= this.capacity()) {
+        //容量满足
+        this.ensureAccessible();
+    } else if (checkBounds && targetCapacity > this.maxCapacity) {
+        //可写空间超过定义的最大空间
+        this.ensureAccessible();
+        throw new IndexOutOfBoundsException(String.format("writerIndex(%d) + minWritableBytes(%d) exceeds maxCapacity(%d): %s", writerIndex, minWritableBytes, this.maxCapacity, this));
+    } else {
+        //当前容量<可写空间<定义的最大空间
+        //获取当前可写的字节
+        int fastWritable = this.maxFastWritableBytes();
+        //获取新容量
+        int newCapacity = fastWritable >= minWritableBytes ? writerIndex + fastWritable : this.alloc().calculateNewCapacity(targetCapacity, this.maxCapacity);
+        //扩容
+        this.capacity(newCapacity);
+    }
+}
+
+```
+
+**ByteBuf重用缓冲空间**
+
+当读取一部分字节数据之后，discardable bytes部分已经是无效数据，为了避免写数据过多超过ByteBuf容量造成扩容，因此应当重用discardable bytes部分的空间。
+ByteBuf提供了discardReadBytes来实现这个功能，原理就是数组复制，然后调整readIndex和writeIndex。由于数组复制是一个比较耗时的操作，应当避免频繁调用避免性能下降。
+
+```java
+ public ByteBuf discardReadBytes() {
+    if (readerIndex == 0) {
+        ensureAccessible();
+        return this;
+    }
+
+    if (readerIndex != writerIndex) {
+        //数组复制
+        setBytes(0, this, readerIndex, writerIndex - readerIndex);
+        //重设readIndex和writeIndex
+        writerIndex -= readerIndex;
+        adjustMarkers(readerIndex);
+        readerIndex = 0;
+    } else {
+        ensureAccessible();
+        adjustMarkers(readerIndex);
+        writerIndex = readerIndex = 0;
+    }
+    return this;
+}
+```
+
+**ByteBuf Clean操作**
+
+和ByteBuffer一样，ByteBuf Clean操作只是改变读写Index,并不会清除缓冲区的内容
+```java
+public ByteBuf clear() {
+    readerIndex = writerIndex = 0;
+    return this;
+}
+```
+
+**ByteBuf Mark和Reset**
+
+和ByteBuffer一样，有时需要对读过的数据进行重读或者写过的位置进行重写，可以通过Mark和Reset来实现。
+```java
+@Override
+public ByteBuf markReaderIndex() {
+    markedReaderIndex = readerIndex;
+    return this;
+}
+
+@Override
+public ByteBuf resetReaderIndex() {
+    readerIndex(markedReaderIndex);
+    return this;
+}
+
+@Override
+public ByteBuf markWriterIndex() {
+    markedWriterIndex = writerIndex;
+    return this;
+}
+
+@Override
+public ByteBuf resetWriterIndex() {
+    writerIndex(markedWriterIndex);
+    return this;
+}
+
+```
+
+**ByteBuf查找操作**
+
+提供了查找字节的方法
+* indexOf()
+* bytesBefore
+* .....
+
+**ByteBuf缓冲视图**
+
+类似于数据库的视图，ByteBuf提供了多个接口用于创建某个ByteBuf的视图或者复制ByteBuf.
+* duplicate: 返回的ByteBuf具有独立的读写索引，但是内容和原来的共享，任何一边修改复制前的内容都会影响另一边的内容。双方持有的是同一个内容的指针引用
+* copy: 内容和索引独立
+* slice: 返回可读的子缓冲，且索引独立
+
+**转换成Jdk的ByteBuffer**
+
+返回的ByteBuffer与原来的读写索引独立，但是共享内容。也就是共享同一内容的指针，一边修改，会影响到另一边的内容
+```java
+public abstract int nioBufferCount();
+public abstract ByteBuffer nioBuffer();
+public abstract ByteBuffer nioBuffer(int index, int length);
+public abstract ByteBuffer internalNioBuffer(int index, int length);
+//可返回的ByteBuffer数目由nioBufferCount决定
+public abstract ByteBuffer[] nioBuffers();
+public abstract ByteBuffer[] nioBuffers(int index, int length);
+```
+
+```java
+ByteBuf byteBuf = Unpooled.buffer(100);
+for(int i = 0; i< 100; i++){
+    byteBuf.writeByte(i);
+}
+int nioBufferCount = byteBuf.nioBufferCount();
+log.info("nioBufferCount = " + nioBufferCount);
+
+ByteBuffer byteBuffer =  byteBuf.nioBuffer();
+//ByteBuf修改index　50 为61
+byteBuf.setByte(50,61);
+byte data = byteBuffer.get(50);
+log.info("ByteBuf修改index50 为61,ByteBuffer data = " + data);
+
+//ByteBuffer修改index 14为99
+byteBuffer.put(14,(byte)99);
+byte data1 = byteBuf.getByte(14);
+log.info("ByteBuffer修改index14为99,　ByteBuf data1 = " + data1);
+//输出
+nioBufferCount = 1
+ByteBuf修改index50 为61,ByteBuffer data = 61
+ByteBuffer修改index14为99,　ByteBuf data1 = 99
+```
+
+### 2.6.2. ByteBuf源码分析
 <a href="#menu" >目录</a>
 
-### 1.2.9. EventLoop和EventLoopGroup
+### 2.6.3. ByteBuf辅助类
+<a href="#menu" >目录</a>
+
+
+## 2.7. Channel和Unsafe
+<a href="#menu" >目录</a>
+
+## 2.8. ChannelPipeline和ChannelHandler
+<a href="#menu" >目录</a>
+
+## 2.9. EventLoop和EventLoopGroup
 <a href="#menu" >目录</a>
 
 Netty线程模型的设计，既提升了框架的并发性能，又能在很大程度避免锁，局部实现了无所化设计。
 
 
-#### 1.2.9.1. Reactor单线程模型
+### 2.9.1. Reactor单线程模型
 <a href="#menu" >目录</a>
 
 * 单线程模型，是指所有的IO操作都在同一个NIO线程上完成。
@@ -1117,7 +1395,7 @@ Netty线程模型的设计，既提升了框架的并发性能，又能在很大
     * 当NIO线程负载过重之后，处理速度将变慢，这会导致大量客户端连接超时，超时之后 往往进行重发，更加重了NIO线程的负载，最终导致大量消息积压和处理超时，称为系统的性能瓶颈
     * 可靠性问题，一旦NIO线程意外跑飞，或者进入死循环，会导致系统通信模型不可用，不能接收或处理外部消息，造成节点故障
 
-#### 1.2.9.2. Reactor多线程模型
+### 2.9.2. Reactor多线程模型
 <a href="#menu" >目录</a>
 
 * 与单线程最大的区别是有一组NIO线程来处理IO操作。
@@ -1128,13 +1406,13 @@ Netty线程模型的设计，既提升了框架的并发性能，又能在很大
 
 * 在并发较高的情况下，如果只使用一个线程处理大量的连接，仍然会存在性能问题
 
-#### 1.2.9.3. 主从Reactor多线程模型
+### 2.9.3. 主从Reactor多线程模型
 <a href="#menu" >目录</a>
 
 * 一个线程池负责处理连接操作，一个线程池负责处理IO读写操作、
 * 连接线程池仅仅用于客户端的登录，握手和安全认证。一旦链路建立成功，就将链路注册到后端IO线程池上，由IO线程池负责后续的IO操作。
 
-#### 1.2.9.4. Netty线程模型
+### 2.9.4. Netty线程模型
 <a href="#menu" >目录</a>
 
 Netty的线程模型由用户自行设置。
@@ -1178,7 +1456,7 @@ try {
 
 * Netty读取到数据之后，直接调用ChannelPipeline的fireChannelRead(Object msg).只要用户不切换线程，一直都是IO线程处理，这种串行化方式避免了多线程操作导致的锁的竞争，从性能角度看是最优的。
 
-#### 1.2.9.5. 最佳实践
+### 2.9.5. 最佳实践
 <a href="#menu" >目录</a>
 
 * 服务端创建两个线程池，用于隔离连接和IO操作
@@ -1186,9 +1464,9 @@ try {
 * 解码放在NIO线程中进行，不要放到业务线程
 * 如果业务简单，���以很快完成，就直接在IO线程中进行处理。业务复杂，耗时较长，就另起业务线程进行处理。
 
-#### 1.2.9.6. NioEventLoop 源码分析
+### 2.9.6. NioEventLoop 源码分析
 
-![NioEventLoop继承体系](https://github.com/lgjlife/Java-Study/blob/master/pic/netty/NioEventLoop.png?raw=true)
+![NioEventLoop继承体系](pic/netty/NioEventLoop.png)
 
 ```java
 public final class NioEventLoop extends SingleThreadEventLoop
@@ -1199,7 +1477,7 @@ public final class NioEventLoop extends SingleThreadEventLoop
     * 系统Task,通过调用NioEventLoop的execute(Runable task)方法实现，Netty有很多系统Task,创建它们的主要原因是：当IO线程和用户线程同时操作网络资源时，为了防止并发操作导致的锁竞争，将用户线程的操作封装成Task放入消息队列，由IO线程负责执行，这样就实现了局部无锁化。
     * 定时任务,通过NioEventLoop的schedule(Runnable command, long delay, TimeUnit unit) 实现。
 
-### 1.2.10. Futur和Promise
+## 2.10. Futur和Promise
 <a href="#menu" >目录</a>
 
 ```java
@@ -1280,22 +1558,22 @@ public interface ChannelPromise extends ChannelFuture, Promise<Void> {
 
 ``` 
 
-### 1.2.11. Netty架构分析
+## 2.11. Netty架构分析
 <a href="#menu" >目录</a>
 
-### 1.2.12. Java多线程编程在Netty中的应用
+## 2.12. Java多线程编程在Netty中的应用
 <a href="#menu" >目录</a>
 
-### 1.2.13. 高性能之道
+## 2.13. 高性能之道
 <a href="#menu" >目录</a>
 
-### 1.2.14. 可靠性
+## 2.14. 可靠性
 <a href="#menu" >目录</a>
 
-#### 1.2.14.1. 高可靠性设计
+### 2.14.1. 高可靠性设计
 <a href="#menu" >目录</a>
 
-##### 1.2.14.1.1. 网络通信类故障
+#### 2.14.1.1. 网络通信类故障
 <a href="#menu" >目录</a>
 
 **客户端超时连接**
@@ -1391,25 +1669,25 @@ public class ChannelInboundHandlerAdapter{
     }
 }
 ```
-##### 1.2.14.1.2. 链路有效性检测
+#### 2.14.1.2. 链路有效性检测
 <a href="#menu" >目录</a>
 
 
-##### 1.2.14.1.3. Reactor线程的保护
+#### 2.14.1.3. Reactor线程的保护
 <a href="#menu" >目录</a>
 
-##### 1.2.14.1.4. 内存保护
+#### 2.14.1.4. 内存保护
 <a href="#menu" >目录</a>
 
-##### 1.2.14.1.5. 流量整形
-<a href="#menu" >目录</a>
-
-
-##### 1.2.14.1.6. 优雅停机接口
+#### 2.14.1.5. 流量整形
 <a href="#menu" >目录</a>
 
 
-#### 1.2.14.2. 优化建议
+#### 2.14.1.6. 优雅停机接口
+<a href="#menu" >目录</a>
+
+
+### 2.14.2. 优化建议
 <a href="#menu" >目录</a>
 
 
