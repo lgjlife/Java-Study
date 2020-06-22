@@ -28,9 +28,27 @@
   - [2.6. ByteBuf说明](#26-bytebuf说明)
     - [2.6.1. ByteBuf功能说明](#261-bytebuf功能说明)
     - [2.6.2. ByteBuf源码分析](#262-bytebuf源码分析)
+      - [2.6.2.1. 主要继承关系](#2621-主要继承关系)
     - [2.6.3. ByteBuf辅助类](#263-bytebuf辅助类)
   - [2.7. Channel和Unsafe](#27-channel和unsafe)
+    - [2.7.1. Channel功能说明](#271-channel功能说明)
+    - [2.7.2. Channel源码分析](#272-channel源码分析)
+      - [2.7.2.1. 继承体系](#2721-继承体系)
   - [2.8. ChannelPipeline和ChannelHandler](#28-channelpipeline和channelhandler)
+    - [2.8.1. ChannelPipeline功能说明](#281-channelpipeline功能说明)
+    - [2.8.2. ChannelPipeline源码分析](#282-channelpipeline源码分析)
+      - [2.8.2.1. ChannelPipeline与ChannelHandlerContext继承关系](#2821-channelpipeline与channelhandlercontext继承关系)
+      - [2.8.2.2. ChannelHandler添加处理](#2822-channelhandler添加处理)
+      - [2.8.2.3. ChannelPipeline的inbound事件](#2823-channelpipeline的inbound事件)
+      - [2.8.2.4. ChannelPipeline的outbound事件](#2824-channelpipeline的outbound事件)
+    - [2.8.3. ChannelHandler功能说明](#283-channelhandler功能说明)
+    - [2.8.4. netty提供的部分ChannelHandler](#284-netty提供的部分channelhandler)
+      - [2.8.4.1. ByteToMessageDecoder](#2841-bytetomessagedecoder)
+      - [2.8.4.2. LengthFieldBasedFrameDecoder](#2842-lengthfieldbasedframedecoder)
+      - [2.8.4.3. MessageToMessageDecoder](#2843-messagetomessagedecoder)
+      - [2.8.4.4. MessageToMessageEncoder](#2844-messagetomessageencoder)
+      - [2.8.4.5. MessageToByteEncoder](#2845-messagetobyteencoder)
+      - [2.8.4.6. LengthFieldPrepender](#2846-lengthfieldprepender)
   - [2.9. EventLoop和EventLoopGroup](#29-eventloop和eventloopgroup)
     - [2.9.1. Reactor单线程模型](#291-reactor单线程模型)
     - [2.9.2. Reactor多线程模型](#292-reactor多线程模型)
@@ -1366,6 +1384,43 @@ ByteBuffer修改index14为99,　ByteBuf data1 = 99
 ### 2.6.2. ByteBuf源码分析
 <a href="#menu" >目录</a>
 
+#### 2.6.2.1. 主要继承关系
+<a href="#menu" >目录</a>
+
+```java
+|---ByteBuf (implements ReferenceCounted, Comparable<ByteBuf> )
+    |---AbstractByteBuf
+        |---AbstractDerivedByteBuf
+            |---ReadOnlyByteBuf
+            |---DuplicatedByteBuf
+            |---AbstractUnpooledSlicedByteBuf
+        |---AbstractReferenceCountedByteBuf
+            |---AbstractPooledDerivedByteBuf
+            |---ReadOnlyByteBufferBuf
+            |---CompositeByteBuf
+            |---FixedCompositeByteBuf
+            |---PooledByteBuf
+                |---PooledHeapByteBuf
+                |---PooledDirectByteBuf
+            |---UnpooledDirectByteBuf
+                |---UnpooledUnsafeDirectByteBuf
+            |---UnpooledHeapByteBuf
+                |---UnpooledUnsafeHeapByteBuf
+    |---EmptyByteBuf
+    |---ReplayingDecoderByteBuf
+    |---WrappedByteBuf
+    |---WrappedByteBuf
+```
+
+从内存分配角度来看，ByteBuf可以分为两类。一般最佳实践是在IO通信线程的读写缓冲区使用堆外缓冲区，后端业务消息的编解码使用堆内缓冲。
+* 堆内存(HeapByteBuf)字节缓冲区，特点是内存的分配和回收速度快，可以被JVM自动回收，缺点是如果进行IO读写，需要额外多做一次内存复制，将堆内存对应的缓冲区复制到内核Channel中，性能会有一定的下降
+* 直接内存(DirectByteBuf)字节缓冲区，非堆内存，堆外分配，相比堆内存，分配和回收速度慢一些，只有在Full gc才会回收，但是写入或者从socket channel中读取时，少了一次内存复制，性能相对好一些。
+
+从内存回收来看，分为基于对象池的ByteBuf和普通ByteBuf.两者的主要区别就是对象池的缓冲区可以重用ByteBuf对象，它自己维护了一个内存池，可以循环利用创建的ByteBuf,提升内存的使用率，降低由于高负载导致的频繁gc。
+
+//TODO:ByteBuf源码分析
+
+
 ### 2.6.3. ByteBuf辅助类
 <a href="#menu" >目录</a>
 
@@ -1373,8 +1428,724 @@ ByteBuffer修改index14为99,　ByteBuf data1 = 99
 ## 2.7. Channel和Unsafe
 <a href="#menu" >目录</a>
 
+### 2.7.1. Channel功能说明
+<a href="#menu" >目录</a>
+
+Netty的Channel也是重新设计的，Channel是抽象出来的网络IO读写的相关接口。不使用JDK的NIO的Channel的原因
+* JDK的SocketChannel和ServerSocketChannel没有统一的Channel接口供业务开发者使用
+* JDK的SocketChannel和ServerSocketChannel的主要职责是网络IO操作，由于是SPI类接口，由具体的虚拟机厂家来提供，所以通过继承该SPI功能类来扩展功能的难度很大。直接实现SocketChannel和ServerSocketChannel的难度也很大
+* Netty的Channel能够跟netty整体结合起来，而且自定义功能实现更加灵活
+
+
+Netty的Channel主要设计理念
+* 在Channel接口层，采用Facade模式进行统一封装，将网络IO操作以及相关联的其他操作封装起来，统一对外提供
+* Channel接口尽量大而全，公共功能在抽象父类中实现，最大程度程度实现功能和接口的重用
+* 具体实现采用聚合而非包含的方式，将相关功能类聚合在Channel中，由Channel统一负责分配和调度，功能实现更加灵活。
+
+```java
+package io.netty.channel;
+
+public interface Channel extends AttributeMap, ChannelOutboundInvoker, Comparable<Channel> {
+    //通道的唯一id,生成策略:1.机器的MAC地址，2.当前进程的ID
+    ChannelId id();
+    //channel需要注册到EventLoop的多路复用器上，用于处理IO事件，这个就是获取通道注册的EventLoop对象，EventLoop本质是处理网络事件的Reactor线程
+    EventLoop eventLoop();
+    //服务端返回null,客户端返回创建它的SeverSocketChannel
+    Channel parent();
+    ChannelConfig config();
+    boolean isOpen();
+    boolean isRegistered();
+    boolean isActive();
+    //ChannelMetadata有当前TCP连接的配置参数
+    ChannelMetadata metadata();
+    //本地的绑定地址和连接的客户端地址
+    SocketAddress localAddress();
+    SocketAddress remoteAddress();
+    ChannelFuture closeFuture();
+    boolean isWritable();
+    long bytesBeforeUnwritable();
+    long bytesBeforeWritable();
+    Channel.Unsafe unsafe();
+    ChannelPipeline pipeline();
+    ByteBufAllocator alloc();
+    Channel read();
+    Channel flush();
+
+}
+
+public interface ChannelOutboundInvoker {
+    ChannelFuture bind(SocketAddress var1);
+    ChannelFuture connect(SocketAddress var1);
+    ChannelFuture connect(SocketAddress var1, SocketAddress var2);
+    ChannelFuture disconnect();
+    ChannelFuture close();
+    ChannelFuture deregister();
+    ChannelFuture bind(SocketAddress var1, ChannelPromise var2);
+    ChannelFuture connect(SocketAddress var1, ChannelPromise var2);
+    ChannelFuture connect(SocketAddress var1, SocketAddress var2, ChannelPromise var3);
+    ChannelFuture disconnect(ChannelPromise var1);
+    ChannelFuture close(ChannelPromise var1);
+    ChannelFuture deregister(ChannelPromise var1);
+    /**
+    从当前的Channel中读取数据到第一个inbound缓冲区中，如果数据被成功读取，将会触发ChannelHandler.channelRead事件。读取操作完成，会触发ChannelHandler.readComplet事件／ChannelHandler可以决定是否需要继续读取数据，如果已经有读操作请求被挂起，则后续读操作将会被忽略
+    */
+    ChannelOutboundInvoker read();
+    //将当前的msg通过ChannelPipeline写入到目标Channel中，write只是将消息存入到环形数组中，并没有真正发送，只有调用flush才会被写入到Channel中，并发送给对方
+    ChannelFuture write(Object var1);
+    ChannelFuture write(Object var1, ChannelPromise var2);
+    ChannelOutboundInvoker flush();
+    ChannelFuture writeAndFlush(Object var1, ChannelPromise var2);
+    ChannelFuture writeAndFlush(Object var1);
+    ChannelPromise newPromise();
+    ChannelProgressivePromise newProgressivePromise();
+    ChannelFuture newSucceededFuture();
+    ChannelFuture newFailedFuture(Throwable var1);
+    ChannelPromise voidPromise();
+}
+
+```
+
+
+### 2.7.2. Channel源码分析
+<a href="#menu" >目录</a>
+
+#### 2.7.2.1. 继承体系
+<a href="#menu" >目录</a>
+
+主要继承关系
+```java
+|---Channel(extends AttributeMap, ChannelOutboundInvoker, Comparable<Channel> )
+    |---UnixChannel
+    |---DatagramChannel
+    |---DuplexChannel
+    |---AbstractChannel
+        |---AbstractNioChannel
+            |---AbstractNioMessageChannel
+                |---NioServerSocketChannel　服务端Ｃhannel
+            |---AbstractNioByteChannel
+                |---NioSocketChannel 客户端Channel
+    |---UdtChannel
+    |---Http2StreamChannel
+    |---ServerChannel
+        |---ServerSocketChannel
+            |---NioServerSocketChannel
+    |---SctpChannel
+```
+//TODO:CHANNEL源码分析
+
 ## 2.8. ChannelPipeline和ChannelHandler
 <a href="#menu" >目录</a>
+
+Ｎetty的Channel过滤器实现原理与Server Filter机制一致，它将Channel的数据管道抽象为ChannelPipeline,消息在ChannelPipeline中流动和传递。ChannelPipeline持有的IO事件拦截器ChannelHandler的链表，由ChannelＨandler对IO事件进行拦截和处理，可以方便通过新增和删除ChannelHandler来实现不同业务逻辑的定制，不需要对已有的ChannelHandler进行修改，就能改实现数据处理过程的功能扩展。
+
+
+### 2.8.1. ChannelPipeline功能说明
+<a href="#menu" >目录</a>
+
+ChannelPipeline 继承于ChannelInboundInvoker和ChannelOutboundInvoker，并且ChannelPipeline是和Channel绑定的，因此也可以调用IO相关方法(read,connect,write等)。
+
+```java
+//ChannelPipeline的实现类是DefaultChannelPipeline
+public interface ChannelPipeline extends ChannelInboundInvoker, ChannelOutboundInvoker, Iterable<Entry<String, ChannelHandler>> {
+    ChannelPipeline addFirst(String var1, ChannelHandler var2);
+    ChannelPipeline addFirst(EventExecutorGroup var1, String var2, ChannelHandler var3);
+    ChannelPipeline addLast(String var1, ChannelHandler var2);
+    ChannelPipeline addLast(EventExecutorGroup var1, String var2, ChannelHandler var3);
+    ChannelPipeline addBefore(String var1, String var2, ChannelHandler var3);
+    ChannelPipeline addBefore(EventExecutorGroup var1, String var2, String var3, ChannelHandler var4);
+    ChannelPipeline addAfter(String var1, String var2, ChannelHandler var3);
+    ChannelPipeline addAfter(EventExecutorGroup var1, String var2, String var3, ChannelHandler var4);
+    ChannelPipeline addFirst(ChannelHandler... var1);
+    ChannelPipeline addFirst(EventExecutorGroup var1, ChannelHandler... var2);
+    ChannelPipeline addLast(ChannelHandler... var1);
+    ChannelPipeline addLast(EventExecutorGroup var1, ChannelHandler... var2);
+    ChannelPipeline remove(ChannelHandler var1);
+    ChannelHandler remove(String var1);
+    <T extends ChannelHandler> T remove(Class<T> var1);
+    ChannelHandler removeFirst();
+    ChannelHandler removeLast();
+    ChannelPipeline replace(ChannelHandler var1, String var2, ChannelHandler var3);
+    ChannelHandler replace(String var1, String var2, ChannelHandler var3);
+    <T extends ChannelHandler> T replace(Class<T> var1, String var2, ChannelHandler var3);
+    ChannelHandler first();
+    ChannelHandlerContext firstContext();
+    ChannelHandler last();
+    ChannelHandlerContext lastContext();
+    ChannelHandler get(String var1);
+    <T extends ChannelHandler> T get(Class<T> var1);
+    ChannelHandlerContext context(ChannelHandler var1);
+    ChannelHandlerContext context(String var1);
+    ChannelHandlerContext context(Class<? extends ChannelHandler> var1);
+    Channel channel();
+    List<String> names();
+    Map<String, ChannelHandler> toMap();
+    ChannelPipeline fireChannelRegistered();
+    ChannelPipeline fireChannelUnregistered();
+    ChannelPipeline fireChannelActive();
+    ChannelPipeline fireChannelInactive();
+    ChannelPipeline fireExceptionCaught(Throwable var1);
+    ChannelPipeline fireUserEventTriggered(Object var1);
+    ChannelPipeline fireChannelRead(Object var1);
+    ChannelPipeline fireChannelReadComplete();
+    ChannelPipeline fireChannelWritabilityChanged();
+    ChannelPipeline flush();
+}
+
+```
+
+**ChannelPipeline的事件处理过程**
+
+当发送一个IO请求(写事件或者连接事件)时，会经过层层的Outbound Handler进行处理，最后由最后一个将数据发送出去。当内部调用read从通道中读取数据之后，再经过层层的Inbound Handler进行处理，最后一层的Inbound Handler可以通过addLast()进行添加。其中第一个Head Handler,最后一个为Tail Handler.
+```yml
+                                                 I/O Request
+                                            via Channel or
+                                        ChannelHandlerContext
+                                                      |
+  +---------------------------------------------------+---------------+
+  |                           ChannelPipeline         |               |
+  |                                                  \|/              |
+  |    +---------------------+            +-----------+----------+    |
+  |    | Inbound Handler  N  |            | Outbound Handler  1  |    |
+  |    +----------+----------+            +-----------+----------+    |
+  |              /|\                                  |               |
+  |               |                                  \|/              |
+  |    +----------+----------+            +-----------+----------+    |
+  |    | Inbound Handler N-1 |            | Outbound Handler  2  |    |
+  |    +----------+----------+            +-----------+----------+    |
+  |              /|\                                  .               |
+  |               .                                   .               |
+  | ChannelHandlerContext.fireIN_EVT() ChannelHandlerContext.OUT_EVT()|
+  |        [ method call]                       [method call]         |
+  |               .                                   .               |
+  |               .                                  \|/              |
+  |    +----------+----------+            +-----------+----------+    |
+  |    | Inbound Handler  2  |            | Outbound Handler M-1 |    |
+  |    +----------+----------+            +-----------+----------+    |
+  |              /|\                                  |               |
+  |               |                                  \|/              |
+  |    +----------+----------+            +-----------+----------+    |
+  |    | Inbound Handler  1  |            | Outbound Handler  M  |    |
+  |    +----------+----------+            +-----------+----------+    |
+  |              /|\                                  |               |
+  +---------------+-----------------------------------+---------------+
+                  |                                  \|/
+  +---------------+-----------------------------------+---------------+
+  |               |                                   |               |
+  |       [ Socket.read() ]                    [ Socket.write() ]     |
+  |                                                                   |
+  |  Netty Internal I/O Threads (Transport Implementation)            |
+  +-------------------------------------------------------------------+
+```
+
+Ｎetty中的事件分为Inbound事件和Outbound事件。Inbound事件主要由IO线程触发，比如链路建立事件，链路关闭事件，读事件，异常通知事件。Outbound事件通常是由用户主动触发的事件，比如发起连接，绑定操作，消息发送等操作。
+
+```java
+//Inbound event propagation methods:
+//channel注册事件
+ChannelHandlerContext.fireChannelRegistered()
+//tcp链路建立成功，ch激活事件
+ChannelHandlerContext.fireChannelActive()
+//读事件
+ChannelHandlerContext.fireChannelRead(Object)
+//读完成事件
+ChannelHandlerContext.fireChannelReadComplete()
+//异常事件，比如读写异常，或者pipeline处理出现异常等
+ChannelHandlerContext.fireExceptionCaught(Throwable)
+//用户自定义事件
+ChannelHandlerContext.fireUserEventTriggered(Object)
+//可写状态变化事件
+ChannelHandlerContext.fireChannelWritabilityChanged()
+//链路不可用
+ChannelHandlerContext.fireChannelInactive()
+//取消注册事件
+ChannelHandlerContext.fireChannelUnregistered()
+
+//Outbound event propagation methods:
+//绑定本地地址事件
+ChannelOutboundInvoker.bind(SocketAddress, ChannelPromise)
+//连接服务端事件
+ChannelOutboundInvoker.connect(SocketAddress, SocketAddress, ChannelPromise)
+//写事件
+ChannelOutboundInvoker.write(Object, ChannelPromise)
+//刷新事件
+ChannelHandlerContext.flush()
+//读事件
+ChannelHandlerContext.read()
+//断开连接事件
+ChannelOutboundInvoker.disconnect(ChannelPromise)
+//关闭事件
+ChannelOutboundInvoker.close(ChannelPromise)
+//
+ChannelOutboundInvoker.deregister(ChannelPromise)
+```
+
+**添加自定义Handler**
+
+一般输入事件拦截器和输出事件拦截器分别继承ChannelInboundHandlerAdapter和ChannelOutboundHandlerAdapter。由于pipeline是一个链表结构，因此可以将handler添加在任何位置，ChannelPipeline提供了各种方法来实现添加，比如addFirst，addLast，addAfter，addBefore，remove等。
+
+```java
+@Slf4j
+public class InboundHandlerA extends ChannelInboundHandlerAdapter {
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        //先执行相关操作
+        log.info(ctx.name()+"- InboundHandlerA - channelRead");
+        //最后再调用super.channelRead
+        super.channelRead(ctx, msg);
+    }
+}
+@Slf4j
+public class OutboundHandlerA  extends ChannelOutboundHandlerAdapter {
+    @Override
+    public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
+        log.info(ctx.name()+"- OutboundHandlerA - write");
+        super.write(ctx, msg, promise);
+    }
+}
+```
+ChannelHandler在ChannelPipeline中是一个链表结构，如果不调用super.Xxxxx,则不会调用下一个handler.应当且必须只在最后一个才不调用super.Xxxxx。
+
+```java
+bootstrap.handler(new ChannelInitializer(){
+    @Override
+    protected void initChannel(Channel channel) throws Exception {
+
+        ChannelPipeline pipeline = channel.pipeline();
+        //输入
+        pipeline.addLast("1", new InboundHandlerA());
+        pipeline.addLast("2", new InboundHandlerB());
+        //输出
+        pipeline.addLast("3", new OutboundHandlerA());
+        pipeline.addLast("4", new OutboundHandlerB());
+        //输入
+        pipeline.addLast(new LengthFieldBasedFrameDecoder(1024,0,1,0,1));
+        pipeline.addLast(new StringDecoder());
+
+        pipeline.addLast("5",new ClientChannelInboundHandlerAdapter());
+        //输出
+        channel.pipeline().addLast("6",new ClientChannelOutboundHandlerAdapter());
+    }
+});
+```
+从上面来看整个pipeline链是InboundHandlerA --> InboundHandlerB  --> OutboundHandlerA --> OutboundHandlerB --> LengthFieldBasedFrameDecoder --> StringDecoder --> ClientChannelInboundHandlerAdapter --> ClientChannelOutboundHandlerAdapter
+
+
+
+输出
+```yml
+#发送数据
+c.c.netty.client.NettyClient - 发送数据....
+c.c.n.c.ClientChannelOutboundHandlerAdapter - 6  - ClientChannelOutboundHandlerAdapter---write
+c.c.n.c.handler.OutboundHandlerB - 4- OutboundHandlerB - write
+c.c.n.c.handler.OutboundHandlerA - 3- OutboundHandlerA - write
+c.c.netty.client.NettyClient - 数据发送完成....
+#读取数据
+c.c.n.client.handler.InboundHandlerA - 1- InboundHandlerA - channelRead
+c.c.n.client.handler.InboundHandlerB - 2- InboundHandlerB - channelRead
+c.c.n.c.ClientChannelInboundHandlerAdapter - 5  - ClientChannelInboundHandlerAdapter--channelRead
+c.c.n.c.ClientChannelInboundHandlerAdapter - msg = abcde
+```
+从输出可以看出，pileline的handler顺序和调用的顺序。对于InBound,调用的顺序和链表的顺序一致。对于OutBound,调用的顺序和链表的顺序相反。
+
+注意这里有一个处理顺序的问题。比如读数据是Inbound事件，最初从channel读取出来的数据存放在ByteBuf数组类型，如果中间不经过任何编解码，那么最终由最后一个ChannelInboundHandler处理,触发调用的方法是channelRead，此时的msg类型就是ByteBuf数组类型。
+
+上面经过了编辑码器，LengthFieldBasedFrameDecoder用于处理粘包问题，处理结果仍是ByteBuf数组类型。StringDecoder用于将ByteBuf数组类型转化为String类型，处理结果是String类型,最后一个ChannelInboundHandler是ClientChannelInboundHandlerAdapter，上一层的处理结果是String类型，所以此时的msg也是String类型。
+
+
+ChannelPipeline支持动态添加或者删除ChannelHandler,ChannelPipeline是线程安全的，Ｎ个业务线程可以并发操作ChannelPipeline而不存在线程并发问题也就是添加删除ChannelHandler等操作是线程安全的，内部使用了synchronized。但是ChannelHandler不是线程安全。
+
+
+### 2.8.2. ChannelPipeline源码分析
+<a href="#menu" >目录</a>
+
+ChannelPipeline实际上是一个ChannelHandler的容器，内部维护了一个ChannelHandler的链表和迭代器，可以方便地实现ChannelHandler的查找，添加删除。
+
+#### 2.8.2.1. ChannelPipeline与ChannelHandlerContext继承关系
+<a href="#menu" >目录</a>
+
+```java
+|---interface ChannelPipeline extends ChannelInboundInvoker, ChannelOutboundInvoker
+    |--- DefaultChannelPipeline
+
+public class DefaultChannelPipeline implements ChannelPipeline {
+    final AbstractChannelHandlerContext head;
+    final AbstractChannelHandlerContext tail;
+}
+//构造器
+protected DefaultChannelPipeline(Channel channel) {
+    this.channel = ObjectUtil.checkNotNull(channel, "channel");
+    succeededFuture = new SucceededChannelFuture(channel, null);
+    voidPromise =  new VoidChannelPromise(channel, true);
+    //默认会创建两个ChannelHandlerContext最为tail和head
+    //后续的addFirst和addLast并不是替换head和tail指针。
+    //addFirst是在head和head.next之间插入handler
+    //addLast是在tail.prev和tail之间插入handler
+    tail = new TailContext(this);
+    head = new HeadContext(this);
+
+    head.next = tail;
+    tail.prev = head;
+}
+
+
+public interface ChannelHandlerContext extends AttributeMap, ChannelInboundInvoker, ChannelOutboundInvoker {
+
+}
+abstract class AbstractChannelHandlerContext implements ChannelHandlerContext, ResourceLeakHint {
+    volatile AbstractChannelHandlerContext next;
+    volatile AbstractChannelHandlerContext prev;
+}
+```
+ChannelHandlerContext代表了一个ChannelHandler和ChannelPipeline之间的关系，ChannelHandlerContext创建于ChannelHandler被载入到ChannelPipeline的时候，ChannelHandlerContext主要功能是管理在同一ChannelPipeline中各个ChannelHandler的交互
+
+从上面可以看出ChannelPipeline中定义了两个参数head和tail.是pipeline中的两个头尾节点，ChannelHandlerContext可以认为是ChannelHandler的管理类。除了切换ChannelHandler的执行，从继承上看，还可以执行read,write等IO操作。
+
+一个ChannelHandler可以属于多个ChannelPipeline，它也可以绑定多个ChannelHandlerContext实例，如果一个ChannelHandler想要有这样的功能，就必须以@Sharable注解注释这个ChannelHandler，否则，尝试将其加入到不止一个ChannelPipeline中去的时候，会报出异常，很明显，使用这样的支持多线程的channel你必须保证该类是线程安全的，无状态的。
+
+#### 2.8.2.2. ChannelHandler添加处理
+<a href="#menu" >目录</a>
+
+```java
+@Override
+public final ChannelPipeline addFirst(EventExecutorGroup group, String name, ChannelHandler handler) {
+    final AbstractChannelHandlerContext newCtx;
+    //同步
+    synchronized (this) {
+        //检测是否重复添加
+        checkMultiplicity(handler);
+        //如果name是null，则会自动生成一个新的name。同时同一个pipeline中也不能使用同名handler,否则这里将会抛出异常
+        name = filterName(name, handler);
+        //创建AbstractChannelHandlerContext对象，
+        newCtx = newContext(group, name, handler);
+        //插入链表中
+        addFirst0(newCtx);
+
+        // If the registered is false it means that the channel was not registered on an eventLoop yet.
+        // In this case we add the context to the pipeline and add a task that will call
+        // ChannelHandler.handlerAdded(...) once the channel is registered.
+        if (!registered) {
+            newCtx.setAddPending();
+            callHandlerCallbackLater(newCtx, true);
+            return this;
+        }
+
+        EventExecutor executor = newCtx.executor();
+        if (!executor.inEventLoop()) {
+            callHandlerAddedInEventLoop(newCtx, executor);
+            return this;
+        }
+    }
+    callHandlerAdded0(newCtx);
+    return this;
+}
+
+private void addFirst0(AbstractChannelHandlerContext newCtx) {
+    AbstractChannelHandlerContext nextCtx = head.next;
+    newCtx.prev = head;
+    newCtx.next = nextCtx;
+    head.next = newCtx;
+    nextCtx.prev = newCtx;
+}
+private void addLast0(AbstractChannelHandlerContext newCtx) {
+    AbstractChannelHandlerContext prev = tail.prev;
+    newCtx.prev = prev;
+    newCtx.next = tail;
+    prev.next = newCtx;
+    tail.prev = newCtx;
+}
+```
+
+checkMultiplicity检测是否重复添加ChannelHandler。当同一个ChannelHandler对象添加到同一个Bootstrap的pipeline或者不同Bootstrap的pipeline，将会报错，因此这种做法可能会出现并发安全问题。如果在ChannelHandler类上添加注解@ChannelHandler.Sharable，将不会进行报错。这个检测就是通过下面的checkMultiplicity来进行检测。
+
+```java
+private static void checkMultiplicity(ChannelHandler handler) {
+    if (handler instanceof ChannelHandlerAdapter) {
+        ChannelHandlerAdapter h = (ChannelHandlerAdapter)handler;
+        //isSharable是检查是否有注解Sharable。
+        if (!h.isSharable() && h.added) {
+            throw new ChannelPipelineException(h.getClass().getName() + " is not a @Sharable handler, so can't be added or removed multiple times.");
+        }
+
+        h.added = true;
+    }
+
+}
+```
+#### 2.8.2.3. ChannelPipeline的inbound事件
+<a href="#menu" >目录</a>
+
+这里以read事件举例。
+
+在NIO中，selector会不断地select,以便获取fd的事件列表，当发生读事件时，将会调用程序中的read方法，经过一系列的调用，最终会调用ChannelHandler的channelRead方法。
+
+```java
+NioEventLoop.class
+//处理SelectionKey
+private void processSelectedKey(SelectionKey k, AbstractNioChannel ch) {
+    NioUnsafe unsafe = ch.unsafe();
+    if (!k.isValid()) {
+        NioEventLoop eventLoop;
+        try {
+            eventLoop = ch.eventLoop();
+        } catch (Throwable var6) {
+            return;
+        }
+
+        if (eventLoop == this) {
+            unsafe.close(unsafe.voidPromise());
+        }
+
+    } else {
+        try {
+            /*获取此键的 ready 操作集合。可保证返回的集合仅包含对于此键的通道而言有效的操作位。*/
+            int readyOps = k.readyOps();
+            //连接事件
+            if ((readyOps & 8) != 0) {
+                int ops = k.interestOps();
+                ops &= -9;
+                k.interestOps(ops);
+                unsafe.finishConnect();
+            }
+            //写
+            if ((readyOps & 4) != 0) {
+                ch.unsafe().forceFlush();
+            }
+　　　　　　　//accept或者读事件
+            if ((readyOps & 17) != 0 || readyOps == 0) {
+                //读操作
+                unsafe.read();
+            }
+        } catch (CancelledKeyException var7) {
+            unsafe.close(unsafe.voidPromise());
+        }
+
+    }
+}
+```
+
+```java
+NioByteUnsafe.class
+ public final void read() {
+    ChannelConfig config = AbstractNioByteChannel.this.config();
+    if (AbstractNioByteChannel.this.shouldBreakReadReady(config)) {
+        AbstractNioByteChannel.this.clearReadPending();
+    } else {
+        ChannelPipeline pipeline = AbstractNioByteChannel.this.pipeline();
+        ByteBufAllocator allocator = config.getAllocator();
+        Handle allocHandle = this.recvBufAllocHandle();
+        allocHandle.reset(config);
+        ByteBuf byteBuf = null;
+        boolean close = false;
+
+        try {
+            do {
+                byteBuf = allocHandle.allocate(allocator);
+                allocHandle.lastBytesRead(AbstractNioByteChannel.this.doReadBytes(byteBuf));
+                if (allocHandle.lastBytesRead() <= 0) {
+                    byteBuf.release();
+                    byteBuf = null;
+                    close = allocHandle.lastBytesRead() < 0;
+                    if (close) {
+                        AbstractNioByteChannel.this.readPending = false;
+                    }
+                    break;
+                }
+
+                allocHandle.incMessagesRead(1);
+                AbstractNioByteChannel.this.readPending = false;
+                //在这里调用pipeline的read处理
+                pipeline.fireChannelRead(byteBuf);
+                byteBuf = null;
+            } while(allocHandle.continueReading());
+
+            allocHandle.readComplete();
+             //在这里调用pipeline的ReadComplete处理
+            pipeline.fireChannelReadComplete();
+            if (close) {
+                this.closeOnRead(pipeline);
+            }
+        } catch (Throwable var11) {
+            this.handleReadException(pipeline, byteBuf, var11, close, allocHandle);
+        } finally {
+            if (!AbstractNioByteChannel.this.readPending && !config.isAutoRead()) {
+                this.removeReadOp();
+            }
+
+        }
+
+    }
+}
+```
+
+```java
+DefaultChannelPipeline.class
+public final ChannelPipeline fireChannelRead(Object msg) {
+    AbstractChannelHandlerContext.invokeChannelRead(this.head, msg);
+    return this;
+}
+static void invokeChannelRead(final AbstractChannelHandlerContext next, Object msg) {
+    final Object m = next.pipeline.touch(ObjectUtil.checkNotNull(msg, "msg"), next);
+    EventExecutor executor = next.executor();
+    if (executor.inEventLoop()) {
+        next.invokeChannelRead(m);
+    } else {
+        executor.execute(new Runnable() {
+            public void run() {
+                next.invokeChannelRead(m);
+            }
+        });
+    }
+
+}
+//AbstractChannelHandlerContext.class
+private void invokeChannelRead(Object msg) {
+    if (this.invokeHandler()) {
+        try {
+            ((ChannelInboundHandler)this.handler()).channelRead(this, msg);
+        } catch (Throwable var3) {
+            this.invokeExceptionCaught(var3);
+        }
+    } else {
+        this.fireChannelRead(msg);
+    }
+
+}
+//AbstractChannelHandlerContext.class
+public ChannelHandlerContext fireChannelRead(Object msg) {
+    //最终执行的是自己定义的inboundhandler的channelRead
+    //当调用 super.channelRead时，最终又调用的又是这个方法
+    invokeChannelRead(this.findContextInbound(32), msg);
+    return this;
+}
+//获取下一个要执行的ChannelHandler
+private AbstractChannelHandlerContext findContextInbound(int mask) {
+    AbstractChannelHandlerContext ctx = this;
+    EventExecutor currentExecutor = this.executor();
+
+    do {
+        ctx = ctx.next;
+    } while(skipContext(ctx, currentExecutor, mask, 510));
+
+    return ctx;
+}
+//自己定义的inboundhandler
+//当调用 super.channelRead时，最终又调用的是上面的fireChannelRead(Object msg)
+@Override
+public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    //  super.channelRead(ctx, msg);
+    log.info(ctx.name() + "  - ClientChannelInboundHandlerAdapter--channelRead");
+    log.info("msg = " + msg);
+
+    super.channelRead(ctx, msg);
+}
+public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    ctx.fireChannelRead(msg);
+}
+
+```
+分析完成
+
+
+#### 2.8.2.4. ChannelPipeline的outbound事件
+<a href="#menu" >目录</a>
+
+outbound事件的执行流程和上面相似。先通过pipeline获取AbstractChannelHandlerContext对象，再通过context执行。这一步会提交线程池处理，也就是异步处理写操作。最终是调用Channel的Unsafe接口的实现类执行相关的io操作。由于调用关系比较复杂，这里暂时不进行分析。
+
+![outbound](pic/netty/outbound.png)
+
+```java
+public ChannelFuture writeAndFlush(Object msg) {
+    return this.pipeline.writeAndFlush(msg);
+}
+
+public final ChannelFuture writeAndFlush(Object msg) {
+    return this.tail.writeAndFlush(msg);
+}
+//当应用代码调用super.write(ctx, msg, promise);时，会再调用下面的方法，这个方法会进行handle切换
+private void write(Object msg, boolean flush, ChannelPromise promise) {
+    ObjectUtil.checkNotNull(msg, "msg");
+    try {
+        if (isNotValidPromise(promise, true)) {
+            ReferenceCountUtil.release(msg);
+            // cancelled
+            return;
+        }
+    } catch (RuntimeException e) {
+        ReferenceCountUtil.release(msg);
+        throw e;
+    }
+    //查找下一个要执行的context
+    final AbstractChannelHandlerContext next = findContextOutbound(flush ?
+            (MASK_WRITE | MASK_FLUSH) : MASK_WRITE);
+    final Object m = pipeline.touch(msg, next);
+    EventExecutor executor = next.executor();
+    if (executor.inEventLoop()) {
+        if (flush) {
+            next.invokeWriteAndFlush(m, promise);
+        } else {
+            next.invokeWrite(m, promise);
+        }
+    } else {
+        final WriteTask task = WriteTask.newInstance(next, m, promise, flush);
+        if (!safeExecute(executor, task, promise, m, !flush)) {
+            // We failed to submit the WriteTask. We need to cancel it so we decrement the pending bytes
+            // and put it back in the Recycler for re-use later.
+            //
+            // See https://github.com/netty/netty/issues/8343.
+            task.cancel();
+        }
+    }
+}
+//只查找Outbound的context
+private AbstractChannelHandlerContext findContextOutbound(int mask) {
+    AbstractChannelHandlerContext ctx = this;
+    EventExecutor currentExecutor = executor();
+    do {
+        ctx = ctx.prev;
+    } while (skipContext(ctx, currentExecutor, mask, MASK_ONLY_OUTBOUND));
+    return ctx;
+}
+    
+```
+
+
+
+### 2.8.3. ChannelHandler功能说明
+<a href="#menu" >目录</a>
+
+```java
+|---interface ChannelHandler
+    |--- abstract class ChannelHandlerAdapter
+        |--- ChannelOutboundHandlerAdapter　 extends ChannelHandlerAdapter implements ChannelOutboundHandler
+        |--- ChannelInboundHandlerAdapter　 extends ChannelHandlerAdapter implements ChannelInboundHandler
+    |--- interface ChannelOutboundHandler 
+    |--- interface ChannelInboundHandler 
+```
+用户自定义的ChannelHandler都可以通过继承或者实现上面的类来实现。一般是ChannelOutboundHandlerAdapter和ChannelInboundHandlerAdapter。
+
+
+### 2.8.4. netty提供的部分ChannelHandler
+<a href="#menu" >目录</a>
+
+#### 2.8.4.1. ByteToMessageDecoder 
+<a href="#menu" >目录</a>
+
+#### 2.8.4.2. LengthFieldBasedFrameDecoder 
+<a href="#menu" >目录</a>
+
+#### 2.8.4.3. MessageToMessageDecoder 
+<a href="#menu" >目录</a>
+
+#### 2.8.4.4. MessageToMessageEncoder 
+<a href="#menu" >目录</a>
+
+#### 2.8.4.5. MessageToByteEncoder 
+<a href="#menu" >目录</a>
+
+#### 2.8.4.6. LengthFieldPrepender 
+<a href="#menu" >目录</a>
+
+
 
 ## 2.9. EventLoop和EventLoopGroup
 <a href="#menu" >目录</a>
