@@ -63,16 +63,36 @@
     - [2.10.2. Future](#2102-future)
     - [2.10.3. Promise](#2103-promise)
   - [2.11. Netty架构分析](#211-netty架构分析)
+    - [2.11.1. netty逻辑架构](#2111-netty逻辑架构)
+      - [2.11.1.1. Reactor通信调度层](#21111-reactor通信调度层)
+      - [2.11.1.2. 职责链ChannelPipeline](#21112-职责链channelpipeline)
+      - [2.11.1.3. ChannelHandler](#21113-channelhandler)
+    - [2.11.2. 关键质量属性](#2112-关键质量属性)
+      - [2.11.2.1. 高性能](#21121-高性能)
+      - [2.11.2.2. 可靠性](#21122-可靠性)
+        - [2.11.2.2.1. 链路有效性检测](#211221-链路有效性检测)
+        - [2.11.2.2.2. 内存保护机制](#211222-内存保护机制)
+        - [2.11.2.2.3. 优雅停机](#211223-优雅停机)
+      - [2.11.2.3. 可定制性](#21123-可定制性)
+      - [2.11.2.4. 可扩展性](#21124-可扩展性)
   - [2.12. Java多线程编程在Netty中的应用](#212-java多线程编程在netty中的应用)
   - [2.13. 高性能之道](#213-高性能之道)
+    - [2.13.1. RPC性能模型分析](#2131-rpc性能模型分析)
+    - [2.13.2. Netty高性能之道](#2132-netty高性能之道)
+      - [2.13.2.1. 异步非阻塞通信](#21321-异步非阻塞通信)
+      - [2.13.2.2. 高效的Reactor线程模型](#21322-高效的reactor线程模型)
+      - [2.13.2.3. 无锁化的串行设计](#21323-无锁化的串行设计)
+      - [2.13.2.4. 高效的并发编程](#21324-高效的并发编程)
+      - [2.13.2.5. 零拷贝](#21325-零拷贝)
+      - [2.13.2.6. 内存池](#21326-内存池)
+      - [2.13.2.7. 灵活的TCP参数配置](#21327-灵活的tcp参数配置)
   - [2.14. 可靠性](#214-可靠性)
     - [2.14.1. 高可靠性设计](#2141-高可靠性设计)
       - [2.14.1.1. 网络通信类故障](#21411-网络通信类故障)
       - [2.14.1.2. 链路有效性检测](#21412-链路有效性检测)
-      - [2.14.1.3. Reactor线程的保护](#21413-reactor线程的保护)
-      - [2.14.1.4. 内存保护](#21414-内存保护)
-      - [2.14.1.5. 流量整形](#21415-流量整形)
-      - [2.14.1.6. 优雅停机接口](#21416-优雅停机接口)
+      - [2.14.1.3. 内存保护](#21413-内存保护)
+      - [2.14.1.4. 流量整形](#21414-流量整形)
+      - [2.14.1.5. 优雅停机接口](#21415-优雅停机接口)
     - [2.14.2. 优化建议](#2142-优化建议)
 
 <!-- /TOC -->
@@ -2549,11 +2569,215 @@ public ChannelPromise newPromise() {
 ## 2.11. Netty架构分析
 <a href="#menu" >目录</a>
 
+### 2.11.1. netty逻辑架构
+<a href="#menu" >目录</a>
+
+#### 2.11.1.1. Reactor通信调度层
+
+由一系列辅助类完成，包括Reactor线程NioEventLoop及其父类，NioSocketChannle,NioServerSocketChannle及其父类，ByteBuf相关缓冲类，Unsafe类等。该层的主要职责是监听网络的读写和连接操作，负责将网络层的数据读取到内存缓冲区，然后触发各种网络事件，比如连接事件，读事件，写事件等，将这些事件触发到pipeline中，最后有ChannelHandler进行处理。
+
+#### 2.11.1.2. 职责链ChannelPipeline
+
+负责事件在职责链中的有序传播，可以动态增删职责链中处理类。该层通常用于数据的编解码。
+
+#### 2.11.1.3. ChannelHandler
+
+### 2.11.2. 关键质量属性
+<a href="#menu" >目录</a>
+
+#### 2.11.2.1. 高性能
+
+* 性能问题
+  * 架构不合理
+  * 编码问题，比如锁的使用
+  * 硬件配置低
+  * 带宽磁盘等限制io性能
+
+* netty是如何实现高性能的
+  * 采用异步非阻塞io类库，基于Reactor模式实现，解决了传统同步阻塞IO模式下高并发场景下的低性能
+  * TCP接收和发送缓冲区使用直接内存代替堆内存，避免了内存复制，提升IO读写和写入性能
+  * 支持通过内存池的方式循环利用ByteBuf，避免了频繁创建和销毁ByteBuf带来的性能损耗
+  * 可配置的IO线程数，tcp参数等，满足不同的场景
+  * 采用环形数组缓冲区实现无锁化并发编程，代替传统的线程安全容器和锁
+  * 关键资源的处理使用单线程串行化的方式，避免多线程并发访问带来的锁竞争问题和额外的cpu消耗
+  * 通过引用计数器及时地申请释放不再被引用的对象，细粒度的内存管理降低了gc的频率，减少了频繁gc带来的时延增大和cpu损耗。
+  
+  
+#### 2.11.2.2. 可靠性
+<a href="#menu" >目录</a>
+
+##### 2.11.2.2.1. 链路有效性检测
+
+netty提供了空闲检测机制，当按照设置的时间内没有读写事件发生，将会触发调用channelIdle。在心跳机制里，可以在读写空闲发送心跳消息。当达到一定次数没有收到对端的心跳响应，可以判断对端发生异常。可以关闭相关资源，然后进行监听端口或者发起重新连接
+```java
+@Slf4j
+public class ClientIdleStateHandller extends IdleStateHandler {
+    //当设置为0时，将不会触发该事件
+    public ClientIdleStateHandller(long readerIdleTime, long writerIdleTime, long allIdleTime, TimeUnit unit) {
+        super(readerIdleTime, writerIdleTime, allIdleTime, unit);
+    }
+    @Override
+    protected void channelIdle(ChannelHandlerContext ctx, IdleStateEvent evt) throws Exception {
+
+        IdleState idleState =  evt.state();
+        if(idleState == IdleState.READER_IDLE){
+            log.info("读空闲");
+        }
+
+        if(idleState == IdleState.WRITER_IDLE){
+            log.info("写空闲");
+
+        }
+
+        super.channelIdle(ctx, evt);
+    }
+}
+//使用
+pipeline.addLast( new ClientIdleStateHandller(5,4,1, TimeUnit.SECONDS));
+                
+```
+
+##### 2.11.2.2.2. 内存保护机制
+
+* netty内存保护机制
+  * 通过对象引用计数器对netty的ByteBuf等内置对象进行细粒度的内存申请和释放，对非法的对象引用进行检测和保护
+  * 通过内存池来重用ByteBuf,节省内存
+  * 可设置的内存容量上限，避免ByteBuf无限扩容
+
+##### 2.11.2.2.3. 优雅停机
+
+优雅停机是指当系统退出时，JVM通过注册的ShutdownHook拦截到退出信号，然后执行退出操作，释放相关资源，将缓冲区的消息处理完成或者清空，将待刷新的数据持久化，等待这些操作完成后再退出。
+
+```java
+
+//EventExecutorGroup
+Future<?> shutdownGracefully()
+Future<?> shutdownGracefully(long var1, long var3, TimeUnit var5);
+Channel.close();
+Unsafe.close();
+//强制关闭
+Unsafe.closeForcibly();
+ChannelPipeline.close();
+```
+
+#### 2.11.2.3. 可定制性
+<a href="#menu" >目录</a>
+
+* 责任链模式，ChannelPipeline基于责任链模式开发，便于业务逻辑的拦截，定制和扩展
+* 基于接口的开发，关键的类库都提供了接口或者抽象类，用户也可以自定义实现相关接口
+* 提供了大量的工厂类，通过重载这些工厂类可以创建出想要实现的对象
+* 大量的参数可配置
+
+
+
+#### 2.11.2.4. 可扩展性
+<a href="#menu" >目录</a>
+
+基于netty的nio框架，可以方便地进行应用层协议扩展，比如http,websocket等。
+
 ## 2.12. Java多线程编程在Netty中的应用
 <a href="#menu" >目录</a>
 
+netty大量地使用了jdk中多线程的操作，比如synchronized的使用，volatile，原子类，读写锁，线程池等。
+
 ## 2.13. 高性能之道
 <a href="#menu" >目录</a>
+
+### 2.13.1. RPC性能模型分析
+<a href="#menu" >目录</a>
+
+**影响RPC性能原因**
+* IO模型的选择，传统的BIO需要一个线程管理一个连接，当连接膨胀到上千时，导致应用线程创建过多，将会严重影响性能
+* 序列化，网络传输的字节序列，而应用上一般是对象，要实现转换，就需要进行序列化和反序列化操作，好的序列化框架是序列化之后的码流较小，序列化过程较快，还有一个指标是跨平台性。
+
+**影响IO通信性能问题**
+* IＯ模型,BIO,NIO,AIO,不同的模型很大程度上决定了通信的性能
+* 协议，不同的协议码流大小是不一样的，像http码流就比较大，通常做好自定义协议
+* 线程控制。比如数据报如何读取，读取之后如何处理，是单线程处理还是多线程处理，线程数如何设置。多线程会可能会带来锁竞争，同时线程数过多也会导致上下文切换时间增加，导致性能不升反降。
+
+
+
+### 2.13.2. Netty高性能之道
+<a href="#menu" >目录</a>
+
+#### 2.13.2.1. 异步非阻塞通信
+<a href="#menu" >目录</a>
+
+在IO编程中，当需要同时处理多个客户端的连接时，可以利用多线程或者IO多路复用技术进行处理。IO多路复用技术是通过把多个IO的阻塞复用到同一个select的阻塞上，从而使得系统在单线程的情况下可以同时处理多个客户端请求，与传统的多线程多进程相比，IO多路复用的最大优势是系统开销小，系统不需要创建新的额外进程或者线程，也不需要维护这些进程或者线程的运行，节省了计算机的资源。
+
+JDK1.4提供了NIO,1.5使用epoll替换传统的select/poll，极大提升了NIO的性能。传统的BIO使用的是Socket和ＳervcerSocket，NIO提供了SocketChannel和ServerSocketChannel两种套接字通信实现。这两种都支持阻塞和非阻塞模式。一般来说，低负载，低并发的应用可以使用实现简单的同步阻塞IO,而高并发高负载则使用NIO的非阻塞模式进行开发。
+
+Netty的IO线程NioEventLoop聚合了多路复用器Selector,使用的还是JDK的实现，同时也解决了JDK中的epoll空循环问题。一个IO线程可以并发处理N个客户端连接和读写操作，使得架构的性能，弹性伸缩能力和可靠性都得到了极大的提升。
+
+
+#### 2.13.2.2. 高效的Reactor线程模型
+<a href="#menu" >目录</a>
+
+在网络通信中，如果是长连接，那么io读写的事件将远远大于连接事件
+
+**Reactor线程模型**
+* Reactor单线程模型
+  * 连接和io读写都用同一个线程
+* Reactor多线程模型
+  * 连接使用一个线程，io读写使用多线程
+* 主从Reactor多线程模型
+  * 连接和io读写都使用多线程
+
+从上到下，处理的并发越多。
+
+```java
+//通过设置线程池的线程数量来缺点不同的reactor模型
+//如果不配置线程数，那么默认是cpu*2
+//单线程
+private EventLoopGroup master = new NioEventLoopGroup(1);
+ServerBootstrap serverBootstrap = new ServerBootstrap();
+//如果为null,会报错
+serverBootstrap.group(master,master);
+
+//多线程
+private EventLoopGroup master = new NioEventLoopGroup(1);
+private EventLoopGroup worker = new NioEventLoopGroup();
+ServerBootstrap serverBootstrap = new ServerBootstrap();
+serverBootstrap.group(master,worker);
+
+//主从
+private EventLoopGroup master = new NioEventLoopGroup();
+private EventLoopGroup worker = new NioEventLoopGroup();
+ServerBootstrap serverBootstrap = new ServerBootstrap();
+serverBootstrap.group(master,worker);
+
+```
+
+#### 2.13.2.3. 无锁化的串行设计
+<a href="#menu" >目录</a>
+
+为了尽可能提升性能，netty采用了串行无锁化设计，在IO线程内部进行串行化操作，避免多线程竞争导致的性能下降。netty读取到消息之后，会调用ChannelPipeline的fireChannelRead().只要用户不主动切换线程一直都会由NioEventLopp调用到用户的Handler,期间不进行切换。这种串行化处理方式避免了多线程操作导致的锁竞争。
+
+#### 2.13.2.4. 高效的并发编程
+<a href="#menu" >目录</a>
+
+* volatile的大量正确使用
+* cas和原子类的广泛使用
+* 线程安全容器的使用
+* 通过读写锁提升并发性能
+
+#### 2.13.2.5. 零拷贝
+<a href="#menu" >目录</a>
+//TODO:netty零拷贝
+
+#### 2.13.2.6. 内存池
+<a href="#menu" >目录</a>
+//TODO:netty内存池
+
+
+#### 2.13.2.7. 灵活的TCP参数配置
+<a href="#menu" >目录</a>
+
+```java
+serverBootstrap.option(ChannelOption.SO_RCVBUF,100).childOption(ChannelOption.SO_RCVBUF,100);
+```
+　
+
 
 ## 2.14. 可靠性
 <a href="#menu" >目录</a>
@@ -2566,12 +2790,23 @@ public ChannelPromise newPromise() {
 
 **客户端超时连接**
 
-* 传统的BIO编程由于是阻塞式的，需要设置连接超时时间。
 
-* netty连接超时时间实现
-
-设置
 ```JAVA
+//BIO Socket
+public void connect(SocketAddress endpoint)
+public void connect(SocketAddress endpoint, int timeout)
+//SocketChannel
+ChannelFuture connect(SocketAddress var1);
+ChannelFuture connect(SocketAddress var1, SocketAddress var2);
+ChannelFuture connect(SocketAddress var1, ChannelPromise var2);
+ChannelFuture connect(SocketAddress var1, SocketAddress var2, ChannelPromise var3);
+```
+从上面可以看出，传统的同步阻塞的连接有超时连接，而NIO由于是非阻塞的，所以没有超时连接，只有回调函数。如果想要实现超时连接，就需要用户自己实现。
+
+netty的实现
+
+```JAVA
+//设置连接超时时间
 serverBootstrap.group(bossGroup, workerGroup).option.(ChannelOption.CONNECT_TIMEOUT_MILLIS,3000);
 ```
 
@@ -2586,14 +2821,16 @@ public final void connect(final SocketAddress remoteAddress, SocketAddress local
             }
 
             boolean wasActive = AbstractNioChannel.this.isActive();
+            //连接
             if (AbstractNioChannel.this.doConnect(remoteAddress, localAddress)) {
                 this.fulfillConnectPromise(promise, wasActive);
             } else {
                 AbstractNioChannel.this.connectPromise = promise;
                 AbstractNioChannel.this.requestedRemoteAddress = remoteAddress;
+                //获取超时参数
                 int connectTimeoutMillis = AbstractNioChannel.this.config().getConnectTimeoutMillis();
                 if (connectTimeoutMillis > 0) {
-                    //
+                    //创建定时任务
                     AbstractNioChannel.this.connectTimeoutFuture = AbstractNioChannel.this.eventLoop().schedule(new Runnable() {
                         public void run() {
                             ChannelPromise connectPromise = AbstractNioChannel.this.connectPromise;
@@ -2630,17 +2867,12 @@ public final void connect(final SocketAddress remoteAddress, SocketAddress local
 ```
 Netty客户端超时配置方便，用户无需关心底层如何实现。
 
-**通信对端强制关闭连接**
-在客户端和服务端正常通信的过程中，如果发生网络闪断，对方进程突然宕积或者非正常关闭链路事件时，TCP链路就会发生异常。由于TCP是全双工的，通信双方需要关闭和释放Socket句柄才不会发生句柄泄漏。
-```
-netstat -ano | find 8080
-
-```
-
 **链路关闭**
 
+如果通信对端关闭了链路，会触发inboundＨandler的channelUnregistered和channelInactive方法，可以在里面做相关处理并关闭连接，释放fd.如果对方关闭了链路，还发送数据，将会抛出异常java.nio.channels.ClosedChannelException。
 
 **定制IO故障**
+
 用户需要对一些异常进行定制化处理
 * 客户端断连重连机制
 * 消息的缓存重发
@@ -2657,21 +2889,27 @@ public class ChannelInboundHandlerAdapter{
     }
 }
 ```
+
 #### 2.14.1.2. 链路有效性检测
 <a href="#menu" >目录</a>
 
+**心跳检测机制**
+* ping-ping: 区分心跳和响应，一般由客户端发送心跳请求，服务端响应
+* ping-pong: 不区分心跳和响应，双方都会向对方发送心跳请求
 
-#### 2.14.1.3. Reactor线程的保护
+netty可以使用IdleStateHandler来在读或者写空闲时向对方发送心跳消息。读写空闲时超时计数器自增，在收到其他业务消息或者心跳消息时，将超时计数器清零。
+
+
+#### 2.14.1.3. 内存保护
 <a href="#menu" >目录</a>
 
-#### 2.14.1.4. 内存保护
+
+
+#### 2.14.1.4. 流量整形
 <a href="#menu" >目录</a>
 
-#### 2.14.1.5. 流量整形
-<a href="#menu" >目录</a>
 
-
-#### 2.14.1.6. 优雅停机接口
+#### 2.14.1.5. 优雅停机接口
 <a href="#menu" >目录</a>
 
 
