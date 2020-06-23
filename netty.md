@@ -50,13 +50,18 @@
       - [2.8.4.5. MessageToByteEncoder](#2845-messagetobyteencoder)
       - [2.8.4.6. LengthFieldPrepender](#2846-lengthfieldprepender)
   - [2.9. EventLoop和EventLoopGroup](#29-eventloop和eventloopgroup)
-    - [2.9.1. Reactor单线程模型](#291-reactor单线程模型)
-    - [2.9.2. Reactor多线程模型](#292-reactor多线程模型)
-    - [2.9.3. 主从Reactor多线程模型](#293-主从reactor多线程模型)
-    - [2.9.4. Netty线程模型](#294-netty线程模型)
-    - [2.9.5. 最佳实践](#295-最佳实践)
-    - [2.9.6. NioEventLoop 源码分析](#296-nioeventloop-源码分析)
-  - [2.10. Futur和Promise](#210-futur和promise)
+    - [2.9.1. Reactor线程模型](#291-reactor线程模型)
+      - [2.9.1.1. Reactor单线程模型](#2911-reactor单线程模型)
+      - [2.9.1.2. Reactor多线程模型](#2912-reactor多线程模型)
+      - [2.9.1.3. 主从Reactor多线程模型](#2913-主从reactor多线程模型)
+      - [2.9.1.4. Netty线程模型](#2914-netty线程模型)
+      - [2.9.1.5. 最佳实践](#2915-最佳实践)
+    - [2.9.2. NioEventLoop 源码分析](#292-nioeventloop-源码分析)
+      - [2.9.2.1. netty的select过程分析](#2921-netty的select过程分析)
+  - [2.10. Future和Promise](#210-future和promise)
+    - [2.10.1. 继承体系](#2101-继承体系)
+    - [2.10.2. Future](#2102-future)
+    - [2.10.3. Promise](#2103-promise)
   - [2.11. Netty架构分析](#211-netty架构分析)
   - [2.12. Java多线程编程在Netty中的应用](#212-java多线程编程在netty中的应用)
   - [2.13. 高性能之道](#213-高性能之道)
@@ -2123,12 +2128,22 @@ private AbstractChannelHandlerContext findContextOutbound(int mask) {
 ```
 用户自定义的ChannelHandler都可以通过继承或者实现上面的类来实现。一般是ChannelOutboundHandlerAdapter和ChannelInboundHandlerAdapter。
 
-
+//TODO: netty提供的部分ChannelHandler
 ### 2.8.4. netty提供的部分ChannelHandler
 <a href="#menu" >目录</a>
 
 #### 2.8.4.1. ByteToMessageDecoder 
 <a href="#menu" >目录</a>
+
+Netty 的解码器有很多种，比如基于长度的，基于分割符的，私有协议的。但是，总体的思路都是一致的。
+* 拆包思路：当数据满足了 解码条件时，将其拆开。放到数组。然后发送到业务 handler 处理。
+* 半包思路：当读取的数据不够时，先存起来，直到满足解码条件后，放进数组。送到业务 handler 处理。
+
+而实现这个逻辑的就是：ByteToMessageDecoder。
+
+看名字的意思是：将字节转换成消息的解码器.
+
+
 
 #### 2.8.4.2. LengthFieldBasedFrameDecoder 
 <a href="#menu" >目录</a>
@@ -2152,21 +2167,21 @@ private AbstractChannelHandlerContext findContextOutbound(int mask) {
 
 Netty线程模型的设计，既提升了框架的并发性能，又能在很大程度避免锁，局部实现了无所化设计。
 
-
-### 2.9.1. Reactor单线程模型
+### 2.9.1. Reactor线程模型
+#### 2.9.1.1. Reactor单线程模型
 <a href="#menu" >目录</a>
 
 * 单线程模型，是指所有的IO操作都在同一个NIO线程上完成。
-* NIO线程职责如下
     * 作为NIO服务端，接收客户端的TCP连接,读取通信对端的请求或者应答消息
     * 作为NIO客户端，向服务端发起TCP连接，向通信对端发送消息或者应答消息
+    * 读取通信对端的信息和向通信对端发送信息
 
 * Netty是基于NIO,所有的IO操作都是异步非阻塞，原则上可以处理所有的IO操作。但仅适用于负载较低的场景。对于高并发，高负载并不适合
     * 一个NIO线程同时处理成百上千的链路，性能上无法支撑。即使NIO线程的CPU负荷达到100%，也无法满足海量消息的编码，解码，读取和发送。
-    * 当NIO线程负载过重之后，处理速度将变慢，这会导致大量客户端连接超时，超时之后 往往进行重发，更加重了NIO线程的负载，最终导致大量消息积压和处理超时，称为系统的性能瓶颈
+    * 当NIO线程负载过重之后，处理速度将变慢，这会导致大量客户端连接超时，超时之后 往往进行重发，更加重了NIO线程的负载，最终导致大量消息积压和处理超时，成为系统的性能瓶颈
     * 可靠性问题，一旦NIO线程意外跑飞，或者进入死循环，会导致系统通信模型不可用，不能接收或处理外部消息，造成节点故障
 
-### 2.9.2. Reactor多线程模型
+#### 2.9.1.2. Reactor多线程模型
 <a href="#menu" >目录</a>
 
 * 与单线程最大的区别是有一组NIO线程来处理IO操作。
@@ -2175,15 +2190,15 @@ Netty线程模型的设计，既提升了框架的并发性能，又能在很大
     * 网络IO操作的读写等由一个NIO线程池负责，由这些NIO线程负责消息的读取，解码，编码和发送
     * 一个NIO线程可以处理多条链路，但是一个链路只对应一个NIO线程，防止发生并发操作问题。
 
-* 在并发较高的情况下，如果只使用一个线程处理大量的连接，仍然会存在性能问题
+在绝大多数场景下，上述方式只使用一个线程处理连接监听链路任务，基本上满足要求。但是在特别大的并发下，或者需要进行握手安全认证等操作，可能会存在性能问题，因此出现第三种模型：主从Reactor多线程模型
 
-### 2.9.3. 主从Reactor多线程模型
+#### 2.9.1.3. 主从Reactor多线程模型
 <a href="#menu" >目录</a>
 
 * 一个线程池负责处理连接操作，一个线程池负责处理IO读写操作、
 * 连接线程池仅仅用于客户端的登录，握手和安全认证。一旦链路建立成功，就将链路注册到后端IO线程池上，由IO线程池负责后续的IO操作。
 
-### 2.9.4. Netty线程模型
+#### 2.9.1.4. Netty线程模型
 <a href="#menu" >目录</a>
 
 Netty的线程模型由用户自行设置。
@@ -2227,15 +2242,15 @@ try {
 
 * Netty读取到数据之后，直接调用ChannelPipeline的fireChannelRead(Object msg).只要用户不切换线程，一直都是IO线程处理，这种串行化方式避免了多线程操作导致的锁的竞争，从性能角度看是最优的。
 
-### 2.9.5. 最佳实践
+#### 2.9.1.5. 最佳实践
 <a href="#menu" >目录</a>
 
 * 服务端创建两个线程池，用于隔离连接和IO操作
 * 尽量不要在ChannelHandler中启动用户线程(解码后用于将POJO消息派发到业务线程除外)
 * 解码放在NIO线程中进行，不要放到业务线程
-* 如果业务简单，���以很快完成，就直接在IO线程中进行处理。业务复杂，耗时较长，就另起业务线程进行处理。
+* 如果业务简单，可以很快完成，就直接在IO线程中进行处理。业务复杂，耗时较长，就另起业务线程进行处理。
 
-### 2.9.6. NioEventLoop 源码分析
+### 2.9.2. NioEventLoop 源码分析
 
 ![NioEventLoop继承体系](pic/netty/NioEventLoop.png)
 
@@ -2248,20 +2263,154 @@ public final class NioEventLoop extends SingleThreadEventLoop
     * 系统Task,通过调用NioEventLoop的execute(Runable task)方法实现，Netty有很多系统Task,创建它们的主要原因是：当IO线程和用户线程同时操作网络资源时，为了防止并发操作导致的锁竞争，将用户线程的操作封装成Task放入消息队列，由IO线程负责执行，这样就实现了局部无锁化。
     * 定时任务,通过NioEventLoop的schedule(Runnable command, long delay, TimeUnit unit) 实现。
 
-## 2.10. Futur和Promise
+#### 2.9.2.1. netty的select过程分析
+```java
+@Override
+protected void run() {
+int selectCnt = 0;
+for (;;) {
+    try {
+        int strategy;
+        try {
+            strategy = selectStrategy.calculateStrategy(selectNowSupplier, hasTasks());
+            switch (strategy) {
+            case SelectStrategy.CONTINUE:
+                continue;
+
+            case SelectStrategy.BUSY_WAIT:
+                // fall-through to SELECT since the busy-wait is not supported with NIO
+
+            case SelectStrategy.SELECT:
+                long curDeadlineNanos = nextScheduledTaskDeadlineNanos();
+                if (curDeadlineNanos == -1L) {
+                    curDeadlineNanos = NONE; // nothing on the calendar
+                }
+                nextWakeupNanos.set(curDeadlineNanos);
+                try {
+                    if (!hasTasks()) {
+                        strategy = select(curDeadlineNanos);
+                    }
+                } finally {
+                    // This update is just to help block unnecessary selector wakeups
+                    // so use of lazySet is ok (no race condition)
+                    nextWakeupNanos.lazySet(AWAKE);
+                }
+                // fall through
+            default:
+            }
+        } catch (IOException e) {
+            // If we receive an IOException here its because the Selector is messed up. Let's rebuild
+            // the selector and retry. https://github.com/netty/netty/issues/8566
+            rebuildSelector0();
+            selectCnt = 0;
+            handleLoopException(e);
+            continue;
+        }
+
+        selectCnt++;
+        cancelledKeys = 0;
+        needsToSelectAgain = false;
+        final int ioRatio = this.ioRatio;
+        boolean ranTasks;
+        if (ioRatio == 100) {
+            try {
+                if (strategy > 0) {
+                    processSelectedKeys();
+                }
+            } finally {
+                // Ensure we always run tasks.
+                ranTasks = runAllTasks();
+            }
+        } else if (strategy > 0) {
+            final long ioStartTime = System.nanoTime();
+            try {
+                processSelectedKeys();
+            } finally {
+                // Ensure we always run tasks.
+                final long ioTime = System.nanoTime() - ioStartTime;
+                ranTasks = runAllTasks(ioTime * (100 - ioRatio) / ioRatio);
+            }
+        } else {
+            ranTasks = runAllTasks(0); // This will run the minimum number of tasks
+        }
+
+        if (ranTasks || strategy > 0) {
+            if (selectCnt > MIN_PREMATURE_SELECTOR_RETURNS && logger.isDebugEnabled()) {
+                logger.debug("Selector.select() returned prematurely {} times in a row for Selector {}.",
+                        selectCnt - 1, selector);
+            }
+            selectCnt = 0;
+        } else if (unexpectedSelectorWakeup(selectCnt)) { // Unexpected wakeup (unusual case)
+            selectCnt = 0;
+        }
+    } catch (CancelledKeyException e) {
+        // Harmless exception - log anyway
+        if (logger.isDebugEnabled()) {
+            logger.debug(CancelledKeyException.class.getSimpleName() + " raised by a Selector {} - JDK bug?",
+                    selector, e);
+        }
+    } catch (Throwable t) {
+        handleLoopException(t);
+    }
+    // Always handle shutdown even if the loop processing threw an exception.
+    try {
+        if (isShuttingDown()) {
+            closeAll();
+            if (confirmShutdown()) {
+                return;
+            }
+        }
+    } catch (Throwable t) {
+        handleLoopException(t);
+    }
+}
+}
+
+```
+
+selector.select() 应该 一直阻塞，直到有就绪事件到达，但很遗憾，由于 Java NIO 实现上存在 bug，select() 可能在没有任何就绪事件的情况下返回，从而导致 while(true) 被不断执行，最后导致某个 CPU 核心的利用率飙升到 100%，这就是臭名昭著的 Java NIO 的 epoll bug。
+
+实际上，这是 Linux 系统下 poll/epoll 实现导致的 bug，但 Java NIO 并未完善处理它，所以也可以说是 Java NIO 的 bug。该问题最早在 Java 6 发现，随后很多版本声称解决了该问题，但实际上只是降低了该 bug 的出现频率，起码从网上搜索看，Java 8 还是存在该问题。
+
+
+Netty的解决办法
+* 对Selector的select操作周期进行统计，每完成一次空的select操作进行一次计数，
+* 若在某个周期内连续发生N次空轮询，则触发了epoll死循环bug。
+* 重建Selector，判断是否是其他线程发起的重建请求，若不是则将原SocketChannel从旧的Selector上去除注册，重新注册到新的Selector上，并将原来的Selector关闭。
+
+
+## 2.10. Future和Promise
+<a href="#menu" >目录</a>
+
+### 2.10.1. 继承体系
+
+```java
+|---java.util.concurrent.Future<V>
+    |--- Future<V>
+        |---abstract class AbstractFuture<V> implements Future<V>
+        |---Promise<V> extends Future<V>
+        |---ScheduledFuture<V> extends Future<V>, java.util.concurrent.ScheduledFuture<V>
+        |---ProgressiveFuture<V> extends Future<V>
+        |---ChannelGroupFuture extends Future<Void>, Iterable<ChannelFuture>
+        |---ChannelFuture extends Future<Void>
+```
+
+### 2.10.2. Future
 <a href="#menu" >目录</a>
 
 ```java
-
+//jdk Future
 public interface Future<V> {
+    //尝试取消异步操作，结果未知，如果操作已经完成，或者由于其他原因拒绝，取消操作将会失败
     boolean cancel(boolean mayInterruptIfRunning);
     boolean isCancelled();
     boolean isDone();
+    //获取异步结果，阻塞等待
     V get() throws InterruptedException, ExecutionException;
     V get(long timeout, TimeUnit unit)
         throws InterruptedException, ExecutionException, TimeoutException;
 }
-
+//netty future
 public interface Future<V> extends java.util.concurrent.Future<V> {
     boolean isSuccess();
     boolean isCancellable();
@@ -2281,7 +2430,77 @@ public interface Future<V> extends java.util.concurrent.Future<V> {
     V getNow();
     boolean cancel(boolean var1);
 }
+public interface ChannelFuture extends Future<Void> {
 
+　　//Returns a channel where the I/O operation associated with this future takes place.
+    Channel channel();
+    @Override
+    ChannelFuture addListener(GenericFutureListener<? extends Future<? super Void>> listener);
+    @Override
+    ChannelFuture addListeners(GenericFutureListener<? extends Future<? super Void>>... listeners);
+    @Override
+    ChannelFuture removeListener(GenericFutureListener<? extends Future<? super Void>> listener);
+    @Override
+    ChannelFuture removeListeners(GenericFutureListener<? extends Future<? super Void>>... listeners);
+    @Override
+    ChannelFuture sync() throws InterruptedException;
+    @Override
+    ChannelFuture syncUninterruptibly();
+    @Override
+    ChannelFuture await() throws InterruptedException;
+    @Override
+    ChannelFuture awaitUninterruptibly();
+}
+public interface GenericFutureListener<F extends Future<?>> extends EventListener {
+    void operationComplete(F future) throws Exception;
+}
+```
+
+在netty中，所有的io操作都是异步的，任何io调用都会立即返回，比如read,write等。
+
+ChannelFuture都有两种状态uncompleted和completed.当开始一个io操作时，一个新的ChannelFuter被创建，此时处于uncompleted状态，一旦io操作成功状态将会改为completed.
+
+```yml
+uncompleted
+---isDone()--false ;  isSuccess()--false ; isCancelled()--false ; cause()--null;
+
+completed success
+---isDone()--true ;  isSuccess()--true ; 
+
+completed failure
+---isDone()--true ;  cause()--non null;
+
+
+completed cancellation
+---isDone()--true ; isCancelled()--true ;
+
+```
+使用例子
+```JAVA
+ChannelFuture channelFuture =  bootstrap.connect(host,port);
+//方式1,阻塞等待
+channelFuture.sync();
+//获取结果
+channelFuture.get();
+//方式２,添加监听器，在监听器里等待结果，推荐这种方式
+channelFuture.addListener(new ChannelFutureListener() {
+    @Override
+    public void operationComplete(ChannelFuture channelFuture) throws Exception {
+        
+    }
+});
+```
+不要在channelhandler中调用future.await()方法，会导致死锁。原因是发起io操作之后，由io线程负责异步通知发起io操作的用户线程，如果io操作的线程和用户线程是同一个线程，就会导致io线程等待自己通知操作完成。会导致死锁。
+
+future.await(timeout)是io调用本身的超时，是应用代码层面的，如果没有关闭相关资源，io操作仍然会成功。也可以设置tcp相关的超时，比如连接超时bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS,100);超时则会返回错误。
+
+
+
+### 2.10.3. Promise
+<a href="#menu" >目录</a> 
+
+
+```java
 public interface Promise<V> extends Future<V> {
     Promise<V> setSuccess(V var1);
     boolean trySuccess(V var1);
@@ -2296,18 +2515,6 @@ public interface Promise<V> extends Future<V> {
     Promise<V> awaitUninterruptibly();
     Promise<V> sync() throws InterruptedException;
     Promise<V> syncUninterruptibly();
-}
-
-public interface ChannelFuture extends Future<Void> {
-    Channel channel();
-    ChannelFuture addListener(GenericFutureListener<? extends Future<? super Void>> var1);
-    ChannelFuture addListeners(GenericFutureListener... var1);
-    ChannelFuture removeListener(GenericFutureListener<? extends Future<? super Void>> var1);
-    ChannelFuture removeListeners(GenericFutureListener... var1);
-    ChannelFuture sync() throws InterruptedException;
-    ChannelFuture syncUninterruptibly();
-    ChannelFuture await() throws InterruptedException;
-    ChannelFuture awaitUninterruptibly();
 }
 
 public interface ChannelPromise extends ChannelFuture, Promise<Void> {
@@ -2328,6 +2535,16 @@ public interface ChannelPromise extends ChannelFuture, Promise<Void> {
 
 
 ``` 
+
+可以看到ChannelPromise比ChannelFuture多了几个setXxxx方法，用于设置结果。比如写操作，将会创建一个ChannelPromise。
+```java
+public ChannelFuture write(Object msg) {
+    return this.write(msg, this.newPromise());
+}
+public ChannelPromise newPromise() {
+    return new DefaultChannelPromise(this.channel(), this.executor());
+}   
+```
 
 ## 2.11. Netty架构分析
 <a href="#menu" >目录</a>
