@@ -24,49 +24,54 @@
   - [2.3. 私有协议开发](#23-私有协议开发)
     - [2.3.1. Netty协议栈功能设计](#231-netty协议栈功能设计)
     - [2.3.2. Netty协议栈开发](#232-netty协议栈开发)
-  - [2.4. 服务端客户端创建过程分析](#24-服务端客户端创建过程分析)
-    - [EventLoopGroup分析](#eventloopgroup分析)
-    - [2.4.1. Bootstrap分析](#241-bootstrap分析)
-    - [2.4.2. 服务端创建流程分析](#242-服务端创建流程分析)
-      - [2.4.2.1. 创建代码](#2421-创建代码)
-      - [2.4.2.2. 分析](#2422-分析)
-      - [2.4.2.3. 线程状态](#2423-线程状态)
-    - [2.4.3. 客户端创建流程分析](#243-客户端创建流程分析)
-      - [2.4.3.1. 创建代码](#2431-创建代码)
-      - [2.4.3.2. 分析](#2432-分析)
-  - [2.5. ByteBuf说明](#25-bytebuf说明)
-    - [2.5.1. ByteBuf功能说明](#251-bytebuf功能说明)
-    - [2.5.2. ByteBuf源码分析](#252-bytebuf源码分析)
-      - [2.5.2.1. 主要继承关系](#2521-主要继承关系)
-    - [2.5.3. ByteBuf辅助类](#253-bytebuf辅助类)
-  - [2.6. Channel和Unsafe](#26-channel和unsafe)
-    - [2.6.1. Channel功能说明](#261-channel功能说明)
-    - [2.6.2. Channel源码分析](#262-channel源码分析)
-      - [2.6.2.1. 继承体系](#2621-继承体系)
-  - [2.7. ChannelPipeline和ChannelHandler](#27-channelpipeline和channelhandler)
-    - [2.7.1. ChannelPipeline功能说明](#271-channelpipeline功能说明)
-    - [2.7.2. ChannelPipeline源码分析](#272-channelpipeline源码分析)
-      - [2.7.2.1. ChannelPipeline与ChannelHandlerContext继承关系](#2721-channelpipeline与channelhandlercontext继承关系)
-      - [2.7.2.2. ChannelHandler添加处理](#2722-channelhandler添加处理)
-      - [2.7.2.3. ChannelPipeline的inbound事件](#2723-channelpipeline的inbound事件)
-      - [2.7.2.4. ChannelPipeline的outbound事件](#2724-channelpipeline的outbound事件)
-    - [2.7.3. ChannelHandler功能说明](#273-channelhandler功能说明)
-    - [2.7.4. netty提供的部分ChannelHandler](#274-netty提供的部分channelhandler)
-      - [2.7.4.1. ByteToMessageDecoder](#2741-bytetomessagedecoder)
-      - [2.7.4.2. LengthFieldBasedFrameDecoder](#2742-lengthfieldbasedframedecoder)
-      - [2.7.4.3. MessageToMessageDecoder](#2743-messagetomessagedecoder)
-      - [2.7.4.4. MessageToMessageEncoder](#2744-messagetomessageencoder)
-      - [2.7.4.5. MessageToByteEncoder](#2745-messagetobyteencoder)
-      - [2.7.4.6. LengthFieldPrepender](#2746-lengthfieldprepender)
-  - [2.8. EventLoop和EventLoopGroup](#28-eventloop和eventloopgroup)
-    - [2.8.1. Reactor线程模型](#281-reactor线程模型)
-      - [2.8.1.1. Reactor单线程模型](#2811-reactor单线程模型)
-      - [2.8.1.2. Reactor多线程模型](#2812-reactor多线程模型)
-      - [2.8.1.3. 主从Reactor多线程模型](#2813-主从reactor多线程模型)
-      - [2.8.1.4. Netty线程模型](#2814-netty线程模型)
-      - [2.8.1.5. 最佳实践](#2815-最佳实践)
-    - [2.8.2. NioEventLoop 源码分析](#282-nioeventloop-源码分析)
-      - [2.8.2.1. netty的select过程分析](#2821-netty的select过程分析)
+  - [2.4. EventLoop和EventLoopGroup](#24-eventloop和eventloopgroup)
+    - [2.4.1. Reactor线程模型](#241-reactor线程模型)
+      - [2.4.1.1. Reactor单线程模型](#2411-reactor单线程模型)
+      - [2.4.1.2. Reactor多线程模型](#2412-reactor多线程模型)
+      - [2.4.1.3. 主从Reactor多线程模型](#2413-主从reactor多线程模型)
+      - [2.4.1.4. Netty线程模型](#2414-netty线程模型)
+      - [2.4.1.5. 最佳实践](#2415-最佳实践)
+    - [2.4.2. EventLoopGroup 源码分析](#242-eventloopgroup-源码分析)
+    - [2.4.3. NioEventLoop](#243-nioeventloop)
+      - [2.4.3.1. netty的select过程分析](#2431-netty的select过程分析)
+  - [2.5. 服务端客户端创建过程分析](#25-服务端客户端创建过程分析)
+    - [2.5.1. Bootstrap分析](#251-bootstrap分析)
+    - [2.5.2. 客户端创建流程分析](#252-客户端创建流程分析)
+      - [2.5.2.1. 创建代码](#2521-创建代码)
+      - [2.5.2.2. 分析](#2522-分析)
+        - [2.5.2.2.1. EventLoopGroup创建](#25221-eventloopgroup创建)
+        - [2.5.2.2.2. Bootstrap创建和配置](#25222-bootstrap创建和配置)
+        - [2.5.2.2.3. Channel和pipeline的配置](#25223-channel和pipeline的配置)
+        - [2.5.2.2.4. 发起连接](#25224-发起连接)
+        - [2.5.2.2.5. Channel发送数据](#25225-channel发送数据)
+    - [2.5.3. 服务端创建流程分析](#253-服务端创建流程分析)
+      - [2.5.3.1. 创建代码](#2531-创建代码)
+      - [2.5.3.2. 分析](#2532-分析)
+      - [2.5.3.3. 线程状态](#2533-线程状态)
+  - [2.6. ByteBuf说明](#26-bytebuf说明)
+    - [2.6.1. ByteBuf功能说明](#261-bytebuf功能说明)
+    - [2.6.2. ByteBuf源码分析](#262-bytebuf源码分析)
+      - [2.6.2.1. 主要继承关系](#2621-主要继承关系)
+    - [2.6.3. ByteBuf辅助类](#263-bytebuf辅助类)
+  - [2.7. Channel和Unsafe](#27-channel和unsafe)
+    - [2.7.1. Channel功能说明](#271-channel功能说明)
+    - [2.7.2. Channel源码分析](#272-channel源码分析)
+      - [2.7.2.1. 继承体系](#2721-继承体系)
+  - [2.8. ChannelPipeline和ChannelHandler](#28-channelpipeline和channelhandler)
+    - [2.8.1. ChannelPipeline功能说明](#281-channelpipeline功能说明)
+    - [2.8.2. ChannelPipeline源码分析](#282-channelpipeline源码分析)
+      - [2.8.2.1. ChannelPipeline与ChannelHandlerContext继承关系](#2821-channelpipeline与channelhandlercontext继承关系)
+      - [2.8.2.2. ChannelHandler添加处理](#2822-channelhandler添加处理)
+      - [2.8.2.3. ChannelPipeline的inbound事件](#2823-channelpipeline的inbound事件)
+      - [2.8.2.4. ChannelPipeline的outbound事件](#2824-channelpipeline的outbound事件)
+    - [2.8.3. ChannelHandler功能说明](#283-channelhandler功能说明)
+    - [2.8.4. netty提供的部分ChannelHandler](#284-netty提供的部分channelhandler)
+      - [2.8.4.1. ByteToMessageDecoder](#2841-bytetomessagedecoder)
+      - [2.8.4.2. LengthFieldBasedFrameDecoder](#2842-lengthfieldbasedframedecoder)
+      - [2.8.4.3. MessageToMessageDecoder](#2843-messagetomessagedecoder)
+      - [2.8.4.4. MessageToMessageEncoder](#2844-messagetomessageencoder)
+      - [2.8.4.5. MessageToByteEncoder](#2845-messagetobyteencoder)
+      - [2.8.4.6. LengthFieldPrepender](#2846-lengthfieldprepender)
   - [2.9. Future和Promise](#29-future和promise)
     - [2.9.1. 继承体系](#291-继承体系)
     - [2.9.2. Future](#292-future)
@@ -1028,24 +1033,794 @@ Header定义
 <a href="#menu" >目录</a>
 
 
-## 2.4. 服务端客户端创建过程分析
 
-### EventLoopGroup分析
+## 2.4. EventLoop和EventLoopGroup
 <a href="#menu" >目录</a>
 
-### 2.4.1. Bootstrap分析
+Netty线程模型的设计，既提升了框架的并发性能，又能在很大程度避免锁，局部实现了无所化设计。
+
+### 2.4.1. Reactor线程模型
+
+#### 2.4.1.1. Reactor单线程模型
 <a href="#menu" >目录</a>
 
+* 单线程模型，是指所有的IO操作都在同一个NIO线程上完成。
+    * 作为NIO服务端，接收客户端的TCP连接,读取通信对端的请求或者应答消息
+    * 作为NIO客户端，向服务端发起TCP连接，向通信对端发送消息或者应答消息
+    * 读取通信对端的信息和向通信对端发送信息
+
+* Netty是基于NIO,所有的IO操作都是异步非阻塞，原则上可以处理所有的IO操作。但仅适用于负载较低的场景。对于高并发，高负载并不适合
+    * 一个NIO线程同时处理成百上千的链路，性能上无法支撑。即使NIO线程的CPU负荷达到100%，也无法满足海量消息的编码，解码，读取和发送。
+    * 当NIO线程负载过重之后，处理速度将变慢，这会导致大量客户端连接超时，超时之后 往往进行重发，更加重了NIO线程的负载，最终导致大量消息积压和处理超时，成为系统的性能瓶颈
+    * 可靠性问题，一旦NIO线程意外跑飞，或者进入死循环，会导致系统通信模型不可用，不能接收或处理外部消息，造成节点故障
+
+#### 2.4.1.2. Reactor多线程模型
+<a href="#menu" >目录</a>
+
+* 与单线程最大的区别是有一组NIO线程来处理IO操作。
+* 特点
+    * 有一个专门的NIO线程用于监听服务端，接收客户端的TCP连接请求。
+    * 网络IO操作的读写等由一个NIO线程池负责，由这些NIO线程负责消息的读取，解码，编码和发送
+    * 一个NIO线程可以处理多条链路，但是一个链路只对应一个NIO线程，防止发生并发操作问题。
+
+在绝大多数场景下，上述方式只使用一个线程处理连接监听链路任务，基本上满足要求。但是在特别大的并发下，或者需要进行握手安全认证等操作，可能会存在性能问题，因此出现第三种模型：主从Reactor多线程模型
+
+#### 2.4.1.3. 主从Reactor多线程模型
+<a href="#menu" >目录</a>
+
+* 一个线程池负责处理连接操作，一个线程池负责处理IO读写操作、
+* 连接线程池仅仅用于客户端的登录，握手和安全认证。一旦链路建立成功，就将链路注册到后端IO线程池上，由IO线程池负责后续的IO操作。
+
+#### 2.4.1.4. Netty线程模型
+<a href="#menu" >目录</a>
+
+Netty的线程模型由用户自行设置。
+两种方式，一种是单线程池模型，连接和IO操作是由单个线程池负责处理。一种是双线程池模型，连接和IO操作是由两个线程池负责处理
+线程池的线程数量也可以在定义EventLoopGroup时指定。
+客户端只能设置单个线程池，服务端可以设置两个。
+
+ServerBootstrap 有两个方法用于设置线程池，分别用于设置单个和双个线程池。
+```java
+public ServerBootstrap group(EventLoopGroup group) {
+        return this.group(group, group);
+    }
+
+public ServerBootstrap group(EventLoopGroup parentGroup, EventLoopGroup childGroup);
+
+ //bossGroup接受传入的连接
+EventLoopGroup bossGroup = new NioEventLoopGroup();
+//一旦bossGroup接受连接并注册到workerGroup，workerGroup则处理连接相关的流量
+EventLoopGroup workerGroup = new NioEventLoopGroup();
+try {
+
+    ServerBootstrap serverBootstrap = new ServerBootstrap();
+    //用于设置服务端
+    serverBootstrap.group(bossGroup, workerGroup)
+            .channel(NioServerSocketChannel.class)
+            .option(ChannelOption.SO_BACKLOG, 1024)
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,3000)
+            .childHandler(new ChildChannelHandler());
+}
+```
+
+* Netty用于接收客户端请求的线程池职责
+    * 接收客户端TCP连接，初始化Channel参数
+    * 将链路状态变更事件通知给ChannelPipeline
+
+* Netty用于处理IO请求的线程池职责
+    * 异步读取通信对端的数据报，发送事件到ChannelPipeline
+    * 异步发送消息到通信对端，调用ChannelPipeline的消息发送接口
+    * 执行系统调用Task
+    * 执行定时任务Task,例如链路空闲状态监测定时任务
+
+* Netty读取到数据之后，直接调用ChannelPipeline的fireChannelRead(Object msg).只要用户不切换线程，一直都是IO线程处理，这种串行化方式避免了多线程操作导致的锁的竞争，从性能角度看是最优的。
+
+#### 2.4.1.5. 最佳实践
+<a href="#menu" >目录</a>
+
+* 服务端创建两个线程池，用于隔离连接和IO操作
+* 尽量不要在ChannelHandler中启动用户线程(解码后用于将POJO消息派发到业务线程除外)
+* 解码放在NIO线程中进行，不要放到业务线程
+* 如果业务简单，可以很快完成，就直接在IO线程中进行处理。业务复杂，耗时较长，就另起业务线程进行处理。
+
+### 2.4.2. EventLoopGroup 源码分析
+
+**继承体系**
+
+```java
+|--- Executor
+    |--- ExecutorService  extends Executor
+        |--- ScheduledExecutorService extends ExecutorService
+            |---  EventExecutorGroup extends ScheduledExecutorService
+                |--- EventLoopGroup extends EventExecutorGroup
+                    |---AbstractEventLoopGroup extends AbstractEventExecutorGroup implements EventLoopGroup
+                    |---MultithreadEventLoopGroup extends MultithreadEventExecutorGroup implements EventLoopGroup 
+                        |--- NioEventLoopGroup extends MultithreadEventLoopGroup 
+                    |---ThreadPerChannelEventLoopGroup extends AbstractEventExecutorGroup implements EventLoopGroup 
+                    |---EventLoop extends OrderedEventExecutor, EventLoopGroup
+                        |---SingleThreadEventLoop extends SingleThreadEventExecutor implements EventLoop
+                            |---NioEventLoop extends SingleThreadEventLoop
+```             
+
+
+### 2.4.3. NioEventLoop
+
+![NioEventLoop继承体系](pic/netty/NioEventLoop.png)
+
+```java
+public final class NioEventLoop extends SingleThreadEventLoop
+```
+
+* NioEventLoop作用
+    * IO线程的读写
+    * 系统Task,通过调用NioEventLoop的execute(Runable task)方法实现，Netty有很多系统Task,创建它们的主要原因是：当IO线程和用户线程同时操作网络资源时，为了防止并发操作导致的锁竞争，将用户线程的操作封装成Task放入消息队列，由IO线程负责执行，这样就实现了局部无锁化。
+    * 定时任务,通过NioEventLoop的schedule(Runnable command, long delay, TimeUnit unit) 实现。
+
+#### 2.4.3.1. netty的select过程分析
+```java
+@Override
+protected void run() {
+int selectCnt = 0;
+for (;;) {
+    try {
+        int strategy;
+        try {
+            strategy = selectStrategy.calculateStrategy(selectNowSupplier, hasTasks());
+            switch (strategy) {
+            case SelectStrategy.CONTINUE:
+                continue;
+
+            case SelectStrategy.BUSY_WAIT:
+                // fall-through to SELECT since the busy-wait is not supported with NIO
+
+            case SelectStrategy.SELECT:
+                long curDeadlineNanos = nextScheduledTaskDeadlineNanos();
+                if (curDeadlineNanos == -1L) {
+                    curDeadlineNanos = NONE; // nothing on the calendar
+                }
+                nextWakeupNanos.set(curDeadlineNanos);
+                try {
+                    if (!hasTasks()) {
+                        strategy = select(curDeadlineNanos);
+                    }
+                } finally {
+                    // This update is just to help block unnecessary selector wakeups
+                    // so use of lazySet is ok (no race condition)
+                    nextWakeupNanos.lazySet(AWAKE);
+                }
+                // fall through
+            default:
+            }
+        } catch (IOException e) {
+            // If we receive an IOException here its because the Selector is messed up. Let's rebuild
+            // the selector and retry. https://github.com/netty/netty/issues/8566
+            rebuildSelector0();
+            selectCnt = 0;
+            handleLoopException(e);
+            continue;
+        }
+
+        selectCnt++;
+        cancelledKeys = 0;
+        needsToSelectAgain = false;
+        final int ioRatio = this.ioRatio;
+        boolean ranTasks;
+        if (ioRatio == 100) {
+            try {
+                if (strategy > 0) {
+                    processSelectedKeys();
+                }
+            } finally {
+                // Ensure we always run tasks.
+                ranTasks = runAllTasks();
+            }
+        } else if (strategy > 0) {
+            final long ioStartTime = System.nanoTime();
+            try {
+                processSelectedKeys();
+            } finally {
+                // Ensure we always run tasks.
+                final long ioTime = System.nanoTime() - ioStartTime;
+                ranTasks = runAllTasks(ioTime * (100 - ioRatio) / ioRatio);
+            }
+        } else {
+            ranTasks = runAllTasks(0); // This will run the minimum number of tasks
+        }
+
+        if (ranTasks || strategy > 0) {
+            if (selectCnt > MIN_PREMATURE_SELECTOR_RETURNS && logger.isDebugEnabled()) {
+                logger.debug("Selector.select() returned prematurely {} times in a row for Selector {}.",
+                        selectCnt - 1, selector);
+            }
+            selectCnt = 0;
+        } else if (unexpectedSelectorWakeup(selectCnt)) { // Unexpected wakeup (unusual case)
+            selectCnt = 0;
+        }
+    } catch (CancelledKeyException e) {
+        // Harmless exception - log anyway
+        if (logger.isDebugEnabled()) {
+            logger.debug(CancelledKeyException.class.getSimpleName() + " raised by a Selector {} - JDK bug?",
+                    selector, e);
+        }
+    } catch (Throwable t) {
+        handleLoopException(t);
+    }
+    // Always handle shutdown even if the loop processing threw an exception.
+    try {
+        if (isShuttingDown()) {
+            closeAll();
+            if (confirmShutdown()) {
+                return;
+            }
+        }
+    } catch (Throwable t) {
+        handleLoopException(t);
+    }
+}
+}
+
+```
+
+selector.select() 应该 一直阻塞，直到有就绪事件到达，但很遗憾，由于 Java NIO 实现上存在 bug，select() 可能在没有任何就绪事件的情况下返回，从而导致 while(true) 被不断执行，最后导致某个 CPU 核心的利用率飙升到 100%，这就是臭名昭著的 Java NIO 的 epoll bug。
+
+实际上，这是 Linux 系统下 poll/epoll 实现导致的 bug，但 Java NIO 并未完善处理它，所以也可以说是 Java NIO 的 bug。该问题最早在 Java 6 发现，随后很多版本声称解决了该问题，但实际上只是降低了该 bug 的出现频率，起码从网上搜索看，Java 8 还是存在该问题。
+
+
+Netty的解决办法
+* 对Selector的select操作周期进行统计，每完成一次空的select操作进行一次计数，
+* 若在某个周期内连续发生N次空轮询，则触发了epoll死循环bug。
+* 重建Selector，判断是否是其他线程发起的重建请求，若不是则将原SocketChannel从旧的Selector上去除注册，重新注册到新的Selector上，并将原来的Selector关闭。
+  
+
+## 2.5. 服务端客户端创建过程分析
+
+
+### 2.5.1. Bootstrap分析
+<a href="#menu" >目录</a>
+
+Bootstrap 是 Netty 提供的一个便利的工厂类，可以通过它来完成 Netty 的客户端或服务器端的 Netty 初始化
+```java
+|---AbstractBootstrap
+    |---Bootstrap
+    |---ServerBootstrap
+
+public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C extends Channel> implements Cloneable {
+    static final Entry<ChannelOption<?>, Object>[] EMPTY_OPTION_ARRAY = new Entry[0];
+    static final Entry<AttributeKey<?>, Object>[] EMPTY_ATTRIBUTE_ARRAY = new Entry[0];
+    volatile EventLoopGroup group;
+    private volatile ChannelFactory<? extends C> channelFactory;
+    private volatile SocketAddress localAddress;
+    private final Map<ChannelOption<?>, Object> options = new LinkedHashMap();
+    private final Map<AttributeKey<?>, Object> attrs = new ConcurrentHashMap();
+    private volatile ChannelHandler handler;
+｝
+public class Bootstrap extends AbstractBootstrap<Bootstrap, Channel> {
+    private static final InternalLogger logger = InternalLoggerFactory.getInstance(Bootstrap.class);
+    private static final AddressResolverGroup<?> DEFAULT_RESOLVER;
+    private final BootstrapConfig config = new BootstrapConfig(this);
+    private volatile AddressResolverGroup<SocketAddress> resolver;
+    private volatile SocketAddress remoteAddress;
+｝
+public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerChannel> {
+    private static final InternalLogger logger = InternalLoggerFactory.getInstance(ServerBootstrap.class);
+    private final Map<ChannelOption<?>, Object> childOptions = new LinkedHashMap();
+    private final Map<AttributeKey<?>, Object> childAttrs = new ConcurrentHashMap();
+    private final ServerBootstrapConfig config = new ServerBootstrapConfig(this);
+    private volatile EventLoopGroup childGroup;
+    private volatile ChannelHandler childHandler;
+｝
+```
 
 
 
-### 2.4.2. 服务端创建流程分析
+### 2.5.2. 客户端创建流程分析
+<a href="#menu" >目录</a>
+
+#### 2.5.2.1. 创建代码
+
+```java
+ //工作线程池,默认cpu * 2
+EventLoopGroup worker = new NioEventLoopGroup()
+Bootstrap bootstrap = new Bootstrap();
+bootstrap.group(worker)
+bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS,100);
+bootstrap.channel(NioSocketChannel.class);
+bootstrap.handler(new ChannelInitializer(){
+    @Override
+    protected void initChannel(Channel channel) throws Exception {
+
+        ChannelPipeline pipeline = channel.pipeline();
+        pipeline.addLast(new ChannelTrafficShapingHandler(1024,1024*1024,100));
+        pipeline.addLast(new ClientChannelTrafficShapingHandler());
+    }
+});
+ChannelFuture channelFuture =  bootstrap.connect(host,port).sync();
+Channel channel =  channelFuture.channel();
+channel.writeAndFlush(ButeBuf data)
+```
+创建步骤:
+* 创建处理客户端连接,IO读写的Reactor线程组NioEventLoopGroup.可以通过构造器参数指定线程数量，默认是CPU核心的两倍
+* 创建Bootstrap对象
+* Bootstrap配置工作线程池EventLoopGroup
+* 配置通道类型NioSocketChannel
+* 配置参数
+* 配置pipeline处理责任链
+* 发起连接
+* 获取通道Channel，一般需要将Channel缓存，key为host和port.使用的时候再从里面获取通道
+* 通过通道发送数据writeAndFlush
+
+#### 2.5.2.2. 分析
+<a href="#menu" >目录</a>
+
+##### 2.5.2.2.1. EventLoopGroup创建
+
+EventLoopGroup创建的创建过程就是根据线程数量创建NioEventLoop。new EventLoopGroup()最终调用的是子孙类MultithreadEventExecutorGroup的构造器
+
+```java
+protected MultithreadEventExecutorGroup(int nThreads, Executor executor,
+                                        EventExecutorChooserFactory chooserFactory, Object... args) {
+    if (nThreads <= 0) {
+        throw new IllegalArgumentException(String.format("nThreads: %d (expected: > 0)", nThreads));
+    }
+
+    if (executor == null) {
+        executor = new ThreadPerTaskExecutor(newDefaultThreadFactory());
+    }
+
+    children = new EventExecutor[nThreads];
+    //根据线程数量创建NioEventLoop
+    for (int i = 0; i < nThreads; i ++) {
+        boolean success = false;
+        try {
+            //创建NioEventLoop
+            children[i] = newChild(executor, args);
+            success = true;
+        } catch (Exception e) {
+            // TODO: Think about if this is a good exception type
+            throw new IllegalStateException("failed to create a child event loop", e);
+        } finally {
+            if (!success) {
+                //创建失败，关闭已经创建好的　NioEventLoop
+                for (int j = 0; j < i; j ++) {
+                    children[j].shutdownGracefully();
+                }
+
+                for (int j = 0; j < i; j ++) {
+                    EventExecutor e = children[j];
+                    try {
+                        while (!e.isTerminated()) {
+                            e.awaitTermination(Integer.MAX_VALUE, TimeUnit.SECONDS);
+                        }
+                    } catch (InterruptedException interrupted) {
+                        // Let the caller handle the interruption.
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    chooser = chooserFactory.newChooser(children);
+
+    //创建关闭监听器
+    final FutureListener<Object> terminationListener = new FutureListener<Object>() {
+        @Override
+        public void operationComplete(Future<Object> future) throws Exception {
+            if (terminatedChildren.incrementAndGet() == children.length) {
+                terminationFuture.setSuccess(null);
+            }
+        }
+    };
+
+    for (EventExecutor e: children) {
+        e.terminationFuture().addListener(terminationListener);
+    }
+
+    Set<EventExecutor> childrenSet = new LinkedHashSet<EventExecutor>(children.length);
+    Collections.addAll(childrenSet, children);
+    readonlyChildren = Collections.unmodifiableSet(childrenSet);
+}
+```
+
+##### 2.5.2.2.2. Bootstrap创建和配置
+
+创建和配置线程组，只是普通的创建对象
+```java
+Bootstrap bootstrap = new Bootstrap();
+bootstrap.group(worker);
+bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS,100);
+```
+
+ChannelOption参数详解
+```java
+//缓冲区分配器
+public static final ChannelOption<ByteBufAllocator> ALLOCATOR = valueOf("ALLOCATOR");
+//发送缓冲区分配器
+public static final ChannelOption<RecvByteBufAllocator> RCVBUF_ALLOCATOR = valueOf("RCVBUF_ALLOCATOR");
+public static final ChannelOption<MessageSizeEstimator> MESSAGE_SIZE_ESTIMATOR = valueOf("MESSAGE_SIZE_ESTIMATOR");
+//连接超时时间,这是netty参数，
+public static final ChannelOption<Integer> CONNECT_TIMEOUT_MILLIS = valueOf("CONNECT_TIMEOUT_MILLIS");
+/** @deprecated */
+@Deprecated
+public static final ChannelOption<Integer> MAX_MESSAGES_PER_READ = valueOf("MAX_MESSAGES_PER_READ");
+public static final ChannelOption<Integer> WRITE_SPIN_COUNT = valueOf("WRITE_SPIN_COUNT");
+/** @deprecated */
+@Deprecated
+public static final ChannelOption<Integer> WRITE_BUFFER_HIGH_WATER_MARK = valueOf("WRITE_BUFFER_HIGH_WATER_MARK");
+/** @deprecated */
+@Deprecated
+public static final ChannelOption<Integer> WRITE_BUFFER_LOW_WATER_MARK = valueOf("WRITE_BUFFER_LOW_WATER_MARK");
+public static final ChannelOption<WriteBufferWaterMark> WRITE_BUFFER_WATER_MARK = valueOf("WRITE_BUFFER_WATER_MARK");
+public static final ChannelOption<Boolean> ALLOW_HALF_CLOSURE = valueOf("ALLOW_HALF_CLOSURE");
+public static final ChannelOption<Boolean> AUTO_READ = valueOf("AUTO_READ");
+public static final ChannelOption<Boolean> AUTO_CLOSE = valueOf("AUTO_CLOSE");
+public static final ChannelOption<Boolean> SO_BROADCAST = valueOf("SO_BROADCAST");
+/*
+对应于套接字选项中的SO_KEEPALIVE，该参数用于设置TCP连接，当设置该选项以后，连接会测试链接的状态，这个选项用于可能长时间没有数据交流的连接。当设置该选项以后，如果在两小时内没有数据的通信时，TCP会自动发送一个活动探测数据报文。
+*/
+public static final ChannelOption<Boolean> SO_KEEPALIVE = valueOf("SO_KEEPALIVE");
+/*
+对应于套接字选项中的SO_SNDBUF，ChannelOption.SO_RCVBUF参数对应于套接字选项中的SO_RCVBUF这两个参数用于操作接收缓冲区和发送缓冲区的大小，接收缓冲区用于保存网络协议站内收到的数据，直到应用程序读取成功，发送缓冲区用于保存发送数据，直到发送成功
+*/
+public static final ChannelOption<Integer> SO_SNDBUF = valueOf("SO_SNDBUF");
+public static final ChannelOption<Integer> SO_RCVBUF = valueOf("SO_RCVBUF");
+/**
+对应于套接字选项中的SO_REUSEADDR，这个参数表示允许重复使用本地地址和端口.比如，某个服务器进程占用了TCP的80端口进行监听，此时再次监听该端口就会返回错误，使用该参数就可以解决问题，该参数允许共用该端口，这个在服务器程序中比较常使用， 比如某个进程非正常退出，该程序占用的端口可能要被占用一段时间才能允许其他进程使用，而且程序死掉以后，内核一需要一定的时间才能够释放此端口，不设置SO_REUSEADDR就无法正常使用该端口。
+*/
+public static final ChannelOption<Boolean> SO_REUSEADDR = valueOf("SO_REUSEADDR");
+/*
+对应于套接字选项中的SO_LINGER,Linux内核默认的处理方式是当用户调用close（）方法的时候，函数返回，在可能的情况下，尽量发送数据，不一定保证会发生剩余的数据，造成了数据的不确定性，使用SO_LINGER可以阻塞close()的调用时间，直到数据完全发送
+*/
+public static final ChannelOption<Integer> SO_LINGER = valueOf("SO_LINGER");
+/*
+对应的是tcp/ip协议listen函数中的backlog参数，函数listen(int socketfd,int backlog)用来初始化服务端可连接队列，服务端处理客户端连接请求是顺序处理的，所以同一时间只能处理一个客户端连接，多个客户端来的时候，服务端将不能处理的客户端连接请求放在队列中等待处理，backlog参数指定了队列的大小
+*/
+public static final ChannelOption<Integer> SO_BACKLOG = valueOf("SO_BACKLOG");
+public static final ChannelOption<Integer> SO_TIMEOUT = valueOf("SO_TIMEOUT");
+/*IP参数，设置IP头部的Type-of-Service字段，用于描述IP包的优先级和QoS选项。*/
+public static final ChannelOption<Integer> IP_TOS = valueOf("IP_TOS");
+public static final ChannelOption<InetAddress> IP_MULTICAST_ADDR = valueOf("IP_MULTICAST_ADDR");
+public static final ChannelOption<NetworkInterface> IP_MULTICAST_IF = valueOf("IP_MULTICAST_IF");
+public static final ChannelOption<Integer> IP_MULTICAST_TTL = valueOf("IP_MULTICAST_TTL");
+public static final ChannelOption<Boolean> IP_MULTICAST_LOOP_DISABLED = valueOf("IP_MULTICAST_LOOP_DISABLED");
+/*
+对应于套接字选项中的TCP_NODELAY,该参数的使用与Nagle算法有关,Nagle算法是将小的数据包组装为更大的帧然后进行发送，而不是输入一次发送一次,因此在数据包不足的时候会等待其他数据的到了，组装成大的数据包进行发送，虽然该方式有效提高网络的有效负载，但是却造成了延时，而该参数的作用就是禁止使用Nagle算法，使用于小数据即时传输，于TCP_NODELAY相对应的是TCP_CORK，该选项是需要等到发送的数据量最大的时候，一次性发送数据，适用于文件传输。
+*/
+public static final ChannelOption<Boolean> TCP_NODELAY = valueOf("TCP_NODELAY");
+/** @deprecated */
+@Deprecated
+public static final ChannelOption<Boolean> DATAGRAM_CHANNEL_ACTIVE_ON_REGISTRATION = valueOf("DATAGRAM_CHANNEL_ACTIVE_ON_REGISTRATION");
+public static final ChannelOption<Boolean> SINGLE_EVENTEXECUTOR_PER_GROUP = valueOf("SINGLE_EVENTEXECUTOR_PER_GROUP");
+
+```
+
+##### 2.5.2.2.3. Channel和pipeline的配置
+
+Bootstrap主要关注两点，一个是通道的配置，一个是pipeline的配置。
+
+```java
+public B channel(Class<? extends C> channelClass) {
+    return this.channelFactory((io.netty.channel.ChannelFactory)(new ReflectiveChannelFactory((Class)ObjectUtil.checkNotNull(channelClass, "channelClass"))));
+}
+```
+这是设置通道的工厂，用于之后创建Channel,ReflectiveChannelFactory保存了channelClass的构造器。
+
+pipeline的配置的配置是配置各个责任链处理类，相关内容参考< ChannelPipeline和ChannelHandler>章节
+
+##### 2.5.2.2.4. 发起连接
+
+**Bootstrap.class**
+```java
+public ChannelFuture connect(SocketAddress remoteAddress) {
+    ObjectUtil.checkNotNull(remoteAddress, "remoteAddress");
+    this.validate();
+    return this.doResolveAndConnect(remoteAddress, this.config.localAddress());
+}
+ private ChannelFuture doResolveAndConnect(final SocketAddress remoteAddress, final SocketAddress localAddress) {
+     //创建channel，并且向EventLoopGroup中注册
+    ChannelFuture regFuture = this.initAndRegister();
+    final Channel channel = regFuture.channel();
+    if (regFuture.isDone()) {
+        //执行连接
+        return !regFuture.isSuccess() ? regFuture : this.doResolveAndConnect0(channel, remoteAddress, localAddress, channel.newPromise());
+    } else {
+        final PendingRegistrationPromise promise = new PendingRegistrationPromise(channel);
+        regFuture.addListener(new ChannelFutureListener() {
+            public void operationComplete(ChannelFuture future) throws Exception {
+                Throwable cause = future.cause();
+                if (cause != null) {
+                    promise.setFailure(cause);
+                } else {
+                    promise.registered();
+                    Bootstrap.this.doResolveAndConnect0(channel, remoteAddress, localAddress, promise);
+                }
+
+            }
+        });
+        return promise;
+    }
+}
+//创建channel并向eventloop注册
+final ChannelFuture initAndRegister() {
+    Channel channel = null;
+
+    try {
+        //通过上面配置的通道工厂创建channel
+        channel = this.channelFactory.newChannel();
+        this.init(channel);
+    } catch (Throwable var3) {
+        if (channel != null) {
+            channel.unsafe().closeForcibly();
+            return (new DefaultChannelPromise(channel, GlobalEventExecutor.INSTANCE)).setFailure(var3);
+        }
+
+        return (new DefaultChannelPromise(new FailedChannel(), GlobalEventExecutor.INSTANCE)).setFailure(var3);
+    }
+    //向NioEventLoop注册通道
+    ChannelFuture regFuture = this.config().group().register(channel);
+    if (regFuture.cause() != null) {
+        if (channel.isRegistered()) {
+            channel.close();
+        } else {
+            channel.unsafe().closeForcibly();
+        }
+    }
+
+    return regFuture;
+}
+//执行连接
+private ChannelFuture doResolveAndConnect0(final Channel channel, SocketAddress remoteAddress, final SocketAddress localAddress, final ChannelPromise promise) {
+    try {
+        EventLoop eventLoop = channel.eventLoop();
+
+        AddressResolver resolver;
+        try {
+            resolver = this.resolver.getResolver(eventLoop);
+        } catch (Throwable var9) {
+            channel.close();
+            return promise.setFailure(var9);
+        }
+
+        if (!resolver.isSupported(remoteAddress) || resolver.isResolved(remoteAddress)) {
+            doConnect(remoteAddress, localAddress, promise);
+            return promise;
+        }
+
+        Future<SocketAddress> resolveFuture = resolver.resolve(remoteAddress);
+        if (resolveFuture.isDone()) {
+            Throwable resolveFailureCause = resolveFuture.cause();
+            if (resolveFailureCause != null) {
+                channel.close();
+                promise.setFailure(resolveFailureCause);
+            } else {
+                doConnect((SocketAddress)resolveFuture.getNow(), localAddress, promise);
+            }
+
+            return promise;
+        }
+
+        resolveFuture.addListener(new FutureListener<SocketAddress>() {
+            public void operationComplete(Future<SocketAddress> future) throws Exception {
+                if (future.cause() != null) {
+                    channel.close();
+                    promise.setFailure(future.cause());
+                } else {
+                    Bootstrap.doConnect((SocketAddress)future.getNow(), localAddress, promise);
+                }
+
+            }
+        });
+    } catch (Throwable var10) {
+        promise.tryFailure(var10);
+    }
+
+    return promise;
+}
+//创建异步操作，向通道对应的eventLoop提交
+private static void doConnect(final SocketAddress remoteAddress, final SocketAddress localAddress, final ChannelPromise connectPromise) {
+    final Channel channel = connectPromise.channel();
+    channel.eventLoop().execute(new Runnable() {
+        public void run() {
+            if (localAddress == null) {
+                //最后是通过Channel的内部类Unsafe实现
+                channel.connect(remoteAddress, connectPromise);
+            } else {
+                channel.connect(remoteAddress, localAddress, connectPromise);
+            }
+
+            connectPromise.addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
+        }
+    });
+}    
+```
+
+##### 2.5.2.2.5. Channel发送数据
+
+![netty数据发送跟踪](pic/netty/netty数据发送跟踪.png)
+
+
+channel.writeAndFlush是通过pipeline进行调用的,之后会调用AbstractChannelHandlerContext.tail.writeAndFlush()，tail变量也是AbstractChannelHandlerContext类型。然后是通过bootstrap中定义的handler依次处理。处理完成后最后通过channel内部接口unsafe的实现类将数据发送出去。
+```java
+//Channel.class
+public ChannelFuture writeAndFlush(Object msg) {
+    return this.pipeline.writeAndFlush(msg);
+}
+//AbstractChannelHandlerContext.class
+public final ChannelFuture writeAndFlush(Object msg) {
+    return this.tail.writeAndFlush(msg);
+}
+//AbstractChannelHandlerContext.class
+//每次在handler中调用 super.write(ctx, msg, promise);都会调用这个方法。
+//只有在第一次调用的时候才会创建异步任务，第一个handler是DefaultChannelPipeline.TailContext.write(),TailContext没有重写该方法，所以调用的父类的方法，也就是下面的方法
+//后续调用的都是执行handler的write方法，这时候已经是eventhLoop的异步线程执行了。
+//直到最后一个handler,最后一个handler是DefaultChannelPipeline.HeadContext
+private void write(Object msg, boolean flush, ChannelPromise promise) {
+    ObjectUtil.checkNotNull(msg, "msg");
+    try {
+        if (isNotValidPromise(promise, true)) {
+            ReferenceCountUtil.release(msg);
+            // cancelled
+            return;
+        }
+    } catch (RuntimeException e) {
+        ReferenceCountUtil.release(msg);
+        throw e;
+    }
+
+    final AbstractChannelHandlerContext next = findContextOutbound(flush ?
+            (MASK_WRITE | MASK_FLUSH) : MASK_WRITE);
+    final Object m = pipeline.touch(msg, next);
+    EventExecutor executor = next.executor();
+    if (executor.inEventLoop()) {
+        if (flush) {
+            next.invokeWriteAndFlush(m, promise);
+        } else {
+            next.invokeWrite(m, promise);
+        }
+    } else {
+        //第一次，还没向eventLoop添加executor。在这里创建异步任务并提交
+        final WriteTask task = WriteTask.newInstance(next, m, promise, flush);
+        if (!safeExecute(executor, task, promise, m, !flush)) {
+            // We failed to submit the WriteTask. We need to cancel it so we decrement the pending bytes
+            // and put it back in the Recycler for re-use later.
+            //
+            // See https://github.com/netty/netty/issues/8343.
+            task.cancel();
+        }
+    }
+}
+static final class WriteTask implements Runnable {
+
+    protected static void init(AbstractChannelHandlerContext.WriteTask task, AbstractChannelHandlerContext ctx, Object msg, ChannelPromise promise, boolean flush) {
+        task.ctx = ctx;
+        task.msg = msg;
+        task.promise = promise;
+        if (ESTIMATE_TASK_SIZE_ON_SUBMIT) {
+            task.size = ctx.pipeline.estimatorHandle().size(msg) + WRITE_TASK_OVERHEAD;
+            ctx.pipeline.incrementPendingOutboundBytes((long)task.size);
+        } else {
+            task.size = 0;
+        }
+
+        if (flush) {
+            //flush为true
+            task.size |= -2147483648;
+        }
+
+    }
+
+    public void run() {
+        try {
+            this.decrementPendingOutboundBytes();
+            if (this.size >= 0) {
+                //只向缓冲区写入数据
+                this.ctx.invokeWrite(this.msg, this.promise);
+            } else {
+                //向缓冲区写入数据并发送
+                this.ctx.invokeWriteAndFlush(this.msg, this.promise);
+            }
+        } finally {
+            this.recycle();
+        }
+
+    }
+｝  
+void invokeWrite(Object msg, ChannelPromise promise) {
+    if (invokeHandler()) {
+        //执行pipeline 中的handler
+        invokeWrite0(msg, promise);
+    } else {
+        write(msg, promise);
+    }
+}
+void invokeWriteAndFlush(Object msg, ChannelPromise promise) {
+    if (invokeHandler()) {
+        //执行pipeline 中的handler
+        invokeWrite0(msg, promise);
+        //清空发送缓冲区，也就是将数据发送出去
+        //也是最后调用HeadContext.flush,然后调用unsafe.flush()
+        invokeFlush0();
+    } else {
+        writeAndFlush(msg, promise);
+    }
+}      
+//HeadContext.class
+public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
+    //通过unsafe执行
+    unsafe.write(msg, promise);
+}
+public void flush(ChannelHandlerContext ctx) {
+    unsafe.flush();
+}
+
+```
+
+```java
+//write 只是将数据放入发送缓冲区
+@Override
+public final void write(Object msg, ChannelPromise promise) {
+    assertEventLoop();
+
+    ChannelOutboundBuffer outboundBuffer = this.outboundBuffer;
+    if (outboundBuffer == null) {
+        // If the outboundBuffer is null we know the channel was closed and so
+        // need to fail the future right away. If it is not null the handling of the rest
+        // will be done in flush0()
+        // See https://github.com/netty/netty/issues/2362
+        safeSetFailure(promise, newClosedChannelException(initialCloseCause));
+        // release message now to prevent resource-leak
+        ReferenceCountUtil.release(msg);
+        return;
+    }
+
+    int size;
+    try {
+        msg = filterOutboundMessage(msg);
+        size = pipeline.estimatorHandle().size(msg);
+        if (size < 0) {
+            size = 0;
+        }
+    } catch (Throwable t) {
+        safeSetFailure(promise, t);
+        ReferenceCountUtil.release(msg);
+        return;
+    }
+
+    outboundBuffer.addMessage(msg, size, promise);
+}
+//flush执行真正的发送
+@Override
+public final void flush() {
+    assertEventLoop();
+
+    ChannelOutboundBuffer outboundBuffer = this.outboundBuffer;
+    if (outboundBuffer == null) {
+        return;
+    }
+
+    outboundBuffer.addFlush();
+    flush0();
+}
+```
+
+发送数据流程总结
+* 调用channel.writeAndFlush(ByteBuf)发送数据
+* 执行pipeline.write
+* 执行channel对应的AbstractChannelHandlerContext.write
+* 创建异步任务WriteTask并提交EventLoop
+* 依次执行pipeline责任链中的DefaultChannelPipeline.TailContext.write(),自定义的handler.write(),DefaultChannelPipeline.HeadContext.write()
+* 最终调用的是Channel对应的unsafe类来执行
+
+注意，pipeline和context只有一个对象实例，channel可以有多个，每个channel对应一个unsafe实例。
+
+### 2.5.3. 服务端创建流程分析
 <a href="#menu" >目录</a>
 
 ```
 ![](https://img-blog.csdnimg.cn/20190228093932476.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3N1bnNoaW5lMDUyNjk3,size_16,color_FFFFFF,t_70)
 ```
-#### 2.4.2.1. 创建代码
+#### 2.5.3.1. 创建代码
 
 ```java
  //bossGroup接受传入的连接
@@ -1072,7 +1847,7 @@ try {
     //  workerGroup.shutdownGracefully();
 }
 ```
-#### 2.4.2.2. 分析
+#### 2.5.3.2. 分析
 
 **步骤1**
 创建ServerBootstrap实例。ServerBootstrap是服务端的启动辅助类，提供一系列方法用于设置服务端启动的相关参数，底层通过门面模式对各种能力进行抽象和封装。
@@ -1226,7 +2001,7 @@ Selector轮询，由Rector线程NioEventLoop负责调度和执行Selector轮询�
     
 ```
 
-#### 2.4.2.3. 线程状态
+#### 2.5.3.3. 线程状态
 
 使用jstack pid查看线程状态，
 ```yml
@@ -1279,43 +2054,10 @@ public int select(long var1) throws IOException {
 ```
 
 
-### 2.4.3. 客户端创建流程分析
+## 2.6. ByteBuf说明
 <a href="#menu" >目录</a>
 
-#### 2.4.3.1. 创建代码
-
-```java
- //工作线程池,默认cpu * 2
-EventLoopGroup worker = new NioEventLoopGroup()
-Bootstrap bootstrap = new Bootstrap();
-bootstrap.group(worker)
-        .channel(NioSocketChannel.class);
-//设置TCP参数
-bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS,100);
-bootstrap.handler(new ChannelInitializer(){
-    @Override
-    protected void initChannel(Channel channel) throws Exception {
-
-        ChannelPipeline pipeline = channel.pipeline();
-        pipeline.addLast(new ChannelTrafficShapingHandler(1024,1024*1024,100));
-        pipeline.addLast(new ClientChannelTrafficShapingHandler());
-    }
-});
-```
-创建步骤:
-* 创建处理客户端连接,IO读写的Reactor线程组NioEventLoopGroup.可以通过构造器参数指定线程数量，默认是CPU核心的两倍
-* 创建Bootstrap对象
-* 
-
-#### 2.4.3.2. 分析
-<a href="#menu" >目录</a>
-
-
-
-## 2.5. ByteBuf说明
-<a href="#menu" >目录</a>
-
-### 2.5.1. ByteBuf功能说明
+### 2.6.1. ByteBuf功能说明
 <a href="#menu" >目录</a>
 
 缓冲区是用于存放即将要发送给通道的数据或者装载从通道获取的数据。JDK NIO中使用的是缓冲类是Buffer，其子类一共有7种(除了布尔类型的所有基本类型)，比如IntBuffer,FloatBuffer等。其中常用的类是ByteBuffer,它的主要缺点是:
@@ -1529,10 +2271,10 @@ ByteBuf修改index50 为61,ByteBuffer data = 61
 ByteBuffer修改index14为99,　ByteBuf data1 = 99
 ```
 
-### 2.5.2. ByteBuf源码分析
+### 2.6.2. ByteBuf源码分析
 <a href="#menu" >目录</a>
 
-#### 2.5.2.1. 主要继承关系
+#### 2.6.2.1. 主要继承关系
 <a href="#menu" >目录</a>
 
 ```java
@@ -1569,14 +2311,14 @@ ByteBuffer修改index14为99,　ByteBuf data1 = 99
 //TODO:ByteBuf源码分析
 
 
-### 2.5.3. ByteBuf辅助类
+### 2.6.3. ByteBuf辅助类
 <a href="#menu" >目录</a>
 
 
-## 2.6. Channel和Unsafe
+## 2.7. Channel和Unsafe
 <a href="#menu" >目录</a>
 
-### 2.6.1. Channel功能说明
+### 2.7.1. Channel功能说明
 <a href="#menu" >目录</a>
 
 Netty的Channel也是重新设计的，Channel是抽象出来的网络IO读写的相关接口。不使用JDK的NIO的Channel的原因
@@ -1654,10 +2396,10 @@ public interface ChannelOutboundInvoker {
 ```
 
 
-### 2.6.2. Channel源码分析
+### 2.7.2. Channel源码分析
 <a href="#menu" >目录</a>
 
-#### 2.6.2.1. 继承体系
+#### 2.7.2.1. 继承体系
 <a href="#menu" >目录</a>
 
 主要继承关系
@@ -1681,13 +2423,13 @@ public interface ChannelOutboundInvoker {
 ```
 //TODO:CHANNEL源码分析
 
-## 2.7. ChannelPipeline和ChannelHandler
+## 2.8. ChannelPipeline和ChannelHandler
 <a href="#menu" >目录</a>
 
 Ｎetty的Channel过滤器实现原理与Server Filter机制一致，它将Channel的数据管道抽象为ChannelPipeline,消息在ChannelPipeline中流动和传递。ChannelPipeline持有的IO事件拦截器ChannelHandler的链表，由ChannelＨandler对IO事件进行拦截和处理，可以方便通过新增和删除ChannelHandler来实现不同业务逻辑的定制，不需要对已有的ChannelHandler进行修改，就能改实现数据处理过程的功能扩展。
 
 
-### 2.7.1. ChannelPipeline功能说明
+### 2.8.1. ChannelPipeline功能说明
 <a href="#menu" >目录</a>
 
 ChannelPipeline 继承于ChannelInboundInvoker和ChannelOutboundInvoker，并且ChannelPipeline是和Channel绑定的，因此也可以调用IO相关方法(read,connect,write等)。
@@ -1903,12 +2645,12 @@ c.c.n.c.ClientChannelInboundHandlerAdapter - msg = abcde
 ChannelPipeline支持动态添加或者删除ChannelHandler,ChannelPipeline是线程安全的，Ｎ个业务线程可以并发操作ChannelPipeline而不存在线程并发问题也就是添加删除ChannelHandler等操作是线程安全的，内部使用了synchronized。但是ChannelHandler不是线程安全。
 
 
-### 2.7.2. ChannelPipeline源码分析
+### 2.8.2. ChannelPipeline源码分析
 <a href="#menu" >目录</a>
 
 ChannelPipeline实际上是一个ChannelHandler的容器，内部维护了一个ChannelHandler的链表和迭代器，可以方便地实现ChannelHandler的查找，添加删除。
 
-#### 2.7.2.1. ChannelPipeline与ChannelHandlerContext继承关系
+#### 2.8.2.1. ChannelPipeline与ChannelHandlerContext继承关系
 <a href="#menu" >目录</a>
 
 ```java
@@ -1950,7 +2692,7 @@ ChannelHandlerContext代表了一个ChannelHandler和ChannelPipeline之间的关
 
 一个ChannelHandler可以属于多个ChannelPipeline，它也可以绑定多个ChannelHandlerContext实例，如果一个ChannelHandler想要有这样的功能，就必须以@Sharable注解注释这个ChannelHandler，否则，尝试将其加入到不止一个ChannelPipeline中去的时候，会报出异常，很明显，使用这样的支持多线程的channel你必须保证该类是线程安全的，无状态的。
 
-#### 2.7.2.2. ChannelHandler添加处理
+#### 2.8.2.2. ChannelHandler添加处理
 <a href="#menu" >目录</a>
 
 ```java
@@ -2019,7 +2761,7 @@ private static void checkMultiplicity(ChannelHandler handler) {
 
 }
 ```
-#### 2.7.2.3. ChannelPipeline的inbound事件
+#### 2.8.2.3. ChannelPipeline的inbound事件
 <a href="#menu" >目录</a>
 
 这里以read事件举例。
@@ -2194,7 +2936,7 @@ public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception 
 分析完成
 
 
-#### 2.7.2.4. ChannelPipeline的outbound事件
+#### 2.8.2.4. ChannelPipeline的outbound事件
 <a href="#menu" >目录</a>
 
 outbound事件的执行流程和上面相似。先通过pipeline获取AbstractChannelHandlerContext对象，再通过context执行。这一步会提交线程池处理，也就是异步处理写操作。最终是调用Channel的Unsafe接口的实现类执行相关的io操作。由于调用关系比较复杂，这里暂时不进行分析。
@@ -2258,7 +3000,7 @@ private AbstractChannelHandlerContext findContextOutbound(int mask) {
 
 
 
-### 2.7.3. ChannelHandler功能说明
+### 2.8.3. ChannelHandler功能说明
 <a href="#menu" >目录</a>
 
 ```java
@@ -2272,10 +3014,10 @@ private AbstractChannelHandlerContext findContextOutbound(int mask) {
 用户自定义的ChannelHandler都可以通过继承或者实现上面的类来实现。一般是ChannelOutboundHandlerAdapter和ChannelInboundHandlerAdapter。
 
 //TODO: netty提供的部分ChannelHandler
-### 2.7.4. netty提供的部分ChannelHandler
+### 2.8.4. netty提供的部分ChannelHandler
 <a href="#menu" >目录</a>
 
-#### 2.7.4.1. ByteToMessageDecoder 
+#### 2.8.4.1. ByteToMessageDecoder 
 <a href="#menu" >目录</a>
 
 Netty 的解码器有很多种，比如基于长度的，基于分割符的，私有协议的。但是，总体的思路都是一致的。
@@ -2288,238 +3030,22 @@ Netty 的解码器有很多种，比如基于长度的，基于分割符的，�
 
 
 
-#### 2.7.4.2. LengthFieldBasedFrameDecoder 
+#### 2.8.4.2. LengthFieldBasedFrameDecoder 
 <a href="#menu" >目录</a>
 
-#### 2.7.4.3. MessageToMessageDecoder 
+#### 2.8.4.3. MessageToMessageDecoder 
 <a href="#menu" >目录</a>
 
-#### 2.7.4.4. MessageToMessageEncoder 
+#### 2.8.4.4. MessageToMessageEncoder 
 <a href="#menu" >目录</a>
 
-#### 2.7.4.5. MessageToByteEncoder 
+#### 2.8.4.5. MessageToByteEncoder 
 <a href="#menu" >目录</a>
 
-#### 2.7.4.6. LengthFieldPrepender 
+#### 2.8.4.6. LengthFieldPrepender 
 <a href="#menu" >目录</a>
 
 
-
-## 2.8. EventLoop和EventLoopGroup
-<a href="#menu" >目录</a>
-
-Netty线程模型的设计，既提升了框架的并发性能，又能在很大程度避免锁，局部实现了无所化设计。
-
-### 2.8.1. Reactor线程模型
-#### 2.8.1.1. Reactor单线程模型
-<a href="#menu" >目录</a>
-
-* 单线程模型，是指所有的IO操作都在同一个NIO线程上完成。
-    * 作为NIO服务端，接收客户端的TCP连接,读取通信对端的请求或者应答消息
-    * 作为NIO客户端，向服务端发起TCP连接，向通信对端发送消息或者应答消息
-    * 读取通信对端的信息和向通信对端发送信息
-
-* Netty是基于NIO,所有的IO操作都是异步非阻塞，原则上可以处理所有的IO操作。但仅适用于负载较低的场景。对于高并发，高负载并不适合
-    * 一个NIO线程同时处理成百上千的链路，性能上无法支撑。即使NIO线程的CPU负荷达到100%，也无法满足海量消息的编码，解码，读取和发送。
-    * 当NIO线程负载过重之后，处理速度将变慢，这会导致大量客户端连接超时，超时之后 往往进行重发，更加重了NIO线程的负载，最终导致大量消息积压和处理超时，成为系统的性能瓶颈
-    * 可靠性问题，一旦NIO线程意外跑飞，或者进入死循环，会导致系统通信模型不可用，不能接收或处理外部消息，造成节点故障
-
-#### 2.8.1.2. Reactor多线程模型
-<a href="#menu" >目录</a>
-
-* 与单线程最大的区别是有一组NIO线程来处理IO操作。
-* 特点
-    * 有一个专门的NIO线程用于监听服务端，接收客户端的TCP连接请求。
-    * 网络IO操作的读写等由一个NIO线程池负责，由这些NIO线程负责消息的读取，解码，编码和发送
-    * 一个NIO线程可以处理多条链路，但是一个链路只对应一个NIO线程，防止发生并发操作问题。
-
-在绝大多数场景下，上述方式只使用一个线程处理连接监听链路任务，基本上满足要求。但是在特别大的并发下，或者需要进行握手安全认证等操作，可能会存在性能问题，因此出现第三种模型：主从Reactor多线程模型
-
-#### 2.8.1.3. 主从Reactor多线程模型
-<a href="#menu" >目录</a>
-
-* 一个线程池负责处理连接操作，一个线程池负责处理IO读写操作、
-* 连接线程池仅仅用于客户端的登录，握手和安全认证。一旦链路建立成功，就将链路注册到后端IO线程池上，由IO线程池负责后续的IO操作。
-
-#### 2.8.1.4. Netty线程模型
-<a href="#menu" >目录</a>
-
-Netty的线程模型由用户自行设置。
-两种方式，一种是单线程池模型，连接和IO操作是由单个线程池负责处理。一种是双线程池模型，连接和IO操作是由两个线程池负责处理
-线程池的线程数量也可以在定义EventLoopGroup时指定。
-客户端只能设置单个线程池，服务端可以设置两个。
-
-ServerBootstrap 有两个方法用于设置线程池，分别用于设置单个和双个线程池。
-```java
-public ServerBootstrap group(EventLoopGroup group) {
-        return this.group(group, group);
-    }
-
-public ServerBootstrap group(EventLoopGroup parentGroup, EventLoopGroup childGroup);
-
- //bossGroup接受传入的连接
-EventLoopGroup bossGroup = new NioEventLoopGroup();
-//一旦bossGroup接受连接并注册到workerGroup，workerGroup则处理连接相关的流量
-EventLoopGroup workerGroup = new NioEventLoopGroup();
-try {
-
-    ServerBootstrap serverBootstrap = new ServerBootstrap();
-    //用于设置服务端
-    serverBootstrap.group(bossGroup, workerGroup)
-            .channel(NioServerSocketChannel.class)
-            .option(ChannelOption.SO_BACKLOG, 1024)
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,3000)
-            .childHandler(new ChildChannelHandler());
-}
-```
-
-* Netty用于接收客户端请求的线程池职责
-    * 接收客户端TCP连接，初始化Channel参数
-    * 将链路状态变更事件通知给ChannelPipeline
-
-* Netty用于处理IO请求的线程池职责
-    * 异步读取通信对端的数据报，发送事件到ChannelPipeline
-    * 异步发送消息到通信对端，调用ChannelPipeline的消息发送接口
-    * 执行系统调用Task
-    * 执行定时任务Task,例如链路空闲状态监测定时任务
-
-* Netty读取到数据之后，直接调用ChannelPipeline的fireChannelRead(Object msg).只要用户不切换线程，一直都是IO线程处理，这种串行化方式避免了多线程操作导致的锁的竞争，从性能角度看是最优的。
-
-#### 2.8.1.5. 最佳实践
-<a href="#menu" >目录</a>
-
-* 服务端创建两个线程池，用于隔离连接和IO操作
-* 尽量不要在ChannelHandler中启动用户线程(解码后用于将POJO消息派发到业务线程除外)
-* 解码放在NIO线程中进行，不要放到业务线程
-* 如果业务简单，可以很快完成，就直接在IO线程中进行处理。业务复杂，耗时较长，就另起业务线程进行处理。
-
-### 2.8.2. NioEventLoop 源码分析
-
-![NioEventLoop继承体系](pic/netty/NioEventLoop.png)
-
-```java
-public final class NioEventLoop extends SingleThreadEventLoop
-```
-
-* NioEventLoop作用
-    * IO线程的读写
-    * 系统Task,通过调用NioEventLoop的execute(Runable task)方法实现，Netty有很多系统Task,创建它们的主要原因是：当IO线程和用户线程同时操作网络资源时，为了防止并发操作导致的锁竞争，将用户线程的操作封装成Task放入消息队列，由IO线程负责执行，这样就实现了局部无锁化。
-    * 定时任务,通过NioEventLoop的schedule(Runnable command, long delay, TimeUnit unit) 实现。
-
-#### 2.8.2.1. netty的select过程分析
-```java
-@Override
-protected void run() {
-int selectCnt = 0;
-for (;;) {
-    try {
-        int strategy;
-        try {
-            strategy = selectStrategy.calculateStrategy(selectNowSupplier, hasTasks());
-            switch (strategy) {
-            case SelectStrategy.CONTINUE:
-                continue;
-
-            case SelectStrategy.BUSY_WAIT:
-                // fall-through to SELECT since the busy-wait is not supported with NIO
-
-            case SelectStrategy.SELECT:
-                long curDeadlineNanos = nextScheduledTaskDeadlineNanos();
-                if (curDeadlineNanos == -1L) {
-                    curDeadlineNanos = NONE; // nothing on the calendar
-                }
-                nextWakeupNanos.set(curDeadlineNanos);
-                try {
-                    if (!hasTasks()) {
-                        strategy = select(curDeadlineNanos);
-                    }
-                } finally {
-                    // This update is just to help block unnecessary selector wakeups
-                    // so use of lazySet is ok (no race condition)
-                    nextWakeupNanos.lazySet(AWAKE);
-                }
-                // fall through
-            default:
-            }
-        } catch (IOException e) {
-            // If we receive an IOException here its because the Selector is messed up. Let's rebuild
-            // the selector and retry. https://github.com/netty/netty/issues/8566
-            rebuildSelector0();
-            selectCnt = 0;
-            handleLoopException(e);
-            continue;
-        }
-
-        selectCnt++;
-        cancelledKeys = 0;
-        needsToSelectAgain = false;
-        final int ioRatio = this.ioRatio;
-        boolean ranTasks;
-        if (ioRatio == 100) {
-            try {
-                if (strategy > 0) {
-                    processSelectedKeys();
-                }
-            } finally {
-                // Ensure we always run tasks.
-                ranTasks = runAllTasks();
-            }
-        } else if (strategy > 0) {
-            final long ioStartTime = System.nanoTime();
-            try {
-                processSelectedKeys();
-            } finally {
-                // Ensure we always run tasks.
-                final long ioTime = System.nanoTime() - ioStartTime;
-                ranTasks = runAllTasks(ioTime * (100 - ioRatio) / ioRatio);
-            }
-        } else {
-            ranTasks = runAllTasks(0); // This will run the minimum number of tasks
-        }
-
-        if (ranTasks || strategy > 0) {
-            if (selectCnt > MIN_PREMATURE_SELECTOR_RETURNS && logger.isDebugEnabled()) {
-                logger.debug("Selector.select() returned prematurely {} times in a row for Selector {}.",
-                        selectCnt - 1, selector);
-            }
-            selectCnt = 0;
-        } else if (unexpectedSelectorWakeup(selectCnt)) { // Unexpected wakeup (unusual case)
-            selectCnt = 0;
-        }
-    } catch (CancelledKeyException e) {
-        // Harmless exception - log anyway
-        if (logger.isDebugEnabled()) {
-            logger.debug(CancelledKeyException.class.getSimpleName() + " raised by a Selector {} - JDK bug?",
-                    selector, e);
-        }
-    } catch (Throwable t) {
-        handleLoopException(t);
-    }
-    // Always handle shutdown even if the loop processing threw an exception.
-    try {
-        if (isShuttingDown()) {
-            closeAll();
-            if (confirmShutdown()) {
-                return;
-            }
-        }
-    } catch (Throwable t) {
-        handleLoopException(t);
-    }
-}
-}
-
-```
-
-selector.select() 应该 一直阻塞，直到有就绪事件到达，但很遗憾，由于 Java NIO 实现上存在 bug，select() 可能在没有任何就绪事件的情况下返回，从而导致 while(true) 被不断执行，最后导致某个 CPU 核心的利用率飙升到 100%，这就是臭名昭著的 Java NIO 的 epoll bug。
-
-实际上，这是 Linux 系统下 poll/epoll 实现导致的 bug，但 Java NIO 并未完善处理它，所以也可以说是 Java NIO 的 bug。该问题最早在 Java 6 发现，随后很多版本声称解决了该问题，但实际上只是降低了该 bug 的出现频率，起码从网上搜索看，Java 8 还是存在该问题。
-
-
-Netty的解决办法
-* 对Selector的select操作周期进行统计，每完成一次空的select操作进行一次计数，
-* 若在某个周期内连续发生N次空轮询，则触发了epoll死循环bug。
-* 重建Selector，判断是否是其他线程发起的重建请求，若不是则将原SocketChannel从旧的Selector上去除注册，重新注册到新的Selector上，并将原来的Selector关闭。
 
 
 ## 2.9. Future和Promise
