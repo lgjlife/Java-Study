@@ -53,6 +53,10 @@
     - [2.6.2. ByteBuf源码分析](#262-bytebuf源码分析)
       - [2.6.2.1. 主要继承关系](#2621-主要继承关系)
     - [2.6.3. ByteBuf辅助类](#263-bytebuf辅助类)
+      - [2.6.3.1. ByteBufHolder](#2631-bytebufholder)
+      - [2.6.3.2. ByteBufAllocator](#2632-bytebufallocator)
+      - [2.6.3.3. CompositeByteBuf](#2633-compositebytebuf)
+      - [2.6.3.4. ByteBufUtil](#2634-bytebufutil)
   - [2.7. Channel和Unsafe](#27-channel和unsafe)
     - [2.7.1. Channel功能说明](#271-channel功能说明)
     - [2.7.2. Channel源码分析](#272-channel源码分析)
@@ -1495,17 +1499,69 @@ public static final ChannelOption<Boolean> SINGLE_EVENTEXECUTOR_PER_GROUP = valu
 
 ```
 
+**ALLOCATOR ByteBuf的内存分配器**
+
+配置接收的ByteBuf类型
+```java
+//这两个构造器参数在这里没什么用，因为内部逻辑还有根据noUnsafe决定使用何种类型
+//使用池
+ bootstrap.option(ChannelOption.ALLOCATOR, new PooledByteBufAllocator(true));
+//不使用池
+ bootstrap.option(ChannelOption.ALLOCATOR, new UnpooledByteBufAllocator(true));
+```
+对于是直接内存还是堆内存，由VM参数-Dio.netty.noUnsafe决定，当前运行平台是否支持使用Java的unsafe来进行本地方法调用，默认为false，也就是使用直接内存，反之，使用堆内存.
+
+对于发送的ByteBuf类型，由发送者定义的类型决定。
+
 ##### 2.5.2.2.3. Channel和pipeline的配置
 
 Bootstrap主要关注两点，一个是通道的配置，一个是pipeline的配置。
 
 ```java
+//Bootstrap.class
 public B channel(Class<? extends C> channelClass) {
     return this.channelFactory((io.netty.channel.ChannelFactory)(new ReflectiveChannelFactory((Class)ObjectUtil.checkNotNull(channelClass, "channelClass"))));
 }
+//ReflectiveChannelFactory
+public class ReflectiveChannelFactory<T extends Channel> implements ChannelFactory<T> {
+    private final Constructor<? extends T> constructor;
+
+    public ReflectiveChannelFactory(Class<? extends T> clazz) {
+        ObjectUtil.checkNotNull(clazz, "clazz");
+
+        try {
+            this.constructor = clazz.getConstructor();
+        } catch (NoSuchMethodException var3) {
+            throw new IllegalArgumentException("Class " + StringUtil.simpleClassName(clazz) + " does not have a public non-arg constructor", var3);
+        }
+    }
+    //在发起连接的时候会调用newChannel创建Channel
+    //在创建Channel的时候会在其抽象父类AbstractChannel中创建pipeline
+    public T newChannel() {
+        try {
+            return (Channel)this.constructor.newInstance();
+        } catch (Throwable var2) {
+            throw new ChannelException("Unable to create Channel from class " + this.constructor.getDeclaringClass(), var2);
+        }
+    }
+
+    public String toString() {
+        return StringUtil.simpleClassName(ReflectiveChannelFactory.class) + '(' + StringUtil.simpleClassName(this.constructor.getDeclaringClass()) + ".class)";
+    }
+}
+
 ```
 这是设置通道的工厂，用于之后创建Channel,ReflectiveChannelFactory保存了channelClass的构造器。
 
+在创建Channel的时候会在其抽象父类AbstractChannel中创建pipeline
+```java
+protected AbstractChannel(Channel parent) {
+    this.parent = parent;
+    this.id = this.newId();
+    this.unsafe = this.newUnsafe();
+    this.pipeline = this.newChannelPipeline();
+}
+```
 pipeline的配置的配置是配置各个责任链处理类，相关内容参考< ChannelPipeline和ChannelHandler>章节
 
 ##### 2.5.2.2.4. 发起连接
@@ -1810,16 +1866,14 @@ public final void flush() {
 * 执行channel对应的AbstractChannelHandlerContext.write
 * 创建异步任务WriteTask并提交EventLoop
 * 依次执行pipeline责任链中的DefaultChannelPipeline.TailContext.write(),自定义的handler.write(),DefaultChannelPipeline.HeadContext.write()
-* 最终调用的是Channel对应的unsafe类来执行
+* 最终调用的是Channel对应的unsafe类来执行,当然最终执行发送操作的是JDK的channel的相关方法
 
-注意，pipeline和context只有一个对象实例，channel可以有多个，每个channel对应一个unsafe实例。
+注意pipeline,context,channel,unsafe之间的关系是一对一关系。context可以有多个，每个context对应一个InboundHandler或者ＯutboundHandler.
+
 
 ### 2.5.3. 服务端创建流程分析
 <a href="#menu" >目录</a>
 
-```
-![](https://img-blog.csdnimg.cn/20190228093932476.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3N1bnNoaW5lMDUyNjk3,size_16,color_FFFFFF,t_70)
-```
 #### 2.5.3.1. 创建代码
 
 ```java
@@ -2314,6 +2368,157 @@ ByteBuffer修改index14为99,　ByteBuf data1 = 99
 ### 2.6.3. ByteBuf辅助类
 <a href="#menu" >目录</a>
 
+#### 2.6.3.1. ByteBufHolder
+<a href="#menu" >目录</a>
+
+```java
+public interface ByteBufHolder extends ReferenceCounted {
+    //获取holder的ByteBuf
+    ByteBuf content();
+    //深复制
+    ByteBufHolder copy();
+    //浅复制
+    ByteBufHolder duplicate();
+    //
+    ByteBufHolder retainedDuplicate();
+    //替换内容
+    ByteBufHolder replace(ByteBuf var1);
+    //增加１　reference count
+    ByteBufHolder retain();
+    //增加var1　reference count
+    ByteBufHolder retain(int var1);
+    //Records the current access location of this object for debugging purposes.
+    ByteBufHolder touch();
+    //Records the current access location of this object with an additional arbitrary information for debugging purposes.
+    ByteBufHolder touch(Object var1);
+}
+```
+ByteBufHolder是ByteBuf的容器，在Netty中，它非常有用，例如HTTP协议的请求消息和应答消息都可以携带消息体，这个消息体在NIO ByteBuffer中就是个ByteBuffer对象，在Netty中就是ByteBuf对象。由于不同的协议消息体可以包含不同的协议字段和功能，因此，需要对ByteBuf进行包装和抽象，不同的子类可以有不同的实现。为了满足这些定制化的需求，Netty抽象出了ByteBufHolder对象，它包含了一个ByteBuf，另外还提供了一些其他实用的方法，使用者继承ByteBufHolder接口后可以按需封装自己的实现。
+
+#### 2.6.3.2. ByteBufAllocator
+<a href="#menu" >目录</a>
+
+```java
+|---ByteBufAllocator
+    |---PreferHeapByteBufAllocator　倾向创建 Heap ByteBuf 的分配器。
+    |---AbstractByteBufAllocator
+        |---UnpooledByteBufAllocator　普通的 ByteBuf 的分配器。
+        |---PooledByteBufAllocator　基于内存池的 ByteBuf 的分配器。
+    |---PreferredDirectByteBufAllocator　倾向创建 Direct ByteBuf 的分配器。
+
+//主要接口方法
+//由实现类决定
+ByteBuf buffer();
+//创建一个用于 IO 操作的 ByteBuf 对象。对于 IO 操作来说，倾向于 Direct ByteBuf ，性能更优。
+ByteBuf ioBuffer();
+//堆缓冲
+ByteBuf heapBuffer();
+//直接缓冲
+ByteBuf directBuffer();
+
+每个分配器都可以配置initialCapacity和maxCapacity
+
+```
+常用的实现类是UnpooledByteBufAllocator和PooledByteBufAllocator。基于非池和池分配器
+
+
+**ioBuffer**
+
+根据是否支持 Unsafe 操作的情况，调用 directBuffer() 方法，还是调用 heapBuffer() 方法。这个由-Dio.netty.noUnsafe=true控制，默认为flase,也就是支持unsafe.
+```java
+//AbstractByteBufAllocator.class
+public ByteBuf ioBuffer() {
+    return !PlatformDependent.hasUnsafe() && !this.isDirectBufferPooled() ? this.heapBuffer(256) : this.directBuffer(256);
+}
+```
+可以看到，既不支持unsafe也不是直接缓冲池的时候，创建的是堆缓冲区;只要满足一个条件，则ioBuffer创建的是直接缓冲区。isDirectBufferPooled()这里由子类实现。
+
+看一下子类如何实现。
+
+对于UnpooledByteBufAllocator类，返回的永远是false,所以创建的ByteBuf类型由unsafe决定
+```java
+//UnpooledByteBufAllocator.class
+public boolean isDirectBufferPooled() {
+    return false;
+}
+```
+PooledByteBufAllocator.class
+```java
+//返回值由directArenas控制
+public boolean isDirectBufferPooled() {
+    return this.directArenas != null;
+}
+//directArenas在构造器中进行初始化
+ public PooledByteBufAllocator(boolean preferDirect, int nHeapArena, int nDirectArena, int pageSize, int maxOrder, int tinyCacheSize, int smallCacheSize, int normalCacheSize, boolean useCacheForAllThreads, int directMemoryCacheAlignment) {
+
+    //省略其他代码 
+    //是否是null由参数nDirectArena控制
+    if (nDirectArena > 0) {
+        this.directArenas = newArenaArray(nDirectArena);
+    }
+}
+//在往上最终是由类变量DEFAULT_NUM_DIRECT_ARENA控制。也就是实参DEFAULT_NUM_DIRECT_ARENA传给行参nDirectArena
+
+//DEFAULT_NUM_DIRECT_ARENA是在静态初始化里面进行初始化
+//可以看出最终由io.netty.allocator.numDirectArenas控制
+ DEFAULT_NUM_DIRECT_ARENA = Math.max(0, SystemPropertyUtil.getInt("io.netty.allocator.numDirectArenas", (int)Math.min((long)defaultMinNumArena, PlatformDependent.maxDirectMemory() / (long)defaultChunkSize / 2L / 3L)));
+
+```
+
+总结:
+
+* UnpooledByteBufAllocator.ioBuffer()创建的ByteBuf类型
+  * 堆缓冲区 
+    * -Dio.netty.noUnsafe=true,也就是不支持unsafe
+    * -Dio.netty.allocator.numDirectArenas　与这个参数无关
+  * 直接缓冲区 
+    * -Dio.netty.noUnsafe=false,默认值，也就是支持unsafe
+    * -Dio.netty.allocator.numDirectArenas　与这个参数无关
+* UnpooledByteBufAllocator.ioBuffer()创建的ByteBuf类型
+  * 堆缓冲区 
+    * -Dio.netty.noUnsafe=true,也就是不支持unsafe
+    * -Dio.netty.allocator.numDirectArenas=num,num等于0
+  * 直接缓冲区 
+    * -Dio.netty.noUnsafe=true
+    * -Dio.netty.allocator.numDirectArenas=num, num>0，默认值为8
+    * 其中一个条件满足即可
+
+netty在Channel读取数据时创建ByteBuf对象时，调用的就是ioBuffer()
+
+```java
+//AbstractNioByteChannel.class#read()
+byteBuf = allocHandle.allocate(allocator);
+//DefaultMaxMessagesRecvByteBufAllocator.class#allocate()
+public ByteBuf allocate(ByteBufAllocator alloc) {
+    return alloc.ioBuffer(this.guess());
+}
+```
+
+
+**directBuffer和heapBuffer**返回的ByteBuf和方法定义的类型一样。
+
+**buffer方法**
+
+```java
+//AbstractByteBufAllocator.class
+public ByteBuf buffer() {
+    return this.directByDefault ? this.directBuffer() : this.heapBuffer();
+}
+protected AbstractByteBufAllocator(boolean preferDirect) {
+    this.directByDefault = preferDirect && PlatformDependent.hasUnsafe();
+    this.emptyBuf = new EmptyByteBuf(this);
+}
+```
+* 如果构造器参数preferDirect为false或者不支持unsafe，则创建的是堆缓冲区
+* 如果构造器参数preferDirect为true并且支持unsafe，则创建的是直接缓冲区
+
+
+
+#### 2.6.3.3. CompositeByteBuf
+<a href="#menu" >目录</a>
+
+#### 2.6.3.4. ByteBufUtil
+<a href="#menu" >目录</a>
 
 ## 2.7. Channel和Unsafe
 <a href="#menu" >目录</a>
