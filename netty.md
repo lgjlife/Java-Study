@@ -43,11 +43,13 @@
         - [2.5.2.2.2. Bootstrap创建和配置](#25222-bootstrap创建和配置)
         - [2.5.2.2.3. Channel和pipeline的配置](#25223-channel和pipeline的配置)
         - [2.5.2.2.4. 发起连接](#25224-发起连接)
-        - [2.5.2.2.5. Channel发送数据](#25225-channel发送数据)
     - [2.5.3. 服务端创建流程分析](#253-服务端创建流程分析)
       - [2.5.3.1. 创建代码](#2531-创建代码)
       - [2.5.3.2. 分析](#2532-分析)
       - [2.5.3.3. 线程状态](#2533-线程状态)
+    - [2.5.4. Channel发送数据](#254-channel发送数据)
+    - [2.5.5. 读取数据过程](#255-读取数据过程)
+    - [2.5.6. 数据流控](#256-数据流控)
   - [2.6. ByteBuf说明](#26-bytebuf说明)
     - [2.6.1. ByteBuf功能说明](#261-bytebuf功能说明)
     - [2.6.2. ByteBuf创建](#262-bytebuf创建)
@@ -68,6 +70,9 @@
       - [2.6.5.2. 内存泄漏问题](#2652-内存泄漏问题)
       - [2.6.5.3. 监控使用的直接内存](#2653-监控使用的直接内存)
       - [2.6.5.4. 编程上如何避免直接内存泄漏](#2654-编程上如何避免直接内存泄漏)
+      - [2.6.5.5. 内存池工作机制](#2655-内存池工作机制)
+        - [2.6.5.5.1. 基本结构](#26551-基本结构)
+        - [2.6.5.5.2. 源码分析](#26552-源码分析)
   - [2.7. Channel和Unsafe](#27-channel和unsafe)
     - [2.7.1. Channel功能说明](#271-channel功能说明)
     - [2.7.2. Channel源码分析](#272-channel源码分析)
@@ -288,7 +293,7 @@ epoll跟select都能提供多路I/O复用的解决方案。在现在的Linux内�
 简单的描述一下BIO的服务端通信模型：采用BIO通信模型的服务端，通常由一个独立的Acceptor线程负责监听客户端的连接，它接收到客户端连接请求之后为每个客户端创建一个新的线程进行链路处理没处理完成后，通过输出流返回应答给客户端，线程销毁。即典型的一请求一应答通信模型。为什么需要每个线程处理一个连接:因为是阻塞式IO，读写过程都是阻塞的，如果发生长时间的阻塞并且只使用一个线程处理，就会导致大并发下处理不即时。
 
 传统BIO通信模型图
-![BIO](pic/netty/BIO.jpg)
+![BIO](pic/netty/BIO.png)
 
 该模型最大的问题就是缺乏弹性伸缩能力，当客户端并发访问量增加后，服务端的线程个数和客户端并发访问数呈1:1的正比关系，Java中的线程也是比较宝贵的系统资源，线程数量快速膨胀后，系统的性能将急剧下降。
 
@@ -1702,186 +1707,6 @@ private static void doConnect(final SocketAddress remoteAddress, final SocketAdd
 }    
 ```
 
-##### 2.5.2.2.5. Channel发送数据
-
-![netty数据发送跟踪](pic/netty/netty数据发送跟踪.png)
-
-
-channel.writeAndFlush是通过pipeline进行调用的,之后会调用AbstractChannelHandlerContext.tail.writeAndFlush()，tail变量也是AbstractChannelHandlerContext类型。然后是通过bootstrap中定义的handler依次处理。处理完成后最后通过channel内部接口unsafe的实现类将数据发送出去。
-```java
-//Channel.class
-public ChannelFuture writeAndFlush(Object msg) {
-    return this.pipeline.writeAndFlush(msg);
-}
-//AbstractChannelHandlerContext.class
-public final ChannelFuture writeAndFlush(Object msg) {
-    return this.tail.writeAndFlush(msg);
-}
-//AbstractChannelHandlerContext.class
-//每次在handler中调用 super.write(ctx, msg, promise);都会调用这个方法。
-//只有在第一次调用的时候才会创建异步任务，第一个handler是DefaultChannelPipeline.TailContext.write(),TailContext没有重写该方法，所以调用的父类的方法，也就是下面的方法
-//后续调用的都是执行handler的write方法，这时候已经是eventhLoop的异步线程执行了。
-//直到最后一个handler,最后一个handler是DefaultChannelPipeline.HeadContext
-private void write(Object msg, boolean flush, ChannelPromise promise) {
-    ObjectUtil.checkNotNull(msg, "msg");
-    try {
-        if (isNotValidPromise(promise, true)) {
-            ReferenceCountUtil.release(msg);
-            // cancelled
-            return;
-        }
-    } catch (RuntimeException e) {
-        ReferenceCountUtil.release(msg);
-        throw e;
-    }
-
-    final AbstractChannelHandlerContext next = findContextOutbound(flush ?
-            (MASK_WRITE | MASK_FLUSH) : MASK_WRITE);
-    final Object m = pipeline.touch(msg, next);
-    EventExecutor executor = next.executor();
-    if (executor.inEventLoop()) {
-        if (flush) {
-            next.invokeWriteAndFlush(m, promise);
-        } else {
-            next.invokeWrite(m, promise);
-        }
-    } else {
-        //第一次，还没向eventLoop添加executor。在这里创建异步任务并提交
-        final WriteTask task = WriteTask.newInstance(next, m, promise, flush);
-        if (!safeExecute(executor, task, promise, m, !flush)) {
-            // We failed to submit the WriteTask. We need to cancel it so we decrement the pending bytes
-            // and put it back in the Recycler for re-use later.
-            //
-            // See https://github.com/netty/netty/issues/8343.
-            task.cancel();
-        }
-    }
-}
-static final class WriteTask implements Runnable {
-
-    protected static void init(AbstractChannelHandlerContext.WriteTask task, AbstractChannelHandlerContext ctx, Object msg, ChannelPromise promise, boolean flush) {
-        task.ctx = ctx;
-        task.msg = msg;
-        task.promise = promise;
-        if (ESTIMATE_TASK_SIZE_ON_SUBMIT) {
-            task.size = ctx.pipeline.estimatorHandle().size(msg) + WRITE_TASK_OVERHEAD;
-            ctx.pipeline.incrementPendingOutboundBytes((long)task.size);
-        } else {
-            task.size = 0;
-        }
-
-        if (flush) {
-            //flush为true
-            task.size |= -2147483648;
-        }
-
-    }
-
-    public void run() {
-        try {
-            this.decrementPendingOutboundBytes();
-            if (this.size >= 0) {
-                //只向缓冲区写入数据
-                this.ctx.invokeWrite(this.msg, this.promise);
-            } else {
-                //向缓冲区写入数据并发送
-                this.ctx.invokeWriteAndFlush(this.msg, this.promise);
-            }
-        } finally {
-            this.recycle();
-        }
-
-    }
-｝  
-void invokeWrite(Object msg, ChannelPromise promise) {
-    if (invokeHandler()) {
-        //执行pipeline 中的handler
-        invokeWrite0(msg, promise);
-    } else {
-        write(msg, promise);
-    }
-}
-void invokeWriteAndFlush(Object msg, ChannelPromise promise) {
-    if (invokeHandler()) {
-        //执行pipeline 中的handler
-        invokeWrite0(msg, promise);
-        //清空发送缓冲区，也就是将数据发送出去
-        //也是最后调用HeadContext.flush,然后调用unsafe.flush()
-        invokeFlush0();
-    } else {
-        writeAndFlush(msg, promise);
-    }
-}      
-//HeadContext.class
-public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
-    //通过unsafe执行
-    unsafe.write(msg, promise);
-}
-public void flush(ChannelHandlerContext ctx) {
-    unsafe.flush();
-}
-
-```
-
-```java
-//write 只是将数据放入发送缓冲区
-@Override
-public final void write(Object msg, ChannelPromise promise) {
-    assertEventLoop();
-
-    ChannelOutboundBuffer outboundBuffer = this.outboundBuffer;
-    if (outboundBuffer == null) {
-        // If the outboundBuffer is null we know the channel was closed and so
-        // need to fail the future right away. If it is not null the handling of the rest
-        // will be done in flush0()
-        // See https://github.com/netty/netty/issues/2362
-        safeSetFailure(promise, newClosedChannelException(initialCloseCause));
-        // release message now to prevent resource-leak
-        ReferenceCountUtil.release(msg);
-        return;
-    }
-
-    int size;
-    try {
-        msg = filterOutboundMessage(msg);
-        size = pipeline.estimatorHandle().size(msg);
-        if (size < 0) {
-            size = 0;
-        }
-    } catch (Throwable t) {
-        safeSetFailure(promise, t);
-        ReferenceCountUtil.release(msg);
-        return;
-    }
-
-    outboundBuffer.addMessage(msg, size, promise);
-}
-//flush执行真正的发送
-@Override
-public final void flush() {
-    assertEventLoop();
-
-    ChannelOutboundBuffer outboundBuffer = this.outboundBuffer;
-    if (outboundBuffer == null) {
-        return;
-    }
-
-    outboundBuffer.addFlush();
-    flush0();
-}
-```
-
-发送数据流程总结
-* 调用channel.writeAndFlush(ByteBuf)发送数据
-* 执行pipeline.write
-* 执行channel对应的AbstractChannelHandlerContext.write
-* 创建异步任务WriteTask并提交EventLoop
-* 依次执行pipeline责任链中的DefaultChannelPipeline.TailContext.write(),自定义的handler.write(),DefaultChannelPipeline.HeadContext.write()
-* 最终调用的是Channel对应的unsafe类来执行,当然最终执行发送操作的是JDK的channel的相关方法
-
-注意pipeline,context,channel,unsafe之间的关系是一对一关系。context可以有多个，每个context对应一个InboundHandler或者ＯutboundHandler.
-
-
 ### 2.5.3. 服务端创建流程分析
 <a href="#menu" >目录</a>
 
@@ -2118,6 +1943,275 @@ public int select(long var1) throws IOException {
 }
 ```
 
+### 2.5.4. Channel发送数据
+
+![netty数据发送跟踪](pic/netty/netty数据发送跟踪.png)
+
+
+channel.writeAndFlush是通过pipeline进行调用的,之后会调用AbstractChannelHandlerContext.tail.writeAndFlush()，tail变量也是AbstractChannelHandlerContext类型。然后是通过bootstrap中定义的handler依次处理。处理完成后最后通过channel内部接口unsafe的实现类将数据发送出去。
+```java
+//Channel.class
+public ChannelFuture writeAndFlush(Object msg) {
+    return this.pipeline.writeAndFlush(msg);
+}
+//AbstractChannelHandlerContext.class
+public final ChannelFuture writeAndFlush(Object msg) {
+    return this.tail.writeAndFlush(msg);
+}
+//AbstractChannelHandlerContext.class
+//每次在handler中调用 super.write(ctx, msg, promise);都会调用这个方法。
+//只有在第一次调用的时候才会创建异步任务，第一个handler是DefaultChannelPipeline.TailContext.write(),TailContext没有重写该方法，所以调用的父类的方法，也就是下面的方法
+//后续调用的都是执行handler的write方法，这时候已经是eventhLoop的异步线程执行了。
+//直到最后一个handler,最后一个handler是DefaultChannelPipeline.HeadContext
+private void write(Object msg, boolean flush, ChannelPromise promise) {
+    ObjectUtil.checkNotNull(msg, "msg");
+    try {
+        if (isNotValidPromise(promise, true)) {
+            ReferenceCountUtil.release(msg);
+            // cancelled
+            return;
+        }
+    } catch (RuntimeException e) {
+        ReferenceCountUtil.release(msg);
+        throw e;
+    }
+
+    final AbstractChannelHandlerContext next = findContextOutbound(flush ?
+            (MASK_WRITE | MASK_FLUSH) : MASK_WRITE);
+    final Object m = pipeline.touch(msg, next);
+    EventExecutor executor = next.executor();
+    if (executor.inEventLoop()) {
+        if (flush) {
+            next.invokeWriteAndFlush(m, promise);
+        } else {
+            next.invokeWrite(m, promise);
+        }
+    } else {
+        //第一次，还没向eventLoop添加executor。在这里创建异步任务并提交
+        final WriteTask task = WriteTask.newInstance(next, m, promise, flush);
+        if (!safeExecute(executor, task, promise, m, !flush)) {
+            // We failed to submit the WriteTask. We need to cancel it so we decrement the pending bytes
+            // and put it back in the Recycler for re-use later.
+            //
+            // See https://github.com/netty/netty/issues/8343.
+            task.cancel();
+        }
+    }
+}
+static final class WriteTask implements Runnable {
+
+    protected static void init(AbstractChannelHandlerContext.WriteTask task, AbstractChannelHandlerContext ctx, Object msg, ChannelPromise promise, boolean flush) {
+        task.ctx = ctx;
+        task.msg = msg;
+        task.promise = promise;
+        if (ESTIMATE_TASK_SIZE_ON_SUBMIT) {
+            task.size = ctx.pipeline.estimatorHandle().size(msg) + WRITE_TASK_OVERHEAD;
+            ctx.pipeline.incrementPendingOutboundBytes((long)task.size);
+        } else {
+            task.size = 0;
+        }
+
+        if (flush) {
+            //flush为true
+            task.size |= -2147483648;
+        }
+
+    }
+
+    public void run() {
+        try {
+            this.decrementPendingOutboundBytes();
+            if (this.size >= 0) {
+                //只向缓冲区写入数据
+                this.ctx.invokeWrite(this.msg, this.promise);
+            } else {
+                //向缓冲区写入数据并发送
+                this.ctx.invokeWriteAndFlush(this.msg, this.promise);
+            }
+        } finally {
+            this.recycle();
+        }
+
+    }
+｝  
+void invokeWrite(Object msg, ChannelPromise promise) {
+    if (invokeHandler()) {
+        //执行pipeline 中的handler
+        invokeWrite0(msg, promise);
+    } else {
+        write(msg, promise);
+    }
+}
+void invokeWriteAndFlush(Object msg, ChannelPromise promise) {
+    if (invokeHandler()) {
+        //执行pipeline 中的handler
+        invokeWrite0(msg, promise);
+        //清空发送缓冲区，也就是将数据发送出去
+        //也是最后调用HeadContext.flush,然后调用unsafe.flush()
+        invokeFlush0();
+    } else {
+        writeAndFlush(msg, promise);
+    }
+}      
+//HeadContext.class
+public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
+    //通过unsafe执行
+    unsafe.write(msg, promise);
+}
+public void flush(ChannelHandlerContext ctx) {
+    unsafe.flush();
+}
+
+```
+
+```java
+//write 只是将数据放入发送缓冲区
+@Override
+public final void write(Object msg, ChannelPromise promise) {
+    assertEventLoop();
+
+    ChannelOutboundBuffer outboundBuffer = this.outboundBuffer;
+    if (outboundBuffer == null) {
+        // If the outboundBuffer is null we know the channel was closed and so
+        // need to fail the future right away. If it is not null the handling of the rest
+        // will be done in flush0()
+        // See https://github.com/netty/netty/issues/2362
+        safeSetFailure(promise, newClosedChannelException(initialCloseCause));
+        // release message now to prevent resource-leak
+        ReferenceCountUtil.release(msg);
+        return;
+    }
+
+    int size;
+    try {
+        msg = filterOutboundMessage(msg);
+        size = pipeline.estimatorHandle().size(msg);
+        if (size < 0) {
+            size = 0;
+        }
+    } catch (Throwable t) {
+        safeSetFailure(promise, t);
+        ReferenceCountUtil.release(msg);
+        return;
+    }
+
+    outboundBuffer.addMessage(msg, size, promise);
+}
+//flush执行真正的发送
+@Override
+public final void flush() {
+    assertEventLoop();
+
+    ChannelOutboundBuffer outboundBuffer = this.outboundBuffer;
+    if (outboundBuffer == null) {
+        return;
+    }
+
+    outboundBuffer.addFlush();
+    flush0();
+}
+```
+
+发送数据流程总结
+* 调用channel.writeAndFlush(ByteBuf)发送数据
+* 执行pipeline.write
+* 执行channel对应的AbstractChannelHandlerContext.write
+* 创建异步任务WriteTask并提交EventLoop
+* 依次执行pipeline责任链中的DefaultChannelPipeline.TailContext.write(),自定义的handler.write(),DefaultChannelPipeline.HeadContext.write()
+* 最终调用的是Channel对应的unsafe类来执行,当然最终执行发送操作的是JDK的channel的相关方法
+
+注意pipeline,context,channel,unsafe之间的关系是一对一关系。context可以有多个，每个context对应一个InboundHandler或者ＯutboundHandler.
+
+### 2.5.5. 读取数据过程
+<a href="#menu" >目录</a>
+
+### 2.5.6. 数据流控
+<a href="#menu" >目录</a>
+
+
+有一个用于提示发送水位的类WriteBufferWaterMark。当发送的字节数目加上发送缓冲区中的字节数目，就会将发送缓冲区ChannelOutboundBuffer的unwritable设置为1.通过channel.isWritable()就可以确定是否可写。
+
+```java
+public final class WriteBufferWaterMark {
+    private static final int DEFAULT_LOW_WATER_MARK = 32768;   //32k
+    private static final int DEFAULT_HIGH_WATER_MARK = 65536;　//64k
+
+    private final int low;
+    private final int high;
+}
+//可以通过channel.config().setWriteBufferHighWaterMark 来进行修改默认值
+public interface ChannelConfig {
+    ChannelConfig setWriteBufferHighWaterMark(int var1);
+    ChannelConfig setWriteBufferLowWaterMark(int var1);
+    ChannelConfig setWriteBufferWaterMark(WriteBufferWaterMark var1);
+
+}
+```
+
+```java
+//AbstractChannel.class
+public boolean isWritable() {
+    ChannelOutboundBuffer buf = this.unsafe.outboundBuffer();
+    return buf != null && buf.isWritable();
+}
+//ChannelOutboundBuffer.class
+public boolean isWritable() {
+    return this.unwritable == 0;
+}   
+```
+
+在创建WriteTask时会检测是否超过DEFAULT_HIGH_WATER_MARK，如果超过，则将设置ChannelOutboundBuffe#unwritable为1
+
+```java
+//ChannelOutboundBuffer.class
+
+private void incrementPendingOutboundBytes(long size, boolean invokeLater) {
+    if (size != 0L) {
+        //将缓冲区中的未发送字节数与当前要加入缓冲区的字节数相加并返回
+        //TOTAL_PENDING_SIZE_UPDATER是ChannelOutboundBuffer中的字段，标记未发送的字节数。
+        //可以看到这里已经是实际性相加后返回，因此这个检测操作仅仅是提供一种提示，并不会因为超过DEFAULT_HIGH_WATER_MARK而拒绝数据的发送操作
+        long newWriteBufferSize = TOTAL_PENDING_SIZE_UPDATER.addAndGet(this, size);
+        if (newWriteBufferSize > (long)this.channel.config().getWriteBufferHighWaterMark()) {
+            //设置unwritable为１
+            this.setUnwritable(invokeLater);
+        }
+
+    }
+}
+//通过CAS设置为1
+private void setUnwritable(boolean invokeLater) {
+    int oldValue;
+    int newValue;
+    do {
+        oldValue = this.unwritable;
+        newValue = oldValue | 1;
+    } while(!UNWRITABLE_UPDATER.compareAndSet(this, oldValue, newValue));
+
+    if (oldValue == 0 && newValue != 0) {
+        this.fireChannelWritabilityChanged(invokeLater);
+    }
+
+}
+```
+
+当发送完成要释放ByteBuf时，会调用decrementPendingOutboundBytes，如果小于DEFAULT_LOW_WATER_MARK，则将设置ChannelOutboundBuffe#unwritable为0
+```java
+void decrementPendingOutboundBytes(long size) {
+    this.decrementPendingOutboundBytes(size, true, true);
+}
+
+private void decrementPendingOutboundBytes(long size, boolean invokeLater, boolean notifyWritability) {
+    if (size != 0L) {
+        long newWriteBufferSize = TOTAL_PENDING_SIZE_UPDATER.addAndGet(this, -size);
+        if (notifyWritability && newWriteBufferSize < (long)this.channel.config().getWriteBufferLowWaterMark()) {
+            this.setWritable(invokeLater);
+        }
+
+    }
+}
+```
+
+从上面可以看出，当发送缓冲区和将发送数据的总长度超过高水位，则channel.isWritable()会返回false.当低于低水位的时候，会返回true.这个检测并不会拒绝用户继续发送数据。只是一种提示。提示用户发送缓冲区可能缓冲较多数据，应用层面可以暂缓发送。
 
 ## 2.6. ByteBuf说明
 <a href="#menu" >目录</a>
@@ -3234,6 +3328,125 @@ protected void onUnhandledInboundMessage(Object msg) {
 以上操作的ReferenceCountUtil是ByteBuf　引用相关的工具类，比如release,retain,touch等操作。
 
 在实际应用中，除了非缓冲池创建堆内存ByteBuf,该类型会在垃圾回收时被主动回收，其他类型需要由netty或者手动进行release。否则会出现内存泄漏的问题。
+
+#### 2.6.5.5. 内存池工作机制
+<a href="#menu" >目录</a>
+
+##### 2.6.5.5.1. 基本结构
+<a href="#menu" >目录</a>
+
+**内存池主要数据结构**
+
+* PooledArena: 代表内存中一大块连续的区域，PooledArena由多个PoolChunk组成，每个PoolChunk由多个PoolSubpage组成，为了提升并发性能，内存池中包含了一组PooledArena。
+* PoolChunk: 用来组织和管理多个Page的内存分配和释放，默认为16M 
+* PoolSubpage：对于小于一个page的内存，netty在page中完成分配。每个page会被切分成大小相等的多个存储块，存储块的大小由第一次申请的内存大小决定。比如一个page为8个字节，第一次申请分配1个字节，那就分配成8个存储块，每个大小１字节，后续只能继续分配一个字节。如果第一次申请4个字节，那就分配成2个存储块，每个大小4字节。　
+
+内存池的内存分配从PooledArena开始，一个PooledArena包含多个PoolChunk。PoolChunk负责内存的分配和回收。每个PoolChunk包含多个PoolSubpage，每个Page由大小相等的块Region组成，每个Page大小由第一次从Page申请的内存大小决定，某个Page中的块大小是相等的。PoolChunk默认为16Ｍ，包含2048个PoolSubpage，每个PoolSubpage为8kb
+
+**内存分配策略**
+
+通过PooledByteBUfAllocator申请内存时，首先从PoolThreadLocalCache中获取与线程绑定的缓存池PoolThreadCache,如果不存在线程私有的缓存池，则轮询分配一个Ａrean数组中的PooledArean，创建一个新的ＰoolThreadCache作为缓存池使用。
+
+* 内存分类,系统根据需要申请合适的内存
+  * tiny : [0,512B)
+  * small: [512B,8KB)
+  * normal: [8KB,16MB]
+  * huge: (16MB]
+
+在PooledArena中创建PooledChunk之后，调用PooledChunk的allocate方法进行真正的内存分配。PooledChunk通过二叉树记录每个ＰoolSubpage的分配情况。
+
+![](pic/netty/PoolChunk二叉树.png)
+
+
+
+
+##### 2.6.5.5.2. 源码分析
+<a href="#menu" >目录</a>
+
+
+PooledByteBufAllocator.class
+```java
+protected ByteBuf newDirectBuffer(int initialCapacity, int maxCapacity) {
+    PoolThreadCache cache = (PoolThreadCache)this.threadCache.get();
+    PoolArena<ByteBuffer> directArena = cache.directArena;
+    Object buf;
+    if (directArena != null) {
+        buf = directArena.allocate(cache, initialCapacity, maxCapacity);
+    } else {
+        buf = PlatformDependent.hasUnsafe() ? UnsafeByteBufUtil.newUnsafeDirectByteBuf(this, initialCapacity, maxCapacity) : new UnpooledDirectByteBuf(this, initialCapacity, maxCapacity);
+    }
+
+    return toLeakAwareBuffer((ByteBuf)buf);
+}
+```
+
+PoolArena.class
+```java
+PooledByteBuf<T> allocate(PoolThreadCache cache, int reqCapacity, int maxCapacity) {
+    PooledByteBuf<T> buf = this.newByteBuf(maxCapacity);
+    this.allocate(cache, buf, reqCapacity);
+    return buf;
+}
+private void allocate(PoolThreadCache cache, PooledByteBuf<T> buf, int reqCapacity) {
+    int normCapacity = this.normalizeCapacity(reqCapacity);
+    if (this.isTinyOrSmall(normCapacity)) {
+        boolean tiny = isTiny(normCapacity);
+        int tableIdx;
+        PoolSubpage[] table;
+        if (tiny) {
+            if (cache.allocateTiny(this, buf, reqCapacity, normCapacity)) {
+                return;
+            }
+
+            tableIdx = tinyIdx(normCapacity);
+            table = this.tinySubpagePools;
+        } else {
+            if (cache.allocateSmall(this, buf, reqCapacity, normCapacity)) {
+                return;
+            }
+
+            tableIdx = smallIdx(normCapacity);
+            table = this.smallSubpagePools;
+        }
+
+        PoolSubpage<T> head = table[tableIdx];
+        synchronized(head) {
+            PoolSubpage<T> s = head.next;
+            if (s != head) {
+                assert s.doNotDestroy && s.elemSize == normCapacity;
+
+                long handle = s.allocate();
+
+                assert handle >= 0L;
+
+                s.chunk.initBufWithSubpage(buf, (ByteBuffer)null, handle, reqCapacity, cache);
+                this.incTinySmallAllocation(tiny);
+                return;
+            }
+        }
+
+        synchronized(this) {
+            this.allocateNormal(buf, reqCapacity, normCapacity, cache);
+        }
+
+        this.incTinySmallAllocation(tiny);
+    } else {
+        if (normCapacity <= this.chunkSize) {
+            if (cache.allocateNormal(this, buf, reqCapacity, normCapacity)) {
+                return;
+            }
+
+            synchronized(this) {
+                this.allocateNormal(buf, reqCapacity, normCapacity, cache);
+                ++this.allocationsNormal;
+            }
+        } else {
+            this.allocateHuge(buf, reqCapacity);
+        }
+
+    }
+}   
+```
 
 ## 2.7. Channel和Unsafe
 <a href="#menu" >目录</a>
