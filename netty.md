@@ -50,13 +50,24 @@
       - [2.5.3.3. 线程状态](#2533-线程状态)
   - [2.6. ByteBuf说明](#26-bytebuf说明)
     - [2.6.1. ByteBuf功能说明](#261-bytebuf功能说明)
-    - [2.6.2. ByteBuf源码分析](#262-bytebuf源码分析)
-      - [2.6.2.1. 主要继承关系](#2621-主要继承关系)
-    - [2.6.3. ByteBuf辅助类](#263-bytebuf辅助类)
-      - [2.6.3.1. ByteBufHolder](#2631-bytebufholder)
-      - [2.6.3.2. ByteBufAllocator](#2632-bytebufallocator)
-      - [2.6.3.3. CompositeByteBuf](#2633-compositebytebuf)
-      - [2.6.3.4. ByteBufUtil](#2634-bytebufutil)
+    - [2.6.2. ByteBuf创建](#262-bytebuf创建)
+    - [2.6.3. ByteBuf源码分析](#263-bytebuf源码分析)
+      - [2.6.3.1. 主要继承关系](#2631-主要继承关系)
+      - [2.6.3.2. AbstractByteBuf](#2632-abstractbytebuf)
+      - [2.6.3.3. AbstractReferenceCountedByteBuf](#2633-abstractreferencecountedbytebuf)
+      - [2.6.3.4. UnpooledHeapByteBuf](#2634-unpooledheapbytebuf)
+      - [2.6.3.5. PooledByteBuf](#2635-pooledbytebuf)
+      - [2.6.3.6. PooledDirectByteBuf](#2636-pooleddirectbytebuf)
+    - [2.6.4. ByteBuf辅助类](#264-bytebuf辅助类)
+      - [2.6.4.1. ByteBufHolder](#2641-bytebufholder)
+      - [2.6.4.2. ByteBufAllocator](#2642-bytebufallocator)
+      - [2.6.4.3. CompositeByteBuf](#2643-compositebytebuf)
+      - [2.6.4.4. ByteBufUtil](#2644-bytebufutil)
+    - [2.6.5. 池化和非池化ByteBuf](#265-池化和非池化bytebuf)
+      - [2.6.5.1. 性能对比](#2651-性能对比)
+      - [2.6.5.2. 内存泄漏问题](#2652-内存泄漏问题)
+      - [2.6.5.3. 监控使用的直接内存](#2653-监控使用的直接内存)
+      - [2.6.5.4. 编程上如何避免直接内存泄漏](#2654-编程上如何避免直接内存泄漏)
   - [2.7. Channel和Unsafe](#27-channel和unsafe)
     - [2.7.1. Channel功能说明](#271-channel功能说明)
     - [2.7.2. Channel源码分析](#272-channel源码分析)
@@ -2324,11 +2335,16 @@ nioBufferCount = 1
 ByteBuf修改index50 为61,ByteBuffer data = 61
 ByteBuffer修改index14为99,　ByteBuf data1 = 99
 ```
-
-### 2.6.2. ByteBuf源码分析
+### 2.6.2. ByteBuf创建
 <a href="#menu" >目录</a>
 
-#### 2.6.2.1. 主要继承关系
+ByteBuf的创建一般是通过分配器ByteBufAllocator实现,或者由工具类Pooled创建，不过只能创建池化的缓冲，其本质也是通过ByteBufAllocator实现。ByteBufAllocator更多使用说明参考后续内容介绍。
+
+
+### 2.6.3. ByteBuf源码分析
+<a href="#menu" >目录</a>
+
+#### 2.6.3.1. 主要继承关系
 <a href="#menu" >目录</a>
 
 ```java
@@ -2343,10 +2359,10 @@ ByteBuffer修改index14为99,　ByteBuf data1 = 99
             |---ReadOnlyByteBufferBuf
             |---CompositeByteBuf
             |---FixedCompositeByteBuf
-            |---PooledByteBuf
+            |---PooledByteBuf　基于池的缓冲区
                 |---PooledHeapByteBuf
                 |---PooledDirectByteBuf
-            |---UnpooledDirectByteBuf
+            |---UnpooledDirectByteBuf　非池缓冲区
                 |---UnpooledUnsafeDirectByteBuf
             |---UnpooledHeapByteBuf
                 |---UnpooledUnsafeHeapByteBuf
@@ -2364,11 +2380,211 @@ ByteBuffer修改index14为99,　ByteBuf data1 = 99
 
 //TODO:ByteBuf源码分析
 
-
-### 2.6.3. ByteBuf辅助类
+#### 2.6.3.2. AbstractByteBuf
 <a href="#menu" >目录</a>
 
-#### 2.6.3.1. ByteBufHolder
+**成员变量**
+```java
+public abstract class AbstractByteBuf extends ByteBuf {
+    private static final InternalLogger logger = InternalLoggerFactory.getInstance(AbstractByteBuf.class);
+    private static final String LEGACY_PROP_CHECK_ACCESSIBLE = "io.netty.buffer.bytebuf.checkAccessible";
+    private static final String PROP_CHECK_ACCESSIBLE = "io.netty.buffer.checkAccessible";
+    //是否需要检测ByteBuf是否可以访问
+    //io.netty.buffer.checkAccessible或者io.netty.buffer.bytebuf.checkAccessible控制，默认为true
+    static final boolean checkAccessible;
+    private static final String PROP_CHECK_BOUNDS = "io.netty.buffer.checkBounds";
+    private static final boolean checkBounds;
+    //用于检测对象是否泄漏
+    static final ResourceLeakDetector<ByteBuf> leakDetector;
+    //读写index
+    int readerIndex;
+    int writerIndex;
+    //标记index
+    private int markedReaderIndex;
+    private int markedWriterIndex;
+    //当内存扩展到最大容量，就会报错
+    private int maxCapacity;
+}
+```
+
+**读操作**
+
+```java
+public ByteBuf readBytes(byte[] dst, int dstIndex, int length) {
+    this.checkReadableBytes(length);
+    //由子类实现，最终也是通过数组复制实现
+    this.getBytes(this.readerIndex, dst, dstIndex, length);
+    this.readerIndex += length;
+    return this;
+}
+private void checkReadableBytes0(int minimumReadableBytes) {
+    //确保可以访问
+    this.ensureAccessible();
+    //可读取字节是否足够
+    if (checkBounds && this.readerIndex > this.writerIndex - minimumReadableBytes) {
+        throw new IndexOutOfBoundsException(String.format("readerIndex(%d) + length(%d) exceeds writerIndex(%d): %s", this.readerIndex, minimumReadableBytes, this.writerIndex, this));
+    }
+}
+protected final void ensureAccessible() {
+    if (checkAccessible && !this.isAccessible()) {
+        throw new IllegalReferenceCountException(0);
+    }
+}
+```
+
+**写操作**
+
+```java
+public ByteBuf writeBytes(byte[] src) {
+    this.writeBytes((byte[])src, 0, src.length);
+    return this;
+}
+public ByteBuf writeBytes(byte[] src, int srcIndex, int length) {
+    this.ensureWritable(length);
+    //子类实现
+    this.setBytes(this.writerIndex, src, srcIndex, length);
+    this.writerIndex += length;
+    return this;
+}
+
+//检测是否空间足够写
+final void ensureWritable0(int minWritableBytes) {
+    int writerIndex = this.writerIndex();
+    int targetCapacity = writerIndex + minWritableBytes;
+    if (targetCapacity <= this.capacity()) {
+        //容量足够
+        this.ensureAccessible();
+    } else if (checkBounds && targetCapacity > this.maxCapacity) {
+        //超过最大容量，抛出异常
+        this.ensureAccessible();
+        throw new IndexOutOfBoundsException(String.format("writerIndex(%d) + minWritableBytes(%d) exceeds maxCapacity(%d): %s", writerIndex, minWritableBytes, this.maxCapacity, this));
+    } else {
+        //当前容量<新的容量<最大容量。需要进行扩容
+        //cap - windex
+        int fastWritable = this.maxFastWritableBytes();
+        int newCapacity = fastWritable >= minWritableBytes ? 
+        //这里不是很清楚，因为fastWritable >= minWritableBytes为true,说明容量足够，就不会进入这个语句块
+        writerIndex + fastWritable : 
+        this.alloc().calculateNewCapacity(targetCapacity, this.maxCapacity);
+        //由实现类实现
+        this.capacity(newCapacity);
+    }
+}
+//计算新容量
+@Override
+public int calculateNewCapacity(int minNewCapacity, int maxCapacity) {
+    checkPositiveOrZero(minNewCapacity, "minNewCapacity");
+    if (minNewCapacity > maxCapacity) {
+        throw new IllegalArgumentException(String.format(
+                "minNewCapacity: %d (expected: not greater than maxCapacity(%d)",
+                minNewCapacity, maxCapacity));
+    }
+    final int threshold = CALCULATE_THRESHOLD; // 4 MiB page 4194304
+　　//容量刚好=4m，就设置新容量为4m　
+    if (minNewCapacity == threshold) {
+        return threshold;
+    }
+
+    // If over threshold, do not double but just increase by threshold.
+    //当大于阈值，每次步进4m
+    //这里的处理很巧妙。可以一定程度上减少每次扩增的容量；
+    //假如minNewCapacity为7,　newCapacity　＝　７／４×４＝4　，　　newCapacity　＝　４＋４　＝　８
+    //假如minNewCapacity为9 ,　newCapacity　＝　9／４×４＝8　，　　newCapacity　＝　8＋４　＝　12
+    if (minNewCapacity > threshold) {
+        int newCapacity = minNewCapacity / threshold * threshold;
+        if (newCapacity > maxCapacity - threshold) {
+            newCapacity = maxCapacity;
+        } else {
+            newCapacity += threshold;
+        }
+        return newCapacity;
+    }
+
+    // Not over threshold. Double up to 4 MiB, starting from 64.
+    //当低于4m阈值，则采用倍增方式
+    int newCapacity = 64;
+    while (newCapacity < minNewCapacity) {
+        newCapacity <<= 1;
+    }
+
+    return Math.min(newCapacity, maxCapacity);
+}
+
+```
+
+当容量较小的时候，倍增容量并不会带来太多的内存浪费。但是当容量较大的时候，上面的阈值是4m，进行倍增可能会存在较大的浪费。所以超过阈值之后进行平滑递增。
+
+从上面可以看到，读写过程都是没用加锁的，也就是并发下是不安全的，这是也netty为了避免加锁带来的性能问题。本身上netty内部pipeline处理也是同一个线程，用户添加的handler在解码之前也不应该在多线程中处理ByteBuf.
+
+#### 2.6.3.3. AbstractReferenceCountedByteBuf
+<a href="#menu" >目录</a>
+
+AbstractReferenceCountedByteBuf对引用进行计数。
+
+```java
+public abstract class AbstractReferenceCountedByteBuf extends AbstractByteBuf {
+    private static final long REFCNT_FIELD_OFFSET =
+            ReferenceCountUpdater.getUnsafeOffset(AbstractReferenceCountedByteBuf.class, "refCnt");
+    private static final AtomicIntegerFieldUpdater<AbstractReferenceCountedByteBuf> AIF_UPDATER =
+            AtomicIntegerFieldUpdater.newUpdater(AbstractReferenceCountedByteBuf.class, "refCnt");
+
+    private static final ReferenceCountUpdater<AbstractReferenceCountedByteBuf> updater =
+            new ReferenceCountUpdater<AbstractReferenceCountedByteBuf>() {
+        @Override
+        protected AtomicIntegerFieldUpdater<AbstractReferenceCountedByteBuf> updater() {
+            return AIF_UPDATER;
+        }
+        @Override
+        protected long unsafeOffset() {
+            return REFCNT_FIELD_OFFSET;
+        }
+    };
+
+    // Value might not equal "real" reference count, all access should be via the updater
+    @SuppressWarnings("unused")
+    private volatile int refCnt = updater.initialValue();
+}
+```
+
+每当调用一次retain(),refCnt加１，每调用一次release()，refCnt减１，当为0的时候，就无法再写入数据。
+
+```java
+public ByteBuf retain() {
+    return (ByteBuf)updater.retain(this);
+}
+    public final  T retain(T instance) {　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+    return this.retain0(instance, 1, 2);
+}
+private T retain0(T instance, final int increment, final int rawIncrement) {
+    int oldRef = updater().getAndAdd(instance, rawIncrement);
+    if (oldRef != 2 && oldRef != 4 && (oldRef & 1) != 0) {
+        throw new IllegalReferenceCountException(0, increment);
+    }
+    // don't pass 0!
+    if ((oldRef <= 0 && oldRef + rawIncrement >= 0)
+            || (oldRef >= 0 && oldRef + rawIncrement < oldRef)) {
+        // overflow case
+        updater().getAndAdd(instance, -rawIncrement);
+        throw new IllegalReferenceCountException(realRefCnt(oldRef), increment);
+    }
+    return instance;
+}
+```
+
+#### 2.6.3.4. UnpooledHeapByteBuf
+<a href="#menu" >目录</a>
+
+#### 2.6.3.5. PooledByteBuf
+<a href="#menu" >目录</a>
+
+#### 2.6.3.6. PooledDirectByteBuf
+<a href="#menu" >目录</a>
+
+
+### 2.6.4. ByteBuf辅助类
+<a href="#menu" >目录</a>
+
+#### 2.6.4.1. ByteBufHolder
 <a href="#menu" >目录</a>
 
 ```java
@@ -2395,7 +2611,7 @@ public interface ByteBufHolder extends ReferenceCounted {
 ```
 ByteBufHolder是ByteBuf的容器，在Netty中，它非常有用，例如HTTP协议的请求消息和应答消息都可以携带消息体，这个消息体在NIO ByteBuffer中就是个ByteBuffer对象，在Netty中就是ByteBuf对象。由于不同的协议消息体可以包含不同的协议字段和功能，因此，需要对ByteBuf进行包装和抽象，不同的子类可以有不同的实现。为了满足这些定制化的需求，Netty抽象出了ByteBufHolder对象，它包含了一个ByteBuf，另外还提供了一些其他实用的方法，使用者继承ByteBufHolder接口后可以按需封装自己的实现。
 
-#### 2.6.3.2. ByteBufAllocator
+#### 2.6.4.2. ByteBufAllocator
 <a href="#menu" >目录</a>
 
 ```java
@@ -2514,11 +2730,510 @@ protected AbstractByteBufAllocator(boolean preferDirect) {
 
 
 
-#### 2.6.3.3. CompositeByteBuf
+#### 2.6.4.3. CompositeByteBuf
 <a href="#menu" >目录</a>
 
-#### 2.6.3.4. ByteBufUtil
+CompositeByteBuf也是ByteBuf的实现类，因此具有ByteBuf的相关操作。CompositeByteBuf允许将多个ByteBuf的实例组装到一起，形成一个统一的视图，有点类似于数据库将多个表的字段组装到一起统一用视图展示。
+
+CompositeByteBuf在一些场景下非常有用，例如某个协议POJO对象包含两部分：消息头和消息体，它们都是ByteBuf对象。当需要对消息进行编码的时候需要进行整合。
+
+```java
+
+ByteBufAllocator allocator = new UnpooledByteBufAllocator(true);
+
+CompositeByteBuf byteBufs = allocator.compositeBuffer();
+
+ByteBuf byteBuf1 = allocator.buffer();
+ByteBuf byteBuf2 = allocator.buffer();
+
+byteBuf1.writeBytes("123456".getBytes());
+byteBuf2.writeBytes("7890".getBytes());
+
+byteBufs.addComponent(true,byteBuf1);
+System.out.println("添加byteBuf1之后,byteBufs = " + byteBufs);
+byteBufs.addComponent(true,byteBuf2);
+System.out.println("添加byteBuf2之后,byteBufs = " + byteBufs);
+
+int len = byteBufs.readableBytes();
+System.out.println("len = " + len);
+byte[] result = new byte[len];
+byteBufs.readBytes(result);
+
+System.out.println("byteBufs str = " + new String(result));
+
+ByteBuf component0 =  byteBufs.component(0);
+len = component0.readableBytes();
+System.out.println("len = " + len);
+result = new byte[len];
+component0.readBytes(result);
+System.out.println("component0 str = " + new String(result));
+
+ByteBuf component1 =  byteBufs.component(1);
+len = component1.readableBytes();
+System.out.println("len = " + len);
+result = new byte[len];
+component1.readBytes(result);
+
+System.out.println("component1 str = " + new String(result));
+
+//输出
+添加byteBuf1之后,byteBufs = CompositeByteBuf(ridx: 0, widx: 6, cap: 6, components=1)
+添加byteBuf2之后,byteBufs = CompositeByteBuf(ridx: 0, widx: 10, cap: 10, components=2)
+len = 10
+byteBufs str = 1234567890
+len = 6
+component0 str = 123456
+len = 4
+component1 str = 7890
+```
+
+从上面可以看出，单独写入ByteBuf对象之后，还可以单独读出，每个写入的ByteBuf对象都会按照索引存放（0开始），单独读取的时候也可以按照索引来读。
+
+因为其内部是用于一个数组来存放添加的ByteBuf
+```java
+private CompositeByteBuf.Component[] components;
+public ByteBuf component(int cIndex) {
+    this.checkComponentIndex(cIndex);
+    return this.components[cIndex].duplicate();
+}
+```
+
+#### 2.6.4.4. ByteBufUtil
 <a href="#menu" >目录</a>
+
+ByteBufUtil是一个非常有用的工具类，它提供了一系列静态方法用于操作ByteBuf对象。
+
+### 2.6.5. 池化和非池化ByteBuf
+<a href="#menu" >目录</a>
+
+#### 2.6.5.1. 性能对比
+
+```java
+public static void poolAndUnpoolTest(ByteBufAllocator allocator ){
+    int times = 100000000;
+    int _1M = 1024 * 10;
+
+    log.info("开始执行任务");
+    long startTime = System.currentTimeMillis();
+    for(int i = 0; i< times; i++){
+        ByteBuf buf = allocator.buffer(_1M);
+        buf.release();
+    }
+    long endTime = System.currentTimeMillis();
+    log.info("执行[{}次总共花费时间[{}]ms",times,endTime-startTime);
+}
+
+//调用
+ByteBufAllocator poolByteBufAllocator = new PooledByteBufAllocator(false);
+ByteBufAllocator unpoolByteBufAllocator = new UnpooledByteBufAllocator(false);
+poolAndUnpoolTest(poolByteBufAllocator);
+```
+JVM参数使用的是默认参数。从结果来看，性能上差了将近３倍，而且GC次数非池化远远高出池化的次数。在实际应用中，应当使用池化缓冲区来实现高性能。
+
+||耗时(ms)|GC次数|
+|---|---|---|
+|非池化|88678|1209|
+|非池化|84232|1272|
+|非池化||1358|
+|池化|31317|8|
+|池化|18240|8|
+|池化|20519|8|
+
+Netty里四种主力的ByteBuf，其中UnpooledHeapByteBuf底下的byte[]能够依赖JVM GC自然回收；而UnpooledDirectByteBuf底下是DirectByteBuffer，如Java堆外内存扫盲贴所述，除了等JVM GC，最好也能主动进行回收；而PooledHeapByteBuf和PooledDirectByteBuf，则必须要主动将用完的byte[]/ByteBuffer放回池里，否则内存就要爆掉。所以，Netty ByteBuf需要在JVM的GC机制之外，有自己的引用计数器和回收过程。
+
+#### 2.6.5.2. 内存泄漏问题
+<a href="#menu" >目录</a>
+
+从上面使用比较可以看出，基于内存池创建的ByteBuf性能上比较有优势。但是会出现内存泄漏的问题(使用问题，非框架问题)
+
+所谓内存泄漏，主要是针对池化的ByteBuf。ByteBuf对象被JVM GC掉之前，没有调用release()去把底下的DirectByteBuffer或byte[]归还到池里，会导致池越来越大。而非池化的ByteBuf，即使像DirectByteBuf那样可能会用到System.gc()，但终归会被release掉的，不会出大事。
+
+
+在不调用ByteBuf.release()释放资源的情况下，只有不使用池的堆内存才不会发生内存泄漏。
+||堆内存|直接内存|
+|---|---|---|
+|使用池|会发生内存泄漏|会发生内存泄漏|
+|不使用池|不会发生内存泄漏|会发生内存泄漏|
+
+
+测试代码
+* 当发生堆内存泄漏时会报错:java.lang.OutOfMemoryError: Java heap space.
+* 当发生直接内存泄漏时，会报错io.netty.util.internal.OutOfDirectMemoryError: failed to allocate 16777216 byte(s) of direct memory (used: 939524096, max: 943718400)
+```java
+ public static void poolAndUnpoolTest(ByteBufAllocator allocator ){
+    int times = Integer.MAX_VALUE;
+    int _10K = 1024*10;
+    log.info("开始执行任务");
+    long startTime = System.currentTimeMillis();
+    for(int i = 0; i< times; i++){
+        ByteBuf buf = allocator.buffer(_10K);
+        //buf.release();
+        try{
+            Thread.sleep(1);
+        }
+        catch(Exception ex){
+            log.error(ex.getMessage());
+        }
+    }
+    long endTime = System.currentTimeMillis();
+    log.info("执行[{}次总共花费时间[{}]ms",times,endTime-startTime);
+}
+//true使用直接内存，false使用堆内存
+ByteBufAllocator poolByteBufAllocator = new PooledByteBufAllocator(false);
+ByteBufAllocator unpoolByteBufAllocator = new UnpooledByteBufAllocator(false);
+poolAndUnpoolTest(unpoolByteBufAllocator);
+
+```
+
+#### 2.6.5.3. 监控使用的直接内存
+<a href="#menu" >目录</a>
+
+netty有一个类io.netty.util.internal.PlatformDependent
+
+```java
+public final class PlatformDependent {
+    private static final InternalLogger logger = InternalLoggerFactory.getInstance(PlatformDependent.class);
+    private static final Pattern MAX_DIRECT_MEMORY_SIZE_ARG_PATTERN = Pattern.compile("\\s*-XX:MaxDirectMemorySize\\s*=\\s*([0-9]+)\\s*([kKmMgG]?)\\s*$");
+    private static final boolean IS_WINDOWS = isWindows0();
+    private static final boolean IS_OSX = isOsx0();
+    private static final boolean IS_J9_JVM = isJ9Jvm0();
+    private static final boolean IS_IVKVM_DOT_NET = isIkvmDotNet0();
+    private static final boolean MAYBE_SUPER_USER;
+    //android不支持TCP_NODELAY这个TCP选项
+    private static final boolean CAN_ENABLE_TCP_NODELAY_BY_DEFAULT = !isAndroid();
+    private static final Throwable UNSAFE_UNAVAILABILITY_CAUSE = unsafeUnavailabilityCause0();
+    private static final boolean DIRECT_BUFFER_PREFERRED;
+    //最大直接内存
+    private static final long MAX_DIRECT_MEMORY = maxDirectMemory0();
+    private static final int MPSC_CHUNK_SIZE = 1024;
+    private static final int MIN_MAX_MPSC_CAPACITY = 2048;
+    private static final int MAX_ALLOWED_MPSC_CAPACITY = 1073741824;
+    private static final long BYTE_ARRAY_BASE_OFFSET = byteArrayBaseOffset0();
+    private static final File TMPDIR = tmpdir0();
+    private static final int BIT_MODE = bitMode0();
+    private static final String NORMALIZED_ARCH = normalizeArch(SystemPropertyUtil.get("os.arch", ""));
+    private static final String NORMALIZED_OS = normalizeOs(SystemPropertyUtil.get("os.name", ""));
+    private static final String[] ALLOWED_LINUX_OS_CLASSIFIERS = new String[]{"fedora", "suse", "arch"};
+    private static final Set<String> LINUX_OS_CLASSIFIERS;
+    private static final int ADDRESS_SIZE = addressSize0();
+    private static final boolean USE_DIRECT_BUFFER_NO_CLEANER;
+    //当前使用的直接内存，单位字节
+    private static final AtomicLong DIRECT_MEMORY_COUNTER;
+    private static final long DIRECT_MEMORY_LIMIT;
+    private static final PlatformDependent.ThreadLocalRandomProvider RANDOM_PROVIDER;
+    private static final Cleaner CLEANER;
+    private static final int UNINITIALIZED_ARRAY_ALLOCATION_THRESHOLD;
+    private static final String[] OS_RELEASE_FILES = new String[]{"/etc/os-release", "/usr/lib/os-release"};
+    private static final String LINUX_ID_PREFIX = "ID=";
+    private static final String LINUX_ID_LIKE_PREFIX = "ID_LIKE=";
+    public static final boolean BIG_ENDIAN_NATIVE_ORDER;
+    private static final Cleaner NOOP;
+}
+```
+需要关注的是DIRECT_MEMORY_COUNTER(netty当前使用的直接内存的字节数)和MAX_DIRECT_MEMORY(应用最大直接内存)，该值由-Xmx决定。当DIRECT_MEMORY_COUNTER超过MAX_DIRECT_MEMORY，将会报错:因为无法分配更多的内存。
+```java
+Exception in thread "main" io.netty.util.internal.OutOfDirectMemoryError: failed to allocate 15360 byte(s) of direct memory (used: 1817702400, max: 1817706496)
+	at io.netty.util.internal.PlatformDependent.incrementMemoryCounter(PlatformDependent.java:754)
+	at io.netty.util.internal.PlatformDependent.allocateDirectNoCleaner(PlatformDependent.java:709)
+```
+
+**MAX_DIRECT_MEMORY**
+
+这是打印java虚拟机内存相关的信息
+```java
+public static void  printMem(){
+
+    System.out.println();
+
+    long totalMemory =  Runtime.getRuntime().totalMemory();
+    long  maxMemory = Runtime.getRuntime().maxMemory();
+    long freeMemory = Runtime.getRuntime().freeMemory();
+
+    float div = (float)( 1024 * 1024.0);
+
+    System.out.println(String.format("totalMemory = %.2fM , maxMemory = %.2f M, freeMemory = %.2fM   ",
+            totalMemory/div,maxMemory/div,freeMemory/div));
+
+    MemoryMXBean memoryMXBean = ManagementFactory.getMemoryMXBean();
+    MemoryUsage heapMemoryUsage =  memoryMXBean.getHeapMemoryUsage();
+    MemoryUsage nonHeapMemoryUsage = memoryMXBean.getNonHeapMemoryUsage();
+
+    System.out.println(String.format("heapMemoryUsage　init=%.2fM,Max = %.2fM,used=%.2fM",
+            heapMemoryUsage.getInit()/div,heapMemoryUsage.getMax()/div,heapMemoryUsage.getUsed()/div));
+
+    System.out.println(String.format("nonHeapMemoryUsage　init=%.2fM,Max = %.2fM,used=%.2fM",
+            nonHeapMemoryUsage.getInit()/div,nonHeapMemoryUsage.getMax()/div,nonHeapMemoryUsage.getUsed()/div));
+
+
+    for (MemoryPoolMXBean mp : ManagementFactory.getMemoryPoolMXBeans()) {
+
+        System.out.println("Pool: " + mp.getName() + " (type " + mp.getType() + ")" + " = " + mb(mp.getUsage().getMax()));
+    }
+
+    System.out.println();
+    }
+```
+jvm参数: -Xms1000m  -Xmn800m -Xmx2000m
+
+输出
+```yml
+# 初始堆　　　　　　　　　　最大可使用的　　　　　　　　#剩余＝totalMemory－used
+totalMemory = 900.00M , maxMemory = 1733.50 M, freeMemory = 864.00M   
+heapMemoryUsage　init=1000.00M,Max = 1733.50M,used=36.00M
+nonHeapMemoryUsage　init=2.44M,Max = -0.00M,used=9.19M
+Pool: Code Cache (type Non-heap memory) = 251658240 (240.00 M)
+Pool: Metaspace (type Non-heap memory) = -1 (-0.00 M)
+Pool: Compressed Class Space (type Non-heap memory) = 1073741824 (1024.00 M)
+Pool: PS Eden Space (type Heap memory) = 629145600 (600.00 M)
+Pool: PS Survivor Space (type Heap memory) = 104857600 (100.00 M)
+Pool: PS Old Gen (type Heap memory) = 1258291200 (1200.00 M)
+```
+maxMemory = (PS Old Gen)  +  (PS Eden Space) -  (heapMemoryUsage　init  used)
+
+这个值由-Xmx（最大堆）参数决定。当不配置时是和硬件物理内存相关，我的电脑是12G,不配置-Xmx时maxMemory是2.2Ｇ
+
+MAX_DIRECT_MEMORY初始化
+
+
+```java
+//PlatformDependent.class
+private static long maxDirectMemory0() {
+    long maxDirectMemory = 0L;
+    ClassLoader systemClassLoader = null;
+
+    Class runtimeClass;
+    try {
+        systemClassLoader = getSystemClassLoader();
+        String vmName = SystemPropertyUtil.get("java.vm.name", "").toLowerCase();
+        if (!vmName.startsWith("ibm j9") && !vmName.startsWith("eclipse openj9")) {
+            runtimeClass = Class.forName("sun.misc.VM", true, systemClassLoader);
+            Method m = runtimeClass.getDeclaredMethod("maxDirectMemory");
+            maxDirectMemory = ((Number)m.invoke((Object)null)).longValue();
+        }
+    } catch (Throwable var9) {
+    }
+
+    if (maxDirectMemory > 0L) {
+        return maxDirectMemory;
+    }
+```
+
+**DIRECT_MEMORY_LIMIT**
+
+直接内存限制值，当配置了io.netty.maxDirectMemory，以这个为准，如果没有配置，以MAX_DIRECT_MEMORY为准。
+```java
+//没有配置io.netty.maxDirectMemory
+long maxDirectMemory = SystemPropertyUtil.getLong("io.netty.maxDirectMemory", -1L);
+if (maxDirectMemory != 0L && hasUnsafe() && PlatformDependent0.hasDirectBufferNoCleanerConstructor()) {
+    USE_DIRECT_BUFFER_NO_CLEANER = true;
+    if (maxDirectMemory < 0L) {
+        //没有配置io.netty.maxDirectMemory
+        maxDirectMemory = MAX_DIRECT_MEMORY;
+        if (maxDirectMemory <= 0L) {
+            DIRECT_MEMORY_COUNTER = null;
+        } else {
+            DIRECT_MEMORY_COUNTER = new AtomicLong();
+        }
+    } else {
+        DIRECT_MEMORY_COUNTER = new AtomicLong();
+    }
+} else {
+    USE_DIRECT_BUFFER_NO_CLEANER = false;
+    DIRECT_MEMORY_COUNTER = null;
+}
+
+logger.debug("-Dio.netty.maxDirectMemory: {} bytes", maxDirectMemory);
+DIRECT_MEMORY_LIMIT = maxDirectMemory >= 1L ? maxDirectMemory : MAX_DIRECT_MEMORY;
+```
+
+**DIRECT_MEMORY_COUNTER**
+
+当创建ByteBuf或者扩容时，会调用PlatformDependent#allocateDirectNoCleaner这个进行记录。
+```java
+public static ByteBuffer allocateDirectNoCleaner(int capacity) {
+    assert USE_DIRECT_BUFFER_NO_CLEANER;
+
+    incrementMemoryCounter(capacity);
+
+    try {
+        return PlatformDependent0.allocateDirectNoCleaner(capacity);
+    } catch (Throwable var2) {
+        decrementMemoryCounter(capacity);
+        throwException(var2);
+        return null;
+    }
+}
+//DIRECT_MEMORY_LIMIT = maxDirectMemory >= 1L ? maxDirectMemory : MAX_DIRECT_MEMORY;
+//
+private static void incrementMemoryCounter(int capacity) {
+    if (DIRECT_MEMORY_COUNTER != null) {
+        long newUsedMemory = DIRECT_MEMORY_COUNTER.addAndGet((long)capacity);
+        if (newUsedMemory > DIRECT_MEMORY_LIMIT) {
+            //超过限制值，抛出错误
+            DIRECT_MEMORY_COUNTER.addAndGet((long)(-capacity));
+            throw new OutOfDirectMemoryError("failed to allocate " + capacity + " byte(s) of direct memory (used: " + (newUsedMemory - (long)capacity) + ", max: " + DIRECT_MEMORY_LIMIT + ')');
+        }
+    }
+
+}
+    
+```
+当调用ByteBuf.release()最终会调用PlatformDependent#decrementMemoryCounter
+```java
+private static void decrementMemoryCounter(int capacity) {
+    if (DIRECT_MEMORY_COUNTER != null) {
+        long usedMemory = DIRECT_MEMORY_COUNTER.addAndGet((long)(-capacity));
+
+        assert usedMemory >= 0L;
+    }
+
+}
+```
+综上，可以通过参数DIRECT_MEMORY_COUNTER获取当前netty的可使用直接内存。由于DIRECT_MEMORY_COUNTER是静态属性，可以通过反射来获取，如果是普通参数，可以通过动态代理进行拦截。
+
+输出DIRECT_MEMORY_COUNTER实现(监控netty直接内存)：
+```java
+public class DirectMemReport {
+
+    private float preUse = 0;
+
+    //netty已经使用的直接内存
+    private Field DIRECT_MEMORY_COUNTER_FIELD;
+    private AtomicLong cur_mem;
+
+    //应用最大的直接内存
+    private Field MAX_DIRECT_MEMORY_FIELD;
+    private long max_mem;
+
+    public DirectMemReport() {
+        init();
+    }
+
+    public void init(){
+
+
+        DIRECT_MEMORY_COUNTER_FIELD =  ReflectionUtils.findField(PlatformDependent.class,"DIRECT_MEMORY_COUNTER");
+        DIRECT_MEMORY_COUNTER_FIELD.setAccessible(true);
+
+        MAX_DIRECT_MEMORY_FIELD =  ReflectionUtils.findField(PlatformDependent.class,"MAX_DIRECT_MEMORY");
+        MAX_DIRECT_MEMORY_FIELD.setAccessible(true);
+
+        try{
+
+            cur_mem = (AtomicLong)DIRECT_MEMORY_COUNTER_FIELD.get(PlatformDependent.class);
+            max_mem = (long)MAX_DIRECT_MEMORY_FIELD.get(PlatformDependent.class);
+        }
+        catch(Exception ex){
+            log.error(ex.getMessage());
+        }
+        //定时任务，每秒打印netty使用的直接内存
+        Executors.newScheduledThreadPool(1).scheduleWithFixedDelay(new Runnable(){
+            @Override
+            public void run() {
+                report();
+            }
+        },0,1, TimeUnit.SECONDS);
+
+    }
+
+    public void report(){
+        try{
+            float div = 1024*1024;
+
+            float curSizeM  = (float)(cur_mem.get()/div);
+            float maxSizeM  = (float)(max_mem/div);
+            log.info("netty使用的直接内存:新增[{}]M,总申请[{}]M,最大容量[{}]M",(curSizeM-preUse),curSizeM,maxSizeM);
+
+            preUse = curSizeM;
+
+            //JvmUtil.printMem();
+        }
+        catch(Exception ex){
+            log.error(ex.getMessage());
+        }
+    }
+}
+```
+输出
+```yml
+totalMemory = 900.00M , maxMemory = 1733.50 M, freeMemory = 864.00M   
+heapMemoryUsage　init=1000.00M,Max = 1733.50M,used=36.00M
+nonHeapMemoryUsage　init=2.44M,Max = -0.00M,used=9.11M
+Pool: Code Cache (type Non-heap memory) = 251658240 (240.00 M)
+Pool: Metaspace (type Non-heap memory) = -1 (-0.00 M)
+Pool: Compressed Class Space (type Non-heap memory) = 1073741824 (1024.00 M)
+Pool: PS Eden Space (type Heap memory) = 629145600 (600.00 M)
+Pool: PS Survivor Space (type Heap memory) = 104857600 (100.00 M)
+Pool: PS Old Gen (type Heap memory) = 1258291200 (1200.00 M)
+
+21:12:48.602    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.73535156]M,总申请[0.73535156]M,最大容量[1733.5]M
+21:12:49.603    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.8798828]M,总申请[1.6152344]M,最大容量[1733.5]M
+21:12:50.604    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.8486328]M,总申请[2.4638672]M,最大容量[1733.5]M
+21:12:51.605    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.8486328]M,总申请[3.3125]M,最大容量[1733.5]M
+21:12:52.606    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.8496094]M,总申请[4.1621094]M,最大容量[1733.5]M
+21:12:53.606    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.8515625]M,总申请[5.013672]M,最大容量[1733.5]M
+21:12:54.607    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.8486328]M,总申请[5.8623047]M,最大容量[1733.5]M
+21:12:55.608    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.85546875]M,总申请[6.7177734]M,最大容量[1733.5]M
+21:12:56.609    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.85839844]M,总申请[7.576172]M,最大容量[1733.5]M
+21:12:57.610    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.85546875]M,总申请[8.431641]M,最大容量[1733.5]M
+21:12:58.611    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.8574219]M,总申请[9.2890625]M,最大容量[1733.5]M
+21:12:59.612    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.85546875]M,总申请[10.144531]M,最大容量[1733.5]M
+21:13:00.612    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.85058594]M,总申请[10.995117]M,最大容量[1733.5]M
+21:13:01.613    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.86035156]M,总申请[11.855469]M,最大容量[1733.5]M
+21:13:02.614    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.86816406]M,总申请[12.723633]M,最大容量[1733.5]M
+21:13:03.615    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.8564453]M,总申请[13.580078]M,最大容量[1733.5]M
+21:13:04.616    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.8564453]M,总申请[14.436523]M,最大容量[1733.5]M
+21:13:05.616    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.8574219]M,总申请[15.293945]M,最大容量[1733.5]M
+21:13:06.617    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.86816406]M,总申请[16.16211]M,最大容量[1733.5]M
+21:13:07.618    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.86328125]M,总申请[17.02539]M,最大容量[1733.5]M
+21:13:08.619    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.8808594]M,总申请[17.90625]M,最大容量[1733.5]M
+21:13:09.619    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.87402344]M,总申请[18.780273]M,最大容量[1733.5]M
+21:13:10.620    c.c.test.util.DirectMemReport - netty使用的直接内存:新增[0.8671875]M,总申请[19.64746]M,最大容量[1733.5]M
+```
+在实际长时间运行中，如果是趋势递增，可能是出现了内存泄漏的问题，
+
+#### 2.6.5.4. 编程上如何避免直接内存泄漏
+<a href="#menu" >目录</a>
+
+**发送数据的ByteBuf释放**
+
+发送数据时ByteBuf是用户创建的，下图是发送数据整个调用过程，当执行完channel.doＷrite()之后，最终会调用ReferenceCountUtil.release(Object msg) 释放掉空间，因此无需用户手动释放。
+
+![发送数据release处理](pic/netty/发送数据release处理.png)
+
+
+**接收数据的ByteBuf释放**
+
+![接收数据release处理](pic/netty/接收数据release处理.png)
+
+对于接收数据，最终会调用TailContext.channelRead().当然调用TailContext.channelRead()的前提是用户需要在自定义的ChannelHandler中调用super.channelRead(ctx, msg);。否则，需要自行调用ReferenceCountUtil.release(msg);来对ByteBuf进行释放。
+
+```java
+final class TailContext extends AbstractChannelHandlerContext implements ChannelInboundHandler {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        DefaultChannelPipeline.this.onUnhandledInboundMessage(ctx, msg);
+    }
+}
+protected void onUnhandledInboundMessage(ChannelHandlerContext ctx, Object msg) {
+    this.onUnhandledInboundMessage(msg);
+    if (logger.isDebugEnabled()) {
+        logger.debug("Discarded message pipeline : {}. Channel : {}.", ctx.pipeline().names(), ctx.channel());
+    }
+
+}
+protected void onUnhandledInboundMessage(Object msg) {
+    try {
+        logger.debug("Discarded inbound message {} that reached at the tail of the pipeline. Please check your pipeline configuration.", msg);
+    } finally {
+        //执行释放
+        ReferenceCountUtil.release(msg);
+    }
+}    
+```
+
+以上操作的ReferenceCountUtil是ByteBuf　引用相关的工具类，比如release,retain,touch等操作。
+
+在实际应用中，除了非缓冲池创建堆内存ByteBuf,该类型会在垃圾回收时被主动回收，其他类型需要由netty或者手动进行release。否则会出现内存泄漏的问题。
 
 ## 2.7. Channel和Unsafe
 <a href="#menu" >目录</a>
