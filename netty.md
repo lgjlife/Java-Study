@@ -15,6 +15,7 @@
   - [1.7. 实现自定义协议](#17-实现自定义协议)
 - [2. Netty](#2-netty)
   - [2.1. Netty基本案例](#21-netty基本案例)
+    - [服务端](#服务端)
   - [2.2. TCP粘包拆包](#22-tcp粘包拆包)
     - [2.2.1. 粘包拆包基本概念](#221-粘包拆包基本概念)
     - [2.2.2. 行拆包器LineBasedFrameDecoder](#222-行拆包器linebasedframedecoder)
@@ -47,7 +48,7 @@
       - [2.5.3.1. 创建代码](#2531-创建代码)
       - [2.5.3.2. 分析](#2532-分析)
       - [2.5.3.3. 线程状态](#2533-线程状态)
-    - [2.5.4. Channel发送数据](#254-channel发送数据)
+    - [2.5.4. 数据发送流程](#254-数据发送流程)
     - [2.5.5. 读取数据过程](#255-读取数据过程)
     - [2.5.6. 数据流控](#256-数据流控)
   - [2.6. ByteBuf说明](#26-bytebuf说明)
@@ -134,7 +135,6 @@
       - [2.15.1.2. 链路有效性检测](#21512-链路有效性检测)
       - [2.15.1.3. 内存保护](#21513-内存保护)
       - [2.15.1.4. 流量整形](#21514-流量整形)
-      - [2.15.1.5. 优雅停机接口](#21515-优雅停机接口)
     - [2.15.2. 优化建议](#2152-优化建议)
 
 <!-- /TOC -->
@@ -621,8 +621,8 @@ while(true){
 ## 1.6. 事件驱动模型
 <a href="#menu" >目录</a>
 
-**轮询方式:**线程不断轮询访问相关事件发生源有没有发生事件，有发生事件就调用事件处理逻辑。
-**事件驱动方式:**事件发生时主线程把事件放入事件队列，在另外线程不断循环消费事件列表中的事件，调用事件对应的处理逻辑处理事件。事件驱动方式也被称为消息通知方式，其实是设计模式中观察者模式的思路。
+**轮询方式:**　线程不断轮询访问相关事件发生源有没有发生事件，有发生事件就调用事件处理逻辑。
+**事件驱动方式:**　事件发生时主线程把事件放入事件队列，在另外线程不断循环消费事件列表中的事件，调用事件对应的处理逻辑处理事件。事件驱动方式也被称为消息通知方式，其实是设计模式中观察者模式的思路。
 
 ![事件驱动模型](pic/netty/事件驱动模型.png)
 
@@ -697,6 +697,134 @@ while(true){
 
 ## 2.1. Netty基本案例
 <a href="#menu" >目录</a>
+
+### 服务端
+
+```java
+public class DiscardServer {
+    
+    private int port;
+    
+    public DiscardServer(int port) {
+        this.port = port;
+    }
+    
+    public void run() throws Exception {
+        //配置线程池管理器，bossGroup主要用于连接。连接成功后转交workerGroup处理，主要用于处理IO读写，定时任务
+        //线程数量默认是cpu*2
+        EventLoopGroup bossGroup = new NioEventLoopGroup(); // (1)
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        try {
+            //建立服务端启动类
+            ServerBootstrap b = new ServerBootstrap(); // (2)
+            //设置线程池管理器
+            b.group(bossGroup, workerGroup)
+            //设置通道类型
+             .channel(NioServerSocketChannel.class) // (3)
+             //设置pipeline
+             .childHandler(new ChannelInitializer<SocketChannel>() { // (4)
+                 @Override
+                 public void initChannel(SocketChannel ch) throws Exception {
+                     ch.pipeline().addLast(new DiscardServerHandler());
+                 }
+             })
+             //配置参数
+             //option() 针对bossGroup，childOption() 针对workerGroup
+             .option(ChannelOption.SO_BACKLOG, 128)          // (5)
+             .childOption(ChannelOption.SO_KEEPALIVE, true); // (6)
+    
+            // Bind and start to accept incoming connections.
+            //绑定端口并阻塞等待
+            ChannelFuture f = b.bind(port).sync(); // (7)
+    
+            // Wait until the server socket is closed.
+            // In this example, this does not happen, but you can do that to gracefully
+            // shut down your server.
+            //关闭，注意关闭了就无法接收连接和数据
+            f.channel().closeFuture().sync();
+        } finally {
+
+            //优雅关闭，实际应用是长连接，不应该关闭
+            workerGroup.shutdownGracefully();
+            bossGroup.shutdownGracefully();
+        }
+    }
+    
+    public static void main(String[] args) throws Exception {
+        int port = 8080;
+        if (args.length > 0) {
+            port = Integer.parseInt(args[0]);
+        }
+
+        new DiscardServer(port).run();
+    }
+}
+
+public class DiscardServerHandler extends ChannelInboundHandlerAdapter{
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+
+        ByteBuf data = (ByteBuf)msg;
+        //读数据
+        byte[] read = new byte[data.readableBytes()]
+        data.readBytes(read);
+
+        //返回数据
+        Channel ch = ctx.channel();
+        ch.writeAndFlush(message);
+
+
+        //两种方式
+        //１.在这里释放资源
+        msg.release();
+        //2.提交给下一个context处理，
+        ctx.channelRead(msg);  
+    }
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        cause.printStackTrace();
+        ctx.close();
+    }
+}
+```
+
+**客户端**
+
+```java
+public class TimeClient {
+    public static void main(String[] args) throws Exception {
+        String host = args[0];
+        int port = Integer.parseInt(args[1]);
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        
+        try {
+            Bootstrap b = new Bootstrap(); // (1)
+            b.group(workerGroup); // (2)
+            b.channel(NioSocketChannel.class); // (3)
+            b.option(ChannelOption.SO_KEEPALIVE, true); // (4)
+            b.handler(new ChannelInitializer<SocketChannel>() {
+                @Override
+                public void initChannel(SocketChannel ch) throws Exception {
+                    ch.pipeline().addLast(new TimeClientHandler());
+                }
+            });
+            
+            // Start the client.
+            //连接服务端
+            ChannelFuture f = b.connect(host, port).sync(); // (5)
+            Channel ch = f.channel();
+            ch.writeAndFlush(message);
+            
+            // Wait until the connection is closed.
+            f.channel().closeFuture().sync();
+        } finally {
+            workerGroup.shutdownGracefully();
+        }
+    }
+}
+```
+
 
 ## 2.2. TCP粘包拆包
 <a href="#menu" >目录</a>
@@ -1057,7 +1185,7 @@ Header定义
 ## 2.4. EventLoop和EventLoopGroup
 <a href="#menu" >目录</a>
 
-Netty线程模型的设计，既提升了框架的并发性能，又能在很大程度避免锁，局部实现了无所化设计。
+Netty线程模型的设计，既提升了框架的并发性能，又能在很大程度避免锁，局部实现了无锁化设计。
 
 ### 2.4.1. Reactor线程模型
 
@@ -1943,7 +2071,7 @@ public int select(long var1) throws IOException {
 }
 ```
 
-### 2.5.4. Channel发送数据
+### 2.5.4. 数据发送流程
 
 ![netty数据发送跟踪](pic/netty/netty数据发送跟踪.png)
 
@@ -2122,12 +2250,156 @@ public final void flush() {
 
 注意pipeline,context,channel,unsafe之间的关系是一对一关系。context可以有多个，每个context对应一个InboundHandler或者ＯutboundHandler.
 
+
+**ChannelOutboundBuffer说明**
+
+ChannelOutboundBuffer可以理解为应用层面的发送缓冲区
+
+当调用unsafe.write()时，并没有实质性将数据发送出去，而是数据加入到发送缓冲区。当调用unsafe.flush()时，会从缓冲区中将数据读取出来，然后发送，最后销毁。
+```java
+//AbstractUnsafe
+public final void write(Object msg, ChannelPromise promise) {
+    this.assertEventLoop();
+    ChannelOutboundBuffer outboundBuffer = this.outboundBuffer;
+    if (outboundBuffer == null) {
+        this.safeSetFailure(promise, this.newClosedChannelException(AbstractChannel.this.initialCloseCause));
+        ReferenceCountUtil.release(msg);
+    } else {
+        int size;
+        try {
+            msg = AbstractChannel.this.filterOutboundMessage(msg);
+            size = AbstractChannel.this.pipeline.estimatorHandle().size(msg);
+            if (size < 0) {
+                size = 0;
+            }
+        } catch (Throwable var6) {
+            this.safeSetFailure(promise, var6);
+            ReferenceCountUtil.release(msg);
+            return;
+        }
+        //加入缓冲区
+        outboundBuffer.addMessage(msg, size, promise);
+    }
+}
+
+//ChannelOutboundBuffer
+public void addMessage(Object msg, int size, ChannelPromise promise) {
+    //构建一个entry
+    ChannelOutboundBuffer.Entry entry = ChannelOutboundBuffer.Entry.newInstance(msg, size, total(msg), promise);
+    if (this.tailEntry == null) {
+        this.flushedEntry = null;
+    } else {
+        //添加到链表末尾
+        ChannelOutboundBuffer.Entry tail = this.tailEntry;
+        tail.next = entry;
+    }
+
+    this.tailEntry = entry;
+    if (this.unflushedEntry == null) {
+        this.unflushedEntry = entry;
+    }
+
+    this.incrementPendingOutboundBytes((long)entry.pendingSize, false);
+}
+
+```
+Entry是一个链表结构，存储每一个应用层面发送过来的数据包。
+```java
+ static final class Entry {
+    private static final ObjectPool<ChannelOutboundBuffer.Entry> RECYCLER = ObjectPool.newPool(new ObjectCreator<ChannelOutboundBuffer.Entry>() {
+        public ChannelOutboundBuffer.Entry newObject(Handle<ChannelOutboundBuffer.Entry> handle) {
+            return new ChannelOutboundBuffer.Entry(handle);
+        }
+    });
+    private final Handle<ChannelOutboundBuffer.Entry> handle;
+    ChannelOutboundBuffer.Entry next;
+    Object msg;
+    ByteBuffer[] bufs;
+    ByteBuffer buf;
+    ChannelPromise promise;
+    long progress;
+    long total;
+    int pendingSize;
+    int count;
+    boolean cancelled;
+}
+```
+
+**消息发送源码说明**
+
+![缓冲区数据发送](pic/netty/缓冲区数据发送.png)
+
+```java
+public final void flush() {
+    this.assertEventLoop();
+    ChannelOutboundBuffer outboundBuffer = this.outboundBuffer;
+    if (outboundBuffer != null) {
+        outboundBuffer.addFlush();
+        this.flush0();
+    }
+}
+
+protected void flush0() {
+    if (!this.inFlush0) {
+        ChannelOutboundBuffer outboundBuffer = this.outboundBuffer;
+        if (outboundBuffer != null && !outboundBuffer.isEmpty()) {
+            this.inFlush0 = true;
+            if (!AbstractChannel.this.isActive()) {
+                try {
+                    if (AbstractChannel.this.isOpen()) {
+                        outboundBuffer.failFlushed(new NotYetConnectedException(), true);
+                    } else {
+                        outboundBuffer.failFlushed(this.newClosedChannelException(AbstractChannel.this.initialCloseCause), false);
+                    }
+                } finally {
+                    this.inFlush0 = false;
+                }
+
+            } else {
+                try {
+                    AbstractChannel.this.doWrite(outboundBuffer);
+                } catch (Throwable var15) {
+                    Throwable t = var15;
+                    if (var15 instanceof IOException && AbstractChannel.this.config().isAutoClose()) {
+                        AbstractChannel.this.initialCloseCause = var15;
+                        this.close(this.voidPromise(), var15, this.newClosedChannelException(var15), false);
+                    } else {
+                        try {
+                            this.shutdownOutput(this.voidPromise(), t);
+                        } catch (Throwable var14) {
+                            AbstractChannel.this.initialCloseCause = var15;
+                            this.close(this.voidPromise(), var14, this.newClosedChannelException(var15), false);
+                        }
+                    }
+                } finally {
+                    this.inFlush0 = false;
+                }
+
+            }
+        }
+    }
+}
+```
+
+
+
+**关注点**
+* 多个业务线程并发调用write操作是线程安全的，netty会将发送消息封装成WriteTask，提交由NioEventLoop线程执行
+* 由于单个channel由其对应的NioEventLoop线程执行，如果并行调用单个Channel的write操作超过NioEventLoop的处理能力，会造成WriteTask积压。
+* NioEventLoop要处理的任务包括连接，注册，读写任务，或者其他任务，如果任务较重，会导致执行延迟，导致性能问题
+
+
+
 ### 2.5.5. 读取数据过程
 <a href="#menu" >目录</a>
 
 ### 2.5.6. 数据流控
 <a href="#menu" >目录</a>
 
+**导致发送队列积压的原因**
+* 应用发送速度过快，数据较大，导致netty来不及发送
+* 网络瓶颈，超过网络连接的处理能力
+* 服务端读取消息过慢，导致TCP缓冲区满
 
 有一个用于提示发送水位的类WriteBufferWaterMark。当发送的字节数目加上发送缓冲区中的字节数目，就会将发送缓冲区ChannelOutboundBuffer的unwritable设置为1.通过channel.isWritable()就可以确定是否可写。
 
@@ -4382,10 +4654,162 @@ netty流量整形的作用
 ### 2.10.2. 流量整形使用
 <a href="#menu" >目录</a>
 
+服务端添加
+```java
+pipeline.addLast(new ChannelTrafficShapingHandler(1024,2*1024*1024,5000));
+//writeLimit：写限制字节
+//readLimit:　读限制字节
+//checkInterval 检测间隔，越大精度越高，最好是5/10分钟
+public ChannelTrafficShapingHandler(long writeLimit, long readLimit, long checkInterval, long maxTime);
+```
+
 ### 2.10.3. 工作机制
 <a href="#menu" >目录</a>
 
+```java
+public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    //计算ByteBuf--msg的size
+    long size = this.calculateSize(msg);
+    //当前时间的ms
+    long now = TrafficCounter.milliSecondFromNano();
+    if (size > 0L) {
+        //计算需要暂停读取消息的等待时间
+        long wait = this.trafficCounter.readTimeToWait(size, this.readLimit, this.maxTime, now);
+        wait = this.checkWaitReadTime(ctx, wait, now);
+        //超过10ms
+        if (wait >= 10L) {
+            Channel channel = ctx.channel();
+            ChannelConfig config = channel.config();
+            if (logger.isDebugEnabled()) {
+                logger.debug("Read suspend: " + wait + ':' + config.isAutoRead() + ':' + isHandlerActive(ctx));
+            }
 
+            if (config.isAutoRead() && isHandlerActive(ctx)) {
+                //设置为暂停读取状态
+                config.setAutoRead(false);
+                channel.attr(READ_SUSPENDED).set(true);
+                Attribute<Runnable> attr = channel.attr(REOPEN_TASK);
+                Runnable reopenTask = (Runnable)attr.get();
+                if (reopenTask == null) {
+                    //创建定时任务,定时任务到则重新打开通道自动读状态
+                    reopenTask = new AbstractTrafficShapingHandler.ReopenReadTimerTask(ctx);
+                    attr.set(reopenTask);
+                }
+                //加入定时任务，超时时间为wait
+                ctx.executor().schedule((Runnable)reopenTask, wait, TimeUnit.MILLISECONDS);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Suspend final status => " + config.isAutoRead() + ':' + isHandlerActive(ctx) + " will reopened at: " + wait);
+                }
+            }
+        }
+    }
+
+    this.informReadOperation(ctx, now);
+    ctx.fireChannelRead(msg);
+}
+
+ public long readTimeToWait(long size, long limitTraffic, long maxTime, long now) {
+    this.bytesRecvFlowControl(size);
+    if (size != 0L && limitTraffic != 0L) {
+        long lastTimeCheck = this.lastTime.get();
+        long sum = this.currentReadBytes.get();
+        long localReadingTime = this.readingTime;
+        long lastRB = this.lastReadBytes;
+        long interval = now - lastTimeCheck;
+        long pastDelay = Math.max(this.lastReadingTime - lastTimeCheck, 0L);
+        long time;
+        if (interval > 10L) {
+            time = sum * 1000L / limitTraffic - interval + pastDelay;
+            if (time > 10L) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Time: " + time + ':' + sum + ':' + interval + ':' + pastDelay);
+                }
+
+                if (time > maxTime && now + time - localReadingTime > maxTime) {
+                    time = maxTime;
+                }
+
+                this.readingTime = Math.max(localReadingTime, now + time);
+                return time;
+            } else {
+                this.readingTime = Math.max(localReadingTime, now);
+                return 0L;
+            }
+        } else {
+            time = sum + lastRB;
+            long lastinterval = interval + this.checkInterval.get();
+            long time = time * 1000L / limitTraffic - lastinterval + pastDelay;
+            if (time > 10L) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Time: " + time + ':' + time + ':' + lastinterval + ':' + pastDelay);
+                }
+
+                if (time > maxTime && now + time - localReadingTime > maxTime) {
+                    time = maxTime;
+                }
+
+                this.readingTime = Math.max(localReadingTime, now + time);
+                return time;
+            } else {
+                this.readingTime = Math.max(localReadingTime, now);
+                return 0L;
+            }
+        }
+    } else {
+        return 0L;
+    }
+}
+
+```
+
+**发送流量整形**
+
+```java
+public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
+    //计算需要发送的大小
+    long size = this.calculateSize(msg);
+    long now = TrafficCounter.milliSecondFromNano();
+    if (size > 0L) {
+        //获取需要暂停消息发送的等待时间
+        long wait = this.trafficCounter.writeTimeToWait(size, this.writeLimit, this.maxTime, now);
+        if (wait >= 10L) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Write suspend: " + wait + ':' + ctx.channel().config().isAutoRead() + ':' + isHandlerActive(ctx));
+            }
+
+            this.submitWrite(ctx, msg, size, wait, now, promise);
+            return;
+        }
+    }
+
+    this.submitWrite(ctx, msg, size, 0L, now, promise);
+}
+void submitWrite(final ChannelHandlerContext ctx, Object msg, long size, long delay, long now, ChannelPromise promise) {
+    ChannelTrafficShapingHandler.ToSend newToSend;
+    synchronized(this) {
+        //不需要等待，直接发送
+        if (delay == 0L && this.messagesQueue.isEmpty()) {
+            this.trafficCounter.bytesRealWriteFlowControl(size);
+            ctx.write(msg, promise);
+            return;
+        }
+
+        newToSend = new ChannelTrafficShapingHandler.ToSend(delay + now, msg, promise);
+        this.messagesQueue.addLast(newToSend);
+        this.queueSize += size;
+        this.checkWriteSuspend(ctx, delay, this.queueSize);
+    }
+
+    final long futureNow = newToSend.relativeTimeAction;
+    ctx.executor().schedule(new Runnable() {
+        public void run() {
+            //定时发送
+            ChannelTrafficShapingHandler.this.sendAllValid(ctx, futureNow);
+        }
+    }, delay, TimeUnit.MILLISECONDS);
+}
+    
+```
 
 ## 2.11. Netty架构分析
 <a href="#menu" >目录</a>
@@ -5157,12 +5581,20 @@ netty可以使用IdleStateHandler来在读或者写空闲时向对方发送心�
 <a href="#menu" >目录</a>
 
 
-#### 2.15.1.5. 优雅停机接口
-<a href="#menu" >目录</a>
-
 
 ### 2.15.2. 优化建议
 <a href="#menu" >目录</a>
 
 
+* 操作系统参数
+  * 文件描述符数量限制
+  * tcpip相关参数
 
+* netty性能优化
+  * 设置合理的线程数
+  * 心跳优化
+  * 接收和发送缓冲区调优
+  * 合理使用内存池
+  * 防止IＯ线程被意外阻塞
+  * IO线程和业务线程分离
+  * 流控
