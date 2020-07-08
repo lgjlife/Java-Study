@@ -5,373 +5,374 @@
 <!-- TOC -->
 
 - [1. Spring](#1-spring)
-    - [1.1. Spring模块](#11-spring模块)
-    - [1.2. Spring体系其他模块](#12-spring体系其他模块)
-    - [1.3. 版本特性变化](#13-版本特性变化)
-    - [1.4. 常用注解](#14-常用注解)
-        - [1.4.1. Spring部分](#141-spring部分)
-        - [1.4.2. SpringMVC部分](#142-springmvc部分)
-    - [1.5. 资源访问](#15-资源访问)
-        - [1.5.1. 接口以及实现类说明](#151-接口以及实现类说明)
-        - [1.5.2. 资源地址的表示](#152-资源地址的表示)
-    - [1.6. IOC容器](#16-ioc容器)
-        - [1.6.1. 控制反转和依赖注入](#161-控制反转和依赖注入)
-        - [1.6.2. 依赖注入方式](#162-依赖注入方式)
-            - [1.6.2.1. setter注入与构造方法注入](#1621-setter注入与构造方法注入)
-            - [1.6.2.2. 自动注入方式](#1622-自动注入方式)
-    - [1.7. IOC容器](#17-ioc容器)
-        - [1.7.1. IOC 容器的设计](#171-ioc-容器的设计)
-        - [1.7.2. BeanFactory接口以及实现类说明](#172-beanfactory接口以及实现类说明)
-            - [1.7.2.1. BeanDefinition](#1721-beandefinition)
-                - [1.7.2.1.1. AbstractBeanDefinition](#17211-abstractbeandefinition)
-                - [1.7.2.1.2. RootBeanDefinition](#17212-rootbeandefinition)
-            - [1.7.2.2. BeanFactory](#1722-beanfactory)
-            - [1.7.2.3. ApplicationContext](#1723-applicationcontext)
-                - [1.7.2.3.1. 基本介绍](#17231-基本介绍)
-                - [1.7.2.3.2. 启动介绍](#17232-启动介绍)
-            - [1.7.2.4. WebApplicationContext](#1724-webapplicationcontext)
-            - [1.7.2.5. 父子容器](#1725-父子容器)
-            - [1.7.2.6. DefaultListableBeanFactory](#1726-defaultlistablebeanfactory)
-            - [1.7.2.7. HierarchicalBeanFactory](#1727-hierarchicalbeanfactory)
-            - [1.7.2.8. SimpleJndiBeanFactory](#1728-simplejndibeanfactory)
-            - [1.7.2.9. AutowireCapableBeanFactory](#1729-autowirecapablebeanfactory)
-            - [1.7.2.10. ListableBeanFactory](#17210-listablebeanfactory)
-            - [1.7.2.11. ConfigurableBeanFactory](#17211-configurablebeanfactory)
-            - [1.7.2.12. ConfigurableListableBeanFactory](#17212-configurablelistablebeanfactory)
-            - [1.7.2.13. BeanDefinitionRegistry](#17213-beandefinitionregistry)
-            - [1.7.2.14. 单例管理接口SingletonBeanRegistry](#17214-单例管理接口singletonbeanregistry)
-                - [1.7.2.14.1. AliasRegistry](#172141-aliasregistry)
-                - [1.7.2.14.2. SingletonBeanRegistry](#172142-singletonbeanregistry)
-                - [1.7.2.14.3. DefaultSingletonBeanRegistry](#172143-defaultsingletonbeanregistry)
-        - [1.7.3. Bean创建过程](#173-bean创建过程)
-        - [1.7.4. Bean的作用域](#174-bean的作用域)
-        - [1.7.5. Bean的生命周期](#175-bean的生命周期)
-    - [1.8. 切面编程AOP](#18-切面编程aop)
-        - [1.8.1. AOP概述](#181-aop概述)
-        - [1.8.2. 切点函数](#182-切点函数)
-            - [1.8.2.1. 常用切点函数](#1821-常用切点函数)
-            - [1.8.2.2. 通配符](#1822-通配符)
-            - [1.8.2.3. 逻辑运算符](#1823-逻辑运算符)
-        - [1.8.3. 切点函数详解](#183-切点函数详解)
-            - [1.8.3.1. @annotation()](#1831-annotation)
-            - [1.8.3.2. execution()](#1832-execution)
-            - [1.8.3.3. args和@args()](#1833-args和args)
-            - [1.8.3.4. within()](#1834-within)
-            - [1.8.3.5. @within()和@target()](#1835-within和target)
-            - [1.8.3.6. target()和this()](#1836-target和this)
-        - [1.8.4. 切点函数高级用法](#184-切点函数高级用法)
-            - [1.8.4.1. 切点复合运算](#1841-切点复合运算)
-            - [1.8.4.2. 命名切点](#1842-命名切点)
-            - [1.8.4.3. 增强织入的顺序](#1843-增强织入的顺序)
-            - [1.8.4.4. 访问连接点信息](#1844-访问连接点信息)
-            - [1.8.4.5. 绑定连接点方法入参](#1845-绑定连接点方法入参)
-            - [1.8.4.6. 绑定代理对象](#1846-绑定代理对象)
-            - [1.8.4.7. 绑定类注解对象](#1847-绑定类注解对象)
-            - [1.8.4.8. 绑定返回值](#1848-绑定返回值)
-            - [1.8.4.9. 绑定抛出的异常](#1849-绑定抛出的异常)
-        - [1.8.5. Spring AOP案例](#185-spring-aop案例)
-        - [1.8.6. 实现原理](#186-实现原理)
-            - [1.8.6.1. 五种通知的执行顺序](#1861-五种通知的执行顺序)
-            - [1.8.6.2. 代理实现](#1862-代理实现)
-    - [1.9. Spring对DAO的支持](#19-spring对dao的支持)
-        - [1.9.1. Spring DAO理念](#191-spring-dao理念)
-        - [1.9.2. 统一的异常体系](#192-统一的异常体系)
-        - [1.9.3. 统一的数据访问模板](#193-统一的数据访问模板)
-        - [1.9.4. 数据源](#194-数据源)
-    - [1.10. Spring事务管理](#110-spring事务管理)
-        - [1.10.1. 数据库事务基础知识](#1101-数据库事务基础知识)
-        - [1.10.2. Jdbc对事务的支持](#1102-jdbc对事务的支持)
-        - [1.10.3. Spring对事务的支持](#1103-spring对事务的支持)
-            - [1.10.3.1. 编程式事务管理](#11031-编程式事务管理)
-            - [1.10.3.2. 使用XML配置声明式事务](#11032-使用xml配置声明式事务)
-            - [1.10.3.3. 使用注解配置事务](#11033-使用注解配置事务)
-        - [1.10.4. Spring事务实现原理](#1104-spring事务实现原理)
-            - [1.10.4.1. 事务管理关键抽象](#11041-事务管理关键抽象)
-                - [1.10.4.1.1. TransactionDefinition](#110411-transactiondefinition)
-                - [1.10.4.1.2. TransactionStatus](#110412-transactionstatus)
-                - [1.10.4.1.3. PlatformTransactionManager](#110413-platformtransactionmanager)
-        - [1.10.5. 事务管理器实现类](#1105-事务管理器实现类)
-            - [1.10.5.1. Spring事务执行流程](#11051-spring事务执行流程)
-                - [1.10.5.1.1. 基本原理](#110511-基本原理)
-                - [1.10.5.1.2. 代理类](#110512-代理类)
-                - [1.10.5.1.3. TransactionAspectSupport中的处理](#110513-transactionaspectsupport中的处理)
-                - [1.10.5.1.4. 事务管理类DataSourceTransactionManager](#110514-事务管理类datasourcetransactionmanager)
-        - [1.10.6. 事务同步管理器](#1106-事务同步管理器)
-        - [1.10.7. 事务传播行为](#1107-事务传播行为)
-            - [1.10.7.1. 事务传播行为说明](#11071-事务传播行为说明)
-            - [1.10.7.2. 具体说明](#11072-具体说明)
-                - [1.10.7.2.1. PROPAGATION_REQUIRED](#110721-propagation_required)
-                - [1.10.7.2.2. PROPAGATION_REQUIRES_NEW](#110722-propagation_requires_new)
-                - [1.10.7.2.3. PROPAGATION_SUPPORTS](#110723-propagation_supports)
-                - [1.10.7.2.4. PROPAGATION_MANDATORY](#110724-propagation_mandatory)
-                - [1.10.7.2.5. PROPAGATION_NOT_SUPPORTED](#110725-propagation_not_supported)
-                - [1.10.7.2.6. PROPAGATION_NEVER](#110726-propagation_never)
-                - [1.10.7.2.7. PROPAGATION_NESTED](#110727-propagation_nested)
-        - [1.10.8. 使用场景](#1108-使用场景)
-    - [1.11. Spring常用工具类](#111-spring常用工具类)
-        - [1.11.1. web](#1111-web)
-        - [1.11.2. 内置的resouce类型](#1112-内置的resouce类型)
-        - [1.11.3. 工具类](#1113-工具类)
-        - [1.11.4. xml工具](#1114-xml工具)
-        - [1.11.5. 其它工具集](#1115-其它工具集)
+  - [1.1. Spring模块](#11-spring模块)
+  - [1.2. Spring体系其他模块](#12-spring体系其他模块)
+  - [1.3. 版本特性变化](#13-版本特性变化)
+  - [1.4. 常用注解](#14-常用注解)
+    - [1.4.1. Spring部分](#141-spring部分)
+    - [1.4.2. SpringMVC部分](#142-springmvc部分)
+  - [1.5. 资源访问](#15-资源访问)
+    - [1.5.1. 接口以及实现类说明](#151-接口以及实现类说明)
+    - [1.5.2. 资源地址的表示](#152-资源地址的表示)
+  - [1.6. IOC容器](#16-ioc容器)
+    - [1.6.1. 控制反转和依赖注入](#161-控制反转和依赖注入)
+    - [1.6.2. 依赖注入方式](#162-依赖注入方式)
+      - [1.6.2.1. setter注入与构造方法注入](#1621-setter注入与构造方法注入)
+      - [1.6.2.2. 自动注入方式](#1622-自动注入方式)
+  - [1.7. IOC容器](#17-ioc容器)
+    - [1.7.1. IOC 容器的设计](#171-ioc-容器的设计)
+    - [1.7.2. BeanFactory接口以及实现类说明](#172-beanfactory接口以及实现类说明)
+      - [1.7.2.1. BeanDefinition](#1721-beandefinition)
+        - [1.7.2.1.1. AbstractBeanDefinition](#17211-abstractbeandefinition)
+        - [1.7.2.1.2. RootBeanDefinition](#17212-rootbeandefinition)
+      - [1.7.2.2. BeanFactory](#1722-beanfactory)
+      - [1.7.2.3. ApplicationContext](#1723-applicationcontext)
+        - [1.7.2.3.1. 基本介绍](#17231-基本介绍)
+        - [1.7.2.3.2. 启动介绍](#17232-启动介绍)
+      - [1.7.2.4. WebApplicationContext](#1724-webapplicationcontext)
+      - [1.7.2.5. 父子容器](#1725-父子容器)
+      - [1.7.2.6. DefaultListableBeanFactory](#1726-defaultlistablebeanfactory)
+      - [1.7.2.7. HierarchicalBeanFactory](#1727-hierarchicalbeanfactory)
+      - [1.7.2.8. SimpleJndiBeanFactory](#1728-simplejndibeanfactory)
+      - [1.7.2.9. AutowireCapableBeanFactory](#1729-autowirecapablebeanfactory)
+      - [1.7.2.10. ListableBeanFactory](#17210-listablebeanfactory)
+      - [1.7.2.11. ConfigurableBeanFactory](#17211-configurablebeanfactory)
+      - [1.7.2.12. ConfigurableListableBeanFactory](#17212-configurablelistablebeanfactory)
+      - [1.7.2.13. BeanDefinitionRegistry](#17213-beandefinitionregistry)
+      - [1.7.2.14. 单例管理接口SingletonBeanRegistry](#17214-单例管理接口singletonbeanregistry)
+        - [1.7.2.14.1. AliasRegistry](#172141-aliasregistry)
+        - [1.7.2.14.2. SingletonBeanRegistry](#172142-singletonbeanregistry)
+        - [1.7.2.14.3. DefaultSingletonBeanRegistry](#172143-defaultsingletonbeanregistry)
+    - [1.7.3. Bean创建过程](#173-bean创建过程)
+    - [1.7.4. Bean的作用域](#174-bean的作用域)
+    - [1.7.5. Bean的生命周期](#175-bean的生命周期)
+  - [1.8. 切面编程AOP](#18-切面编程aop)
+    - [1.8.1. AOP概述](#181-aop概述)
+    - [1.8.2. 切点函数](#182-切点函数)
+      - [1.8.2.1. 常用切点函数](#1821-常用切点函数)
+      - [1.8.2.2. 通配符](#1822-通配符)
+      - [1.8.2.3. 逻辑运算符](#1823-逻辑运算符)
+    - [1.8.3. 切点函数详解](#183-切点函数详解)
+      - [1.8.3.1. @annotation()](#1831-annotation)
+      - [1.8.3.2. execution()](#1832-execution)
+      - [1.8.3.3. args和@args()](#1833-args和args)
+      - [1.8.3.4. within()](#1834-within)
+      - [1.8.3.5. @within()和@target()](#1835-within和target)
+      - [1.8.3.6. target()和this()](#1836-target和this)
+    - [1.8.4. 切点函数高级用法](#184-切点函数高级用法)
+      - [1.8.4.1. 切点复合运算](#1841-切点复合运算)
+      - [1.8.4.2. 命名切点](#1842-命名切点)
+      - [1.8.4.3. 增强织入的顺序](#1843-增强织入的顺序)
+      - [1.8.4.4. 访问连接点信息](#1844-访问连接点信息)
+      - [1.8.4.5. 绑定连接点方法入参](#1845-绑定连接点方法入参)
+      - [1.8.4.6. 绑定代理对象](#1846-绑定代理对象)
+      - [1.8.4.7. 绑定类注解对象](#1847-绑定类注解对象)
+      - [1.8.4.8. 绑定返回值](#1848-绑定返回值)
+      - [1.8.4.9. 绑定抛出的异常](#1849-绑定抛出的异常)
+    - [1.8.5. Spring AOP案例](#185-spring-aop案例)
+    - [1.8.6. 实现原理](#186-实现原理)
+      - [1.8.6.1. 五种通知的执行顺序](#1861-五种通知的执行顺序)
+      - [1.8.6.2. 代理实现](#1862-代理实现)
+  - [1.9. Spring对DAO的支持](#19-spring对dao的支持)
+    - [1.9.1. Spring DAO理念](#191-spring-dao理念)
+    - [1.9.2. 统一的异常体系](#192-统一的异常体系)
+    - [1.9.3. 统一的数据访问模板](#193-统一的数据访问模板)
+    - [1.9.4. 数据源](#194-数据源)
+  - [1.10. Spring事务管理](#110-spring事务管理)
+    - [1.10.1. 数据库事务基础知识](#1101-数据库事务基础知识)
+    - [1.10.2. Jdbc对事务的支持](#1102-jdbc对事务的支持)
+    - [1.10.3. Spring对事务的支持](#1103-spring对事务的支持)
+      - [1.10.3.1. 编程式事务管理](#11031-编程式事务管理)
+      - [1.10.3.2. 使用XML配置声明式事务](#11032-使用xml配置声明式事务)
+      - [1.10.3.3. 使用注解配置事务](#11033-使用注解配置事务)
+    - [1.10.4. Spring事务实现原理](#1104-spring事务实现原理)
+      - [1.10.4.1. 事务管理关键抽象](#11041-事务管理关键抽象)
+        - [1.10.4.1.1. TransactionDefinition](#110411-transactiondefinition)
+        - [1.10.4.1.2. TransactionStatus](#110412-transactionstatus)
+        - [1.10.4.1.3. PlatformTransactionManager](#110413-platformtransactionmanager)
+    - [1.10.5. 事务管理器实现类](#1105-事务管理器实现类)
+      - [1.10.5.1. Spring事务执行流程](#11051-spring事务执行流程)
+        - [1.10.5.1.1. 基本原理](#110511-基本原理)
+        - [1.10.5.1.2. 代理类](#110512-代理类)
+        - [1.10.5.1.3. TransactionAspectSupport中的处理](#110513-transactionaspectsupport中的处理)
+        - [1.10.5.1.4. 事务管理类DataSourceTransactionManager](#110514-事务管理类datasourcetransactionmanager)
+    - [1.10.6. 事务同步管理器](#1106-事务同步管理器)
+    - [1.10.7. 事务传播行为](#1107-事务传播行为)
+      - [1.10.7.1. 事务传播行为说明](#11071-事务传播行为说明)
+      - [1.10.7.2. 具体说明](#11072-具体说明)
+        - [1.10.7.2.1. PROPAGATION_REQUIRED](#110721-propagation_required)
+        - [1.10.7.2.2. PROPAGATION_REQUIRES_NEW](#110722-propagation_requires_new)
+        - [1.10.7.2.3. PROPAGATION_SUPPORTS](#110723-propagation_supports)
+        - [1.10.7.2.4. PROPAGATION_MANDATORY](#110724-propagation_mandatory)
+        - [1.10.7.2.5. PROPAGATION_NOT_SUPPORTED](#110725-propagation_not_supported)
+        - [1.10.7.2.6. PROPAGATION_NEVER](#110726-propagation_never)
+        - [1.10.7.2.7. PROPAGATION_NESTED](#110727-propagation_nested)
+    - [1.10.8. 使用场景](#1108-使用场景)
+  - [1.11. Spring常用工具类](#111-spring常用工具类)
+    - [1.11.1. web](#1111-web)
+    - [1.11.2. 内置的resouce类型](#1112-内置的resouce类型)
+    - [1.11.3. 工具类](#1113-工具类)
+    - [1.11.4. xml工具](#1114-xml工具)
+    - [1.11.5. 其它工具集](#1115-其它工具集)
 - [2. Spring 表达式语言](#2-spring-表达式语言)
 - [3. Spring Cache](#3-spring-cache)
-    - [3.1. Cache 的组件和概念](#31-cache-的组件和概念)
-    - [3.2. 几个重要概念&缓存注解](#32-几个重要概念缓存注解)
-    - [3.3. 集成 Spring Cache](#33-集成-spring-cache)
-    - [3.4. 缓存管理器](#34-缓存管理器)
-        - [3.4.1. SimpleCacheManager](#341-simplecachemanager)
-        - [3.4.2. NoOpCacheManager](#342-noopcachemanager)
-        - [3.4.3. ConcurrentMapCacheManager](#343-concurrentmapcachemanager)
-        - [3.4.4. CompositeCacheManager](#344-compositecachemanager)
-    - [3.5. SpEL上下文数据](#35-spel上下文数据)
-    - [3.6. 基本使用](#36-基本使用)
-    - [3.7. 使用Redis Cache](#37-使用redis-cache)
-    - [3.8. 实现Redis二级缓存](#38-实现redis二级缓存)
-        - [实现 TwolevelCacheManager](#实现-twolevelcachemanager)
+  - [3.1. Cache 的组件和概念](#31-cache-的组件和概念)
+  - [3.2. 几个重要概念&缓存注解](#32-几个重要概念缓存注解)
+  - [3.3. 集成 Spring Cache](#33-集成-spring-cache)
+  - [3.4. 缓存管理器](#34-缓存管理器)
+    - [3.4.1. SimpleCacheManager](#341-simplecachemanager)
+    - [3.4.2. NoOpCacheManager](#342-noopcachemanager)
+    - [3.4.3. ConcurrentMapCacheManager](#343-concurrentmapcachemanager)
+    - [3.4.4. CompositeCacheManager](#344-compositecachemanager)
+  - [3.5. SpEL上下文数据](#35-spel上下文数据)
+  - [3.6. 基本使用](#36-基本使用)
+  - [3.7. 使用Redis Cache](#37-使用redis-cache)
+  - [3.8. 实现Redis二级缓存](#38-实现redis二级缓存)
+    - [实现 TwolevelCacheManager](#实现-twolevelcachemanager)
 - [4. Spring Boot Admin](#4-spring-boot-admin)
-    - [4.1. 基础认识](#41-基础认识)
-    - [4.2. 使用实例](#42-使用实例)
-        - [4.2.1. Server应用](#421-server应用)
-        - [4.2.2. Client应用](#422-client应用)
-        - [4.2.3. Client配置说明](#423-client配置说明)
-        - [4.2.4. 集群](#424-集群)
-        - [4.2.5. 集成spring security](#425-集成spring-security)
-        - [4.2.6. 集成邮箱报警功能](#426-集成邮箱报警功能)
+  - [4.1. 基础认识](#41-基础认识)
+  - [4.2. 使用实例](#42-使用实例)
+    - [4.2.1. Server应用](#421-server应用)
+    - [4.2.2. Client应用](#422-client应用)
+    - [4.2.3. Client配置说明](#423-client配置说明)
+    - [4.2.4. 集群](#424-集群)
+    - [4.2.5. 集成spring security](#425-集成spring-security)
+    - [4.2.6. 集成邮箱报警功能](#426-集成邮箱报警功能)
 - [5. Spring Security](#5-spring-security)
-    - [5.1. 简介](#51-简介)
-    - [5.2. 提供的功能](#52-提供的功能)
-    - [5.3. 核心类](#53-核心类)
+  - [5.1. 简介](#51-简介)
+  - [5.2. 提供的功能](#52-提供的功能)
+  - [5.3. 核心类](#53-核心类)
 - [6. Sppring MVC](#6-sppring-mvc)
-    - [6.1. MVC体系概述](#61-mvc体系概述)
-        - [6.1.1. MVC 架构](#611-mvc-架构)
-    - [6.2. Restful](#62-restful)
-        - [6.2.1. URL 设计](#621-url-设计)
-        - [6.2.2. 状态码](#622-状态码)
-        - [6.2.3. 服务器回应](#623-服务器回应)
-    - [6.3. 注解说明](#63-注解说明)
-    - [6.4. 拦截器](#64-拦截器)
-    - [6.5. 过滤器](#65-过滤器)
-        - [6.5.1. 过滤器和拦截器的区别：](#651-过滤器和拦截器的区别)
-        - [6.5.2. 拦截器（Interceptor）和过滤器（Filter）的一些用途](#652-拦截器interceptor和过滤器filter的一些用途)
-    - [6.6. WebDataBinder](#66-webdatabinder)
+  - [6.1. MVC体系概述](#61-mvc体系概述)
+    - [6.1.1. MVC 架构](#611-mvc-架构)
+  - [6.2. Restful](#62-restful)
+    - [6.2.1. URL 设计](#621-url-设计)
+    - [6.2.2. 状态码](#622-状态码)
+    - [6.2.3. 服务器回应](#623-服务器回应)
+  - [6.3. 注解说明](#63-注解说明)
+  - [6.4. 拦截器](#64-拦截器)
+  - [6.5. 过滤器](#65-过滤器)
+    - [6.5.1. 过滤器和拦截器的区别：](#651-过滤器和拦截器的区别)
+    - [6.5.2. 拦截器（Interceptor）和过滤器（Filter）的一些用途](#652-拦截器interceptor和过滤器filter的一些用途)
+  - [* Mime-type chain Filter](#ullimime-type-chain-filterliul)
+  - [6.6. WebDataBinder](#66-webdatabinder)
 - [7. Webflux](#7-webflux)
-    - [7.1. 概述](#71-概述)
-        - [7.1.1. SpringMVC与SpringWebFlux](#711-springmvc与springwebflux)
-        - [7.1.2. Reactive Spring Web](#712-reactive-spring-web)
-    - [7.2. 基本例子](#72-基本例子)
-    - [7.3. Mono常用方法说明](#73-mono常用方法说明)
+  - [7.1. 概述](#71-概述)
+    - [7.1.1. SpringMVC与SpringWebFlux](#711-springmvc与springwebflux)
+    - [7.1.2. Reactive Spring Web](#712-reactive-spring-web)
+  - [7.2. 基本例子](#72-基本例子)
+  - [7.3. Mono常用方法说明](#73-mono常用方法说明)
 - [8. SpringBoot](#8-springboot)
-    - [8.1. 基本概念](#81-基本概念)
-    - [8.2. 基本使用](#82-基本使用)
-    - [8.3. SpringBoot DevTools 的用途是什么？](#83-springboot-devtools-的用途是什么)
-    - [8.4. Spring Boot 环境下创建Bean](#84-spring-boot-环境下创建bean)
-        - [8.4.1. 方式1:使用@Component等注解：](#841-方式1使用component等注解)
-        - [8.4.2. 方式2:使用@Bean注解](#842-方式2使用bean注解)
-        - [8.4.3. 方式3:使用@Import注解](#843-方式3使用import注解)
-        - [8.4.4. 方式4:使用ImportSelector接口](#844-方式4使用importselector接口)
-        - [8.4.5. 方式5:手动注册到容器](#845-方式5手动注册到容器)
-    - [8.5. 使用不同的WEB容器](#85-使用不同的web容器)
-    - [8.6. 配置文件](#86-配置文件)
-        - [8.6.1. bootstrap.yml与application.yml区别](#861-bootstrapyml与applicationyml区别)
-        - [8.6.2. 多环境配置](#862-多环境配置)
-            - [8.6.2.1. 配置文件](#8621-配置文件)
-            - [8.6.2.2. 多环境配置](#8622-多环境配置)
-        - [8.6.3. 注解ConfigurationProperties注入yml配置文件中的数据](#863-注解configurationproperties注入yml配置文件中的数据)
-            - [8.6.3.1. Spring 宽松绑定规则 (relaxed binding)](#8631-spring-宽松绑定规则-relaxed-binding)
-            - [8.6.3.2. 基本使用](#8632-基本使用)
-            - [8.6.3.3. 带验证的配置](#8633-带验证的配置)
-            - [8.6.3.4. @ConfigurationProperties vs. @Value](#8634-configurationproperties-vs-value)
-        - [8.6.4. 使用随机数](#864-使用随机数)
-        - [8.6.5. 从命令行指定参数](#865-从命令行指定参数)
-        - [8.6.6. 配置日志](#866-配置日志)
-    - [8.7. 启动类 @SpringBootApplication 注解](#87-启动类-springbootapplication-注解)
-        - [8.7.1. @Inherited 注解](#871-inherited-注解)
-        - [8.7.2. @SpringBootConfiguration](#872-springbootconfiguration)
-        - [8.7.3. @EnableAutoConfiguration](#873-enableautoconfiguration)
-        - [8.7.4. @ComponentScan](#874-componentscan)
-    - [8.8. 条件化注解](#88-条件化注解)
-    - [8.9. Spring Boot Starter](#89-spring-boot-starter)
-        - [8.9.1. 常用的Starter](#891-常用的starter)
-        - [8.9.2. 创建自己的Starter](#892-创建自己的starter)
-        - [8.9.3. Starter原理](#893-starter原理)
-    - [8.10. Actuator 的端点](#810-actuator-的端点)
-        - [8.10.1. 揭秘 Actuator 的端点](#8101-揭秘-actuator-的端点)
-        - [8.10.2. 自定义监控](#8102-自定义监控)
-    - [8.11. Spring Boot 项目发布](#811-spring-boot-项目发布)
-    - [8.12. Maven打包](#812-maven打包)
-    - [8.13. Spring Boot原理分析](#813-spring-boot原理分析)
-        - [8.13.1. 启动流程分析](#8131-启动流程分析)
-            - [8.13.1.1. 创建SpringApplication对象](#81311-创建springapplication对象)
-            - [8.13.1.2. 执行Run方法](#81312-执行run方法)
-    - [8.14. 种保护 Spring Boot 应用的绝佳方法](#814-种保护-spring-boot-应用的绝佳方法)
-        - [8.14.1. 在生产中使用HTTPS](#8141-在生产中使用https)
-        - [8.14.2. 使用Snyk检查你的依赖关系](#8142-使用snyk检查你的依赖关系)
-        - [8.14.3. 升级到最新版本](#8143-升级到最新版本)
-        - [8.14.4. 启用CSRF保护](#8144-启用csrf保护)
-        - [8.14.5. 使用内容安全策略防止XSS攻击](#8145-使用内容安全策略防止xss攻击)
-        - [8.14.6. 使用OpenID Connect进行身份验证](#8146-使用openid-connect进行身份验证)
-        - [8.14.7. 管理密码？使用密码哈希！](#8147-管理密码使用密码哈希)
-        - [8.14.8. 安全地存储秘密](#8148-安全地存储秘密)
-        - [8.14.9. 使用OWASP的ZAP测试您的应用程序](#8149-使用owasp的zap测试您的应用程序)
-        - [8.14.10. 让你的安全团队进行代码审查](#81410-让你的安全团队进行代码审查)
-    - [8.15. 项目实践](#815-项目实践)
-        - [8.15.1. 访问数据库](#8151-访问数据库)
-        - [8.15.2. 跨域配置](#8152-跨域配置)
-        - [8.15.3. 全局异常处理](#8153-全局异常处理)
-    - [8.16. 其他一些问题](#816-其他一些问题)
-        - [8.16.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？](#8161-如何在-spring-boot-启动的时候运行一些特定的代码)
-        - [8.16.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？](#8162-如何重新加载spring-boot上的更改而无需重新启动服务器)
-        - [8.16.3. Spring Boot 有哪几种读取配置的方式？](#8163-spring-boot-有哪几种读取配置的方式)
+  - [8.1. 基本概念](#81-基本概念)
+  - [8.2. 基本使用](#82-基本使用)
+  - [8.3. SpringBoot DevTools 的用途是什么？](#83-springboot-devtools-的用途是什么)
+  - [8.4. Spring Boot 环境下创建Bean](#84-spring-boot-环境下创建bean)
+    - [8.4.1. 方式1:使用@Component等注解：](#841-方式1使用component等注解)
+    - [8.4.2. 方式2:使用@Bean注解](#842-方式2使用bean注解)
+    - [8.4.3. 方式3:使用@Import注解](#843-方式3使用import注解)
+    - [8.4.4. 方式4:使用ImportSelector接口](#844-方式4使用importselector接口)
+    - [8.4.5. 方式5:手动注册到容器](#845-方式5手动注册到容器)
+  - [8.5. 使用不同的WEB容器](#85-使用不同的web容器)
+  - [8.6. 配置文件](#86-配置文件)
+    - [8.6.1. bootstrap.yml与application.yml区别](#861-bootstrapyml与applicationyml区别)
+    - [8.6.2. 多环境配置](#862-多环境配置)
+      - [8.6.2.1. 配置文件](#8621-配置文件)
+      - [8.6.2.2. 多环境配置](#8622-多环境配置)
+    - [8.6.3. 注解ConfigurationProperties注入yml配置文件中的数据](#863-注解configurationproperties注入yml配置文件中的数据)
+      - [8.6.3.1. Spring 宽松绑定规则 (relaxed binding)](#8631-spring-宽松绑定规则-relaxed-binding)
+      - [8.6.3.2. 基本使用](#8632-基本使用)
+      - [8.6.3.3. 带验证的配置](#8633-带验证的配置)
+      - [8.6.3.4. @ConfigurationProperties vs. @Value](#8634-configurationproperties-vs-value)
+    - [8.6.4. 使用随机数](#864-使用随机数)
+    - [8.6.5. 从命令行指定参数](#865-从命令行指定参数)
+    - [8.6.6. 配置日志](#866-配置日志)
+  - [8.7. 启动类 @SpringBootApplication 注解](#87-启动类-springbootapplication-注解)
+    - [8.7.1. @Inherited 注解](#871-inherited-注解)
+    - [8.7.2. @SpringBootConfiguration](#872-springbootconfiguration)
+    - [8.7.3. @EnableAutoConfiguration](#873-enableautoconfiguration)
+    - [8.7.4. @ComponentScan](#874-componentscan)
+  - [8.8. 条件化注解](#88-条件化注解)
+  - [8.9. Spring Boot Starter](#89-spring-boot-starter)
+    - [8.9.1. 常用的Starter](#891-常用的starter)
+    - [8.9.2. 创建自己的Starter](#892-创建自己的starter)
+    - [8.9.3. Starter原理](#893-starter原理)
+  - [8.10. Actuator 的端点](#810-actuator-的端点)
+    - [8.10.1. 揭秘 Actuator 的端点](#8101-揭秘-actuator-的端点)
+    - [8.10.2. 自定义监控](#8102-自定义监控)
+  - [8.11. Spring Boot 项目发布](#811-spring-boot-项目发布)
+  - [8.12. Maven打包](#812-maven打包)
+  - [8.13. Spring Boot原理分析](#813-spring-boot原理分析)
+    - [8.13.1. 启动流程分析](#8131-启动流程分析)
+      - [8.13.1.1. 创建SpringApplication对象](#81311-创建springapplication对象)
+      - [8.13.1.2. 执行Run方法](#81312-执行run方法)
+  - [8.14. 种保护 Spring Boot 应用的绝佳方法](#814-种保护-spring-boot-应用的绝佳方法)
+    - [8.14.1. 在生产中使用HTTPS](#8141-在生产中使用https)
+    - [8.14.2. 使用Snyk检查你的依赖关系](#8142-使用snyk检查你的依赖关系)
+    - [8.14.3. 升级到最新版本](#8143-升级到最新版本)
+    - [8.14.4. 启用CSRF保护](#8144-启用csrf保护)
+    - [8.14.5. 使用内容安全策略防止XSS攻击](#8145-使用内容安全策略防止xss攻击)
+    - [8.14.6. 使用OpenID Connect进行身份验证](#8146-使用openid-connect进行身份验证)
+    - [8.14.7. 管理密码？使用密码哈希！](#8147-管理密码使用密码哈希)
+    - [8.14.8. 安全地存储秘密](#8148-安全地存储秘密)
+    - [8.14.9. 使用OWASP的ZAP测试您的应用程序](#8149-使用owasp的zap测试您的应用程序)
+    - [8.14.10. 让你的安全团队进行代码审查](#81410-让你的安全团队进行代码审查)
+  - [8.15. 项目实践](#815-项目实践)
+    - [8.15.1. 访问数据库](#8151-访问数据库)
+    - [8.15.2. 跨域配置](#8152-跨域配置)
+    - [8.15.3. 全局异常处理](#8153-全局异常处理)
+  - [8.16. 其他一些问题](#816-其他一些问题)
+    - [8.16.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？](#8161-如何在-spring-boot-启动的时候运行一些特定的代码)
+    - [8.16.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？](#8162-如何重新加载spring-boot上的更改而无需重新启动服务器)
+    - [8.16.3. Spring Boot 有哪几种读取配置的方式？](#8163-spring-boot-有哪几种读取配置的方式)
 - [9. SpringCloud](#9-springcloud)
-    - [9.1. 基础知识](#91-基础知识)
-        - [9.1.1. 微服务概念](#911-微服务概念)
-        - [9.1.2. SpringCloud子项目](#912-springcloud子项目)
-        - [9.1.3. 版本说明](#913-版本说明)
-    - [9.2. 服务治理Eureka](#92-服务治理eureka)
-        - [9.2.1. 基本使用](#921-基本使用)
-        - [9.2.2. 高可用注册中心](#922-高可用注册中心)
-        - [9.2.3. 原理说明](#923-原理说明)
-            - [9.2.3.1. 基础模块说明](#9231-基础模块说明)
-            - [9.2.3.2. Region,Zone](#9232-regionzone)
-            - [9.2.3.3. 源码分析](#9233-源码分析)
-                - [9.2.3.3.1. EnableDiscoveryClient注解说明](#92331-enablediscoveryclient注解说明)
-                - [9.2.3.3.2. 服务注册](#92332-服务注册)
-                - [9.2.3.3.3. 服务续约](#92333-服务续约)
-        - [9.2.4. 更多配置说明](#924-更多配置说明)
-            - [9.2.4.1. 服务注册类配置](#9241-服务注册类配置)
-            - [9.2.4.2. 服务实例类配置](#9242-服务实例类配置)
-    - [9.3. 负载均衡Ribbon](#93-负载均衡ribbon)
-        - [9.3.1. 基本使用](#931-基本使用)
-        - [9.3.2. 原理说明](#932-原理说明)
-            - [9.3.2.1. 源码分析](#9321-源码分析)
-            - [9.3.2.2. 负载均衡器](#9322-负载均衡器)
-            - [9.3.2.3. 负载均衡策略](#9323-负载均衡策略)
-            - [9.3.2.4. 配置详解](#9324-配置详解)
-        - [9.3.3. ribbon配置](#933-ribbon配置)
-            - [9.3.3.1. 配置参数说明](#9331-配置参数说明)
-            - [9.3.3.2. 重试机制](#9332-重试机制)
-    - [9.4. 声明式服务调用feign](#94-声明式服务调用feign)
-        - [9.4.1. 使用案例](#941-使用案例)
-        - [9.4.2. 实现原理](#942-实现原理)
-            - [9.4.2.1. 配置类](#9421-配置类)
-            - [9.4.2.2. 启动注解说明](#9422-启动注解说明)
-            - [9.4.2.3. 调用实现原理](#9423-调用实现原理)
-            - [9.4.2.4. 总结](#9424-总结)
-    - [9.5. 服务容错保护 Hystrix](#95-服务容错保护-hystrix)
-        - [9.5.1. Ribbon中使用Hystrix](#951-ribbon中使用hystrix)
-        - [9.5.2. Feign中使用Hystrix](#952-feign中使用hystrix)
-        - [9.5.3. Hystrix详解](#953-hystrix详解)
-            - [9.5.3.1. 背景](#9531-背景)
-            - [9.5.3.2. 基本认识](#9532-基本认识)
-            - [9.5.3.3. hystrix适用场景](#9533-hystrix适用场景)
-            - [9.5.3.4. 注解说明](#9534-注解说明)
-            - [9.5.3.5. 如何使用](#9535-如何使用)
-                - [9.5.3.5.1. 基本的实例](#95351-基本的实例)
-                - [9.5.3.5.2. 同步执行](#95352-同步执行)
-                - [9.5.3.5.3. 异步执行](#95353-异步执行)
-                - [9.5.3.5.4. Reactive Execution](#95354-reactive-execution)
-                - [9.5.3.5.5. Reactive Commands](#95355-reactive-commands)
-                - [9.5.3.5.6. Fallback](#95356-fallback)
-                - [9.5.3.5.7. Error Propagation](#95357-error-propagation)
-                - [9.5.3.5.8. Command Name](#95358-command-name)
-                - [9.5.3.5.9. Command Group](#95359-command-group)
-                - [9.5.3.5.10. Command Thread-Pool](#953510-command-thread-pool)
-                - [9.5.3.5.11. Request Cache](#953511-request-cache)
-                - [9.5.3.5.12. Request Collapsing](#953512-request-collapsing)
-                - [9.5.3.5.13. Request Context Setup](#953513-request-context-setup)
-                - [9.5.3.5.14. Common Patterns](#953514-common-patterns)
-                - [9.5.3.5.15. Fail Silent](#953515-fail-silent)
-                - [9.5.3.5.16. Fallback: Static](#953516-fallback-static)
-                - [9.5.3.5.17. Fallback: Stubbed](#953517-fallback-stubbed)
-                - [9.5.3.5.18. Fallback: Cache via Network](#953518-fallback-cache-via-network)
-                - [9.5.3.5.19. Primary + Secondary with Fallback](#953519-primary--secondary-with-fallback)
-                - [9.5.3.5.20. Client Doesn't Perform Network Access](#953520-client-doesnt-perform-network-access)
-                - [9.5.3.5.21. Get-Set-Get with Request Cache Invalidation](#953521-get-set-get-with-request-cache-invalidation)
-                - [9.5.3.5.22. Get-Set-Get with Request Cache Invalidation](#953522-get-set-get-with-request-cache-invalidation)
-            - [9.5.3.6. 工作原理](#9536-工作原理)
-        - [9.5.4. Spring Cloud 中使用Hystrix原理](#954-spring-cloud-中使用hystrix原理)
-        - [9.5.5. Hystrix监控](#955-hystrix监控)
-    - [9.6. API网关服务](#96-api网关服务)
-        - [9.6.1. zuul](#961-zuul)
-        - [9.6.2. GateWay](#962-gateway)
-    - [9.7. 分布式配置中心Config](#97-分布式配置中心config)
-        - [9.7.1. 基本使用](#971-基本使用)
-            - [9.7.1.1. 配置中心](#9711-配置中心)
-            - [9.7.1.2. bootstrap.yml与application.yml区别](#9712-bootstrapyml与applicationyml区别)
-            - [9.7.1.3. 客户端配置](#9713-客户端配置)
-            - [9.7.1.4. 刷新配置](#9714-刷新配置)
-        - [9.7.2. 原理说明](#972-原理说明)
-        - [9.7.3. 更多使用方式](#973-更多使用方式)
-    - [9.8. 消息总线bus](#98-消息总线bus)
-        - [9.8.1. 消息代理](#981-消息代理)
-    - [9.9. 消息驱动的微服务Stream](#99-消息驱动的微服务stream)
-    - [9.10. 分布式服务跟踪Sleuth](#910-分布式服务跟踪sleuth)
-        - [9.10.1. 基本使用](#9101-基本使用)
-        - [9.10.2. 跟踪原理](#9102-跟踪原理)
-            - [9.10.2.1. 基本实现原理](#91021-基本实现原理)
-            - [9.10.2.2. 支持的组件](#91022-支持的组件)
-            - [9.10.2.3. 一些基本概念](#91023-一些基本概念)
-            - [9.10.2.4. zipkin](#91024-zipkin)
-            - [9.10.2.5. 调用过程](#91025-调用过程)
+  - [9.1. 基础知识](#91-基础知识)
+    - [9.1.1. 微服务概念](#911-微服务概念)
+    - [9.1.2. SpringCloud子项目](#912-springcloud子项目)
+    - [9.1.3. 版本说明](#913-版本说明)
+  - [9.2. 服务治理Eureka](#92-服务治理eureka)
+    - [9.2.1. 基本使用](#921-基本使用)
+    - [9.2.2. 高可用注册中心](#922-高可用注册中心)
+    - [9.2.3. 原理说明](#923-原理说明)
+      - [9.2.3.1. 基础模块说明](#9231-基础模块说明)
+      - [9.2.3.2. Region,Zone](#9232-regionzone)
+      - [9.2.3.3. 源码分析](#9233-源码分析)
+        - [9.2.3.3.1. EnableDiscoveryClient注解说明](#92331-enablediscoveryclient注解说明)
+        - [9.2.3.3.2. 服务注册](#92332-服务注册)
+        - [9.2.3.3.3. 服务续约](#92333-服务续约)
+    - [9.2.4. 更多配置说明](#924-更多配置说明)
+      - [9.2.4.1. 服务注册类配置](#9241-服务注册类配置)
+      - [9.2.4.2. 服务实例类配置](#9242-服务实例类配置)
+  - [9.3. 负载均衡Ribbon](#93-负载均衡ribbon)
+    - [9.3.1. 基本使用](#931-基本使用)
+    - [9.3.2. 原理说明](#932-原理说明)
+      - [9.3.2.1. 源码分析](#9321-源码分析)
+      - [9.3.2.2. 负载均衡器](#9322-负载均衡器)
+      - [9.3.2.3. 负载均衡策略](#9323-负载均衡策略)
+      - [9.3.2.4. 配置详解](#9324-配置详解)
+    - [9.3.3. ribbon配置](#933-ribbon配置)
+      - [9.3.3.1. 配置参数说明](#9331-配置参数说明)
+      - [9.3.3.2. 重试机制](#9332-重试机制)
+  - [9.4. 声明式服务调用feign](#94-声明式服务调用feign)
+    - [9.4.1. 使用案例](#941-使用案例)
+    - [9.4.2. 实现原理](#942-实现原理)
+      - [9.4.2.1. 配置类](#9421-配置类)
+      - [9.4.2.2. 启动注解说明](#9422-启动注解说明)
+      - [9.4.2.3. 调用实现原理](#9423-调用实现原理)
+      - [9.4.2.4. 总结](#9424-总结)
+  - [9.5. 服务容错保护 Hystrix](#95-服务容错保护-hystrix)
+    - [9.5.1. Ribbon中使用Hystrix](#951-ribbon中使用hystrix)
+    - [9.5.2. Feign中使用Hystrix](#952-feign中使用hystrix)
+    - [9.5.3. Hystrix详解](#953-hystrix详解)
+      - [9.5.3.1. 背景](#9531-背景)
+      - [9.5.3.2. 基本认识](#9532-基本认识)
+      - [9.5.3.3. hystrix适用场景](#9533-hystrix适用场景)
+      - [9.5.3.4. 注解说明](#9534-注解说明)
+      - [9.5.3.5. 如何使用](#9535-如何使用)
+        - [9.5.3.5.1. 基本的实例](#95351-基本的实例)
+        - [9.5.3.5.2. 同步执行](#95352-同步执行)
+        - [9.5.3.5.3. 异步执行](#95353-异步执行)
+        - [9.5.3.5.4. Reactive Execution](#95354-reactive-execution)
+        - [9.5.3.5.5. Reactive Commands](#95355-reactive-commands)
+        - [9.5.3.5.6. Fallback](#95356-fallback)
+        - [9.5.3.5.7. Error Propagation](#95357-error-propagation)
+        - [9.5.3.5.8. Command Name](#95358-command-name)
+        - [9.5.3.5.9. Command Group](#95359-command-group)
+        - [9.5.3.5.10. Command Thread-Pool](#953510-command-thread-pool)
+        - [9.5.3.5.11. Request Cache](#953511-request-cache)
+        - [9.5.3.5.12. Request Collapsing](#953512-request-collapsing)
+        - [9.5.3.5.13. Request Context Setup](#953513-request-context-setup)
+        - [9.5.3.5.14. Common Patterns](#953514-common-patterns)
+        - [9.5.3.5.15. Fail Silent](#953515-fail-silent)
+        - [9.5.3.5.16. Fallback: Static](#953516-fallback-static)
+        - [9.5.3.5.17. Fallback: Stubbed](#953517-fallback-stubbed)
+        - [9.5.3.5.18. Fallback: Cache via Network](#953518-fallback-cache-via-network)
+        - [9.5.3.5.19. Primary + Secondary with Fallback](#953519-primary--secondary-with-fallback)
+        - [9.5.3.5.20. Client Doesn't Perform Network Access](#953520-client-doesnt-perform-network-access)
+        - [9.5.3.5.21. Get-Set-Get with Request Cache Invalidation](#953521-get-set-get-with-request-cache-invalidation)
+        - [9.5.3.5.22. Get-Set-Get with Request Cache Invalidation](#953522-get-set-get-with-request-cache-invalidation)
+      - [9.5.3.6. 工作原理](#9536-工作原理)
+    - [9.5.4. Spring Cloud 中使用Hystrix原理](#954-spring-cloud-中使用hystrix原理)
+    - [9.5.5. Hystrix监控](#955-hystrix监控)
+  - [9.6. API网关服务](#96-api网关服务)
+    - [9.6.1. zuul](#961-zuul)
+    - [9.6.2. GateWay](#962-gateway)
+  - [9.7. 分布式配置中心Config](#97-分布式配置中心config)
+    - [9.7.1. 基本使用](#971-基本使用)
+      - [9.7.1.1. 配置中心](#9711-配置中心)
+      - [9.7.1.2. bootstrap.yml与application.yml区别](#9712-bootstrapyml与applicationyml区别)
+      - [9.7.1.3. 客户端配置](#9713-客户端配置)
+      - [9.7.1.4. 刷新配置](#9714-刷新配置)
+    - [9.7.2. 原理说明](#972-原理说明)
+    - [9.7.3. 更多使用方式](#973-更多使用方式)
+  - [9.8. 消息总线bus](#98-消息总线bus)
+    - [9.8.1. 消息代理](#981-消息代理)
+  - [9.9. 消息驱动的微服务Stream](#99-消息驱动的微服务stream)
+  - [9.10. 分布式服务跟踪Sleuth](#910-分布式服务跟踪sleuth)
+    - [9.10.1. 基本使用](#9101-基本使用)
+    - [9.10.2. 跟踪原理](#9102-跟踪原理)
+      - [9.10.2.1. 基本实现原理](#91021-基本实现原理)
+      - [9.10.2.2. 支持的组件](#91022-支持的组件)
+      - [9.10.2.3. 一些基本概念](#91023-一些基本概念)
+      - [9.10.2.4. zipkin](#91024-zipkin)
+      - [9.10.2.5. 调用过程](#91025-调用过程)
 - [10. 单元测试](#10-单元测试)
-    - [10.1. Junit](#101-junit)
-        - [10.1.1. 概述](#1011-概述)
-        - [10.1.2. JUnit 中的重要的 API](#1012-junit-中的重要的-api)
-        - [10.1.3. 常用注解](#1013-常用注解)
-        - [10.1.4. 套件测试](#1014-套件测试)
-    - [10.2. TestNG测试](#102-testng测试)
-        - [10.2.1. 概述](#1021-概述)
-        - [10.2.2. JUnit 4 Vs TestNG比较](#1022-junit-4-vs-testng比较)
-        - [10.2.3. 注解说明](#1023-注解说明)
-        - [10.2.4. 测试案例](#1024-测试案例)
-            - [10.2.4.1. 基本例子](#10241-基本例子)
-            - [10.2.4.2. 预期异常测试](#10242-预期异常测试)
-            - [10.2.4.3. 忽略测试](#10243-忽略测试)
-            - [10.2.4.4. 超时测试](#10244-超时测试)
-            - [10.2.4.5. 分组测试](#10245-分组测试)
-    - [10.3. Mockito](#103-mockito)
-        - [10.3.1. 介绍](#1031-介绍)
-        - [10.3.2. Mockito说明](#1032-mockito说明)
-        - [10.3.3. 例子](#1033-例子)
-            - [10.3.3.1. 基本的例子](#10331-基本的例子)
-            - [10.3.3.2. 验证行为](#10332-验证行为)
-            - [10.3.3.3. 模拟我们所期望的结果](#10333-模拟我们所期望的结果)
-            - [10.3.3.4. RETURNS_SMART_NULLS和RETURNS_DEEP_STUBS](#10334-returns_smart_nulls和returns_deep_stubs)
-            - [10.3.3.5. 模拟方法体抛出异常](#10335-模拟方法体抛出异常)
-            - [10.3.3.6. 使用注解来快速模拟](#10336-使用注解来快速模拟)
-            - [10.3.3.7. 参数匹配](#10337-参数匹配)
-            - [10.3.3.8. 自定义参数匹配](#10338-自定义参数匹配)
-            - [10.3.3.9. 捕获参数来进一步断言](#10339-捕获参数来进一步断言)
-            - [10.3.3.10. 使用方法预期回调接口生成期望值（Answer结构）](#103310-使用方法预期回调接口生成期望值answer结构)
-            - [10.3.3.11. 修改对未预设的调用返回默认期望](#103311-修改对未预设的调用返回默认期望)
-            - [10.3.3.12. 用spy监控真实对象](#103312-用spy监控真实对象)
-            - [10.3.3.13. 真实的部分mock](#103313-真实的部分mock)
-            - [10.3.3.14. 重置mock](#103314-重置mock)
-            - [10.3.3.15. 验证确切的调用次数](#103315-验证确切的调用次数)
-            - [10.3.3.16. 连续调用](#103316-连续调用)
-            - [10.3.3.17. 验证执行顺序](#103317-验证执行顺序)
-            - [10.3.3.18. 确保模拟对象上无互动发生](#103318-确保模拟对象上无互动发生)
-            - [10.3.3.19. 找出冗余的互动(即未被验证到的)](#103319-找出冗余的互动即未被验证到的)
-        - [10.3.4. Mockito如何实现Mock[3]](#1034-mockito如何实现mock3)
-    - [10.4. 控制层测试](#104-控制层测试)
-        - [10.4.1. 基本使用](#1041-基本使用)
-            - [10.4.1.1. 依赖](#10411-依赖)
-            - [10.4.1.2. 基本使用](#10412-基本使用)
-            - [10.4.1.3. 比较 MVC 的返回结果](#10413-比较-mvc-的返回结果)
-            - [10.4.1.4. 完整例子](#10414-完整例子)
-        - [10.4.2. 相关类说明](#1042-相关类说明)
-            - [10.4.2.1. MockMvcBuilder/MockMvcBuilders](#10421-mockmvcbuildermockmvcbuilders)
-            - [10.4.2.2. MockMvc](#10422-mockmvc)
-            - [10.4.2.3. RequestBuilder/MockMvcRequestBuilders](#10423-requestbuildermockmvcrequestbuilders)
-            - [10.4.2.4. ResultActions](#10424-resultactions)
-            - [10.4.2.5. ResultMatcher/MockMvcResultMatchers](#10425-resultmatchermockmvcresultmatchers)
-            - [10.4.2.6. ResultHandler/MockMvcResultHandlers](#10426-resulthandlermockmvcresulthandlers)
-            - [10.4.2.7. MvcResult](#10427-mvcresult)
-        - [10.4.3. 测试运行中的应用程序](#1043-测试运行中的应用程序)
-    - [10.5. 服务层测试](#105-服务层测试)
-    - [10.6. DAO层测试](#106-dao层测试)
-    - [10.7. SpringBoot实现单元测试时回滚事务](#107-springboot实现单元测试时回滚事务)
+  - [10.1. Junit](#101-junit)
+    - [10.1.1. 概述](#1011-概述)
+    - [10.1.2. JUnit 中的重要的 API](#1012-junit-中的重要的-api)
+    - [10.1.3. 常用注解](#1013-常用注解)
+    - [10.1.4. 套件测试](#1014-套件测试)
+  - [10.2. TestNG测试](#102-testng测试)
+    - [10.2.1. 概述](#1021-概述)
+    - [10.2.2. JUnit 4 Vs TestNG比较](#1022-junit-4-vs-testng比较)
+    - [10.2.3. 注解说明](#1023-注解说明)
+    - [10.2.4. 测试案例](#1024-测试案例)
+      - [10.2.4.1. 基本例子](#10241-基本例子)
+      - [10.2.4.2. 预期异常测试](#10242-预期异常测试)
+      - [10.2.4.3. 忽略测试](#10243-忽略测试)
+      - [10.2.4.4. 超时测试](#10244-超时测试)
+      - [10.2.4.5. 分组测试](#10245-分组测试)
+  - [10.3. Mockito](#103-mockito)
+    - [10.3.1. 介绍](#1031-介绍)
+    - [10.3.2. Mockito说明](#1032-mockito说明)
+    - [10.3.3. 例子](#1033-例子)
+      - [10.3.3.1. 基本的例子](#10331-基本的例子)
+      - [10.3.3.2. 验证行为](#10332-验证行为)
+      - [10.3.3.3. 模拟我们所期望的结果](#10333-模拟我们所期望的结果)
+      - [10.3.3.4. RETURNS_SMART_NULLS和RETURNS_DEEP_STUBS](#10334-returns_smart_nulls和returns_deep_stubs)
+      - [10.3.3.5. 模拟方法体抛出异常](#10335-模拟方法体抛出异常)
+      - [10.3.3.6. 使用注解来快速模拟](#10336-使用注解来快速模拟)
+      - [10.3.3.7. 参数匹配](#10337-参数匹配)
+      - [10.3.3.8. 自定义参数匹配](#10338-自定义参数匹配)
+      - [10.3.3.9. 捕获参数来进一步断言](#10339-捕获参数来进一步断言)
+      - [10.3.3.10. 使用方法预期回调接口生成期望值（Answer结构）](#103310-使用方法预期回调接口生成期望值answer结构)
+      - [10.3.3.11. 修改对未预设的调用返回默认期望](#103311-修改对未预设的调用返回默认期望)
+      - [10.3.3.12. 用spy监控真实对象](#103312-用spy监控真实对象)
+      - [10.3.3.13. 真实的部分mock](#103313-真实的部分mock)
+      - [10.3.3.14. 重置mock](#103314-重置mock)
+      - [10.3.3.15. 验证确切的调用次数](#103315-验证确切的调用次数)
+      - [10.3.3.16. 连续调用](#103316-连续调用)
+      - [10.3.3.17. 验证执行顺序](#103317-验证执行顺序)
+      - [10.3.3.18. 确保模拟对象上无互动发生](#103318-确保模拟对象上无互动发生)
+      - [10.3.3.19. 找出冗余的互动(即未被验证到的)](#103319-找出冗余的互动即未被验证到的)
+    - [10.3.4. Mockito如何实现Mock[3]](#1034-mockito如何实现mock3)
+  - [10.4. 控制层测试](#104-控制层测试)
+    - [10.4.1. 基本使用](#1041-基本使用)
+      - [10.4.1.1. 依赖](#10411-依赖)
+      - [10.4.1.2. 基本使用](#10412-基本使用)
+      - [10.4.1.3. 比较 MVC 的返回结果](#10413-比较-mvc-的返回结果)
+      - [10.4.1.4. 完整例子](#10414-完整例子)
+    - [10.4.2. 相关类说明](#1042-相关类说明)
+      - [10.4.2.1. MockMvcBuilder/MockMvcBuilders](#10421-mockmvcbuildermockmvcbuilders)
+      - [10.4.2.2. MockMvc](#10422-mockmvc)
+      - [10.4.2.3. RequestBuilder/MockMvcRequestBuilders](#10423-requestbuildermockmvcrequestbuilders)
+      - [10.4.2.4. ResultActions](#10424-resultactions)
+      - [10.4.2.5. ResultMatcher/MockMvcResultMatchers](#10425-resultmatchermockmvcresultmatchers)
+      - [10.4.2.6. ResultHandler/MockMvcResultHandlers](#10426-resulthandlermockmvcresulthandlers)
+      - [10.4.2.7. MvcResult](#10427-mvcresult)
+    - [10.4.3. 测试运行中的应用程序](#1043-测试运行中的应用程序)
+  - [10.5. 服务层测试](#105-服务层测试)
+  - [10.6. DAO层测试](#106-dao层测试)
+  - [10.7. SpringBoot实现单元测试时回滚事务](#107-springboot实现单元测试时回滚事务)
 
 <!-- /TOC -->
 
@@ -9088,6 +9089,7 @@ public class XxxConfiguration{
 ```
 **指定配置类**
 
+方式１: 
 在resource中创建文件 META-INF/spring.factories
 文件内容为
 ```yml
@@ -9097,7 +9099,18 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=xx.xx.xx.XxxConfi
 
 因为其他的SpringBoot项目中如果不指定这个配置类的扫描路径.这个配置类是不会加载的.因此使用上面的方式,SpringBoot启动时会扫描META-INF/spring.factories文件,从而确定依赖包中需要加载的配置类.
 
+方式１直接引入依赖，则会自动加载XxxConfiguration并创建符合条件的bean
 
+方式２：
+
+```java
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Import(XxxConfiguration.class)
+public @interface EnableXxxConfig {
+}
+```
+在启动类上加上上面的注解即可。
 
 
 ### 8.9.3. Starter原理
@@ -10162,7 +10175,15 @@ Spring Boot 可以通过 @PropertySource,@Value,@Environment, @ConfigurationProp
 <a href="#menu" >目录</a>
 
 ### 9.1.1. 微服务概念
+
 微服务是系统架构上的一种设计风格， 它的主旨是将一个原本独立的系统拆分成多个小型服务，这些小型服务都在各自独立的进程中运行，服务之间通过基于HTTP的RESTful API进行通信协作。 被拆分成的每一个小型服务都围绕着系统中的某一项或一些耦合度较高的业务功能进行构建， 并且每个服务都维护着自身的数据存储、 业务开发、自动化测试案例以及独立部署机制。 由千有了轻量级的通信协作基础， 所以这些微服务可以使用不同的语言来编写
+
+
+**单体应用存在的问题**
+* 复杂性高，单体应用模块多，难以维护
+* 可靠性差，如果某一个模块出现问题，整个应用将变得不可用
+* 扩展能力差，单体应用只适合作为一个整体进行扩展，无法根据业务模块进行伸缩
+* 阻碍技术创新，整个应用都使用同一种技术(语言，框架)，无法根据业务情况选择合适的技术
 
 **微服务主要的优势如下：**
 * 降低复杂度，易于开发和维护
@@ -10177,6 +10198,22 @@ Spring Boot 可以通过 @PropertySource,@Value,@Environment, @ConfigurationProp
     * 在微服务架构下，当某一组件发生故障时，故障会被隔离在单个服务中。 通过限流、熔断等方式降低错误导致的危害，保障核心业务正常运行。
 * 扩展
     * 单块架构应用也可以实现横向扩展，就是将整个应用完整的复制到不同的节点。当应用的不同组件在扩展需求上存在差异时，微服务架构便体现出其灵活性，因为每个服务可以根据实际需求独立进行扩展。
+
+**微服务常用组件概念**
+
+* 服务注册与发现
+  * 服务提供方将己方调用地址注册到服务注册中心，让服务调用方能够方便地查找，服务调用方从服务注册中心找到自己需要调用的服务地址
+* 负载均衡
+  * 将请求分发到不同的集群节点，避免单个应用负载增大
+* 服务网关
+  * 可以在这个组件中实现用户鉴权，动态路由，灰度发布，A/B测试，负载限流
+* 配置中心
+  * 将本地化的配置信息注册到配置中心进行统一配置
+* 调用链监控
+  * 记录完成一次请求的先后衔接和调用关系，并将这种串行化或并行的调用关系展示出来，在系统出错的时候，可以方便地找出出错点
+* 支撑平台
+  * 持续集成，健康检查，性能监控等的统一平台建设　
+
 
 **微服务带来的问题**
 * 运维要求较高
@@ -10268,6 +10305,19 @@ pom文件中指定cloud的版本，便可以不用指定各个子项目依赖的
 ## 9.2. 服务治理Eureka
 <a href="#menu" >目录</a>
 
+和 Consul 、 Zookeeper 类似， Eureka 是一个用于服务注册和发现的组件， Eureka 分为 Eureka Server 和 Eureka Client, Eureka　Server 为 Eureka 服务注册中心， Eureka Client 为 Eureka 客户端 。
+
+* 选择的原因
+  * 开源，并且经过生产环境检验
+  * Spring cloud 推荐，可以和其他模块无缝对接。完成相关功能
+* 组件
+  * Register Service：服务注册中心，它是一个 Eureka Server，提供服务注册和发现的功能。
+  * Provider Service：服务提供者，它是一个 Eureka Client，提供服务 。
+  * Consumer Service：服务消费者，它是一个 Eureka Cient，消费服务
+
+服务消费的基本过程如下：首先需要一个服务注册中心 Eureka Server，服务提供者 EurekaClient 向服务注册中心 Eureka Server 注册，将自己的信息（比如服务名和服务的 IP 地址等）通过restful的形式提交给服务注册中心 Eureka Server。同样，服务消费者 Eureka Client 也向服务注册中心Eureka Server 注册，同时服务消费者获取一份服务注册列表的信息 ， 该列表包含了所有向服务注册中心 Eureka Server 注册的服务信息。获取服务注册列表信息之后 ，服务消费者就知到服务提供者的 IP 地址，可以通过 Http远程调度来消费服务提供者的服务。
+
+
 ### 9.2.1. 基本使用
 
 **注册中心**
@@ -10283,18 +10333,28 @@ pom文件中指定cloud的版本，便可以不用指定各个子项目依赖的
 ```yml
 server:
   port: 8001
+
+spring:
+  application:
+    name: user-service
 eureka:
   instance:
     hostname: localhost
+    #instance-id是eureka服务的唯一标记，主要用于区分集群中不同的实例
+    #默认是eureka.instance.hostname:spring.application.name:server.port
+    instance-id: ${spring.application.name}:${server.port}:${random.value}
   client:
-    #false 禁止向注册中心注册,默认true
+    #如果是单个eureka，应当设置为false　
+    #false:禁止向注册中心注册,默认true
     register-with-eureka: false
-    #false进制获取注册中心中各个微服务的注册信息,默认true
+    #false:禁止获取注册中心中各个微服务的注册信息,默认true
     fetch-registry: false
     service-url:
-      defaultZone:
-          http://localhost:8001/eureka/
+      #配置自己的地址　http://hostip:port/eureka/
+      defaultZone:　http://localhost:8001/eureka/
 ```
+
+
 
 * 启动类通过@EnableEurekaServer使能配置中心
 ```java
@@ -10307,7 +10367,16 @@ public class CenterApplication {
     }
 }
 ```
-配置中心创建完成
+配置中心创建完成.
+
+**访问配置中心**
+
+访问地址:http://localhost:8001/
+
+![注册中心页面](pic/spring/springcloud/center.png)
+这里配置了一个消费者(8003)和两个服务提供者（8002/8012）
+
+status的UP后面的字符串即为服务的唯一标识instance-id。可以通过eureka.instance.instance-id进行修改。
 
 **微服务**
 * 依赖引入
@@ -10325,7 +10394,7 @@ eureka:
     service-url:
       defaultZone: http://localhost:8001/eureka/
 ```
-* 使用@EnableEurekaClient或者@EnableDiscoveryClien七使能微服务
+* 使用@EnableEurekaClient或者@EnableDiscoveryClient使能微服务
 ```java
 @EnableEurekaClient
 @SpringBootApplication
@@ -10340,14 +10409,66 @@ public class ConsumerApplication {
 ```
 微服务创建完成
 
-**访问配置中心**
+**获取元数据**
 
-访问地址:http://localhost:8001/
-
-![注册中心页面](pic/spring/springcloud/center.png)
-这里配置了一个消费者(8003)和两个服务提供者（8002/8012）
-
-status的UP后面的字符串即为服务的唯一标识instance-id。可以通过eureka.instance.instance-id进行修改。
+```java
+@Autowired
+private EurekaDiscoveryClient discoveryClient;
+//参数是spring.application.name
+List<ServiceInstance> serviceInstances =  discoveryClient.getInstances("USER-SERVICE");
+```
+```yml
+[
+  {
+    "metadata": {
+      "management.port": "8004",
+      "jmx.port": "45273"
+    },
+    "secure": false,
+    "uri": "http://localhost:8004",
+    "serviceId": "USER-SERVICE",
+    "instanceId": "localhost:user-service:8004",
+    "instanceInfo": {
+      "instanceId": "localhost:user-service:8004",
+      "app": "USER-SERVICE",
+      "ipAddr": "192.168.1.104",
+      "sid": "na",
+      "homePageUrl": "http://localhost:8004/",
+      "statusPageUrl": "http://localhost:8004/actuator/info",
+      "healthCheckUrl": "http://localhost:8004/actuator/health",
+      "vipAddress": "user-service",
+      "secureVipAddress": "user-service",
+      "countryId": 1,
+      "dataCenterInfo": {
+        "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+        "name": "MyOwn"
+      },
+      "hostName": "localhost",
+      "status": "UP",　
+      "overriddenStatus": "UNKNOWN",
+      "leaseInfo": {
+        "renewalIntervalInSecs": 30,
+        "durationInSecs": 90,
+        "registrationTimestamp": 1593791512137,
+        "lastRenewalTimestamp": 1593791512137,
+        "evictionTimestamp": 0,
+        "serviceUpTimestamp": 1593791512137
+      },
+      "isCoordinatingDiscoveryServer": false,
+      "metadata": {
+        "management.port": "8004",
+        "jmx.port": "45273"
+      },
+      "lastUpdatedTimestamp": 1593791512137,
+      "lastDirtyTimestamp": 1593791512095,
+      "actionType": "ADDED"
+    },
+    "scheme": "http",
+    "host": "localhost",
+    "port": 8004
+  }
+]
+```
 
 **给注册中心添加登录认证**
 
@@ -10389,14 +10510,25 @@ eureka:
   instance:
     hostname: localhost
   client:
+    #因为注册中新要互相向对方注册和获取注册信息，因此需要设置为true
     #false 禁止向注册中心注册,默认true
     #register-with-eureka: false
     #false进制获取注册中心中各个微服务的注册信息,默认true
     #fetch-registry: false
     service-url:
-      defaultZone:
-          http://localhost:8001/eureka/,http://localhost:8002/eureka/,http://localhost:8003/eureka/
+      defaultZone: http://localhost:8001/eureka/,http://localhost:8002/eureka/,http://localhost:8003/eureka/
 ```
+服务消费者和服务提供者配置
+```yml
+```yml
+eureka:
+  client:
+    service-url:
+    #如果这里只是·配置其中的一个节点，也能正常注册到集群，因为server集群节点间会进行同步，一般最好配置多个集群节点
+      defaultZone: http://localhost:8001/eureka/,http://localhost:8002/eureka/,http://localhost:8003/eureka/
+```
+
+
 EurekaServer的高可用实际上就是将自己作为服务向其他服务注册中心注册自己， 这样就可以形成一组互相注册的服务注册中心， 以实现服务清单的互相同步， 达到高可用的效果
 
 ### 9.2.3. 原理说明
@@ -10409,7 +10541,7 @@ EurekaServer的高可用实际上就是将自己作为服务向其他服务注�
 * 服务注册中心
     * Eureka 提供的服务端， 提供服务注册与发现的功能， 也就是在上一节中我们实现的 eureka-server。
 * 服务提供者
-    * 提供服务的应用， 可以是 Spring Boot 应用， 也可以是其他技术平台且遵循 Eureka 通信机制的应用。它将自己提供的服务注册到 Eureka, 以供其他应用发现，也就是在上一节中我们实现的 HELLO-SERVICE 应用。
+    * 提供服务的应用， 可以是 Spring Boot 应用， 也可以是其他技术平台且遵循 Eureka 通信机制的应用。它将自己提供的服务注册到 Eureka, 以供其他应用发现。
 * 服务消费者
     * 消费者应用从服务注册中心获取服务列表， 从而使消费者可以知道去何处调用其所需要的服务
 
@@ -10430,13 +10562,14 @@ EurekaServer的高可用实际上就是将自己作为服务向其他服务注�
         * 如架构图中所示， 这里的两个服务提供者分别注册到了两个不同的服务注册中心上，也就是说， 它们的信息分别被两个服务注册中心所维护。 此时，由于服务注册中心之间因互相注册为服务， 当服务提供者发送注册请求到一个服务注册中心时， 它会将该请求转发给集群中相连的其他注册中心， 从而实现注册中心之间的服务同步 。 
         * 通过服务同步，两个服务提供者的服务信息就可以通过这两台服务注册中心中的任意一台获取到。
     * 服务续约
-        * 服务注册中心和服务提供者将会进行心跳操作
-        * eureka.instance.lease-renewal-interval-in-seconds 参数用于定义服务续约任务的调用间隔时间，默认为30秒。 eureka.instance.lease-expiration-duration-in-seconds参数用于定义服务失效的时间，默认为90秒
+        * 服务注册中心和服务提供者将会进行心跳操作，服务注册中心如果长时间没有心跳，则会注销该实例。
+        * eureka.instance.lease-renewal-interval-in-seconds 参数用于定义服务续约任务的调用间隔时间，默认为30秒
+        * eureka.instance.lease-expiration-duration-in-seconds参数用于定义服务失效的时间，默认为90秒.也就是说连续三次没有心跳，说明该服务实例失效了
 * **服务消费者**
     * 获取服务
         * 启动服务消费者的时候，它会发送一个REST请求给服务注册中心，来获取上面注册的服务清单
         * Eureka Server会维护一份只读的服务清单来返回给客户端，同时该缓存清单会每隔30秒更新一次.
-        * 获取服务是服务消费者的基础，所以必须确保eureka.c巨ent.fetch-registry=true,默认值为true
+        * 获取服务是服务消费者的基础，所以必须确保eureka.client.fetch-registry=true,默认值为true
         * 希望修改缓存清单的 更新时间，可以通过 eureka.client.registry-fetch-interval-seconds=30参数进行修改，该参数默认值为30, 单位为秒        
     * 服务调用
         * 服务消费者在 获取服务清单后，通过服务名可以获得具体提供服务的实例名和该实例的元数据信息。 因为有这些服务实例的详细信息， 所以客户端可以根据自己的需要决定具体调用哪个实例，在ribbon中会默认采用轮询的方式进行调用，从而实现客户端的负载均衡
@@ -10451,21 +10584,31 @@ EurekaServer的高可用实际上就是将自己作为服务向其他服务注�
         * EurekaServer在运行期间，会统计心跳失败的比例在15分钟之内是否低于85%, 如果出现低于的情况（在单机调试的时候很容易满足， 实际在生产环境上通常是由于网络不稳定导致）， EurekaServer会将当前的实例注册信息保护起来， 让这些实例不会过期， 尽可能保护这些注册信息
         * 在这段保护期间内实例若出现问题， 那么客户端很容易拿到实际已经不存在的服务实例， 会出现调用失败的清况， 所以客户端必须要有容错机制， 比如可以使用请求重试、 断路器等机制。
         * eureka.server.enableself-preservation=true,默认使能
+    * 服务注册中心应当具备的功能
+      * 服务注册表：是服务注册组件的核心。用来记录各个微服务的信息。例如名称,ip,端口等。服务注册表提供查询API和管理API,查询API用于查询可用的微服务实例，管理API用于服务的注销和注册
+      * 服务注册和服务发现，服务注册是在微服务启动的时候，将自己的信息注册到服务注册中心。服务发现是指查询可用微服务及其网络地址的信息
+      * 服务检查，使用一定机制检查已经注册的服务，如发现某实例长时间无法访问，就从服务注册表中移除该实例。
+    * Spring注册中心的实现有Eureka,Consul,zookeeper
 
+服务消费者本身也可能是服务提供者，所以其启动和运行时操作上是一致的。
 
 #### 9.2.3.2. Region,Zone
+
 **背景**
+
 用户量比较大或者用户地理位置分布范围很广的项目，一般都会有多个机房。这个时候如果上线springCloud服务的话，我们希望一个机房内的服务优先调用同一个机房内的服务，当同一个机房的服务不可用的时候，再去调用其它机房的服务，以达到减少延时的作用。
 
 **概念**
+
 eureka提供了region和zone两个概念来进行分区，这两个概念均来自于亚马逊的AWS：
-* region：可以简单理解为地理上的分区，比如亚洲地区，或者华北地区，再或者北京等等，没有具体大小的限制。根据项目具体的情况，可以自行合理划分region。
+* region：可以简单理解为地理上的分区，比如亚洲地区，或者华北地区，再或者北京等等，没有具体大小的限制。根据项目具体的情况，可以自行合理划分region。每个region之间完全隔离
 * zone：可以简单理解为region内的具体机房，比如说region划分为北京，然后北京有两个机房，就可以在此region之下划分出zone1,zone2两个zone。
 
 **分区服务架构图**
+
 ![](https://segmentfault.com/img/bV7lKo?w=865&h=343)
-如图所示，有一个region:beijing，下面有zone-1和zone-2两个分区，每个分区内有一个注册中心Eureka Server和一个服务提供者Service。
-我们在zone-1内创建一个Consumer-1服务消费者的话，其会优先调用同一个zone内的Service-1，当Service-1不可用时，才会去调用zone-2内的Service-2。
+
+如图所示，有一个region:beijing，下面有zone-1和zone-2两个分区，每个分区内有一个注册中心Eureka Server和一个服务提供者Service。 我们在zone-1内创建一个Consumer-1服务消费者的话，其会优先调用同一个zone内的Service-1，当Service-1不可用时，才会去调用zone-2内的Service-2。
 
 **配置**
 
@@ -10489,6 +10632,7 @@ eureka:
     #地区
     region: beijing
     availability-zones:
+     # 对于服务提供者，优先注册到前面的zone.对于服务消费者，优先请求排在前面的服务提供者
       beijing: zone-1,zone-2
     service-url:
       zone-1: http://localhost:30000/eureka/
@@ -10517,6 +10661,7 @@ eureka:
     #地区
     region: beijing
     availability-zones:
+   
       beijing: zone-2,zone-1
     service-url:
       zone-1: http://localhost:30000/eureka/
@@ -10565,7 +10710,7 @@ eureka:
       zone-1: http://localhost:30000/eureka/
       zone-2: http://localhost:30001/eureka/
 
-zone.name: zone-
+zone.name: zone-1
 ```
 
 
@@ -10697,7 +10842,7 @@ eureka.instance.lease-expiration-duration-in-seconds: 90
 #### 9.2.3.3. 源码分析
 <a href="#menu" >目录</a>
 
-
+Eureka服务端与客户之间的通讯方式为http，服务端通过提供rest API风格的接口与客户端或其它服务端交互。
 
 我们在将一个普通的 Spring Boot 应用注册到 Eureka Server 或是从 Eureka Server 中获取服务列表时， 主要就做了两件事：
 * 在应用主类中配置了@EnableDiscoveryClient注解。
@@ -10712,7 +10857,7 @@ eureka.instance.lease-expiration-duration-in-seconds: 90
 @Documented
 @Inherited
 @Import(EnableDiscoveryClientimportSelector.class)
-public @in七erface EnableDiscoveryClient {
+public @interface EnableDiscoveryClient {
 
 }
 ```
@@ -11168,14 +11313,14 @@ public class EurekaInstanceConfigBean implements CloudEurekaInstanceConfig, Envi
 |hostname |主机名， 不配置的时候将根据操作系统的主机名来获取
 
 
-**服务实例类配置**
+
 
 
 
 ## 9.3. 负载均衡Ribbon
 <a href="#menu" >目录</a>
 
-Spring Cloud Ribbon 是一个基于 HTTP 和 TCP 的客户端负载均衡工具，它基于 Netflixribbon 实现。 通过 Spring Cloud 的封装， 可以让我们轻松地将面向服务的 REST 模板请求自动转换成客户端负载均衡的服务调用。 Spring Cloud Ribbon 虽然只是一个工具类框架，它不像服务注册中心、 配置中心、 API 网关那样需要独立部署， 但是它几乎存在于每一个Spring Cloud 构建的微服务和基础设施中。 因为微服务间的调用，API 网关的请求转发等内容实际上都是通过伈bbon 来实现的，包括后续我们将要介绍的 Feign, 它也是基于 Ribbon实现的工具。 所以， 对 Spring Cloud Ribbon 的理解和使用， 对于我们使用 Spring Cloud 来构建微服务非常重要。
+Spring Cloud Ribbon 是一个基于 HTTP 和 TCP 的客户端负载均衡工具，它基于 Netflix ribbon 实现。 通过 Spring Cloud 的封装， 可以让我们轻松地将面向服务的 REST 模板请求自动转换成客户端负载均衡的服务调用。 Spring Cloud Ribbon 虽然只是一个工具类框架，它不像服务注册中心、 配置中心、 API 网关那样需要独立部署， 但是它几乎存在于每一个Spring Cloud 构建的微服务和基础设施中。 因为微服务间的调用，API 网关的请求转发等内容实际上都是通过伈bbon 来实现的，包括后续我们将要介绍的 Feign, 它也是基于 Ribbon实现的工具。 所以， 对 Spring Cloud Ribbon 的理解和使用， 对于我们使用 Spring Cloud 来构建微服务非常重要。
 
 ribbon底层是基于RestTemplate实现Http请求
 org.springframework.web.client.RestTemplate
@@ -11197,7 +11342,7 @@ org.springframework.web.client.RestTemplate
 public class RibbonConfig {
 
     @Bean
-    //开启客户端负载均衡
+    //开启客户端ribbon负载均衡
     @LoadBalanced
     public RestTemplate restTemplate(){
         return new RestTemplate();
@@ -11243,32 +11388,6 @@ public class RibbonService {
 * 维护了 一个被@LoadBalanced 注解修饰的RestTempl琴e对象列表， 并在这里进行初始化， 通过调用Res七TemplateCustomizer的实例来给需要客户端负载均衡的Res七Template增加LoadBalancerin七erceptor拦截器。
 
 ```java
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
-
-package org.springframework.cloud.client.loadbalancer;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.function.Consumer;
-import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.SmartInitializingSingleton;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
-import org.springframework.retry.support.RetryTemplate;
-import org.springframework.web.client.RestTemplate;
-
 @Configuration
 @ConditionalOnClass({RestTemplate.class})
 @ConditionalOnBean({LoadBalancerClient.class})
