@@ -2,221 +2,231 @@
 <!-- TOC -->
 
 - [1. Redis(Remote Dictionary Server)](#1-redisremote-dictionary-server)
-    - [1.1. 简介](#11-简介)
-        - [1.1.1. 特性](#111-特性)
-        - [1.1.2. 应用场景](#112-应用场景)
-        - [1.1.3. 常见客户端](#113-常见客户端)
-        - [1.1.4. 与memcache对比](#114-与memcache对比)
-        - [1.1.5. 常用配置说明](#115-常用配置说明)
-        - [1.1.6. 常见面试题](#116-常见面试题)
-    - [1.2. 常用数据结构](#12-常用数据结构)
-        - [1.2.1. redis-cli和redis-server](#121-redis-cli和redis-server)
-        - [1.2.2. 种基本数据类型](#122-种基本数据类型)
-        - [1.2.3. 字符串](#123-字符串)
-        - [1.2.4. 列表](#124-列表)
-        - [1.2.5. 散列](#125-散列)
-        - [1.2.6. 集合](#126-集合)
-        - [1.2.7. 有序集合](#127-有序集合)
-        - [1.2.8. 事务](#128-事务)
-        - [1.2.9. 键](#129-键)
-            - [1.2.9.1. SCAN](#1291-scan)
-                - [1.2.9.1.1. 基本用法](#12911-基本用法)
-                - [1.2.9.1.2. SCAN命令的保证](#12912-scan命令的保证)
-                - [1.2.9.1.3. 每次执行返回的元素](#12913-每次执行返回的元素)
-                - [1.2.9.1.4. COUNT选项](#12914-count选项)
-                - [1.2.9.1.5. MATCH 选项](#12915-match-选项)
-                - [1.2.9.1.6. 并发执行多个迭代](#12916-并发执行多个迭代)
-                - [1.2.9.1.7. 中途停止迭代](#12917-中途停止迭代)
-                - [1.2.9.1.8. 使用错误的游标进行增量式迭代](#12918-使用错误的游标进行增量式迭代)
-                - [1.2.9.1.9. 迭代终结的保证](#12919-迭代终结的保证)
-            - [1.2.9.2. SORT](#1292-sort)
-                - [1.2.9.2.1. 一般SORT的用法](#12921-一般sort的用法)
-                - [1.2.9.2.2. 使用ALPHA](#12922-使用alpha)
-                - [1.2.9.2.3. 使用LIMIT](#12923-使用limit)
-                - [1.2.9.2.4. 使用外部KEY](#12924-使用外部key)
-                - [1.2.9.2.5. 保存排序结果](#12925-保存排序结果)
-        - [1.2.10. 连接](#1210-连接)
-        - [1.2.11. Server（服务器）](#1211-server服务器)
-    - [1.3. 数据结构和对象实现原理](#13-数据结构和对象实现原理)
-        - [1.3.1. 简单动态字符串](#131-简单动态字符串)
-        - [1.3.2. 链表](#132-链表)
-        - [1.3.3. 字典](#133-字典)
-            - [1.3.3.1. Rehash](#1331-rehash)
-            - [1.3.3.2. 渐进式Hash](#1332-渐进式hash)
-        - [1.3.4. 跳跃表](#134-跳跃表)
-        - [1.3.5. 整数集合](#135-整数集合)
-        - [1.3.6. 压缩列表](#136-压缩列表)
-        - [1.3.7. 对象](#137-对象)
-            - [1.3.7.1. 对象类型和编码](#1371-对象类型和编码)
-            - [1.3.7.2. 字符串对象](#1372-字符串对象)
-            - [1.3.7.3. 列表对象](#1373-列表对象)
-            - [1.3.7.4. 哈希对象](#1374-哈希对象)
-            - [1.3.7.5. 集合对象](#1375-集合对象)
-            - [1.3.7.6. 有序集合对象](#1376-有序集合对象)
-            - [1.3.7.7. 类型检查和命令多态](#1377-类型检查和命令多态)
-            - [1.3.7.8. 内存回收](#1378-内存回收)
-            - [1.3.7.9. 对象共享](#1379-对象共享)
-            - [1.3.7.10. 对象空转时长](#13710-对象空转时长)
-    - [1.4. 持久化](#14-持久化)
-        - [1.4.1. Redis持久化](#141-redis持久化)
-        - [1.4.2. RDB持久化](#142-rdb持久化)
-            - [1.4.2.1. 快照条件](#1421-快照条件)
-            - [1.4.2.2. 快照原理](#1422-快照原理)
-            - [1.4.2.3. 优点和缺点](#1423-优点和缺点)
-        - [1.4.3. AOF持久化(append-only file)](#143-aof持久化append-only-file)
-            - [1.4.3.1. 基本实现](#1431-基本实现)
-            - [1.4.3.2. 重写AOF文件](#1432-重写aof文件)
-            - [1.4.3.3. 优点和缺点](#1433-优点和缺点)
-        - [1.4.4. RDB和AOF选择](#144-rdb和aof选择)
-        - [1.4.5. 验证快照文件和AOF文件](#145-验证快照文件和aof文件)
-        - [1.4.6. 备份 Redis 数据](#146-备份-redis-数据)
-        - [1.4.7. 问题定位和优化](#147-问题定位和优化)
-            - [1.4.7.1. fork操作](#1471-fork操作)
-            - [1.4.7.2. 子进程开销监控和优化](#1472-子进程开销监控和优化)
-    - [1.5. 集群](#15-集群)
-        - [1.5.1. 复制Replication](#151-复制replication)
-            - [1.5.1.1. cap原理](#1511-cap原理)
-            - [1.5.1.2. 配置](#1512-配置)
-            - [1.5.1.3. 原理](#1513-原理)
-            - [1.5.1.4. 传输延迟](#1514-传输延迟)
-            - [1.5.1.5. 拓扑结构](#1515-拓扑结构)
-            - [1.5.1.6. 数据库崩溃处理](#1516-数据库崩溃处理)
-            - [1.5.1.7. 无硬盘复制](#1517-无硬盘复制)
-            - [1.5.1.8. 增量复制](#1518-增量复制)
-            - [1.5.1.9. 心跳机制](#1519-心跳机制)
-            - [1.5.1.10. 开发与运维中的问题](#15110-开发与运维中的问题)
-                - [1.5.1.10.1. 读写分离](#151101-读写分离)
-                - [1.5.1.10.2. 主从配置不一致](#151102-主从配置不一致)
-                - [1.5.1.10.3. 规避全量复制](#151103-规避全量复制)
-                - [1.5.1.10.4. 规避复制风暴](#151104-规避复制风暴)
-        - [1.5.2. 哨兵Sentinel](#152-哨兵sentinel)
-            - [1.5.2.1. 什么是哨兵](#1521-什么是哨兵)
-            - [1.5.2.2. 基本操作](#1522-基本操作)
-            - [1.5.2.3. 配置 Sentinel](#1523-配置-sentinel)
-            - [1.5.2.4. 每个 Sentinel 都需要定期执行的任务](#1524-每个-sentinel-都需要定期执行的任务)
-            - [1.5.2.5. 自动发现 Sentinel 和从服务器](#1525-自动发现-sentinel-和从服务器)
-            - [1.5.2.6. Sentinel API](#1526-sentinel-api)
-            - [1.5.2.7. 故障转移](#1527-故障转移)
-            - [1.5.2.8. TILT 模式](#1528-tilt-模式)
-            - [1.5.2.9. 处理 -BUSY 状态](#1529-处理--busy-状态)
-            - [1.5.2.10. 实现原理](#15210-实现原理)
-                - [1.5.2.10.1. 三个定时监控](#152101-三个定时监控)
-                - [1.5.2.10.2. 主观下线和客观下线](#152102-主观下线和客观下线)
-                - [1.5.2.10.3. 领导者Sentinel节点选举](#152103-领导者sentinel节点选举)
-                - [1.5.2.10.4. 故障转移](#152104-故障转移)
-            - [1.5.2.11. 哨兵的部署](#15211-哨兵的部署)
-        - [1.5.3. 集群Cluster](#153-集群cluster)
-            - [1.5.3.1. 集群简介](#1531-集群简介)
-            - [1.5.3.2. 集群数据分布](#1532-集群数据分布)
-                - [1.5.3.2.1. 分布规则](#15321-分布规则)
-                - [1.5.3.2.2. 集群功能限制](#15322-集群功能限制)
-            - [1.5.3.3. Redis 集群数据共享](#1533-redis-集群数据共享)
-            - [1.5.3.4. Redis 集群中的主从复制](#1534-redis-集群中的主从复制)
-            - [1.5.3.5. Redis 集群的一致性保证（guarantee）](#1535-redis-集群的一致性保证guarantee)
-            - [1.5.3.6. 节点通信](#1536-节点通信)
-                - [1.5.3.6.1. 通信流程](#15361-通信流程)
-                - [1.5.3.6.2. Gossip消息](#15362-gossip消息)
-                - [1.5.3.6.3. 节点选择](#15363-节点选择)
-            - [1.5.3.7. 集群伸缩](#1537-集群伸缩)
-                - [1.5.3.7.1. 伸缩原理](#15371-伸缩原理)
-                - [1.5.3.7.2. 扩容集群](#15372-扩容集群)
-                - [1.5.3.7.3. 收缩集群](#15373-收缩集群)
-            - [1.5.3.8. 请求路由](#1538-请求路由)
-                - [1.5.3.8.1. 请求重定向](#15381-请求重定向)
-            - [1.5.3.9. 故障转移](#1539-故障转移)
-                - [1.5.3.9.1. 故障发现](#15391-故障发现)
-                - [1.5.3.9.2. 故障恢复](#15392-故障恢复)
-                - [1.5.3.9.3. 故障转移时间](#15393-故障转移时间)
-                - [1.5.3.9.4. 故障转移演练](#15394-故障转移演练)
-            - [1.5.3.10. 集群运维](#15310-集群运维)
-                - [1.5.3.10.1. 集群完整性](#153101-集群完整性)
-                - [1.5.3.10.2. 带宽消耗](#153102-带宽消耗)
-                - [1.5.3.10.3. PubSub广播问题](#153103-pubsub广播问题)
-                - [1.5.3.10.4. 集群倾斜](#153104-集群倾斜)
-                - [1.5.3.10.5. 集群读写分离](#153105-集群读写分离)
-                - [1.5.3.10.6. 手动故障转移](#153106-手动故障转移)
-                - [1.5.3.10.7. 数据迁移](#153107-数据迁移)
-    - [1.6. 事务](#16-事务)
-        - [1.6.1. 概述](#161-概述)
-        - [1.6.2. 错误处理](#162-错误处理)
-        - [1.6.3. WATCH命令介绍](#163-watch命令介绍)
-        - [1.6.4. 优化](#164-优化)
-    - [1.7. 过期时间与内存优化](#17-过期时间与内存优化)
-        - [1.7.1. 常用命令](#171-常用命令)
-        - [1.7.2. 实现访问频率](#172-实现访问频率)
-        - [1.7.3. 键的过期策略](#173-键的过期策略)
-        - [1.7.4. 内存优化](#174-内存优化)
-            - [1.7.4.1. 内存消耗](#1741-内存消耗)
-                - [1.7.4.1.1. 内存使用统计](#17411-内存使用统计)
-                - [1.7.4.1.2. 内存消耗划分](#17412-内存消耗划分)
-                - [1.7.4.1.3. 子进程内存消耗](#17413-子进程内存消耗)
-            - [1.7.4.2. 内存管理](#1742-内存管理)
-                - [1.7.4.2.1. 设置内存上限](#17421-设置内存上限)
-                - [1.7.4.2.2. 动态调整内存上限](#17422-动态调整内存上限)
-                - [1.7.4.2.3. 内存回收策略](#17423-内存回收策略)
-            - [1.7.4.3. 内存优化](#1743-内存优化)
-                - [1.7.4.3.1. redisObject对象](#17431-redisobject对象)
-                - [1.7.4.3.2. 缩减键值对象](#17432-缩减键值对象)
-                - [1.7.4.3.3. 共享对象池](#17433-共享对象池)
-                - [1.7.4.3.4. 字符串优化](#17434-字符串优化)
-                - [1.7.4.3.5. 编码优化](#17435-编码优化)
-                - [1.7.4.3.6. 控制键的数量](#17436-控制键的数量)
-    - [1.8. 管道](#18-管道)
-    - [1.9. Redis 安全](#19-redis-安全)
-        - [1.9.1. 指令安全](#191-指令安全)
-        - [1.9.2. 端口安全](#192-端口安全)
-        - [1.9.3. Lua脚本安全](#193-lua脚本安全)
-        - [1.9.4. SSL代理](#194-ssl代理)
-    - [1.10. 发布订阅](#110-发布订阅)
-        - [1.10.1. PubSub 缺点](#1101-pubsub-缺点)
-    - [1.11. LUA脚本](#111-lua脚本)
-        - [1.11.1. LUA语法](#1111-lua语法)
-        - [1.11.2. Redis使用LUA](#1112-redis使用lua)
-            - [1.11.2.1. 常用命令](#11121-常用命令)
-        - [1.11.3. 在脚本中调用Redis命令](#1113-在脚本中调用redis命令)
-            - [1.11.3.1. Jedis操作LUA](#11131-jedis操作lua)
-    - [1.12. 客户端](#112-客户端)
-        - [1.12.1. 通信协议](#1121-通信协议)
-        - [1.12.2. 客户端管理](#1122-客户端管理)
-            - [1.12.2.1. Redis 的info 命令](#11221-redis-的info-命令)
-            - [1.12.2.2. 客户端API](#11222-客户端api)
-            - [1.12.2.3. 客户端相关配置](#11223-客户端相关配置)
-            - [1.12.2.4. 客户端统计片段](#11224-客户端统计片段)
-        - [1.12.3. 客户端常见异常](#1123-客户端常见异常)
-        - [1.12.4. 客户端案例分析](#1124-客户端案例分析)
-            - [1.12.4.1. Redis 内存陡增](#11241-redis-内存陡增)
-            - [1.12.4.2. 客户端周期性超时](#11242-客户端周期性超时)
-    - [1.13. 线程模型](#113-线程模型)
-        - [1.13.1. 相关概念](#1131-相关概念)
-        - [1.13.2. 阻塞问题](#1132-阻塞问题)
-            - [1.13.2.1. 发现阻塞](#11321-发现阻塞)
-            - [1.13.2.2. 内在原因](#11322-内在原因)
-                - [1.13.2.2.1. API使用不合理](#113221-api使用不合理)
-                - [1.13.2.2.2. CPU饱和](#113222-cpu饱和)
-            - [1.13.2.3. 持久化阻塞](#11323-持久化阻塞)
-            - [1.13.2.4. 外在原因](#11324-外在原因)
-                - [1.13.2.4.1. CPU竞争](#113241-cpu竞争)
-                - [1.13.2.4.2. 内存交换](#113242-内存交换)
-                - [1.13.2.4.3. 网络问题](#113243-网络问题)
-    - [1.14. 慢查询日志](#114-慢查询日志)
-    - [1.15. 监视器](#115-监视器)
-    - [1.16. Redis使用注意事项](#116-redis使用注意事项)
-        - [1.16.1. Linux 配置优化](#1161-linux-配置优化)
-        - [1.16.2. flushall/flushdb误操作](#1162-flushallflushdb误操作)
-            - [1.16.2.1. 借助AOF机制恢复](#11621-借助aof机制恢复)
-            - [1.16.2.2. RDB问题](#11622-rdb问题)
-            - [1.16.2.3. 从节点有什么变化](#11623-从节点有什么变化)
-            - [1.16.2.4. 快速恢复数据](#11624-快速恢复数据)
-        - [1.16.3. 安全的redis](#1163-安全的redis)
-        - [1.16.4. bigkey处理](#1164-bigkey处理)
-        - [1.16.5. 热点key](#1165-热点key)
-    - [1.17. 关于redis性能问题分析和优化](#117-关于redis性能问题分析和优化)
-        - [1.17.1. 如何查看Redis性能](#1171-如何查看redis性能)
-        - [1.17.2. 内存](#1172-内存)
-        - [1.17.3. 命令处理数](#1173-命令处理数)
-        - [1.17.4. 延迟时间](#1174-延迟时间)
-        - [1.17.5. 内存碎片率](#1175-内存碎片率)
-        - [1.17.6. 回收key](#1176-回收key)
+  - [1.1. 简介](#11-简介)
+    - [1.1.1. 特性](#111-特性)
+    - [1.1.2. 应用场景](#112-应用场景)
+    - [1.1.3. 常见客户端](#113-常见客户端)
+    - [1.1.4. 与memcache对比](#114-与memcache对比)
+    - [1.1.5. 常用配置说明](#115-常用配置说明)
+    - [1.1.6. 常见面试题](#116-常见面试题)
+  - [1.2. 常用数据结构](#12-常用数据结构)
+    - [1.2.1. redis-cli和redis-server](#121-redis-cli和redis-server)
+    - [1.2.2. 种基本数据类型](#122-种基本数据类型)
+    - [1.2.3. 字符串](#123-字符串)
+    - [1.2.4. 列表](#124-列表)
+    - [1.2.5. 散列](#125-散列)
+    - [1.2.6. 集合](#126-集合)
+    - [1.2.7. 有序集合](#127-有序集合)
+    - [1.2.8. 事务](#128-事务)
+    - [1.2.9. 键](#129-键)
+      - [1.2.9.1. SCAN](#1291-scan)
+        - [1.2.9.1.1. 基本用法](#12911-基本用法)
+        - [1.2.9.1.2. SCAN命令的保证](#12912-scan命令的保证)
+        - [1.2.9.1.3. 每次执行返回的元素](#12913-每次执行返回的元素)
+        - [1.2.9.1.4. COUNT选项](#12914-count选项)
+        - [1.2.9.1.5. MATCH 选项](#12915-match-选项)
+        - [1.2.9.1.6. 并发执行多个迭代](#12916-并发执行多个迭代)
+        - [1.2.9.1.7. 中途停止迭代](#12917-中途停止迭代)
+        - [1.2.9.1.8. 使用错误的游标进行增量式迭代](#12918-使用错误的游标进行增量式迭代)
+        - [1.2.9.1.9. 迭代终结的保证](#12919-迭代终结的保证)
+      - [1.2.9.2. SORT](#1292-sort)
+        - [1.2.9.2.1. 一般SORT的用法](#12921-一般sort的用法)
+        - [1.2.9.2.2. 使用ALPHA](#12922-使用alpha)
+        - [1.2.9.2.3. 使用LIMIT](#12923-使用limit)
+        - [1.2.9.2.4. 使用外部KEY](#12924-使用外部key)
+        - [1.2.9.2.5. 保存排序结果](#12925-保存排序结果)
+    - [1.2.10. 连接](#1210-连接)
+    - [1.2.11. Server（服务器）](#1211-server服务器)
+  - [1.3. 数据结构和对象实现原理](#13-数据结构和对象实现原理)
+    - [1.3.1. 简单动态字符串](#131-简单动态字符串)
+    - [1.3.2. 链表](#132-链表)
+    - [1.3.3. 字典](#133-字典)
+      - [1.3.3.1. Rehash](#1331-rehash)
+      - [1.3.3.2. 渐进式Hash](#1332-渐进式hash)
+    - [1.3.4. 跳跃表](#134-跳跃表)
+    - [1.3.5. 整数集合](#135-整数集合)
+    - [1.3.6. 压缩列表](#136-压缩列表)
+    - [1.3.7. 对象](#137-对象)
+      - [1.3.7.1. 对象类型和编码](#1371-对象类型和编码)
+      - [1.3.7.2. 字符串对象](#1372-字符串对象)
+      - [1.3.7.3. 列表对象](#1373-列表对象)
+      - [1.3.7.4. 哈希对象](#1374-哈希对象)
+      - [1.3.7.5. 集合对象](#1375-集合对象)
+      - [1.3.7.6. 有序集合对象](#1376-有序集合对象)
+      - [1.3.7.7. 类型检查和命令多态](#1377-类型检查和命令多态)
+      - [1.3.7.8. 内存回收](#1378-内存回收)
+      - [1.3.7.9. 对象共享](#1379-对象共享)
+      - [1.3.7.10. 对象空转时长](#13710-对象空转时长)
+  - [1.4. 持久化](#14-持久化)
+    - [1.4.1. Redis持久化](#141-redis持久化)
+    - [1.4.2. RDB持久化](#142-rdb持久化)
+      - [1.4.2.1. 快照条件](#1421-快照条件)
+      - [1.4.2.2. 快照原理](#1422-快照原理)
+      - [1.4.2.3. 优点和缺点](#1423-优点和缺点)
+    - [1.4.3. AOF持久化(append-only file)](#143-aof持久化append-only-file)
+      - [1.4.3.1. 基本实现](#1431-基本实现)
+      - [1.4.3.2. 重写AOF文件](#1432-重写aof文件)
+      - [1.4.3.3. 优点和缺点](#1433-优点和缺点)
+    - [1.4.4. RDB和AOF选择](#144-rdb和aof选择)
+    - [1.4.5. 验证快照文件和AOF文件](#145-验证快照文件和aof文件)
+    - [1.4.6. 备份 Redis 数据](#146-备份-redis-数据)
+    - [1.4.7. 问题定位和优化](#147-问题定位和优化)
+      - [1.4.7.1. fork操作](#1471-fork操作)
+      - [1.4.7.2. 子进程开销监控和优化](#1472-子进程开销监控和优化)
+  - [1.5. 集群](#15-集群)
+    - [1.5.1. 复制Replication](#151-复制replication)
+      - [1.5.1.1. cap原理](#1511-cap原理)
+      - [1.5.1.2. 配置](#1512-配置)
+      - [1.5.1.3. 原理](#1513-原理)
+      - [1.5.1.4. 传输延迟](#1514-传输延迟)
+      - [1.5.1.5. 拓扑结构](#1515-拓扑结构)
+      - [1.5.1.6. 数据库崩溃处理](#1516-数据库崩溃处理)
+      - [1.5.1.7. 无硬盘复制](#1517-无硬盘复制)
+      - [1.5.1.8. 增量复制](#1518-增量复制)
+      - [1.5.1.9. 心跳机制](#1519-心跳机制)
+      - [1.5.1.10. 开发与运维中的问题](#15110-开发与运维中的问题)
+        - [1.5.1.10.1. 读写分离](#151101-读写分离)
+        - [1.5.1.10.2. 主从配置不一致](#151102-主从配置不一致)
+        - [1.5.1.10.3. 规避全量复制](#151103-规避全量复制)
+        - [1.5.1.10.4. 规避复制风暴](#151104-规避复制风暴)
+    - [1.5.2. 哨兵Sentinel](#152-哨兵sentinel)
+      - [1.5.2.1. 什么是哨兵](#1521-什么是哨兵)
+      - [1.5.2.2. 基本操作](#1522-基本操作)
+      - [1.5.2.3. 配置 Sentinel](#1523-配置-sentinel)
+      - [1.5.2.4. 每个 Sentinel 都需要定期执行的任务](#1524-每个-sentinel-都需要定期执行的任务)
+      - [1.5.2.5. 自动发现 Sentinel 和从服务器](#1525-自动发现-sentinel-和从服务器)
+      - [1.5.2.6. Sentinel API](#1526-sentinel-api)
+      - [1.5.2.7. 故障转移](#1527-故障转移)
+      - [1.5.2.8. TILT 模式](#1528-tilt-模式)
+      - [1.5.2.9. 处理 -BUSY 状态](#1529-处理--busy-状态)
+      - [1.5.2.10. 实现原理](#15210-实现原理)
+        - [1.5.2.10.1. 三个定时监控](#152101-三个定时监控)
+        - [1.5.2.10.2. 主观下线和客观下线](#152102-主观下线和客观下线)
+        - [1.5.2.10.3. 领导者Sentinel节点选举](#152103-领导者sentinel节点选举)
+        - [1.5.2.10.4. 故障转移](#152104-故障转移)
+      - [1.5.2.11. 哨兵的部署](#15211-哨兵的部署)
+    - [1.5.3. 集群Cluster](#153-集群cluster)
+      - [1.5.3.1. 集群简介](#1531-集群简介)
+      - [1.5.3.2. 集群数据分布](#1532-集群数据分布)
+        - [1.5.3.2.1. 分布规则](#15321-分布规则)
+        - [1.5.3.2.2. 集群功能限制](#15322-集群功能限制)
+      - [1.5.3.3. Redis 集群数据共享](#1533-redis-集群数据共享)
+      - [1.5.3.4. Redis 集群中的主从复制](#1534-redis-集群中的主从复制)
+      - [1.5.3.5. Redis 集群的一致性保证（guarantee）](#1535-redis-集群的一致性保证guarantee)
+      - [1.5.3.6. 节点通信](#1536-节点通信)
+        - [1.5.3.6.1. 通信流程](#15361-通信流程)
+        - [1.5.3.6.2. Gossip消息](#15362-gossip消息)
+        - [1.5.3.6.3. 节点选择](#15363-节点选择)
+      - [1.5.3.7. 集群伸缩](#1537-集群伸缩)
+        - [1.5.3.7.1. 伸缩原理](#15371-伸缩原理)
+        - [1.5.3.7.2. 扩容集群](#15372-扩容集群)
+        - [1.5.3.7.3. 收缩集群](#15373-收缩集群)
+      - [1.5.3.8. 请求路由](#1538-请求路由)
+        - [1.5.3.8.1. 请求重定向](#15381-请求重定向)
+      - [1.5.3.9. 故障转移](#1539-故障转移)
+        - [1.5.3.9.1. 故障发现](#15391-故障发现)
+        - [1.5.3.9.2. 故障恢复](#15392-故障恢复)
+        - [1.5.3.9.3. 故障转移时间](#15393-故障转移时间)
+        - [1.5.3.9.4. 故障转移演练](#15394-故障转移演练)
+      - [1.5.3.10. 集群运维](#15310-集群运维)
+        - [1.5.3.10.1. 集群完整性](#153101-集群完整性)
+        - [1.5.3.10.2. 带宽消耗](#153102-带宽消耗)
+        - [1.5.3.10.3. PubSub广播问题](#153103-pubsub广播问题)
+        - [1.5.3.10.4. 集群倾斜](#153104-集群倾斜)
+        - [1.5.3.10.5. 集群读写分离](#153105-集群读写分离)
+        - [1.5.3.10.6. 手动故障转移](#153106-手动故障转移)
+        - [1.5.3.10.7. 数据迁移](#153107-数据迁移)
+  - [1.6. 事务](#16-事务)
+    - [1.6.1. 概述](#161-概述)
+    - [1.6.2. 错误处理](#162-错误处理)
+    - [1.6.3. WATCH命令介绍](#163-watch命令介绍)
+    - [1.6.4. 优化](#164-优化)
+  - [1.7. 过期时间与内存优化](#17-过期时间与内存优化)
+    - [1.7.1. 常用命令](#171-常用命令)
+    - [1.7.2. 实现访问频率](#172-实现访问频率)
+    - [1.7.3. 键的过期策略](#173-键的过期策略)
+    - [1.7.4. 内存优化](#174-内存优化)
+      - [1.7.4.1. 内存消耗](#1741-内存消耗)
+        - [1.7.4.1.1. 内存使用统计](#17411-内存使用统计)
+        - [1.7.4.1.2. 内存消耗划分](#17412-内存消耗划分)
+        - [1.7.4.1.3. 子进程内存消耗](#17413-子进程内存消耗)
+      - [1.7.4.2. 内存管理](#1742-内存管理)
+        - [1.7.4.2.1. 设置内存上限](#17421-设置内存上限)
+        - [1.7.4.2.2. 动态调整内存上限](#17422-动态调整内存上限)
+        - [1.7.4.2.3. 内存回收策略](#17423-内存回收策略)
+      - [1.7.4.3. 内存优化](#1743-内存优化)
+        - [1.7.4.3.1. redisObject对象](#17431-redisobject对象)
+        - [1.7.4.3.2. 缩减键值对象](#17432-缩减键值对象)
+        - [1.7.4.3.3. 共享对象池](#17433-共享对象池)
+        - [1.7.4.3.4. 字符串优化](#17434-字符串优化)
+        - [1.7.4.3.5. 编码优化](#17435-编码优化)
+        - [1.7.4.3.6. 控制键的数量](#17436-控制键的数量)
+  - [1.8. 管道](#18-管道)
+  - [1.9. Redis 安全](#19-redis-安全)
+    - [1.9.1. 指令安全](#191-指令安全)
+    - [1.9.2. 端口安全](#192-端口安全)
+    - [1.9.3. Lua脚本安全](#193-lua脚本安全)
+    - [1.9.4. SSL代理](#194-ssl代理)
+  - [1.10. 发布订阅](#110-发布订阅)
+    - [1.10.1. PubSub 缺点](#1101-pubsub-缺点)
+  - [1.11. LUA脚本](#111-lua脚本)
+    - [1.11.1. LUA语法](#1111-lua语法)
+    - [1.11.2. Redis使用LUA](#1112-redis使用lua)
+      - [1.11.2.1. 常用命令](#11121-常用命令)
+    - [1.11.3. 在脚本中调用Redis命令](#1113-在脚本中调用redis命令)
+      - [1.11.3.1. Jedis操作LUA](#11131-jedis操作lua)
+  - [1.12. 客户端](#112-客户端)
+    - [1.12.1. 通信协议](#1121-通信协议)
+    - [1.12.2. 客户端管理](#1122-客户端管理)
+      - [1.12.2.1. Redis 的info 命令](#11221-redis-的info-命令)
+      - [1.12.2.2. 客户端API](#11222-客户端api)
+      - [1.12.2.3. 客户端相关配置](#11223-客户端相关配置)
+      - [1.12.2.4. 客户端统计片段](#11224-客户端统计片段)
+    - [1.12.3. 客户端常见异常](#1123-客户端常见异常)
+    - [1.12.4. 客户端案例分析](#1124-客户端案例分析)
+      - [1.12.4.1. Redis 内存陡增](#11241-redis-内存陡增)
+      - [1.12.4.2. 客户端周期性超时](#11242-客户端周期性超时)
+  - [1.13. 线程模型](#113-线程模型)
+    - [1.13.1. 相关概念](#1131-相关概念)
+    - [1.13.2. 阻塞问题](#1132-阻塞问题)
+      - [1.13.2.1. 发现阻塞](#11321-发现阻塞)
+      - [1.13.2.2. 内在原因](#11322-内在原因)
+        - [1.13.2.2.1. API使用不合理](#113221-api使用不合理)
+        - [1.13.2.2.2. CPU饱和](#113222-cpu饱和)
+      - [1.13.2.3. 持久化阻塞](#11323-持久化阻塞)
+      - [1.13.2.4. 外在原因](#11324-外在原因)
+        - [1.13.2.4.1. CPU竞争](#113241-cpu竞争)
+        - [1.13.2.4.2. 内存交换](#113242-内存交换)
+        - [1.13.2.4.3. 网络问题](#113243-网络问题)
+  - [1.14. 慢查询日志](#114-慢查询日志)
+  - [1.15. 监视器](#115-监视器)
+  - [1.16. Redis使用注意事项](#116-redis使用注意事项)
+    - [1.16.1. Linux 配置优化](#1161-linux-配置优化)
+    - [1.16.2. flushall/flushdb误操作](#1162-flushallflushdb误操作)
+      - [1.16.2.1. 借助AOF机制恢复](#11621-借助aof机制恢复)
+      - [1.16.2.2. RDB问题](#11622-rdb问题)
+      - [1.16.2.3. 从节点有什么变化](#11623-从节点有什么变化)
+      - [1.16.2.4. 快速恢复数据](#11624-快速恢复数据)
+    - [1.16.3. 安全的redis](#1163-安全的redis)
+    - [1.16.4. bigkey处理](#1164-bigkey处理)
+    - [1.16.5. 热点key](#1165-热点key)
+  - [1.17. 关于redis性能问题分析和优化](#117-关于redis性能问题分析和优化)
+    - [1.17.1. 如何查看Redis性能](#1171-如何查看redis性能)
+    - [1.17.2. 内存](#1172-内存)
+    - [1.17.3. 命令处理数](#1173-命令处理数)
+    - [1.17.4. 延迟时间](#1174-延迟时间)
+    - [1.17.5. 内存碎片率](#1175-内存碎片率)
+    - [1.17.6. 回收key](#1176-回收key)
+  - [1.18. 客户端](#118-客户端)
+  - [1.19. Jedis](#119-jedis)
+  - [1.20. Redission](#120-redission)
+    - [1.20.1. 基本使用](#1201-基本使用)
+    - [1.20.2. 锁分析](#1202-锁分析)
+      - [1.20.2.1. 获取锁](#12021-获取锁)
+      - [1.20.2.2. lua脚本](#12022-lua脚本)
+        - [看门狗实现](#看门狗实现)
+      - [1.20.2.3. 操作锁](#12023-操作锁)
+      - [1.20.2.4. 释放锁](#12024-释放锁)
 
 <!-- /TOC -->
 
@@ -6025,3 +6035,248 @@ a. Hash分片：一个比较简单的方法实现，通过Hash函数计算出key
 b. 代理分片：客户端把请求发送到代理上，代理通过分片配置表选择对应的Redis实例。 如Twitter的Twemproxy，豌豆荚的codis。
 c. 一致性Hash分片
 d. 虚拟桶分片
+
+## 1.18. 客户端
+
+<a href="#menu" >目录</a>
+
+
+## 1.19. Jedis
+<a href="#menu" >目录</a>
+
+## 1.20. Redission
+<a href="#menu" >目录</a>
+
+### 1.20.1. 基本使用
+<a href="#menu" >目录</a>
+
+```xml
+<dependency>
+    <groupId>org.redisson</groupId>
+    <artifactId>redisson</artifactId>
+    <version>3.13.2</version>
+</dependency>
+```
+
+```java
+//1. 配置
+Config config = new Config();
+//单个服务器
+config.useSingleServer().setAddress("redis://127.0.0.1:6379");
+
+/*
+//其他模式
+config.useClusterServers();
+config.useReplicatedServers();
+config.useSentinelServers();
+*/
+// 2. Create Redisson instance
+
+// Sync and Async API
+RedissonClient redisson = Redisson.create(config);
+
+// Reactive API
+RedissonReactiveClient redissonReactive = Redisson.createReactive(config);
+
+// RxJava2 API
+RedissonRxClient redissonRx = Redisson.createRx(config);
+
+// 4. Get Redis based Lock
+RLock lock = redisson.getLock("myLock");
+RLockReactive lockReactive = redissonReactive.getLock("myLock");
+RLockRx lockRx = redissonRx.getLock("myLock");
+
+
+```
+
+### 1.20.2. 锁分析
+<a href="#menu" >目录</a>
+
+#### 1.20.2.1. 获取锁
+<a href="#menu" >目录</a>
+
+```java
+public RLock getLock(String name) {
+    return new RedissonLock(this.connectionManager.getCommandExecutor(), name);
+}
+
+public RedissonLock(CommandAsyncExecutor commandExecutor, String name) {
+    super(commandExecutor, name);
+    this.commandExecutor = commandExecutor;
+    this.id = commandExecutor.getConnectionManager().getId();
+    //看门狗超时时间，默认是30000ms ,也就是30ms,这么长
+    this.internalLockLeaseTime = commandExecutor.getConnectionManager().getCfg().getLockWatchdogTimeout();
+    this.entryName = this.id + ":" + name;
+    this.pubSub = commandExecutor.getConnectionManager().getSubscribeService().getLockPubSub();
+}
+```
+
+#### 1.20.2.2. lua脚本
+<a href="#menu" >目录</a>
+
+##### 看门狗实现
+<a href="#menu" >目录</a>
+
+
+```java
+private void renewExpiration() {
+    RedissonLock.ExpirationEntry ee = (RedissonLock.ExpirationEntry)EXPIRATION_RENEWAL_MAP.get(this.getEntryName());
+    if (ee != null) {
+        Timeout task = this.commandExecutor.getConnectionManager().newTimeout(new TimerTask() {
+            public void run(Timeout timeout) throws Exception {
+                RedissonLock.ExpirationEntry ent = (RedissonLock.ExpirationEntry)RedissonLock.EXPIRATION_RENEWAL_MAP.get(RedissonLock.this.getEntryName());
+                if (ent != null) {
+                    Long threadId = ent.getFirstThreadId();
+                    if (threadId != null) {
+                        //通过lua脚本重新设置redission的lock key　的超时时间
+                        RFuture<Boolean> future = RedissonLock.this.renewExpirationAsync(threadId);
+                        future.onComplete((res, e) -> {
+                            if (e != null) {
+                                RedissonLock.log.error("Can't update lock " + RedissonLock.this.getName() + " expiration", e);
+                            } else {
+                                if (res) {
+                                    RedissonLock.this.renewExpiration();
+                                }
+
+                            }
+                        });
+                    }
+                }
+            }
+            //超时时间除以3。
+            //也就是redis lock key 的超时时间为30s，但是redission的看门狗唤醒时间为30/3＝10s.唤醒之后重新设置redis　lock key 的超时时间为30s
+        }, this.internalLockLeaseTime / 3L, TimeUnit.MILLISECONDS);
+        ee.setTimeout(task);
+    }
+}
+```
+**更新超时时间**
+
+通过lua脚本实现
+```java
+protected RFuture<Boolean> renewExpirationAsync(long threadId) {
+    return this.evalWriteAsync(this.getName(), 
+    LongCodec.INSTANCE, 
+    RedisCommands.EVAL_BOOLEAN, 
+    //key 是否存在，存在则设置超时时间
+    "if (redis.call('hexists', KEYS[1], ARGV[2]) == 1) 
+    then 
+        //成功则返回１
+        redis.call('pexpire', KEYS[1], ARGV[1]); 
+        return 1; 
+    end; 
+        //失败返回0
+        return 0;", 
+    //要设置的lock key
+    Collections.singletonList(this.getName()), 
+    //时间，默认30s
+    this.internalLockLeaseTime, 
+    this.getLockName(threadId));
+}
+
+```
+这里有个问题，何时创建看门狗。
+
+renewExpiration()在scheduleExpirationRenewal中进行调用，scheduleExpirationRenewal又是何时进行调用的？
+```java
+private void scheduleExpirationRenewal(long threadId) {
+    RedissonLock.ExpirationEntry entry = new RedissonLock.ExpirationEntry();
+    RedissonLock.ExpirationEntry oldEntry = (RedissonLock.ExpirationEntry)EXPIRATION_RENEWAL_MAP.putIfAbsent(this.getEntryName(), entry);
+    if (oldEntry != null) {
+        oldEntry.addThreadId(threadId);
+    } else {
+        entry.addThreadId(threadId);
+        //在这里进行调用
+        this.renewExpiration();
+    }
+
+}
+```
+看下面两张图,从参数可以看出，是在执行set lock key成功之后调用scheduleExpirationRenewal的。
+![redission看门狗设置调用流程](pic/redis/redission看门狗设置调用流程.png)
+![redission看门狗设置调用流程参数](pic/redis/redission看门狗设置调用流程参数.png)
+
+
+
+```java
+ <T> RFuture<T> tryLockInnerAsync(long leaseTime, TimeUnit unit, long threadId, RedisStrictCommand<T> command) {
+        this.internalLockLeaseTime = unit.toMillis(leaseTime);
+        return this.evalWriteAsync(this.getName(), LongCodec.INSTANCE, command, "if (redis.call('exists', KEYS[1]) == 0) then redis.call('hincrby', KEYS[1], ARGV[2], 1); redis.call('pexpire', KEYS[1], ARGV[1]); return nil; end; if (redis.call('hexists', KEYS[1], ARGV[2]) == 1) then redis.call('hincrby', KEYS[1], ARGV[2], 1); redis.call('pexpire', KEYS[1], ARGV[1]); return nil; end; return redis.call('pttl', KEYS[1]);", Collections.singletonList(this.getName()), this.internalLockLeaseTime, this.getLockName(threadId));
+    }
+```
+
+```java
+    public RFuture<Boolean> forceUnlockAsync() {
+        this.cancelExpirationRenewal((Long)null);
+        return this.evalWriteAsync(this.getName(), LongCodec.INSTANCE, RedisCommands.EVAL_BOOLEAN, "if (redis.call('del', KEYS[1]) == 1) then redis.call('publish', KEYS[2], ARGV[1]); return 1 else return 0 end", Arrays.asList(this.getName(), this.getChannelName()), LockPubSub.UNLOCK_MESSAGE);
+    }
+
+```
+
+```java
+    protected RFuture<Boolean> unlockInnerAsync(long threadId) {
+        return this.evalWriteAsync(this.getName(), LongCodec.INSTANCE, RedisCommands.EVAL_BOOLEAN, "if (redis.call('hexists', KEYS[1], ARGV[3]) == 0) then return nil;end; local counter = redis.call('hincrby', KEYS[1], ARGV[3], -1); if (counter > 0) then redis.call('pexpire', KEYS[1], ARGV[2]); return 0; else redis.call('del', KEYS[1]); redis.call('publish', KEYS[2], ARGV[1]); return 1; end; return nil;", Arrays.asList(this.getName(), this.getChannelName()), LockPubSub.UNLOCK_MESSAGE, this.internalLockLeaseTime, this.getLockName(threadId));
+    }
+
+```
+
+
+#### 1.20.2.3. 操作锁
+<a href="#menu" >目录</a>
+
+```java
+public void lock() {
+    try {
+        this.lock(-1L, (TimeUnit)null, false);
+    } catch (InterruptedException var2) {
+        throw new IllegalStateException();
+    }
+}
+
+private void lock(long leaseTime, TimeUnit unit, boolean interruptibly) throws InterruptedException {
+    //当前线程id
+    long threadId = Thread.currentThread().getId();
+    //异步执行set lock key 
+    Long ttl = this.tryAcquire(leaseTime, unit, threadId);
+    if (ttl != null) {
+        RFuture<RedissonLockEntry> future = this.subscribe(threadId);
+        if (interruptibly) {
+            this.commandExecutor.syncSubscriptionInterrupted(future);
+        } else {
+            this.commandExecutor.syncSubscription(future);
+        }
+
+        try {
+            while(true) {
+                ttl = this.tryAcquire(leaseTime, unit, threadId);
+                if (ttl == null) {
+                    return;
+                }
+
+                if (ttl >= 0L) {
+                    try {
+                        ((RedissonLockEntry)future.getNow()).getLatch().tryAcquire(ttl, TimeUnit.MILLISECONDS);
+                    } catch (InterruptedException var13) {
+                        if (interruptibly) {
+                            throw var13;
+                        }
+
+                        ((RedissonLockEntry)future.getNow()).getLatch().tryAcquire(ttl, TimeUnit.MILLISECONDS);
+                    }
+                } else if (interruptibly) {
+                    ((RedissonLockEntry)future.getNow()).getLatch().acquire();
+                } else {
+                    ((RedissonLockEntry)future.getNow()).getLatch().acquireUninterruptibly();
+                }
+            }
+        } finally {
+            this.unsubscribe(future, threadId);
+        }
+    }
+}
+```
+
+#### 1.20.2.4. 释放锁
+<a href="#menu" >目录</a>
+
+
