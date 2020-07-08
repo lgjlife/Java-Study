@@ -6117,7 +6117,7 @@ public RedissonLock(CommandAsyncExecutor commandExecutor, String name) {
 ##### 看门狗实现
 <a href="#menu" >目录</a>
 
-
+RedissonLock.class
 ```java
 private void renewExpiration() {
     RedissonLock.ExpirationEntry ee = (RedissonLock.ExpirationEntry)EXPIRATION_RENEWAL_MAP.get(this.getEntryName());
@@ -6153,6 +6153,8 @@ private void renewExpiration() {
 **更新超时时间**
 
 通过lua脚本实现
+
+RedissonLock.class
 ```java
 protected RFuture<Boolean> renewExpirationAsync(long threadId) {
     return this.evalWriteAsync(this.getName(), 
@@ -6178,6 +6180,8 @@ protected RFuture<Boolean> renewExpirationAsync(long threadId) {
 这里有个问题，何时创建看门狗。
 
 renewExpiration()在scheduleExpirationRenewal中进行调用，scheduleExpirationRenewal又是何时进行调用的？
+
+RedissonLock.class
 ```java
 private void scheduleExpirationRenewal(long threadId) {
     RedissonLock.ExpirationEntry entry = new RedissonLock.ExpirationEntry();
@@ -6198,29 +6202,6 @@ private void scheduleExpirationRenewal(long threadId) {
 
 
 
-```java
- <T> RFuture<T> tryLockInnerAsync(long leaseTime, TimeUnit unit, long threadId, RedisStrictCommand<T> command) {
-        this.internalLockLeaseTime = unit.toMillis(leaseTime);
-        return this.evalWriteAsync(this.getName(), LongCodec.INSTANCE, command, "if (redis.call('exists', KEYS[1]) == 0) then redis.call('hincrby', KEYS[1], ARGV[2], 1); redis.call('pexpire', KEYS[1], ARGV[1]); return nil; end; if (redis.call('hexists', KEYS[1], ARGV[2]) == 1) then redis.call('hincrby', KEYS[1], ARGV[2], 1); redis.call('pexpire', KEYS[1], ARGV[1]); return nil; end; return redis.call('pttl', KEYS[1]);", Collections.singletonList(this.getName()), this.internalLockLeaseTime, this.getLockName(threadId));
-    }
-```
-
-```java
-    public RFuture<Boolean> forceUnlockAsync() {
-        this.cancelExpirationRenewal((Long)null);
-        return this.evalWriteAsync(this.getName(), LongCodec.INSTANCE, RedisCommands.EVAL_BOOLEAN, "if (redis.call('del', KEYS[1]) == 1) then redis.call('publish', KEYS[2], ARGV[1]); return 1 else return 0 end", Arrays.asList(this.getName(), this.getChannelName()), LockPubSub.UNLOCK_MESSAGE);
-    }
-
-```
-
-```java
-    protected RFuture<Boolean> unlockInnerAsync(long threadId) {
-        return this.evalWriteAsync(this.getName(), LongCodec.INSTANCE, RedisCommands.EVAL_BOOLEAN, "if (redis.call('hexists', KEYS[1], ARGV[3]) == 0) then return nil;end; local counter = redis.call('hincrby', KEYS[1], ARGV[3], -1); if (counter > 0) then redis.call('pexpire', KEYS[1], ARGV[2]); return 0; else redis.call('del', KEYS[1]); redis.call('publish', KEYS[2], ARGV[1]); return 1; end; return nil;", Arrays.asList(this.getName(), this.getChannelName()), LockPubSub.UNLOCK_MESSAGE, this.internalLockLeaseTime, this.getLockName(threadId));
-    }
-
-```
-
-
 #### 1.20.2.3. 操作锁
 <a href="#menu" >目录</a>
 
@@ -6239,6 +6220,7 @@ private void lock(long leaseTime, TimeUnit unit, boolean interruptibly) throws I
     //异步执行set lock key 
     Long ttl = this.tryAcquire(leaseTime, unit, threadId);
     if (ttl != null) {
+        //发布订阅　channel .当删除key 时，会向channel发布　LockPubSub.UNLOCK_MESSAGE　为0
         RFuture<RedissonLockEntry> future = this.subscribe(threadId);
         if (interruptibly) {
             this.commandExecutor.syncSubscriptionInterrupted(future);
@@ -6276,7 +6258,166 @@ private void lock(long leaseTime, TimeUnit unit, boolean interruptibly) throws I
 }
 ```
 
+tryAcquire()　之后会调用tryLockInnerAsync方法，
+```java
+ <T> RFuture<T> tryLockInnerAsync(long leaseTime, TimeUnit unit, long threadId, RedisStrictCommand<T> command) {
+        this.internalLockLeaseTime = unit.toMillis(leaseTime);
+        return this.evalWriteAsync(this.getName(), 
+        LongCodec.INSTANCE, 
+        command, 
+        //key 不存在，说明可以加锁
+        //KEYS[1] lock key
+        //ARGV[1] 超时时间
+        //ARGV[2] 唯一的字符串格式id，对于同一个线程多次调用lock(),该值一样，用于该值实现可重入特性
+        /* 
+        * Redis Hincrby 命令用于为哈希表中的字段值加上指定增量值。
+        * 增量也可以为负数，相当于对指定字段进行减法操作。
+        * 如果哈希表的 key 不存在，一个新的哈希表被创建并执行 HINCRBY 命令。
+        * 如果指定的字段不存在，那么在执行命令前，字段的值被初始化为 0 。
+        * 对一个储存字符串值的字段执行 HINCRBY 命令将造成一个错误。
+        */
+        //所以redission使用的hash类型类存储lock key
+        //HSET key field value 
+        // key 为lock key , field为唯一id , value为当前线程申请锁的次数
+        
+        "if (redis.call('exists', KEYS[1]) == 0) 
+            then redis.call('hincrby', KEYS[1], ARGV[2], 1); 
+                redis.call('pexpire', KEYS[1], ARGV[1]); 
+                return nil; 
+        end; 
+        //上面设置成功
+        if (redis.call('hexists', KEYS[1], ARGV[2]) == 1) 
+            then redis.call('hincrby', KEYS[1], ARGV[2], 1); 
+                redis.call('pexpire', KEYS[1], ARGV[1]); 
+                return nil; 
+        end; 
+        //返回　lock key的剩余失效时间
+        return redis.call('pttl', KEYS[1]);", 
+            //KEYS[1] lock　key
+            Collections.singletonList(this.getName()), 
+            //超时时间
+            this.internalLockLeaseTime, 
+            //
+            this.getLockName(threadId));
+    }
+```
+
+* 首先尝试获取锁，具体代码下面再看，返回结果是已存在的锁的剩余存活时间，为 null 则说明没有已存在的锁并成功获得锁。
+* 如果获得锁则结束流程，回去执行业务逻辑。
+* 如果没有获得锁，则需等待锁被释放，并通过 Redis 的 channel 订阅锁释放的消息，这里的具体实现本文也不深入，只是简单提一下 Redisson 在执行 Redis 命令时提供了同步和异步的两种实现，但实际上同步的实现都是基于异步的，具体做法是使用 Netty 中的异步工具 Future 和 FutureListener 结合 JDK 中的 CountDownLatch 一起实现。
+* 订阅锁的释放消息成功后，进入一个不断重试获取锁的循环，循环中每次都先试着获取锁，并得到已存在的锁的剩余存活时间。
+* 如果在重试中拿到了锁，则结束循环，跳过第 6 步。
+* 如果锁当前是被占用的，那么等待释放锁的消息，具体实现使用了 JDK 并发的信号量工具 Semaphore 来阻塞线程，当锁释放并发布释放锁的消息后，信号量的 release() 方法会被调用，此时被信号量阻塞的等待队列中的一个线程就可以继续尝试获取锁了。
+* 在成功获得锁后，就没必要继续订阅锁的释放消息了，因此要取消对 Redis 上相应 channel 的订阅。
+
+
+* 上面说过 Redisson 实现的执行 Redis 命令都是异步的，但是它在异步的基础上提供了以同步的方式获得执行结果的封装。
+* 前面提到分布式锁要确保未来的一段时间内锁一定能够被释放，因此要对锁设置超时释放的时间，在我们没有指定该时间的情况下，Redisson 默认指定为30秒。
+* 在成功获取到锁的情况下，为了避免业务中对共享资源的操作还未完成，锁就被释放掉了，需要定期（锁失效时间的三分之一）刷新锁失效的时间，这里 Redisson 使用了 Netty 的 TimerTask、Timeout 工具来实现该任务调度。
+* 获取锁真正执行的命令，Redisson 使用 EVAL 命令执行上面的 Lua 脚本来完成获取锁的操作：
+* 如果通过 exists 命令发现当前 key 不存在，即锁没被占用，则执行 hset 写入 Hash 类型数据 key:全局锁名称（例如共享资源ID）, field:锁实例名称（Redisson客户端ID:线程ID）, value:1，并执行 pexpire 对该 key 设置失效时间，返回空值 nil，至此获取锁成功。
+* 如果通过 hexists 命令发现 Redis 中已经存在当前 key 和 field 的 Hash 数据，说明当前线程之前已经获取到锁，因为这里的锁是可重入的，则执行 hincrby 对当前 key field 的值加一，并重新设置失效时间，返回空值，至此重入获取锁成功。
+* 最后是锁已被占用的情况，即当前 key 已经存在，但是 Hash 中的 Field 与当前值不同，则执行 pttl 获取锁的剩余存活时间并返回，至此获取锁失败。
+
+
+
 #### 1.20.2.4. 释放锁
 <a href="#menu" >目录</a>
 
 
+强制释放锁，不管有没有线程持有锁
+```java
+    public RFuture<Boolean> forceUnlockAsync() {
+        this.cancelExpirationRenewal((Long)null);
+        return this.evalWriteAsync(
+            this.getName(), 
+            LongCodec.INSTANCE, 
+            RedisCommands.EVAL_BOOLEAN,
+            //Redis Publish 命令用于将信息发送到指定的频道。
+            //PUBLISH channel message
+            //如果删除成功
+             "if (redis.call('del', KEYS[1]) == 1) 
+             //发布到通道
+                then redis.call('publish', KEYS[2], ARGV[1]); 
+                    return 1 
+            　else 
+                return 0 
+            　end", 
+            Arrays.asList(this.getName(), 
+            this.getChannelName()), 
+            LockPubSub.UNLOCK_MESSAGE);
+    }
+
+```
+
+优雅释放没有线程持有锁，才会释放锁
+```java
+protected RFuture<Boolean> unlockInnerAsync(long threadId) {
+    return this.evalWriteAsync(
+        this.getName(), 
+        LongCodec.INSTANCE, 
+        RedisCommands.EVAL_BOOLEAN, 
+        //不存在，说明已经被删除
+        "if (redis.call('hexists', KEYS[1], ARGV[3]) == 0)
+                then return nil;
+        end; 
+            //存在，减１
+            local counter = redis.call('hincrby', KEYS[1], ARGV[3], -1); 
+            if (counter > 0) 
+            //大于0　说明还有unlock完，重新添加超时时间
+                then redis.call('pexpire', KEYS[1], ARGV[2]); 
+                    return 0; 
+            //等于0,说明已经unlock完成，可以删除key
+            //删除key
+            else redis.call('del', KEYS[1]); 
+                //发布 LockPubSub.UNLOCK_MESSAGE
+                redis.call('publish', KEYS[2], ARGV[1]);
+                    return 1; 
+                end;
+            return nil;", 
+            Arrays.asList(this.getName(), // KEYS[1]
+            this.getChannelName()), // KEYS[2]
+            LockPubSub.UNLOCK_MESSAGE, //ARGV[1]
+            this.internalLockLeaseTime, //ARGV[2]
+            this.getLockName(threadId));//ARGV[3]
+}
+
+```
+
+```java
+public RFuture<E> subscribe(final String entryName, final String channelName) {
+    final AtomicReference<Runnable> listenerHolder = new AtomicReference();
+    final AsyncSemaphore semaphore = this.service.getSemaphore(new ChannelName(channelName));
+    final RPromise<E> newPromise = new RedissonPromise<E>() {
+        public boolean cancel(boolean mayInterruptIfRunning) {
+            return semaphore.remove((Runnable)listenerHolder.get());
+        }
+    };
+    Runnable listener = new Runnable() {
+        public void run() {
+            E entry = (PubSubEntry)PublishSubscribe.this.entries.get(entryName);
+            if (entry != null) {
+                entry.acquire();
+                semaphore.release();
+                entry.getPromise().onComplete(new TransferListener(newPromise));
+            } else {
+                E value = PublishSubscribe.this.createEntry(newPromise);
+                value.acquire();
+                E oldValue = (PubSubEntry)PublishSubscribe.this.entries.putIfAbsent(entryName, value);
+                if (oldValue != null) {
+                    oldValue.acquire();
+                    semaphore.release();
+                    oldValue.getPromise().onComplete(new TransferListener(newPromise));
+                } else {
+                    RedisPubSubListener<Object> listener = PublishSubscribe.this.createListener(channelName, value);
+                    PublishSubscribe.this.service.subscribe(LongCodec.INSTANCE, channelName, semaphore, new RedisPubSubListener[]{listener});
+                }
+            }
+        }
+    };
+    semaphore.acquire(listener);
+    listenerHolder.set(listener);
+    return newPromise;
+}
+
+```
