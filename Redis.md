@@ -218,15 +218,15 @@
     - [1.17.5. 内存碎片率](#1175-内存碎片率)
     - [1.17.6. 回收key](#1176-回收key)
   - [1.18. 客户端](#118-客户端)
-  - [1.19. Jedis](#119-jedis)
-  - [1.20. Redission](#120-redission)
-    - [1.20.1. 基本使用](#1201-基本使用)
-    - [1.20.2. 锁分析](#1202-锁分析)
-      - [1.20.2.1. 获取锁](#12021-获取锁)
-      - [1.20.2.2. lua脚本](#12022-lua脚本)
-        - [看门狗实现](#看门狗实现)
-      - [1.20.2.3. 操作锁](#12023-操作锁)
-      - [1.20.2.4. 释放锁](#12024-释放锁)
+    - [1.18.1. Jedis](#1181-jedis)
+    - [1.18.2. Redission](#1182-redission)
+      - [1.18.2.1. 基本使用](#11821-基本使用)
+      - [1.18.2.2. 锁分析](#11822-锁分析)
+        - [1.18.2.2.1. 获取锁](#118221-获取锁)
+        - [1.18.2.2.2. 看门狗实现](#118222-看门狗实现)
+        - [1.18.2.2.3. 操作锁](#118223-操作锁)
+        - [1.18.2.2.4. 释放锁](#118224-释放锁)
+    - [1.18.3. RedLock](#1183-redlock)
 
 <!-- /TOC -->
 
@@ -6041,13 +6041,13 @@ d. 虚拟桶分片
 <a href="#menu" >目录</a>
 
 
-## 1.19. Jedis
+### 1.18.1. Jedis
 <a href="#menu" >目录</a>
 
-## 1.20. Redission
+### 1.18.2. Redission
 <a href="#menu" >目录</a>
 
-### 1.20.1. 基本使用
+#### 1.18.2.1. 基本使用
 <a href="#menu" >目录</a>
 
 ```xml
@@ -6089,10 +6089,10 @@ RLockRx lockRx = redissonRx.getLock("myLock");
 
 ```
 
-### 1.20.2. 锁分析
+#### 1.18.2.2. 锁分析
 <a href="#menu" >目录</a>
 
-#### 1.20.2.1. 获取锁
+##### 1.18.2.2.1. 获取锁
 <a href="#menu" >目录</a>
 
 ```java
@@ -6111,10 +6111,8 @@ public RedissonLock(CommandAsyncExecutor commandExecutor, String name) {
 }
 ```
 
-#### 1.20.2.2. lua脚本
-<a href="#menu" >目录</a>
 
-##### 看门狗实现
+##### 1.18.2.2.2. 看门狗实现
 <a href="#menu" >目录</a>
 
 RedissonLock.class
@@ -6202,7 +6200,7 @@ private void scheduleExpirationRenewal(long threadId) {
 
 
 
-#### 1.20.2.3. 操作锁
+##### 1.18.2.2.3. 操作锁
 <a href="#menu" >目录</a>
 
 ```java
@@ -6258,7 +6256,7 @@ private void lock(long leaseTime, TimeUnit unit, boolean interruptibly) throws I
 }
 ```
 
-tryAcquire()　之后会调用tryLockInnerAsync方法，
+tryAcquire()　之后会调用tryLockInnerAsync方法，不管是lock.lock()还是lock.tryLock()。都会调用这个方法实现。
 ```java
  <T> RFuture<T> tryLockInnerAsync(long leaseTime, TimeUnit unit, long threadId, RedisStrictCommand<T> command) {
         this.internalLockLeaseTime = unit.toMillis(leaseTime);
@@ -6311,6 +6309,45 @@ tryAcquire()　之后会调用tryLockInnerAsync方法，
 * 在成功获得锁后，就没必要继续订阅锁的释放消息了，因此要取消对 Redis 上相应 channel 的订阅。
 
 
+
+```java
+public RFuture<E> subscribe(final String entryName, final String channelName) {
+    final AtomicReference<Runnable> listenerHolder = new AtomicReference();
+    final AsyncSemaphore semaphore = this.service.getSemaphore(new ChannelName(channelName));
+    final RPromise<E> newPromise = new RedissonPromise<E>() {
+        public boolean cancel(boolean mayInterruptIfRunning) {
+            return semaphore.remove((Runnable)listenerHolder.get());
+        }
+    };
+    Runnable listener = new Runnable() {
+        public void run() {
+            E entry = (PubSubEntry)PublishSubscribe.this.entries.get(entryName);
+            if (entry != null) {
+                entry.acquire();
+                semaphore.release();
+                entry.getPromise().onComplete(new TransferListener(newPromise));
+            } else {
+                E value = PublishSubscribe.this.createEntry(newPromise);
+                value.acquire();
+                E oldValue = (PubSubEntry)PublishSubscribe.this.entries.putIfAbsent(entryName, value);
+                if (oldValue != null) {
+                    oldValue.acquire();
+                    semaphore.release();
+                    oldValue.getPromise().onComplete(new TransferListener(newPromise));
+                } else {
+                    RedisPubSubListener<Object> listener = PublishSubscribe.this.createListener(channelName, value);
+                    PublishSubscribe.this.service.subscribe(LongCodec.INSTANCE, channelName, semaphore, new RedisPubSubListener[]{listener});
+                }
+            }
+        }
+    };
+    semaphore.acquire(listener);
+    listenerHolder.set(listener);
+    return newPromise;
+}
+
+```
+
 * 上面说过 Redisson 实现的执行 Redis 命令都是异步的，但是它在异步的基础上提供了以同步的方式获得执行结果的封装。
 * 前面提到分布式锁要确保未来的一段时间内锁一定能够被释放，因此要对锁设置超时释放的时间，在我们没有指定该时间的情况下，Redisson 默认指定为30秒。
 * 在成功获取到锁的情况下，为了避免业务中对共享资源的操作还未完成，锁就被释放掉了，需要定期（锁失效时间的三分之一）刷新锁失效的时间，这里 Redisson 使用了 Netty 的 TimerTask、Timeout 工具来实现该任务调度。
@@ -6321,7 +6358,7 @@ tryAcquire()　之后会调用tryLockInnerAsync方法，
 
 
 
-#### 1.20.2.4. 释放锁
+##### 1.18.2.2.4. 释放锁
 <a href="#menu" >目录</a>
 
 
@@ -6384,40 +6421,13 @@ protected RFuture<Boolean> unlockInnerAsync(long threadId) {
 
 ```
 
-```java
-public RFuture<E> subscribe(final String entryName, final String channelName) {
-    final AtomicReference<Runnable> listenerHolder = new AtomicReference();
-    final AsyncSemaphore semaphore = this.service.getSemaphore(new ChannelName(channelName));
-    final RPromise<E> newPromise = new RedissonPromise<E>() {
-        public boolean cancel(boolean mayInterruptIfRunning) {
-            return semaphore.remove((Runnable)listenerHolder.get());
-        }
-    };
-    Runnable listener = new Runnable() {
-        public void run() {
-            E entry = (PubSubEntry)PublishSubscribe.this.entries.get(entryName);
-            if (entry != null) {
-                entry.acquire();
-                semaphore.release();
-                entry.getPromise().onComplete(new TransferListener(newPromise));
-            } else {
-                E value = PublishSubscribe.this.createEntry(newPromise);
-                value.acquire();
-                E oldValue = (PubSubEntry)PublishSubscribe.this.entries.putIfAbsent(entryName, value);
-                if (oldValue != null) {
-                    oldValue.acquire();
-                    semaphore.release();
-                    oldValue.getPromise().onComplete(new TransferListener(newPromise));
-                } else {
-                    RedisPubSubListener<Object> listener = PublishSubscribe.this.createListener(channelName, value);
-                    PublishSubscribe.this.service.subscribe(LongCodec.INSTANCE, channelName, semaphore, new RedisPubSubListener[]{listener});
-                }
-            }
-        }
-    };
-    semaphore.acquire(listener);
-    listenerHolder.set(listener);
-    return newPromise;
-}
+* 使用 EVAL 命令执行 Lua 脚本来释放锁：
+* key 不存在，说明锁已释放，直接执行 publish 命令发布释放锁消息并返回 1。
+* key 存在，但是 field 在 Hash 中不存在，说明自己不是锁持有者，无权释放锁，返回 nil。
+* 因为锁可重入，所以释放锁时不能把所有已获取的锁全都释放掉，一次只能释放一把锁，因此执行 hincrby 对锁的值减一。
+* 释放一把锁后，如果还有剩余的锁，则刷新锁的失效时间并返回 0；如果刚才释放的已经是最后一把锁，则执行 del 命令删除锁的 key，并发布锁释放消息，返回 1。
+* 上面执行结果返回 nil 的情况（即第2中情况），因为自己不是锁的持有者，不允许释放别人的锁，故抛出异常。
+* 执行结果返回 1 的情况，该锁的所有实例都已全部释放，所以不需要再刷新锁的失效时间。
 
-```
+### 1.18.3. RedLock
+<a href="#menu" >目录</a>
