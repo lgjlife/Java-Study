@@ -128,7 +128,7 @@
   - [3.6. 基本使用](#36-基本使用)
   - [3.7. 使用Redis Cache](#37-使用redis-cache)
   - [3.8. 实现Redis二级缓存](#38-实现redis二级缓存)
-    - [实现 TwolevelCacheManager](#实现-twolevelcachemanager)
+    - [3.8.1. 实现 TwolevelCacheManager](#381-实现-twolevelcachemanager)
 - [4. Spring Boot Admin](#4-spring-boot-admin)
   - [4.1. 基础认识](#41-基础认识)
   - [4.2. 使用实例](#42-使用实例)
@@ -142,6 +142,10 @@
   - [5.1. 简介](#51-简介)
   - [5.2. 提供的功能](#52-提供的功能)
   - [5.3. 核心类](#53-核心类)
+  - [5.4. CSRF防护](#54-csrf防护)
+    - [5.4.1. 跨域攻击说明](#541-跨域攻击说明)
+    - [5.4.2. SpringBoot配置](#542-springboot配置)
+    - [5.4.3. 源码分析](#543-源码分析)
 - [6. Sppring MVC](#6-sppring-mvc)
   - [6.1. MVC体系概述](#61-mvc体系概述)
     - [6.1.1. MVC 架构](#611-mvc-架构)
@@ -224,14 +228,47 @@
     - [8.16.1. 如何在 Spring Boot 启动的时候运行一些特定的代码？](#8161-如何在-spring-boot-启动的时候运行一些特定的代码)
     - [8.16.2. 如何重新加载Spring Boot上的更改，而无需重新启动服务器？](#8162-如何重新加载spring-boot上的更改而无需重新启动服务器)
     - [8.16.3. Spring Boot 有哪几种读取配置的方式？](#8163-spring-boot-有哪几种读取配置的方式)
-- [9. SpringCloud](#9-springcloud)
-  - [9.1. 基础知识](#91-基础知识)
-    - [9.1.1. 微服务概念](#911-微服务概念)
-    - [9.1.2. SpringCloud子项目](#912-springcloud子项目)
-    - [9.1.3. 版本说明](#913-版本说明)
-  - [9.2. 服务治理Eureka](#92-服务治理eureka)
-    - [9.2.1. 基本使用](#921-基本使用)
-    - [9.2.2. 高可用注册中心](#922-高可用注册中心)
+- [9. 安全](#9-安全)
+  - [9.1. Spring Security](#91-spring-security)
+    - [9.1.1. 基本使用](#911-基本使用)
+    - [9.1.2. 核心组件](#912-核心组件)
+      - [9.1.2.1. Ａuthentication](#9121-ａuthentication)
+      - [9.1.2.2. Userdetails](#9122-userdetails)
+      - [9.1.2.3. UserDetailsService](#9123-userdetailsservice)
+      - [9.1.2.4. AuthenticationProvider](#9124-authenticationprovider)
+      - [9.1.2.5. AuthenticationManager](#9125-authenticationmanager)
+  - [9.2. Oauth2](#92-oauth2)
+    - [9.2.1. JSON Web Token(JWT)知识](#921-json-web-tokenjwt知识)
+      - [9.2.1.1. 使用场景](#9211-使用场景)
+      - [9.2.1.2. 组成部分](#9212-组成部分)
+      - [9.2.1.3. 工作流程](#9213-工作流程)
+    - [9.2.2. Oauth2](#922-oauth2)
+      - [9.2.2.1. 协议流Protocol Flow](#9221-协议流protocol-flow)
+      - [9.2.2.2. Authorization Grant](#9222-authorization-grant)
+      - [9.2.2.3. Client Registration](#9223-client-registration)
+      - [9.2.2.4. Protocol Endpoints](#9224-protocol-endpoints)
+      - [9.2.2.5. 客户端授权类型: Obtaining Authorization](#9225-客户端授权类型-obtaining-authorization)
+        - [9.2.2.5.1. 授权码方式:Authorization Code Grant](#92251-授权码方式authorization-code-grant)
+        - [9.2.2.5.2. Implicit Grant](#92252-implicit-grant)
+        - [9.2.2.5.3. Resource Owner Password Credentials Grant](#92253-resource-owner-password-credentials-grant)
+        - [9.2.2.5.4. Client Credentials Grant](#92254-client-credentials-grant)
+        - [9.2.2.5.5. 令牌的使用](#92255-令牌的使用)
+        - [9.2.2.5.6. 更新令牌](#92256-更新令牌)
+      - [9.2.2.6. Issuing an Access Token](#9226-issuing-an-access-token)
+      - [9.2.2.7. Refreshing an Access Token](#9227-refreshing-an-access-token)
+  - [9.3. Spring security + Spring gateway + Oauth2 整合](#93-spring-security--spring-gateway--oauth2-整合)
+    - [9.3.1. 网关层　Spring gateway](#931-网关层spring-gateway)
+      - [9.3.1.1. 依赖引入](#9311-依赖引入)
+      - [9.3.1.2. 配置](#9312-配置)
+    - [9.3.2. 授权服务器](#932-授权服务器)
+- [10. SpringCloud](#10-springcloud)
+  - [10.1. 基础知识](#101-基础知识)
+    - [10.1.1. 微服务概念](#1011-微服务概念)
+    - [10.1.2. SpringCloud子项目](#1012-springcloud子项目)
+    - [10.1.3. 版本说明](#1013-版本说明)
+  - [10.2. 服务治理Eureka](#102-服务治理eureka)
+    - [10.2.1. 基本使用](#1021-基本使用)
+    - [10.2.2. 高可用注册中心](#1022-高可用注册中心)
     - [9.2.3. 原理说明](#923-原理说明)
       - [9.2.3.1. 基础模块说明](#9231-基础模块说明)
       - [9.2.3.2. Region,Zone](#9232-regionzone)
@@ -5647,7 +5684,7 @@ public User save(User user) {
 ## 3.8. 实现Redis二级缓存
 <a href="#menu" >目录</a>
 
-### 实现 TwolevelCacheManager
+### 3.8.1. 实现 TwolevelCacheManager
 
 
 
@@ -6088,6 +6125,245 @@ spring.boot.admin.notify.mail.to: xxx@qq.com
     * GrantedAuthority：对认证主题的应用层面的授权，含当前用户的权限信息，通常使用角色表示
     * UserDetails：构建Authentication对象必须的信息，可以自定义，可能需要访问DB得到
     * UserDetailsService：通过username构建UserDetails对象，通过loadUserByUsername根据userName获取UserDetail对象 （可以在这里基于自身业务进行自定义的实现  如通过数据库，xml,缓存获取等）           
+
+## 5.4. CSRF防护
+<a href="#menu" >目录</a>
+
+### 5.4.1. 跨域攻击说明
+<a href="#menu" >目录</a>
+
+CSRF全称为跨站请求伪造（Cross-site request forgery），是一种网络攻击方式，也被称为 one-click attack 或者 session riding。
+
+
+CSRF攻击利用网站对于用户网页浏览器的信任，挟持用户当前已登陆的Web应用程序，去执行并非用户本意的操作。
+
+**CSRF攻击实例**
+角色：
+* 正常浏览网页的用户：User
+* 正规的但是具有漏洞的网站：WebA
+* 利用CSRF进行攻击的网站：WebB
+
+* 步骤一:用户登录、浏览并信任正规网站WebA，同时，WebA通过用户的验证并在用户的浏览器中产生Cookie。
+* 步骤二：攻击者WebB通过在WebA中添加图片链接等方式诱导用户User访问网站WebB。
+* 步骤三:在用户User被诱导访问WebB后，WebB会利用用户User的浏览器访问第三方网站WebA，并发出操作请求。
+* 步骤四:用户User的浏览器根据WebB的要求，带着步骤一中产生的Cookie访问WebA。
+* 步骤五: 网站WebA接收到用户浏览器的请求，WebA无法分辨请求由何处发出，由于浏览器访问时带上用户的Cookie，因此WebA会响应浏览器的请求，如此一来，攻击网站WebB就达到了模拟用户操作的目的。
+
+**CSRF攻击防护**
+
+上文简单的叙述了CSRF攻击的原理，接下来将要介绍几种CSRF攻击的防护方法。
+
+1. 只使用JSON API
+
+使用JavaScript发起AJAX请求是限制跨域的，并不能通过简单的 表单来发送JSON，所以，通过只接收JSON可以很大可能避免CSRF攻击。
+
+2. 验证HTTP Referer字段
+
+根据 HTTP 协议，在 HTTP 头中有一个字段叫 Referer，它记录了该 HTTP 请求的来源地址。在通常情况下，访问一个安全受限页面的请求来自于同一个网站，比如上文中用户User想要在网站WebA中进行转账操作，那么用户User
+
+必须先登录WebA,然后再通过点击页面上的按钮出发转账事件
+
+这时该转帐请求的 Referer 值就会是转账按钮所在的页面的URL，而如果黑客要对银行网站实施 CSRF攻击，他只能在他自己的网站构造请求，当用户User通过黑客的网站发送请求到WebA时，该请求的 Referer 是指向黑客自己的网站。
+因此，要防御 CSRF 攻击，网站WebA只需要对于每一个转账请求验证其 Referer 值，如果是以网站WebA的网址开头的域名，则说明该请求是来自WebA自己的请求，是合法的。如果 Referer 是其他网站的话，则有可能是黑客的 CSRF 攻击，拒绝该请求。
+
+3. 在请求地址中添加token验证
+
+CSRF 攻击之所以能够成功，是因为黑客可以完全伪造用户的请求，该请求中所有的用户验证信息都是存在于 cookie 中，因此黑客可以在不知道这些验证信息的情况下直接利用用户自己的 cookie 来通过安全验证。要抵御 CSRF，关键在于在请求中放入黑客所不能伪造的信息，并且该信息不存在于 cookie 之中。可以在 HTTP 请求中以参数的形式加入一个随机产生的 token，并在服务器端建立一个拦截器来验证这个 token，如果请求中没有 token 或者 token 内容不正确，则认为可能是 CSRF 攻击而拒绝该请求。
+这种方法要比检查 Referer 要安全一些，token 可以在用户登陆后产生并放于 session 之中，然后在每次请求时把 token 从 session 中拿出，与请求中的 token 进行比对。
+
+
+
+### 5.4.2. SpringBoot配置
+<a href="#menu" >目录</a>
+
+```java
+
+@EnableWebSecurity
+@Component
+public class MyWebSecurity extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        super.configure(auth);
+    }
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        super.configure(web);
+    }
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        //配置管理cookie的管理器仓库,用于生成　cookie
+        /*如果cookie中设置了HttpOnly属性，那么通过js脚本将无法读取到cookie信息，这样能有效的防止XSS攻击，窃取cookie内容，这样就增加了cookie的安全性，即便是这样，也不要将重要信息存入cookieXSS全称Cross SiteScript，跨站脚本攻击，是Web程序中常见的漏洞，XSS属于被动式且用于客户端的攻击方式，所以容易被忽略其危害性。其原理是攻击者向有XSS漏洞的网站中输入(传入)恶意的HTML代码，当其它用户浏览该网站时，这段HTML代码会自动执行，从而达到攻击的目的。如，盗取用户Cookie、破坏页面结构、重定向到其它网站等。
+        */
+
+        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+        .and()
+        .authorizeRequests()
+        .anyRequest().permitAll();
+
+
+    }
+
+
+}
+```
+
+### 5.4.3. 源码分析
+
+```java
+
+
+public final class CookieCsrfTokenRepository implements CsrfTokenRepository {
+    static final String DEFAULT_CSRF_COOKIE_NAME = "XSRF-TOKEN";
+    static final String DEFAULT_CSRF_PARAMETER_NAME = "_csrf";
+    static final String DEFAULT_CSRF_HEADER_NAME = "X-XSRF-TOKEN";
+    private String parameterName = "_csrf";
+    private String headerName = "X-XSRF-TOKEN";
+    private String cookieName = "XSRF-TOKEN";
+    private boolean cookieHttpOnly = true;
+    private String cookiePath;
+    private String cookieDomain;
+
+    public CookieCsrfTokenRepository() {
+    }
+
+    public CsrfToken generateToken(HttpServletRequest request) {
+        //使用uuid创建CsrfToken
+        return new DefaultCsrfToken(this.headerName, this.parameterName, this.createNewToken());
+    }
+
+    public void saveToken(CsrfToken token, HttpServletRequest request, HttpServletResponse response) {
+        String tokenValue = token == null ? "" : token.getToken();
+        Cookie cookie = new Cookie(this.cookieName, tokenValue);
+        cookie.setSecure(request.isSecure());
+        if (this.cookiePath != null && !this.cookiePath.isEmpty()) {
+            cookie.setPath(this.cookiePath);
+        } else {
+            cookie.setPath(this.getRequestContext(request));
+        }
+
+        if (token == null) {
+            cookie.setMaxAge(0);
+        } else {
+            cookie.setMaxAge(-1);
+        }
+
+        cookie.setHttpOnly(this.cookieHttpOnly);
+        if (this.cookieDomain != null && !this.cookieDomain.isEmpty()) {
+            cookie.setDomain(this.cookieDomain);
+        }
+
+        response.addCookie(cookie);
+    }
+
+    public CsrfToken loadToken(HttpServletRequest request) {
+        Cookie cookie = WebUtils.getCookie(request, this.cookieName);
+        if (cookie == null) {
+            return null;
+        } else {
+            String token = cookie.getValue();
+            return !StringUtils.hasLength(token) ? null : new DefaultCsrfToken(this.headerName, this.parameterName, token);
+        }
+    }
+｝
+
+public final class CsrfFilter extends OncePerRequestFilter {
+     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        request.setAttribute(HttpServletResponse.class.getName(), response);
+        //从request  cookie中获取key为　XSRF-TOKEN　的cookie
+        CsrfToken csrfToken = this.tokenRepository.loadToken(request);
+        boolean missingToken = csrfToken == null;
+        if (missingToken) {
+            //不存在则创建一个
+            csrfToken = this.tokenRepository.generateToken(request);
+            //向response中添加上面创建的cookie
+            this.tokenRepository.saveToken(csrfToken, request, response);
+        }
+
+        request.setAttribute(CsrfToken.class.getName(), csrfToken);
+        request.setAttribute(csrfToken.getParameterName(), csrfToken);
+        //可以看下面的DefaultRequiresCsrfMatcher，主要是判断当前请求的方法需不需要验证
+        //"GET", "HEAD", "TRACE", "OPTIONS"都不要校验
+        if (!this.requireCsrfProtectionMatcher.matches(request)) {
+            filterChain.doFilter(request, response);
+        } else {
+            //从header里获取token
+            String actualToken = request.getHeader(csrfToken.getHeaderName());
+            if (actualToken == null) {
+                actualToken = request.getParameter(csrfToken.getParameterName());
+            }
+            //header里获取token的和cookie的token比较
+            if (!csrfToken.getToken().equals(actualToken)) {
+                 //如果不相等
+                if (this.logger.isDebugEnabled()) {
+                    this.logger.debug("Invalid CSRF token found for " + UrlUtils.buildFullRequestUrl(request));
+                }
+               //cookie中不存在XSRF-TOKEN 的cookie说明第一次请求
+               //设置403错误
+                if (missingToken) {
+                    this.accessDeniedHandler.handle(request, response, new MissingCsrfTokenException(actualToken));
+                } else {
+                    //cookie中存在XSRF-TOKEN 但是不相等
+                    //1.说明header中不存在X-XSRF-TOKEN　的token 或者真的不一样                
+                    this.accessDeniedHandler.handle(request, response, new InvalidCsrfTokenException(csrfToken, actualToken));
+                }
+
+            } else {
+                //如果相等，按正常流程执行
+                filterChain.doFilter(request, response);
+            }
+        }
+    }
+
+     private static final class DefaultRequiresCsrfMatcher implements RequestMatcher {
+        private final HashSet<String> allowedMethods;
+
+        private DefaultRequiresCsrfMatcher() {
+            this.allowedMethods = new HashSet(Arrays.asList("GET", "HEAD", "TRACE", "OPTIONS"));
+        }
+        //判断当前请求的方法需不需要验证
+        public boolean matches(HttpServletRequest request) {
+            return !this.allowedMethods.contains(request.getMethod());
+        }
+    }
+
+}
+
+public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
+    protected static final Log logger = LogFactory.getLog(AccessDeniedHandlerImpl.class);
+    private String errorPage;
+
+    public AccessDeniedHandlerImpl() {
+    }
+
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+        if (!response.isCommitted()) {
+            if (this.errorPage != null) {
+                //设置403错误
+                request.setAttribute("SPRING_SECURITY_403_EXCEPTION", accessDeniedException);
+                response.setStatus(HttpStatus.FORBIDDEN.value());
+                RequestDispatcher dispatcher = request.getRequestDispatcher(this.errorPage);
+                //
+                dispatcher.forward(request, response);
+            } else {
+                response.sendError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.getReasonPhrase());
+            }
+        }
+
+    }
+}
+
+
+
+```
+
+从上面可看，其实现csrf原理为:
+
+* 当客户端第一次请求的时候，web过滤器CsrfFilter中会创建一个uuid并放在cookie中，键为XSRF-TOKEN，以后每次请求都会带上这个cookie。之后返回403(FORBIDDEN(403, "Forbidden"))错误。客户端需要读取这个cookie并设置到下一个请求的header，键为X-XSRF-TOKEN。
+* 当客户端发起后续请求时，会比较cookie(XSRF-TOKEN)和header(X-XSRF-TOKEN)是否相等，相等则正常执行，不想等则返回403.
+
+对于"GET", "HEAD", "TRACE", "OPTIONS"不需要校验.　如果前端是VUE,会自动设置X-XSRF-TOKEN。其他可能需要手动设置。
+
+当浏览器禁用cookie之后，上面将会校验错误返回403.
 
 
 # 6. Sppring MVC
@@ -10167,14 +10443,1178 @@ Spring Boot有一个开发工具（DevTools）模块，它有助于提高开发�
 ### 8.16.3. Spring Boot 有哪几种读取配置的方式？
 Spring Boot 可以通过 @PropertySource,@Value,@Environment, @ConfigurationProperties 来绑定变量，具体请看这篇文章《Spring Boot读取配置的几种方式》。
 
-
-# 9. SpringCloud
+# 9. 安全
 <a href="#menu" >目录</a>
 
-## 9.1. 基础知识
+## 9.1. Spring Security
 <a href="#menu" >目录</a>
 
-### 9.1.1. 微服务概念
+
+### 9.1.1. 基本使用
+<a href="#menu" >目录</a>
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+```
+
+```yml
+spring:
+  security:
+    user:
+      name: user
+      password: password
+    filter:
+      order: 100
+      dispatcher-types: FORWARD|INCLUDE|REQUEST|ASYNC|ERROR
+```
+
+启动之后，当首次访问时会需要进行登录。
+
+### 9.1.2. 核心组件
+<a href="#menu" >目录</a>
+
+spring security核心组件有：Userdetails 、Authentication，UserDetailsService、AuthenticationProvider、AuthenticationManager 
+
+#### 9.1.2.1. Ａuthentication
+<a href="#menu" >目录</a>
+
+```java
+public interface Authentication extends Principal, Serializable {
+
+    //获取用户权限，一般情况下获取到的是用户的角色信息。
+    Collection<? extends GrantedAuthority> getAuthorities();
+    //获取证明用户认证的信息，通常情况下获取到的是密码等信息。
+    Object getCredentials();
+    //获取用户的额外信息，（这部分信息可以是我们的用户表中的信息）
+    Object getDetails();
+    //获取用户身份信息，在未认证的情况下获取到的是用户名，在已认证的情况下获取到的是 UserDetails (UserDetails也是一个接口，里边的方法有getUsername,getPassword等)。
+    Object getPrincipal();
+    //获取当前 Authentication 是否已认证。
+    boolean isAuthenticated();
+    //设置当前 Authentication 是否已认证（true or false）。
+    void setAuthenticated(boolean var1) throws IllegalArgumentException;
+}
+```
+* 接口有4个get方法，分别获取
+    * Authorities, 填充的是用户角色信息。
+    * Credentials，直译，证书。填充的是密码。
+    * Details ，用户信息。
+    * Principal 直译，形容词是“主要的，最重要的”，名词是“负责人，资本，本金”。感觉很别扭，所以，还是不翻译了，直接用原词principal来表示这个概念，其填充的是用户名。
+
+#### 9.1.2.2. Userdetails
+<a href="#menu" >目录</a>
+
+用户信息
+
+
+```java
+public interface UserDetails extends Serializable {
+    //权限
+    Collection<? extends GrantedAuthority> getAuthorities();
+    String getPassword();
+    String getUsername();
+    //是否过期
+    boolean isAccountNonExpired();
+    //是否锁定
+    boolean isAccountNonLocked();
+    //密码是否过期
+    boolean isCredentialsNonExpired();
+    //是否可用
+    boolean isEnabled();
+}
+```
+#### 9.1.2.3. UserDetailsService
+<a href="#menu" >目录</a>
+
+当登录的时候，会调用loadUserByUsername获取用户信息UserDetails，
+```java
+public interface UserDetailsService {
+    UserDetails loadUserByUsername(String var1) throws UsernameNotFoundException;
+}
+
+public interface UserDetailsManager extends UserDetailsService {
+    void createUser(UserDetails var1);
+
+    void updateUser(UserDetails var1);
+
+    void deleteUser(String var1);
+
+    void changePassword(String var1, String var2);
+
+    boolean userExists(String var1);
+}
+
+```
+
+使用
+```java
+@Override
+public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+
+    //1.从数据库获取用户相关信息，比如密码，是否可用等
+    //2.获取用户的角色和权限信息，角色和权限都是字符串
+
+    UserDetails userDetails = new UserDetails() {
+        @Override
+        public Collection<? extends GrantedAuthority> getAuthorities() {
+            //放置权限和角色
+            List<GrantedAuthority> role = AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_READ");
+            return role;
+        }
+
+        @Override
+        public String getPassword() {
+            //需要加密
+            return passwordEncoder.encode("my-password1");
+        }
+        //其他信息
+        @Override
+        public String getUsername() {
+            return "my-username";
+        }
+
+        @Override
+        public boolean isAccountNonExpired() {
+            return true;
+        }
+
+        @Override
+        public boolean isAccountNonLocked() {
+            return true;
+        }
+
+        @Override
+        public boolean isCredentialsNonExpired() {
+            return true;
+        }
+
+        @Override
+        public boolean isEnabled() {
+            return true;
+        }
+    };
+    return userDetails1;
+}
+
+```
+
+#### 9.1.2.4. AuthenticationProvider
+<a href="#menu" >目录</a>
+
+负责真正的验证。
+
+如果没有指定对应关联的 AuthenticationProvider 对象，Spring Security 默认会使用 DaoAuthenticationProvider。DaoAuthenticationProvider 在进行认证的时候需要一个 UserDetailsService 来获取用户的信息 UserDetails，其中包括用户名、密码和所拥有的权限等。所以如果我们需要改变认证的方式，我们可以实现自己的 AuthenticationProvider；如果需要改变认证的用户信息来源，我们可以实现 UserDetailsService。
+
+```java
+public interface AuthenticationProvider {
+    //表示认证的动作。
+    Authentication authenticate(Authentication var1) throws AuthenticationException;
+    //supports 表示所支持的 Authentication类型。Authentication 包含很多子类，
+    boolean supports(Class<?> var1);
+}
+
+```
+
+
+#### 9.1.2.5. AuthenticationManager 
+<a href="#menu" >目录</a>
+
+认证是由 AuthenticationManager 来管理的，但是真正进行认证的是 AuthenticationManager 中定义的 AuthenticationProvider。AuthenticationManager 中可以定义有多个 AuthenticationProvider。
+
+AuthenticationManager 是一个接口，它只有一个方法，接收参数为Authentication，其定义如下：
+
+```JAVA
+public interface AuthenticationManager {
+    Authentication authenticate(Authentication authentication)
+            throws AuthenticationException;
+}
+```
+
+AuthenticationManager 的作用就是校验Authentication,如果验证失败会抛出AuthenticationException异常。AuthenticationException是一个抽象类，因此代码逻辑并不能实例化一个AuthenticationException异常并抛出，实际上抛出的异常通常是其实现类，如DisabledException,LockedException,BadCredentialsException等。BadCredentialsException可能会比较常见，即密码错误的时候。
+
+
+## 9.2. Oauth2
+<a href="#menu" >目录</a>
+
+### 9.2.1. JSON Web Token(JWT)知识
+<a href="#menu" >目录</a>
+
+#### 9.2.1.1. 使用场景
+
+* Authorization (授权) : 这是使用JWT的最常见场景。一旦用户登录，后续每个请求都将包含JWT，允许用户访问该令牌允许的路由、服务和资源。单点登录是现在广泛使用的JWT的一个特性，因为它的开销很小，并且可以轻松地跨域使用。
+* Information Exchange (信息交换) : 对于安全的在各方之间传输信息而言，JSON Web Tokens无疑是一种很好的方式。因为JWTs可以被签名，例如，用公钥/私钥对，你可以确定发送人就是它们所说的那个人。另外，由于签名是使用头和有效负载计算的，您还可以验证内容没有被篡改。
+
+
+#### 9.2.1.2. 组成部分
+
+* Header
+* Payload
+* Signature
+  
+```
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTQzNjEyODYsInVzZXJfbmFtZSI6Im15LXVzZXJuYW1lIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlVTRVIxIiwiUk9MRV9VU0VSIiwiQURNSU4xIl0sImp0aSI6IjlhMjFjM2Y4LTFlMzEtNDJkOC04ZTVmLWEwODYzOWFhNDU2OCIsImNsaWVudF9pZCI6InRlc3QtY2xpZW50Iiwic2NvcGUiOlsiZGVmYXVsdC1zY29wZSJdfQ.N5dCJjQw9zuG394cFUsMe3CTcnTZyYaDdnF5kVhVClGIZUtS2fFDm_fZ3Uu1gfy9nR128jEqnaypYqNfrOvPDX2HTMlrM9nypne_87_a3dC3u9vs6kBUWRfQsppBa1IZmaMpHu1s-_J5hUjWjTWFggPJBjSbDQlICGVA4KbTpzXs6apEOSBTwxXT9tmTk6_H9FUhdJ6WDd8Iqx2PrWG_y5IMwjgNXEVNUc0bd5pAVM0jB7ng1otRmfGtbYVyYqSzBx9q5Ax9TemsYSKm4TIBpx0NX04wq4vwy5vjGVSM8f1Vsfiq28wFddPW_ZbM6kiEuuacxWtRcLTpRJCcQlHOmw
+```
+[https://jwt.io/#debugger-io](https://jwt.io/#debugger-io)
+
+```json
+{
+  "alg": "RS256",
+  "typ": "JWT"
+}
+{
+  "exp": 1594361286,
+  "user_name": "my-username",
+  "authorities": [
+    "ROLE_ADMIN",
+    "USER1",
+    "ROLE_USER",
+    "ADMIN1"
+  ],
+  "jti": "9a21c3f8-1e31-42d8-8e5f-a08639aa4568",
+  "client_id": "test-client",
+  "scope": [
+    "default-scope"
+  ]
+}
+RSASHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),
+)
+```
+**header**
+
+一般包含两部分，签名的算法和token类型，算法比如HMAC SHA256 or RSA.以下的json数据将会被base64编码变成jwt的第一部分
+```json
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+```
+**Payload**
+
+键值类型的负载数据，可以自定义，对payload进行Base64编码就得到JWT的第二部分.不要在JWT的payload或header中放置敏感信息，除非它们是加密的。
+```json
+{
+  "sub": "1234567890",
+  "name": "John Doe",
+  "admin": true
+}
+```
+
+**Signature**
+
+为了得到签名部分，你必须有编码过的header、编码过的payload、一个秘钥，签名算法是header中指定的那个，然后对它们签名即可。
+
+例如：HMACSHA256(base64UrlEncode(header) + "." + base64UrlEncode(payload), secret)
+
+签名是用于验证消息在传递过程中有没有被更改，并且，对于使用私钥签名的token，它还可以验证JWT的发送方是否为它所称的发送方。
+
+#### 9.2.1.3. 工作流程
+
+当用户输入用户名密码并验证成功之后，服务器生成jwt，并返回给客户端，客户端将会保存，并在每次请求的时候带上jwt，服务器将会验证jwt是否过期，如果过期则会认为请求失败，返回401(未认证),同时jwt的payload也可以携带权限数据，服务器就可以验证jwt有效之后再验证是否有权限访问资源，进行更细粒度的安全控制。因此常规来讲，jwt应当携带这几个基本信息：用户名称或者id，jwt失效时间，权限数据。前两个是必须，后一个可以选择。
+
+jwt的传输可以一般有三种方式
+* 通过查询参数，存在安全问题
+* 通过cookie，存在跨域问题
+* 通过header的字段，一般是Authorization
+
+第三种通常来讲是:Authorization: Bearer <token>。后端解析时需要去掉前置字符串"Bearer "，这个字符串只是一种标识声明，并没有什么作用。
+
+用Token的好处
+* 无状态和可扩展性：Tokens存储在客户端。完全无状态，可扩展。我们的负载均衡器可以将用户传递到任意服务器，因为在任何地方都没有状态或会话信息。
+* 安全：Token不是Cookie。（The token, not a cookie.）每次请求的时候Token都会被发送。而且，由于没有Cookie被发送，还有助于防止CSRF攻击。即使在你的实现中将token存储到客户端的Cookie中，这个Cookie也只是一种存储机制，而非身份认证机制。没有基于会话的信息可以操作，因为我们没有会话!
+
+**JWT与Session的差异**
+
+相同点是，它们都是存储用户信息；然而，Session是在服务器端的，而JWT是在客户端的。
+
+Session方式存储用户信息的最大问题在于要占用大量服务器内存，增加服务器的开销。
+
+而JWT方式将用户状态分散到了客户端中，可以明显减轻服务端的内存压力。
+
+Session的状态是存储在服务器端，客户端只有session id；而Token的状态是存储在客户端。
+
+**基于Token的身份认证是如何工作的**
+
+基于Token的身份认证是无状态的，服务器或者Session中不会存储任何用户信息。
+
+主要流程如下：
+* 用户携带用户名和密码请求访问
+* 服务器校验用户凭据
+* 应用提供一个token给客户端
+* 客户端存储token，并且在随后的每一次请求中都带着它
+* 服务器校验token并返回数据
+
+注意：
+* 每一次请求都需要token
+* Token应该放在请求header中
+* 我们还需要将服务器设置为接受来自所有域的请求，用Access-Control-Allow-Origin: *
+
+**JWT与OAuth的区别**
+
+* JWT是一种认证协议, OAuth2是一种授权框架 
+* 无论使用哪种方式切记用HTTPS来保证数据的安全性
+* OAuth2用在使用第三方账号登录的情况(比如使用weibo, qq, github登录某个app)，当然也可以用在本系统内的用户登录，而JWT是用在前后端分离, 需要简单的对后台API进行保护时使用。
+
+
+**JW过期解决机制**
+
+由于jwt携带过期时间，如果解析之后验证过期，服务器就会抛出错误。给用户体验不是很好。解决方案：返回前端的时候，返回的是两个jwt,access_token和refresh_token，通常访问的时候使用access_token，当access_token过期之后，使用refresh_token获取新的access_token。通常来讲access_token的过期时间远小于refresh_token，这样如果access_token被盗，也会很快失效。
+
+### 9.2.2. Oauth2
+<a href="#menu" >目录</a>
+
+[Oauth2协议　https://tools.ietf.org/html/rfc6749](https://tools.ietf.org/html/rfc6749)
+
+OAuth定义了四种角色：
+* resource owner（资源所有者，用户）
+* resource server（资源服务器，可以理解为受访问控制的资源接口集合）
+* client（客户端）：代表资源所有者并且经过所有者授权去访问受保护的资源的应用程序
+* authorization server（授权服务器）：在成功验证资源所有者并获得授权后向客户端发出访问令牌
+
+#### 9.2.2.1. 协议流Protocol Flow
+
+```yml
+  +--------+                               +---------------+
+     |        |--(A)- Authorization Request ->|   Resource    |
+     |        |                               |     Owner     |
+     |        |<-(B)-- Authorization Grant ---|               |
+     |        |                               +---------------+
+     |        |
+     |        |                               +---------------+
+     |        |--(C)-- Authorization Grant -->| Authorization |
+     | Client |                               |     Server    |
+     |        |<-(D)----- Access Token -------|               |
+     |        |                               +---------------+
+     |        |
+     |        |                               +---------------+
+     |        |--(E)----- Access Token ------>|    Resource   |
+     |        |                               |     Server    |
+     |        |<-(F)--- Protected Resource ---|               |
+     +--------+                               +---------------+
+```
+
+* 客户端向资源所有者请求其授权
+* 客户端收到资源所有者的授权许可，这个授权许可是一个代表资源所有者授权的凭据
+* 客户端向授权服务器请求访问令牌，并出示授权许可
+* 授权服务器对客户端身份进行认证，并校验授权许可，如果都是有效的，则发放访问令牌
+* 客户端向资源服务器请求受保护的资源，并出示访问令牌
+* 资源服务器校验访问令牌，如果令牌有效，则提供服务
+
+#### 9.2.2.2. Authorization Grant
+
+一个授权许可是一个凭据，它代表资源所有者对访问受保护资源的一个授权，是客户端用来获取访问令牌的。
+
+授权类型有四种：authorization code, implicit, resource owner password credentials, and client credentials
+
+**Authorization Code**
+
+授权码是授权服务器用来获取并作为客户端和资源所有者之间的中介。代替直接向资源所有者请求授权，客户端定向资源所有者到一个授权服务器，授权服务器反过来指导资源所有者将授权码返回给客户端。在将授权码返回给客户端之前，授权服务器对资源所有者进行身份验证并获得授权。因为资源所有者只对授权服务器进行身份验证，所以资源所有者的凭据永远不会与客户机共享。
+
+**Implicit**
+
+隐式授权是为了兼顾到在浏览器中用诸如JavaScript的脚本语言实现的客户端而优化的简化授权代码流程。在隐式授权流程中，不是发给客户端一个授权码，而是直接发给客户端一个访问令牌，而且不会对客户端进行认证。隐式授权提高了一些客户端（比如基于浏览器实现的客户端）的响应能力和效率，因为它减少了获得访问令牌所需的往返次数。
+
+**Resource Owner Password Credentials**
+
+资源所有者的密码凭据（比如，用户名和密码）可以直接作为授权许可来获取访问令牌。这个凭据只应该用在高度信任的资源所有者和客户端之间（比如，客户端是系统的一部分，或者特许的应用），并且其它授权模式不可用的时候。
+
+**Client Credentials**
+
+客户端凭据通常用作授权许可
+
+**Access Token**
+
+访问令牌是用来访问受保护的资源的凭据。一个访问令牌是一个字符串，它代表发给客户端的授权。令牌代表资源所有者授予的对特定范围和访问的时间（PS：令牌是有范围和有效期的），并由资源服务器和授权服务器强制执行。访问令牌可以有不同的格式、结构和使用方法。
+
+**Refresh Token**
+
+Refresh Token是用于获取Access Token的凭据。刷新令牌是授权服务器发给客户端的，用于在当前访问令牌已经失效或者过期的时候获取新的访问令牌。刷新令牌只用于授权服务器，并且从来不会发给资源所有者。
+
+```yml
++--------+                                           +---------------+
+|        |--(A)------- Authorization Grant --------->|               |
+|        |                                           |               |
+|        |<-(B)----------- Access Token -------------|               |
+|        |               & Refresh Token             |               |
+|        |                                           |               |
+|        |                            +----------+   |               |
+|        |--(C)---- Access Token ---->|          |   |               |
+|        |                            |          |   |               |
+|        |<-(D)- Protected Resource --| Resource |   | Authorization |
+| Client |                            |  Server  |   |     Server    |
+|        |--(E)---- Access Token ---->|          |   |               |
+|        |                            |          |   |               |
+|        |<-(F)- Invalid Token Error -|          |   |               |
+|        |                            +----------+   |               |
+|        |                                           |               |
+|        |--(G)----------- Refresh Token ----------->|               |
+|        |                                           |               |
+|        |<-(H)----------- Access Token -------------|               |
++--------+           & Optional Refresh Token        +---------------+
+```
+
+刷新的流程如图所示：
+* (A)客户端请求获取访问令牌，并向授权服务器提供授权许可
+* (B)授权服务器对客户端身份进行认证，并校验授权许可，如果校验通过，则发放访问令牌和刷新令牌
+* (C)客户端访问受保护的资源，并向资源服务器提供访问令牌
+* (D)资源服务器校验访问令牌，如果校验通过，则提供服
+* (E)重复(C)和(D)直到访问令牌过期。如果客户端直到访问令牌已经过期，则跳至(G)，否则不能继续访问受保护的资源
+* (F)自从访问令牌失效以后，资源服务器返回一个无效的令牌错误
+* (G)客户端请求获取一个新的访问令牌，并提供刷新令牌
+* (H)授权服务器对客户端进行身份认证并校验刷新令牌，如果校验通过，则发放新的访问令牌（并且，可选的发放新的刷新令牌）
+
+#### 9.2.2.3. Client Registration
+<a href="#menu" >目录</a>
+
+在使用该协议之前，客户端向授权服务器注册。
+
+**Client Types**
+
+OAuth定义了两种客户端类型：
+* confidential：能够维护其凭证的机密性的客户端
+* public：不能维护其凭证的机密性的客户端
+
+**Client Password**
+
+拥有客户端密码的客户端可以使用HTTP Basic向服务器进行认证，当然前提是授权服务器支持HTTP Basic认证。
+
+例如：Authorization: Basic czZCaGRSa3F0Mzo3RmpmcDBaQnIxS3REUmJuZlZkbUl3
+
+二者选其一的，授权服务器可能支持在请求体中用下列参数包含客户端凭据：
+* client_id：必须的，在授权服务器中注册过的客户端标识符。
+* client_secret：必须的，客户端秘钥。如果秘钥是空字符串的话可以省略该参数。
+用这两个参数将客户端凭据包含在请求体中这种方式不推荐，并且应该限制客户端不能直接用HTTP Basic认证方案。
+
+
+#### 9.2.2.4. Protocol Endpoints
+
+授权处理用两个授权服务器端点：
+* Authorization endpoint：用于客户端从资源所有者那里获取授权
+* Token endpoint：用于客户端用授权许可交互访问令牌
+
+还有一个端点
+* Redirection endpoint：用于资源服务器通过资源所有者用户代理将包含授权凭据的响应返回给客户端
+
+**Authorization Endpoint**
+
+授权端点用于和资源所有者交互并获取一个授权许可的。授权服务器必须首先校验资源所有者的身份。
+
+* Response Type
+  
+客户端用以下参数通知授权服务器自己渴望的授权类型：
+
+response_type：必须的。为了请求一个授权码这个值必须是"code"，为了请求一个访问令牌这个值必须是"token"
+
+* Redirection Endpoint
+在完成和资源所有者的交互以后，授权服务器直接将资源所有者的user-agent返回给客户端。授权服务器重定向到这个user-agent
+
+**Access Token Scope**
+
+授权和令牌端点允许客户端使用“scope”请求参数指定访问请求的范围。反过来，授权服务器使用“scope”响应参数通知客户机它所发放的访问令牌的范围。
+
+
+#### 9.2.2.5. 客户端授权类型: Obtaining Authorization
+<a href="#menu" >目录</a>
+
+为了获得一个访问令牌，客户端需要先从资源所有者那里获得授权。授权是以授权许可的形式来表示的。
+
+OAuth定义了四种授权类型：
+* 授权码 authorization code
+* 隐藏式 implicit
+* 密码式 resource owner password credentials
+* 客户端凭证 client credentials
+
+OAuth 2.0 规定了四种获得令牌的流程。你可以选择最适合自己的那一种，向第三方应用颁发令牌。不管哪一种授权方式，第三方应用申请令牌之前，都必须先到系统备案，说明自己的身份，然后会拿到两个身份识别码：客户端 ID（client ID）和客户端密钥（client secret）。这是为了防止令牌被滥用，没有备案过的第三方应用，是不会拿到令牌的。
+
+##### 9.2.2.5.1. 授权码方式:Authorization Code Grant
+
+授权码（authorization code）方式，指的是第三方应用先申请一个授权码，然后再用该码获取令牌。
+
+这种方式是最常用的流程，安全性也最高，它适用于那些有后端的 Web 应用。授权码通过前端传送，令牌则是储存在后端，而且所有与资源服务器的通信都在后端完成。这样的前后端分离，可以避免令牌泄漏。
+
+```yml
+ +----------+
+     | Resource |
+     |   Owner  |
+     |          |
+     +----------+
+          ^
+          |
+         (B)
+     +----|-----+          Client Identifier      +---------------+
+     |         -+----(A)-- & Redirection URI ---->|               |
+     |  User-   |                                 | Authorization |
+     |  Agent  -+----(B)-- User authenticates --->|     Server    |
+     |          |                                 |               |
+     |         -+----(C)-- Authorization Code ---<|               |
+     +-|----|---+                                 +---------------+
+       |    |                                         ^      v
+      (A)  (C)                                        |      |
+       |    |                                         |      |
+       ^    v                                         |      |
+     +---------+                                      |      |
+     |         |>---(D)-- Authorization Code ---------'      |
+     |  Client |          & Redirection URI                  |
+     |         |                                             |
+     |         |<---(E)----- Access Token -------------------'
+     +---------+       (w/ Optional Refresh Token)
+```
+
+
+授权码流程如图所示：
+* (A)  客户端通过将资源所有者的用户代理指向授权端点来启动这个流程。客户端包含它的客户端标识符，请求范围，本地状态，和重定向URI，在访问被允许（或者拒绝）后授权服务器立即将用户代理返回给重定向URI。
+* (B)  授权服务器验证资源所有者（通过用户代理），并确定资源所有者是否授予或拒绝客户端的访问请求。
+* (C)  假设资源所有者授权访问，那么授权服务器用之前提供的重定向URI（在请求中或在客户端时提供的）将用户代理重定向回客户端。重定向URI包括授权码和前面客户端提供的任意本地状态。
+* (D)  客户端用上一步接收到的授权码从授权服务器的令牌端点那里请求获取一个访问令牌。
+* (E)  授权服务器对客户端进行认证，校验授权码，并确保这个重定向URI和第三步(C)中那个URI匹配。如果校验通过，则发放访问令牌，以及可选的刷新令牌。
+
+**Authorization Request**
+
+客户端通过使用“application/x-www-form- urlencoding”格式向授权端点URI的查询组件添加以下参数来构造请求URI
+* response_type：必须的。参数表示要求返回授权码 ,值必须是"code"。参数表示要求返回授权码
+* client_id：必须的。知道是谁在请求,客户端标识符。
+* redirect_uri：可选的。参数是接受或拒绝请求后的跳转网址
+* scope：可选的。请求访问的范围。
+* state：推荐的。一个不透明的值用于维护请求和回调之间的状态。授权服务器在将用户代理重定向会客户端的时候会带上该参数。
+例如：
+　　
+```yml
+　　GET https://b.com/oauth/authorize?
+  response_type=code&
+  client_id=CLIENT_ID&
+  redirect_uri=CALLBACK_URL&
+  scope=read
+```
+
+**Authorization Response**
+
+如果资源所有者授权访问请求，授权服务器发出授权代码并通过使用“application/x-www-form- urlencoding”格式向重定向URI的查询组件添加以下参数，将其给客户端。
+
+* code：必须的。授权服务器生成的授权码。授权代码必须在发布后不久过期，以减少泄漏的风险。建议最大授权代码生命期为10分钟。客户端不得多次使用授权代码。如果授权代码不止一次使用，授权服务器必须拒绝请求，并在可能的情况下撤销先前基于该授权代码发布的所有令牌。授权代码是绑定到客户端标识符和重定向URI上的。
+* state：如果之前客户端授权请求中带的有"state"参数，则响应的时候也会带上该参数。
+例如：
+```
+　　HTTP/1.1 302 Found
+　　Location: https://client.example.com/cb?code=SplxlOBeZQQYbYS6WxSbIA&state=xyz
+```
+**Error Response**
+
+error：取值如下error_description：可选的
+* invalid_request　　
+* unauthorized_client
+* access_denied
+* unsupported_response_type
+* invalid_scope
+* server_error
+* temporarily_unavailable
+* error_description
+* error_uri：可选的
+
+**Access Token Request**
+
+客户端通过使用“application/ www-form-urlencoding”格式发送以下参数向令牌端点发出请求
+
+* grant_type：必须的。值必须是"authorization_code"。
+* code：必须的。值是从授权服务器那里接收的授权码。
+* redirect_uri：如果在授权请求的时候包含"redirect_uri"参数，那么这里也需要包含"redirect_uri"参数。而且，这两处"redirect_uri"必须完全相同。
+* client_id：如果客户端不需要认证，那么必须带的该参数。
+例如：
+```
+　　POST /token HTTP/1.1
+　　Host: server.example.com
+　　Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+　　Content-Type: application/x-www-form-urlencoded
+
+　　grant_type=authorization_code&code=SplxlOBeZQQYbYS6WxSbIA&redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fcb
+```
+
+**Access Token Response**
+
+例如：
+```
+　　HTTP/1.1 200 OK
+　　Content-Type: application/json;charset=UTF-8
+　　Cache-Control: no-store
+　　Pragma: no-cache
+
+　　{
+　　　　"access_token":"2YotnFZFEjr1zCsicMWpAA",
+　　　　"token_type":"example",
+　　　　"expires_in":3600,
+　　　　"refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA",
+　　　　"example_parameter":"example_value"
+　　}
+```
+
+**流程分析**
+
+第一步，A 网站提供一个链接，用户点击后就会跳转到 B 网站，授权用户数据给 A 网站使用。下面就是 A 网站跳转 B 网站的一个示意链接。
+
+```
+https://b.com/oauth/authorize?
+  response_type=code&
+  client_id=CLIENT_ID&
+  redirect_uri=CALLBACK_URL&
+  scope=read
+```
+
+第二步，用户跳转后，B 网站会要求用户登录，然后询问是否同意给予 A 网站授权。用户表示同意，这时 B 网站就会跳回redirect_uri参数指定的网址。跳转时，会传回一个授权码，就像下面这样。
+
+```
+https://a.com/callback?code=AUTHORIZATION_CODE
+```
+
+第三步，A 网站拿到授权码以后，就可以在后端，向 B 网站请求令牌。
+```
+https://b.com/oauth/token?
+ client_id=CLIENT_ID&
+ client_secret=CLIENT_SECRET&
+ grant_type=authorization_code&
+ code=AUTHORIZATION_CODE&
+ redirect_uri=CALLBACK_URL
+```
+第四步，B 网站收到请求以后，就会颁发令牌。具体做法是向redirect_uri指定的网址，发送一段 JSON 数据。
+
+```
+{    
+  "access_token":"ACCESS_TOKEN",
+  "token_type":"bearer",
+  "expires_in":2592000,
+  "refresh_token":"REFRESH_TOKEN",
+  "scope":"read",
+  "uid":100101,
+  "info":{...}
+}
+```
+
+
+##### 9.2.2.5.2. Implicit Grant
+
+隐式授权用于获取访问令牌（它不支持刷新令牌），它针对已知的操作特定重定向URI的公共客户端进行了优化。这些客户端通常在浏览器中使用脚本语言(如JavaScript)实现。
+
+因为它是基于重定向的流程，所以客户端必须有能力和资源所有者的用户代理（典型地，是一个Web浏览器）进行交互，同时必须有能力接收来自授权服务器的重定向请求。
+
+隐士授权类型不包含客户端身份验证，它依赖于资源所有者的存在和重定向URI的注册。由于访问令牌被编码到重定向URI中，所以它可能暴露给资源所有者以及同一台设备上的其它应用。
+
+```yml
++----------+
+| Resource |
+|  Owner   |
+|          |
++----------+
+    ^
+    |
+    (B)
++----|-----+          Client Identifier     +---------------+
+|         -+----(A)-- & Redirection URI --->|               |
+|  User-   |                                | Authorization |
+|  Agent  -|----(B)-- User authenticates -->|     Server    |
+|          |                                |               |
+|          |<---(C)--- Redirection URI ----<|               |
+|          |          with Access Token     +---------------+
+|          |            in Fragment
+|          |                                +---------------+
+|          |----(D)--- Redirection URI ---->|   Web-Hosted  |
+|          |          without Fragment      |     Client    |
+|          |                                |    Resource   |
+|     (F)  |<---(E)------- Script ---------<|               |
+|          |                                +---------------+
++-|--------+
+|    |
+(A)  (G) Access Token
+|    |
+^    v
++---------+
+|         |
+|  Client |
+|         |
++---------+
+```
+
+
+隐式授权流程如图所示：
+* (A)  客户端引导资源所有者的user-agent到授权端点。客户端携带它的客户端标识，请求scope，本地state和一个重定向URI。
+* (B)  授权服务器对资源所有者（通过user-agent）进行身份认证，并建立连接是否资源所有者允许或拒绝客户端的访问请求。
+* (C)  假设资源所有者允许访问，那么授权服务器通过重定向URI将user-agent返回客户端。
+* (D)  user-agent遵从重定向指令
+* (E)  web-hosted客户端资源返回一个web页面（典型的，内嵌脚本的HTML文档），并从片段中提取访问令牌。
+* (F)  user-agent执行web-hosted客户端提供的脚本，提取访问令牌
+* (G)  user-agent将访问令牌传给客户端
+
+**Authorization Request**
+
+response_type：必须的。值必须是"token"。
+* client_id：必须的。
+* redirect_uri：可选的。
+* scope：可选的。
+
+
+**执行流程**
+
+第一步，A 网站提供一个链接，要求用户跳转到 B 网站，授权用户数据给 A 网站使用。
+
+```
+https://b.com/oauth/authorize?
+  response_type=token&
+  client_id=CLIENT_ID&
+  redirect_uri=CALLBACK_URL&
+  scope=read
+```
+
+第二步，用户跳转到 B 网站，登录后同意给予 A 网站授权。这时，B 网站就会跳回redirect_uri参数指定的跳转网址，并且把令牌作为 URL 参数，传给 A 网站。
+```
+https://a.com/callback#token=ACCESS_TOKEN
+```
+上面 URL 中，token参数就是令牌，A 网站因此直接在前端拿到令牌。
+
+注意，令牌的位置是 URL 锚点（fragment），而不是查询字符串（querystring），这是因为 OAuth 2.0 允许跳转网址是 HTTP 协议，因此存在"中间人攻击"的风险，而浏览器跳转时，锚点不会发到服务器，就减少了泄漏令牌的风险。
+
+这种方式把令牌直接传给前端，是很不安全的。因此，只能用于一些安全要求不高的场景，并且令牌的有效期必须非常短，通常就是会话期间（session）有效，浏览器关掉，令牌就失效了。
+
+##### 9.2.2.5.3. Resource Owner Password Credentials Grant
+
+
+资源所有者密码凭证授予类型适用于资源所有者与客户端(如设备操作系统或高度特权应用程序)存在信任关系的情况。授权服务器在启用这种授予类型时应该特别小心，并且只在其他授权流程不可行的时候才允许使用。
+
+这种授权类型适合于有能力维护资源所有者凭证（用户名和密码，典型地，用一个交互式的表单）的客户端。
+
+```yml
++----------+
+     | Resource |
+     |  Owner   |
+     |          |
+     +----------+
+          v
+          |    Resource Owner
+         (A) Password Credentials
+          |
+          v
+     +---------+                                  +---------------+
+     |         |>--(B)---- Resource Owner ------->|               |
+     |         |         Password Credentials     | Authorization |
+     | Client  |                                  |     Server    |
+     |         |<--(C)---- Access Token ---------<|               |
+     |         |    (w/ Optional Refresh Token)   |               |
+     +---------+                                  +---------------+
+```
+
+资源所有者密码凭证流程如图：
+
+* (A)  资源所有者提供他的用户名和密码给客户端
+* (B)  客户端携带从资源所有者那里收到的凭证去授权服务器的令牌端点那里请求获取访问令牌
+* (C)  授权服务器对客户端进行身份认证，并校验资源所有者的凭证，如果都校验通过，则发放访问令牌
+
+**Access Token Request**
+
+客户端通过在HTTP请求体中添加"application/x-www-form-urlencoded"格式的参数来向令牌端点请求。
+
+* grant_type ：必须的。而且值必须是"password"。
+* username ：必须的。资源所有者的用户名。
+* password ：必须的。资源所有者的密码。
+* scope：可选的。
+例如：
+
+```yml
+POST /token HTTP/1.1
+　　Host: server.example.com
+　　Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+　　Content-Type: application/x-www-form-urlencoded
+
+　　grant_type=password&username=johndoe&password=A3ddj3w
+```
+
+**Access Token Response**
+
+```
+　　HTTP/1.1 200 OK
+　　Content-Type: application/json;charset=UTF-8
+　　Cache-Control: no-store
+　　Pragma: no-cache
+
+　　{
+　　　　"access_token":"2YotnFZFEjr1zCsicMWpAA",
+　　　　"token_type":"example",
+　　　　"expires_in":3600,
+　　　　"refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA",
+　　　　"example_parameter":"example_value"
+　　}
+```
+
+**请求流程**
+
+如果你高度信任某个应用，RFC 6749 也允许用户把用户名和密码，直接告诉该应用。该应用就使用你的密码，申请令牌，这种方式称为"密码式"（password）。这种方式可以作为应用内部的登录方式。
+
+第一步，A 网站要求用户提供 B 网站的用户名和密码。拿到以后，A 就直接向 B 请求令牌。
+```
+https://oauth.b.com/token?
+  grant_type=password&
+  username=USERNAME&
+  password=PASSWORD&
+  client_id=CLIENT_ID
+```
+
+上面 URL 中，grant_type参数是授权方式，这里的password表示"密码式"，username和password是 B 的用户名和密码。
+
+第二步，B 网站验证身份通过后，直接给出令牌。注意，这时不需要跳转，而是把令牌放在 JSON 数据里面，作为 HTTP 回应，A 因此拿到令牌。
+
+这种方式需要用户给出自己的用户名/密码，显然风险很大，因此只适用于其他授权方式都无法采用的情况，而且必须是用户高度信任的应用。
+
+
+
+
+##### 9.2.2.5.4. Client Credentials Grant
+
+客户端用它自己的客户单凭证去请求获取访问令牌
+
+```yml
+ +---------+                                  +---------------+
+     |         |                                  |               |
+     |         |>--(A)- Client Authentication --->| Authorization |
+     | Client  |                                  |     Server    |
+     |         |<--(B)---- Access Token ---------<|               |
+     |         |                                  |               |
+     +---------+                                  +---------------+
+```
+客户端凭证授权流程如图所示：
+
+* (A)  客户端用授权服务器的认证，并请求获取访问令牌
+* (B)  授权服务器验证客户端身份，如果严重通过，则发放令牌
+
+**Access Token Request**
+
+grant_type：必须的。值必须是"client_credentials"。
+scope：可选的。
+例如：
+```
+　　POST /token HTTP/1.1
+　　Host: server.example.com
+　　Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+　　Content-Type: application/x-www-form-urlencoded
+
+　　grant_type=client_credentials
+```
+
+**Access Token Response**
+例如：
+```
+　　HTTP/1.1 200 OK
+　　Content-Type: application/json;charset=UTF-8
+　　Cache-Control: no-store
+　　Pragma: no-cache
+
+　　{
+　　　　"access_token":"2YotnFZFEjr1zCsicMWpAA",
+　　　　"token_type":"example",
+　　　　"expires_in":3600,
+　　　　"example_parameter":"example_value"
+　　}
+```
+**请求过程**
+
+适用于没有前端的命令行应用，即在命令行下请求令牌。
+
+第一步，A 应用在命令行向 B 发出请求。
+
+```
+https://oauth.b.com/token?
+  grant_type=client_credentials&
+  client_id=CLIENT_ID&
+  client_secret=CLIENT_SECRET
+```
+
+上面 URL 中，grant_type参数等于client_credentials表示采用凭证式，client_id和client_secret用来让 B 确认 A 的身份。
+
+第二步，B 网站验证通过以后，直接返回令牌。
+
+这种方式给出的令牌，是针对第三方应用的，而不是针对用户的，即有可能多个用户共享同一个令牌。
+
+##### 9.2.2.5.5. 令牌的使用
+
+A 网站拿到令牌以后，就可以向 B 网站的 API 请求数据了。
+
+此时，每个发到 API 的请求，都必须带有令牌。具体做法是在请求的头信息，加上一个Authorization字段，令牌就放在这个字段里面。
+
+```
+curl -H "Authorization: Bearer ACCESS_TOKEN" \
+"https://api.b.com"
+```
+
+上面命令中，ACCESS_TOKEN就是拿到的令牌。
+
+A 网站拿到令牌以后，就可以向 B 网站的 API 请求数据了。
+
+此时，每个发到 API 的请求，都必须带有令牌。具体做法是在请求的头信息，加上一个Authorization字段，令牌就放在这个字段里面。
+
+
+curl -H "Authorization: Bearer ACCESS_TOKEN" \
+"https://api.b.com"
+上面命令中，ACCESS_TOKEN就是拿到的令牌。
+
+##### 9.2.2.5.6. 更新令牌
+
+令牌的有效期到了，如果让用户重新走一遍上面的流程，再申请一个新的令牌，很可能体验不好，而且也没有必要。OAuth 2.0 允许用户自动更新令牌。
+
+具体方法是，B 网站颁发令牌的时候，一次性颁发两个令牌，一个用于获取数据，另一个用于获取新的令牌（refresh token 字段）。令牌到期前，用户使用 refresh token 发一个请求，去更新令牌。
+
+```
+https://b.com/oauth/token?
+  grant_type=refresh_token&
+  client_id=CLIENT_ID&
+  client_secret=CLIENT_SECRET&
+  refresh_token=REFRESH_TOKEN
+```
+
+上面 URL 中，grant_type参数为refresh_token表示要求更新令牌，client_id参数和client_secret参数用于确认身份，refresh_token参数就是用于更新令牌的令牌。
+
+B 网站验证通过以后，就会颁发新的令牌。
+
+
+
+#### 9.2.2.6. Issuing an Access Token
+
+<a href="#menu" >目录</a>
+
+**Successful Response**
+
+授权服务器发放令牌
+* access_token：必须的。
+* token_type：必须的。比如："bearer"，"mac"等等
+* expires_in：推荐的。
+* refresh_token：可选的。
+* scope：可选的。
+* media type是application/json，参数被序列化成JSON对象。
+
+授权服务器必须包含"Cache-Control"HTTP头，并且值必须是"no-store"。
+
+例如：
+```
+　　HTTP/1.1 200 OK
+　　Content-Type: application/json;charset=UTF-8
+　　Cache-Control: no-store
+　　Pragma: no-cache
+
+　　{
+　　　　"access_token":"2YotnFZFEjr1zCsicMWpAA",
+　　　　"token_type":"example",
+　　　　"expires_in":3600,
+　　　　"refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA",
+　　　　"example_parameter":"example_value"
+　　}
+```
+
+#### 9.2.2.7. Refreshing an Access Token
+<a href="#menu" >目录</a>
+
+请求参数
+* grant_type：必须的。值必须是"refresh_token"。
+* refresh_token：必须的。
+* scope：可选的。
+例如：
+```
+　　POST /token HTTP/1.1
+　　Host: server.example.com
+　　Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+　　Content-Type: application/x-www-form-urlencoded
+
+　　grant_type=refresh_token&refresh_token=tGzv3JOkF0XG5Qx2TlKWIA
+```
+
+## 9.3. Spring security + Spring gateway + Oauth2 整合
+<a href="#menu" >目录</a>
+
+
+整个项目包括四个部分：客户端，资源服务器(常规的服务应用)，网关层，授权服务器
+
+### 9.3.1. 网关层　Spring gateway　
+<a href="#menu" >目录</a>
+
+#### 9.3.1.1. 依赖引入
+<a href="#menu" >目录</a>
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-webflux</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-gateway</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-config</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-oauth2-resource-server</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-oauth2-client</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-oauth2-jose</artifactId>
+</dependency>
+
+```
+#### 9.3.1.2. 配置
+<a href="#menu" >目录</a>
+
+
+```yml
+spring:
+    #路由配置
+  cloud.gateway.routes:
+    #授权认证服务
+    - id: microblog-auth
+      uri: http://localhost:8000
+      predicates:
+        - Path=/api/auth/**
+      filters:
+        - StripPrefix=2
+    #普通的服务
+    - id: api-service-route
+      uri: http://localhost:8080
+      predicates:
+        - Path=/api/service/**
+      filters:
+        - StripPrefix=1
+    #　授权服务获取jwt的地址
+  security.oauth2.resourceserver.jwt.jwk-set-uri: 'http://localhost:8000/.well-known/jwks.json'
+
+```
+访问控制
+```java
+package com.microblog.gateway.config;
+
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.ReactiveAuthenticationManager;
+import org.springframework.security.authentication.ReactiveAuthenticationManagerAdapter;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.authentication.AuthenticationWebFilter;
+import org.springframework.security.web.server.authorization.ServerAccessDeniedHandler;
+import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.WebFilter;
+import reactor.core.publisher.Mono;
+
+import java.util.Iterator;
+
+@Configuration
+@Slf4j
+@EnableWebFluxSecurity
+public class ResourceServerConfigurer {
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+
+        
+        http.oauth2ResourceServer().jwt();
+
+        //关闭打开的csrf保护
+        //CSRF（Cross-site request forgery跨站请求伪造，也被称为“One Click Attack”或者Session Riding，通常缩写为CSRF或者XSRF，是一种对网站的恶意利用。为了防止跨站提交攻击，通常会配置csrf。
+        http.csrf().disable()
+                .authorizeExchange()
+                .pathMatchers("/").permitAll()
+                .pathMatchers("/api/auth/oauth/**").permitAll()
+                .pathMatchers("/login.html", "/login").permitAll()
+                .pathMatchers("/actuator/**").permitAll()
+                .pathMatchers("/needauth").authenticated()
+                .pathMatchers("/notauth")
+                .access(AccessReactiveAuthorizationManager.hasAnyAuthority("USER1","ADMIN1"))//hasAnyRole("USER"," ADMIN")
+                //.pathMatchers("/api/notauth").hasAnyRole("USER"," ADMIN")
+                .anyExchange().authenticated()
+                .and().exceptionHandling().accessDeniedHandler(new ServerAccessDeniedHandler() {
+            @Override
+            public Mono<Void> handle(ServerWebExchange serverWebExchange, AccessDeniedException e) {
+
+                e.printStackTrace();
+                return Mono.empty();
+            }
+        })
+        ;
+
+        SecurityWebFilterChain chain = http.build();
+        Iterator<WebFilter> weIterable = chain.getWebFilters().toIterable().iterator();
+        while(weIterable.hasNext()) {
+            WebFilter f = weIterable.next();
+            if(f instanceof AuthenticationWebFilter) {
+                AuthenticationWebFilter webFilter = (AuthenticationWebFilter) f;
+                //将自定义的AuthenticationConverter添加到过滤器中
+                log.info("将自定义的AuthenticationConverter添加到过滤器中");
+               // webFilter.setServerAuthenticationConverter(new AuthenticationConverter());
+            }
+        }
+
+        return chain;
+
+
+    }
+
+    @Bean
+    public ReactiveAuthenticationManager reactiveAuthenticationManager() {
+        return new ReactiveAuthenticationManagerAdapter((authentication)->{
+
+
+            log.info("ReactiveAuthenticationManager...");
+            if(authentication instanceof AccountAuthentication) {
+                AccountAuthentication gmAccountAuthentication = (AccountAuthentication) authentication;
+                if(gmAccountAuthentication.getPrincipal() != null) {
+                    authentication.setAuthenticated(true);
+                    return authentication;
+                } else {
+                    return authentication;
+                }
+            } else {
+                return authentication;
+            }
+        });
+    }
+
+
+}
+
+
+```
+
+### 9.3.2. 授权服务器
+<a href="#menu" >目录</a>
+
+
+
+
+
+
+
+# 10. SpringCloud
+<a href="#menu" >目录</a>
+
+## 10.1. 基础知识
+<a href="#menu" >目录</a>
+
+### 10.1.1. 微服务概念
 
 微服务是系统架构上的一种设计风格， 它的主旨是将一个原本独立的系统拆分成多个小型服务，这些小型服务都在各自独立的进程中运行，服务之间通过基于HTTP的RESTful API进行通信协作。 被拆分成的每一个小型服务都围绕着系统中的某一项或一些耦合度较高的业务功能进行构建， 并且每个服务都维护着自身的数据存储、 业务开发、自动化测试案例以及独立部署机制。 由千有了轻量级的通信协作基础， 所以这些微服务可以使用不同的语言来编写
 
@@ -10231,7 +11671,7 @@ Spring Boot 可以通过 @PropertySource,@Value,@Environment, @ConfigurationProp
 * 轻量级通信原则
 * 微服务粒度，确定好服务边界
 
-### 9.1.2. SpringCloud子项目
+### 10.1.2. SpringCloud子项目
 * SpringCloudConfig: 配置管理工具， 支持使用Git存储 配置内容， 可以使用它实现应用配置的外部化存储， 并支持客户端配置信息刷新、 加密／解密配置内容 等。
 * SpringCloudNetflix: 核心 组件， 对多个Netflix OSS开源套件进行整合。
 * Eureka: 服务治理组件， 包含服务注册中心、 服务注册与发现机制的实现。
@@ -10253,7 +11693,7 @@ Spring Boot 可以通过 @PropertySource,@Value,@Environment, @ConfigurationProp
 * Spring Cloud Starters: Spring Cloud 的基础组件， 它是基于 Spring Boot 风格项目的基础依赖模块。
 * Spring Cloud CLI: 用于在 Groovy 中快速创建 Spring Cloud 应用的 Spring Boot CLI插件。
 
-### 9.1.3. 版本说明
+### 10.1.3. 版本说明
 
 由于 Spring Cloud 不像 Spring 社区其他一些项目那样相对独立， 它是一个拥有诸多子项目的大型综合项目， 可以说是对微服务架构解决方案的综合套件组合， 其包含的各个子项目也都独立进行着内容更新与迭代，各自都维护着自己的发布版本号。因此每一 个Spring Cloud 的版本都会包含多个不同版本的子项目， 为了管理每个版本的子项目清单， 避免Spring Cloud的版本号与其子项目的版本号相混淆，没有采用版本号的方式，而是通过命名的方式。使用单词而不是字母主要是因为:设计的目的是为了更好的管理每个SpringCloud子项目的清单，避免自己的版本号与子项目的版本号混淆.
 
@@ -10302,7 +11742,7 @@ pom文件中指定cloud的版本，便可以不用指定各个子项目依赖的
 * Dalston:1.5.x
 
 
-## 9.2. 服务治理Eureka
+## 10.2. 服务治理Eureka
 <a href="#menu" >目录</a>
 
 和 Consul 、 Zookeeper 类似， Eureka 是一个用于服务注册和发现的组件， Eureka 分为 Eureka Server 和 Eureka Client, Eureka　Server 为 Eureka 服务注册中心， Eureka Client 为 Eureka 客户端 。
@@ -10318,7 +11758,7 @@ pom文件中指定cloud的版本，便可以不用指定各个子项目依赖的
 服务消费的基本过程如下：首先需要一个服务注册中心 Eureka Server，服务提供者 EurekaClient 向服务注册中心 Eureka Server 注册，将自己的信息（比如服务名和服务的 IP 地址等）通过restful的形式提交给服务注册中心 Eureka Server。同样，服务消费者 Eureka Client 也向服务注册中心Eureka Server 注册，同时服务消费者获取一份服务注册列表的信息 ， 该列表包含了所有向服务注册中心 Eureka Server 注册的服务信息。获取服务注册列表信息之后 ，服务消费者就知到服务提供者的 IP 地址，可以通过 Http远程调度来消费服务提供者的服务。
 
 
-### 9.2.1. 基本使用
+### 10.2.1. 基本使用
 
 **注册中心**
 
@@ -10498,7 +11938,7 @@ eureka:
       defaultZone: http://user:123456@localhost:8001/eureka/
 ```
 
-### 9.2.2. 高可用注册中心
+### 10.2.2. 高可用注册中心
 
 * 注册中心可以集群部署，提高高可用
 
