@@ -242,6 +242,7 @@
       - [9.2.1.1. 使用场景](#9211-使用场景)
       - [9.2.1.2. 组成部分](#9212-组成部分)
       - [9.2.1.3. 工作流程](#9213-工作流程)
+      - [JWT与Session的差异](#jwt与session的差异)
     - [9.2.2. Oauth2](#922-oauth2)
       - [9.2.2.1. 协议流Protocol Flow](#9221-协议流protocol-flow)
       - [9.2.2.2. Authorization Grant](#9222-authorization-grant)
@@ -10727,7 +10728,7 @@ jwt的传输可以一般有三种方式
 * 无状态和可扩展性：Tokens存储在客户端。完全无状态，可扩展。我们的负载均衡器可以将用户传递到任意服务器，因为在任何地方都没有状态或会话信息。
 * 安全：Token不是Cookie。（The token, not a cookie.）每次请求的时候Token都会被发送。而且，由于没有Cookie被发送，还有助于防止CSRF攻击。即使在你的实现中将token存储到客户端的Cookie中，这个Cookie也只是一种存储机制，而非身份认证机制。没有基于会话的信息可以操作，因为我们没有会话!
 
-**JWT与Session的差异**
+#### JWT与Session的差异
 
 相同点是，它们都是存储用户信息；然而，Session是在服务器端的，而JWT是在客户端的。
 
@@ -10737,6 +10738,19 @@ Session方式存储用户信息的最大问题在于要占用大量服务器内�
 
 Session的状态是存储在服务器端，客户端只有session id；而Token的状态是存储在客户端。
 
+**Cookie-Session认证机制**
+
+* 用户访问客户端(浏览器)，服务器通过session校验用户是否登录
+* 用户没登录返回登录页面，输入账号密码等验证
+* 服务器验证通过创建session，服务以该session id　最为key,value作为用户信息进行存储(内存或者分布式缓存)，并返回sessionId给客户端保存到cookie，
+* 接着，用户访问其它同域链接，服务器会从存储中以session id为key获取用户信息。
+
+**缺点**
+
+* 只适用于B/S架构的软件，对于安卓app等客户端不带cookie的，不能和服务端进行对接
+* 不支持跨域，因为Cookie为了保证安全性，只能允许同域访问，不支持跨域
+* CSRF攻击，Cookie没做好安全保证，有时候容易被窃取，受到跨站请求伪造的攻击
+
 **基于Token的身份认证是如何工作的**
 
 基于Token的身份认证是无状态的，服务器或者Session中不会存储任何用户信息。
@@ -10744,9 +10758,9 @@ Session的状态是存储在服务器端，客户端只有session id；而Token�
 主要流程如下：
 * 用户携带用户名和密码请求访问
 * 服务器校验用户凭据
-* 应用提供一个token给客户端
+* 应用提供一个token给客户端,token中包含了用户信息
 * 客户端存储token，并且在随后的每一次请求中都带着它
-* 服务器校验token并返回数据
+* 服务器校验token获取当前请求的用户
 
 注意：
 * 每一次请求都需要token
@@ -11530,31 +11544,43 @@ public class ResourceServerConfigurer {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
 
-        
+        //使用jwt方式
         http.oauth2ResourceServer().jwt();
 
         //关闭打开的csrf保护
-        //CSRF（Cross-site request forgery跨站请求伪造，也被称为“One Click Attack”或者Session Riding，通常缩写为CSRF或者XSRF，是一种对网站的恶意利用。为了防止跨站提交攻击，通常会配置csrf。
+        //CSRF（Cross-site request forgery跨站请求伪造，也被称为“One Click Attack”或者Session Riding，通常缩写为CSRF或者XSRF，是一种对网站的恶意利用。为了防止跨站提交攻击，实际应用应当配置csrf。这里禁止掉
         http.csrf().disable()
-                .authorizeExchange()
-                .pathMatchers("/").permitAll()
-                .pathMatchers("/api/auth/oauth/**").permitAll()
-                .pathMatchers("/login.html", "/login").permitAll()
-                .pathMatchers("/actuator/**").permitAll()
-                .pathMatchers("/needauth").authenticated()
-                .pathMatchers("/notauth")
-                .access(AccessReactiveAuthorizationManager.hasAnyAuthority("USER1","ADMIN1"))//hasAnyRole("USER"," ADMIN")
-                //.pathMatchers("/api/notauth").hasAnyRole("USER"," ADMIN")
-                .anyExchange().authenticated()
-                .and().exceptionHandling().accessDeniedHandler(new ServerAccessDeniedHandler() {
-            @Override
-            public Mono<Void> handle(ServerWebExchange serverWebExchange, AccessDeniedException e) {
+            .authorizeExchange()
+            /*ppathMatchers(String... antPatterns)  多参数，可以配置多个
+            permitAll() 允许通过，不需要认证和授权
+            denyAll() 全部聚集
+            authenticated() 已经登录，通过校验jwt是否有效判断
+            hasRole(String role)　拥有角色，前提是已经认证登录
+            hasAuthority(String authority)　拥有权限，前提是已经认证登录              
+            access(ReactiveAuthorizationManager<AuthorizationContext> manager)//自定义权限校验器
+            */
+            .pathMatchers("/").permitAll()
+            .pathMatchers("/api/auth/oauth/**").permitAll()
+            .pathMatchers("/login.html", "/login").permitAll()
+            .pathMatchers("/actuator/**").permitAll()
+            .pathMatchers("/needauth").authenticated()
+            .pathMatchers("/notauth")
+            //这里由于系统提供的权限校验不满足要求，自定义了一个
+            .access(AccessReactiveAuthorizationManager.hasAnyAuthority("USER1","ADMIN1"))//hasAnyRole("USER"," ADMIN")
+            //.pathMatchers("/api/notauth").hasAnyRole("USER"," ADMIN")
+            .anyExchange().authenticated()
+            //自定义异常处理器
+            .and().exceptionHandling().accessDeniedHandler(
+                new ServerAccessDeniedHandler() {
+                    @Override
+                    public Mono<Void> handle(ServerWebExchange serverWebExchange, AccessDeniedException e) {
 
-                e.printStackTrace();
-                return Mono.empty();
-            }
-        })
+                        e.printStackTrace();
+                        return Mono.empty();
+                    }
+                })
         ;
+        //除上面的配置，还有很多可以配置，比如添加过滤器
 
         SecurityWebFilterChain chain = http.build();
         Iterator<WebFilter> weIterable = chain.getWebFilters().toIterable().iterator();
@@ -11573,30 +11599,149 @@ public class ResourceServerConfigurer {
 
     }
 
-    @Bean
-    public ReactiveAuthenticationManager reactiveAuthenticationManager() {
-        return new ReactiveAuthenticationManagerAdapter((authentication)->{
+}
+//自定义权限处理
+public class AccessReactiveAuthorizationManager<T> implements ReactiveAuthorizationManager<T>{
+    //存放角色和权限信息
+    private  List<String> authorities;
+
+    private AccessReactiveAuthorizationManager(String... authorities) {
+        this.authorities = Arrays.asList(authorities);
+    }
+
+    @Override
+    public Mono<AuthorizationDecision> check(Mono<Authentication> mono, T object) {
 
 
-            log.info("ReactiveAuthenticationManager...");
-            if(authentication instanceof AccountAuthentication) {
-                AccountAuthentication gmAccountAuthentication = (AccountAuthentication) authentication;
-                if(gmAccountAuthentication.getPrincipal() != null) {
-                    authentication.setAuthenticated(true);
-                    return authentication;
-                } else {
-                    return authentication;
-                }
-            } else {
-                return authentication;
+        Mono result =   mono.filter((a) -> {
+            boolean isAuthenticated = a.isAuthenticated();
+            log.info("是否认证通过? {}",isAuthenticated);
+            return isAuthenticated;
+
+        }).flatMapIterable((a) -> {
+
+            //从jwt中获取权限和角色字符串，并构建SimpleGrantedAuthority对象
+            Jwt jwt = (Jwt) a.getCredentials();
+            Map<String, Object> claims =  jwt.getClaims();
+            JSONArray roleJSONArray = (JSONArray)claims.get("authorities");
+            String roleStr = "";
+            Collection<SimpleGrantedAuthority>  simpleGrantedAuthorities = new ArrayList<>();
+            for(int i = 0; i< roleJSONArray.size(); i++){
+                roleStr += roleJSONArray.get(i) + ",";
             }
-        });
+            //格式: role1,role2,role3
+            SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(roleStr);
+            simpleGrantedAuthorities.add(grantedAuthority);
+
+            return simpleGrantedAuthorities;
+        }).map((g) -> {
+            return g.getAuthority();
+        }).any((roleStr) -> {
+            //解析
+            String[]  roles = roleStr.split(",");
+            for (String role:roles){
+                if(authorities.contains(role)){
+                    if (log.isDebugEnabled()){
+                        if(role.startsWith("ROLE")){
+                            log.info("拥有角色[{}]",role);
+                        }
+                        else {
+                            log.info("拥有权限[{}]",role);
+                        }
+                    }
+
+                    return true;
+                }
+            }
+            log.debug("未拥有权限!!!");
+            return false;//this.authorities.contains(a);
+        }).map((hasAuthority) -> {
+            return new AuthorizationDecision(hasAuthority);
+        }).defaultIfEmpty(new AuthorizationDecision(false));
+
+        return  result;
     }
 
 
+    public static <T> AccessReactiveAuthorizationManager<T> hasAuthority(String authority) {
+        Assert.notNull(authority, "authority cannot be null");
+        return new AccessReactiveAuthorizationManager(new String[]{authority});
+    }
+
+    public static <T> AccessReactiveAuthorizationManager<T> hasAnyAuthority(String... authorities) {
+        Assert.notNull(authorities, "authorities cannot be null");
+        String[] var1 = authorities;
+        int var2 = authorities.length;
+
+        for(int var3 = 0; var3 < var2; ++var3) {
+            String authority = var1[var3];
+            Assert.notNull(authority, "authority cannot be null");
+        }
+
+        return new AccessReactiveAuthorizationManager(authorities);
+    }
+
+    public static <T> AccessReactiveAuthorizationManager<T> hasRole(String role) {
+        Assert.notNull(role, "role cannot be null");
+        return hasAuthority("ROLE_" + role);
+    }
+
+    public static <T> AccessReactiveAuthorizationManager<T> hasAnyRole(String... roles) {
+        Assert.notNull(roles, "roles cannot be null");
+        String[] var1 = roles;
+        int var2 = roles.length;
+
+        for(int var3 = 0; var3 < var2; ++var3) {
+            String role = var1[var3];
+            Assert.notNull(role, "role cannot be null");
+        }
+
+        return hasAnyAuthority(toNamedRolesArray(roles));
+    }
+
+    private static String[] toNamedRolesArray(String... roles) {
+        String[] result = new String[roles.length];
+
+        for(int i = 0; i < roles.length; ++i) {
+            result[i] = "ROLE_" + roles[i];
+        }
+
+        return result;
+    }
 }
 
 
+```
+
+gateway的工作是
+
+1.当客户端请求获取token或者刷新token时，将请求转发到认证服务器
+
+```yml
+#客户端请求
+http://localhost:8010/api/auth/oauth/token?grant_type=password&&client_id=test-client&&client_secret=test-secret&&username=my-username&&password=my-password1
+
+# 不校验/api/auth/oauth/路径
+.pathMatchers("/api/auth/oauth/**").permitAll()
+
+# 路由配置转发
+spring:
+  cloud.gateway.routes:
+    - id: microblog-auth
+      uri: http://localhost:8000
+      predicates:
+        - Path=/api/auth/**
+      filters:
+        #把前面的两个字符串去掉/api/auth/
+        - StripPrefix=2
+```
+
+2.客户端获取jwt之后，携带jwt访问资源。如果访问的资源需要认证和授权，并且是第一次访问，就会向授权服务器请求获取解析jwt的公钥。获取公钥后会将该公钥缓存在gateway，下次请求的时候就不需要再次请求授权服务器。这里spring security和oauth处理是当授权生成jwt时，使用rsa算法的私钥加密签名，而在gateway端使用公钥对签名进行解密。
+
+```yml
+# 获取公钥的路径配置
+spring:
+  security.oauth2.resourceserver.jwt.jwk-set-uri: 'http://localhost:8000/.well-known/jwks.json'
 ```
 
 ### 9.3.2. 授权服务器
