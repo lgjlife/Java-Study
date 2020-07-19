@@ -961,14 +961,18 @@ public class QueueData implements Comparable<QueueData> {
 
 虽然本质上的问题的解决都是不断地调用方法来实现．但是对于面向对象，当前对象不能满足要求时，可以通过替换对象来实现内部逻辑处理的修改．也就是不同的对象可以有不同的实现逻辑，即使他们的父类类型一样．从这方面来讲，面向对象可维护性和可扩展性更加好．更加适用于大规模的问题．
 
+与面向过程方法相比，面向对象不再局限于计算机的机器本质，而更加侧重于对现实世界的模拟。面向对象会设计很多对象，并且指定这些对象需要完成的任务。
+
 **总结**
 * 面向过程：
     * 优点：性能比面向对象高，因为类调用时需要实例化，开销比较大，比较消耗资源;比如单片机、嵌入式开发、 Linux/Unix等一般采用面向过程开发，性能是最重要的因素。 
-    * 缺点：没有面向对象易维护、易复用、易扩展
+    * 缺点：没有面向对象易维护、易复用、易扩展。过程相对固定，扩展比较困难。不利于应对需求的频繁变更。适用于不会频繁变更的基础软件，比如操作系统，数据库等
 * 面向对象：
     * 优点：易维护、易复用、易扩展，由于面向对象有封装、继承、多态性的特性，可以设计出低耦合的系统，使系统 更加灵活、更加易于维护 
     * 缺点：性能比面向过程低
+    * 基于可扩展性，适用于需求频繁变更的互联网应用
 
+不论是面向过程还是面向对象，都只是一种思维方式。和语言关系不大，比如c可以写出面向对象的程序，java也可以写出面向过程的程序。
 
 **类与对象**
 
@@ -985,8 +989,30 @@ public class QueueData implements Comparable<QueueData> {
 * 继承　is-a，继承类或者实现接口
 
 
+**面向对象程序需求分析**
 
+* 5W
+    * WHEN　何时调用
+    * WHERE　何处调用
+    * WHO　谁调用
+    * WHAT　实现的功能
+    * WHY　为什么要这么处理
+* 1H
+    * How
+        * 分析正常的执行流程
+        * 在正常流程的处理上，分析每一步的各种异常情况和对应的处理
+        * 在征程流程的步骤上，分析每一步是否有其他替代方法，以及替代方法如何做
+* 8C
+    * 性能Performance
+    * 成本Cost
+    * 时间Time
+    * 可靠性Reliability
+    * 安全性Security
+    * 合规性Compliance
+    * 技术性Technology
+    * 兼容性Compatibility
 
+   
 
 ## 2.2. 面向对象三大特性
 <a href="#menu"  >目录</a>
@@ -1001,7 +1027,7 @@ public class QueueData implements Comparable<QueueData> {
         * 隐藏类的实例细节，方便修改和实现。　
 
 * 多态 
-    * 多态就是对象的多种形态。同一种类型的对象，调用同一个方法，其呈现的效果不一样。
+    * 多态就是对象的多种形态。同一种类型的对象，调用同一个方法，其呈现的效果不一样。真正含义是:指向父类的指针或者引用，能够调用子类对象的方法
     * java里的多态主要表现在两个方面：
         * 引用多态　　　
             * 父类的引用可以指向本类的对象；
@@ -1017,7 +1043,7 @@ Java有两种类型，编译时类型(由声明的类型决定)，运行时类�
 //Animal是编译时类型，Ｄog是运行时类型
 Animal aanimal = new Dog();
 ```
-* 向上转型: 子类对象赋给父类变量。自动转换。只能调用父类拥有的方法。
+* 向上转型: 子类对象赋给父类变量。自动转换。该父类变量只能调用父类拥有的方法。
 * 向下转型: 父类对象赋给子类变量，需要强制转换。可以调用子类拥有的方法。
 
 
@@ -7084,43 +7110,453 @@ public enum User{
 
 **消除过期的对象引用**
 
+避免隐式持有对象的引用，比如用数组存储对象，当移除对象的时候，只是改变相关的索引，没有移除数组所持有的强引用，这种会导致一直持有对象，垃圾回收器无法对其进行回收。或者是缓存没有即时回收，也会导致这个问题。
 
+内存泄漏的第三个来源是监听器和其他回调。如果实现了一个API,客户端在这个API中注册回调，却没有显示取消注册，这种会不断地堆积起来。确保回调立即被当作垃圾回收的最佳方法是只保存它们的弱引用。
+
+可以借助Heap剖析工具(Heap Profiler)进行检测。
 
 **避免使用终结方法和消除方法**
 
+终结方法finalizer和Java9中的cleaner不能保证会被即时执行。从一个对象变得不可到达开始，到它的终结方法被执行，所花费的时间是不确定的。因此如果在里面执行关闭相关资源，可能就造成无法即时执行关闭。同时并不能保证终结方法一定会被执行，比如程序终止的情况下，终结方法就不会被执行。如果在终结方法中没有处理异常，后续的代码也无法得到执行。
+
 **try-with-resources优先于try-finnally**
+
+Java库中有很多资源需要手动关闭，比如InputStream、OutputStream、java.sql.Connection等等。在此之前，通常是使用try-finally的方式关闭资源；Java7之后，推出了try-with-resources声明来替代之前的方式。 try-with-resources 声明要求其中定义的变量实现 AutoCloseable 接口，这样系统可以自动调用它们的close方法，从而替代了finally中关闭资源的功能。
+
+举个栗子，下面是一个复制文件的方法，按照原本try-catch-finally的写法：
+
+```java
+// 一个简单的复制文件方法。
+public static void copy(String src, String dst) {
+    InputStream in = null;
+    OutputStream out = null;
+    try {
+        in = new FileInputStream(src);
+        out = new FileOutputStream(dst);
+        byte[] buff = new byte[1024];
+        int n;
+        while ((n = in.read(buff)) >= 0) {
+            out.write(buff, 0, n);
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    } finally {
+        if (in != null) {
+            try {
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (out != null) {
+            try {
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+```
+可以看出，这种实现非常的丑陋。
+
+下面来看使用了try-with-resources后的效果：
+
+```java
+public static void copy(String src, String dst) {
+    try (InputStream in = new FileInputStream(src);
+         OutputStream out = new FileOutputStream(dst)) {
+        byte[] buff = new byte[1024];
+        int n;
+        while ((n = in.read(buff)) >= 0) {
+            out.write(buff, 0, n);
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+```
+try-with-resources将会自动关闭try()中的资源，并且将先关闭后声明的资源。
+
+如果不catch IOException就更加清爽了：
+```java
+public static void copy(String src, String dst) throws IOException {
+    try (InputStream in = new FileInputStream(src);
+         OutputStream out = new FileOutputStream(dst)) {
+        byte[] buff = new byte[1024];
+        int n;
+        while ((n = in.read(buff)) >= 0) {
+            out.write(buff, 0, n);
+        }
+    }
+}
+```
+
+原理分析
+
+那么try-with-resources有什么神奇之处呢？到底做了什么呢？
+
+我们先来看下AutoCloseable接口：
+
+```java
+public interface AutoCloseable {
+    void close() throws Exception;
+}
+```
+其中仅有一个close方法，实现AutoCloseable接口的类将在close方法中实现其关闭资源的功能。
+
+而try-with-resources其实是个语法糖，它将在编译时编译成关闭资源的代码。我们将上述例子中的代码编译成class文件，再反编译回java文件，就能看到如下代码：
+```java
+public static void copy(String var0, String var1) throws IOException {
+    FileInputStream var2 = new FileInputStream(var0);
+    Throwable var3 = null;
+
+    try {
+        FileOutputStream var4 = new FileOutputStream(var1);
+        Throwable var5 = null;
+
+        try {
+            byte[] var6 = new byte[1024];
+
+            int var7;
+            while((var7 = var2.read(var6)) >= 0) {
+                var4.write(var6, 0, var7);
+            }
+        } catch (Throwable var29) {
+            var5 = var29;
+            throw var29;
+        } finally {
+            if (var4 != null) {
+                if (var5 != null) {
+                    try {
+                        // 关闭FileOutputStream
+                        var4.close();
+                    } catch (Throwable var28) {
+                        var5.addSuppressed(var28);
+                    }
+                } else {
+                    var4.close();
+                }
+            }
+
+        }
+    } catch (Throwable var31) {
+        var3 = var31;
+        throw var31;
+    } finally {
+        if (var2 != null) {
+            if (var3 != null) {
+                try {
+                    // 关闭FileInputStream
+                    var2.close();
+                } catch (Throwable var27) {
+                    var3.addSuppressed(var27);
+                }
+            } else {
+                var2.close();
+            }
+        }
+
+    }
+
+}
+```
+
+除却处理异常相关的代码，其实就是调用了资源的close方法。
+
 
 ## 17.2. 对于所有对象都通用的方法
 <a href="#menu"  >目录</a>
 
 **覆盖equals时请遵守通用的约定**
+
+* 自反性(reflexive):对于任何非null的引用值x，　x.equals(x)必须返回true。
+* 对称性(symmetric):对于任何非null的引用值x和y,当且仅当y.equals(x)返回true时',x.equals(y)必须返回true。
+* 传递性(transitive):对于任何非null的引用值x、y和z,如果x.equals(y)返回true,并且y.equals(z)也返回true,那么x.equals(z)也必须返回true
+* 一致性(consistent):对于任何非null的引用值x和y,只要equals的比较操作在对象中所用的信息没有被修改,多次调用x.equals(y)就会一致地返回true,
+或者一致地返回false。
+
+
+
 **覆盖equals时总要覆盖的hashCode**
+
+Object 规范:
+* 在应用程序的执行期间,只要对象的 equals 方法的比较操作所用到的信息没有被修改,那么对同一个对象的多次调用, hashCode 方法都必须始终返回同一个值 。在一个应用程序与另一个程序的执行过程中,执行 hashCode 方法所返回的值可以不一致 。
+* 如果两个对象根据 equals(Object )方法比较是相等的,那么调用这两个对象中的 hashCode 方法都必须产生同样的整数结果 。
+* 如果两个对象根据 equals(Object )方法比较是不相等的,那么调用这两个对象中的 hashCode 方法,则不一定要求 hashCode 方法必须产生不同的结果 。也就是hashCode相同，equals不一定相等。 但是程序员应该知道,给不相等的对象产生截然不同的整数结果,有可能提高散列表( hashtable )的性能
+
+```java
+public boolean equals(Object obj) {
+    return (this == obj);
+}
+public native int hashCode();
+```
+
+默认的equals是通过==来比较，也就是比较内存地址是否一样，hashCode()是native方法，返回值和内存地址相关。因此除非引用改变。上述两个是符合上面的Object 规范的。
+
+
+对于基本类型(byte,int,long)的包装类型，比较的是其数值。
+```java
+//Integer
+ public boolean equals(Object obj) {
+    if (obj instanceof Integer) {
+        return value == ((Integer)obj).intValue();
+    }
+    return false;
+}
+public static int hashCode(int value) {
+    return value;
+}
+//Float
+public boolean equals(Object obj) {
+    return (obj instanceof Float)
+            && (floatToIntBits(((Float)obj).value) == floatToIntBits(value));
+}
+public static int floatToIntBits(float value) {
+    int result = floatToRawIntBits(value);
+    // Check for NaN based on values of bit fields, maximum
+    // exponent and nonzero significand.
+    if ( ((result & FloatConsts.EXP_BIT_MASK) ==
+            FloatConsts.EXP_BIT_MASK) &&
+            (result & FloatConsts.SIGNIF_BIT_MASK) != 0)
+        result = 0x7fc00000;
+    return result;
+}
+
+public static int hashCode(float value) {
+    return floatToIntBits(value);
+}
+
+```
+
+public static int floatToIntBits(float value)
+
+根据 IEEE 754 的浮点“单一形式”中的位布局，返回指定浮点值的表示形式。 
+* 第 31 位（掩码 0x80000000 选定的位）表示浮点数字的符号。第 30-23 位（掩码 0x7f800000 选定的位）表示指数。第 22-0 位（掩码 0x007fffff 选定的位）表示浮点数字的有效位数（有时也称为尾数）。 
+* 如果参数为正无穷大，则结果为 0x7f800000。 
+* 如果参数为负无穷大，则结果为 0xff800000。 
+* 如果参数为 NaN，则结果为 0x7fc00000。 
+
+在所有情况下，结果都是一个整数，在将其赋予 intBitsToFloat(int) 方法时，将生成一个与 floatToIntBits 的参数相同的浮点值（除所有 NaN 值被折叠成一个“规范的”NaN 值之外）。 
+
+另外需要知道的是，float类型占用4个字节，从最低位（最右边）到最高位（最左边）的编号是从0-31。这样的话，上面的解释就容易看懂了。也就是说，转换成的32个0、1字符串中，31号表示符号，30-23表示指数，22-0表示尾数。
+
+按照IEEE 754标准，32位浮点数在计算机中二进制存储形式共三部分：S(1位，符号) E(8位，阶码) M(23位，尾数)
+举个例子，Float.floatToIntBits(20.5f)按照如下方式计算：
+20.59D=10100.1B=1.01001*2^4B 指数e=4
+S=0-->正数  E=4+127=131D=10000011B-->真实指数e变成阶码E时需加127  M=01001B
+则32位2进制存储形式为：0 10000011 01001000000000000000000
+转换成10进制即1101266944
+
+
+对于字符串,比较的是字符串中字符的值。
+```java
+ public boolean equals(Object anObject) {
+    if (this == anObject) {
+        return true;
+    }
+    if (anObject instanceof String) {
+        String anotherString = (String)anObject;
+        int n = value.length;
+        if (n == anotherString.value.length) {
+            char v1[] = value;
+            char v2[] = anotherString.value;
+            int i = 0;
+            while (n-- != 0) {
+                if (v1[i] != v2[i])
+                    return false;
+                i++;
+            }
+            return true;
+        }
+    }
+    return false;
+}
+public int hashCode() {
+    int h = hash;
+    if (h == 0 && value.length > 0) {
+        char val[] = value;
+
+        for (int i = 0; i < value.length; i++) {
+            h = 31 * h + val[i];
+        }
+        hash = h;
+    }
+    return h;
+}
+```
+
+
+
 **始终要覆盖toString**
+
+虽然 Object 提供了 toString 方法的 一 个实现,但它返回的字符串通常并不是类的用户所期望看到的 。 它包含类的名称,以及 一 个“@”符号,接着是散列码的无符号十六进制表示法,例如 PhoneNumber@163b91
+
+可以通过覆盖toString输出该类的一些属性信息。
+
+
 **谨慎覆盖clone**
+
+实现 Cloneable接口仅标明该类支持通过调用clone进行扩容,但还是需要用户自行实现。
+
+```java
+protected native Object clone() throws CloneNotSupportedException;
+```
+如果要实现深拷贝(引用对象也要拷贝)，那么实现时引用对象也要单独调用clone。
+
+如果属性是final的，由于不能重新赋值，因此也不能被拷贝。
+
+```java
+
+@Data
+class User implements Cloneable{
+
+    private Location location;
+
+    public User(Location location) {
+        this.location = location;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        User user = null;
+        try{
+            //浅拷贝只是拷贝基本类型
+            user = (User)super.clone();
+            //深拷贝，引用对象也要进行拷贝，
+            user.location = (Location)this.location.clone();
+
+        }
+        catch(Exception ex){
+
+        }
+
+        return user;
+    }
+}
+@Data
+class Location implements Cloneable{
+
+    String name;
+
+    public Location(String name) {
+        this.name = name;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+}
+```
+
+
+
 **考虑实现Comparable**
 
+在使用Array.sort时或者一些排序的集合，都需要对对象进行排序比较，有两种方式，一种是比较的类自行实现Comparable。一种是传入自定义的比较器Comparator。
+
+```java
+public interface Comparable<T> {
+    //　this > o ,1;
+    //　this = o ,0;
+    // this < o ,-1
+    public int compareTo(T o);
+}
+
+public interface Comparator<T> {
+    // o1 > o2 ,1;
+    // o1 = o2 ,0;
+    // o1 < o2 ,-1
+    int compare(T o1, T o2);
+}
+```
 
 ## 17.3. 类和接口
 <a href="#menu"  >目录</a>
 
 **使类和成员的可访问性最小化**
-**要在公有类而非公有域中使用访问方法**
+
+尽量隐藏内部实现，只开放一些公有方法进行访问。对于属性，一般只将静态的final域设置为public,其他的一般设置为private或者protected。
+
+* 私有的(private)一-只有在声明该成员的顶层类内部才可以访问这个成员。
+* 包级私有的(package-private)一一声明该成员的包内部的任何类都可以访问这个成员。从技术上讲,它被称为“缺省”(default)访问级别,如果没有为成员指定访问修饰符,就采用这个访问级别(当然,接口成员除外,它们默认的访问级别是公有的)。
+* 受保护的(protected)一一声明该成员的类的子类可以访问这个成员,并且声明该成员的包内部的任何类也可以访问这个成员。
+* 公有的(public)-一在任何地方都可以访问该成员 。
+
+
 **使可变性最小化**
+
+不可变类是指其实例不能被修改的类。每个实例中包含的所有信息都必须在创建该实例的时候就提供,并在对象的整个生命周期(lifetime)内固定不变。Java平台类库中包含许多不可变的类,其中有String、基本类型的包装类、Biginteger和BigDecimal。存在不可变的类有许多理由:不可变的类比可变类更加易于设计、实现和使用。它们不容易出错,且更加安全。
+
+为了使类成为不可变,要遵循下面五条规则:
+1. 不要提供任何会修改对象状态的方法(也称为设值方法)。
+2. 保证类不会被扩展。这样可以防止粗心或者恶意的子类假装对象的状态已经改变,从而破坏该类的不可变行为。为了防止子类化,一般做法是声明这个类成为final的
+3. 声明所有的域都是final的。通过系统的强制方式可以清楚地表明你的意图。而且,如果一个指向新创建实例的引用在缺乏同步机制的情况下,从一个线程被传递到另一个线程,就必须确保正确的行为,正如内存模型(memorymodel)中所述。
+4. 声明所有的域都为私有的。这样可以防止客户端获得访问被域引用的可变对象的权限,井防止客户端直接修改这些对象。虽然从技术上讲,允许不可变的类具有公有的final域,只要这些域包含基本类型的值或者指向不可变对象的引用,但是不建议这样做,因为这样会使得在以后的版本中无法再改变内部的表示法
+5. 确保对子任何可变组件的互斥访问。如果类具有指向可变对象的域,则必须确保该类的客户端无法获得指向这些对象的引用。并且,永远不要用客户端提供的对象引用来初始化这样的域,也不要从任何访问方法(accessor)中返回该对象引用。在构造器、访问方法和readObject方法中请使用保护性拷贝(defensivecopy)技术
+
+不可变对象本身是线程安全的，因为其属性不能被改变，不需要进行同步。当然缺点是对于不同的值，需要创建不同的对象。
+
+
 **复合优先于继承**
+
+继承的功能非常强大,但是也存在诸多问题,因为它违背了封装原则 。 只有当子类和超类之间确实存在子类型关系时,使用继承才是恰当的 。 即使如此,如 果子
+类和超类处在不同的包中,并且超类并不是为了继承 而设计的,那么继 承将会导致脆弱性( fragility ) 。 为了避免这种脆弱性,可以用复合和转发机制来代替继承,尤其是当存在适当的接口可以实现包装类的时候 。 包装类不仅比子类更加健壮,而且功能也更加强大。
+
 **要么设计继承并提交文档说明，要么禁止继承**
+
 **接口优先抽象类**
+
 **为后代设计接口**
+
+接口在第一次发布时，应当考虑全面，避免后期频繁更改接口方法。因为更改接口法方法会导致实现类编译时报错，要么在实现类中去实现该方法。当然也可使用default修饰接口方法，实现类无需实现该方法也不会编译报错。
+
 **接口只用于定义类型**
+
 **类层次优先于标签类**
+
 **静态成员类优于非静态成员类**
+
 **限制源文件为单个顶级类**
+
+也就是一个源文件应当只定义一个类(不包括内部类)
 
 ## 17.4. 范型
 <a href="#menu"  >目录</a>
 
-**请不要使用原声态类型**
+**请不要使用原生态类型**
+
+原生态类型就是范型没有指定类型，这种插入的时候不会进行类型检查。但是如果插入时和读取的时候类型不一致，转化的时候就会出错。
+
+```java
+//不指定范型类型,编译器不会进行范型检查
+List list = new ArrayList();
+//插入时不会报错
+list.add(new Date());
+//转化时会报错
+String str = (String)lisr.get();
+```
+
+```
+参数化的类型　List<String>
+实际类型参数 Str 工 ng
+泛型 List<E>
+形式类型参数 E 
+元限制通配符类型 List<?> 
+原生态类型 List
+有限制类型参数 <E extends Number>
+递归类型限制 <T extends Comparable<T>>
+有限制通配符类型 List<? extends Number> 
+泛型方法 static <E> E func(E data)
+类型令牌 String.class
+```
+
 **消除非受检的警告**
+
 **列表优先于数组**
+
 **优先考虑范型**
 **优先考虑范型方法**
 **利用有限制通配符来提升API灵活性**
@@ -7132,7 +7568,24 @@ public enum User{
 <a href="#menu"  >目录</a>
 
 **用enum代替int常量**
+
 **用实例域代替序数**
+
+不使用默认的序数
+```java
+
+public enum Demo{
+
+    RED(1),
+    BLUE(2);
+
+    private int value;
+    public Demo(int value){
+        this.value = value;
+    }
+}
+```
+
 **用enumSet代替位域**
 **用enumＭap代替序数索引**
 **用接口模拟可扩展的枚举**
@@ -7186,8 +7639,55 @@ public enum User{
 <a href="#menu"  >目录</a>
 
 **只针对异常的情况才使用异常**
+
+
 **对可恢复的情况使用受检异常，对编程错误使用运行时异常**
+
+Java程序设计语言提供了 三种可抛出结构( throwable ):受检异常( checked exception )、运行时异常( run-time exception )和错误( eπor ) 。
+
+```java
+|---Throwable
+    |---Exception
+        |---RuntimeException　其子类都是运行时异常
+        |---其他子类都是受检异常
+    |---Error
+        
+```
+
+* 受检异常
+    * 期望调用者能够适当地恢复，对于这种情况使用受检异常。用户可以对该异常处理或者将其继续抛给调用者。调用者必须显示使用try-catch进行捕获。
+* 运行时异常和错误
+    * 不需要也不应该被捕获的可抛出结构。如果程序抛出未受检的异常或者错误,往往就属于不可恢复的情形,继续执行下去有害无益 。 如果程序没有捕捉到这样的可抛出结构,将会导致当前线程中断( halt ),并出现适当的错误消息 。
+    * 调用者可以不显示使用try－catch进行捕获。如果对运行时异常使用try-catch捕获异常，可以捕捉到处理后可以继续执行后续代码。对于错误，try-catch捕获不到异常，程序会立即终止，编译器认为这是严重并且无法修复的问题。
+
+```java
+//uncheckedExcepiton。
+Java.lang.ArithmeticException
+　　Java.lang.ArrayStoreExcetpion
+　　Java.lang.ClassCastException
+　　Java.lang.EnumConstantNotPresentException
+　　Java.lang.IllegalArgumentException
+　　Java.lang.IllegalThreadStateException
+　　Java.lang.NumberFormatException
+　　Java.lang.IllegalMonitorStateException
+　　Java.lang.IllegalStateException
+　　Java.lang.IndexOutOfBoundsException
+　　Java.lang.ArrayIndexOutOfBoundsException
+　　Java.lang.StringIndexOutOfBoundsException
+　　Java.lang.NegativeArraySizeException
+　　Java.lang.NullPointerException
+　　Java.lang.SecurityException
+　　Java.lang.TypeNotPresentException
+　　Java.lang.UnsupprotedOperationException
+```
+
+
+也就是说你希望处理产生的异常并且后续代码能够继续运行，就使用受检异常，
+
+
 **避免不必要地使用受检异常**
+
+
 **抛出与抽象对应的异常**
 **每个方法抛出的所有异常都要建立文档**
 **在细节消息中包含失败捕获信息**
