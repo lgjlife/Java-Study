@@ -1,4 +1,4 @@
-package offer;
+package offer.array;
 
 /**
  *功能描述
