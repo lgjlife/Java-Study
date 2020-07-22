@@ -6,7 +6,7 @@ package interview.stackqueue;
  * @Description 　　　
  * @date 　
 */
-public class Code1_1 {
+public class Code1 {
 
     private Stack normalStack = new Stack();
     private Stack minStack = new Stack();
@@ -48,7 +48,7 @@ public class Code1_1 {
 
     public static void main(String args[]){
 
-        Code1_1 demo = new Code1_1();
+        Code1 demo = new Code1();
 
 
 
@@ -85,7 +85,7 @@ public class Code1_1 {
 
     }
 
-    public static void printGetMin(Code1_1 demo){
+    public static void printGetMin(Code1 demo){
 
 
         System.out.println("-------------");
