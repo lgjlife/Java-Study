@@ -43,18 +43,18 @@
 
 <!-- /TOC -->
 # 1. MongoDB
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ## 1.1. 基本介绍
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 MongoDB 是一个基于分布式文件存储的数据库。由 C++ 语言编写。旨在为 WEB 应用提供可扩展的高性能数据存储解决方案。
 
 MongoDB 是一个介于关系数据库和非关系数据库之间的产品，是非关系数据库当中功能最丰富，最像关系数据库的。
 
 ### 1.1.1. MongoDB特性、优势
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 易于使用
     * 面向文档的数据库,不是关系型数据库
@@ -89,7 +89,7 @@ MongoDB 是一个介于关系数据库和非关系数据库之间的产品，是
     * 解决数据分析场景需求，用户可以自己写查询语句或脚本，将请求都分发到 MongoDB 上完成
 
 ### 1.1.2. 使用场景
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 应用不需要事务及复杂 join 支持
 * 新应用，需求会变，数据模型无法确定，想快速迭代开发
@@ -101,7 +101,7 @@ MongoDB 是一个介于关系数据库和非关系数据库之间的产品，是
 * 应用需要大量的地理位置查询、文本查询
 
 ### 1.1.3. Redis和MongoDB的区别
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 从以下几个维度，对redis、mongoDB 做了对比：
 * 性能
@@ -133,10 +133,10 @@ MongoDB 是一个介于关系数据库和非关系数据库之间的产品，是
 
 
 ### 1.1.4. 安装和运行
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.1.4.1. Docker方式安装运行
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **下载镜像**
 ```
@@ -199,10 +199,10 @@ WriteResult({ "nInserted" : 1 })
 ```
 
 ### 1.1.5. 基础知识
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.1.5.1. 文档
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 文档是MongoDB中数据的基本单元,类似于数据库中的行.
 
@@ -228,7 +228,7 @@ WriteResult({ "nInserted" : 1 })
 
 ```
 #### 1.1.5.2. 集合
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 集合可以看作是一个拥有动态模式的表.动态模式意味着集合里面的文档可以是各式各样的,文档的字段等可以完全不一样.一般使用中为了规范,一个集合中只存储同一种文档.
 
@@ -242,7 +242,7 @@ WriteResult({ "nInserted" : 1 })
 集合可以使用"."分隔不同的命名空间的子集合,比如blog.comment,blog.img
 
 #### 1.1.5.3. 数据库
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 多个文档组成集合,多个集合组成数据库.一个Mongo可以包含多个数据库.每个数据库都有独立的权限.
 
@@ -259,7 +259,7 @@ WriteResult({ "nInserted" : 1 })
 
 
 ### 1.1.6. MongoDB shell简介
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 MongoDB自带JavaScript Shel,可在Shell中使用命令与MongoDB实例交互
 
@@ -357,7 +357,7 @@ $ mongo  xxx.js xxx1.js
 
 
 ### 1.1.7. 数据类型
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.1.7.1. 基本数据类型
 
@@ -392,10 +392,10 @@ $ mongo  xxx.js xxx1.js
     * {"x": /a/i }
 
 ## 1.2. 创建,更新和删除文档
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.2.1. 插入并保存文档
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ```
 db.mybook.insert(book)
@@ -408,7 +408,7 @@ db.mybook.batchInsert({"age":1},{"age":11},{"age":111})
 如果批量插入时某一个文档失败,这个文档之前的插入都会成功,但是后续的插入会失败.
 
 ### 1.2.2. 删除文档
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 删除数据是永久性的,不能恢复
 
@@ -426,14 +426,14 @@ db.mybook.drop()
 
 
 ### 1.2.3. 更新文档
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ## 1.3. 查询
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.3.1. 基本的find操作
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 find:返回所有符合的文档
 fineOne:返回一个文档
@@ -452,13 +452,13 @@ db.mybook.find({},{"page":type})
 ```
 
 ## 1.4. 索引
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ## 1.5. 聚合
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ## 1.6. 复制
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 副本集
 
@@ -466,11 +466,11 @@ db.mybook.find({},{"page":type})
 
 
 ## 1.7. 分片
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ## 应用管理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **查看正在进行的操作:db.currentOp()**
 
@@ -563,15 +563,15 @@ db.mybook.find({},{"page":type})
 ```
 
 ## 服务器管理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ## 1.8. SpringBoot中使用Mongodb
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.8.1. 引入依赖
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ```xml
 <dependency>
@@ -581,7 +581,7 @@ db.mybook.find({},{"page":type})
 ```
 
 ### 1.8.2. 配置
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 如果mongodb端口是默认端口，并且没有设置密码，可不配置，sprinboot会开启默认的。
 
@@ -625,10 +625,10 @@ public class MongoProperties {
 }
 ```
 ### 1.8.3. 使用
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.8.3.1. 创建实体
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ```java
 //文档声明,集合名称为user
@@ -712,7 +712,7 @@ public enum FieldType {
 }
 ```
 #### 1.8.3.2. 使用MongoTemplate方式
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ```java
 @Autowired
@@ -745,7 +745,7 @@ shell客户端查看,可以看到数据插入成功
 
 
 #### 1.8.3.3. 使用MongoRepository方式
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ```java
 @Service

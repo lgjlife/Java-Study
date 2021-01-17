@@ -5,40 +5,142 @@
 <!-- TOC -->
 
 - [1. Elasticsearch搜索引擎](#1-elasticsearch搜索引擎)
-    - [1.1. 基本概念](#11-基本概念)
-    - [1.2. Elasticsearch工作流程](#12-elasticsearch工作流程)
-        - [1.2.1. 启动过程](#121-启动过程)
-        - [1.2.2. 故障检测](#122-故障检测)
-        - [1.2.3. 与El通信](#123-与el通信)
-            - [1.2.3.1. 索引数据](#1231-索引数据)
-            - [1.2.3.2. 查询数据](#1232-查询数据)
-    - [1.3. 安装与配置](#13-安装与配置)
-        - [1.3.1. 配置文件说明](#131-配置文件说明)
-            - [1.3.1.1. elasticsearch.yml](#1311-elasticsearchyml)
-    - [1.4. 索引](#14-索引)
-        - [1.4.1. 索引](#141-索引)
-        - [1.4.2. 映射配置](#142-映射配置)
-    - [1.5. 集群管理](#15-集群管理)
-        - [1.5.1. 集群健康](#151-集群健康)
-        - [1.5.2. 添加索引](#152-添加索引)
-    - [1.6. 数据](#16-数据)
-        - [1.6.1. 文档](#161-文档)
-        - [1.6.2. 处理冲突](#162-处理冲突)
-    - [1.7. 分布式增删改查](#17-分布式增删改查)
-        - [1.7.1. 路由文档到分片](#171-路由文档到分片)
-        - [1.7.2. 分片交互](#172-分片交互)
-            - [1.7.2.1. 新建，索引和删除文档](#1721-新建索引和删除文档)
-            - [1.7.2.2. 索引文档](#1722-索引文档)
-    - [1.8. 面试小结之Elasticsearch篇](#18-面试小结之elasticsearch篇)
+  - [1.1. 基本概念](#11-基本概念)
+  - [1.2. 全文搜索](#12-全文搜索)
+  - [1.3. 基础知识](#13-基础知识)
+  - [1.4. 安装与配置](#14-安装与配置)
+    - [1.4.1. 配置文件说明](#141-配置文件说明)
+      - [1.4.1.1. elasticsearch.yml](#1411-elasticsearchyml)
+    - [1.4.2. 安装中文分词器](#142-安装中文分词器)
+    - [1.4.3. 启动](#143-启动)
+    - [1.4.4. elasticsearch-head的使用](#144-elasticsearch-head的使用)
+  - [1.5. 辅助工具](#15-辅助工具)
+- [2. Elasticsearch工作流程](#2-elasticsearch工作流程)
+  - [2.1. 启动过程](#21-启动过程)
+  - [2.2. 故障检测](#22-故障检测)
+  - [2.3. 与El通信](#23-与el通信)
+    - [2.3.1. 索引数据](#231-索引数据)
+    - [2.3.2. 查询数据](#232-查询数据)
+- [3. 索引](#3-索引)
+  - [3.1. 索引](#31-索引)
+  - [3.2. 映射配置](#32-映射配置)
+- [4. 集群管理](#4-集群管理)
+  - [4.1. 集群健康](#41-集群健康)
+  - [4.2. 添加索引](#42-添加索引)
+- [5. 数据](#5-数据)
+  - [5.1. 文档](#51-文档)
+  - [5.2. 处理冲突](#52-处理冲突)
+- [6. 分布式增删改查](#6-分布式增删改查)
+  - [6.1. 路由文档到分片](#61-路由文档到分片)
+  - [6.2. 分片交互](#62-分片交互)
+    - [6.2.1. 新建，索引和删除文档](#621-新建索引和删除文档)
+    - [6.2.2. 索引文档](#622-索引文档)
+- [7. ELK应用](#7-elk应用)
+  - [7.1. Logstash](#71-logstash)
+    - [7.1.1. 配置文件](#711-配置文件)
+  - [7.2. Kibana](#72-kibana)
+- [8. 面试小结之Elasticsearch篇](#8-面试小结之elasticsearch篇)
 
 <!-- /TOC -->
 
 
 # 1. Elasticsearch搜索引擎
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
+
+Elasticsearch是一个基于Lucene构建的开源、分布式、RestFul接口全文搜索引擎。同时还是一个分布式文档数据库，其中每个字段均是被索引的数据且可被搜索。它能够扩展至数以百计的服务器存储以及处理PB级的数据。它可以在很短的时间内处理和分析大量的数据。
+
+**Elasticsearch的特点**
+1. 可以作为一个大型分布式集群（数百台服务器）技术，处理PB级数据，服务大公司；也可以运行在单机上，服务小公司
+2. Elasticsearch不是什么新技术，主要是将全文检索、数据分析以及分布式技术，合并在了一起，才形成了独一无二的ES；lucene（全文检索），商用的数据分析软件（也是有的），分布式数据库（mycat）
+3. 对用户而言，是开箱即用的，非常简单，作为中小型的应用，直接3分钟部署一下ES，就可以作为生产环境的系统来使用了，数据量不大，操作不是太复杂
+4. 数据库的功能面对很多领域是不够用的（事务，还有各种联机事务型的操作）；特殊的功能，比如全文检索，同义词处理，相关度排名，复杂数据分析，海量数据的近实时处理；Elasticsearch作为传统数据库的一个补充，提供了数据库所不不能提供的很多功能
+
+
+**优点**
+* 横向可扩展性：只需要增加一台服务器，配置好相关参数，就可启动加入集群
+* 分片机制提供更好的分布性：同一个索引分成多个分片(sharding)
+* 高可用:提供复制机制，一个分片可以设置多个复制，使得某台服务器在宕积的情况下，集群仍然可以照常运行，并会把服务器宕机丢失的数据信息复制恢复到其他可用的节点上
+* 使用简单
+
+**ElasticSearch使用场景**
+* 存储
+    * ElasticSearch天然支持分布式，具备存储海量数据的能力，其搜索和数据分析的功能都建立在ElasticSearch存储的海量的数据之上；ElasticSearch很方便的作为海量数据的存储工具，特别是在数据量急剧增长的当下，ElasticSearch结合爬虫等数据收集工具可以发挥很大用处
+* 搜索
+    * ElasticSearch使用倒排索引，每个字段都被索引且可用于搜索，更是提供了丰富的搜索api，在海量数据下近实时实现近秒级的响应,基于Lucene的开源搜索引擎，为搜索引擎（全文检索，高亮，搜索推荐等）提供了检索的能力。 具体场景:
+      * Stack Overflow（国外的程序异常讨论论坛），IT问题，程序的报错，提交上去，有人会跟你讨论和回答，全文检索，搜索相关问题和答案，程序报错了，就会将报错信息粘贴到里面去，搜索有没有对应的答案；
+      * GitHub（开源代码管理），搜索上千亿行代码；
+      * 电商网站，检索商品；
+      * 日志数据分析，logstash采集日志，ElasticSearch进行复杂的数据分析（ELK技术，elasticsearch+logstash+kibana）；
+* 数据分析
+    * ElasticSearch也提供了大量数据分析的api和丰富的聚合能力，支持在海量数据的基础上进行数据的分析和处理。具体场景：
+    * 爬虫爬取不同电商平台的某个商品的数据，通过ElasticSearch进行数据分析（各个平台的历史价格、购买力等等）；
+
+
+**架构**
+
+![架构](pic/elasticsearch/el架构.png)
+
+1. Gateway是ES用来存储索引的文件系统，支持多种类型。
+2. Gateway的上层是一个分布式的lucene框架。
+3. Lucene之上是ES的模块，包括：索引模块、搜索模块、映射解析模块等
+4. ES模块之上是 Discovery、Scripting和第三方插件。Discovery是ES的节点发现模块，不同机器上的ES节点要组成集群需要进行消息通信，集群内部需要选举master节点，这些工作都是由Discovery模块完成。支持多种发现机制，如 Zen 、EC2、gce、Azure。Scripting用来支持在查询语句中插入javascript、python等脚本语言，scripting模块负责解析这些脚本，使用脚本语句性能稍低。ES也支持多种第三方插件。
+5. 再上层是ES的传输模块和JMX.传输模块支持多种传输协议，如 Thrift、memecached、http，默认使用http。JMX是java的管理框架，用来管理ES应用。
+6. 最上层是ES提供给用户的接口，可以通过RESTful接口和ES集群进行交互。
+
+目前市场上开放源代码的最好全文检索引擎工具包就属于 Apache 的 Lucene了。但是 Lucene 只是一个工具包，它不是一个完整的全文检索引擎。Lucene 的目的是为软件开发人员提供一个简单易用的工具包，以方便的在目标系统中实现全文检索的功能，或者是以此为基础建立起完整的全文检索引擎。目前以 Lucene 为基础建立的开源可用全文搜索引擎主要是 Solr 和 Elasticsearch。Solr 和 Elasticsearch 都是比较成熟的全文搜索引擎，能完成的功能和性能也基本一样。但是 ES 本身就具有分布式的特性和易安装使用的特点，而 Solr 的分布式需要借助第三方来实现，例如通过使用 ZooKeeper 来达到分布式协调管理。不管是 Solr 还是 Elasticsearch 底层都是依赖于 Lucene，而 Lucene 能实现全文搜索主要是因为它实现了倒排索引的查询结构。
+
+**ElasticSearch核心概念**
+
+* Near Realtime (NRT)近实时：数据提交索引后，立马就可以搜索到。
+* Cluster集群：一个集群由一个唯一的名字标识，默认为“elasticsearch”。集群名称非常重要，具体相同集群名的节点才会组成一个集群。集群名称可以在配置文件中指定。集群中有多个节点，其中有一个为主节点，这个主节点是可以通过选举产生的，主从节点是对于集群内部来说的。ElasticSearch的一个概念就是去中心化，字面上理解就是无中心节点，这是对于集群外部来说的，因为从外部来看ElasticSearch集群，在逻辑上是个整体，你与任何一个节点的通信和与整个ElasticSearch集群通信是等价的。
+* Node 节点：存储集群的数据，参与集群的索引和搜索功能。像集群有名字，节点也有自己的名称，默认在启动时会以一个随机的UUID的前七个字符作为节点的名字，你可以为其指定任意的名字。通过集群名在网络中发现同伴组成集群。一个节点也可是集群。每一个运行实例称为一个节点,每一个运行实例既可以在同一机器上,也可以在不同的机器上。所谓运行实例,就是一个服务器进程，在测试环境中可以在一台服务器上运行多个服务器进程，在生产环境中建议每台服务器运行一个服务器进程。
+* Index 索引: 一个索引是一个文档的集合（等同于solr中的集合）。每个索引有唯一的名字，通过这个名字来操作它。一个集群中可以有任意多个索引。索引作动词时，指索引数据、或对数据进行索引。Type 类型：指在一个索引中，可以索引不同类型的文档，如用户数据、博客数据。从6.0.0 版本起已废弃，一个索引中只存放一类数据。Elasticsearch里的索引概念是名词而不是动词，在elasticsearch里它支持多个索引。 一个索引就是一个拥有相似特征的文档的集合。比如说，你可以有一个客户数据的索引，另一个产品目录的索引，还有一个订单数据的索引。一个索引由一个名字来 标识（必须全部是小写字母的），并且当我们要对这个索引中的文档进行索引、搜索、更新和删除的时候，都要使用到这个名字。在一个集群中，你能够创建任意多个索引。
+* Document 文档：被索引的一条数据，索引的基本信息单元，以JSON格式来表示。一个文档是一个可被索引的基础信息单元。比如，你可以拥有某一个客户的文档、某一个产品的一个文档、某个订单的一个文档。文档以JSON格式来表示，而JSON是一个到处存在的互联网数据交互格式。在一个index/type里面，你可以存储任意多的文档。注意，一个文档物理上存在于一个索引之中，但文档必须被索引/赋予一个索引的type。
+* Shard 分片：在创建一个索引时可以指定分成多少个分片来存储。每个分片本身也是一个功能完善且独立的“索引”，可以被放置在集群的任意节点上（分片数创建索引时指定，创建后不可改了。备份数可以随时改）。索引分片，ElasticSearch可以把一个完整的索引分成多个分片，这样的好处是可以把一个大的索引拆分成多个，分布到不同的节点上。构成分布式搜索。分片的数量只能在索引创建前指定，并且索引创建后不能更改。分片的好处：
+    * 允许我们水平切分/扩展容量
+    * 可在多个分片上进行分布式的、并行的操作，提高系统的性能和吞吐量。
+* Replication 备份： 一个分片可以有多个备份（副本）。备份的好处：
+    * 高可用扩展搜索的并发能力、吞吐量。
+    * 搜索可以在所有的副本上并行运行。
+* primary shard：主分片，每个文档都存储在一个分片中，当你存储一个文档的时候，系统会首先存储在主分片中，然后会复制到不同的副本中。默认情况下，一个索引有5个主分片。你可以在事先制定分片的数量，当分片一旦建立，分片的数量则不能修改。
+* replica shard：副本分片，每一个分片有零个或多个副本。副本主要是主分片的复制，其中有两个目的：
+    * 增加高可用性：当主分片失败的时候，可以从副本分片中选择一个作为主分片。
+    * 提高性能：当查询的时候可以到主分片或者副本分片中进行查询。默认情况下，一个主分配有一个副本，但副本的数量可以在后面动态的配置增加。副本必须部署在不同的节点上，不能部署在和主分片相同的节点上。
+* term索引词：在elasticsearch中索引词(term)是一个能够被索引的精确值。foo，Foo几个单词是不相同的索引词。索引词(term)是可以通过term查询进行准确搜索。
+* text文本：是一段普通的非结构化文字，通常，文本会被分析称一个个的索引词，存储在elasticsearch的索引库中，为了让文本能够进行搜索，文本字段需要事先进行分析；当对文本中的关键词进行查询的时候，搜索引擎应该根据搜索条件搜索出原文本。
+* analysis：分析是将文本转换为索引词的过程，分析的结果依赖于分词器，比如： FOO BAR, Foo-Bar, foo bar这几个单词有可能会被分析成相同的索引词foo和bar，这些索引词存储在elasticsearch的索引库中。当用 FoO:bAR进行全文搜索的时候，搜索引擎根据匹配计算也能在索引库中搜索出之前的内容。这就是elasticsearch的搜索分析。
+* routing路由：当存储一个文档的时候，他会存储在一个唯一的主分片中，具体哪个分片是通过散列值的进行选择。默认情况下，这个值是由文档的id生成。如果文档有一个指定的父文档，从父文档ID中生成，该值可以在存储文档的时候进行修改。
+* type类型：在一个索引中，你可以定义一种或多种类型。一个类型是你的索引的一个逻辑上的分类/分区，其语义完全由你来定。通常，会为具有一组相同字段的文档定义一个类型。比如说，我们假设你运营一个博客平台 并且将你所有的数据存储到一个索引中。在这个索引中，你可以为用户数据定义一个类型，为博客数据定义另一个类型，当然，也可以为评论数据定义另一个类型。
+* template：索引可使用预定义的模板进行创建,这个模板称作Index templatElasticSearch。模板设置包括settings和mappings。
+* mapping：映射像关系数据库中的表结构，每一个索引都有一个映射，它定义了索引中的每一个字段类型，以及一个索引范围内的设置。一个映射可以事先被定义，或者在第一次存储文档的时候自动识别。
+* field：一个文档中包含零个或者多个字段，字段可以是一个简单的值（例如字符串、整数、日期），也可以是一个数组或对象的嵌套结构。字段类似于关系数据库中的表中的列。每个字段都对应一个字段类型，例如整数、字符串、对象等。字段还可以指定如何分析该字段的值。
+* source field：默认情况下，你的原文档将被存储在_source这个字段中，当你查询的时候也是返回这个字段。这允许您可以从搜索结果中访问原始的对象，这个对象返回一个精确的json字符串，这个对象不显示索引分析后的其他任何数据。
+id：一个文件的唯一标识，如果在存库的时候没有提供id，系统会自动生成一个id，文档的index/type/id必须是唯一的。
+* recovery：代表数据恢复或叫数据重新分布，ElasticSearch在有节点加入或退出时会根据机器的负载对索引分片进行重新分配，挂掉的节点重新启动时也会进行数据恢复。
+* River：代表ElasticSearch的一个数据源，也是其它存储方式（如：数据库）同步数据到ElasticSearch的一个方法。它是以插件方式存在的一个ElasticSearch服务，通过读取river中的数据并把它索引到ElasticSearch中，官方的river有couchDB的，RabbitMQ的，Twitter的，Wikipedia的，river这个功能将会在后面的文件中重点说到。
+* gateway：代表ElasticSearch索引的持久化存储方式，ElasticSearch默认是先把索引存放到内存中，当内存满了时再持久化到硬盘。当这个ElasticSearch集群关闭再重新启动时就会从gateway中读取索引数据。ElasticSearch支持多种类型的gateway，有本地文件系统(默认), 分布式文件系统，Hadoop的HDFS和amazon的s3云存储服务。
+* discovery.zen：代表ElasticSearch的自动发现节点机制，ElasticSearch是一个基于p2p的系统，它先通过广播寻找存在的节点，再通过多播协议来进行节点之间的通信，同时也支持点对点的交互。
+* Transport：代表ElasticSearch内部节点或集群与客户端的交互方式，默认内部是使用tcp协议进行交互，同时它支持http协议（json格式）、thrift、servlet、memcached、zeroMQ等的传输协议（通过插件方式集成）。
+
+**与关系型数据库对比**
+
+|RDBMS|EL|
+|---|---|
+|数据库database|索引index|
+|表table|类型type|
+|行row|文档document|
+|列column|字段field|
+|表结构schema|映射mapping|
+|索引|反向索引|
+|SQL|查询ＤＳＬ|
+|select | get http://|
+|update| put http://|
+|delete |delete http://|
+
+
 
 ## 1.1. 基本概念
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 索引
     * 逻辑数据的存储，可以看作一个数据库
@@ -119,57 +221,94 @@
     * 没有对索引中的数据结构强加任何限制
     * 准实时搜索和版本同步，由于分布式特性，无法保证数据实时同步，el尝试解决这些问题，并且提供额外的机制用于版本同步。
 
+## 1.2. 全文搜索
+<a href="#menu" >目录</a>
+
+全文搜索是指计算机搜索程序通过扫描文章中的每一个词，对每一个词建立一个索引，指明该词在文章中出现的次数和位置。当用户查询的时候，搜索程序根据事先建立的索引进行查找，并将查找的结果反馈给客户。
+
+lucene 是一个开放源代码的全文检索引擎工具包，但它不是一个完整的全文检索引擎，而是一个全文检索引擎的架构，提供了完整的查询引擎和索引引擎，部分文本分析引擎（英文与德文两种西方语言）。es在它的基础上实现了分布式集群以及对外http访问接口等功能。
+
+**倒排索引**
+
+倒排索引是全文搜索中的关键技术。
+
+比如有两个文章:
+
+* 文章1: lucene 是一个开放源代码的全文检索引擎工具包
+* 文章2: lucene 不是一个完整的全文检索引擎
+
+程序会先对内容进行分词，去掉没多大意义的词(比如是／不是／一个)。
+
+假设经过分词以后
+
+* 文章1: [lucene|全文检索|工具包]
+* 文章2: [lucene|全文检索|引擎]
+
+之后就是建立倒排索引
+
+|关键词|文章号[出现频率]|出现位置｜
+|---|---|
+|lucene|1[1],2[1]|1
+|全文检索|1[1],2[1]|1
+|工具包|1[1]|18
+|引擎|2[1]|12
+
+通过倒排索引，就可以很方便的查找到关键词所在的文章和位置。
+
+当不使用倒排索引时，要查找关键字在哪里，就需要进行全文章的遍历，速度会是非常慢的。
 
 
+## 1.3. 基础知识
+<a href="#menu" >目录</a>
 
-## 1.2. Elasticsearch工作流程
-<a href="#menu" style="float:right">目录</a>
+* 索引词
+    * 在elastiasearch中索引词（term）是一个能够被索引的精确值。foo,Foo,FOO几个单词是不同的索引词。索引词（term）是可以通过term查询进行准确的搜索。
+* 文本(text)
+    文本是一段普通的非结构化文字。通常，文本会被分拆成一个个的索引词，存储在elasticsearch的索引库中。为了让文本能够进行搜索，文本字段需要事先进行分析了；当对文本中的关键词进行查询的时候，搜索引擎应该根据搜索条件搜索出原文本。
+* 分析(analysis)
+    * 分析是将文本转换为索引词的过程，分析的结果依赖于分词器。比如：FOO BAR，Foo-Bar和foo bar这几个词有可能会被分析成相同的索引词foo和bar，这些索引词存储在Elasticsearch的索引库中。
+* 集群(cluster)
+    * 集群由一个或多个节点组成，对外提供服务，对外提供索引和搜索功能。在所有节点，一个集群有一个唯一的名称默认为“elasticsearch”.此名称是很重要的，因为每个节点只能是集群的一部分，当该节点被设置为相同的集群名称时，就会自动加入集群。当需要有多个集群的时候，要确保每个集群的名称不能重复，，否则节点可能会加入到错误的集群。请注意，一个节点只能加入到一个集群。此外，你还可以拥有多个独立的集群，每个集群都有其不同的集群名称。
+* 节点(node)
+    * 一个节点是一个逻辑上独立的服务,它是集群的一部分,可以存储数据,并参与集群的索引和搜索功能。就像集群一样,节点也有唯一的名字,在启动的时候分配。如果你不想要默认名称,你可以定义任何你想要的节点名.这个名字在理中很重要,在Elasticsearch集群通过节点名称进行管理和通信.一个节点可以被配置加入到一个特定的集群。默认情况下,每个节点会加人名为Elasticsearch 的集祥中,这意味着如果你在网热动多个节点,如果网络畅通,他们能彼此发现井自动加人名为Elasticsearch 的一个集群中,你可以拥有多个你想要的节点。当网络没有集祥运行的时候,只要启动一个节点,这个节点会默认生成一个新的集群,这个集群会有一个节点。
+* 分片(shard)
+    * 分片是单个Lucene 实例,这是Elasticsearch管理的比较底层的功能。索引是指向主分片和副本分片的逻辑空间。对于使用,只需要指定分片的数量,其他不需要做过多的事情。在开发使用的过程中,我们对应的对象都是索引,Elasticsearch 会自动管理集群中所有的分片,当发生故障的时候,Elasticsearch 会把分片移动到不同的节点或者添加新的节点。
+    * 一个索引可以存储很大的数据,这些空间可以超过一个节点的物理存储的限制。例如,十亿个文档占用磁盘空间为1TB。仅从单个节点搜索可能会很慢,还有一台物理机器也不一定能存储这么多的数据。为了解决这一问题,Elasticsearch将索引分解成多个分片。当你创建一个索引,你可以简单地定义你想要的分片数量。每个分片本身是一个全功能的、独立的单元,可以托管在集群中的任何节点。
+    * 主分片
+        * 每个文档都存储在一个分片中,当你存储一个文档的时候,系统会首先存储在主分片中,然后会复制到不同的副本中。
+        * 默认情况下,一个索引有5个主分片。 你可以事先制定分片的数量,当分片一旦建立,则分片的数量不能修改。
+    * 副本分片
+        * 每一个分片有零个或多个副本。副本主要是主分片的复制,其中有两个目的:
+            * 增加高可用性:当主分片失败的时候,可以从副本分片中选择一个作为主分片。
+            * 提高性能:当查询的时候可以到主分片或者副本分片中进行查询。默认情況下,一个主分片配有一个副本,但副本的数量可以在后面动态地配置增加。副本分片必部署在不同的节点上,不能部署在和主分片相同的节点上。
+    * 分片主要有两个很重要的原因是:
+        * 允许水平分割扩展数据。
+        * 允许分配和井行操作(可能在多个节点上)从而提高性能和吞吐量。
+    * 这些很强大的功能对用户来说是透明的,你不需要做什么操作,系统会自动处理。
+* 索引(index)
+    * 索引是具有相同结构的文档集合。例如,可以有一个客户信息的索引,包括一个产品目录的索引,一个订单数据的索引。 在系统上索引的名字全部小写,通过这个名字可以用来执行索引、搜索、更新和删除操作等。在单个集群中,可以定义多个你想要的索引。
+* 类型(type)
+    * 在索引中,可以定义一个或多个类型,类型是索引的逻辑分区。在一般情况下,一种类型被定义为具有一组公共字段的文档。例如,让我们假设你运行一个博客平台,并把所有的数据存储在一个索引中。在这个索引中,你可以定义一种类型为用户数据,一种类型为博客数据,另一种类型为评论数据。
+* 文档(doc)
+    * 文档是存储在Elasticsearch中的一个JSON格式的字符串。它就像在关系数据库中表的一行。每个存储在索引中的一个文档都有一个类型和一个ID,每个文档都是一个JSON对象,存储了零个或者多个字段,或者键值对。原始的JSON 文档假存储在一个叫作Sour的字段中。当搜索文档的时候默认返回的就是这个字段。
+* 映射
+    * 映射像关系数据库中的表结构,每一个索引都有一个映射,它定义了索引中的每一个字段类型,以及一个索引范围内的设置。一个映射可以事先被定义,或者在第一次存储文档的时候自动识别。
+* 字段
+    * 文档中包含零个或者多个字段,字段可以是一个简单的值(例如字符串、整数、日期),也可以是一个数组或对象的嵌套结构。字段类似于关系数据库中表的列。每个字段都对应一个字段类型,例如整数、字符串、对象等。字段还可以指定如何分析该字段的值。
+* 主键
+    * ID是一个文件的唯一标识,如果在存库的时候没有提供ID,系统会自动生成一个ID,文档的index/type/id必须是唯一的。
+* 复制
+    * 复制是一个非常有用的功能,不然会有单点问题。 当网络中的某个节点出现问题的时候,复制可以对故障进行转移,保证系统的高可用。因此,Elasticsearch 允许你创建一个或多个拷贝,你的索引分片就形成了所谓的副本或副本分片。
+    * 复制是重要的,主要的原因有:
+        * 它提供丁高可用性,当节点失败的时候不受影响。需要注意的是,一个复制的分片不会存储在同一个节点中。
+        * 它允许你扩展搜索量,提高并发量,因为搜索可以在所有副本上并行执行。
+        * 每个索引可以拆分成多个分片。索引可以复制零个或者多个分片.一旦复制,每个索引就有了主分片和副本分片.分片的数量和副本的数量可以在创建索引时定义.当创建索引后,你可以随时改变副本的数量,但你不能改变分片的数量.
+    * 默认情況下,每个索引分配5个分片和一个副本,这意味着你的集群节点至少要有两个节点,你将拥有5个主要的分片和5个副本分片共计10个分片.
+    * 每个Elasticsearch分片是一个Lucene 的索引。有文档存储数量限制,你可以在一个单一的Lucene索引中存储的最大值为lucene-5843,极限是2147483519(=integer.max_value-128)个文档。你可以使用cat/shards API监控分片的大小。
 
-### 1.2.1. 启动过程
-<a href="#menu" style="float:right">目录</a>
 
-* 当节点启动时，它使用发现模块来发现同一个集群(集群名称需要一样)中的其他节点，并与他们连接，默认情况下节点会发送广播请求，以找到拥有相同集群名称的其他节点。
-* 集群中的一个节点被选为主(master)节点。该节点负责集群的状态管理以及在集群拓扑变化时做出反映，分发索引分片至集群相应的节点上去。
-* 用户不需要关注哪个是master,请求可以发送到任何的节点其内部会自行转发处理。
-* 管理节点读取集群的状态信息，如果有必要，它会进行会恢复处理，在该阶段，管理节点会检查哪些索引分片，并决定哪些分片将用作主分片，然后整个集群进入**黄色状态**。
-* 黄色状态意味着集群可以进行查询，但是系统的吞吐量以及各种可能的状态是未知的(可以理解为所有的主分片已经分配，但是副本分片还没有分配)
-* el寻找冗余的分片用作副本，如果某个主分片的副本数过少，管理节点将决定基于某个主分片创建分片和副本，如果主分片和副本分片已经分配好，那么将进入**绿色状态**
-
-### 1.2.2. 故障检测
-<a href="#menu" style="float:right">目录</a>
-
-* 集群正常工作时，管理节点会监控所有可用的节点，检查它们是否正常工作。
-* 如果任何节点在预订的超时时间内不响应，则认为该节点已经断开，然后错误处理开始启动
-    * 这意味着集群-分片之间重新做平衡，选择新的主节点等
-    * 对每个丢失的主分片，一个新的主分片将会从原来的主分片副本中选出来
-
-
-### 1.2.3. 与El通信
-<a href="#menu" style="float:right">目录</a>
-
-#### 1.2.3.1. 索引数据
-<a href="#menu" style="float:right">目录</a>
-
-![索引建立](https://github.com/lgjlife/Java-Study/blob/master/pic/elasticsearch/index-create.png?raw=true)
-
-* 索引操作只能发生在主分片上，而不是副本，当一个索引请求被发送到一个节点上时
-* 如果该节点没有对应的主分片或者只有副本，那么这个请求会被转发到拥有正确的主分片节点。
-* 然后该主节点会将请求发送到各个副本，然后等待响应，当达到规定数目的副本返回响应，完成索引过程并返回响应给客户端。
-
-
-#### 1.2.3.2. 查询数据
-<a href="#menu" style="float:right">目录</a>
-
-![索引搜索](https://github.com/lgjlife/Java-Study/blob/master/pic/elasticsearch/index-search.png?raw=true)
-
-* 查询分为分散阶段和合并阶段
-    * 分散阶段
-        * 查询请求分发到包含相关文档的多个分片中执行查询
-    * 合并阶段
-        * 从众多分片中收集返回结果，。然后进行合并，排序等操作之后再返回客户端。
-
-## 1.3. 安装与配置
-<a href="#menu" style="float:right">目录</a>
+## 1.4. 安装与配置
+<a href="#menu" >目录</a>
 
 新创建的目录中。应该可以看到下面的目录结构：
 |目录 |描述|
@@ -185,18 +324,19 @@ Elasticsearch启动后，会创建如下目录（如果目录不存在）：
 |plugins| 存储所安装插件的地方
 |work| Elasticsearch使用的临时文件
 
-### 1.3.1. 配置文件说明
-<a href="#menu" style="float:right">目录</a>
+### 1.4.1. 配置文件说明
+<a href="#menu" >目录</a>
+
 
 * elasticsearch.yml  Elasticsearch配置文件
 * jvm.options jvm参数配置
 * log4j2.properties 日志配置
 
 
-#### 1.3.1.1. elasticsearch.yml
-<a href="#menu" style="float:right">目录</a>
+#### 1.4.1.1. elasticsearch.yml
+<a href="#menu" >目录</a>
 
-```
+```yml
 cluster.name: elasticsearch                 配置集群名称，默认elasticsearch
 node.name: node1                            配置节点名称
 node.master: true                           配置当前节点是否具有可选为master节点的资格，默认值为true
@@ -216,9 +356,9 @@ bootstrap.mlockall: true                    JVM开始交换时，ElasticSearch�
 network.bind_host: 192.168.0.1              默认情况下，ElasticSearch使用0.0.0.0地址，并为http传输开启9200-9300端口，为节点到节点的通信开启9300-9400端口，也可以自行设置IP地址
 network.publish_host: 192.168.0.1           publish_host设置其他节点连接此节点的地址，如果不设置的话，则自动获取，publish_host的地址必须为真实地址
 network.host: 192.168.0.1                   bind_host和publish_host可以一起设置
-transport.tcp.port: 9300                    配置节点之间交互的端口
+transport.tcp.port: 9300                    配置节点之间交互的端口, 默认 9300-9400 。可以为它指定一个值或一个区间，当为区间时会取用区间第一个可用的端口。
 transport.tcp.compress: true                节点间交互时，可以设置是否压缩，转为为不压缩
-http.port: 9200                             可以为Http传输监听定制端口
+http.port: 9200                             可以为Http传输监听定制端口,默认 9200-9300 。可以为它指定一个值或一个区间，当为区间时会取用区间第一个可用的端口。
 http.max_content_length: 100mb              设置内容的最大长度
 http.enabled: false                         禁止HTTP 
 http.cors.enabled: true                     设置运行跨域访问，默认为false
@@ -248,13 +388,448 @@ action.auto_create_index: true              是否允许自动创建索引，除
 action.auto_create_index: -an*,+a*,-*       允许自动创建以a开头的索引，但以an开头的索引则允许。其他索引也必须手动创建（因为指令中的-*）。注意顺序，匹配到就不会继续往下匹配。
 ```
 
+### 1.4.2. 安装中文分词器
 
 
-## 1.4. 索引
-<a href="#menu" style="float:right">目录</a>
+elasticsearch 本身对中文支持不够好，所以需要中文的分词插件，目前主流的都用 IK。 以下这是 Google的中文词条。
 
-### 1.4.1. 索引
-<a href="#menu" style="float:right">目录</a>
+IK Analyzer是一个开源的，基于java语言开发的轻量级的中文分词工具包。从2006年12月推出1.0版开始， IKAnalyzer已经推出了4个大版本。最初，它是以开源项目Luence为应用主体的，结合词典分词和文法分析算法的中文分词组件。从3.0版本开始，IK发展为面向Java的公用分词组件，独立于Lucene项目，同时提供了对Lucene的默认优化实现。在2012版本中，IK实现了简单的分词歧义排除算法，标志着IK分词器从单纯的词典分词向模拟语义分词衍化。
+
+
+下载地址[https://github.com/medcl/elasticsearch-analysis-ik]
+
+然后在plugins创建目录ik，将压缩包复制到ik目录下解压:unzip elasticsearch-analysis-ik-6.5.4.zip
+
+启动时显示则安装成功
+```yml
+[2020-12-24T19:02:26,524][INFO ][o.e.p.PluginsService     ] [node-1] loaded plugin [analysis-ik]
+
+```
+
+**验证**
+
+* ik_max_word和ik_smart
+    * ik_max_word: 将文本按最细粒度的组合来拆分，比如会将“中华五千年华夏”拆分为“五千年、五千、五千年华、华夏、千年华夏”，总之是可能的组合；
+    * ik_smart: 最粗粒度的拆分，比如会将“五千年华夏”拆分为“五千年、华夏”
+* 当不添加分词类别，Elastic对于汉字默认使用standard只是将汉字拆分成一个个的汉字，而我们ik则更加的智能，下面通过几个案例来说明。
+
+默认情况下
+```yml
+curl -X GET -H "Content-Type: application/json"  "http://localhost:9200/_analyze?pretty=true" -d'{"text":"中华五千年华夏"}'
+```
+
+返回
+```json
+{
+  "tokens" : [
+    {
+      "token" : "中",
+      "start_offset" : 0,
+      "end_offset" : 1,
+      "type" : "<IDEOGRAPHIC>",
+      "position" : 0
+    },
+    {
+      "token" : "华",
+      "start_offset" : 1,
+      "end_offset" : 2,
+      "type" : "<IDEOGRAPHIC>",
+      "position" : 1
+    },
+    {
+      "token" : "五",
+      "start_offset" : 2,
+      "end_offset" : 3,
+      "type" : "<IDEOGRAPHIC>",
+      "position" : 2
+    },
+    {
+      "token" : "千",
+      "start_offset" : 3,
+      "end_offset" : 4,
+      "type" : "<IDEOGRAPHIC>",
+      "position" : 3
+    },
+    {
+      "token" : "年",
+      "start_offset" : 4,
+      "end_offset" : 5,
+      "type" : "<IDEOGRAPHIC>",
+      "position" : 4
+    },
+    {
+      "token" : "华",
+      "start_offset" : 5,
+      "end_offset" : 6,
+      "type" : "<IDEOGRAPHIC>",
+      "position" : 5
+    },
+    {
+      "token" : "夏",
+      "start_offset" : 6,
+      "end_offset" : 7,
+      "type" : "<IDEOGRAPHIC>",
+      "position" : 6
+    }
+  ]
+}
+
+```
+
+ik_smart分词
+```yml
+curl -X GET -H "Content-Type: application/json"  "http://localhost:9200/_analyze?pretty=true" -d'{"text":"中华五千年华夏","analyzer": "ik_smart"}' 
+
+```
+```json
+{
+  "tokens" : [
+    {
+      "token" : "中华",
+      "start_offset" : 0,
+      "end_offset" : 2,
+      "type" : "CN_WORD",
+      "position" : 0
+    },
+    {
+      "token" : "五千年",
+      "start_offset" : 2,
+      "end_offset" : 5,
+      "type" : "TYPE_CQUAN",
+      "position" : 1
+    },
+    {
+      "token" : "华夏",
+      "start_offset" : 5,
+      "end_offset" : 7,
+      "type" : "CN_WORD",
+      "position" : 2
+    }
+  ]
+}
+
+```
+ ik_max_word分词
+```yml
+curl -X GET -H "Content-Type: application/json"  "http://localhost:9200/_analyze?pretty=true" -d'{"text":"中华五千年华夏","analyzer": "ik_max_word"}'
+
+```
+
+```json
+{
+  "tokens" : [
+    {
+      "token" : "中华",
+      "start_offset" : 0,
+      "end_offset" : 2,
+      "type" : "CN_WORD",
+      "position" : 0
+    },
+    {
+      "token" : "五千",
+      "start_offset" : 2,
+      "end_offset" : 4,
+      "type" : "TYPE_CNUM",
+      "position" : 1
+    },
+    {
+      "token" : "千年",
+      "start_offset" : 3,
+      "end_offset" : 5,
+      "type" : "CN_WORD",
+      "position" : 2
+    },
+    {
+      "token" : "年华",
+      "start_offset" : 4,
+      "end_offset" : 6,
+      "type" : "CN_WORD",
+      "position" : 3
+    },
+    {
+      "token" : "年",
+      "start_offset" : 4,
+      "end_offset" : 5,
+      "type" : "COUNT",
+      "position" : 4
+    },
+    {
+      "token" : "华夏",
+      "start_offset" : 5,
+      "end_offset" : 7,
+      "type" : "CN_WORD",
+      "position" : 5
+    }
+  ]
+}
+
+```
+
+**自定义分词**
+
+IK 很友好，为我们提供热更新 IK 分词，在配置文件 {ES_HOME}/plugins/ik/config/IKAnalyzer.cfg.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>IK Analyzer 扩展配置</comment>
+    <!--用户可以在这里配置自己的扩展字典 -->
+    <entry key="ext_dict">custom/mydict.dic;custom/single_word_low_freq.dic</entry>
+     <!--用户可以在这里配置自己的扩展停止词字典-->
+    <entry key="ext_stopwords">custom/ext_stopword.dic</entry>
+    <!--用户可以在这里配置远程扩展字典 -->
+    <entry key="remote_ext_dict">location</entry>
+    <!--用户可以在这里配置远程扩展停止词字典-->
+    <entry key="remote_ext_stopwords">http://xxx.com/xxx.dic</entry>
+</properties>
+```
+
+我们一般将需要自动更新的热词放在一个UTF8的txt文件里，再利用 nginx ，当 .txt 文件修改时，http server 会在客户端请求该文件时自动返回相应的 Last-Modified 和 ETag。可以另外做一个工具来从业务系统提取相关词汇，并更新这个 .txt 文件。
+
+
+### 1.4.3. 启动
+
+配置完成后，进入bin目录下执行
+```java
+./elasticsearch 
+```
+
+启动成功后浏览器访问:http://localhost:9200/  。9200是配置文件中的http.port。
+
+```json
+{
+  "name" : "node-1",
+  "cluster_name" : "elasticsearch",
+  "cluster_uuid" : "3eiz8kCQQfuVIQ0q7XNH2w",
+  "version" : {
+    "number" : "6.5.4",
+    "build_flavor" : "default",
+    "build_type" : "tar",
+    "build_hash" : "d2ef93d",
+    "build_date" : "2018-12-17T21:17:40.758843Z",
+    "build_snapshot" : false,
+    "lucene_version" : "7.5.0",
+    "minimum_wire_compatibility_version" : "5.6.0",
+    "minimum_index_compatibility_version" : "5.0.0"
+  },
+  "tagline" : "You Know, for Search"
+}
+```
+
+如果要配置集群，主要需要配置以下参数
+```yml
+cluster.name: elasticsearch　# 集群名称，必须一样
+node.name: node-2
+network.host: 127.0.0.1
+transport.tcp.port: 9301 #集群间通信端口
+discovery.zen.ping.unicast.hosts: ["127.0.0.1:9300", "127.0.0.1:9301", "127.0.0.1:9302"]
+```
+
+### 1.4.4. elasticsearch-head的使用
+
+ealsticsearch只是后端提供各种api，那么怎么直观的使用它呢？elasticsearch-head将是一款专门针对于elasticsearch的客户端工具
+
+elasticsearch-head配置包，下载地址：https://github.com/mobz/elasticsearch-head
+
+elasticsearch-head是一个基于node.js的前端工程，启动elasticsearch-head的步骤如下（这里针对的是elasticsearch 5.x以上的版本）：
+
+1. 进入elasticsearch-head的文件夹
+2. 执行 npm install
+3. 执行 npm run start
+
+在浏览器访问http://localhost:9100，可看到如下界面，表示启动成功：
+
+
+
+## 1.5. 辅助工具
+<a href="#menu" >目录</a>
+
+**Beats**
+
+它是一个代理，将不同类型的数据发送到el中，官方提供。由三个部分组成
+* Filebeat：用来搜集日志
+* Topbeat：搜集系统基础设置信息，比如cpu、内存、进程的统计信息
+* Ｐacketbeat网络包分析工具，统计收集网络信息
+
+**Shield**
+
+为el带来企业级的安全性，加密通信、认证保护。收费。
+
+**Watcher**
+
+el的警报和通知工。主动监测el的状态，并在有异常的时候进行提醒。收费。
+
+**Marvel**
+
+管理和监控工具，监测集群索引和节点的活动，快速诊断问题。收费。
+
+
+# 2. Elasticsearch工作流程
+<a href="#menu" >目录</a>
+
+## 2.1. 启动过程
+<a href="#menu" >目录</a>
+
+* 当节点启动时，它使用发现模块来发现同一个集群(集群名称需要一样)中的其他节点，并与他们连接，默认情况下节点会发送广播请求，以找到拥有相同集群名称的其他节点。
+* 集群中的一个节点被选为主(master)节点。该节点负责集群的状态管理以及在集群拓扑变化时做出反映，分发索引分片至集群相应的节点上去。
+* 用户不需要关注哪个是master,请求可以发送到任何的节点其内部会自行转发处理。
+* 管理节点读取集群的状态信息，如果有必要，它会进行会恢复处理，在该阶段，管理节点会检查哪些索引分片，并决定哪些分片将用作主分片，然后整个集群进入**黄色状态**。
+* 黄色状态意味着集群可以进行查询，但是系统的吞吐量以及各种可能的状态是未知的(可以理解为所有的主分片已经分配，但是副本分片还没有分配)
+* el寻找冗余的分片用作副本，如果某个主分片的副本数过少，管理节点将决定基于某个主分片创建分片和副本，如果主分片和副本分片已经分配好，那么将进入**绿色状态**
+
+## 2.2. 故障检测
+<a href="#menu" >目录</a>
+
+* 集群正常工作时，管理节点会监控所有可用的节点，检查它们是否正常工作。
+* 如果任何节点在预订的超时时间内不响应，则认为该节点已经断开，然后错误处理开始启动
+    * 这意味着集群-分片之间重新做平衡，选择新的主节点等
+    * 对每个丢失的主分片，一个新的主分片将会从原来的主分片副本中选出来
+
+
+## 2.3. 与El通信
+<a href="#menu" >目录</a>
+
+### 2.3.1. 索引数据
+<a href="#menu" >目录</a>
+
+![索引建立](https://github.com/lgjlife/Java-Study/blob/master/pic/elasticsearch/index-create.png?raw=true)
+
+* 索引操作只能发生在主分片上，而不是副本，当一个索引请求被发送到一个节点上时
+* 如果该节点没有对应的主分片或者只有副本，那么这个请求会被转发到拥有正确的主分片节点。
+* 然后该主节点会将请求发送到各个副本，然后等待响应，当达到规定数目的副本返回响应，完成索引过程并返回响应给客户端。
+
+
+### 2.3.2. 查询数据
+<a href="#menu" >目录</a>
+
+![索引搜索](https://github.com/lgjlife/Java-Study/blob/master/pic/elasticsearch/index-search.png?raw=true)
+
+* 查询分为分散阶段和合并阶段
+    * 分散阶段
+        * 查询请求分发到包含相关文档的多个分片中执行查询
+    * 合并阶段
+        * 从众多分片中收集返回结果，。然后进行合并，排序等操作之后再返回客户端。
+
+
+
+# 3. 索引
+<a href="#menu" >目录</a>
+
+索引是具有相同结构的文档集合。对es的操作大部分操作是基于索引来完成的。
+
+![索引](pic/elasticsearch/索引.png)
+
+索引信息
+```yml
+
+{
+    "state": "open",
+    "settings": {
+        "index": {
+            "number_of_shards": "5",
+            "blocks": {
+                "read_only_allow_delete": "true"
+            },
+            "provided_name": "index_user",
+            "creation_date": "1563199743234",
+            "number_of_replicas": "1",
+            "uuid": "Oo00fLRNRyWwSiqWY6_guQ",
+            "version": {
+                "created": "6050499"
+            }
+        }
+    },
+    "mappings": {
+        "user": {
+            "properties": {
+                "salt": {
+                "type": "text",
+                "fields": {
+                "keyword": {
+                    "ignore_above": 256,
+                    "type": "keyword"
+                }
+            }
+        },
+        "gender": {
+            "type": "text",
+                "fields": {
+                "keyword": {
+                    "ignore_above": 256,
+                    "type": "keyword"
+                }
+            }
+        },
+        "registerTime": {
+        "type": "date"
+    },
+    "nickName": {
+        "type": "text",
+            "fields": {
+            "keyword": {
+                "ignore_above": 256,
+                "type": "keyword"
+            }
+        }
+    },
+
+    },
+    "aliases": [ ],
+        "primary_terms": {
+            "0": 10,
+            "1": 10,
+            "2": 10,
+            "3": 10,
+            "4": 10
+        },
+    "in_sync_allocations": {
+        "0": [
+            "TcVO4P-BSmS9i16xzCUxMw"
+            ,
+            "BLFjXoYiRYWMxhsKADj-kQ"
+        ],
+        "1": [
+            "1cjJgRbTTs2XxETqQtN5NQ"
+            ,
+            "ka_LzVLFTh-558k5aSrqLQ"
+        ],
+        "2": [
+            "M4a_3EOUTf-Qvj9RYOg-3g"
+            ,
+            "1_XkQ_6uSL6gbA1WDiJP5g"
+        ],
+        "3": [
+            "ron40qNDQS-7ivA765Jw8A"
+            ,
+            "N4kES974QTqTQnERJisePA"
+        ],
+        "4": [
+            "qqmO9xTOTgqH00E01HQHwA"
+            ,
+            "-Res1zvqQHWuvNnM506vag"
+        ]
+    }
+}
+
+```
+分片信息
+```yml
+{
+    "state": "STARTED",
+    "primary": true,
+    "node": "8StKNMLeQDGRLWv_E4O4Sw",
+    "relocating_node": null,
+    "shard": 3,
+    "index": "index_user",
+    "allocation_id": {
+        "id": "N4kES974QTqTQnERJisePA"
+    }
+}
+```
+
+## 3.1. 索引
+<a href="#menu" >目录</a>
 
 * 分片和副本
     * 每个索引是由一个或者多个分片组成，每个分片包含了文档集的一部分
@@ -268,8 +843,8 @@ action.auto_create_index: -an*,+a*,-*       允许自动创建以a开头的索�
     * 更多副本意味着查询吞吐量将会增加，因为执行查询可以使用分片或分片的任一副本。
     * 一旦建立好分片，就无法更新分片数量，涉及到数据迁移的问题。副本数量可以改变。
 
-### 1.4.2. 映射配置
-<a href="#menu" style="float:right">目录</a>
+## 3.2. 映射配置
+<a href="#menu" >目录</a>
 
 * Elasticsearch有以下核心类型
     * string 字符串
@@ -371,8 +946,8 @@ Elasticsearch添加了IP字段类型，以数字形式简化IPv4地址的使用�
     * snowball：这个分析器类似于standard分析器，但提供了词干提取算法（ stemmingalgorithm ， 参 数 的 完 整 列 表 请 参 阅 http://www.elasticsearch.org/guide/en/elasticsearch/eference/current/analysis-snowball-analyzer.html）。
 
 
-## 1.5. 集群管理
-<a href="#menu" style="float:right">目录</a>
+# 4. 集群管理
+<a href="#menu" >目录</a>
 
 一个节点(node)就是一个Elasticsearch实例， 而一个集群(cluster)由一个或多个节点组成， 它们具有相同的 cluster.name 它们协同工作， 分享数据和负载。 当加入新的节点或者删除一个节点时， 集群就会感知到并平衡数据。
 
@@ -380,8 +955,8 @@ Elasticsearch添加了IP字段类型，以数字形式简化IPv4地址的使用�
 
 做为用户， 我们能够与集群中的任何节点通信， 包括主节点。 每一个节点都知道文档存在于哪个节点上，它们可以转发请求到相应的节点上。 我们访问的节点负责收集各节点返回的数据， 最后一起返回给客户端。 这一切都由Elasticsearch处理。
 
-### 1.5.1. 集群健康
-<a href="#menu" style="float:right">目录</a>
+## 4.1. 集群健康
+<a href="#menu" >目录</a>
 
 |颜色| 意义|
 |---|---|
@@ -394,8 +969,8 @@ Elasticsearch添加了IP字段类型，以数字形式简化IPv4地址的使用�
 * 当启动两个节点时，主分片和副本分片都可用，此时为**green**.此时el平衡负载，可能两个节点都有主分片。
 * 此时关闭一个节点，必然至少有一个主分片被关掉，此时状态为**red**.经过内部调整，被关掉的主分片的副本分片升级为主分片，此时所有主要分片可用， 但不是所有复制分片都可用，因此为yellow
 
-### 1.5.2. 添加索引
-<a href="#menu" style="float:right">目录</a>
+## 4.2. 添加索引
+<a href="#menu" >目录</a>
 
 
 为了将数据添加到Elasticsearch， 我们需要索引(index)——一个存储关联数据的地方。 实际上， 索引只是一个用来指向一个或多个分片(shards)的“逻辑命名空间(logical namespace)”.
@@ -418,11 +993,11 @@ PUT /blogs
 ```
 
 
-## 1.6. 数据
-<a href="#menu" style="float:right">目录</a>
+# 5. 数据
+<a href="#menu" >目录</a>
 
-### 1.6.1. 文档
-<a href="#menu" style="float:right">目录</a>
+## 5.1. 文档
+<a href="#menu" >目录</a>
 
 在Elasticsearch中， 文档(document)这个术语有着特殊含义。 它特指最顶层结构或者根对象(root object)序列化成的JSON数据（以唯一ID标识并存储于Elasticsearch中） 。
 
@@ -451,8 +1026,8 @@ _type 的名字可以是大写或小写， 不能包含下划线或逗号。 我
 d仅仅是一个字符串， 它与 _index 和 _type 组合时， 就可以在ELasticsearch中唯一标识一个文档。 当创建一个文档， 你可以自定义 _id ， 也可以让Elasticsearch帮你自动生成。
 
 
-### 1.6.2. 处理冲突
-<a href="#menu" style="float:right">目录</a>
+## 5.2. 处理冲突
+<a href="#menu" >目录</a>
 
 当某个文档被并发修改时，如何确保修改丢失?
 
@@ -468,24 +1043,24 @@ Elasticsearch是分布式的。 当文档被创建、 更新或删除， 文档�
 
 
 
-## 1.7. 分布式增删改查
-<a href="#menu" style="float:right">目录</a>
+# 6. 分布式增删改查
+<a href="#menu" >目录</a>
 
-### 1.7.1. 路由文档到分片
-<a href="#menu" style="float:right">目录</a>
+## 6.1. 路由文档到分片
+<a href="#menu" >目录</a>
 
 当你索引一个文档， 它被存储在单独一个主分片上。 Elasticsearch是如何知道文档属于哪个分片的呢？ 当你创建一个新文档， 它是如何知道是应该存储在分片1还是分片2上的呢？
 进程不能是随机的， 因为我们将来要检索文档。 事实上， 它根据一个简单的算法决定：shard = hash(routing) % number_of_primary_shards ，routing 值是一个任意字符串， 它默认是 _id 但也可以自定义。 这个 routing 字符串通过哈希函数生成一个数字， 然后除以主切片的数量得到一个余数(remainder)， 余数的范围永远是 0 到 number_of_primary_shards - 1 ， 这个数字就是特定文档所在的分片。
 这也解释了为什么主分片的数量只能在创建索引时定义且不能修改： 如果主分片的数量在未来改变了， 所有先前的路由值就失效了， 文档也就永远找不到了。
 有时用户认为固定数量的主分片会让之后的扩展变得很困难。 现实中， 有些技术会在你需要的时候让扩展变得容易。
 
-### 1.7.2. 分片交互
-<a href="#menu" style="float:right">目录</a>
+## 6.2. 分片交互
+<a href="#menu" >目录</a>
 
 每个节点都能够接收客户端的请求，每个节点都能知道任意文档所在的节点，所以也可以将请求转发到需要的节点。
 
-#### 1.7.2.1. 新建，索引和删除文档
-<a href="#menu" style="float:right">目录</a>
+### 6.2.1. 新建，索引和删除文档
+<a href="#menu" >目录</a>
 
 
 新建、索引和删除请求都是写(write)操作， 它们必须在主分片上成功完成才能复制到相关的复制分片上。
@@ -521,8 +1096,8 @@ int( (primary + 3 replicas) / 2 ) + 1 = 3
 注意：
 新索引默认有 1 个复制分片， 这意味着为了满足 quorum 的要求需要两个活动的分片。 当然， 这个默认设置将阻止我们在单一节点集群中进行操作。 为了避开这个问题， 规定数量只有在 number_of_replicas 大于一时才生效。
 
-#### 1.7.2.2. 索引文档
-<a href="#menu" style="float:right">目录</a>
+### 6.2.2. 索引文档
+<a href="#menu" >目录</a>
 
 
 文档能够从主分片或任意一个复制分片被检索。
@@ -537,8 +1112,60 @@ int( (primary + 3 replicas) / 2 ) + 1 = 3
 
 可能的情况是， 一个被索引的文档已经存在于主分片上却还没来得及同步到复制分片上。 这时复制分片会报告文档未找到，主分片会成功返回文档。一旦索引请求成功返回给用户，文档则在主分片和复制分片都是可用的。
 
-## 1.8. 面试小结之Elasticsearch篇
-<a href="#menu" style="float:right">目录</a>
+# 7. ELK应用
+<a href="#menu" >目录</a>
+
+日志主要包括系统日志、应用程序日志和安全日志。系统运维和开发人员可以通过日志了解服务器软硬件信息、检查配置过程中的错误及错误发生的原因。经常分析日志可以了解服务器的负荷，性能安全性，从而及时采取措施纠正错误。
+
+通常，日志被分散的储存不同的设备上。如果你管理数百上千台服务器，你还在使用依次登录每台机器的传统方法查阅日志。这样是不是感觉很繁琐和效率低下。当务之急我们使用集中化的日志管理，例如：开源的syslog，将所有服务器上的日志收集汇总。集中化管理日志后，日志的统计和检索又成为一件比较麻烦的事情，一般我们使用grep、awk和wc等Linux命令能实现检索和统计，但是对于要求更高的查询、排序和统计等要求和庞大的机器数量依然使用这样的方法难免有点力不从心。
+
+开源实时日志分析ELK平台能够完美的解决我们上述的问题，ELK由ElasticSearch、Logstash和Kiabana三个开源工具组成。
+
+整个架构为: 各个服务将日志发送到kafka===>Logstash===>ElasticSearch===>Kiabana
+
+* Kafka：接收用户日志的消息队列
+* Logstash是一个完全开源的工具，他可以对你的日志进行收集、过滤，并将其存储供以后使用（如，搜索）。
+* Elasticsearch是个开源分布式搜索引擎，它的特点有：分布式，零配置，自动发现，索引自动分片，索引副本机制，restful风格接口，多数据源，自动搜索负载等。
+* Kibana 也是一个开源和免费的工具，它Kibana可以为 Logstash 和 ElasticSearch 提供的日志分析友好的 Web 界面，可以帮助您汇总、分析和搜索重要数据日志。
+
+
+
+## 7.1. Logstash
+<a href="#menu" >目录</a>
+
+下载地址:[https://www.elastic.co/cn/downloads/logstash]
+
+bin目录里启动:　./logstash -f xxx.conf
+ 
+官方文档: [https://www.elastic.co/guide/en/logstash/6.8/index.html]
+
+
+### 7.1.1. 配置文件
+
+
+
+
+## 7.2. Kibana
+<a href="#menu" >目录</a>
+
+
+下载地址[https://www.elastic.co/cn/downloads/kibana]
+
+配置文件config/kibana.yml: elasticsearch.url: "http://localhost:9200"
+
+启动：　./bin/kibana
+
+访问地址
+```
+log   [15:16:23.617] [info][listening] Server running at http://localhost:5601
+log   [15:16:24.105] [info][status][plugin:spaces@6.5.4] Status changed from yellow to green - Ready
+```
+
+
+
+
+# 8. 面试小结之Elasticsearch篇
+<a href="#menu" >目录</a>
 
 **Elasticsearch是如何实现Master选举的？**
 * Elasticsearch的选主是ZenDiscovery模块负责的，主要包含Ping（节点之间通过这个RPC来发现彼此）和Unicast（单播模块包含一个主机列表以控制哪些节点需要ping通）这两部分；

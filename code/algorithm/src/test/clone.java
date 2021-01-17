@@ -46,7 +46,7 @@ class People implements Cloneable{
         People people = null;
 
         try {
-            //只克隆普通基本数据类型和 String
+            //只克隆普通基本数据类型和 string
             people = (People) super.clone();
         } catch (Exception e) {
             e.printStackTrace();

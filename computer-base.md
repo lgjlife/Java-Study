@@ -134,14 +134,14 @@
 
 
 # 1. 计算机&网络&操作系统
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ## 1.1. 计算机基础
 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.1.1. 数字系统
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **整数**
 
@@ -307,13 +307,13 @@ $\pm S_{k-1} * 10^{k-1} + S_{k-2} * 10^{k-2}... S_{1} * 10^{1} + S_{0} * 10^{0}$
 |0111 1110|	126|	7E	|~
 
 ### 1.1.2. 数据存储
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.1.3. 数据运算
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.1.4. 计算机组成
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.1.4.1. 计算机组成
 
@@ -394,7 +394,7 @@ CPU和存储器一般使用三组线进行连接:数据总线,控制总线,地�
 
 
 ### 1.1.5. 程序设计语言
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.1.5.1. 计算机语言
 
@@ -442,7 +442,7 @@ CPU和存储器一般使用三组线进行连接:数据总线,控制总线,地�
 * 声明式
 
 ### 1.1.6. 软件工程
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.1.6.1. 开发过程模型
 
@@ -524,39 +524,39 @@ CPU和存储器一般使用三组线进行连接:数据总线,控制总线,地�
 * 技术文档
 
 ### 1.1.7. 数据结构
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.1.8. 抽象数据类型
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.1.9. 文件结构
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.1.10. 数据库
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.1.11. 数据压缩
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.1.12. 安全
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ## 1.2. 编译原理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 
 ## 1.3. 操作系统
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 计算机系统由软件和硬件组成,硬件是计算机系统的基础,操作系统是位于硬件上的第一层软件,用于控制管理各种硬件资源.为其他软件和用户提供了工作环境.操作系统为人们有效的使用计算机提供了用户接口.操作系统还要对系统资源进行统一管理,使各并发进程能改按照一定的原则合理共享计算机资源,并在保证各个并发进程顺利运行的基础上提高资源的利用率,操作系统是整个计算机的控制管理中心.
 
 ### 1.3.1. 操作系统基本概念
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.1.1. 操作系统的功能
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **1.提供人机接口**
 * 作业控制级接口
@@ -730,10 +730,10 @@ Debian这款操作系统无疑并不适合新手用户，而是适合系统管�
 
 
 ### 1.3.3. 进程管理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.3.1. 进程的基本概念
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 进程是操作系统中一个非常重要的概念,程序的运行是通过进程来完成的.在层次结构的操作系统中.进程不仅使系统分配资源的基本单位.而且是CPU调度的基本单位.
 
@@ -775,7 +775,7 @@ Unix系统中,进程的创建通过函数fork进行创建,这个系统调用会�
         * 进程正在等待某种事件发生而暂时不能运行起来
 
 #### 1.3.3.2. 进程控制
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 进程控制就是系统使用一个引起具有特定功能的程序段来创建,撤销进程以及完成进程各状态间的转换,从而达到多进程高效率并发执行和协调,实现资源共享的目的.通常,把系统态下执行的某些具有特定功能的程序段成为原语(原子操作).原语可以分为两类,一类是机器指令级的,执行期间不允许中断.一类是功能级的,其特点是作为原语的程序段不允许并发执行.这两类原语都是在系统态下执行,都是为了完成某个系统管理锁需要的功能而被高层软件所调用.
 
@@ -848,7 +848,7 @@ exec()用于执行新的程序
 
 
 #### 1.3.3.3. 进程同步
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ##### 1.3.3.3.1. 临界资源的概念
@@ -889,11 +889,11 @@ exec()用于执行新的程序
     * signal
 
 #### 1.3.3.4. 经典的进程同步问题
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.3.4. 进程通信
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 * Unix系统提供的进程间通信的基本机制
@@ -1017,7 +1017,7 @@ more ＜ temp.text
 
 
 ### 1.3.5. 线程
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.5.1. 线程的基本概念
 
@@ -1305,10 +1305,10 @@ http://my.oschina.net/cnyinlinux/blog/367910
 * 单进程、多线程，VxWorks是这种操作系统。
 
 ### 1.3.6. 处理机调度和死锁
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.6.1. 处理机调度的层次
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 作业
     * 用户向计算机提交任务的实体
@@ -1359,7 +1359,7 @@ http://my.oschina.net/cnyinlinux/blog/367910
         * 使被选中的进程执行
 
 #### 1.3.6.3. 调度算法
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ##### 1.3.6.3.1. 优先级调度算法
@@ -1395,7 +1395,7 @@ schedule()函数需要确定以下参数:
 
 
 #### 1.3.6.5. 产生死锁的原因和必要条件
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 死锁是指多个进程循环等待其他进程占有的资源，因为额无限期僵持下去的局面，也可以说死锁是进程之间互相等待永不发生的事件，如果没有外界的作用，死锁中的各个进程将永远处于阻塞状态．
 
@@ -1428,60 +1428,60 @@ schedule()函数需要确定以下参数:
 
 
 ### 1.3.7. 存储器管理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.7.1. 存储器的层次结构
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.7.2. 程序的装入和链接
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.7.3. 连续分配方式
 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.7.4. 基本分段存储管理方式
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.7.5. 虚拟存储器的基本概念
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.7.6. 请求分页存储管理方式
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.7.7. 页面置换算法
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.7.8. 请求分段管理方式
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.3.8. 设备管理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.8.1. I/O系统
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.8.2. I/O控制方式
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.8.3. 缓冲管理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.8.4. I/O软件
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.8.5. 设备分配
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.8.6. 磁盘存储器的管理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.3.9. 文件管理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.9.1. 文件和文件系统
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 文件类型
     * 按文件的数据形式分类
@@ -1506,7 +1506,7 @@ schedule()函数需要确定以下参数:
 
 
 #### 1.3.9.2. 文件的结构
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 文件结构：文件的组织形式
     * 文件的逻辑结构
@@ -1541,25 +1541,25 @@ schedule()函数需要确定以下参数:
 
 
 #### 1.3.9.3. 外存的分配方式
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.9.4. 目录管理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 文件目录是查看，读取外存中所存放文件的数据结构，用于文件描述和文件控制，实现按名存取和文件共享和保护，随文件的建立而创建，随文件的删除而消亡
 
 #### 1.3.9.5. 文件存储空间的管理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.9.6. 文件共享与文件保护
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.9.7. 数据一致性控制
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.3.10. Ｌinux网络基础
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.10.1. 网络配置文件
 
@@ -1599,18 +1599,18 @@ netstat		15/tcp
 ```
 
 ### 1.3.11. 系统安全性
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.3.12. Unix系统内核结构
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ## 1.4. Linux系统编程
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.4.1. 标准
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.4.1.1. POSIX 
 
@@ -1642,10 +1642,10 @@ System V(System Five),是Unix操作系统众多版本中的一支，就是当年
 
 
 ### 1.4.2. 基本概念
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.4.2.1. 操作系统的核心
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 操作系统
     * 完整的软件包，包括用来管理计算机资源的核心层软件，以及附带的所有标准软件工具
@@ -1678,7 +1678,7 @@ System V(System Five),是Unix操作系统众多版本中的一支，就是当年
     * 但是有些操作只能在内核空间下执行，比如访问内存管理硬件等．这种机制保证了用户态下不会执行非法操作导致系统出现异常
 
 #### 1.4.2.2. shell
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 shel是一种具有特殊用途的程序，主要啊用于读取用户输入的命令，并执行相应的程序以响应命令．也称为命令解释器．
 
@@ -1691,7 +1691,7 @@ shel是一种具有特殊用途的程序，主要啊用于读取用户输入的�
 
 
 #### 1.4.2.3. 用户和组
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 系统会为每个用户的身份做唯一标识，用户可隶属于多个组．
 
@@ -1700,7 +1700,7 @@ shel是一种具有特殊用途的程序，主要啊用于读取用户输入的�
 
 
 #### 1.4.2.4. 单根目录层级，目录，链接以及文件
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 unix的根目录是"／"，所有的文件和目录都是根目录的子孙．
 
@@ -1729,7 +1729,7 @@ Linux下文件一般有如下几种类型
 
 
 #### 1.4.2.5. 文件IO模型 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 unix系统IO模型的特点是I/O通用性，同一套系统调用(open(),read(),write(),close()等)所执行的操作，可适用于所有文件．应用程序发起IO请求，内核会将其转化为相应的文件系统操作．或者设备驱动程序操作．也就是说内核提供了上面的通用接口．但是内核层面会根据访问文件的差异实现不同的代码．
 
@@ -1776,10 +1776,10 @@ unlimited
 
     
 #### 1.4.2.6. 程序
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.4.2.7. 进程
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 进程是正在执行的程序实例．也是受操作系统资源管理的基本单位．执行程序时，内核会将程序代码载入虚拟内存，为程序变量分配空间，建立内核数据结构．以记录与进程相关的各种信息，比如进程id，用户id等信息．
 
@@ -1804,52 +1804,52 @@ unlimited
     * 由fork（）创建的新进程，会继承其父进程对资源的限制值
 
 #### 1.4.2.8. 内存映射
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 
 
 #### 1.4.2.9. 静态库和共享库
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.4.2.10. 进程间通信和同步
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.4.2.11. 信号 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.4.2.12. 线程
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.4.2.13. 进程组和shell任务控制
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.4.2.14. 会话，控制终端和控制进程
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.4.2.15. 伪终端
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.4.2.16. 日期和时间
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.4.2.17. 客户端服务器架构
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.4.2.18. 实时性
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.4.2.19. ／proc文件系统
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 
 
 ## 1.8. Unix环境编程
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.8.1. 基本概念
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * **内核**
 管理和分配计算机资源(CPU,内存等)的核心层软件
@@ -1886,7 +1886,7 @@ unlimited
         * 每一个进程都有一个唯一标识符PID，如果有父进程，还有一个父进程PPID
 
 ### 1.8.2. IO模型
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **概念理解**
  在进行网络编程时，我们常常见到同步(Sync)/异步(Async)，阻塞(Block)/非阻塞(Unblock)四种调用方式：
@@ -2023,7 +2023,7 @@ IO复用是先通过select调用阻塞。
 ![](https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=176532706,1323700702&fm=26&gp=0.jpg)
 
 ### 1.8.3. select&poll&epoll比较
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 #### 1.8.3.1. 整体概览

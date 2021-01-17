@@ -112,10 +112,10 @@
 
 <!-- /TOC -->
 # 1. RabbitMQ
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ## 1.1. 概述
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 它是采用Erlang语言实现的AMQP(Advanced Message Queued Protocol)的消息中间件，最初起源于金融系统，用在分布式系统存储转发消息。
 
@@ -132,10 +132,10 @@ RabbitMQ发展到今天，被越来越多的人认可，这和它在易用性、
 
 
 ## 1.2. 安装和使用 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.2.1. 安装
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **安装 Erlang**
 
@@ -200,7 +200,7 @@ export RABBITMQ HOME=/opt/rabbitmq
 之后执行 source/etc/profile 命令让配置文件生效。
 
 ### 1.2.2. 服务器管理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 RabbitMQ是基于Erlang编写的,Erlang也有虚拟机,而虚拟机的每个实例称之为节点(node),不同于JVM,多个Erlang应用程序可以运行在同一个节点之上,节点之间可以进行本地通信,
 
@@ -208,7 +208,7 @@ RabbitMQ是基于Erlang编写的,Erlang也有虚拟机,而虚拟机的每个实�
 
 
 #### 1.2.2.1. 启动节点
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 在修改了 /etc/profile 配置文件之后，可以任意打开一个 Shell 窗口，输入如下命令以运行 RabbitMQ 服务 :
 ```
@@ -308,7 +308,7 @@ Status of node rabbit@lgj-Lenovo-G470 ...
 ```
 
 #### 1.2.2.2. 停止节点
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 使用rabbitmqctl stop来停止节点
 注意这里是停止整个RabbitMQ节点(应用程序和Erlang节点一起).
@@ -358,7 +358,7 @@ Current node details:
 
 ```
 #### 1.2.2.3. 关闭和重启应用程序:有何差别
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 rabbitmqctl stop来停止节点,如果只是需要重启节点上的应用程序而保持节点的运行.
 
@@ -369,7 +369,7 @@ rabbitmqctl stop_app
 ```
 
 #### 1.2.2.4. 其他命令
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ```
 rabbitmqctl list_queues：查看所有队列信息
@@ -409,11 +409,11 @@ rabbitmqctl delete_user username：删除用户
 rabbitmqctl delete_vhost vhostpath：删除虚拟主机
 ```
 ### 1.2.3. 请求许可
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 #### 1.2.3.1. 权限系统
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 **权限**
@@ -469,16 +469,16 @@ web配置vhost权限
 
  
 ### 1.2.4. 检查
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.2.4.1. 查看数据统计
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.2.4.2. 理解日志
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.2.5. 疑难解答
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 
@@ -489,17 +489,17 @@ web配置vhost权限
 
 
 ## 1.3. 入门
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 整体模型
 ![rabbitmq](https://github.com/lgjlife/Java-Study/blob/master/pic/rabbitmq/rabbitmq.png?raw=true)
 
 ### 1.3.1. 相关概念介绍
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 #### 1.3.1.1. 生产者和消费值
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 生产者:生产者创建消息,然后发布到RabbitMQ中.
 * 消息
@@ -543,7 +543,7 @@ public void basicReject(long deliveryTag, boolean requeue) throws IOException {
 
 
 #### 1.3.1.2. 队列
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 Queue: 队列，是 RabbitMQ 的内部对象，用于存储消息
 
@@ -556,7 +556,7 @@ RabbitMQ中消息都只能存储在队列中，这一点和Katka这种消息中�
 
 
 #### 1.3.1.3. 交换器,路由键,绑定
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * Exchange (交换器)
     * 生产者将消息发送到 Exchange (交换器，通常也可以用大写的 "X" 来表示)，由交换器将消息路由到一个或者多个队列中。如果路由不到，或许会返回给生产者，或许直接丢弃。这里可以将 RabbitMQ 中的交换器看作一个简单的实体，
@@ -571,7 +571,7 @@ RabbitMQ中消息都只能存储在队列中，这一点和Katka这种消息中�
 
 
 #### 1.3.1.4. 交换器类型
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 RabbitMQ 常用的交换器类型有 fanout 、 direct 、topic 、headers 这四种 。 AMQP协议里还提到另外两种类型: System 和自定义
 
@@ -589,7 +589,7 @@ RabbitMQ 常用的交换器类型有 fanout 、 direct 、topic 、headers 这�
     * headers 类型的交换器不依赖于路由键的匹配规则来路由消息，而是根据发送的消息内容中的 headers 属性进行匹配。在绑定队列和交换器时制定一组键值对 ， 当发送消息到交换器时，RabbitMQ 会获取到该消息的 headers (也是一个键值对的形式) ，对比其中的键值对是否完全匹配队列和交换器绑定时指定的键值对，如果完全匹配则消息会路由到该队列，否则不会路由到该队列 。 headers 类型的交换器性能会很差，而且也不实用，基本上不会看到它的存在。
 
 #### 1.3.1.5. 多租户模式:虚拟主机和隔离
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 每个RabbitMQ都能创建虚拟消息服务器(也就是虚拟主机vhost),每一个vhost本质上是一个mini版的RabbitMQ服务器,每个vhost之间相互独立,有独立的权限控制,可以创建同名的交换器和队列.但还是同一个实例,只是逻辑上的隔离.
 
@@ -599,7 +599,7 @@ RabbitMQ 常用的交换器类型有 fanout 、 direct 、topic 、headers 这�
 
 
 #### 1.3.1.6. 消息持久化
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 发送消息时,需要把投递模式(delivery mode)选项设置为2来把消息标记为持久化.它还必须被发布到持久化的交换器并且到达持久化队列中才行.否则,会在崩溃后重启消息不复存在.
 因为消息想要实现从崩溃中恢复:
@@ -620,7 +620,7 @@ RabbitMQ没有使用事务来提高消息可靠性,而是使用发送方确认�
 
 
 #### 1.3.1.7. RabbitMQ运转流程
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **生产者**
 (1) 生产者连接到 RabbitMQ Broker ， 建立一个连接( Connection) ，开启 一个信道 (Channel)
@@ -656,7 +656,7 @@ NIO，也称非阻塞 UO ， 包含三大核心部分 Channel (信道)、 Buffer
 
 
 #### 1.3.1.8. 通信模式
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * TCP的创建和销毁，开销大，创建需要三次握手，销毁需要四次分手
 * 如果不使用信道，那么应用程序就会使用TCP的方式连接到rabbitmq，高峰时每秒成千上万条连接会造成资源的巨大浪费(一条tcp消耗资源，成千上万的tcp会非常消耗资源)，而且操作系统每秒处理TCP连接数量也是有限的，必定会造成性能瓶颈
@@ -666,7 +666,7 @@ NIO，也称非阻塞 UO ， 包含三大核心部分 Channel (信道)、 Buffer
 对操作系统来说,建立和销毁TCP会话是非常昂贵的开销.假设每个线程都需要自行连接到RabbitMQ服务器.将会导致高峰期连接数很高.导致连接资源不够用,造成性能问题.
 
 ### 1.3.2. AMQP协议介绍
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 RabbitMQ 就是 AMQP协议的 Erlang 的实现(当然 RabbitMQ 还支持 STOMP2 、 MQTT3 等协议 ) AMQP 的模型架构和 RabbitMQ 的模型架构是一样的，生产者将消息发送给交换器，交换器和队列绑定 。当生产者发送消息时所携带的 RoutingKey 与绑定时 的 BindingKey 相匹配时，消息即被存入相应的队列之中 。 消费者可以订阅相应的队列来获取消息 。
 
@@ -680,13 +680,13 @@ AMQP 协议本身包括三层。
 AMQP 说到底还是一个通信协议，通信协议都会涉及报文交互，从 low-level 举例来说，AMQP 本身是应用层的协议，其填充于 TCP 协议层的数据部分。而从 high-level 来说， AMQP是通过协议命令进行交互的。 AMQP 协议可以看作一系列结构化命令的集合，这里的命令代表一种操作，类似于 HTTP 中的方法 (GET、 POST 、 PUT、 DELETE 等) 。
 
 #### 1.3.2.1. AMQP生产者流转过程
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.2.2. AMQP消费者流转过程
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.3.3. 配置
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 RabbitMQ提供了三种方式来定制化服务:
 (1)环境变量(EnviromentVariables).RabbitMQ服务端参数可以通过环境变量进行配置，例如，节点名称、RabbitMQ配直文件的地址、节点内部通信端口等。
@@ -694,10 +694,10 @@ RabbitMQ提供了三种方式来定制化服务:
 (3)运行时参数和策略(RuntimeParametersandPolicies)。可以在运行时定义集群层面的服务设直.
 
 #### 1.3.3.1. 环境变量
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.3.3.2. 配置文件
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 Ubuntu系统上RabbitMQ的配置文件应该存储在/etc/rabbitmq/rabbitmq.conf
 
@@ -1868,12 +1868,12 @@ CONFIG_FILE=/etc/rabbitmq/rabbitmq
 
 
 #### 1.3.3.3. 参数和策略
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 
 ## 1.4. 客户端开发
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.4.1. 依赖
@@ -1887,7 +1887,7 @@ CONFIG_FILE=/etc/rabbitmq/rabbitmq
 ```
 
 ### 1.4.2. 连接RabbitMQ
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ```java
 //获取工厂类
@@ -1911,7 +1911,7 @@ Connection 可以 用来创建多个 Channel 实例，但是 Channel 实例不�
 
 
 ### 1.4.3. 使用交换器和队列
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **创建交换器**
 ```java
@@ -2011,7 +2011,7 @@ RabbitMQ 的消息存储在队列中，交换器的使用 并不真正耗费服�
 如果集群资源充足，而即将使用的队列所占用的资源又在可控的范围之内，为了增加业务程序的灵活性，也完全可以在业务程序中声明队列。至于是使用预先分配创建资源的静态方式还是动态的创建方式，需要从业务逻辑本身、公司运维体系和公司硬件资源等方面考虑。
 
 ### 1.4.4. 发送消息
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ```java
 
@@ -2054,7 +2054,7 @@ public void basicPublish(String exchange, String routingKey, boolean mandatory, 
 
 
 ### 1.4.5. 消费消息
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 RabbitMQ 的消费模式分两种 : 推 ( Push )模式和拉 ( Pull )模式 。 推模式采用 Basic.Consume进行消费，而拉模式则是调用 Basic.Get 进行消费。
 
@@ -2062,7 +2062,7 @@ RabbitMQ 的消费模式分两种 : 推 ( Push )模式和拉 ( Pull )模式 。 
 而拉模式由消费者主动向RabbitMQ获取数据.
 
 #### 1.4.5.1. 推模式(push)
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ```JAVA
 public void  recdata() throws Exception{
@@ -2106,7 +2106,7 @@ public String basicConsume(String queue, boolean autoAck, String consumerTag, bo
 每个 Channel 都拥有自己独立的线程。最常用的做法是一个 Channel 对应一个消费者，也就是意味着消费者彼此之间没有任何关联。当然也可以在一个 Channel 中维持多个消费者，但是要注意一个问题，如果 Channel 中的一个消费者一直在运行，那么其他消费者的 callback会被"耽搁"。
 
 #### 1.4.5.2. 拉模式(pull)
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ```java
 public void pushMode()throws Exception{
@@ -2126,7 +2126,7 @@ Spring 的amqp包中使用的是推模式(push).
 
 
 ### 1.4.6. 消息端的确认和拒绝
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 为了保证消息从队列可靠地达到消费者， RabbitMQ 提供了消息确认机制( messageacknowledgement) 。 消费者在订阅队列时，可以指定 autoAck 参数，当 autoAck 等于 false时， RabbitMQ 会等待消费者显式地回复确认信号后才从内存(或者磁盘)中移去消息(实质上是先打上删除标记，之后再删除) 。当 autoAck 等于 true 时， RabbitMQ 会自动把发送出去的消息置为确认，然后从内存(或者磁盘)中删除，而不管消费者是否真正地消费到了这些消息 。
 
@@ -2166,7 +2166,7 @@ void basicNack(long deliveryTag, boolean multiple, boolean requeue) throws IOExc
 
 
 ### 1.4.7. 关闭连接
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 在应用程序使用完之后，需要关闭连接，释放资源:
 channel.close();
@@ -2205,10 +2205,10 @@ public class ShutdownSignalException extends RuntimeException implements Sensibl
 
 
 ## 1.5. 进阶
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.5.1. 参数mandatory 和 immediate介绍
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 mandatory 和 immediate 是 channel . basicPublish 方法中的两个参数，它们都有当消息传递过程中不可达目的地时将消息返回给生产者的功能。 RabbitMQ 提供的备份交换器(Altemate Exchange) 可以将未能被交换器路由的消息(没有绑定队列或者没有匹配的绑定〉存储起来，而不用返回给客户端。
 
@@ -2238,7 +2238,7 @@ channel.addReturnListener(new ReturnListener() {
 RabbitMQ 3.0版本开始去掉了对imrnediate参数的支持，对此 RabbitMQ 官方解释是 :imrnediate 参数会影响镜像队列的性能，增加了代码复杂性，建议采用 TTL 和 DLX 的方法替代
 
 ### 1.5.2. 备份交换器
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 备份交换器，英文名称为 Altemate Exchange，简称庙，或者更直白地称之为"备胎交换器"。
 生产者在发送消息的时候如果不设置 mandatory 参数 ， 那么消息在未被路由的情况下将会丢失 :如果设置了 mandatory 参数，那么需要添加 ReturnListener 的编程逻辑，生产者的代码将
@@ -2271,12 +2271,12 @@ channe1 .queueDec1are( "unroutedQueue " , true , fa1se , fa1se , nu11);
 
 
 ### 1.5.3. 过期时间TTL
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 RabbitMQ 可以对消息和队列设置 TTL 。
 
 #### 1.5.3.1. 设置消息的过期时间
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 目前有两种方法可以设置消息的 TTL
     * 第一种方法是通过**队列属性**设置，队列中所有消息都有相同的过期时间。
@@ -2312,7 +2312,7 @@ channel.basicPublish (exchangeName,routingKey,mandatory，properties，"ttlTestM
 因为第一种方法里，队列中己过期的消息肯定在队列头部， RabbitMQ 只要定期从队头开始扫描是否有过期的消息即可。而第二种方法里，每条消息的过期时间不同，如果要删除所有过期消息势必要扫描整个队列，所以不如等到此消息即将被消费时再判定是否过期 ， 如果过期再进行删除即可。
 
 #### 1.5.3.2. 设置队列的过期时间
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 通过 channel.queueDeclare 方法中的 x-expires 参数可以控制队列被自动删除前处于未使用状态的时间。未使用的意思是队列上没有任何的消费者，队列也没有被重新声明，并且在过期时间段内也未调用过 Basic.Get 命令。
 
@@ -2328,7 +2328,7 @@ RabbitMQ 会确保在过期时间到达后将队列删除，但是不保障删�
 
 
 ### 1.5.4. 死信队列
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 DLX ，全称为 Dead-Letter-Exchange ，可以称之为死信交换器，也有人称之为死信邮箱。当消息在一个队列中变成死信 (dead message) 之后，它能被重新被发送到另一个交换器中，这个
@@ -2379,7 +2379,7 @@ channel.basicPublish( "exchange.normal" , "rk" ,MessageProperties.PERSISTENT_TEX
 
 
 ### 1.5.5. 延迟队列
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 延迟队列存储的对象是对应的延迟消息，所谓"延迟消息"是指当消息被发送以后，并不想让消费者立刻拿到消息，而是等待特定时间后，消费者才能拿到这个消息进行消费 
@@ -2395,7 +2395,7 @@ channel.basicPublish( "exchange.normal" , "rk" ,MessageProperties.PERSISTENT_TEX
 
 
 ### 1.5.6. 优先级队列
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 优先级队列，顾名思义，具有高优先级的队列具有高的优先权，优先级高的消息具备优先被消费的特权。
 可以通过设置队列的 x -max -priority 参数来实现
@@ -2420,11 +2420,11 @@ channel.basicPub1ish( "exchange_priority" , " rk_priority " , properties , "mess
 
 
 ### 1.5.7. RPC实现
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.5.8. 持久化
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 交换器持久化
     * 声明队列时将 durable 参数置为 true 
@@ -2452,10 +2452,10 @@ channel.basicPub1ish( "exchange_priority" , " rk_priority " , properties , "mess
 还可以在发送端引入事务机制或者发送方确认机制来保证消息己经正确地发送并存储至RabbitMQ 中，前提还要保证在调用 channel.basicPublish 方法的时候交换器能够将消息正确路由到相应的队列之中。
 
 ### 1.5.9. 生产者确认
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.5.9.1. 事务机制
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 RabbitMQ客户端中与事务机制相关的方法有 三 个: channel.txSelect 、channel.txCommit 和 channel.txRollbacko channel.txSelect 用于将当前的信道设置成事务模式
 * 在通过 channel.txSelect 方法开启事务之后，我们便可以发布消息给 RabbitMQ 了
@@ -2495,7 +2495,7 @@ for (int i=O ; i<LOOP_TIMES;i++) {
 事务确实能够解决消息发送方和 RabbitMQ 之间消息确认的问题，只有消息成功被RabbitMQ 接收，事务才能提交成功，否则便可在捕获异常之后进行事务回滚 ，与此同时可以进行消息重发。但是使用事务机制会"吸干" RabbitMQ 的性能，那么有没有更好的方法既能保证消息发送方确认消息已经正确送达，又能基本上不带来性能上的损失呢?从 AMQP 协议层面来看并没有更好的办法，但是 RabbitMQ 提供了一个改进方案，即发送方确认机制，
 
 #### 1.5.9.2. 发送方确认机制
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 生产者将信道设置成 confirm (确认)模式，一旦信道进入 confirm 模式，所有在该信道上面发布的消息都会被指派一个唯一的 ID(从1开始)，一旦消息被投递到所有匹配的队列之后，RabbitMQ 就会发送一个确认 (Basic.Ack) 给生产者(包含消息的唯一 ID) ，这就使得生产者知晓消息已经正确到达了目的地了。如果消息和队列是可持久化的，那么确认消息会在消息写入磁盘之后发出。 RabbitMQ 回传给生产者的确认消息中的 deliveryTag 包含了确认消息的序号，此外 RabbitMQ 也可以设置 channel.basicAck 方法中的 multiple 参数，表示到这个序号之前的所有消息都己经得到了处理。注意辨别这里的确认和消费时候的确认之间的异同。
 
@@ -2582,10 +2582,10 @@ public interface ConfirmCallback {
 ```
 
 ### 1.5.10. 消费端要点介绍
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.5.10.1. 消息分发
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 当 RabbitMQ 队列拥有多个消费者时 ，队列收到的消息将以轮询 (round-robin )的分发方式发送给消费者。每条消息只会发送给订阅列表里的一个消费者。这种方式非常适合扩展，而且它是专门为并发程序设计的。如果现在负载加重，那么只需要创建更多的消费者来消费处理消息即可。
 
@@ -2663,7 +2663,7 @@ channel.basicConsume("queue2 " , false , consumer2) ;
 
 #### 1.5.10.2. 消息顺序性
 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 消息的顺序性是指消费者消费到的消息和发送者发布的消息的顺序是一致的。举个例子，不考虑消息重复的情况，如果生产者发布的消息分别为msgl、msg2、msg3，那么消费者必然也是按照msgl、msg2、msg3的顺序进行消费的。
 
@@ -2676,7 +2676,7 @@ channel.basicConsume("queue2 " , false , consumer2) ;
 ID)来实现
 
 ### 1.5.11. 消息传输保障
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 消息可靠传输一般是业务系统接入消息中间件时首要考虑的问题，一般消息中间件的消息传输保障分为三个层级。
 * At most once: 最多一次。消息可能会丢失 ，但绝不会重复传输 。
@@ -2699,7 +2699,7 @@ publisherconfirm机制的时候，发送完一条消息等待RabbitMQ返回确�
 ## 1.6. Spring集成RabbitMQ
 
 ### 1.6.1. 依赖
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ```xml
 <dependency>
@@ -2709,7 +2709,7 @@ publisherconfirm机制的时候，发送完一条消息等待RabbitMQ返回确�
 ```
 
 ### 1.6.2. 配置
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ```java
 @ConfigurationProperties(
@@ -2892,7 +2892,7 @@ public Exchange(String name, boolean durable, boolean autoDelete, Map<String, Ob
 
 
 ### 1.6.4. 生产者
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ```java
 @Slf4j
@@ -2932,7 +2932,7 @@ public class MsgProducer implements RabbitTemplate.ConfirmCallback {
 ```
 
 ### 1.6.5. 消费者
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ```java
@@ -2950,7 +2950,7 @@ public class MsgReceiver {
 ```
 
 ### 1.6.6. 为Rabbitmq中的Jackson2JsonMessageConverter自定义ClassMapper
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 每次发消息都要自己构造 Message 对象比较麻烦。Spring-AMQP 允许我们直接使用自定义的类，然后会利用指定好的 MessageConverter 将自定义的类转换为 Message 进行发送，在接收时也会利用 MessageConverter 将接收到的 Message 对象转成需要的对象。Spring-AMQP 提供了多种 MessageConverter，比如 SimpleMessageConverter，SerializerMessageConverter，Jackson2JsonMessageConverter，MarshallingMessageConverter等等，如果发送的消息对象不是 Message 实例，并且没有指定 MessageConverter 的话，默认用 SimpleMessageConverter。以上各种 MessageConverter 归根结底都是实现了 MessageConverter 接口，该接口只有两个方法：
 
@@ -3016,7 +3016,7 @@ converter.setClassMapper(new ClassMapper() {
 ```
 
 ### 1.6.7. SimpleMessageListenerContainer
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 SimpleMessageListenerContainer 即简单消息监听容器。
 
@@ -3121,17 +3121,17 @@ public void sendMsgObject(Object content) {
 
 
 ## 1.7. RabbitMQ管理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ## 1.8. 数据存储
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ## 1.9. 集群
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.9.1. 集群架构
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 
@@ -3161,12 +3161,12 @@ RabbitMQ会记录以下四种类型的内部元数据
 不同于队列那样拥有自己的进程，交换器其实只是一个名称和绑定列表。当消息发布到交换器时，实际上是由所连接的信道将消息上的路由键同交换器的绑定列表进行比较，然后再路由消息。当创建一个新的交换器时，RabbitMQ所要做的就是将绑定列表添加到集群中的所有节点上。这样，每个节点上的每条信道都可以访问到新的交换器了
 
 ### 1.9.2. 集群搭建
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 RabbitMQ 集群对延迟非常敏感，应当只在本地局域网内使用。在广域网中不应该使用集群，而应该使用 Federation 或者 Shove1 来代替。
 
 #### 1.9.2.1. 多机多节点配置
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 第一步，配置各个节点的hosts文件，让各个节点都能互相识别对方的存在。比如在Linux系统中可以编辑/etc/hosts文件，在其上添加IP地址与节点名称的映射信息:
 192.168.0.2 node1
@@ -3200,24 +3200,24 @@ Cluster status of node rabbit@nodel
 
 
 #### 1.9.2.2. 集群节点类型
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 #### 1.9.2.3. 删除单个节点
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 #### 1.9.2.4. 集群节点的升级
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 #### 1.9.2.5. 单机多节点配置
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 
 ### 1.9.3. 镜像队列
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 如果RabbitMQ集群中只有一个Broker节点，那么该节点的失效将导致整体服务的临时'性不可用，并且也可能会导致消息的丢失。可以将所有消息都设置为持久化，并且对应队列的durable属性也设置为true，但是这样仍然无法避免由于缓存导致的问题:因为消息在发送之后和被写入磁盘井执行刷盘动作之间存在一个短暂却会产生问题的时间窗。通过publisherconfmn机制能够确保客户端知道哪些消息己经存入磁盘，尽管如此，一般不希望遇到因单点故障导致的服务不可用。
 
@@ -3237,10 +3237,10 @@ Cluster status of node rabbit@nodel
 
 
 ## 1.10. 网络分区
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.10.1. 网络分区的意义
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 当出现网络分区时，不同分区里的节点会认为不属于自身所在分区的节点都已经挂(down)了，对于队列、交换器、绑定的操作仅对当前分区有效。在RabbitMQ的默认配置下，即使网络恢复了也不会自动处理网络分区带来的问题。RabbitMQ从3.1版本开始会自动探测网络分区，并且提供了相应的配置来解决这个问题。
 
@@ -3251,51 +3251,51 @@ RabbitMQ采用的镜像队列是一种环形的逻辑结构,某队列配置了4�
 许多情况下，网络分区都是由单个节点的网络故障引起的，且通常会形成一个大分区和一个单节点的分区，如果之前又配置了镜像，那么可以在不影响服务可用性，不丢失消息的情况下从网络分区的情形下得以恢复 。
 
 ### 1.10.2. 网络分区的判定
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.10.3. 网络分区的模拟
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.10.4. 网络分区的影响
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.10.4.1. 未配置的镜像
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.10.4.2. 已配置的镜像
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.10.5. 手动处理网络分区
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.10.6. 自动处理网络分区
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.10.6.1. pause-minority模式
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.10.6.2. pause-if-all-down模式
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.10.6.3. autoheal模式
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.10.6.4. 模式选择
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 
 ## 1.11. RabbitMQ扩展
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.11.1. 消息追踪
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 在使用任何消息中间件的过程中，难免会出现消息异常丢失的情况。对于RabbitMQ而言，可能是生产者与Broker断开了连接并且也没有任何重试机制;也可能是消费者在处理消息时发生了异常，不过却提前进行了ack;甚至是交换器并没有与任何队列进行绑定，生产者感知不到或者没有采取相应的措施;另外RabbitMQ本身的集群策略也可能导致消息的丢失。这个时候就需要有一个良好的机制来跟踪记录消息的投递过程，以此协助开发或者运维人员快速地定位问题。
 
 #### 1.11.1.1. Firehose
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 在RabbitMQ中可以使用Firehose功能来实现消息追踪，Firehose可以记录每一次发送或者消费消息的记录，方便RabbitMQ的使用者进行调试、排错等。
 
@@ -3315,7 +3315,7 @@ Firehose默认情况下处于关闭状态，并且Firehose的状态也是非持�
 在Firehose开启状态下，当有客户端发送或者消费消息时，Firehose会自动封装相应的消息体，并添加详细的headers属性。
 
 #### 1.11.1.2. rabbitmq_tracing 插件
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 rabbitrnq_tracing插件相当于Firehose的GUI版本，它同样能跟踪RabbitMQ中消息的流入流出情况。rabbitrnqtracing插件同样会对流入流出的消息进行封装，然后将封装后的消息日志存入相应的trace文件之中。
 * 打开:rabbitmq-plugins enable rabbitmq_tracing
@@ -3340,7 +3340,7 @@ started 1 plugins.
 
 
 ### 1.11.2. 负载均衡
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 面对大量业务访问、高并发请求，可以使用高性能的服务器来提升RabbitMQ服务的负载能力。当单机容量达到极限时，可以采取集群的策略来对负载能力做进一步的提升，但这里还存在一个负载不均衡的问题。试想如果一个集群中有3个节点，那么所有的客户端都与其中的单个节点nodel建立TCP连接，那么nodel的网络负载必然会大大增加而显得难以承受，其他节点又由于没有那么多的负载而造成硬件资源的浪费，所以负载均衡显得尤为重要。
 
@@ -3358,13 +3358,13 @@ started 1 plugins.
 
 
 #### 1.11.2.1. 客户端内部实现负载均衡
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.11.2.2. 使用HAProxy实现负载均衡
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ##### 1.11.2.2.1. HaProxy基本介绍
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 （1）HAProxy 是一款提供高可用性、负载均衡以及基于TCP（第四层）和HTTP（第七层）应用的代理软件，支持虚拟主机，它是免费、快速并且可靠的一种解决方案。 HAProxy特别适用于那些负载特大的web站点，这些站点通常又需要会话保持或七层处理。HAProxy运行在时下的硬件上，完全可以支持数以万计的 并发连接。并且它的运行模式使得它可以很简单安全的整合进您当前的架构中， 同时可以保护你的web服务器不被暴露到网络上。
 
@@ -3393,7 +3393,7 @@ HAProxy借助于OS上几种常见的技术来实现性能的最大化。
 在生产环境中，在7层处理上使用HAProxy作为昂贵的高端硬件负载均衡设备故障故障时的紧急解决方案也时长可见。硬件负载均衡设备在“报文”级别处理请求，这在支持跨报文请求(request across multiple packets)有着较高的难度，并且它们不缓冲任何数据，因此有着较长的响应时间。对应地，软件负载均衡设备使用TCP缓冲，可建立极长的请求，且有着较大的响应时间。
 
 ##### 1.11.2.2.2. 安装
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 下载解压,进入解压后的目录
 安装 
@@ -3416,7 +3416,7 @@ lgj@lgj-Lenovo-G470:~/java/haproxy-2.0.0$ sudo make install PREFIX=/usr/local/ha
 
 
 ##### 1.11.2.2.3. 配置文件
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 haproxy 的配置文件由两部分组成：全局设定和对代理的设定，共分为五段：global，defaults，frontend，backend，listen。
 
 HAProxy的配置处理3类来主要参数来源：
@@ -3512,7 +3512,7 @@ defaults
 
 
 #### 1.11.2.3. 使用Keepalived实现高可靠负载均衡
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 试想如果前面配置的HAProxy主机192.168.0.9突然岩机或者网卡失效，那么虽然RabbitMQ集群没有任何故障，但是对于外界的客户端来说所有的连接都会被断开，结果将是灾难性的。
 确保负载均衡服务的可靠性同样显得十分重要。这里就需要引入Keepalived工具，它能够通过自身健康检查、资源接管功能做高可用(双机热备)，实现故障转移
@@ -3526,7 +3526,7 @@ Keepalived工作在OSI模型中的第3层、第4层和第7层。
 
 
 #### 1.11.2.4. 使用Keepalived+LVS实现负载均衡
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 

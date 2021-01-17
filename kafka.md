@@ -91,17 +91,17 @@ puppeteer:
 # 1. Kafka
 
 ## 1.1. 概述
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.1.1. 架构
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 ![](https://images2018.cnblogs.com/blog/1385722/201808/1385722-20180804221732434-2116774825.png)
 
 
 
 
 ### 1.1.2. 基本概念
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 主题(topic)
     * Kafka消息通过主题进行分类
@@ -219,11 +219,11 @@ puppeteer:
 
     
 ### 1.1.3. 快速理解
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ## 1.2. 安装配置
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.2.1. 安装&&启动
 
@@ -309,7 +309,7 @@ puppeteer:
             
 
 ## 1.3. Kafka生产者
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 生产者发送流程
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/kafka/kafka-producer.png?raw=true)
@@ -324,7 +324,7 @@ puppeteer:
     * 一般用于日志等数据丢失问题不大的场景
 
 ### 1.3.1. 生产者例子
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 生产者
 ```java
@@ -375,7 +375,7 @@ public class ProducerClientUtil {
 
 
 ### 1.3.2. 生产者配置
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * acks
     * 指定必须有多少个分区副本收到消息，生产者才会认为消息写入是成功的。
@@ -436,7 +436,7 @@ public class ProducerClientUtil {
     * 如果为-1，就使用操作系统的默认值
     
 ### 1.3.3. 序列化器
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 kafka客户端提供了String的序列化方式，用户也可以自行定义
 ```java
@@ -482,7 +482,7 @@ public interface Deserializer<T> extends Closeable {
 ```
 
 ### 1.3.4. 分区
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 一条完整的消息对象ProducerRecord类型对象,包含topic,key,具体的消息value
 ```java
@@ -546,10 +546,10 @@ public class DefaultPartitioner implements Partitioner {
 
 
 ## 1.4. Kafka消费者
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.4.1. 消费者和消费者群组
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 * 消费者从属于消费者群组，一个群组里的消费者订阅的是同一个主题，每个消费者接收主题的一部分分区的消息
@@ -570,7 +570,7 @@ public class DefaultPartitioner implements Partitioner {
 * 第一个假如群组的将称为群主，群主从协调器那里获得群组的成员列表，并负责给每一个成员分配分区。
 
 ### 1.4.2. 消费者实例
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ```java
@@ -686,7 +686,7 @@ public class ConsumerClientUtil {
 
 ```
 ### 1.4.3. 消费者配置
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * fetch.min.bytes
     * 消费者从服务器获取记录的最小字节数
@@ -741,7 +741,7 @@ public class ConsumerClientUtil {
     * 如果为-1，就使用操作系统的默认值
     
 ### 1.4.4. 提交和偏移量
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * Kafka不会像其他JMS队列那样需要得到消费者的确认，消费者可以使用Kafka来追踪消息在分区里的位置(偏移量)
 
@@ -754,7 +754,7 @@ public class ConsumerClientUtil {
 
 
 #### 1.4.4.1. 自动提交 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * enable.auto.commit为true时
     * 消费者会自动把从poll方法接收到的最大偏移量提交上去，提交时间间隔由auto.commit.interval.ms控制默认值是5s
@@ -764,7 +764,7 @@ public class ConsumerClientUtil {
 
 
 #### 1.4.4.2. 提交当前偏移量
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 Consumer类
 ```java
@@ -776,7 +776,7 @@ void commitSync(Map<TopicPartition, OffsetAndMetadata> var1, Duration var2);
 以上便是消费者同步提交的API，在broker返回响应之前将阻塞
 
 #### 1.4.4.3. 异步提交
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ```java
 void commitAsync();
@@ -788,20 +788,20 @@ void commitAsync(Map<TopicPartition, OffsetAndMetadata> var1, OffsetCommitCallba
 * 可以使用序号记录每次提交，在回调函数里面检查序号大小，如果没有更新的提交，则可以进行重试。
 
 #### 1.4.4.4. 同步和异步组合提交
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 try 里面执行异步提交
 finnally 里面执行同步提交
 
 
 #### 1.4.4.5. 提交特定的偏移量
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 以上的无参方法提交的都是最后一次的偏移量
 * 可以使用参数Map<TopicPartition, OffsetAndMetadata> var1 来自定义提交的偏移量。
 * 使用场景是消费者收到很多消息，需要在很多时间处理，需要在处理的中间进行提交，防止再均衡导致的重消费问题。
 
 ### 1.4.5. 再均衡监听器
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 在subscribe时可以注册一个再均衡监听器，
 ```java
@@ -823,7 +823,7 @@ public interface ConsumerRebalanceListener {
 
 
 ### 1.4.6. 从特定偏移量处开始处理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ```java
 //指定位置
@@ -836,12 +836,12 @@ void seekToEnd(Collection<TopicPartition> var1);
 ```
 
 ### 1.4.7. 如何退出
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 consumer.wakeup()调用时，可以退出poll循环，并抛出WakeupException异常，不需要处理，因为这个异常只是为了退出poll循环
 
 ### 1.4.8. 独立消费者
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 场景
     * 一个消费者从一个主题的所有分区读取数据
@@ -861,11 +861,11 @@ void assign(Collection<TopicPartition> var1);
 
 
 ## 1.5. 深入Kafka
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.5.1. 集群成员关系
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * kafka使用zookeeper来维护集群成员的信息
 * 每个broker都有一个唯一的标识符broker ID，这个标识符可以配置文件指定，也可以自动生成，在启动时，通过创建临时节点把自己的ID注册到Zookeeper（/brokers/ids）
@@ -874,7 +874,7 @@ void assign(Collection<TopicPartition> var1);
 
 
 ### 1.5.2. 控制器
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 控制器
     * 就是一个broker,除了具有一般broker的功能之外。还负责分区首领的选举。
@@ -950,12 +950,12 @@ Kafka 的高级消费者即通过 ZooKeeperConsumerConnector 实现的消费者�
 * RequestChannel 是为了给 Processor 线程与 Handler线程之间通信提供数据缓冲，是通信过程中 Request 与 Response 缓存的通道，是 Processor 线程与 Handler 线程交换数据的地方 。
 
 ### 1.5.5. 日志管理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 日志管理器 （ LogManager）是 Kafka 用来管理所有日志的 ， 也称为日志管理子系统（ LogManagement Subsystem ）。 它负责管理 日 志的创建与删除 、 日志检索 、 日志加载和恢复、检查点及日志文件刷写磁盘 以及日志清理等
 
 #### 1.5.5.1. 日志结构
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 * Kafka 消息是以主题为基本单位进行组织的， 各个主题之间相互独立 。 
@@ -999,21 +999,21 @@ Kafka 的高级消费者即通过 ZooKeeperConsumerConnector 实现的消费者�
 
 
 #### 1.5.5.2. 日志管理器启动过程
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 #### 1.5.5.3. 日志加载及恢复
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 #### 1.5.5.4. 日志清理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 
 
 ### 1.5.6. 复制
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 副本类型
     * 首领副本
@@ -1026,7 +1026,7 @@ Kafka 的高级消费者即通过 ZooKeeperConsumerConnector 实现的消费者�
         * 如果首领节点失败，其中一个跟随者将成为首领副本
 
 ### 1.5.7. 处理请求
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 消息标准头
     * Request Type 
@@ -1039,105 +1039,105 @@ Kafka 的高级消费者即通过 ZooKeeperConsumerConnector 实现的消费者�
     * IO线程从**请求队列**里获取请求并处理，处理结果放入**响应队列**
 
 ### 1.5.8. 生产请求
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 生产者发送的请求，它包含客户端要写入broker的消息
 
 
 
 ### 1.5.9. 获取请求
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 在消费者和跟随者副本需要从broker读取消息时发送的请求
 
 ### 1.5.10. 其他请求
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 
 ### 1.5.11. 物理存储
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 
 
 ## 1.6. 可靠的数据传递
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.6.1. 可靠性保证
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.6.2. 复制
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.6.3. broker配置
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.6.4. 在可靠的系统里使用生产者
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.6.5. 在可靠的系统里使用消费者
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.6.6. 验证系统可靠性
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 
 
 ## 1.7. 构建数据管道
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ## 1.8. 跨越集群数据镜像
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.8.1. 跨集群镜像的使用场景
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.8.2. 多集群架构
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 
 
 ## 1.9. 管理Kafaka
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ## 1.10. 监控Kafka
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.10.1. broker的度量指标
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.10.2. 非同步分区
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.10.3. broker度量指标
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.10.4. 主题和分区的度量指标
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.10.5. Java虚拟机监控
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.10.6. 操作系统监控
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.10.7. 日志
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.10.8. 客户端监控
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.10.9. 生产者度量指标
 
@@ -1149,20 +1149,20 @@ Kafka 的高级消费者即通过 ZooKeeperConsumerConnector 实现的消费者�
 
 
 ### 1.10.12. 延迟监控
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.10.13. 端到端监控
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 
 
 ## 1.11. 流式处理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.11.1. 什么是流式处理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 数据流
     * 无边界数据集的抽象表示，无边界意味着无限和持续增长。无限是因为随着时间的推移，新的记录会不断加入进来。
@@ -1179,7 +1179,7 @@ Kafka 的高级消费者即通过 ZooKeeperConsumerConnector 实现的消费者�
     * 流式处理
 
 ### 1.11.2. 流式处理的概念
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **时间**
 
@@ -1215,21 +1215,21 @@ Kafka 的高级消费者即通过 ZooKeeperConsumerConnector 实现的消费者�
 
 
 ### 1.11.3. 使用场景
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.11.4. 流式处理的设计模式
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.11.5. 实例
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.11.6. 架构概览
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.11.7. 如何选择流式处理框架
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 

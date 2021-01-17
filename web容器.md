@@ -48,7 +48,7 @@
 # 1. WEB相关
 
 ## 1.1. Servlet规范
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **Servlet 是什么？**
 * Java Servlet 是运行在 Web 服务器或应用服务器上的程序，它是作为来自 Web 浏览器或其他 HTTP 客户端的请求和 HTTP 服务器上的数据库或应用程序之间的中间层。
@@ -397,11 +397,11 @@ public class MyEmbeddedServletContainerFactory  {
 ```
 
 ## 1.4. 短网址生成方案
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.4.1. 实现思路
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 网页短链接是指将原本较长的网址转化成较短的网址，从而便于用户的记忆与社交软件上的传播。很多互联网公司都提供了生成短链接的服务，比如新浪微博短网址服务等
 
@@ -426,7 +426,7 @@ public class MyEmbeddedServletContainerFactory  {
     * 而当用户点击了我们生成的短网址后，只需要将代表多进制的这部分提取出来，还原成十进制的数字ID后查表即可得到原始的长网址，再根据网址做一个重定向即可让用户访问到原始的网页
 
 ### 1.4.2. 进制转换
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **把10进制转成N进制：除N取余，逆序排列**
 
@@ -708,7 +708,7 @@ public class TheMoronicCowmpouter
 
 
 ## 1.5. WEB容器
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 **Jetty和tomcat的比较**
@@ -734,20 +734,20 @@ public class TheMoronicCowmpouter
 
 
 ## 1.6. Tomcat
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.6.1. 概述
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 #### 1.6.1.1. Tomcat快速理解
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.6.2. Web服务机制
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.6.2.1. 通信协议
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * HTTP协议
     * Hyper Text Transfer Protocol 超文本传输协议
@@ -780,7 +780,7 @@ public class TheMoronicCowmpouter
     
 
 ### 1.6.3. Tomcat 总体架构
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 Tomcat总计架构
 ![](https://github.com/lgjlife/Java-Study/blob/master/pic/tomcat/tomcat.png?raw=true)
@@ -1033,11 +1033,11 @@ Tomcat总计架构
 
 
 ### 1.6.4. Server和Service组件
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.6.5. Connect组件
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * http11Protocol
     * HTTP阻塞模式协议
@@ -1049,67 +1049,67 @@ Tomcat总计架构
     * HTTP阻塞模式协议
 
 ### 1.6.6. Engine组件
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.6.7. Host容器
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.6.8. Context容器
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.6.9. Wrapper容器
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.6.10. 生命周期管理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.6.11. 日志框架和国家化
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.6.12. 公共与隔离类加载器
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.6.13. 请求URI映射器Mapper
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ### 1.6.14. Tomcat的JNDI
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.6.15. 运行、通信、及访问安全管理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.6.16. 处理请求和响应的管道
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.6.17. 多样化的会话管理器
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.6.18. 高可用集群实现
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.6.19. 集群通信框架
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 ### 1.6.20. 监控和管理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 
 ## 1.7. Jetty
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ## 1.8. 编码问题
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 需要编码的原因
     * 计算机中存储信息的最小单位是一个字节，所能表示的字符范围是0～255
@@ -1118,7 +1118,7 @@ Tomcat总计架构
 * 当将一种编码格式的数据转化成另一种编码格式的数据就要进行翻译
 
 ### 1.8.1. 常见的编码格式
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **ASCII码**
 * 总共128个，用一个字节的低7位表示。

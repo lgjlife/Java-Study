@@ -6,8 +6,8 @@ import java.util.List;
 public class Code784LetterCasePermutation {
     public static void main(String[] args) {
         LetterCasePermutationSolution solution = new LetterCasePermutationSolution();
-        // String data =  "a1b2";
-        // List<String> result = solution.letterCasePermutation(N,M,i,j);
+        // string data =  "a1b2";
+        // List<string> result = solution.letterCasePermutation(N,M,i,j);
        // System.out.println("result = " + result);
     }
 }

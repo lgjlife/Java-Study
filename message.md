@@ -8,7 +8,7 @@
 
 
 ## 1.1. 什么是消息中间件
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 消息是应用间传送的数据.消息队列中间件(Message Queue Middleware;MQ)是指利用高效可靠的消息机制进行与平台无关的数据交流,并基于数据通信来进行分布式系统的集成.通过提供消息传递和消息排队模型.它可以在分布式环境下扩展进程间的通信.
 
@@ -24,7 +24,7 @@
 
 ## 1.2. 消息中间件对比
 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 |功能|RocketMA|Kafka|RabbitMQ|
 |---|---|---|---|
@@ -40,7 +40,7 @@
 |事务消息|支持|不支持|不支持|
 
 ## 1.3. 消息队列的作用
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 应用解耦：在项目启动之初是很难预测未来会遇到什么困难的，消息中间件在处理过程中插入了一个隐含的，基于数据的接口层，两边都实现这个接口，这样就允许独立的修改或者扩展两边的处理过程，只要两边遵守相同的接口约束即可。
 * 冗余（存储）：在某些情况下处理数据的过程中会失败，消息中间件允许把数据持久化知道他们完全被处理
@@ -60,7 +60,7 @@
     * 要多考虑很多方面的问题，比如一致性问题、如何保证消息不被重复消费，如何保证保证消息可靠传输。因此，需要考虑的东西更多，系统复杂性增大。
 
 ## 1.4. 消息中间件需要解决的问题
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **架构模式**
 
@@ -120,7 +120,7 @@ RocketMQ 通过消息消费确认机制（ACK）来确保消息至少被消费�
 
 
 ## 1.5. 消息堆积处理
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 **如何解决消息队列的延时以及过期失效问题？消息队列满了以后该怎么处理？有几百万消息持续积压几小时，说说怎么解决？**
 
@@ -136,7 +136,7 @@ RocketMQ 通过消息消费确认机制（ACK）来确保消息至少被消费�
 * 如果消息数量恢复到正常水平，恢复原来的架构部署。
 
 ## 1.6. 消息幂等性
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 * 幂等性
     * 一般指消息执行一次或者执行多次的效果是一样
@@ -154,14 +154,14 @@ RocketMQ 通过消息消费确认机制（ACK）来确保消息至少被消费�
     * 使用业务ID，比如订单号(订单号一般都是全局唯一的)，如果订单执行成功，那么数据库中就存在记录，在执行之前查询先数据库中是否存在记录。
 
 ## 1.7. 消息顺序性
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
  顺序性指的是在一些具体的业务中，前后的业务操作必须有顺序，否则会导致业务处理错误。例如在电商系统中，订单和支付通常是两个不同的业务逻辑，我们通常会将其分拆开来处理。这两个业务逻辑之间存在非常清晰的依赖关系：需要先生成订单，然后才能支付订单。对于这种情况，我们就说订单消息和支付消息是有顺序性的。
 
 对于消息中间件的消息顺序性问题，一般通用的处理方案是保证局部的消息有序。例如对于 Kafka 来说，我们会保证 Partition 区域的消息有序性。对于上面所说的订单消息、支付消息的例子，我们一般会将订单消息和支付消息里的用户ID作为key，将其分配到同一个 partition 中，这样它们就是有序的。
 
 ## 1.8. JMS,AMQP,MQTT区别与联系
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 消息传递作为基本通信机制已经在全世界成功运用。无论是人与人、机器与人还是机器与机器之间，消息传递一直都是唯一常用的通信方式。在双方（或更多）之间交换消息有两种基本机制。
@@ -179,17 +179,17 @@ RocketMQ 通过消息消费确认机制（ACK）来确保消息至少被消费�
 
 ### 1.8.1. Java消息传递服务（Java Messaging Service (JMS)）
 
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.8.1.1. 简介
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 JMS即Java消息服务（Java Message Service）应用程序接口，是一个Java平台中关于面向消息中间件（MOM-分布式系统的集成）的API，用于在两个应用程序之间，或分布式系统中发送消息，进行异步通信。
 
 JMS是一种与厂商无关的 API，用来访问消息收发系统消息，它类似于JDBC(Java Database Connectivity)。
 
 #### 1.8.1.2. 体系架构
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 JMS由以下元素组成：
 
@@ -204,7 +204,7 @@ JMS由以下元素组成：
 |JMS主题|一种支持发送消息给多个订阅者的机制。
 
 #### 1.8.1.3. JMS对象模型
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ![](https://images2018.cnblogs.com/blog/1182616/201805/1182616-20180528082100248-989741849.png)
 
@@ -218,7 +218,7 @@ JMS由以下元素组成：
 |Destination|Destination的意思是消息生产者的消息发送目标或者说消息消费者的消息来源。对于消息生产者来说，它的Destination是某个队列（Queue）或某个主题（Topic）;对于消息消费者来说，它的Destination也是某个队列或主题（即消息来源）。
 
 #### 1.8.1.4. JMS消息模型
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 在JMS标准中，有两种消息模型PTP（Point to Point）,Publish/Subscribe(Pub/Sub)。
 
@@ -245,7 +245,7 @@ JMS由以下元素组成：
     * 为了缓和这样严格的时间相关性，JMS允许订阅者创建一个可持久化的订阅。这样，即使订阅者没有被激活（运行），它也能接收到发布者的消息。
 
 #### 1.8.1.5. 接收消息
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 在JMS中，消息的接收可以使用以下两种方式：
 |||
@@ -254,7 +254,7 @@ JMS由以下元素组成：
 |异步|使用异步方式接收消息的话，消息订阅者需注册一个消息监听者，类似于事件监听器，只要消息到达，JMS服务提供者会通过调用监听器的onMessage()递送消息。
 
 #### 1.8.1.6. JMS消息结构（Message）
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 Message主要由三部分组成，分别是Header，Properties，Body， 详细如下：
 |||
@@ -502,16 +502,16 @@ message.setIntProperty("JMSXGroupSeq",5);
 
 
 ### 1.8.2. 高级消息队列协议（Advanced Message Queueing Protocol (AMQP)）
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.8.2.1. AMQP 是什么
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 AMQP（Advanced Message Queuing Protocol，高级消息队列协议）是一个进程间传递异步消息的网络协议。
 
 #### 1.8.2.2. AMQP模型
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 ![](https://img-blog.csdn.net/20181022113306601?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zNzY0MTgzMg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
@@ -527,7 +527,7 @@ AMQP（Advanced Message Queuing Protocol，高级消息队列协议）是一个�
 * 在某些情况下，例如当一个消息无法被成功路由时（无法从交换机分发到队列），消息或许会被返回给发布者并被丢弃。或者，如果消息代理执行了延期操作，消息会被放入一个所谓的死信队列中。此时，消息发布者可以选择某些参数来处理这些特殊情况。
 
 #### 1.8.2.3. Exchange交换机
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 交换机是用来发送消息的 AMQP 实体。
 交换机拿到一个消息之后将它路由给一个或零个队列。
 它使用哪种路由算法是由交换机类型和绑定（Bindings）规则所决定的。
@@ -624,7 +624,7 @@ headers 类型的 Exchange 不依赖于 routing key 与 binding key 的匹配规
 |Headers|	根据发送的消息内容中的 headers 属性进行匹配
 
 #### 1.8.2.4. Queue队列
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 AMQP 中的队列（queue）跟其他消息队列或任务队列中的队列是很相似的：它们存储着即将被应用消费掉的消息。
 
@@ -645,7 +645,7 @@ AMQP 中的队列（queue）跟其他消息队列或任务队列中的队列是�
 持久化的队列并不会使得路由到它的消息也具有持久性。倘若消息代理挂掉了，重新启动，那么在重启的过程中持久化队列会被重新声明，无论怎样，只有经过持久化的消息才能被重新恢复。
 
 #### 1.8.2.5. Consumer消费者
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 消息如果只是存储在队列里是没有任何用处的。被应用消费掉，消息的价值才能够体现。在 AMQP 0-9-1 模型中，有两种途径可以达到此目的：
 
@@ -657,7 +657,7 @@ AMQP 中的队列（queue）跟其他消息队列或任务队列中的队列是�
 每个消费者（订阅者）都有一个叫做消费者标签的标识符。它可以被用来退订消息。消费者标签实际上是一个字符串。
 
 #### 1.8.2.6. 消息机制
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 **消息确认**
@@ -708,7 +708,7 @@ AMQP 的消息除属性外，也含有一个有效载荷 - Payload（消息实�
 简单地将消息发送给一个持久化的交换机或者路由给一个持久化的队列，并不会使得此消息具有持久化性质：它完全取决与消息本身的持久模式（persistence mode）。将消息以持久化方式发布时，会对性能造成一定的影响（就像数据库操作一样，健壮性的存在必定造成一些性能牺牲）。
 
 #### 1.8.2.7. 其他
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 
 * 连接
@@ -736,7 +736,7 @@ AMQP 0-9-1 拥有众多的适用于各种流行语言和框架的客户端。其
 因为 AMQP 的主要目标之一就是实现交互性，所以对于开发者来讲，了解协议的操作方法而不是只停留在弄懂特定客户端的库就显得十分重要。这样一来，开发者使用不同类型的库与协议进行沟通时就会容易的多。
 
 ### 1.8.3. 消息队列遥测传输（Message Queueing Telemetry Transport (MQTT)）
-<a href="#menu" style="float:right">目录</a>
+<a href="#menu" >目录</a>
 
 #### 1.8.3.1. 简述
 MQTT（Message Queuing Telemetry Transport，消息队列遥测传输协议），是一种基于发布/订阅（publish/subscribe）模式的"轻量级"通讯协议，该协议构建于TCP/IP协议上，由IBM在1999年发布。MQTT最大优点在于，可以以极少的代码和有限的带宽，为连接远程设备提供实时可靠的消息服务。作为一种低开销、低带宽占用的即时通讯协议，使其在物联网、小型设备、移动应用等方面有较广泛的应用。
