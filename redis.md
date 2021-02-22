@@ -15,49 +15,50 @@
     - [1.1.8. 常⻅⾯试题](#118-常试题)
   - [1.2. 常⽤数据结构](#12-常数据结构)
     - [1.2.1. redis-cli和redis-server](#121-redis-cli和redis-server)
-    - [1.2.2. 多数据库](#122-多数据库)
-    - [1.2.3. 基本数据类型](#123-基本数据类型)
-    - [1.2.4. 字符串](#124-字符串)
-    - [1.2.5. 列表](#125-列表)
-    - [1.2.6. 散列](#126-散列)
-    - [1.2.7. 集合](#127-集合)
-    - [1.2.8. 有序集合](#128-有序集合)
-    - [1.2.9. HyperLogLog去重计数⽅案](#129-hyperloglog去重计数案)
-        - [1.2.9.0.1. 基本使⽤](#12901-基本使)
-      - [1.2.9.1. 实现原理](#1291-实现原理)
-    - [1.2.10. BITMAP](#1210-bitmap)
-      - [1.2.10.1. 基本操作](#12101-基本操作)
-      - [1.2.10.2. 使⽤场景](#12102-使场景)
-      - [1.2.10.3. BITCOUNT实现原理](#12103-bitcount实现原理)
-    - [1.2.11. 布隆过滤器](#1211-布隆过滤器)
-      - [1.2.11.1. 基本原理](#12111-基本原理)
-      - [1.2.11.2. 使⽤](#12112-使)
-    - [1.2.12. 限流](#1212-限流)
-    - [1.2.13. 事务](#1213-事务)
-      - [1.2.13.1. 错误处理](#12131-错误处理)
-      - [1.2.13.2. WATCH命令介绍](#12132-watch命令介绍)
-      - [1.2.13.3. 优化](#12133-优化)
-    - [1.2.14. 键](#1214-键)
-      - [1.2.14.1. SCAN](#12141-scan)
-        - [1.2.14.1.1. 基本⽤法](#121411-基本法)
-        - [1.2.14.1.2. SCAN命令的保证](#121412-scan命令的保证)
-        - [1.2.14.1.3. 每次执⾏返回的元素](#121413-每次执返回的元素)
-        - [1.2.14.1.4. COUNT选项](#121414-count选项)
-        - [1.2.14.1.5. MATCH选项](#121415-match选项)
-        - [1.2.14.1.6. 并发执⾏多个迭代](#121416-并发执多个迭代)
-        - [1.2.14.1.7. 中途停⽌迭代](#121417-中途停迭代)
-        - [1.2.14.1.8. 使⽤错误的游标进⾏增量式迭代](#121418-使错误的游标进增量式迭代)
-        - [1.2.14.1.9. 迭代终结的保证](#121419-迭代终结的保证)
-      - [1.2.14.2. SORT](#12142-sort)
-        - [1.2.14.2.1. ⼀般SORT的⽤法](#121421-般sort的法)
-        - [1.2.14.2.2. 使⽤ALPHA](#121422-使alpha)
-        - [1.2.14.2.3. 使⽤LIMIT](#121423-使limit)
-        - [1.2.14.2.4. 使⽤外部KEY](#121424-使外部key)
-        - [1.2.14.2.5. 保存排序结果](#121425-保存排序结果)
-        - [1.2.14.2.6. sort命令问题](#121426-sort命令问题)
-    - [1.2.15. 管道](#1215-管道)
-    - [1.2.16. 连接](#1216-连接)
-    - [1.2.17. Server（服务器）](#1217-server服务器)
+    - [1.2.2. Redis 性能测试](#122-redis-性能测试)
+    - [1.2.3. 多数据库](#123-多数据库)
+    - [1.2.4. 基本数据类型](#124-基本数据类型)
+    - [1.2.5. 字符串](#125-字符串)
+    - [1.2.6. 列表](#126-列表)
+    - [1.2.7. 散列](#127-散列)
+    - [1.2.8. 集合](#128-集合)
+    - [1.2.9. 有序集合](#129-有序集合)
+    - [1.2.10. HyperLogLog去重计数⽅案](#1210-hyperloglog去重计数案)
+        - [1.2.10.0.1. 基本使⽤](#121001-基本使)
+      - [1.2.10.1. 实现原理](#12101-实现原理)
+    - [1.2.11. BITMAP](#1211-bitmap)
+      - [1.2.11.1. 基本操作](#12111-基本操作)
+      - [1.2.11.2. 使⽤场景](#12112-使场景)
+      - [1.2.11.3. BITCOUNT实现原理](#12113-bitcount实现原理)
+    - [1.2.12. 布隆过滤器](#1212-布隆过滤器)
+      - [1.2.12.1. 基本原理](#12121-基本原理)
+      - [1.2.12.2. 使⽤](#12122-使)
+    - [1.2.13. 限流](#1213-限流)
+    - [1.2.14. 事务](#1214-事务)
+      - [1.2.14.1. 错误处理](#12141-错误处理)
+      - [1.2.14.2. WATCH命令介绍](#12142-watch命令介绍)
+      - [1.2.14.3. 优化](#12143-优化)
+    - [1.2.15. 键](#1215-键)
+      - [1.2.15.1. SCAN](#12151-scan)
+        - [1.2.15.1.1. 基本⽤法](#121511-基本法)
+        - [1.2.15.1.2. SCAN命令的保证](#121512-scan命令的保证)
+        - [1.2.15.1.3. 每次执⾏返回的元素](#121513-每次执返回的元素)
+        - [1.2.15.1.4. COUNT选项](#121514-count选项)
+        - [1.2.15.1.5. MATCH选项](#121515-match选项)
+        - [1.2.15.1.6. 并发执⾏多个迭代](#121516-并发执多个迭代)
+        - [1.2.15.1.7. 中途停⽌迭代](#121517-中途停迭代)
+        - [1.2.15.1.8. 使⽤错误的游标进⾏增量式迭代](#121518-使错误的游标进增量式迭代)
+        - [1.2.15.1.9. 迭代终结的保证](#121519-迭代终结的保证)
+      - [1.2.15.2. SORT](#12152-sort)
+        - [1.2.15.2.1. ⼀般SORT的⽤法](#121521-般sort的法)
+        - [1.2.15.2.2. 使⽤ALPHA](#121522-使alpha)
+        - [1.2.15.2.3. 使⽤LIMIT](#121523-使limit)
+        - [1.2.15.2.4. 使⽤外部KEY](#121524-使外部key)
+        - [1.2.15.2.5. 保存排序结果](#121525-保存排序结果)
+        - [1.2.15.2.6. sort命令问题](#121526-sort命令问题)
+    - [1.2.16. 管道](#1216-管道)
+    - [1.2.17. 连接](#1217-连接)
+    - [1.2.18. Server（服务器）](#1218-server服务器)
   - [1.3. 数据结构和对象实现原理](#13-数据结构和对象实现原理)
     - [1.3.1. 对象](#131-对象)
       - [1.3.1.1. 对象类型和编码](#1311-对象类型和编码)
@@ -199,6 +200,7 @@
     - [1.8.8. SSL代理](#188-ssl代理)
   - [1.9. 发布订阅](#19-发布订阅)
     - [1.9.1. PubSub缺点](#191-pubsub缺点)
+    - [1.9.2. Redis Stream](#192-redis-stream)
   - [1.10. LUA脚本](#110-lua脚本)
     - [1.10.1. 脚本介绍](#1101-脚本介绍)
     - [1.10.2. LUA语法](#1102-lua语法)
@@ -218,19 +220,23 @@
     - [1.11.4. 客户端案例分析](#1114-客户端案例分析)
       - [1.11.4.1. Redis内存陡增](#11141-redis内存陡增)
       - [1.11.4.2. 客户端周期性超时](#11142-客户端周期性超时)
-  - [1.12. 线程模型](#112-线程模型)
-    - [1.12.1. 相关概念](#1121-相关概念)
-    - [1.12.2. 阻塞问题](#1122-阻塞问题)
-      - [1.12.2.1. 发现阻塞](#11221-发现阻塞)
-      - [1.12.2.2. 内在原因](#11222-内在原因)
-        - [1.12.2.2.1. API使⽤不合理](#112221-api使不合理)
-        - [1.12.2.2.2. CPU饱和](#112222-cpu饱和)
-        - [1.12.2.2.3. 持久化阻塞](#112223-持久化阻塞)
-      - [1.12.2.3. 外在原因](#11223-外在原因)
-        - [1.12.2.3.1. CPU竞争](#112231-cpu竞争)
-        - [1.12.2.3.2. 内存交换](#112232-内存交换)
-        - [1.12.2.3.3. ⽹络问题](#112233-络问题)
-    - [1.12.3. 时间驱动机制](#1123-时间驱动机制)
+  - [1.12. 服务端](#112-服务端)
+    - [1.12.1. 线程模型](#1121-线程模型)
+    - [1.12.2. 事件驱动模型](#1122-事件驱动模型)
+      - [1.12.2.1. 事件结构体](#11221-事件结构体)
+      - [1.12.2.2. 核心方法main](#11222-核心方法main)
+      - [文件事件和时间事件](#文件事件和时间事件)
+    - [1.12.3. 客户端请求处理](#1123-客户端请求处理)
+    - [1.12.4. 阻塞问题](#1124-阻塞问题)
+      - [1.12.4.1. 发现阻塞](#11241-发现阻塞)
+      - [1.12.4.2. 内在原因](#11242-内在原因)
+        - [1.12.4.2.1. API使⽤不合理](#112421-api使不合理)
+        - [1.12.4.2.2. CPU饱和](#112422-cpu饱和)
+        - [1.12.4.2.3. 持久化阻塞](#112423-持久化阻塞)
+      - [1.12.4.3. 外在原因](#11243-外在原因)
+        - [1.12.4.3.1. CPU竞争](#112431-cpu竞争)
+        - [1.12.4.3.2. 内存交换](#112432-内存交换)
+        - [1.12.4.3.3. ⽹络问题](#112433-络问题)
   - [1.13. 慢查询⽇志](#113-慢查询志)
   - [1.14. 监视器](#114-监视器)
   - [1.15. Redis使⽤注意事项](#115-redis使注意事项)
@@ -1139,12 +1145,55 @@ config set slowlog-max-len 1000
 config rewrite
 ```
 
+### 1.2.2. Redis 性能测试
 
-### 1.2.2. 多数据库
+redis提供了性能测试工具redis-benchmark
+```yml
+redis-benchmark [option] [option value]
+
+```
+
+![redis-benchmark说明](pic/redis/redis-benchmark说明.png)
+
+
+```yml
+#以下实例同时执行 10000 个请求来检测性能：
+./redis-benchmark -n 10000  -q
+PING_INLINE: 75757.58 requests per second
+PING_BULK: 77519.38 requests per second
+SET: 64516.13 requests per second
+GET: 67567.57 requests per second
+INCR: 78125.00 requests per second
+LPUSH: 73529.41 requests per second
+RPUSH: 64516.13 requests per second
+LPOP: 76335.88 requests per second
+RPOP: 79365.08 requests per second
+SADD: 76335.88 requests per second
+HSET: 80000.00 requests per second
+SPOP: 79365.08 requests per second
+LPUSH (needed to benchmark LRANGE): 76923.08 requests per second
+LRANGE_100 (first 100 elements): 76923.08 requests per second
+LRANGE_300 (first 300 elements): 68027.21 requests per second
+LRANGE_500 (first 450 elements): 76335.88 requests per second
+LRANGE_600 (first 600 elements): 75187.97 requests per second
+MSET (10 keys): 65789.48 requests per second
+
+#测试set
+./redis-benchmark -t set -q 
+SET: 72568.94 requests per second
+
+#以管道方式测试set
+./redis-benchmark -t set -P 2  -q 
+SET: 156739.81 requests per second
+
+
+```
+
+### 1.2.3. 多数据库
 
 redis是⼀个字典结构的存储服务器，⽽实际上⼀个redis实例提供了多个⽤来存储数据的字典，客户端可以指定将数据存储在哪个字典中，类似于多数据库的概念，实际上并不是存在多个数据库，⽽是存在多个存储字典，每个字典可以理解为⼀个独⽴的数据库。每个数据库对外都是⼀个以0开始的递增命名。默认⽀持16个，可以修改参数databases来修改。客户端默认连接的是0号数据库。可以通过命令select no.进⾏选择。常规的读写命令是针对单个数据库的。但是有些命令是针对所有数据库有效，⽐如清除命令FLUSHHALL.实际使⽤中，应该不同的应⽤使⽤不同的redis实例，⽽不应该使⽤不同的数据库进⾏隔离。
 
-### 1.2.3. 基本数据类型
+### 1.2.4. 基本数据类型
 
 <a href="#menu"  >目录</a> 
 
@@ -1157,7 +1206,7 @@ redis是⼀个字典结构的存储服务器，⽽实际上⼀个redis实例提�
 |ZSet |包含字符串的有序收集器，并且每个字符串都是独⼀⽆⼆的
 
 
-### 1.2.4. 字符串
+### 1.2.5. 字符串
 
 * SET
     * SET key value [EX seconds] [PX milliseconds] [NX|XX]
@@ -1245,7 +1294,7 @@ redis是⼀个字典结构的存储服务器，⽽实际上⼀个redis实例提�
     * STRLEN key
     *　返回 key所储存的字符串值的⻓度。
 
-### 1.2.5. 列表
+### 1.2.6. 列表
 
 * BLPOP
     * BLPOP key [key ...] timeout
@@ -1323,7 +1372,7 @@ redis是⼀个字典结构的存储服务器，⽽实际上⼀个redis实例提�
   * 可作为简单的消息队列，同时还可以使⽤阻塞读写
 * ⽂章列表
 
-### 1.2.6. 散列
+### 1.2.7. 散列
 
 <a href="#menu"  >目录</a> 
 
@@ -1398,7 +1447,7 @@ set user:10012 serialize(user)
 ```
 
 
-### 1.2.7. 集合
+### 1.2.8. 集合
 
 集合（set）类型也是⽤来保存多个的字符串元素，但和列表类型不⼀样的是，集合中不允许有重复元素，并且集合中的元素是⽆序的，不能通过索引下标获取元素。⼀个集合最多可以存储232-1个元素。Redis除了⽀持集合内的增删改查，同时还⽀持多个集合取交集、并集、差集，合理地使⽤好集合类型，能在实际开发中解决很多实际问题。
 
@@ -1477,7 +1526,7 @@ redis> SDIFF peter's_movies joe's_movies
 * ⽤户−多个标签
 * 共同兴趣∕共同关注(交集)
 
-### 1.2.8. 有序集合
+### 1.2.9. 有序集合
 
 
 有序集合中的元素不能重复，但是score可以重复
@@ -1596,11 +1645,20 @@ redis> ZRANGEBYSCORE salary (5000 400000	# 显示工资大于 5000 小于等
 |集合	|否	|否	|⽆	|标签，社交
 |有序集合 |否	|是	|scope	|排⾏榜，社交
 
-### 1.2.9. HyperLogLog去重计数⽅案
+### 1.2.10. HyperLogLog去重计数⽅案
 
 HyperLogLog提供不精确的去重计数⽅案，虽然不精确但是也不是⾮常不精确，标准误差是 0.81%.可以⽤这个来实现每⽇的登录⽤户计数。
 
-##### 1.2.9.0.1. 基本使⽤
+**命令**
+* pfadd 添加
+    * pfadd key element [element …]
+* pfcount 计算元素数
+    * pfcount key [key …]
+* pfmerge　合并
+    * pfmerge destkey sourcekey [sourcekey ...]
+
+##### 1.2.10.0.1. 基本使⽤
+
 
 使⽤set集合实现去重
 
@@ -1635,26 +1693,25 @@ HyperLogLog提供不精确的去重计数⽅案，虽然不精确但是也不是
 (integer) 4
 ```
 
+使⽤set集合的问题是占⽤的空间⽐较⼤，当数据量⾮常⼤时，占⽤的空间是⾮常可观的。在100万数据的情况下，两者使用的空间可达到84M:15k. HyperLogLog虽然不精确，但是相对节省很多的空间。所以使用上如果对精确度要求不高，可以选用HyperLogLog。比如每天的用户登录数，对于误差0.81%是可以接受的。
 
 
-使⽤set集合的问题是占⽤的空间⽐较⼤，当数据量⾮常⼤时，占⽤的空间是⾮常可观的。HyperLogLog虽然不精确，但是相对节省很多的空间。
-
-
-#### 1.2.9.1. 实现原理
+#### 1.2.10.1. 实现原理
 
 Redis对 HyperLogLog的存储进⾏了优化，在计数⽐较⼩时，它的存储空间采⽤稀疏矩阵存储，空间占⽤很⼩，仅仅在计数慢慢变⼤，稀疏矩阵占⽤空间渐渐超过了阈值时才会⼀次性转变成稠密矩阵，才会占⽤ 12k的空间。
 
-### 1.2.10. BITMAP
+### 1.2.11. BITMAP
 
 <a href="#menu"  >目录</a> 
 
-#### 1.2.10.1. 基本操作
+#### 1.2.11.1. 基本操作
 
 
 * SETBIT
     * SETBIT key oﬀset value
     * oﬀset参数必须⼤于或等于 0，⼩于 2^32 (bit映射被限制在 512 MB之内，2^32∕(8 * 1024 *1024) = 512M)。
     * 返回值:指定偏移量原来储存的位
+    * value为0｜１
     * SETBIT bit 10086 1
 
 * GETBIT
@@ -1663,10 +1720,11 @@ Redis对 HyperLogLog的存储进⾏了优化，在计数⽐较⼩时，它的存
     * 当 oﬀset⽐字符串值的⻓度⼤，或者 key不存在时，返回 0。
 * BITCOUNT
     * BITCOUNT key [start] [end]
-    * 计算给定字符串中，被设置为 1的⽐特位的数量。
+    * start和end可以不用设置，其单位为字节，无法精确到oﬀset
+    * 计算给定key中，被设置为 1的⽐特位的数量。
 * BITOP
     * BITOP operation destkey key [key ...]
-    * 对⼀个或多个保存⼆进制位的字符串 key进⾏位元操作，并将结果保存到 destkey上。
+    * 对⼀个或多个保存⼆进制位的字符串 key进⾏位元操作，并将结果保存到 destkey上。再使用BITCOUNT命令计算其中1的个数
     * operation可以是 AND、OR、NOT、XOR这四种操作中的任意⼀种：
     * BITOP AND destkey key [key ...]，对⼀个或多个 key求逻辑并，并将结果保存到 destkey。
     * BITOP OR destkey key [key ...]，对⼀个或多个 key求逻辑或，并将结果保存到 destkey。
@@ -1675,7 +1733,7 @@ Redis对 HyperLogLog的存储进⾏了优化，在计数⽐较⼩时，它的存
 
 其底层是使⽤sds中的数组来保存。
 
-#### 1.2.10.2. 使⽤场景
+#### 1.2.11.2. 使⽤场景
 
 由于⽤户的id是唯⼀的，因此可以利⽤BITMAP来实现以下功能。
 * ⽤户周活跃
@@ -1683,7 +1741,7 @@ Redis对 HyperLogLog的存储进⾏了优化，在计数⽐较⼩时，它的存
 * 在线⽤户
 * 统计活跃⽤户
 
-#### 1.2.10.3. BITCOUNT实现原理
+#### 1.2.11.3. BITCOUNT实现原理
 
 **轮询法**
 
@@ -1721,11 +1779,11 @@ public static int conut(int data){
 
 REDIS实现: redis使⽤了查表和汉明算法相结合。
 
-### 1.2.11. 布隆过滤器
+### 1.2.12. 布隆过滤器
 
 <a href="#menu"  >目录</a> 
 
-#### 1.2.11.1. 基本原理
+#### 1.2.12.1. 基本原理
 
 
 **布隆过滤器使⽤场景**
@@ -1750,7 +1808,7 @@ REDIS实现: redis使⽤了查表和汉明算法相结合。
 * 缺点：随着数据的增加，误判率会增加；还有⽆法判断数据⼀定存在；另外还有⼀个重要缺点，⽆法删除数据。
 
 
-#### 1.2.11.2. 使⽤
+#### 1.2.12.2. 使⽤
 
 编译安装
 ```yml
@@ -1792,7 +1850,7 @@ redis中有⼀个命令可以来设置这两个值：bf.reserve urls 0.01 100
 
 对于没有相关⽅法的客户端，可以使⽤lua脚本来调⽤。
 
-### 1.2.12. 限流
+### 1.2.13. 限流
 
 redis提供了redis cell，其实现了漏桶限流功能。
 
@@ -1800,7 +1858,7 @@ redis提供了redis cell，其实现了漏桶限流功能。
 
 
 
-### 1.2.13. 事务
+### 1.2.14. 事务
 
 
 
@@ -1840,7 +1898,7 @@ QUEUED
     * 执⾏所有事务块内的命令。
     * 假如某个(或某些) key正处于WATCH命令的监视之下，且事务块中有和这个(或这些) key相关的命令，那么 EXEC命令只在这个(或这些) key没有被其他命令所改动的情况下执⾏并⽣效，否则该事务被打断(abort)。
 
-#### 1.2.13.1. 错误处理
+#### 1.2.14.1. 错误处理
 
 <a href="#menu"  >目录</a> 
 
@@ -1863,7 +1921,7 @@ REDIS事务具有原⼦性、⼀致性、隔离性。当配置持久化时，事
 * 由于事务是单线程处理，因此也就不存在事务并发的执⾏，也就没有了隔离性问题
 
 
-#### 1.2.13.2. WATCH命令介绍
+#### 1.2.14.2. WATCH命令介绍
 
 * WATCH key [key ...]
     * 监视⼀个(或多个) key，如果在事务执⾏之前这个(或这些) key被其他命令所改动，那么事务将被打断。
@@ -1878,7 +1936,7 @@ WATCH必须在事务开始之前执⾏。
 watch可以实现乐观锁。
 
 
-#### 1.2.13.3. 优化
+#### 1.2.14.3. 优化
 
 上⾯的 Redis事务在发送每个指令到事务缓存队列时都要经过⼀次⽹络读写，当⼀个事务内部的指令较多时，需要的⽹络 IO时间也会线性增⻓。所以通常 Redis的客户端在执⾏事务时都会结合 pipeline⼀起使⽤，这样可以将多次 IO操作压缩为单次 IO操作。⽐如我们在使⽤ Python的 Redis客户端时执⾏事务时是要强制使⽤pipeline的。
 ```yml
@@ -1889,7 +1947,7 @@ pipe.incr("books")
 values = pipe.execute()
 ```
 
-### 1.2.14. 键
+### 1.2.15. 键
 
 * DEL
     * DEL key [key ...]
@@ -1998,7 +2056,7 @@ keys算法是遍历算法，复杂度是O(n)，如果实例中有千万级以上
         * zset (有序集)
         * hash (哈希表)
 
-#### 1.2.14.1. SCAN
+#### 1.2.15.1. SCAN
 
 <a href="#menu"  >目录</a> 
 
@@ -2028,7 +2086,7 @@ scan相⽐keys具备有以下特点:
 7. 单次返回的结果是空的并不意味着遍历结束，⽽要看返回的游标值是否为零;
 
 
-##### 1.2.14.1.1. 基本⽤法
+##### 1.2.15.1.1. 基本⽤法
 
 
 SCAN命令是⼀个基于游标的迭代器（cursor based iterator）：SCAN命令每次被调⽤之后，都会向⽤户返回⼀个新的游标，⽤户在下次迭代时需要使⽤这个新游标作为 SCAN命令的游标参数，以此来延续之前的迭代过程。
@@ -2076,7 +2134,7 @@ redis 127.0.0.1:6379> scan 17
 以 0作为游标开始⼀次新的迭代，⼀直调⽤ SCAN命令，直到命令返回游标 0，我们称这个过程为⼀次完整遍历（full iteration）。
 
 
-##### 1.2.14.1.2. SCAN命令的保证
+##### 1.2.15.1.2. SCAN命令的保证
 
 
 SCAN命令，以及其他增量式迭代命令，在进⾏完整遍历的情况下可以为⽤户带来以下保证：从完整遍历开始直到完整遍历结束期间，⼀直存在于数据集内的所有元素都会被完整遍历返回；这意味着，如果有⼀个元素，它从遍历开始直到遍历结束期间都存在于被遍历的数据集当中，那么 SCAN命令总会在某次迭代中将这个元素返回给⽤户。
@@ -2087,7 +2145,7 @@ SCAN命令，以及其他增量式迭代命令，在进⾏完整遍历的情况�
 如果⼀个元素是在迭代过程中被添加到数据集的，⼜或者是在迭代过程中从数据集中被删除的，那么这个元素可能会被返回，也可能不会，这是未定义的（undeﬁned）。
 
 
-##### 1.2.14.1.3. 每次执⾏返回的元素
+##### 1.2.15.1.3. 每次执⾏返回的元素
 
 
 增量式迭代命令并不保证每次执⾏都返回某个给定数量的元素。
@@ -2103,7 +2161,7 @@ structure，适⽤于是⼩集合键、⼩哈希键和⼩有序集合键），�
 最后，⽤户可以通过增量式迭代命令提供的 COUNT选项来指定每次迭代返回元素的最⼤值。
 
 
-##### 1.2.14.1.4. COUNT选项
+##### 1.2.15.1.4. COUNT选项
 
 虽然增量式迭代命令不保证每次迭代所返回的元素数量，但我们可以使⽤ COUNT选项，对命令的⾏为进⾏⼀定程度上的调整。
 
@@ -2120,7 +2178,7 @@ COUNT参数的默认值为 10。
 并⾮每次迭代都要使⽤相同的 COUNT值。⽤户可以在每次迭代中按⾃⼰的需要随意改变 COUNT值，只要记得将上次迭代返回的游标⽤到下次迭代⾥⾯就可以了。
 
 
-##### 1.2.14.1.5. MATCH选项
+##### 1.2.15.1.5. MATCH选项
 
 
 和 KEYS命令⼀样，增量式迭代命令也可以通过提供⼀个 glob⻛格的模式参数，让命令只返回和给定模式相匹配的元素，这⼀点可以通过在执⾏增量式迭代命令时，通过给定MATCH < pattern >参数来实现。
@@ -2171,13 +2229,13 @@ redis 127.0.0.1:6379> scan 176 MATCH *11* COUNT 1000
 在最后⼀次迭代，我们通过将 COUNT选项的参数设置为 1000，强制命令为本次迭代扫描更多元素，从⽽使得命令返回的元素也变多了。
 
 
-##### 1.2.14.1.6. 并发执⾏多个迭代
+##### 1.2.15.1.6. 并发执⾏多个迭代
 
 
 在同⼀时间，可以有任意多个客户端对同⼀数据集进⾏迭代，客户端每次执⾏迭代都需要传⼊⼀个游标，并在迭代执⾏之后获得⼀个新的游标，⽽这个游标就包含了迭代的所有状态，因此，服务器⽆须为迭代记录任何状态。
 
 
-##### 1.2.14.1.7. 中途停⽌迭代
+##### 1.2.15.1.7. 中途停⽌迭代
 
 
 因为迭代的所有状态都保存在游标⾥⾯，⽽服务器⽆须为迭代保存任何状态，所以客户端可以在中途停⽌⼀个迭代，⽽⽆须对服务器进⾏任何通知。
@@ -2185,7 +2243,7 @@ redis 127.0.0.1:6379> scan 176 MATCH *11* COUNT 1000
 即使有任意数量的迭代在中途停⽌，也不会产⽣任何问题。
 
 
-##### 1.2.14.1.8. 使⽤错误的游标进⾏增量式迭代
+##### 1.2.15.1.8. 使⽤错误的游标进⾏增量式迭代
 
 
 使⽤间断的（broken）、负数、超出范围或者其他⾮正常的游标来执⾏增量式迭代并不会造成服务器崩溃，但可能会让命令产⽣未定义的⾏为。
@@ -2198,14 +2256,14 @@ redis 127.0.0.1:6379> scan 176 MATCH *11* COUNT 1000
 增量式迭代命令在执⾏之后返回的，⽤于延续（continue）迭代过程的游标。
 
 
-##### 1.2.14.1.9. 迭代终结的保证
+##### 1.2.15.1.9. 迭代终结的保证
 
 增量式迭代命令所使⽤的算法只保证在数据集的⼤⼩有界（bounded）的情况下，迭代才会停⽌，换句话说，如果被迭代数据集的⼤⼩不断地增⻓的话，增量式迭代命令可能永远也⽆法完成⼀次完整迭代。
 
 从直觉上可以看出，当⼀个数据集不断地变⼤时，想要访问这个数据集中的所有元素就需要做越来越多的⼯作，能否结束⼀个迭代取决于⽤户执⾏迭代的速度是否⽐数据集增⻓的速度更快。
 
 
-#### 1.2.14.2. SORT
+#### 1.2.15.2. SORT
 
 <a href="#menu"  >目录</a> 
 
@@ -2213,7 +2271,7 @@ SORT key [BY pattern] [LIMIT oﬀset count] [GET pattern [GET pattern ...]] [ASC
 [STORE destination]返回或保存给定列表、集合、有序集合 key中经过排序的元素。排序默认以数字作为对象，值被解释为双精度浮点数，然后进⾏⽐较。
 
 
-##### 1.2.14.2.1. ⼀般SORT的⽤法
+##### 1.2.15.2.1. ⼀般SORT的⽤法
 
 最简单的 SORT使⽤⽅法是 SORT key和 SORT key DESC：
 * SORT key返回键值从⼩到⼤排序的结果。
@@ -2238,7 +2296,7 @@ redis 127.0.0.1:6379> SORT today_cost DESC
 ```
 
 
-##### 1.2.14.2.2. 使⽤ALPHA
+##### 1.2.15.2.2. 使⽤ALPHA
 
 
 因为 SORT命令默认排序对象为数字，当需要对字符串进⾏排序时，需要显式地在 SORT命令之后添加
@@ -2261,7 +2319,7 @@ redis> SORT website ALPHA
 如果系统正确地设置了 LC_COLLATE环境变量的话，Redis能识别 UTF-8编码。
 
 
-##### 1.2.14.2.3. 使⽤LIMIT
+##### 1.2.15.2.3. 使⽤LIMIT
 
 
 排序之后返回元素的数量可以通过 LIMIT修饰符进⾏限制，修饰符接受 oﬀset和 count两个参数：
@@ -2293,7 +2351,7 @@ redis 127.0.0.1:6379> SORT rank LIMIT 0 5 DESC
 ```
 
 
-##### 1.2.14.2.4. 使⽤外部KEY
+##### 1.2.15.2.4. 使⽤外部KEY
 
 
 可以使⽤外部 key的数据作为权重，代替默认的直接对⽐键值的⽅式来进⾏排序。
@@ -2522,7 +2580,7 @@ redis 127.0.0.1:6379> SORT uid BY user_info_*->level GET user_info_*->name
 ```
 
 
-##### 1.2.14.2.5. 保存排序结果
+##### 1.2.15.2.5. 保存排序结果
 
 
 默认情况下，SORT操作只是简单地返回排序结果，并不进⾏任何保存操作。
@@ -2573,7 +2631,7 @@ redis 127.0.0.1:6379> LRANGE sorted-numbers 0 -1
 另外，为了正确实现这⼀⽤法，你可能需要加锁以避免多个客户端同时进⾏缓存重建(也就是多个客户端，同⼀时间进⾏ SORT操作，并保存为结果集)，具体参⻅ SETNX命令。
 
 
-##### 1.2.14.2.6. sort命令问题
+##### 1.2.15.2.6. sort命令问题
 
 
 sort的时间复杂度是O(n+mlog(m)) ,其中n是要待排序的列表中的元素个数，m是要返回的个数。排序前也会建⽴⼀个n⻓度的容器来存放结果。同时运⾏多个sort命令进⾏⼤数据量的运算会严重影响性能。因此使⽤时要注意
@@ -2582,17 +2640,13 @@ sort的时间复杂度是O(n+mlog(m)) ,其中n是要待排序的列表中的元�
 2. 使⽤limit来限制返回的数据
 3. 如果数据量⽐较⼤，尽可能使⽤store参数将结果缓存
 
-### 1.2.15. 管道
+### 1.2.16. 管道
 
 Redis是⼀个cs模式的tcp server，使⽤和http类似的请求响应协议。
 
 ⼀个client可以通过⼀个socket连接发起多个请求命令。
 
-每个请求命令发出后client通常会阻塞并等待redis服务处理，redis处理完后请求命令后会将结果通过响应报⽂返回给client。客户端和服务端通过⽹络进⾏连接。这样的连接可能⾮常快（在⼀个回路⽹络中），也可能⾮常慢（在⼴域⽹上经过多个结点才能互通的两个主机）。但是⽆论是否存在⽹络延迟，数据包从客户端传输到服务端，以及客户端从服务端获得相应都需要花费⼀些时间。这段时间就成为往返时延(Round Trip Time)。因此当客户端需要执⾏⼀串请求的时候，很容易看出它对性能的影响（例如往同⼀个队列中加⼊⼤量元素，或者往数据库中插⼊⼤量的键）。如果RTT时⻓为250毫秒（在基于⼴域⽹的低速连接环境下），即使服务器每秒可以处理10万个请求，但是实际上我们依然只能每秒处理最多4个请求。如果处于⼀个回路⽹络中，RTT时⻓则
-
-
-
-相当短（我的主机ping 127.0.0.1时只需要0.044ms），但是如果你执⾏⼀⼤串写⼊请求的时候，还是会有点⻓。幸运的是，redis给我们提供了管道技术
+每个请求命令发出后client通常会阻塞并等待redis服务处理，redis处理完后请求命令后会将结果通过响应报⽂返回给client。客户端和服务端通过⽹络进⾏连接。这样的连接可能⾮常快（在⼀个回路⽹络中），也可能⾮常慢（在⼴域⽹上经过多个结点才能互通的两个主机）。但是⽆论是否存在⽹络延迟，数据包从客户端传输到服务端，以及客户端从服务端获得相应都需要花费⼀些时间。这段时间就成为往返时延(Round Trip Time)。因此当客户端需要执⾏⼀串请求的时候，很容易看出它对性能的影响（例如往同⼀个队列中加⼊⼤量元素，或者往数据库中插⼊⼤量的键）。如果RTT时⻓为250毫秒（在基于⼴域⽹的低速连接环境下），即使服务器每秒可以处理10万个请求，但是实际上我们依然只能每秒处理最多4个请求。如果处于⼀个回路⽹络中，RTT时⻓则相当短（我的主机ping 127.0.0.1时只需要0.044ms），但是如果你执⾏⼀⼤串写⼊请求的时候，还是会有点⻓。幸运的是，redis给我们提供了管道技术
 
 Pipeline虽然好⽤，但是每次Pipeline组装的命令个数不能没有节制，否则⼀次组装Pipeline数据量过⼤，⼀⽅⾯会增加客户端的等待时间，另⼀⽅⾯会造成⼀定的⽹络阻塞，可以将⼀次包含⼤量命令的Pipeline拆分成多次较⼩的Pipeline来完成
 
@@ -2622,8 +2676,7 @@ Redis客户端与 Redis服务器之间使⽤ TCP协议进⾏连接，⼀个客�
 3. 服务器操作系统内核将⽹卡的数据放到内核为套接字分配的接收缓冲 recv buﬀer。
 4. 服务器进程调⽤ read从接收缓冲中取出消息进⾏处理。
 5. 服务器进程调⽤write将响应消息写到内核为套接字分配的发送缓冲 send buﬀer。
-6. 服务器操作系统内核将发送缓冲的内容发送到⽹卡，⽹卡硬件将数据通过「⽹际路由」送到客户端的⽹
-卡。
+6. 服务器操作系统内核将发送缓冲的内容发送到⽹卡，⽹卡硬件将数据通过「⽹际路由」送到客户端的⽹卡。
 7. 客户端操作系统内核将⽹卡的数据放到内核为套接字分配的接收缓冲 recv buﬀer。
 8. 客户端进程调⽤ read从接收缓冲中取出消息返回给上层业务逻辑进⾏处理。
 9. 结束
@@ -2639,28 +2692,55 @@ Redis客户端与 Redis服务器之间使⽤ TCP协议进⾏连接，⼀个客�
 
 output缓冲区⼤⼩/返回结果的数据尺⼨都有很⼤的关系；同时也意味着每个 redis-server同时所能⽀撑的pipeline链接的个数，也是有限的，这将受限于 server的物理内存或⽹络接⼝的缓冲能⼒。
 
-jedis使⽤实例
+
+Pipeline管道机制不单单是为了减少RTT的一种方式，它实际上大大提高了Redis的QPS。原因是，在没有使用管道机制的情况下，从访问数据结构和产生回复的角度来看，为每个命令提供服务是非常便宜的。但是从底层套接字的角度来看，这是非常昂贵的，这涉及read（）和write（）系统调用，从用户态切换到内核态，这种上下文切换开销是巨大。而使用Pipeline的情况下，通常使用单个read（）系统调用读取许多命令，然后使用单个write（）系统调用传递多个回复,这样就提高了QPS
+
+**批量命令与Pipeline对比**
+* 批量命令是原子的，Pipeline 是非原子的
+* 批量命令是一个命令多个 key,Pipeline支持多个命令
+* 批量命令是 Redis服务端实现的，而Pipeline需要服务端和客户端共同实现
+
+**性能测试**
+
+```yml
+#测试单个命令
+./redis-benchmark -t set  -q 
+SET: 67934.78 requests per second
+
+#测试pipeline命令，-P用于测试pipeline命令，其后面的参数为命令的个数
+./redis-benchmark -t set -P 1  -q 
+SET: 78247.26 requests per second
+
+./redis-benchmark -t set -P 100  -q  
+SET: 1492537.25 requests per second
+```
 
 
+**jedis使⽤实例**
 ```java
-Jedis jedis = new Jedis("127.0.0.1",6379);
 Pipeline pipeline = jedis.pipelined();
+pipeline.set("k1","1223");
+pipeline.rpush("k2","2234");
+//调用这个时才会将命令发送出去，并等待结果返回
 List<Object> result = pipeline.syncAndReturnAll();
-Pipeline pipeline1 = jedis.pipelined();
-List<Object> result1 = pipeline1.syncAndReturnAll();
-System.out.println(result1);
 //输出
 [OK, 2]
-[1223, 2234]
+
 
 //res.get()必须在sync()后面执行，否则会报错
 Pipeline pipeline = jedis.pipelined();
-
-Response<String> res1 = pipeline.set("k1","1223");
+Response<String> res1 =  pipeline.set("k1","1223");
 Response<Long> res2 = pipeline.rpush("k2","2234");
+//调用这个时才会将命令发送出去
+pipeline.sync();
+
+System.out.println(res1.get());
+System.out.println(res2.get());
+
+
 ```
 
-### 1.2.16. 连接
+### 1.2.17. 连接
 
 * AUTH
     * AUTH password
@@ -2684,7 +2764,7 @@ Response<Long> res2 = pipeline.rpush("k2","2234");
     * 切换到指定的数据库，数据库索引号 index⽤数字值指定，以 0作为起始索引值。
     * 默认使⽤ 0号数据库
 
-### 1.2.17. Server（服务器）
+### 1.2.18. Server（服务器）
 
 <a href="#menu"  >目录</a> 
 
@@ -7498,6 +7578,147 @@ PubSub的⽣产者传递过来⼀个消息，Redis会直接找到相应的消费
 
 近期 Redis5.0新增了 Stream数据结构，这个功能给 Redis带来了持久化消息队列。
 
+
+### 1.9.2. Redis Stream
+
+Redis Stream 是 Redis 5.0 版本新增加的数据结构。
+
+Redis Stream 主要用于消息队列（MQ，Message Queue），Redis 本身是有一个 Redis 发布订阅 (pub/sub) 来实现消息队列的功能，但它有个缺点就是消息无法持久化，如果出现网络断开、Redis 宕机等，消息就会被丢弃。
+
+简单来说发布订阅 (pub/sub) 可以分发消息，但无法记录历史消息。
+
+而 Redis Stream 提供了消息的持久化和主备复制功能，可以让任何客户端访问任何时刻的数据，并且能记住每一个客户端的访问位置，还能保证消息不丢失。
+
+Redis Stream 的结构如下所示，它有一个消息链表，将所有加入的消息都串起来，每个消息都有一个唯一的 ID 和对应的内容：
+
+![Redis-Stream](pic/redis/Redis-Stream.png)
+
+每个 Stream 都有唯一的名称，它就是 Redis 的 key，在我们首次使用 xadd 指令追加消息时自动创建。
+
+* Consumer Group ：消费组，使用 XGROUP CREATE 命令创建，一个消费组有多个消费者(Consumer)。
+* last_delivered_id ：游标，每个消费组会有个游标 last_delivered_id，任意一个消费者读取了消息都会使游标 last_delivered_id 往前移动。
+* pending_ids ：消费者(Consumer)的状态变量，作用是维护消费者的未确认的 id。 pending_ids 记录了当前已经被客户端读取的消息，但是还没有 ack (Acknowledge character：确认字符）。
+
+**消息队列相关命令：**
+* XADD - 添加消息到末尾
+    * XADD key ID field value [field value ...]
+    * 参数说明
+      * key ：队列名称，如果不存在就创建
+      * ID ：消息 id，使用 * 表示由 redis 生成，可以自定义，但是要自己保证递增性。
+      * field value ： 记录。
+* XTRIM - 对流进行修剪，限制长度
+    * XTRIM key MAXLEN [~] count
+    * XTRIM mystream MAXLEN 2　：　删除最早的消息，只保留MAXLEN个消息
+    * 参数说明
+      * key ：队列名称
+      * MAXLEN ：长度
+      * count ：数量
+* XDEL - 删除消息
+    * XDEL key ID [ID ...]
+    * 参数说明
+        * key：队列名称
+        * ID ：消息 ID
+* XLEN - 获取流包含的元素数量，即消息长度
+* XRANGE - 获取消息列表，会自动过滤已经删除的消息
+    * XRANGE key start end [COUNT count]
+    * XRANGE writers - + COUNT 2
+    * 参数说明
+        * key ：队列名
+        * start ：开始值， - 表示最小值
+        * end ：结束值， + 表示最大值
+        * count ：数量
+* XREVRANGE - 反向获取消息列表，ID 从大到小
+    * XREVRANGE key end start [COUNT count]
+    * 参数说明
+        * key ：队列名
+        * end ：结束值， + 表示最大值
+        * start ：开始值， - 表示最小值
+        * count ：数量
+
+* XREAD - 以阻塞或非阻塞方式获取消息列表
+    * XREAD [COUNT count] [BLOCK milliseconds] STREAMS key [key ...] id [id ...]
+    * 参数说明
+        * count ：数量
+        * milliseconds ：可选，阻塞毫秒数，没有设置就是非阻塞模式
+        * key ：队列名
+        * id ：消息 ID
+**消费者组相关命令：**
+* XGROUP CREATE - 创建消费者组
+    * XGROUP [CREATE key groupname id-or-$] [SETID key groupname id-or-$] [DESTROY key groupname] [DELCONSUMER key groupname consumername]   
+    * 参数说明
+        * key ：队列名称，如果不存在就创建
+        * groupname ：组名。
+        * $ ： 表示从尾部开始消费，只接受新消息，当前 Stream 消息会全部忽略。
+    * 使用
+        * 从头开始消费:XGROUP CREATE mystream consumer-group-name 0-0  
+        * 从尾部开始消费:XGROUP CREATE mystream consumer-group-name $
+* XREADGROUP GROUP - 读取消费者组中的消息
+    * XREADGROUP GROUP group consumer [COUNT count] [BLOCK milliseconds] [NOACK] STREAMS key [key ...] ID [ID ...]
+    * 参数说明
+        * group ：消费组名
+        * consumer ：消费者名。
+        * count ： 读取数量。
+        * milliseconds ： 阻塞毫秒数。
+        * key ： 队列名。
+        * ID ： 消息 ID。
+    * XREADGROUP GROUP consumer-group-name consumer-name COUNT 1 STREAMS mystream >
+* XACK - 将消息标记为"已处理"
+* XGROUP SETID - 为消费者组设置新的最后递送消息ID
+* XGROUP DELCONSUMER - 删除消费者
+* XGROUP DESTROY - 删除消费者组
+* XPENDING - 显示待处理消息的相关信息
+* XCLAIM - 转移消息的归属权
+* XINFO - 查看流和消费者组的相关信息；
+* XINFO GROUPS - 打印消费者组的信息；
+* XINFO STREAM - 打印流信息
+
+
+XADD:使用 XADD 向队列添加消息，如果指定的队列不存在，则创建一个队列，XADD 语法格式：
+
+XADD key ID field value [field value ...]
+key ：队列名称，如果不存在就创建
+ID ：消息 id，我们使用 * 表示由 redis 生成，可以自定义，但是要自己保证递增性。
+field value ： 记录。
+
+```yml
+127.0.0.1:6379> xadd mystream * key1 val1 key2 val2
+#返回的是id
+"1611155590971-0"
+127.0.0.1:6379> xlen mystream
+(integer) 1
+127.0.0.1:6379> xadd mystream * key3 val1 key4 val2
+"1611155621426-0"
+127.0.0.1:6379> xadd mystream * key3 val1 key4 val2
+"1611155624226-0"
+127.0.0.1:6379> xadd mystream * key3 val1 key4 val2
+"1611155624890-0"
+127.0.0.1:6379> xlen mystream
+(integer) 4
+127.0.0.1:6379> xrange mystream
+(error) ERR wrong number of arguments for 'xrange' command
+127.0.0.1:6379> xrange mystream - +
+1) 1) "1611155590971-0"
+   1) 1) "key1"
+      1) "val1"
+      2) "key2"
+      3) "val2"
+2) 1) "1611155621426-0"
+   1) 1) "key3"
+      1) "val1"
+      2) "key4"
+      3) "val2"
+3) 1) "1611155624226-0"
+   1) 1) "key3"
+      2) "val1"
+      3) "key4"
+      4) "val2"
+4) 1) "1611155624890-0"
+   1) 1) "key3"
+      1) "val1"
+      2) "key4"
+      3) "val2"
+```
+
 ## 1.10. LUA脚本
 
 
@@ -8233,10 +8454,16 @@ $<参数N的字节数量> CRLF
 ```
 **返回结果格式**
 * 状态回复：在RESP中第⼀个字节为"+"。
+    * +OK
 * 错误回复：在RESP中第⼀个字节为"-"。
+    * -ERR unknown command 'sethx'
 * 整数回复：在RESP中第⼀个字节为"："。
-* 字符串回复：在RESP中第⼀个字节为"$"。
-* 多条字符串回复：在RESP中第⼀个字节为"*"。
+    * ：1
+* 字符串回复：在RESP中第⼀个字节为"$",$后面的数字为返回结果的长度
+    * get hello-->$5\r\nworld\r\n”
+* 多条字符串回复：在RESP中第⼀个字节为"*"。格式：*返回结果数\r\n$字符长度\r\字符\r\n$字符序列长度\r\字符序列
+
+有一点需要注意， 无论是字符串回复还是多条字符串回复， 如果有nil值， 那么会返回$-1。
 
 举个例⼦：set demo 123456
 
@@ -8248,10 +8475,40 @@ $4 #第二行长度为4
 demo #第二行的消息
 $6 #第三行长度为6
 123456 #第三行的消息
+#返回结果
 +OK #操作成功
 ```
-上⾯只是格式化显⽰的结果.真实的传输的是*3\r\n 4\r\n 6123456\r\n
+上⾯只是格式化显⽰的结果.真实的传输的是*3\r\n$3\r\nset\r\n$4\r\ndemo\r\n$6\r\n123456\r\n
 
+
+jedis的处理
+```java
+public static final byte DOLLAR_BYTE = '$';
+public static final byte ASTERISK_BYTE = '*';
+public static final byte PLUS_BYTE = '+';
+public static final byte MINUS_BYTE = '-';
+public static final byte COLON_BYTE = ':';
+
+private static Object process(final RedisInputStream is) {
+
+    final byte b = is.readByte();
+    if (b == PLUS_BYTE) {
+        return processStatusCodeReply(is);
+    } else if (b == DOLLAR_BYTE) {
+        return processBulkReply(is);
+    } else if (b == ASTERISK_BYTE) {
+        return processMultiBulkReply(is);
+    } else if (b == COLON_BYTE) {
+        return processInteger(is);
+    } else if (b == MINUS_BYTE) {
+        processError(is);
+        return null;
+    } else {
+        throw new JedisConnectionException("Unknown reply: " + (char) b);
+    }
+}
+
+```
 
 
 
@@ -8399,7 +8656,7 @@ blocked_clients:0
     * 限制容易让输出缓冲区增⼤的命令，例如，⾼并发下的monitor命令就是⼀个危险的命令。
     * 及时监控内存，⼀旦发现内存抖动频繁，可能就是输出缓冲区过⼤
 
-```yml
+```cpp
 typedef struct client {
     // 动态缓冲区列表
     list *reply;
@@ -8516,6 +8773,7 @@ int clientsCronHandleTimeout(client *c, mstime_t now_ms) {
     * 不正常并发读写
 
 ### 1.11.4. 客户端案例分析
+<a href="#menu" >目录</a>
 
 
 #### 1.11.4.1. Redis内存陡增
@@ -8533,12 +8791,13 @@ int clientsCronHandleTimeout(client *c, mstime_t now_ms) {
 * ⽹络原因:客户端和服务端之间的⽹络出现周期性的问题，经过观察⽹络是正常的
 * 存在⽐较耗时的命令，导致其他命令没能得到即时执⾏，需要设置慢查询功能查看
 
-## 1.12. 线程模型
+## 1.12. 服务端
+<a href="#menu" >目录</a>
 
+本章节是基于6.0版本进行分析。6.0版本在新增可多线程处理
 
-### 1.12.1. 相关概念
-
-
+### 1.12.1. 线程模型
+<a href="#menu" >目录</a>
 
 redis 5.0以下是单线程处理客户端请求，6.0使⽤多线程来接收客户端数据。
 
@@ -8569,7 +8828,485 @@ Redis的定时任务会记录在⼀个称为最⼩堆的数据结构中。这个
 
 Nginx和 Node的事件处理原理和 Redis也是类似的
 
-### 1.12.2. 阻塞问题
+
+### 1.12.2. 事件驱动模型
+<a href="#menu" >目录</a>
+
+redis的服务器是一个事件驱动模型。驱动整个服务运转的关键技术就是IO多路复用
+
+#### 1.12.2.1. 事件结构体
+
+```cpp
+ae.h
+
+typedef struct aeFileEvent {
+    int mask; /* one of AE_(READABLE|WRITABLE|BARRIER) */
+    //读方法处理
+    aeFileProc *rfileProc;
+    //写方法处理
+    aeFileProc *wfileProc;
+    //指向对应的客户端对象。
+    void *clientData;
+} aeFileEvent;
+
+/* Time event structure */
+typedef struct aeTimeEvent {
+    //时间事件id
+    long long id; /* time event identifier. */
+    //时间秒数/ms
+    long when_sec; /* seconds */    
+    long when_ms; /* milliseconds */
+    //时间事件中的处理函数
+    aeTimeProc *timeProc;
+    //被删除的时候将会调用的方法
+    aeEventFinalizerProc *finalizerProc;
+    void *clientData;
+    //时间结构体内的前／后一个结构体
+    struct aeTimeEvent *prev;
+    struct aeTimeEvent *next;
+    int refcount; /* refcount to prevent timer events from being
+  		   * freed in recursive time event calls. */
+} aeTimeEvent;
+//FireEvent只是用来标记要处理的文件Event。
+/* fired结构体，用来表示将要被处理的文件事件 */
+typedef struct aeFiredEvent {
+	//文件描述符id
+    int fd;
+    int mask;
+} aeFiredEvent;
+/* 创建aeEventLoop，内部的fileEvent和Fired事件的个数为setSize个 */
+aeEventLoop *aeCreateEventLoop(int setsize); 
+/* 删除EventLoop，释放相应的事件所占的空间 */
+void aeDeleteEventLoop(aeEventLoop *eventLoop); 
+/* 设置eventLoop中的停止属性为1 */
+void aeStop(aeEventLoop *eventLoop); 
+/* 在eventLoop中创建文件事件 */
+int aeCreateFileEvent(aeEventLoop *eventLoop, int fd, int mask, aeFileProc *proc, void *clientData); 
+/* 删除文件事件 */
+void aeDeleteFileEvent(aeEventLoop *eventLoop, int fd, int mask); 
+//根据文件描述符id，找出文件的属性，是读事件还是写事件
+int aeGetFileEvents(aeEventLoop *eventLoop, int fd); 
+ /* 在eventLoop中添加时间事件，创建的时间为当前时间加上自己传入的时间 */
+long long aeCreateTimeEvent(aeEventLoop *eventLoop, long long milliseconds,
+        aeTimeProc *proc, void *clientData,
+        aeEventFinalizerProc *finalizerProc);
+//根据时间id，删除时间事件，涉及链表的操作
+int aeDeleteTimeEvent(aeEventLoop *eventLoop, long long id); 
+/* 处理eventLoop中的所有类型事件 */
+int aeProcessEvents(aeEventLoop *eventLoop, int flags); 
+/* 让某事件等待 */
+int aeWait(int fd, int mask, long long milliseconds); 
+/* ae事件执行主程序 */
+void aeMain(aeEventLoop *eventLoop); 
+char *aeGetApiName(void);
+/* 每次eventLoop事件执行完后又重新开始执行时调用 */
+void aeSetBeforeSleepProc(aeEventLoop *eventLoop, aeBeforeSleepProc *beforesleep); 
+/* 获取eventLoop的大小 */
+int aeGetSetSize(aeEventLoop *eventLoop);
+/* EventLoop重新调整大小 */ 
+int aeResizeSetSize(aeEventLoop *eventLoop, int setsize); 
+```
+
+分为两类事件：文件事件(socket可读或可写)和时间事件(定时任务)，redis表示事件循环中的事件封装的结构体是struct aeEventLoop
+
+```cpp
+ae.h
+/* State of an event based program */
+typedef struct aeEventLoop {
+    int maxfd;   /* highest file descriptor currently registered */
+    int setsize; /* max number of file descriptors tracked */
+    long long timeEventNextId;
+    time_t lastTime;     /* Used to detect system clock skew */
+    aeFileEvent *events; /* Registered events */ /*文件事件数组，存储所有注册的文件事件*/
+    aeFiredEvent *fired; /* Fired events */      /*存储被触发的文件事件*/
+    aeTimeEvent *timeEventHead;                  /*事件事件链表的头结点，所有的定时任务存储在该链表中，这是一个无序的链表，因此处理超时事件的复杂度为O(n),这个数据结构可以优化*/
+    int stop;     /*标识时间循环是否结束*/
+    void *apidata; /* This is used for polling API specific data */
+    aeBeforeSleepProc *beforesleep;       /*调用epool_wait阻塞程序之前调用*/
+    aeBeforeSleepProc *aftersleep;        /*阻塞程序之后调用，epoll_wait之后还要处理定时事件，因此epoll_wait阻塞的时间需要关注*/
+    int flags;
+} aeEventLoop;
+```
+
+#### 1.12.2.2. 核心方法main
+
+事件驱动程序的写法一般都是固定：一个死循环，等待事件的发生并处理，处理完开始下一次循环，redis的写法也是如此
+
+aeMain在服务端启动的main中调用
+```cpp
+void aeMain(aeEventLoop *eventLoop) {
+    eventLoop->stop = 0;
+    while (!eventLoop->stop) {
+        aeProcessEvents(eventLoop, AE_ALL_EVENTS|
+                                   AE_CALL_BEFORE_SLEEP|
+                                   AE_CALL_AFTER_SLEEP);
+    }
+}
+```
+
+```cpp
+int aeProcessEvents(aeEventLoop *eventLoop, int flags)
+{
+    aeTimeEvent *shortest = NULL;
+    if (flags & AE_TIME_EVENTS && !(flags & AE_DONT_WAIT))
+            shortest = aeSearchNearestTimer(eventLoop);
+    //...........
+
+    numevents = aeApiPoll(eventLoop, tvp);
+
+    /* After sleep callback. */
+    if (eventLoop->aftersleep != NULL && flags & AE_CALL_AFTER_SLEEP)
+        eventLoop->aftersleep(eventLoop);
+
+    for (j = 0; j < numevents; j++) {
+        //循环处理所有事件
+        aeFileEvent *fe = &eventLoop->events[eventLoop->fired[j].fd];
+        int mask = eventLoop->fired[j].mask;
+        int fd = eventLoop->fired[j].fd;
+        int fired = 0; /* Number of events fired for current fd. */
+
+        /* Normally we execute the readable event first, and the writable
+            * event laster. This is useful as sometimes we may be able
+            * to serve the reply of a query immediately after processing the
+            * query.
+            *
+            * However if AE_BARRIER is set in the mask, our application is
+            * asking us to do the reverse: never fire the writable event
+            * after the readable. In such a case, we invert the calls.
+            * This is useful when, for instance, we want to do things
+            * in the beforeSleep() hook, like fsynching a file to disk,
+            * before replying to a client. */
+        int invert = fe->mask & AE_BARRIER;
+
+        /* Note the "fe->mask & mask & ..." code: maybe an already
+            * processed event removed an element that fired and we still
+            * didn't processed, so we check if the event is still valid.
+            *
+            * Fire the readable event if the call sequence is not
+            * inverted. */
+        if (!invert && fe->mask & mask & AE_READABLE) {
+            //读事件处理，此时clientData还没有数据
+            fe->rfileProc(eventLoop,fd,fe->clientData,mask);
+            fired++;
+            fe = &eventLoop->events[fd]; /* Refresh in case of resize. */
+        }
+
+        /* Fire the writable event. */
+        if (fe->mask & mask & AE_WRITABLE) {
+            //写事件处理
+            if (!fired || fe->wfileProc != fe->rfileProc) {
+                fe->wfileProc(eventLoop,fd,fe->clientData,mask);
+                fired++;
+            }
+        }
+
+        /* If we have to invert the call, fire the readable event now
+            * after the writable one. */
+        if (invert) {
+            fe = &eventLoop->events[fd]; /* Refresh in case of resize. */
+            if ((fe->mask & mask & AE_READABLE) &&
+                (!fired || fe->wfileProc != fe->rfileProc))
+            {
+                fe->rfileProc(eventLoop,fd,fe->clientData,mask);
+                fired++;
+            }
+        }
+
+        processed++;
+    }
+
+    /* Check time events */
+    if (flags & AE_TIME_EVENTS)
+        processed += processTimeEvents(eventLoop);
+
+    return processed; /* return the number of processed file/time events */
+    
+}
+```
+
+aeProcessEvents是redis事件循环的执行函数，该函数的执行流程可以总结为：
+1. 调用aeSearchNearestTimer函数遍历时间事件链表，找到最近要发生的超时事件
+2. 调用aeApiPoll 执行IO多路复用函数(linux下调用epoll)，阻塞等待文件事件的发生。这里需要注意的是，调用aeApiPoll时传的第二个参数是个时间时间结构体aeTimeEvent，这是从时间时间链表中找到的最早的超时时间。该参数有什么用呢? 答案是，调用epoll_wait时需要传入一个超时事件的参数，这个参数表示的意思是阻塞等待的最长时间，如果在该超时时间之内，还没有事件准备就绪的话，epoll_wait就会返回。这里把这个参数设置为最早的超时事件，目的是为了保证定时器的精度，即如果没有文件事件准备就绪的话，最早的超时事件也会被处理。
+3. 回调处理文件事件
+4. 调用processTimeEvents处理时间事件。
+
+
+
+#### 文件事件和时间事件
+
+**文件事件**
+
+redis分为客户端程序和服务器程序，客户端通过TCP socket与服务器连接交互，因此，文件事件指的是socket可读可写事件。socket读写操作分为阻塞和非阻塞模式，redis采用的是非阻塞IO模式。
+
+* 阻塞IO	
+    * 当我们调用套接字的读写方法，默认它们是阻塞的。当用户线程发出IO请求之后，内核会去查看数据是否就绪，如果没有就绪就会等待数据就绪，而用户线程就会处于阻塞状态，用户线程交出CPU。当数据就绪之后，内核会将数据拷贝到用户线程，并返回结果给用户线程，用户线程才解除block状态。
+
+* 非阻塞IO
+    * 用户线程需要不断地询问内核数据是否就绪，也就说非阻塞IO不会交出CPU，而会一直占用CPU。
+    * 非阻塞 IO 在套接字对象上提供了一个选项Non_Blocking，当这个选项打开时，读写方法不会阻塞，而是能读多少读多少，能写多少写多少。能读/写多少取决于内核为套接字分配的读/写缓冲区内部的数据字节数，读方法和写方法都会通过返回值来告知程序实际读写了多少字节。
+
+在非阻塞模式下，可以使用IO多路复用来同时处理多条网络连接。redis会根据不同的操作系统采用不同的多路复用机制，linux上使用的是epoll。
+
+
+aeApiPoll 用于获取就绪事件
+```cpp
+//ae_epoll.c
+
+static int aeApiPoll(aeEventLoop *eventLoop, struct timeval *tvp) {
+    aeApiState *state = eventLoop->apidata;
+    int retval, numevents = 0;
+
+    retval = epoll_wait(state->epfd,state->events,eventLoop->setsize,
+            tvp ? (tvp->tv_sec*1000 + tvp->tv_usec/1000) : -1);
+    if (retval > 0) {
+        //有事件发生
+        int j;
+
+        numevents = retval;
+        for (j = 0; j < numevents; j++) {
+            int mask = 0;
+            struct epoll_event *e = state->events+j;
+
+            if (e->events & EPOLLIN) mask |= AE_READABLE;
+            if (e->events & EPOLLOUT) mask |= AE_WRITABLE;
+            if (e->events & EPOLLERR) mask |= AE_WRITABLE|AE_READABLE;
+            if (e->events & EPOLLHUP) mask |= AE_WRITABLE|AE_READABLE;
+            eventLoop->fired[j].fd = e->data.fd;
+            eventLoop->fired[j].mask = mask;
+        }
+    }
+    return numevents;
+}
+```
+
+
+这是非常标准的也是固定的epoll的写法。函数首先需要通过eventLoop->apidata字段获取epoll模型对应的aeApiState结构体对象，才能调用epoll_wait函数等待事件的发生;epoll_wait函数将已触发的事件存储到aeApiState对象的events字段，Redis再次遍历所有已触发事件，将其封装在eventLoop->fired数组，数组元素类型为结构体aeFiredEvent，只有两个字段，fd表示发生事件的socket文件描述符，mask表示发生的事件类型，如AE_READABLE可读事件和AE_WRITABLE可写事件。
+
+
+
+
+
+**相关知识点**
+
+select事件的模型 
+* 创建所关注的事件的描述符集合（fd_set)，对于一个描述符，可以关注其上面的读(read)、写(write)、异常(exception)事件,所以通常，要创建三个fd_set， 一个用来收集关注读事件的描述符，一个用来收集关注写事件的描述符，另外一个用来收集关注 异常事件的描述符集合。
+* 轮询所有fd_set中的每一个fd ，检查是否有相应的事件发生，如果有，就进行处理。
+    
+poll和上面的区别是可以复用文件描述符，上面对一个文件需要轮询3个文件描述符集合，而poll只需要一个，效率更高
+
+epoll是poll的升级版本，把描述符列表交给内核，一旦有事件发生，内核把发生事件的描述符列表通知给进程，这样就避免了轮询整个描述符列表。效率极大提高 
+
+
+**int epoll_wait(int epfd, struct epoll_event * events, int maxevents, int timeout);**
+等待事件的产生，类似于select()调用。参数events用来从内核得到事件的集合，maxevents告之内核这个events有多大，这个 maxevents的值不能大于创建epoll_create()时的size，参数timeout是超时时间（毫秒，0会立即返回，-1将不确定，也有说法说是永久阻塞）。该函数返回需要处理的事件数目，如返回0表示已超时。如果返回–1，则表示出现错误，需要检查 errno错误码判断错误类型。
+* 第1个参数 epfd是 epoll的描述符。
+* 第2个参数 events则是分配好的 epoll_event结构体数组，epoll将会把发生的事件复制到 events数组中（events不可以是空指针，内核只负责把数据复制到这个 events数组中，不会去帮助我们在用户态中分配内存。内核这种做法效率很高）。
+* 第3个参数 maxevents表示本次可以返回的最大事件数目，通常 maxevents参数与预分配的events数组的大小是相等的。
+* 第4个参数 timeout表示在没有检测到事件发生时最多等待的时间（单位为毫秒），如果 timeout为0，则表示 epoll_wait在 rdllist链表中为空，立刻返回，不会等待。
+
+
+### 1.12.3. 客户端请求处理
+<a href="#menu" >目录</a>
+
+redis服务端的main程序在server.c中
+
+```cpp
+void main(){
+
+    ...
+    if (!server.sentinel_mode) {
+        InitServerLast();
+    }else {
+        InitServerLast();
+        sentinelIsRunning();
+    }
+    ...
+}
+```
+线程初始化
+```cpp
+void InitServerLast() {
+    //Initialize the background system, spawning the thread.
+    bioInit();
+    //io线程初始化
+    //Initialize the data structures needed for threaded I/O.
+    initThreadedIO();
+    set_jemalloc_bg_thread(server.jemalloc_bg_thread);
+    server.initial_memory_usage = zmalloc_used_memory();
+}
+```
+
+```cpp
+void initThreadedIO(void) {
+    io_threads_active = 0; /* We start with threads not active. */
+
+    /* Don't spawn any thread if the user selected a single thread:
+     * we'll handle I/O directly from the main thread. */
+    if (server.io_threads_num == 1) return;
+
+    if (server.io_threads_num > IO_THREADS_MAX_NUM) {
+        serverLog(LL_WARNING,"Fatal: too many I/O threads configured. "
+                             "The maximum number is %d.", IO_THREADS_MAX_NUM);
+        exit(1);
+    }
+
+    /* Spawn and initialize the I/O threads. */
+    //根据配置的线程数初始化,配置文件中可以配置线程数目
+    for (int i = 0; i < server.io_threads_num; i++) {
+        /* Things we do for all the threads including the main thread. */
+        io_threads_list[i] = listCreate();
+        if (i == 0) continue; /* Thread 0 is the main thread. */
+
+        /* Things we do only for the additional threads. */
+        pthread_t tid;
+        pthread_mutex_init(&io_threads_mutex[i],NULL);
+        io_threads_pending[i] = 0;
+        pthread_mutex_lock(&io_threads_mutex[i]); /* Thread will be stopped. */
+        //线程启动之后，会执行方法IOThreadMain
+        if (pthread_create(&tid,NULL,IOThreadMain,(void*)(long)i) != 0) {
+            serverLog(LL_WARNING,"Fatal: Can't initialize IO thread.");
+            exit(1);
+        }
+        io_threads[i] = tid;
+    }
+}
+```
+
+IOThreadMain便是io线程运行的线程代码
+```cpp
+//networking.c
+void *IOThreadMain(void *myid) {
+    /* The ID is the thread number (from 0 to server.iothreads_num-1), and is
+     * used by the thread to just manipulate a single sub-array of clients. */
+    long id = (unsigned long)myid;
+    char thdname[16];
+
+    snprintf(thdname, sizeof(thdname), "io_thd_%ld", id);
+    redis_set_thread_title(thdname);
+    redisSetCpuAffinity(server.server_cpulist);
+
+    while(1) {
+        /* Wait for start */
+        for (int j = 0; j < 1000000; j++) {
+            if (io_threads_pending[id] != 0) break;
+        }
+
+        /* Give the main thread a chance to stop this thread. */
+        if (io_threads_pending[id] == 0) {
+            pthread_mutex_lock(&io_threads_mutex[id]);
+            pthread_mutex_unlock(&io_threads_mutex[id]);
+            continue;
+        }
+
+        serverAssert(io_threads_pending[id] != 0);
+
+        if (tio_debug) printf("[%ld] %d to handle\n", id, (int)listLength(io_threads_list[id]));
+
+        /* Process: note that the main thread will never touch our list
+         * before we drop the pending count to 0. */
+        listIter li;
+        listNode *ln;
+        listRewind(io_threads_list[id],&li);
+        while((ln = listNext(&li))) {
+            client *c = listNodeValue(ln);
+            //写事件
+            if (io_threads_op == IO_THREADS_OP_WRITE) {
+                //写处理
+                writeToClient(c,0);
+            }
+            //读事件 
+            else if (io_threads_op == IO_THREADS_OP_READ) {
+                readQueryFromClient(c->conn);
+            } else {
+                serverPanic("io_threads_op value is unknown");
+            }
+        }
+        listEmpty(io_threads_list[id]);
+        io_threads_pending[id] = 0;
+
+        if (tio_debug) printf("[%ld] Done\n", id);
+    }
+}
+```
+
+io_threads_list用于存放客户端的请求信息。
+
+```cpp
+
+void readQueryFromClient(connection *conn) {
+    client *c = connGetPrivateData(conn);
+    int nread, readlen;
+    size_t qblen;
+
+    /* Check if we want to read from the client later when exiting from
+     * the event loop. This is the case if threaded I/O is enabled. */
+    if (postponeClientRead(c)) return;
+
+    readlen = PROTO_IOBUF_LEN;
+    /* If this is a multi bulk request, and we are processing a bulk reply
+     * that is large enough, try to maximize the probability that the query
+     * buffer contains exactly the SDS string representing the object, even
+     * at the risk of requiring more read(2) calls. This way the function
+     * processMultiBulkBuffer() can avoid copying buffers to create the
+     * Redis Object representing the argument. */
+    if (c->reqtype == PROTO_REQ_MULTIBULK && c->multibulklen && c->bulklen != -1
+        && c->bulklen >= PROTO_MBULK_BIG_ARG)
+    {
+        ssize_t remaining = (size_t)(c->bulklen+2)-sdslen(c->querybuf);
+
+        /* Note that the 'remaining' variable may be zero in some edge case,
+         * for example once we resume a blocked client after CLIENT PAUSE. */
+        if (remaining > 0 && remaining < readlen) readlen = remaining;
+    }
+
+    qblen = sdslen(c->querybuf);
+    if (c->querybuf_peak < qblen) c->querybuf_peak = qblen;
+    c->querybuf = sdsMakeRoomFor(c->querybuf, readlen);
+    nread = connRead(c->conn, c->querybuf+qblen, readlen);
+    if (nread == -1) {
+        if (connGetState(conn) == CONN_STATE_CONNECTED) {
+            return;
+        } else {
+            serverLog(LL_VERBOSE, "Reading from client: %s",connGetLastError(c->conn));
+            freeClientAsync(c);
+            return;
+        }
+    } else if (nread == 0) {
+        serverLog(LL_VERBOSE, "Client closed connection");
+        freeClientAsync(c);
+        return;
+    } else if (c->flags & CLIENT_MASTER) {
+        /* Append the query buffer to the pending (not applied) buffer
+         * of the master. We'll use this buffer later in order to have a
+         * copy of the string applied by the last command executed. */
+        c->pending_querybuf = sdscatlen(c->pending_querybuf,
+                                        c->querybuf+qblen,nread);
+    }
+
+    sdsIncrLen(c->querybuf,nread);
+    c->lastinteraction = server.unixtime;
+    if (c->flags & CLIENT_MASTER) c->read_reploff += nread;
+    server.stat_net_input_bytes += nread;
+    if (sdslen(c->querybuf) > server.client_max_querybuf_len) {
+        sds ci = catClientInfoString(sdsempty(),c), bytes = sdsempty();
+
+        bytes = sdscatrepr(bytes,c->querybuf,64);
+        serverLog(LL_WARNING,"Closing client that reached max query buffer length: %s (qbuf initial bytes: %s)", ci, bytes);
+        sdsfree(ci);
+        sdsfree(bytes);
+        freeClientAsync(c);
+        return;
+    }
+
+    /* There is more data in the client input buffer, continue parsing it
+     * in case to check if there is a full command to execute. */
+     processInputBuffer(c);
+}
+```
+
+
+
+### 1.12.4. 阻塞问题
 
 <a href="#menu"  >目录</a> 
 
@@ -8577,15 +9314,15 @@ Redis是典型的单线程架构，所有的读写操作都是在⼀条主线程
 * 内在原因包括：不合理地使⽤API或数据结构、CPU饱和、持久化阻塞等。
 * 外在原因包括：CPU竞争、内存交换、⽹络问题等。
 
-#### 1.12.2.1. 发现阻塞
+#### 1.12.4.1. 发现阻塞
 
 当Redis阻塞时，线上应⽤服务应该最先感知到，这时应⽤⽅会收到⼤量Redis超时异常，⽐如Jedis客户端会抛出JedisConnectionException异常。常⻅的做法是在应⽤⽅加⼊异常统计并通过邮件/短信/微信报警，以便及时发现通知问题。开发⼈员需要处理如何统计异常以及触发报警的时机。何时触发报警⼀般根据应⽤的并发量决定，如1分钟内超过10个异常触发报警。在实现异常统计时要注意，由于Redis调⽤API会分散在项⽬的多个地⽅，每个地⽅都监听异常并加⼊监控代码必然难以维护。这时可以借助于⽇志系统，如Java语⾔可以使⽤logback或log4j。当异常发⽣时，异常信息最终会被⽇志系统收集到Appender（输出⽬的地），默认的
 Appender⼀般是具体的⽇志⽂件，开发⼈员可以⾃定义⼀个Appender，⽤于专门统计异常和触发报警逻辑除了在应⽤⽅加⼊统计报警逻辑之外，还可以借助Redis监控系统发现阻塞问题，当监控系统检测到Redis运⾏期的⼀些关键指标出现不正常时会触发报警。监控系统所监控的关键指标有很多，如命令耗时、慢查询、持久化阻塞、连接拒绝、CPU/内存/⽹络/磁盘使⽤过载等。
 
-#### 1.12.2.2. 内在原因
+#### 1.12.4.2. 内在原因
 
 
-##### 1.12.2.2.1. API使⽤不合理
+##### 1.12.4.2.1. API使⽤不合理
 
 
 API使⽤不合理导致慢查询。
@@ -8640,14 +9377,14 @@ Biggest hash found 'pcl:3650040409957394505' has 209 fields
 ```
 
 
-##### 1.12.2.2.2. CPU饱和
+##### 1.12.4.2.2. CPU饱和
 
 
 单线程的Redis处理命令时只能使⽤⼀个CPU。⽽CPU饱和是指Redis把单核CPU使⽤率跑到接近100%。使⽤top命令很容易识别出对应Redis进程的CPU使⽤率。
 
 对于这种情况，垂直层⾯的命令优化很难达到效果，这时就需要做集群化⽔平扩展来分摊OPS压⼒。如果只有⼏百或⼏千OPS的Redis实例就接近CPU饱和是很不正常的，有可能使⽤了⾼算法复杂度的命令。还有⼀种情况是过度的内存优化，这种情况有些隐蔽，需要我们根据infocommandstats统计信息分析出命令不合理开销时间
 
-##### 1.12.2.2.3. 持久化阻塞
+##### 1.12.4.2.3. 持久化阻塞
 
 对于开启了持久化功能的Redis节点，需要排查是否是持久化导致的阻塞。持久化引起主线程阻塞的操作主要有：fork阻塞、AOF刷盘阻塞、HugePage写操作阻塞
 
@@ -8670,10 +9407,10 @@ latest_fork_usec指标，表⽰Redis最近⼀次fork操作耗时，如果耗时�
 
 ⼦进程在执⾏重写期间利⽤Linux写时复制技术降低内存开销，因此只有写操作时Redis才复制要修改的内存⻚。对于开启Transparent HugePages的操作系统，每次写命令引起的复制内存⻚单位由4K变为2MB，放⼤了512倍，会拖慢写操作的执⾏时间，导致⼤量写操作慢查询。例如简单的incr命令也会出现在慢查询中
 
-#### 1.12.2.3. 外在原因
+#### 1.12.4.3. 外在原因
 
 
-##### 1.12.2.3.1. CPU竞争
+##### 1.12.4.3.1. CPU竞争
 
 
 CPU竞争问题如下：
@@ -8683,7 +9420,7 @@ CPU竞争问题如下：
 当Redis⽗进程创建⼦进程进⾏RDB/AOF重写时，如果做了CPU绑定，会与⽗进程共享使⽤⼀个CPU。⼦进程重写时对单核CPU使⽤率通常在90%以上，⽗进程与⼦进程将产⽣激烈CPU竞争，极⼤影响Redis稳定性。因此对于开启了持久化或参与复制的主节点不建议绑定CPU。
 
 
-##### 1.12.2.3.2. 内存交换
+##### 1.12.4.3.2. 内存交换
 
 内存交换（swap）对于Redis来说是⾮常致命的，Redis保证⾼性能的⼀个重要前提是所有的数据在内存中。
 如果操作系统把Redis使⽤的部分内存换出到硬盘，由于内存与硬盘读写速度差⼏个数量级，会导致发⽣交换后的Redis性能急剧下降
@@ -8700,7 +9437,7 @@ Swap:	0 kB
 * 降低系统使⽤swap优先级，如echo10>/proc/sys/vm/swappiness
 
 
-##### 1.12.2.3.3. ⽹络问题
+##### 1.12.4.3.3. ⽹络问题
 
 
 ⽹络问题经常是引起Redis阻塞的问题点。常⻅的⽹络问题主要有：连接拒绝、⽹络延迟、⽹卡软中断等。
@@ -8738,7 +9475,6 @@ Redis⽤于⼤量分布式节点访问且⽣命周期⽐较短的场景时，如
 
 ⽹卡软中断是指由于单个⽹卡队列只能使⽤⼀个CPU，⾼并发下⽹卡数据交互都集中在同⼀个CPU，导致⽆法充分利⽤多核CPU的情况。⽹卡软中断瓶颈⼀般出现在⽹络⾼流量吞吐的场景，如下使⽤“top+数字1”命令可以很明显看到CPU1的软中断指标（si）过⾼：
 
-### 1.12.3. 时间驱动机制
 
 
 ## 1.13. 慢查询⽇志
