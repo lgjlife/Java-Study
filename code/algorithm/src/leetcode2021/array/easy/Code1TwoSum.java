@@ -1,4 +1,4 @@
-package leetcode2021.array;
+package leetcode2021.array.easy;
 
 import java.util.Arrays;
 import java.util.HashMap;
