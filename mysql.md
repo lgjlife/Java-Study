@@ -1759,8 +1759,7 @@ limit start,count --初始偏移量是０，单个参数　limit 0,n 等价于�
     * 升序: asc 默认值
     * 降序: desc
 * 使用时遵循的顺序
-    * SELECT-->FROM-->WHERE-->GROUP BY-->HAVING-->ORDER BY-->LIMIT
-
+    * SELECT-->FROM-->WHERE-->GROUP BY-->HAVING-->ORDER BY-->LIMI
 **正则匹配**
 |字符|描述|实例|
 |---|---|---|
