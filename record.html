@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>record.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h2>笔记统计</h2>
+<p>总页数:
+[2528]</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>笔记页数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>基本知识</td>
+<td>160.</td>
+</tr>
+<tr>
+<td>计算机基础</td>
+<td>83.</td>
+</tr>
+<tr>
+<td>计算机网络</td>
+<td>96.</td>
+</tr>
+<tr>
+<td>数据结构和算法</td>
+<td>70.</td>
+</tr>
+<tr>
+<td>Java</td>
+<td>195.</td>
+</tr>
+<tr>
+<td>多线程</td>
+<td>150.</td>
+</tr>
+<tr>
+<td>性能优化</td>
+<td>162.</td>
+</tr>
+<tr>
+<td>spring</td>
+<td>314.</td>
+</tr>
+<tr>
+<td>mysql</td>
+<td>217.</td>
+</tr>
+<tr>
+<td>mybatis</td>
+<td>93.</td>
+</tr>
+<tr>
+<td>MongoDB</td>
+<td>17.</td>
+</tr>
+<tr>
+<td>redis</td>
+<td>242.</td>
+</tr>
+<tr>
+<td>web容器</td>
+<td>27.</td>
+</tr>
+<tr>
+<td>zookeeper</td>
+<td>81.</td>
+</tr>
+<tr>
+<td>Kafka</td>
+<td>30.</td>
+</tr>
+<tr>
+<td>RocketMQ</td>
+<td>63.</td>
+</tr>
+<tr>
+<td>RabbitMQ</td>
+<td>86.</td>
+</tr>
+<tr>
+<td>netty</td>
+<td>133.</td>
+</tr>
+<tr>
+<td>nginx</td>
+<td>69.</td>
+</tr>
+<tr>
+<td>分布式</td>
+<td>99.</td>
+</tr>
+<tr>
+<td>高并发</td>
+<td>80.</td>
+</tr>
+<tr>
+<td>搜索elasticsearch</td>
+<td>23.</td>
+</tr>
+<tr>
+<td>分布式存储</td>
+<td>27.</td>
+</tr>
+<tr>
+<td>web安全</td>
+<td>11.</td>
+</tr>
+</tbody>
+</table>
+<h2>阅读统计</h2>
+(7/254)
+<ul>
+<li>计算机基础
+<ul>
+<li>正则表达式必知必会<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img></li>
+<li>精通正则表达式</li>
+<li>计算机程序的构造和解释</li>
+<li>深入理解计算机系统（第三版）</li>
+<li>编译原理及实践</li>
+<li>编译原理</li>
+</ul>
+</li>
+<li>操作系统
+<ul>
+<li>Linux命令行与shell脚本编程大全.第3版</li>
+<li>《鸟哥的Linux私房菜-基础篇》第四版</li>
+<li>操作系统原理及应用</li>
+<li>现代操作系统  原书第4版</li>
+<li>操作系统设计与实现 第3版 上</li>
+<li>计算机操作系统第三版</li>
+<li>操作系统</li>
+<li>UNIX技术内幕</li>
+<li>深入理解Linux内核-第3版</li>
+<li>Unix编程艺术</li>
+<li>Unix网络编程第2版(1+2卷)</li>
+<li>图解系统</li>
+<li>Linux 系列汇总</li>
+<li>30天自制操作系统</li>
+<li>Linux内核设计与实现（原书第3版）</li>
+</ul>
+</li>
+<li>计算机网络
+<ul>
+<li>计算机网络-谢希仁</li>
+<li>HTTP权威指南</li>
+<li>Linux多线程服务端编程</li>
+<li>Linux网络编程</li>
+<li>Linux高性能服务器编程</li>
+<li>TCPIP入门经典</li>
+<li>TCPIP网络编程</li>
+<li>TCPIP网络编程技术基础.王雷</li>
+<li>TCP IP详解卷1：协议 原书第2版</li>
+<li>TCP-IP详解卷2：实现</li>
+<li>TCP-IP详解卷3：TCP事务协议</li>
+<li>UNIX网络编程卷1：套接字联网API</li>
+<li>图解HTTP</li>
+<li>图解TCP_IP</li>
+<li>图解网络</li>
+<li>深入浅出 HTTPS从原理到实战</li>
+<li>一本书读懂TCP_IP</li>
+<li>网络是怎样连接的 户根勤</li>
+<li>计算机网络教程：自顶向下方法</li>
+</ul>
+</li>
+<li>数据结构和算法
+<ul>
+<li>数据结构与算法 Java版</li>
+<li>大话数据结构</li>
+<li>Java数据结构和算法.（第二版）</li>
+<li>labuladong的算法小抄（修订）</li>
+<li>剑指OFFER  名企面试官精讲典型编程题  第2版</li>
+<li>啊哈！算法.啊哈磊</li>
+<li>程序员代码面试指南 IT名企算法与数据结构题目最优解 ,左程云著</li>
+<li>算法图解</li>
+<li>算法导论（第三版）</li>
+<li>算法．第1卷，基础、数据结构、排序和搜索（第三版）</li>
+<li>算法（第4版）</li>
+<li>背包九讲</li>
+</ul>
+</li>
+<li>代码管理＆项目构建
+<ul>
+<li>Maven实战</li>
+<li>Git权威指南</li>
+<li>GitHub从入门到精通<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img></li>
+</ul>
+</li>
+<li>数据库
+<ul>
+<li>数据库原理-第5版</li>
+<li>Effective MySQL之SQL语句最优化</li>
+<li>MySQL从入门到精通</li>
+<li>sql学习指南</li>
+<li>SQL必知必会 第4版</li>
+<li>MySQL必知必会（文字版）_推荐</li>
+<li>MySQL数据库应用从入门到精通 第2版</li>
+<li>MySQL性能调优与架构设计</li>
+<li>MySQL技术内幕  InnoDB存储引擎  第2版</li>
+<li>MySQL高可用架构设计</li>
+<li>SQL优化实战技巧</li>
+<li>SQL优化最佳实践 构建高效率Oracle数据库的方法与技巧</li>
+<li>收获，不止SQL优化--抓住SQL的本质</li>
+<li>数据库索引设计与优化</li>
+<li>深入浅出MySQL数据库开发优化与管理维护</li>
+<li>高性能mysql第三版</li>
+</ul>
+</li>
+<li>软件工程
+<ul>
+<li>代码整洁之道</li>
+<li>敏捷技能修炼-敏捷软件开发与设计的最佳实践</li>
+<li>敏捷软件开发—原则、模式与实践</li>
+<li>敏捷软件开发：原则、模式与实践HD</li>
+<li>程序员的职业素养</li>
+<li>软件技术职业选择之道</li>
+<li>软件架构师的12项修炼</li>
+<li>重构_改善既有代码的设计</li>
+<li>阿里工程师的自我修养</li>
+<li>高效程序员的45个习惯：敏捷开发修炼之道</li>
+</ul>
+</li>
+<li>Java基础
+<ul>
+<li>疯狂Java讲义</li>
+<li>Java编程思想</li>
+<li>Java核心卷1</li>
+<li>Java核心卷2</li>
+<li>Effective+Java</li>
+<li>Java 8实战</li>
+<li>Java开发实例大全 基础卷</li>
+<li>Java程序员的基本修养</li>
+<li>面向对象葵花宝典  思想、技巧与实践</li>
+</ul>
+</li>
+<li>mybatis
+<ul>
+<li>MyBatis从入门到精通<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img></li>
+<li>MyBatis技术内幕<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img></li>
+<li>Spring+Mybatis企业应用实战<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img></li>
+<li>深入浅出MyBatis技术原理与实战<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img></li>
+</ul>
+</li>
+<li>Java编程规范
+<ul>
+<li>Java语言编码规范<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img></li>
+<li>Java灵魂15问</li>
+<li>阿里巴巴Java开发手册(终极版)</li>
+</ul>
+</li>
+<li>进程线程
+<ul>
+<li>Java多线程编程实战指南-核心篇</li>
+<li>Java多线程编程实战指南+设计模式篇</li>
+<li>Java多线程编程核心技术</li>
+<li>Java并发编程从入门到精通</li>
+<li>Java 并发编程实战</li>
+<li>JAVA并发编程实践（中文）</li>
+<li>Java并发编程的艺术</li>
+<li>Java线程</li>
+<li>Java高并发编程详解</li>
+<li>Java高并发编程详解</li>
+<li>深入浅出 Java 多线程</li>
+</ul>
+</li>
+<li>设计模式
+<ul>
+<li>Java与模式</li>
+<li>Java设计模式</li>
+<li>Java设计模式深入研究</li>
+<li>大话设计模式</li>
+<li>研磨设计模式</li>
+<li>设计模式之禅</li>
+</ul>
+</li>
+<li>JavaWeb
+<ul>
+<li>How Tomcat Works 中文版</li>
+<li>Java RESTful Web Service实战 第2版</li>
+<li>servlet-3_1-final</li>
+<li>《Tomcat与Java Web开发技术详解(第2版)》.(孙卫琴)</li>
+<li>tomcat架构解析</li>
+<li>tomcat内核设计剖析</li>
+<li>深入分析Java  Web技术内幕</li>
+</ul>
+</li>
+<li>JVM和性能优化
+<ul>
+<li>深入JAVA虚拟机第三版</li>
+<li>jvms15</li>
+<li>JVM与性能优化知识点整理</li>
+<li>实战JAVA虚拟机  JVM故障诊断与性能优化</li>
+<li>Java Performance- The Definitive Guide</li>
+<li>JAVA优化编程</li>
+<li>《Java性能优化权威指南》.((美)</li>
+<li>Java性能权威指南</li>
+<li>Java性能调优指南</li>
+<li>Java程序性能优化</li>
+<li>JVM调优总结</li>
+</ul>
+</li>
+<li>高并发
+<ul>
+<li>Java高并发编程详解</li>
+<li>亿级流量网站架构核心技术 跟开涛学搭建高可用高并发系统</li>
+<li>从零开始学架构：照着做，你也能成为架构师</li>
+<li>分布式JAVA应用 基础与实践</li>
+<li>大型分布式网站架构设计与实践</li>
+<li>大型网站技术架构演进与性能优化</li>
+<li>大型网站系统与Java中间件实践</li>
+<li>大规模分布式存储系统：原理解析与架构实战.杨传辉</li>
+<li>架构探险：从零开始写分布式服务架构</li>
+<li>核心原理与案例分析</li>
+<li>淘宝技术发展</li>
+</ul>
+</li>
+<li>Dubbo
+<ul>
+<li>深入剖析Dubbo核心技内幕</li>
+<li>深入理解Apache Dubbo与实战</li>
+</ul>
+</li>
+<li>搜索
+<ul>
+<li>Elasticsearch权威指南（中文版）</li>
+<li>深入理解ElasticSearch  原书第2版</li>
+<li>Elasticsearch服务器开发（第2版）</li>
+<li>Elasticsearch技术解析与实战</li>
+<li>Elasticsearch大数据搜索引擎</li>
+<li>Elasticsearch 八大经典应用</li>
+<li>Elasticsearch 全观测技术解析与应用</li>
+</ul>
+</li>
+<li>Ｍongodb
+<ul>
+<li>MongoDB权威指南（第2版）</li>
+</ul>
+</li>
+<li>netty
+<ul>
+<li>Java IO, NIO and NIO.2(Apress,2015)</li>
+<li>Java+NIO+中文版</li>
+<li>NIO与Socket编程技术指南</li>
+<li>JAVA网络编程 第4版</li>
+<li>《Netty_in_Action》第五版</li>
+<li>Netty权威指南 第2版</li>
+<li>《Netty进阶之路 跟着案例学Netty》_李林锋</li>
+</ul>
+</li>
+<li>nginx
+<ul>
+<li>Nginx实战</li>
+<li>Nginx高性能Web服务器实战教程</li>
+<li>Nginx高性能Web服务器详解</li>
+<li>深入理解Nginx模块开发与架构解析第2版</li>
+<li>精通Nginx（第2版）</li>
+</ul>
+</li>
+<li>redis
+<ul>
+<li>Redis入门指南</li>
+<li>Redis实战</li>
+<li>Redis实战 Josiah</li>
+<li>Redis开发与运维(付磊)</li>
+<li>Redis深度历险：核心原理和应用实践</li>
+<li>redis设计与实现</li>
+</ul>
+</li>
+<li>shiro
+<ul>
+<li>跟我学Shiro教程</li>
+<li>Apache_Shiro_reference(中文版)</li>
+</ul>
+</li>
+<li>spring
+<ul>
+<li>Spring入门经典</li>
+<li>Spring实战（第4版）</li>
+<li>SPRING技术内幕：深入解析SPRING架构与设计原理</li>
+<li>spring揭秘</li>
+<li>精通Spring MVC 4</li>
+<li>Spring源码深度解析</li>
+<li>看透Spring MVC源代码分析与实践</li>
+<li>精通Spring+4.x++企业应用开发实战</li>
+<li>Spring Boot实战</li>
+<li>深入实践Spring+Boot.陈韶健</li>
+<li>Spring Cloud与Docker高并发微服务架构设计实施</li>
+<li>SpringCloud参考指南</li>
+<li>Spring Cloud微服务实战</li>
+<li>深入理解Spring Cloud与微服务构建</li>
+<li>深入理解Spring+Cloud与微服务构建</li>
+</ul>
+</li>
+<li>web安全
+<ul>
+<li>Java加密与解密的艺术</li>
+<li>图解密码技术</li>
+<li>经典密码学与现代密码学</li>
+<li>白帽子讲WEB安全</li>
+<li>Web安全深度剖析</li>
+</ul>
+</li>
+<li>zookpeer
+<ul>
+<li>ZooKeeper-分布式过程协同技术详解</li>
+<li>从Paxos到Zookeeper  分布式一致性原理与实践</li>
+</ul>
+</li>
+<li>分布式&amp;微服务
+<ul>
+<li>raft</li>
+<li>分布式事务专题-v1.1</li>
+<li>分布式服务架构.原理、设计与实战</li>
+<li>分布式系统常用技术及案例分析</li>
+<li>分布式系统概念与设计 原书第5版</li>
+<li>轻量级微服务架构(下册)</li>
+<li>高可用架构  第1卷</li>
+</ul>
+</li>
+<li>单元测试
+<ul>
+<li>单元测试之道Java版</li>
+</ul>
+</li>
+<li>架构
+<ul>
+<li>OReilly.Designing.Data-Intensive.Applications</li>
+<li>一线架构师实践指南</li>
+<li>企业IT架构转型之道</li>
+<li>分布式系统架构落地与瓶颈突破</li>
+<li>分布式服务框架原理与实践_李林锋著</li>
+<li>分布式系统概念与设计 原书第5版</li>
+<li>可伸缩服务架构：框架与中间件</li>
+<li>大规模分布式存储系统原理解析与架构实践</li>
+<li>大规模分布式系统架构与设计实战.完整版-4</li>
+<li>微服务架构设计模式</li>
+<li>微服务那些事儿.纪晓峰</li>
+<li>持续演进的Cloud Native-云原生架构下微服务最佳实践</li>
+<li>数据密集型应用系统设计（中文版书）</li>
+<li>架构解密-从分布式到微服务</li>
+<li>淘系分发体系全面拆解</li>
+<li>深入分布式缓存 从原理到实践</li>
+<li>可伸缩架构：面向增长应用的高可用</li>
+<li>高可用架构·不一样的数据库第2期</li>
+<li>高扩展网站性能的50条原则</li>
+</ul>
+</li>
+<li>消息中间件
+<ul>
+<li>JMS教程</li>
+<li>RocketMQ实战与原理解析</li>
+<li>RocketMQ技术内幕</li>
+<li>RabbitMQ实战指南</li>
+<li>RabbitMQ实战  高效部署分布式消息队列</li>
+<li>Kafka入门与实践</li>
+<li>Kafka权威指南</li>
+<li>Kafka源码解析与实战</li>
+<li>Apache Kafka源码剖析</li>
+</ul>
+</li>
+<li>系统设计</li>
+<li>应用发布
+<ul>
+<li>第一本DOCKER书</li>
+<li>Docker实战</li>
+<li>Docker 容器与容器云（第2版）</li>
+<li>Docker容器技术与应用</li>
+<li>Docker开发实践</li>
+<li>Docker开发指南</li>
+<li>没什么难的Docker入门与开发实战</li>
+<li>Docker技术入门与实战</li>
+<li>Jenkins权威指南</li>
+<li>K8S(kubernetes)学习指南</li>
+<li>Kubernetes in Action中文版</li>
+<li>Kubernetes权威指南：从Docker到Kubernetes实践全接触-龚正，吴治辉，王伟 等</li>
+<li>pen Stack设计与实现_英特尔开源技术中心编著_北京：电子工业出版</li>
+<li>深入浅出Kubernetes</li>
+<li>阿里巴巴 DevOps 实践手册</li>
+</ul>
+</li>
+<li>大数据
+<ul>
+<li>HADOOP实战</li>
+<li>Hadoop权威指南.大数据的存储与分析</li>
+<li>大数据技术原理与应用 概念、存储、处理、分析与应用</li>
+</ul>
+</li>
+<li>领域驱动设计
+<ul>
+<li>领域驱动设计：软件核心复杂性应对之道（修订版）</li>
+<li>领域驱动设计模式、原理与实践</li>
+<li>领域驱动设计与模式实战</li>
+<li>实现领域驱动设计 （美）弗农著</li>
+<li>SEI的项目管理、人际沟通和团队协作要诀</li>
+</ul>
+</li>
+</ul>
+
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config"> MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
+
+</body>
+</html>
