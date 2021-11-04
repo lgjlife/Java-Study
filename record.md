@@ -93,7 +93,7 @@
     * 背包九讲
 * 代码管理＆项目构建
     * Maven实战
-    * Git权威指南
+    * Git权威指南<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
     * GitHub从入门到精通<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
 * 数据库
     * 数据库原理-第5版
