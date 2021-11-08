@@ -2,10 +2,10 @@
 <h2>笔记统计</h2>
 
 总页数: 
-[2528]
+[2563]
 |类别|笔记页数|
 |---|---|
-|基本知识|144.
+|基本知识|188.
 |计算机基础	|83.
 |计算机网络	|96.
 |数据结构和算法	|70.
@@ -23,7 +23,7 @@
 |RocketMQ	|63.
 |RabbitMQ	|86.
 |netty	|133.
-|nginx	|69.
+|nginx	|76.
 |分布式	|99.
 |高并发	|80.
 |搜索elasticsearch	|23.
@@ -32,7 +32,7 @@
 
 
 <h2>阅读统计</h2>
-(7/254)
+(25/254)
 
 
 * 计算机基础
@@ -92,7 +92,7 @@
     * 算法（第4版）
     * 背包九讲
 * 代码管理＆项目构建
-    * Maven实战
+    * Maven实战<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
     * Git权威指南<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
     * GitHub从入门到精通<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
 * 数据库
@@ -113,15 +113,14 @@
     * 深入浅出MySQL数据库开发优化与管理维护
     * 高性能mysql第三版
 * 软件工程
-    * 代码整洁之道 
+    * 代码整洁之道－一般 <img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
     * 敏捷技能修炼-敏捷软件开发与设计的最佳实践
-    * 敏捷软件开发—原则、模式与实践
-    * 敏捷软件开发：原则、模式与实践HD
-    * 程序员的职业素养
-    * 软件技术职业选择之道
-    * 软件架构师的12项修炼
+    * 敏捷软件开发：原则、模式与实践HD　
+    * 程序员的职业素养－一般　<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
+    * 软件技术职业选择之道－一般 <img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
+    * 软件架构师的12项修炼－一般<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
     * 重构_改善既有代码的设计
-    * 阿里工程师的自我修养
+    * 阿里工程师的自我修养－还行<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
     * 高效程序员的45个习惯：敏捷开发修炼之道
 * Java基础
     * 疯狂Java讲义
@@ -239,8 +238,8 @@
     * Spring源码深度解析
     * 看透Spring MVC源代码分析与实践 
     * 精通Spring+4.x++企业应用开发实战
-    * Spring Boot实战  
-    * 深入实践Spring+Boot.陈韶健
+    * Spring Boot实战  <img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
+    * 深入实践Spring+Boot.陈韶健 <img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
     * Spring Cloud与Docker高并发微服务架构设计实施
     * SpringCloud参考指南
     * Spring Cloud微服务实战
@@ -264,7 +263,7 @@
     * 轻量级微服务架构(下册)
     * 高可用架构  第1卷
 * 单元测试
-    * 单元测试之道Java版
+    * 单元测试之道Java版 <img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
 * 架构
     * OReilly.Designing.Data-Intensive.Applications
     * 一线架构师实践指南
@@ -297,14 +296,15 @@
     * Apache Kafka源码剖析
 * 系统设计
 * 应用发布
-    * 第一本DOCKER书
-    * Docker实战
-    * Docker 容器与容器云（第2版）
-    * Docker容器技术与应用
-    * Docker开发实践
-    * Docker开发指南
-    * 没什么难的Docker入门与开发实战
-    * Docker技术入门与实战
+    * 第一本DOCKER书<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
+    * Docker实战　<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
+    * Docker 容器与容器云（第2版）<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
+    * Docker容器技术与应用<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
+    * Docker开发实践<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
+    * Docker开发指南<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
+    * 没什么难的Docker入门与开发实战<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
+    * Docker技术入门与实战<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
+    * Docker安全部分待看
     * Jenkins权威指南
     * K8S(kubernetes)学习指南
     * Kubernetes in Action中文版
