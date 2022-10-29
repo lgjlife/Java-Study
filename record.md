@@ -2,37 +2,37 @@
 <h2>笔记统计</h2>
 
 总页数: 
-[2563]
-|类别|笔记页数|
-|---|---|
-|基本知识|188.
-|计算机基础	|83.
-|计算机网络	|96.
-|数据结构和算法	|70.
-|Java	|195.
-|多线程	|150.
-|性能优化	|162.
-|spring	|314.
-|mysql	|217.
-|mybatis	|93.
-|MongoDB	|17.
-|redis	|242.
-|web容器	|27.
-|zookeeper	|81.
-|Kafka	|30.
-|RocketMQ	|63.
-|RabbitMQ	|86.
-|netty	|133.
-|nginx	|76.
-|分布式	|99.
-|高并发	|80.
-|搜索elasticsearch	|23.
-|分布式存储	|27.
-|web安全	|11.
+[2597]
+||类别|笔记页数|
+|---|---|---|
+|1|基本知识|188.
+|2|计算机基础	|83.
+|3|计算机网络	|96.
+|4|数据结构和算法	|70.
+|5|Java	|195.
+|6|多线程	|150.
+|7|性能优化	|162.
+|8|spring	|314.
+|9|mysql	|217.
+|10|mybatis	|93.
+|11|MongoDB	|17.
+|12|redis	|276.
+|13|web容器	|27.
+|14|zookeeper	|81.
+|15|Kafka	|30.
+|16|RocketMQ	|63.
+|17|RabbitMQ	|86.
+|18|netty	|133.
+|19|nginx	|76.
+|20|分布式	|99.
+|21|高并发	|80.
+|22|搜索elasticsearch	|23.
+|23|分布式存储	|27.
+|24|web安全	|11.
 
 
 <h2>阅读统计</h2>
-(25/254)
+(30/254)
 
 
 * 计算机基础
@@ -220,12 +220,12 @@
     * 深入理解Nginx模块开发与架构解析第2版
     * 精通Nginx（第2版）
 * redis
-    * Redis入门指南
-    * Redis实战
-    * Redis实战 Josiah
-    * Redis开发与运维(付磊)
+    * Redis入门指南<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
+    * Redis实战<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
+    * Redis实战 Josiah<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
+    * Redis开发与运维(付磊)<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
     * Redis深度历险：核心原理和应用实践
-    * redis设计与实现
+    * redis设计与实现<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
 * shiro
     * 跟我学Shiro教程
     * Apache_Shiro_reference(中文版)

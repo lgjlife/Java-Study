@@ -3,7 +3,7 @@ file=record.md
 
 grep "\.$" $file | awk -F '|' '{print $3}' |awk -F '.' '{print $1}'| awk '{sum += $1} ;END {print sum}'
 #笔记总页数
-pages=$( grep "\.$" $file | awk -F '|' '{print $3}' |awk -F '.' '{print $1}'| awk '{sum += $1} ;END {print sum}' )
+pages=$( grep "\.$" $file | awk -F '|' '{print $4}' |awk -F '.' '{print $1}'| awk '{sum += $1} ;END {print sum}' )
 echo "All the pages is $pages"
 
 egrep "^\[[0-9]{4,4}\]$" $file

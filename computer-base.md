@@ -658,6 +658,7 @@ CPU和存储器一般使用三组线进行连接:数据总线,控制总线,地�
 /usr/local/bin 本地增加的命令
 /usr/local/lib 本地增加的库根文件系统
 ```
+
 #### 1.3.2.2. Linux 和 UNIX 的关系/区别
 
 Linux 是一个类似 Unix 的操作系统，Unix 要早于 Linux，Linux 的初衷就是要替代 UNIX，并在功能和用户体验上进行优化，所以 Linux 模仿了 UNIX（但并没有抄袭 UNIX 的源码），使得 Linux 在外观和交互上与 UNIX 非常类似。
@@ -1527,6 +1528,7 @@ schedule()函数需要确定以下参数:
 <a href="#menu" >目录</a>
 
 
+
 ### 1.3.9. 文件管理
 <a href="#menu" >目录</a>
 
@@ -1899,6 +1901,7 @@ unlimited
 <a href="#menu" >目录</a>
 
 ### 1.5.1. 基本概念
+
 <a href="#menu" >目录</a>
 
 * **内核**
