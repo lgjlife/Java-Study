@@ -2,7 +2,7 @@
 <h2>笔记统计</h2>
 
 总页数: 
-[2597]
+[2892]
 ||类别|笔记页数|
 |---|---|---|
 |1|基本知识|188.
@@ -13,7 +13,7 @@
 |6|多线程	|150.
 |7|性能优化	|162.
 |8|spring	|314.
-|9|mysql	|217.
+|9|mysql	|512.
 |10|mybatis	|93.
 |11|MongoDB	|17.
 |12|redis	|276.
@@ -32,7 +32,7 @@
 
 
 <h2>阅读统计</h2>
-(30/254)
+(32/254)
 
 
 * 计算机基础
@@ -96,8 +96,8 @@
     * Git权威指南<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
     * GitHub从入门到精通<img height="15px" id="book" width="15px" src="pic/icon/gou.png"></img>
 * 数据库
-    * 数据库原理-第5版
-    * Effective MySQL之SQL语句最优化
+    * 数据库原理-第5版　<img height="15px" id="book" width="15px" src="pic/icon/x.jpeg"></img>太旧，内容不相关
+    * Effective MySQL之SQL语句最优化<img height="15px" id="book" width="15px" src="pic/icon/x.jpeg"></img>内容质量一般
     * MySQL从入门到精通
     * sql学习指南
     * SQL必知必会 第4版
