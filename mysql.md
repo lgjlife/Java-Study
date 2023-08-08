@@ -99,10 +99,13 @@
         - [1.4.6.2.4. 外连接查询](#14624-外连接查询)
         - [1.4.6.2.5. 全外连接](#14625-全外连接)
         - [1.4.6.2.6. 连接３个或者更多的表](#14626-连接３个或者更多的表)
-        - [1.4.6.2.7. 表连接原理](#14627-表连接原理)
-        - [1.4.6.2.8. on和where的区别](#14628-on和where的区别)
-        - [1.4.6.2.9. 总结](#14629-总结)
-      - [1.4.6.3. 子查询](#1463-子查询)
+        - [1.4.6.2.7. 自连接](#14627-自连接)
+        - [1.4.6.2.8. 相等连接和不等连接](#14628-相等连接和不等连接)
+        - [1.4.6.2.9. 表连接原理](#14629-表连接原理)
+        - [1.4.6.2.10. on和where的区别](#146210-on和where的区别)
+        - [1.4.6.2.11. 总结](#146211-总结)
+      - [1.4.6.3. 集合](#1463-集合)
+      - [1.4.6.4. 子查询](#1464-子查询)
   - [1.5. 索引](#15-索引)
   - [1.6. 函数](#16-函数)
     - [1.6.1. 聚集函数](#161-聚集函数)
@@ -12176,6 +12179,10 @@ select * from stu_info A right join stu_score  B on A.id=B.id;
 select * from stu_info A right join stu_score  B on A.id=B.id left join xxx on xxx=xx;
 ```
 
+从上面可以看出，外连接查询相比于内连接查询，仍保留未符合条件的数据。举个例子，有一个员工表，和一个部门表，需要注意的是有的员工并不是都有部门。
+* 当查找有部门的员工名字及其部门名称，这时候使用内连接进行查询
+* 当查找所有员工的名字及其部门名称，没有部门的员工也要保留，这个时候就需要使用外连接查询。
+
 ##### 1.4.6.2.5. 全外连接
 <a href="#menu" >目录</a>
 
@@ -12217,8 +12224,79 @@ where xxx
 
 在多表连接中，像上面的例子，table3并不是与table2进行连接，而是table1和table2连接后生成的临时表，这个临时表再和这个table3进行连接。
 
-##### 1.4.6.2.7. 表连接原理
-<a href="#menu" >目录</a
+**其他例子**
+
+
+1. 连续两次使用同一个表
+
+在MySQL中，我们可以使用别名（AS）来为每个连接创建一个独立的标识符。例如，我们有一个学生表格，其中包含每个学生的成绩和信息。我们可以通过以下查询语句来同时获取每个学生在数学和英语考试的成绩：
+
+```sql
+SELECT math.student_id, math.score AS math_score, eng.score AS eng_score
+FROM scores math
+LEFT JOIN scores eng ON eng.student_id = math.student_id
+WHERE math.subject = 'mathematics' AND eng.subject = 'english';
+```
+
+订单表orders中有两个字段buyer和seller，分别对应订单的购买者和销售者。这两个字段都对应users表中的user_id字段，需要连接两次users表来查询买家和卖家的姓名。那么，我们可以使用以下语句来进行多次连接查询：
+```sql
+SELECT buyers.name AS buyer_name, sellers.name AS seller_name, orders.order_num
+FROM orders
+JOIN users AS buyers
+ON buyers.user_id = orders.buyer
+JOIN users AS sellers
+ON sellers.user_id = orders.seller;
+```
+这条语句中，我们将users表连接了两次，分别对应买家和卖家的信息。通过别名AS将连接得到的结果分别命名为buyer_name和seller_name，方便后续调用。
+
+2. 将子查询结果作为查询表
+
+```sql
+SELECT e.name, m.name AS manager
+FROM employee e
+LEFT JOIN (
+  SELECT id, name
+  FROM employee
+) m ON m.id = e.manager_id;
+```
+
+
+##### 1.4.6.2.7. 自连接
+<a href="#menu" >目录</a>
+
+自连接就是对表自身进行连接
+
+比如，一张员工表
+```yml
+emp
+员工id   员工名称　　　领导id
+id      emp_name   mgr_id
+1         libai     5
+2         wangwu    5
+5        zhangsan   null
+```
+要求列出所有员工的名称以及领导的名称，此时可以使用自连接方式查询
+
+```sql
+select  e.emp_name,mgr.name 
+from  emp e join emp mgr
+on e.mgr_id = mgr.id
+```
+
+##### 1.4.6.2.8. 相等连接和不等连接
+<a href="#menu" >目录</a>
+
+```sql
+/*相等/不等连接*/
+on xxx = xxx 
+on xxx != xxx
+/*范围连接*/
+on xxx < xxx 
+on xxx < xxx  and  xxx >  xxx
+```
+
+##### 1.4.6.2.9. 表连接原理
+<a href="#menu" >目录</a>
 
 MySQL是一个高效的SQL关系型数据库管理系统，而表连接是它的重要特性之一。在MySQL中，表连接是通过在两个或多个表之间建立连接，使它们共同参与到一个查询中，从而实现所需数据的获取。
 
@@ -12230,7 +12308,7 @@ MySQL表连接的原理是通过在两个或多个表中共同的字段进行比
 
 表连接是MySQL的一个核心特性，在实际应用中极其重要。通过连接两个或多个表，可以轻松实现数据的获取和整合。在开始实施表连接之前，需要明确表连接的原理和使用方法，并在实施过程中注意一些优化技巧。通过严格遵循最佳实践，我们可以充分发挥MySQL表连接的优势，确保查询的准确性和速度。
 
-##### 1.4.6.2.8. on和where的区别
+##### 1.4.6.2.10. on和where的区别
 <a href="#menu" >目录</a>
 
 内连接时，即使将on用where替换掉，也能得到相同的结果，但是标准做法是on确定连接条件，where再进行进一步的过滤
@@ -12245,7 +12323,7 @@ select xxx from table1 join  table2 on table1.xx = table2.xxx where xxx
 ```
 
 
-##### 1.4.6.2.9. 总结
+##### 1.4.6.2.11. 总结
 <a href="#menu" >目录</a>
 
 　
@@ -12349,9 +12427,11 @@ null         DDD
 ```
 
 
+#### 1.4.6.3. 集合
+<a href="#menu" >目录</a>
 
 
-#### 1.4.6.3. 子查询
+#### 1.4.6.4. 子查询
 <a href="#menu" >目录</a>
 
 连接查询的性能较差，可以使用子查询来替代。连接查询会先使用迪卡儿积操作，再去除不满足条件的数据记录。进行迪卡儿积时，会生成两个表数据记录数的乘积条数据记录，如果这两张表的数据量比较大，则在进行迪卡儿积操作可能会造成死机。
