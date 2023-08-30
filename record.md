@@ -2,7 +2,7 @@
 <h2>笔记统计</h2>
 
 总页数: 
-[2892]
+[2913]
 ||类别|笔记页数|
 |---|---|---|
 |1|基本知识|188.
@@ -10,10 +10,10 @@
 |3|计算机网络	|96.
 |4|数据结构和算法	|70.
 |5|Java	|195.
-|6|多线程	|150.
+|6|多线程	|168.
 |7|性能优化	|162.
 |8|spring	|314.
-|9|mysql	|355.
+|9|mysql	|515.
 |10|mybatis	|93.
 |11|MongoDB	|17.
 |12|redis	|276.
@@ -32,7 +32,7 @@
 
 
 <h2>阅读统计</h2>
-(32/254)
+(34/254)
 
 
 * 计算机基础
@@ -42,7 +42,7 @@
     * 深入理解计算机系统（第三版）
     * 编译原理及实践
     * 编译原理
-* 操作系统
+* 操
     * Linux命令行与shell脚本编程大全.第3版
     * 《鸟哥的Linux私房菜-基础篇》第四版
     * 操作系统原理及应用
@@ -99,14 +99,14 @@
     * 数据库原理-第5版　<img height="15px" id="book" width="15px" src="pic/icon/x.jpeg"></img>太旧，内容不相关
     * Effective MySQL之SQL语句最优化<img height="15px" id="book" width="15px" src="pic/icon/x.jpeg"></img>内容质量一般
     * MySQL从入门到精通
-    * sql学习指南
+    * sql学习指南　<img height="15px" id="book" width="15px" src="pic/icon/gou.jpeg"></img>
     * SQL必知必会 第4版
     * MySQL必知必会（文字版）_推荐
     * MySQL数据库应用从入门到精通 第2版
     * MySQL性能调优与架构设计
     * MySQL技术内幕  InnoDB存储引擎  第2版
     * MySQL高可用架构设计
-    * SQL优化实战技巧
+    * SQL优化实战技巧<img height="15px" id="book" width="15px" src="pic/icon/x.jpeg"></img>内容质量一般
     * SQL优化最佳实践 构建高效率Oracle数据库的方法与技巧
     * 收获，不止SQL优化--抓住SQL的本质 
     * 数据库索引设计与优化
@@ -149,7 +149,7 @@
     * Java 并发编程实战
     * JAVA并发编程实践（中文）
     * Java并发编程的艺术
-    * Java线程
+    * Java线程<img height="15px" id="book" width="15px" src="pic/icon/x.jpeg"></img>文档，内容一般
     * Java高并发编程详解
     * Java高并发编程详解
     * 深入浅出 Java 多线程

@@ -78,3 +78,32 @@ select name,dept_name from emp  right join dept on  emp.dept_id = dept.dept_id;
 
 
 
+DROP TABLE IF EXISTS tb_students_info;
+CREATE TABLE tb_students_info(
+   `id` BIGINT  PRIMARY KEY AUTO_INCREMENT COMMENT "ID",
+   `name` varchar(30) COMMENT "name",
+   `course_id` BIGINT
+)ENGINE=InnoDB   COMMENT="学生表";
+
+insert into tb_students_info (name,course_id) 
+values ("libai",1),("zhangsan",1),("kuis",2),("sanu",2);
+select * from tb_students_info;
+
+DROP TABLE IF EXISTS tb_course;
+CREATE TABLE tb_course(
+   `id` BIGINT  PRIMARY KEY AUTO_INCREMENT COMMENT "ID",
+   `course_name` varchar(30) COMMENT "name"
+)ENGINE=InnoDB   COMMENT="学生表";
+
+
+insert into tb_course (id,course_name) 
+values (1,"Java"),(2,"cpp");
+select * from tb_course;
+
+select name from tb_students_info 
+where course_id = (select id from tb_course where course_name = "Java");
+
+select name from tb_students_info  s
+join tb_course c
+on s.course_id = c.id 
+where c.course_name = "Java";
